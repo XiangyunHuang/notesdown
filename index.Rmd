@@ -1,0 +1,558 @@
+--- 
+title: "现代应用统计与 R 语言"
+author: "黄湘云"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+biblio-style: plainnat
+natbiboptions: "authoryear,round"
+documentclass: ctexbook
+papersize: b5
+fontsize: 10pt
+graphics: yes
+colorlinks: yes
+lot: yes
+lof: yes
+geometry:
+  - tmargin=2.5cm
+  - bmargin=2.5cm
+  - lmargin=3.0cm
+  - rmargin=2.0cm
+classoption: "UTF8,twoside,openany,fontset=adobe"
+bibliography: 
+  - book.bib
+  - packages.bib
+link-citations: yes
+keywords: 
+- 现代统计
+- 抽样
+- 估计
+- 检验
+- 预测
+- 线性模型
+- 极大似然估计
+- 最小二乘估计
+- 矩估计
+- 似然比检验 Wilks
+- Wald 检验
+- Score 检验 Rao
+- R 语言
+subject: "现代应用统计与 R 语言"
+description: "线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。"
+---
+
+
+```{r setup, include=FALSE}
+# packages only available on Github
+remote_pkgs <- c(equatiomatic = "datalorax", knitr = "yihui", cmdstanr = "stan-dev")
+
+lapply(c(
+  "bookdown", "desc", "remotes", "reticulate", "rootSolve"
+), function(pkg) {
+  if (system.file(package = pkg) != "") {
+    return()
+  }
+  repo <- remote_pkgs[pkg]
+  if (is.na(repo)) {
+    install.packages(pkg)
+  } else {
+    remotes::install_github(paste(repo, pkg, sep = "/"))
+  }
+})
+```
+
+\mainmatter
+
+# 前言 {#preface .unnumbered}
+
+\chaptermark{前言}
+
+::: rmdwarn
+Book in early development. Planned release in 202X. 
+:::
+
+
+## 本书风格 {#book-style .unnumbered}
+\index{区间估计}
+\index{置信区间}
+\index{信仰区间}
+\index{统计功效}
+
+可以说，点估计、区间估计、假设检验、统计功效是每一个学数理统计的学生都绕不过去的坎，离开学校从事数据相关的工作，它们仍然是必备的工具。所以，本书会覆盖相关内容，但是和高校的教材最大的区别是更加注重它们之间的区别和联系，毕竟每一个统计概念都是经过了千锤百炼，而我们的主流教材始终如一地遵循的一个基本套路，就是突然给出一大堆定义、命题或定理，紧接着冗长的证明过程，然后给出一些难以找到实际应用背景的例子。三板斧抡完后就是给学生布置大量的习题，这种教学方式无论对于立志从事理论工作的还是将来投身于工业界的学生都是不合适的。
+
+> 极大似然估计最初由德国数据学家 Gauss 于 1821 年提出，但未得到重视，后来， R. A. Fisher 在 1922 年再次提出极大似然的思想，探讨了它的性质，使它得到广泛的研究和应用。[@Prob_2006_Mao]
+
+这是国内某著名数理统计教材在极大似然估计开篇第一段的内容，后面是各种定义、定理、公式推导。教材简短一句话，这里面有很多信息值得发散，一个数学家提出了统计学领域极其重要的一个核心思想，他是在研究什么的时候提出了这个想法，为什么后来没有得到重视，整整 100 年以后，Fisher 又是怎么提出这一思想的呢？他做了什么使得这个思想被广泛接受和应用？虽然这可能有点离题，但是读者可以获得很多别的启迪，要知道统计领域核心概念的形成绝不是一蹴而就的，这一点也绝不局限于统计科学，任何一门科学都是这样的，比如物理学之于光的波粒二象性。历史上，各门各派的学者历经多年的思想碰撞才最终沉淀出现在的结晶。笔者认为，学校要想培养出有原创理论创新的人才，在对待前辈的成果上，我们要不吝笔墨和口水，传道不等于满堂灌和刷分机，用寥寥数节课或者数页纸来梳理学者们几十年乃至上百年的智慧结晶是非常值得的，我们甚至可以从当时的社会、人文去剖析。
+
+
+
+
+下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
+
+
+1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 $B(n, p)$ 参数 $p$ 的置信带 [@Test_1934_binom]，图 \@ref(fig:confidence-belt) 提炼了文章的主要结果。
+
+```{r confidence-belt,fig.asp=1,fig.cap="(ref:confidence-belt)",fig.scap="(ref:confidence-belt-s)",echo=FALSE,fig.pos = "!htb"}
+library(rootSolve) # uniroot.all
+options(digits = 4)
+# r 为上分位点
+p_fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = F) - r # 上分位点
+l_fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = T) - r # 下分位点
+
+# 计算每个分位点对应的最小的概率 p
+p <- sapply(0:10, function(x) min(uniroot.all(p_fun, lower = 0, upper = 1, r = x)))
+
+# 计算每个分位点对应的最大的概率 l
+l <- sapply(0:10, function(x) max(uniroot.all(l_fun, lower = 0, upper = 1, r = x)))
+
+plot(
+  x = seq(from = 0, to = 10, length.out = 11), y = seq(from = 0, to = 1, length.out = 11),
+  type = "n", xlab = "x", ylab = "p", panel.first = grid()
+)
+lines(x = 0:10, y = p, type = "s") # 朝下的阶梯线
+lines(x = 0:10, y = p, type = "l") # 折线
+points(x = 0:10, y = p, pch = 16, cex = .8) # 散点
+
+abline(a = 0, b = 0.1, col = "gray", lwd = 2, lty = 2) # 添加对称线
+points(x = 5, y = 0.5, col = "black", pch = 16) # 中心对称点
+points(x = 5, y = 0.5, col = "black", pch = 3) # 中心对称点
+title(main = "Confidence Belt\nwith Coefficient 0.95 for Sample of 10") # 置信带
+
+lines(x = 0:10, y = l, type = "S") # 朝上的阶梯线
+lines(x = 0:10, y = l, type = "l") # 折线
+points(x = 0:10, y = l, pch = 16, cex = .8) # 散点
+
+points(x = c(2, 2), y = c(0.03, 0.55), pch = 8, col = "black")
+text(x = 2, y = 0.55, labels = "p2", pos = 1)
+text(x = 2, y = 0.03, labels = "p1", pos = 3)
+```
+
+(ref:confidence-belt) 给定置信系数 $1- \alpha = 0.95$ 和样本量 $n = 10$ 的情况下，二项分布参数 $p$ 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 $p$ 的精确区间估计为 $(p_1, p_2) = (0.03, 0.55)$。
+
+(ref:confidence-belt-s) 二项分布参数 $p$ 的置信带
+
+区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 $(5, 0.5)$ 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
+
+::: rmdinfo
+Base R 提供的 `uniroot()` 函数只能求取一元非线性方程的一个根，而 **rootSolve** 包提供的 `uniroot.all()` 函数可以求取所有的根。在给定分位点下，我们需要满足方程的最小的概率值。
+:::
+
+Base R 提供的 `binom.test()` 函数可以精确计算置信区间，而 `prop.test()` 函数可近似计算置信区间。
+
+```{r, warning=TRUE,collapse=TRUE}
+# 近似计算 Wilson 区间
+prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
+# 精确计算
+binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
+```
+
+[多重比较与检验]{.todo}
+
+多重比较 p.adjust 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 oneway.test()
+
+```{r}
+set.seed(123)
+x <- rnorm(50, mean = c(rep(0, 25), rep(3, 25)))
+p <- 2 * pnorm(sort(-abs(x)))
+# ?p.adjust
+round(p, 3)
+# round(p.adjust(p), 3)
+# round(p.adjust(p, "BH"), 3)
+```
+
+[混合正态分布的参数估计]{.todo}
+
+两个二元正态分布的碰撞，点的密度估计值代表概率密度值，
+
+```{r faithful, fig.cap="散点图：faithful 数据集",fig.asp=1,echo=FALSE}
+plot(faithful,
+  pch = 20, panel.first = grid(), cex = 1.5,
+  col = densCols(faithful, colramp = gray.colors)
+)
+```
+
+[统计检验，决策风险，显著性水平]{.todo}
+
+```{r ab-test,fig.asp="A/B 测试：功效",echo=FALSE}
+library(ggplot2)
+ggplot(data.frame(x = c(-4, 10)), aes(x)) +
+  stat_function(
+    fun = dnorm, geom = "area", 
+    args = list(mean = 2, sd = 1),
+    fill = "gray70", alpha = .8
+  ) +
+  stat_function(
+    fun = dnorm, geom = "area",
+    args = list(mean = 4, sd = 2),
+    fill = "gray50", alpha = .8
+  ) +
+  geom_vline(xintercept = 4, col = "gray40", lty = 2, lwd = 1.2) +
+  geom_vline(xintercept = 2, col = "gray40", lty = 2, lwd = 1.2) +
+  theme_minimal(base_size = 16)
+```
+
+Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values [@Geyer2005] 文章中的图 1 名义覆盖概率的计算见 [@Blyth1960]
+
+
+[统计计算与软件实现]{.todo}
+
+
+```{r}
+binom.test(x = 2, n = 10, p = 0.95)
+binom.test(x = 1, n = 10, p = 0.95)
+```
+
+置信区间
+
+```{r}
+# 置信系数 p 0.95
+binom.test(x = 1, n = 10, p = 0.95)$conf.int
+binom.test(x = 1, n = 10, p = 0.95)$p.value
+```
+
+如果此时计算的 P 值是 0.05 反推真实的成功概率 $\theta$ 为多少
+
+q 分位点
+
+```{r}
+# 计算覆盖概率
+pbinom(q = 1, size = 10, prob = 0.95, lower.tail = TRUE)
+```
+
+
+```{r}
+pbinom(q = 0:10/10, size = 10, prob = 0.95, lower.tail = TRUE)
+
+round(pbinom(0:4, 10, 1 / 2), 5)
+```
+
+
+```{r}
+# power.prop.test() # 比例检验的功效
+
+```
+
+
+[现代统计建模的三重境界]{.todo}
+
+
+```{r stats-level,fig.cap="(ref:stats-level)",fig.scap="(ref:stats-level-s)",fig.asp=1,echo=FALSE}
+par(mar = rep(0.5, 4))
+plot(c(0, 10), c(0, 10), ann = F, axes = F, type = "n")
+
+symbols(c(5, 5, 5), c(2.8, 4.0, 4.8),
+        circles = c(1.8, 3.5, 4.6), lwd = 2, inches = F,
+        fg = c("gray", "gray", "gray"), add = TRUE, lty = c("dotted", "dashed", "solid")
+)
+
+text(x = 5, y = 2.8, labels = "NORMAL THEORY \n (exact calculations)", cex = 1)
+text(x = 5, y = 6.0, labels = "EXPONENTIAL FAMILIES \n (partly exact)", cex = 1)
+text(x = 5, y = 8.5, labels = "GENERAL THEORY \n (asymptotics)", cex = 1)
+points(x = 5.2, y = 5.2, pch = 8, col = "black")
+points(x = 4.8, y = 6.0, pch = 8, col = "black")
+points(x = 2.5, y = 5.0, pch = 8, col = "black")
+points(x = 3.0, y = 4.2, pch = 8, col = "black")
+points(x = 8.0, y = 4.5, pch = 8, col = "black")
+box()
+```
+
+(ref:stats-level-s) 现代统计建模的三重境界
+
+(ref:stats-level) 现代统计建模的三重境界：修改自 2019 年冬季 Bradley Efron 的课程笔记（第一部分） <http://statweb.stanford.edu/~ckirby/brad/STATS305B_Part-1_corrected-2.pdf>
+
+## 本书定位 {#book-audience .unnumbered}
+
+学习本书需要读者具备基本的概率、统计知识，比如上过一学期的概率论和数理统计学，也需要读者接触过编程知识，比如至少上过一学期的 C 语言、Python 语言或 Matlab 语言。了解基本的线性代数，比如矩阵的加、减、乘、逆四则运算、线性子空间、矩阵的 LU、SVD、Eigen 等分解。
+
+## 内容概要 {#book-abstract .unnumbered}
+
+
+## 语言抉择 {#r-or-python .unnumbered}
+
+\index{R}
+\index{Octave}
+\index{Python}
+
+行业内可以做统计分析和建模的软件汗牛充栋，比较顶级的收费产品有 SAS 和 SPSS，在科学计算领域的 Matlab 和 Mathematica 也有相当强的统计功能，而用户基数最大的是微软 Excel，抛开微软公司的商业手段不说，Excel 的市场份额却是既成事实。 Brian D. Ripley 20 多年前的一句话很有意思，放在当下也是适用的。
+
+> Let's not kid ourselves: the most widely used piece of software for statistics is Excel.
+>
+> --- Brian D. Ripley [@Ripley_2002_SS]
+
+有鉴于 Excel 在人文、社会、经济和管理等领域的影响力，熟悉 R 语言的人把它看作超级收费版的 Excel，这实在是一点也不过分。事实上，我司就是一个很好的明证，一个在线教育类的互联网公司，各大业务部门都在使用 Excel 作为主要的数据分析工具。然而，Excel 的不足也十分突出，工作过程无法保存和重复利用，Excel 也不是数据库，数据集稍大，操作起来愈发困难，对于复杂的展示，需要借助内嵌的 VBA，由于缺乏版本控制，随着时间的推移，几乎不可维护。所以，我们还是放弃 Excel 吧，Jenny Bryan 更在 2016 年国际 R 语言大会上的直截了当地喊出了这句话[^bye-excel]。Nathan Stephens 对 Excel 的缺陷不足做了全面的总结[^without-excel]。
+
+> Some people familiar with R describe it as a supercharged version of Microsoft's Excel spreadsheet software.
+> 
+> --- Ashlee Vance [^AV-NYT-2009]
+
+[^AV-NYT-2009]: <https://www.nytimes.com/2009/01/07/technology/business-computing/07program.html>
+[^bye-excel]: <https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/jailbreakr-Get-out-of-Excel-free>
+[^without-excel]: <https://resources.rstudio.com/wistia-rstudio-essentials-2/how-to-excel-without-using-excel>
+
+另一方面，我们谈谈开源领域的佼佼者 --- R (<https://cran.r-project.org/>)，Python (<https://www.python.org/>) 和 Octave (<http://www.gnu.org/software/octave/>)。Python 号称万能的胶水语言，从系统运维到深度学习都有它的广泛存在，它被各大主流 Linux 系统内置，语言风格上更接近于基数庞大的开发人员，形成了强大的生态平台。 Octave 号称是可以替代 Matlab 的科学计算软件，在兼容 Matlab 的方面确实做的很不错，根据 Julia 官网给出的各大编程语言的测试 <https://julialang.org/benchmarks/>，性能上不能相提并论。
+
+
+```{r r-eco-system, engine = "tikz", echo=FALSE, fig.cap = "R 语言扩展包生态系统", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png')}
+\usetikzlibrary{mindmap,trees}
+\tikzset{level 1 concept/.append style={font=\sf}}
+\tikzset{level 2 concept/.append style={font=\sf}}
+
+\begin{tikzpicture}[scale=0.88]
+	\path[mindmap, concept color=gray!90, text=black]
+	 node[concept] {\textcolor{black} {\Huge\sf Interface}}[clockwise from=60]
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{JavaScript}}[clockwise from=145]
+      child[concept color=gray!50,text=black] { node[concept] {highcharter} }	
+      child[concept color=gray!50,text=black] { node[concept] {plotly} }
+      child[concept color=gray!50,text=black] { node[concept] {leaflet} }
+    }	
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{ DBI }}[clockwise from=100]
+      child[concept color=gray!50,text=black] { node[concept] {sparklyr}  }
+      child[concept color=gray!50,text=black] { node[concept] {odbc} }
+      child[concept color=gray!50,text=black] { node[concept] {rJava} }
+	  child[concept color=gray!50,text=black] { node[concept] {RJDBC} }
+	  child[concept color=gray!50,text=black] { node[concept] {RcppRedis} }
+    }
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{Application}} % 在线分析
+      [clockwise from=-25]
+      child[concept color=gray!50,text=black] { node[concept] {shiny}  }
+      child[concept color=gray!50,text=black] { node[concept] {RestRserve} }
+      child[concept color=gray!50,text=black] { node[concept] {plumber} }
+    }
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{Language}}
+      [clockwise from=-90]
+      child[concept color=gray!50,text=black] { node[concept] {reticulate} }	
+      child[concept color=gray!50,text=black] { node[concept] {rstan} }
+      child[concept color=gray!50,text=black] { node[concept] {Rcpp} }
+    }
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{Software}}[clockwise from=-145]
+      child[concept color=gray!50,text=black] { node[concept] {RWeka } }	
+      child[concept color=gray!50,text=black] { node[concept] {Ryacas} }
+      child[concept color=gray!50,text=black] { node[concept] {RcppOctave} }
+    }
+	child[concept color=gray!70] {
+      node[concept] {\textcolor{black}{Framework}}[clockwise from=145]
+      child[concept color=gray!50,text=black] { node[concept] {mxnet} }
+      child[concept color=gray!50,text=black] { node[concept] {tensorflow} }
+    };
+
+\end{tikzpicture}
+```
+
+JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管在 Github 上 <https://github.com/jasp-stats/jasp-desktop>，主要由阿姆斯特丹大学 E. J. Wagenmakers 教授 <https://www.ejwagenmakers.com/> 领导的团队维护开发，实现了很多贝叶斯和频率统计方法，相似的图形用户界面使得 JASP 可以作为 SPSS 的替代，目前实现的功能见 <https://jasp-stats.org/current-functionality/>，统计方法见博客 <https://www.bayesianspectacles.org/>。
+
+
+[Patrick Burns](https://www.burns-stat.com/) 收集整理了 R 语言中奇葩的现象，写成 [The R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) 直译过来就是《R 之炼狱》。这些奇葩的怪现象可以看做是 R 风格的一部分，对于编程人员来说就是一些建议和技巧，参考之可以避开某些坑。 Paul E. Johnson 整理了一份真正的 R 语言建议，记录了他自己从 SAS 转换到 R 的过程中遇到的各种问题 <http://pj.freefaculty.org/R/Rtips.html>。Michail Tsagris 和 Manos Papadakis 也收集了 70 多条 R 编程的技巧和建议，力求以更加 R 范地将语言特性发挥到极致 [@Rfast_2018_Tsagris]。 Python 社区广泛流传着 Tim Peters 的 《Python 之禅》，它已经整合进每一版 Python 软件中，只需在 Python 控制台里执行  `import this` 可以获得。
+
+> 1. Beautiful is better than ugly.
+1. Explicit is better than implicit.
+1. Simple is better than complex.
+1. Complex is better than complicated.
+1. Flat is better than nested.
+1. Sparse is better than dense.
+1. Readability counts.
+1. Special cases aren't special enough to break the rules.
+1. Although practicality beats purity.
+1. Errors should never pass silently.
+1. Unless explicitly silenced.
+1. In the face of ambiguity, refuse the temptation to guess.
+1. There should be one-- and preferably only one --obvious way to do it.
+1. Although that way may not be obvious at first unless you're Dutch.
+1. Now is better than never.
+1. Although never is often better than *right* now.
+1. If the implementation is hard to explain, it's a bad idea.
+1. If the implementation is easy to explain, it may be a good idea.
+1. Namespaces are one honking great idea -- let's do more of those!
+>
+>   --- The Zen of Python
+
+总之，编程语言到一定境界都是殊途同归的，对美的认识也是趋同的，道理更是相通的，Python 社区的 Pandas <https://github.com/pandas-dev/pandas> 和 Matplotlib <https://github.com/matplotlib/matplotlib> 也有数据框和图形语法的影子。Pandas <https://github.com/pandas-dev/pandas> 明确说了要提供与 data.frame 类似的数据结构和对应统计函数等，而  Matplotlib 偷了 ggplot2 绘图样式 <https://matplotlib.org/3.2.1/gallery/style_sheets/ggplot.html>。
+
+
+## 获取帮助 {#r-help .unnumbered}
+
+R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题 <https://cran.r-project.org/faqs.html> 中查找，也可在线搜索 <https://cran.r-project.org/search.html> 或 <https://rseek.org/> 或 <https://stackoverflow.com/questions/tagged/r>，更多获取帮助方式见 <https://www.r-project.org/help.html>。在当下信息爆炸的时代，唯一不缺的就是各种学习资源：
+
+- 《R 语言资料卡片》中文版 <https://github.com/sunbjt/r_reference>
+- 《R导论》中文版 <https://github.com/DingGuohui/R-intro-cn>
+- 《R 语言高频问题》<https://cran.r-project.org/doc/contrib/Liu-FAQ.pdf> 由刘思喆收集自中文论坛，非 Kurt Hornik 维护的官方文档 [@R-FAQ]
+
+适合入门的书籍：
+
+- 《Exploratory Data Analysis with R》探索性分析与 R 语言 Roger D. Peng <https://bookdown.org/rdpeng/exdata/>
+- 《Efficient R programming》高效的 R 语言编程 Colin Gillespie 和 Robin Lovelace <https://csgillespie.github.io/efficientR/>
+
+与数据可视化相关：
+
+- 《ggplot2: Elegant Graphics for Data Analysis, 3rd》数据分析与图形艺术 Hadley Wickham <https://ggplot2-book.org/>
+- 《Fundamentals of Data Visualization》数据可视化精要 Claus O. Wilke <https://serialmentor.com/dataviz/>
+- 《Interactive web-based data visualization with R, plotly, and shiny》交互式数据可视化 Carson Sievert <https://plotly-r.com/>
+- 《Data Visualization: A Practical Introduction》 数据可视化：实践指南 Kieran Healy <https://socviz.co/>
+
+与 shiny 相关：
+
+- 《Engineering Production-Grade Shiny Apps》 Colin Fay, Sébastien Rochette, Vincent Guyader, Cervan Girard <https://engineering-shiny.org/>
+- 《Mastering Shiny》 Hadley Wickham <https://mastering-shiny.org/>
+
+与统计推断相关：
+
+- 《Computer Age Statistical Inference: Algorithms, Evidence and Data Science》 Bradley Efron 和 Trevor Hastie <https://web.stanford.edu/~hastie/CASI/>
+- 《Spatio-Temporal Statistics with R》 Christopher K. Wikle, Andrew Zammit-Mangion, and Noel Cressie <https://spacetimewithr.org/>
+- 《Geocomputation with R》 Robin Lovelace, Jakub Nowosad, Jannes Muenchow <https://geocompr.robinlovelace.net/>
+- 《Bayesian inference with INLA》Virgilio Gómez-Rubio <https://becarioprecario.bitbucket.io/inla-gitbook/>
+- 《Advanced Spatial Modeling with Stochastic Partial Differential Equations Using R and INLA》Elias T. Krainski, Virgilio Gómez-Rubio, Haakon Bakka, Amanda Lenzi, Daniela Castro-Camilo, Daniel Simpson, Finn Lindgren and Håvard Rue <https://becarioprecario.bitbucket.io/spde-gitbook/>
+- 《Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny》 Paula Moraga <https://www.paulamoraga.com/book-geospatial/>
+- 《Spatial Data Science》 Edzer Pebesma 和 Roger Bivand <https://www.r-spatial.org/book>
+
+以及课程资源：
+
+- CS229: Machine Learning 机器学习课程 <http://cs229.stanford.edu/>
+- Statistical Learning 统计学习课程 Trevor Hastie and Rob Tibshirani <https://www.dataschool.io/15-hours-of-expert-machine-learning-videos/>
+
+还有各类食谱：
+
+- 《R Cookbook, 2nd》R 语言食谱 James (JD) Long 和 Paul Teetor <https://rc2e.com/>
+- 《R Graphics Cookbook, 2nd》 R 绘图食谱 Winston Chang <https://r-graphics.org/>
+- 《R Markdown Cookbook》R Markdown 食谱 Yihui Xie 和 Christophe Dervieux <https://bookdown.org/yihui/rmarkdown-cookbook/>
+
+以及中外博客：
+
+- 谢益辉 <https://yihui.org/>
+- 于淼 <https://yufree.cn/>
+- 谭显英 <https://shrektan.com/>
+- 任坤 <https://renkun.me/>
+- Andrew Gelman <https://andrewgelman.com/>
+- Julia Silge <https://juliasilge.com/>
+- David Robinson <http://varianceexplained.org/>
+
+除了 R 语言，我们还需要掌握一点和命令行相关的东西，比如 Bash 和 Makefile 等。
+
+- 《Bash 教程》阮一峰 <https://github.com/wangdoc/bash-tutorial>
+- 《跟我一起写 Makefile》陈浩 <https://github.com/seisman/how-to-write-makefile>
+- 《快乐的 Linux 命令行》Peter Wang 和 Billie Zhang <https://billie66.github.io/TLCL/>
+- 《Linux 就该这么学》刘遄 <https://www.linuxprobe.com/docs/LinuxProbe.pdf>
+
+## 写作环境 {#writing-details .unnumbered}
+\index{DiagrammeR}
+\index{bookdown}
+\index{Pandoc}
+
+```{r workflow, echo=FALSE, fig.cap="书籍项目架构图"}
+DiagrammeR::grViz("
+digraph {
+  graph [layout = dot, rankdir = TB]
+  
+  node [shape = rectangle]        
+  rec1 [label = 'RStudio IDE / VS Code']
+  rec2 [label = '编辑 R Markdown']
+  rec3 [label = '远程推送 (Git)']
+  rec4 [label = '本地编译 (Makefile)']
+
+  rec9  [label = 'knitr + rmarkdown + bookdown']
+  rec10 [label = 'GitBook / EPUB']
+  rec11 [label = 'PDF']
+  
+  rec19 [label = 'GhostScript']
+  rec20 [label = 'GraphicsMagick / ImageMagick'] # resize image
+  rec21 [label = 'PNG']
+  rec22 [label = 'OptiPNG']
+  rec23 [label = 'Graphviz']
+  rec24 [label = 'GIF']
+  rec25 [label = 'Gifski']
+  rec26 [label = 'PCRE 2.0']
+  
+  rec12 [label = 'LaTeX']
+  rec13 [label = 'Markdown']
+  
+  rec14 [label = 'Pandoc + Lua']
+  rec15 [label = 'CSS + JavaScript + HTML']
+  rec16 [label = 'R + Python + TinyTeX']
+  
+  rec17 [label = '编译成功']
+  rec18 [label = '手动部署 (bookdown.org)']
+  
+  rec5 [label = '自动编译 (Travis CI)']
+  rec6 [label = '自动部署 (Github Pages)']
+  
+  rec8 [label = '自动编译 (Github Action)']
+  rec7 [label = '自动部署 (Netlify)']
+  
+  edge [style = solid, color = black]
+  rec1 -> rec2 -> rec3 -> rec5 -> rec9
+  rec2 -> rec4 -> rec16 -> rec9
+  
+  rec3  -> rec8  -> rec9  -> rec13 -> rec14
+  rec14 -> rec12 -> rec11 -> rec17 -> rec6
+  rec14 -> rec15 -> rec10 -> rec17 -> rec7
+  
+  rec17 -> rec18
+  rec19 -> rec11
+  rec20 -> rec11
+  rec22 -> rec21 -> rec15
+  rec23 -> rec21
+  rec24 -> rec15
+  rec25 -> rec24
+  rec26 -> rec12
+  }", width = 800, height = 800)
+```
+
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 `r format(Sys.time(), '%Y年%m月%d日%H时%M分%S秒')`，本书用 `r R.version.string` 编译，完整运行环境如下：
+
+```{r}
+xfun::session_info(packages = c(
+  "knitr", "rmarkdown", "bookdown", "rootSolve", "ggplot2", "DiagrammeR"
+), dependencies = FALSE)
+```
+
+借助 **bookdown** [@xie2016] 可以将 Rmd 文件组织起来， **rmarkdown** [@rmarkdown]和 **knitr** [@xie2015] 将源文件编译成 Markdown 文件， [Pandoc](https://pandoc.org/) 将 Markdown 文件转化成 HTML 和 TeX 文件， [TinyTeX](https://yihui.name/tinytex/) [@xie2019] 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 **ggplot2** 包制作 [@Wickham_2016_ggplot2]，而统计理论相关的示意图用 Base R 创作。
+
+本书在后续章节中陆续用到新的 R 包，其安装过程不会在正文中呈现，下面以在 CentOS 8 上安装 **sf** 包为例介绍。首先需要安装一些系统依赖，具体安装哪些依赖参见 **sf** 包开发站点 <https://github.com/r-spatial/sf>。
+
+```bash
+sudo dnf copr enable simc/stable # gdal-devel
+sudo dnf install -y sqlite-devel gdal-devel \
+  proj-devel geos-devel udunits2-devel
+```
+
+然后，在 R 命令行窗口中，执行安装命令：
+
+```r
+install.packages('sf')
+```
+
+至此，安装完成。如遇本地未安装的新 R 包，可从其官方文档中找寻安装方式。如果你完全不知道自己应该安装哪些，考虑把下面的依赖都安装上
+
+```bash
+sudo dnf install -y \
+  # magick
+  ImageMagick-c++-devel \ 
+  # pdftools
+  poppler-cpp-devel \ 
+  # gifski
+  cargo 
+```
+
+最后，本书在三个位置提供网页版， 网站 [Github Pages](https://pages.github.com/) 发布最近一次在 Travis 构建成功的版本 <https://xiangyunhuang.github.io/masr/>，网站 [Bookdown](https://bookdown.org) 发布本地手动创建的版本 <https://bookdown.org/xiangyun/masr/> ，网站 [Netlify](https://netlify.com/) 发布最新的开发版 <https://masr.netlify.app/>。
+
+## 记号约定 {#conventions .unnumbered}
+
+正文中的代码、函数、参数及参数值以等宽正体表示，如 `data(list = c('iris', 'BOD'))`，
+其中函数名称 `data()`，参数及参数值 `list = c('iris', 'BOD')` ，R 程序包用粗体表示，如 **graphics**。
+ 
+```{r, echo=FALSE}
+# modified from https://github.com/hadley/adv-r/blob/4915e2984168da50671491db238d351e5590c07b/Introduction.Rmd#L264
+ruler <- function(width = getOption("width")) {
+  x <- seq_len(width)
+  y <- ifelse(x %% 10 == 0, as.character((x %/% 10) %% 10),
+    ifelse(x %% 5 == 0, "+", "-")
+  )
+  cat(y, "\n", sep = "")
+  cat(x %% 10, "\n", sep = "")
+}
+```
+```{r, comment=NA}
+ruler()
+```

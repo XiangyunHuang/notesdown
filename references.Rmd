@@ -1,0 +1,27 @@
+\backmatter
+\printindex
+
+`r if (knitr::is_html_output()) '
+# 参考文献 {#references .unnumbered}
+'`
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown", "gganimate", "gifski",
+    'gam', 'mda', 'R2jags', 'pspearman', 'Kendall', 'SuppDists'
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+bib <- gsub("'(Eigen|ggplot2|Stan)'", "\\1", bib)
+xfun::write_utf8(bib, "packages.bib")
+
+# embed fonts
+if (knitr::is_latex_output()) {
+  pdfs = list.files(knitr::opts_chunk$get('fig.path'), '[.]pdf$', full.names = TRUE)
+  invisible(lapply(pdfs, embedFonts))
+}
+```

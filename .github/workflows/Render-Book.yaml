@@ -1,0 +1,131 @@
+on:
+  push:
+    branches: '*'
+  schedule:
+    # run every day at 11 PM
+    - cron: '0 23 * * *'
+
+name: Render-Book
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    strategy:
+      matrix:
+        config:
+          - {os: ubuntu-18.04, r: '4.0.0'}
+
+    env:
+      RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
+      LANG: "en_US.UTF-8"
+      TZ: "Asia/Shanghai"
+      CMDSTAN_VERSION: "2.23.0"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.23.0"
+      CTAN_URL: https://mirrors.rit.edu/CTAN
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.config.r }}
+
+      - name: Install TinyTeX
+        run: |
+          curl -fLo /tmp/tinytex.tar.gz https://travis-bin.yihui.org/tinytex.tar.gz
+          tar -xzf /tmp/tinytex.tar.gz -C $HOME
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          curl -fsSL https://www.preining.info/rsa.asc | tlmgr key add -
+          tlmgr update --self --all --no-auto-install --repository=${{ env.CTAN_URL }}/systems/texlive/tlnet/
+          tlmgr install $(cat texlive.txt | tr '\n' ' ') || true
+          sudo apt-get install -y fonts-dejavu
+          fc-list | grep 'dejavu' | sort
+
+      - name: Install Pandoc
+        uses: r-lib/actions/setup-pandoc@v1
+        with:
+          pandoc-version: '2.9.2'
+
+      - name: Install ghostscript and Others
+        run: |
+          sudo apt-get install -y cargo ffmpeg graphviz optipng jags virtualenv xvfb python3-virtualenv python3-tk
+          sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev
+
+
+      - name: Install Python ENV
+        run: |
+          virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
+          source $RETICULATE_PYTHON_ENV/bin/activate
+          python -V
+          pip install -r requirements.txt
+          pip list --format=columns
+          deactivate
+
+      - name: Build CmdStan
+        run: |
+          mkdir -p /opt/cmdstan
+          curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz
+          tar -xzf cmdstan-${CMDSTAN_VERSION}.tar.gz -C /opt/cmdstan/
+          cd ${CMDSTAN}
+          make build
+
+      - name: Configure R CXXFLAGS/CXX14FLAGS
+        run: |
+          mkdir -p ~/.R
+          echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars
+          echo "CXX14 = g++ -fPIC -flto=2" >> ~/.R/Makevars
+          echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
+
+      - name: Configure Adobe Fonts
+        run: |
+          mkdir -p ~/.fonts
+          curl -fLo Adobe-Fonts.zip https://github.com/XiangyunHuang/fonts/releases/download/v0.1/Adobe-Fonts.zip
+          unzip Adobe-Fonts.zip -d ~/.fonts/adobe
+          fc-cache -fsv
+
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: r-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: r-
+
+      - name: Cache bookdown results
+        uses: actions/cache@v1
+        with:
+          path: _bookdown_files
+          key: bookdown-${{ hashFiles('**/*Rmd') }}
+          restore-keys: bookdown-
+
+      - name: Install R packages
+        run: |
+          R -e 'install.packages("remotes")'
+          xvfb-run --auto-servernum R -e 'update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])'
+          xvfb-run --auto-servernum R -e 'remotes::install_deps(dependencies = NA)'
+          R -e 'sessionInfo(sort(.packages(T)))'
+          # check TinyTeX
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          R -e 'tinytex:::is_tinytex()'
+
+      - name: Build Book
+        run: |
+          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          R -e 'webshot::install_phantomjs()'
+          if make gitbook; then make pdf; fi
+
+      - name: Install npm
+        uses: actions/setup-node@v1
+
+      - name: Deploy to Netlify
+        # NETLIFY_AUTH_TOKEN added in the repo's secrets
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          export COMMIT_MSG=$(git log -1 --format='%h %<(50,trunc)%s')
+          export DEPLOY_MSG=${COMMIT_MSG//[\'\"\`]/}
+          npm install netlify-cli -g
+          netlify deploy --prod --dir _book --message "$DEPLOY_MSG"
