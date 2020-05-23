@@ -9,7 +9,7 @@ local({
     ))
   }
   # add local PhantomJS Path
-  if (Sys.getenv("CI") == "") {
+  if (Sys.getenv("CI") == "" && grepl("macOS", utils::sessionInfo()$running)) {
     Sys.setenv(PATH = paste(
       normalizePath("~/Library/phantomjs-2.1.1-macosx/bin"),
       Sys.getenv("PATH"),
