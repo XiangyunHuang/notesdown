@@ -16,6 +16,15 @@ local({
       sep = .Platform$path.sep
     ))
   }
+
+  if (Sys.getenv("CI") == "" && grepl("CentOS", utils::sessionInfo()$running)) {
+    Sys.setenv(PATH = paste(
+      normalizePath("/opt/phantomjs/phantomjs-2.1.1-linux-x86_64/bin"),
+      Sys.getenv("PATH"),
+      sep = .Platform$path.sep
+    ))
+  }
+
 })
 options(
   citation.bibtex.max = 999,
