@@ -3,8 +3,6 @@ title: "现代应用统计与 R 语言"
 author: "黄湘云"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-biblio-style: plainnat
-natbiboptions: "authoryear,round"
 documentclass: ctexbook
 papersize: b5
 fontsize: 10pt
@@ -17,25 +15,32 @@ geometry:
   - bmargin=2.5cm
   - lmargin=3.0cm
   - rmargin=2.0cm
-classoption: "UTF8,twoside,openany,fontset=adobe"
+classoption: "UTF8,twoside,openany,fontset=adobe,zihao=false"
 bibliography: 
   - book.bib
   - packages.bib
 link-citations: yes
+biblio-style: plainnat
+natbiboptions: "authoryear,round"
+hyperrefoptions:
+  - linktoc=all
+  - pdfpagemode=FullScreen # 全屏显示
+  - pdfstartview=FitH # 适合宽度
+  - bookmarksnumbered=true # 书签带编号
 keywords: 
-- 现代统计
-- 抽样
-- 估计
-- 检验
-- 预测
-- 线性模型
-- 极大似然估计
-- 最小二乘估计
-- 矩估计
-- 似然比检验 Wilks
-- Wald 检验
-- Score 检验 Rao
-- R 语言
+  - 现代统计
+  - 抽样
+  - 估计
+  - 检验
+  - 预测
+  - 线性模型
+  - 极大似然估计
+  - 最小二乘估计
+  - 矩估计
+  - 似然比检验 Wilks
+  - Wald 检验
+  - Score 检验 Rao
+  - R 语言
 subject: "现代应用统计与 R 语言"
 description: "线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。"
 ---
@@ -69,6 +74,20 @@ lapply(c(
 ::: rmdwarn
 Book in early development. Planned release in 202X. 
 :::
+
+```{r god-play-games,fig.cap="上帝在掷骰子吗？",dev='tikz',fig.process=to_png,cache=TRUE,fig.asp=1,echo=FALSE}
+# 随机，先验分布
+set.seed(2018)
+plot(density(rnorm(1000)), type = "l", xlab = "随机变量 $x$", ylab = "概率密度 $y$" , 
+     main = "$y = f(x) = \\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{x^2}{2}}$")
+invisible(replicate(10, expr = {
+  lines(density(rnorm(1000)), type = "l", lty = 2)
+}))
+curve(dnorm, col = "red", lwd = 3, add = TRUE)
+abline(h = 1/(sqrt(2*pi)), lwd = 2, lty = 2)
+arrows(x0 = 1, y0 = 1/(sqrt(2*pi)) - 0.005, x1 = 1.8, y1 = 0.37, length = 0.15)
+text(2, 0.35, "$\\frac{1}{\\sqrt{2\\pi}}$", cex = 2)
+```
 
 
 ## 本书风格 {#book-style .unnumbered}
@@ -140,14 +159,86 @@ Base R 提供的 `binom.test()` 函数可以精确计算置信区间，而 `prop
 
 ```{r, warning=TRUE,collapse=TRUE}
 # 近似计算 Wilson 区间
-prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
+prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95, correct = TRUE)
 # 精确计算
 binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
 ```
 
+
+二项分布 $B(n,\theta)$ 成功概率 $\theta$
+
+```{r}
+library(ggplot2)
+ggplot(data.frame(x = c(0, 1)), aes(x)) +
+  stat_function(
+    fun = pbinom, geom = "path", 
+    args = list(size = 10, q = 2),
+    color = "gray70", alpha = .8 # 颜色最浅
+  ) +
+  stat_function(
+    fun = pbinom, geom = "path",
+    args = list(size = 10, q = 4),
+    color = "gray50", alpha = .8
+  ) +
+  stat_function(
+    fun = pbinom, geom = "path",
+    args = list(size = 10, q = 6),
+    color = "gray30", alpha = .8
+  ) +
+  labs(x = expression(theta), y = expression(p[theta]), 
+       title = "pbinom() with fixed sample size = 10") +
+  annotate("text", label = "q = 2", x = 0.32, y = 0.50, colour = "gray70") +
+  annotate("text", label = "q = 4", x = 0.50, y = 0.50, colour = "gray50") +
+  annotate("text", label = "q = 6", x = 0.70, y = 0.50, colour = "gray30") +
+  theme_minimal(base_size = 16)
+```
+
+实际达到的置信度水平随真实的未知参数值和样本量的变化而**剧烈**波动，这意味着这种参数估计方法在实际应用中不可靠、真实场景中参数真值是永远未知的，样本量是可控的，并且是可以变化的。根本原因在于这类分布是离散的，比如这里的二项分布。当数据 $x$ 是离散的情况，置信区间的端点$\ell(x)$ 和 $u(x)$ 也是离散的。这种缺陷是无法避免的，清晰的置信区间和离散的数据之间存在无法调和的冲突
+
+覆盖概率 $P_{\theta}(X = x)$ 和参数真值 $\theta$ 的关系 [@Lawrence2001;@Geyer2005]
+
+```{r}
+prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95, correct = TRUE)
+```
+
+```{r}
+set.seed(2020)
+rbinom(1, size = 30, prob = 0.2) # 得到观测值 7 
+
+7 + qnorm(1-0.95/2)*sqrt(0.2*0.8/30)
+
+prop.test(x = 7, n = 30, p = 0.2, conf.level = 0.95, correct = TRUE) # 得到观测值 7 对应的区间估计
+
+pbinom(7, size = 30, prob = 0.2, lower.tail = TRUE)
+
+# 计算分位点
+qbinom(p = 0.95, size = 30, prob = 0.2, lower.tail = TRUE)
+
+binom.test(x = 10, n = 30, p = 0.2, conf.level = 0.95)
+
+prop.test(x = 5, n = 10, p = 0.2, conf.level = 0.95, correct = TRUE) # 得到观测值 7 对应的区间估计
+```
+
+
+
+
+$$
+\sum_{x = C_1 + 1}^{C_2 -1} x \binom{n}{x} p^{x}(1-p)^{n-x} = np \sum_{x = C_1 + 1}^{C_2 -1} \binom{n -1}{x -1} p^{x -1}(1-p)^{(n -1)-(x-1)}
+$$
+
+```{r}
+n = 30 
+c2 = 20 
+c1 = 10
+p = 0.2
+n * p * (pbinom(c2 - 2, n - 1, p) - pbinom(c1 - 1, n - 1, p))
+```
+
+
+
 [多重比较与检验]{.todo}
 
-多重比较 p.adjust 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 oneway.test()
+多重比较 `p.adjust()` 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 `oneway.test()`
 
 ```{r}
 set.seed(123)
@@ -268,7 +359,6 @@ box()
 
 ## 语言抉择 {#r-or-python .unnumbered}
 
-\index{R}
 \index{Octave}
 \index{Python}
 
@@ -290,8 +380,26 @@ box()
 
 另一方面，我们谈谈开源领域的佼佼者 --- R (<https://cran.r-project.org/>)，Python (<https://www.python.org/>) 和 Octave (<http://www.gnu.org/software/octave/>)。Python 号称万能的胶水语言，从系统运维到深度学习都有它的广泛存在，它被各大主流 Linux 系统内置，语言风格上更接近于基数庞大的开发人员，形成了强大的生态平台。 Octave 号称是可以替代 Matlab 的科学计算软件，在兼容 Matlab 的方面确实做的很不错，根据 Julia 官网给出的各大编程语言的测试 <https://julialang.org/benchmarks/>，性能上不能相提并论。
 
+```{cat tikz-template, engine.opts=list(file = 'tikz-template.tex', lang = 'tex'), echo=FALSE}
+\documentclass[fontset=adobe,zihao=false]{ctexart}
+\include{preview}
+\usepackage[xetex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
 
-```{r r-eco-system, engine = "tikz", echo=FALSE, fig.cap = "R 语言扩展包生态系统", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png')}
+\usepackage{smartdiagram} % 提供 Excel Smart Diagram
+\usepackage{metalogo} % 提供 LaTeX Logo
+\usepackage{pgfplots} % 提供三维图形
+\pgfplotsset{width=7cm,compat=1.17}
+
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+\end{preview}
+\end{document}
+```
+```{r r-eco-system, engine = "tikz", echo=FALSE, fig.cap = "R 语言扩展包生态系统", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="95%", engine.opts = list(template = "tikz-template.tex")}
 \usetikzlibrary{mindmap,trees}
 \tikzset{level 1 concept/.append style={font=\sf}}
 \tikzset{level 2 concept/.append style={font=\sf}}
@@ -341,6 +449,38 @@ box()
 
 \end{tikzpicture}
 ```
+
+```{r smart-diagram, engine = "tikz", echo=FALSE, fig.cap = "Excel Smart Diagram", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
+\smartdiagram[descriptive diagram]{
+  {Style,{Define shapes, colors, shading,
+          and line styles for nodes and arrows}},
+  {Position, {Place nodes using a matrix,
+              relative or absolute positioning}},
+  {Relation, Insert edges or arrows
+             between selected nodes},
+  {Label, Add labels on edges or arrows}}
+```
+
+```{r art-stat, engine = "tikz", echo=FALSE, fig.cap = "现代统计是一门跨学科交叉应用的艺术", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
+\begin{tikzpicture}
+  \begin{scope}[blend group = soft light]
+    \fill[red!30!white]   ( 90:1.2) circle (2);
+    \fill[green!30!white] (210:1.2) circle (2);
+    \fill[blue!30!white]  (330:1.2) circle (2);
+  \end{scope}
+  \node at ( 90:2)    {数学分析};
+  \node at ( 210:2)   {高等代数};
+  \node at ( 330:2)   {解析几何};
+  \node [font=\Large] {现代统计};
+\end{tikzpicture}
+```
+
+```{r latex-eco, engine = "tikz", echo=FALSE, fig.cap = "LaTeX 家族", out.width="50%", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
+\smartdiagram[bubble diagram]{\TeX\ engines,
+  \TeX\ (dvi), pdf\TeX, \XeTeX, \LuaTeX, Con\TeX t}
+```
+
+TikZ 在绘制示意图方面有很大优势，特别是示意图里包含数学公式，这更是 LaTeX 所擅长的方面
 
 JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管在 Github 上 <https://github.com/jasp-stats/jasp-desktop>，主要由阿姆斯特丹大学 E. J. Wagenmakers 教授 <https://www.ejwagenmakers.com/> 领导的团队维护开发，实现了很多贝叶斯和频率统计方法，相似的图形用户界面使得 JASP 可以作为 SPSS 的替代，目前实现的功能见 <https://jasp-stats.org/current-functionality/>，统计方法见博客 <https://www.bayesianspectacles.org/>。
 
@@ -407,6 +547,8 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 - 《Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny》 Paula Moraga <https://www.paulamoraga.com/book-geospatial/>
 - 《Spatial Data Science》 Edzer Pebesma 和 Roger Bivand <https://www.r-spatial.org/book>
 
+- 《南瓜书》 <https://datawhalechina.github.io/pumpkin-book>
+
 以及课程资源：
 
 - CS229: Machine Learning 机器学习课程 <http://cs229.stanford.edu/>
@@ -440,47 +582,179 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \index{bookdown}
 \index{Pandoc}
 
-```{r workflow, echo=FALSE, fig.cap="书籍项目架构图"}
-DiagrammeR::grViz("
-digraph {
-  graph [layout = dot, rankdir = TB]
-  
-  node [shape = rectangle]        
-  rec1 [label = 'RStudio IDE / VS Code']
-  rec2 [label = '编辑 R Markdown']
-  rec3 [label = '远程推送 (Git)']
-  rec4 [label = '本地编译 (Makefile)']
 
-  rec9  [label = 'knitr + rmarkdown + bookdown']
-  rec10 [label = 'GitBook / EPUB']
-  rec11 [label = 'PDF']
+```{r ExampleTree, engine = "tikz", fig.cap = "Example Research Project File Tree", cache=TRUE, echo=FALSE, fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'png', out.width="85%", engine.opts = list(template = "tikz-template.tex")}
+\usetikzlibrary{trees}
+% Set node styles
+\tikzstyle{DirBox} = [draw=black,
+                      rectangle,
+                      minimum width=5em,
+                      very thick,
+                      font=\small]
+\tikzstyle{every node} = [draw=gray,
+                          thin,
+                          anchor=west,
+                          font=\small]
+% Begin tikz picture
+\begin{tikzpicture}[%
+  grow via three points={one child at (0.5,-0.7) and
+  two children at (0.5,-0.7) and (0.5,-1.4)},
+  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  % Root Directory
+  \node (root) at (5, 10) [DirBox]{Root};
+  % Project Directory
+  \node (project) at (4.5, 8.5) [DirBox]{example-project}
+        child {node {{\small{paper.Rmd}}}}
+        child {node {{\small{slideshow.Rmd}}}}
+        child {node {{\small{website.Rmd}}}}
+        child {node {{\small{main.bib}}}}
+            ;
+  % Data Directory
+  \node (data) at (0, 4.5) [DirBox]{data}
+      child {node {{\small{main-data.csv}}}}
+      child {node {{\small{Makefile}}}}
+      child {node {{\small{merge-data.R}}}}
+      child {node {{\small{gather-1.R}}}}
+      child {node {{\small{gather-2.R}}}}
+      child {node {{\small{main-data-variable-descriptions.md}}}}
+      child {node {{\small{README.Rmd}}}}
+        ;
+  % Analysis subdirectores/files
+  \node (analysis) at (1.5, 7) [DirBox]{analysis}
+      child {node {{\small{analysis-1.R}}}}
+      child {node {{\small{analysis-2.R}}}}
+        ;
+  % README and .Rproj files
+  \node (readme) at (9, 7) {README.md};
+  \node (rproj) at (10, 6) {example-project.Rproj};
+  % Connect boxes that are not explicit children
+  \draw (root) -- (project);
+  \draw (project) -| (analysis);
+  \draw (project) -| (data);
+  \draw (project) -| (readme);
+  \draw (project) -| (rproj);
+\end{tikzpicture}
+```
+
+```{r convert-figure,fig.cap="图片制作、合成、优化、转换等常用工具",echo=FALSE}
+nomnoml::nomnoml("
+#stroke: black
+#.box: fill=#8f8 dashed visual=ellipse
+
+[Inkscape|制作转换]->[SVG]
+[Inkscape]->[PDF]
+[Inkscape]->[PNG]
+
+[LaTeX|编译生成|
+
+[TeX] --> [TinyTeX|XeLaTeX引擎]
+[TinyTeX] -:> [PDF]
+
+]  ->[PDF]
+
+
+[PNG] <- [OptiPNG|优化压缩]
+[PDF]  ->  [PNG]
+
+[GIFSKI|合成转换|
+  [PNG]导入-->[GIFSKI]
+  [GIFSKI]合成-:>[GIF]
+]  -> [GIF]
+
+[GIF] <- [ImageMagick|合成转换|
+  [PNG]导入-->[ImageMagick]
+  [ImageMagick]合成-:>[GIF]
+]
+
+[PNG] <- [GraphicsMagick|合成转换|
+  [PNG]导入-->[GraphicsMagick]
+  [GraphicsMagick]转换-:>[PNG]
+]
+
+[GhostScript|字体嵌入] ->[PDF]
+
+
+// [PNG] -> [GIF]
+[PNG] -> [PDF]
+
+[PNG] <- [Graphviz|编译生成] 
+[SVG] <- [Graphviz] 
+[PDF] <- [Graphviz] 
+
+[PNG] <- [PhantomJS|转化生成|
+
+  [HTML]导入-->[PhantomJS]
+  [PhantomJS]转换-:>[PNG]
   
-  rec19 [label = 'GhostScript']
-  rec20 [label = 'GraphicsMagick / ImageMagick'] # resize image
-  rec21 [label = 'PNG']
-  rec22 [label = 'OptiPNG']
-  rec23 [label = 'Graphviz']
-  rec24 [label = 'GIF']
-  rec25 [label = 'Gifski']
-  rec26 [label = 'PCRE 2.0']
+]
+")
+```
+
+[Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/javierluraschi/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
+
+ 
+```{r plot3d-tikz, engine = "tikz", echo=FALSE,out.width="55%", fig.cap = "TikZ 绘制的 Octave 图标", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
+\begin{tikzpicture}
+\begin{axis}[
+    hide axis,
+    colormap/viridis,
+]
+\addplot3[
+    mesh,
+    samples=50,
+    domain=-8:8,
+]
+{sin(deg(sqrt(x^2+y^2)))/sqrt(x^2+y^2)};
+% \addlegendentry{$\frac{\sin(r)}{r}$}
+\end{axis}
+\end{tikzpicture}
+```
+```{r clean-tikz-template,include=FALSE}
+if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
+```
+
+另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。
+
+```{r book-workflow, engine = "dot", echo=FALSE, fig.cap="书籍项目架构图", cache=TRUE}
+digraph {
+  graph [layout = dot, rankdir = TB];
   
-  rec12 [label = 'LaTeX']
-  rec13 [label = 'Markdown']
+  node [shape = rectangle];     
+  rec1 [label = "RStudio IDE / VS Code"];
+  rec2 [label = "编辑 R Markdown"];
+  rec3 [label = "远程推送 (Git)"];
+  rec4 [label = "本地编译 (Makefile)"];
+
+  rec9  [label = "knitr + rmarkdown + bookdown"];
+  rec10 [label = "GitBook / EPUB"];
+  rec11 [label = "PDF"];
   
-  rec14 [label = 'Pandoc + Lua']
-  rec15 [label = 'CSS + JavaScript + HTML']
-  rec16 [label = 'R + Python + TinyTeX']
+  rec19 [label = "GhostScript"];
+  rec20 [label = "GraphicsMagick / ImageMagick"]; # resize image
+  rec21 [label = "PNG"];
+  rec22 [label = "OptiPNG"];
+  rec23 [label = "Graphviz"];
+  rec24 [label = "GIF"];
+  rec25 [label = "Gifski"];
+  rec26 [label = "PCRE 2.0"];
   
-  rec17 [label = '编译成功']
-  rec18 [label = '手动部署 (bookdown.org)']
+  rec12 [label = "LaTeX"];
+  rec13 [label = "Markdown"];
   
-  rec5 [label = '自动编译 (Travis CI)']
-  rec6 [label = '自动部署 (Github Pages)']
+  rec14 [label = "Pandoc + Lua"];
+  rec15 [label = "CSS + JavaScript + HTML"];
+  rec16 [label = "R + Python + TinyTeX"];
   
-  rec8 [label = '自动编译 (Github Action)']
-  rec7 [label = '自动部署 (Netlify)']
+  rec17 [label = "编译成功"];
+  rec18 [label = "手动部署 (bookdown.org)"];
   
-  edge [style = solid, color = black]
+  rec5 [label = "自动编译 (Travis CI)"];
+  rec6 [label = "自动部署 (Github Pages)"];
+  
+  rec8 [label = "自动编译 (Github Action)"];
+  rec7 [label = "自动部署 (Netlify)"];
+  
+  edge [style = solid, color = black];
   rec1 -> rec2 -> rec3 -> rec5 -> rec9
   rec2 -> rec4 -> rec16 -> rec9
   
@@ -496,7 +770,31 @@ digraph {
   rec24 -> rec15
   rec25 -> rec24
   rec26 -> rec12
-  }", width = 800, height = 800)
+}
+```
+
+
+```{r data-workflow, engine = "dot", echo=FALSE, fig.cap="数据分析流程图", cache=TRUE}
+digraph demo {
+graph [layout = circo];
+
+node [shape = rectangle, style = filled, fillcolor = Linen];
+
+data [label = "数据集", shape = folder, fillcolor = Beige];
+Import [label = "数据导入"];
+Tidy [label = "数据清理"];
+Transform [label =  "数据处理"];
+Explore [label = "探索性分析"];
+Modeling [label = "数据建模"];
+Explain [label= "结果解释"];
+Visualize [label = "结果展示"];
+Communicate [label = "交流分析"];
+
+edge [style=dashed, color=red];
+data -> Import -> Tidy  -> Transform -> Explore -> Modeling -> Explain -> Visualize -> Communicate;
+Modeling -> Transform;
+Communicate -> Transform;
+}
 ```
 
 本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 `r format(Sys.time(), '%Y年%m月%d日%H时%M分%S秒')`，本书用 `r R.version.string` 编译，完整运行环境如下：
@@ -556,3 +854,6 @@ ruler <- function(width = getOption("width")) {
 ```{r, comment=NA}
 ruler()
 ```
+
+
+[Winston Chang](https://github.com/wch) 整理了一份 LaTeX 常用命令速查小抄 <https://wch.github.io/latexsheet/latexsheet.pdf>
