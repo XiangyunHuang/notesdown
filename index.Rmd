@@ -449,36 +449,10 @@ box()
 
 \end{tikzpicture}
 ```
-
-```{r smart-diagram, engine = "tikz", echo=FALSE, fig.cap = "Excel Smart Diagram", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
-\smartdiagram[descriptive diagram]{
-  {Style,{Define shapes, colors, shading,
-          and line styles for nodes and arrows}},
-  {Position, {Place nodes using a matrix,
-              relative or absolute positioning}},
-  {Relation, Insert edges or arrows
-             between selected nodes},
-  {Label, Add labels on edges or arrows}}
+```{r clean-tikz-template,include=FALSE}
+if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
 ```
 
-```{r art-stat, engine = "tikz", echo=FALSE, fig.cap = "现代统计是一门跨学科交叉应用的艺术", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
-\begin{tikzpicture}
-  \begin{scope}[blend group = soft light]
-    \fill[red!30!white]   ( 90:1.2) circle (2);
-    \fill[green!30!white] (210:1.2) circle (2);
-    \fill[blue!30!white]  (330:1.2) circle (2);
-  \end{scope}
-  \node at ( 90:2)    {数学分析};
-  \node at ( 210:2)   {高等代数};
-  \node at ( 330:2)   {解析几何};
-  \node [font=\Large] {现代统计};
-\end{tikzpicture}
-```
-
-```{r latex-eco, engine = "tikz", echo=FALSE, fig.cap = "LaTeX 家族", out.width="50%", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
-\smartdiagram[bubble diagram]{\TeX\ engines,
-  \TeX\ (dvi), pdf\TeX, \XeTeX, \LuaTeX, Con\TeX t}
-```
 
 TikZ 在绘制示意图方面有很大优势，特别是示意图里包含数学公式，这更是 LaTeX 所擅长的方面
 
@@ -583,137 +557,8 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \index{Pandoc}
 
 
-```{r ExampleTree, engine = "tikz", fig.cap = "Example Research Project File Tree", cache=TRUE, echo=FALSE, fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'png', out.width="85%", engine.opts = list(template = "tikz-template.tex")}
-\usetikzlibrary{trees}
-% Set node styles
-\tikzstyle{DirBox} = [draw=black,
-                      rectangle,
-                      minimum width=5em,
-                      very thick,
-                      font=\small]
-\tikzstyle{every node} = [draw=gray,
-                          thin,
-                          anchor=west,
-                          font=\small]
-% Begin tikz picture
-\begin{tikzpicture}[%
-  grow via three points={one child at (0.5,-0.7) and
-  two children at (0.5,-0.7) and (0.5,-1.4)},
-  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-  % Root Directory
-  \node (root) at (5, 10) [DirBox]{Root};
-  % Project Directory
-  \node (project) at (4.5, 8.5) [DirBox]{example-project}
-        child {node {{\small{paper.Rmd}}}}
-        child {node {{\small{slideshow.Rmd}}}}
-        child {node {{\small{website.Rmd}}}}
-        child {node {{\small{main.bib}}}}
-            ;
-  % Data Directory
-  \node (data) at (0, 4.5) [DirBox]{data}
-      child {node {{\small{main-data.csv}}}}
-      child {node {{\small{Makefile}}}}
-      child {node {{\small{merge-data.R}}}}
-      child {node {{\small{gather-1.R}}}}
-      child {node {{\small{gather-2.R}}}}
-      child {node {{\small{main-data-variable-descriptions.md}}}}
-      child {node {{\small{README.Rmd}}}}
-        ;
-  % Analysis subdirectores/files
-  \node (analysis) at (1.5, 7) [DirBox]{analysis}
-      child {node {{\small{analysis-1.R}}}}
-      child {node {{\small{analysis-2.R}}}}
-        ;
-  % README and .Rproj files
-  \node (readme) at (9, 7) {README.md};
-  \node (rproj) at (10, 6) {example-project.Rproj};
-  % Connect boxes that are not explicit children
-  \draw (root) -- (project);
-  \draw (project) -| (analysis);
-  \draw (project) -| (data);
-  \draw (project) -| (readme);
-  \draw (project) -| (rproj);
-\end{tikzpicture}
-```
-
-```{r convert-figure,fig.cap="图片制作、合成、优化、转换等常用工具",echo=FALSE}
-nomnoml::nomnoml("
-#stroke: black
-#.box: fill=#8f8 dashed visual=ellipse
-
-[Inkscape|制作转换]->[SVG]
-[Inkscape]->[PDF]
-[Inkscape]->[PNG]
-
-[LaTeX|编译生成|
-
-[TeX] --> [TinyTeX|XeLaTeX引擎]
-[TinyTeX] -:> [PDF]
-
-]  ->[PDF]
 
 
-[PNG] <- [OptiPNG|优化压缩]
-[PDF]  ->  [PNG]
-
-[GIFSKI|合成转换|
-  [PNG]导入-->[GIFSKI]
-  [GIFSKI]合成-:>[GIF]
-]  -> [GIF]
-
-[GIF] <- [ImageMagick|合成转换|
-  [PNG]导入-->[ImageMagick]
-  [ImageMagick]合成-:>[GIF]
-]
-
-[PNG] <- [GraphicsMagick|合成转换|
-  [PNG]导入-->[GraphicsMagick]
-  [GraphicsMagick]转换-:>[PNG]
-]
-
-[GhostScript|字体嵌入] ->[PDF]
-
-
-// [PNG] -> [GIF]
-[PNG] -> [PDF]
-
-[PNG] <- [Graphviz|编译生成] 
-[SVG] <- [Graphviz] 
-[PDF] <- [Graphviz] 
-
-[PNG] <- [PhantomJS|转化生成|
-
-  [HTML]导入-->[PhantomJS]
-  [PhantomJS]转换-:>[PNG]
-  
-]
-")
-```
-
-[Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/javierluraschi/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
-
- 
-```{r plot3d-tikz, engine = "tikz", echo=FALSE,out.width="55%", fig.cap = "TikZ 绘制的 Octave 图标", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
-\begin{tikzpicture}
-\begin{axis}[
-    hide axis,
-    colormap/viridis,
-]
-\addplot3[
-    mesh,
-    samples=50,
-    domain=-8:8,
-]
-{sin(deg(sqrt(x^2+y^2)))/sqrt(x^2+y^2)};
-% \addlegendentry{$\frac{\sin(r)}{r}$}
-\end{axis}
-\end{tikzpicture}
-```
-```{r clean-tikz-template,include=FALSE}
-if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
-```
-
-另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。
 
 ```{r book-workflow, engine = "dot", echo=FALSE, fig.cap="书籍项目架构图", cache=TRUE}
 digraph {
@@ -770,30 +615,6 @@ digraph {
   rec24 -> rec15
   rec25 -> rec24
   rec26 -> rec12
-}
-```
-
-
-```{r data-workflow, engine = "dot", echo=FALSE, fig.cap="数据分析流程图", cache=TRUE}
-digraph demo {
-graph [layout = circo];
-
-node [shape = rectangle, style = filled, fillcolor = Linen];
-
-data [label = "数据集", shape = folder, fillcolor = Beige];
-Import [label = "数据导入"];
-Tidy [label = "数据清理"];
-Transform [label =  "数据处理"];
-Explore [label = "探索性分析"];
-Modeling [label = "数据建模"];
-Explain [label= "结果解释"];
-Visualize [label = "结果展示"];
-Communicate [label = "交流分析"];
-
-edge [style=dashed, color=red];
-data -> Import -> Tidy  -> Transform -> Explore -> Modeling -> Explain -> Visualize -> Communicate;
-Modeling -> Transform;
-Communicate -> Transform;
 }
 ```
 

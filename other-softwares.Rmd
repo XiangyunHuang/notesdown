@@ -1,5 +1,28 @@
 # 其它软件 {#chap:other-softwares}
 
+```{cat, engine.opts=list(file = 'tikz-template.tex', lang = 'tex'), echo=FALSE}
+\documentclass[fontset=adobe,zihao=false]{ctexart}
+\include{preview}
+\usepackage[xetex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+
+\usepackage{smartdiagram} % 提供 Excel Smart Diagram
+\usepackage{metalogo} % 提供 LaTeX Logo
+\usepackage{pgfplots} % 提供三维图形
+\pgfplotsset{width=7cm,compat=1.17}
+
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+\end{preview}
+\end{document}
+```
+
+<!-- Pandoc Graphviz UML TikZ ImageMagick -->
+<!-- 考虑把 Markdown 参考文档翻译成中文 -->
+
 ## 命令行程序 {#sec:bash}
 
 Bash 文件查找、查看（内容、大小）、移动（重命名）、删除、创建、修改权限
@@ -60,4 +83,243 @@ tar -xjf filename.tar.bz2 -C ~/tmp
 :::
 ::::::
 
+
+
+## 文本编辑器 {#sec:text-editor}
+
+代码文件也是纯文本，RStudio 集成了编辑器，支持语法高亮。Windows 系统上优秀的代码编辑器有 Notepad++ 非常轻量。Markdown 文本编辑器我们推荐 Typora 编辑器，它是跨平台的，下面以 Ubuntu 环境为例，介绍安装和使用过程：
+
+```bash
+# or run:
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+
+# add Typora's repository
+sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo apt-get update
+
+# install typora
+sudo apt-get install typora
+```
+
+```{r typora-theme, fig.cap="Typora 主题",fig.subcap=c("默认的主题", "Vue 主题"), echo=FALSE,fig.show='hold', out.width="45%"}
+knitr::include_graphics(path = c('screenshots/typora-theme-default.png', 'screenshots/typora-theme-vue.png'), dpi = NA)
+```
+
+设置中文环境，并且将主题风格样式配置为 Vue，见图\@ref(fig:typora-theme)（右），Vue 主题可从 Typora 官网下载 <https://theme.typora.io/theme/Vue/>
+
+
+
+## 代码编辑器 {#sec:code-editor}
+
+VS Code, Sublime Text 和 Atom
+
+## 集成开发环境 {#sec:rstudio-ide}
+
+[RStudio 公司的愿景](https://rstudio.com/slides/rstudio-pbc/)
+
+介绍 RStudio 开发环境提供的效率提升工具或功能
+
+## Git 版本控制 {#sec:version-control}
+
+
+
+## UML 标准建模图 {#sec:nomnoml}
+
+UML (Unified Modeling Language) 表示统一建模语言
+
+```{r convert-figure,fig.cap="图片制作、合成、优化、转换等常用工具",echo=FALSE}
+nomnoml::nomnoml("
+#stroke: black
+#.box: fill=#8f8 dashed visual=ellipse
+
+[Inkscape|制作转换]->[SVG]
+[Inkscape]->[PDF]
+[Inkscape]->[PNG]
+
+[LaTeX|编译生成|
+
+[TeX] --> [TinyTeX|XeLaTeX引擎]
+[TinyTeX] -:> [PDF]
+
+]  ->[PDF]
+
+
+[PNG] <- [OptiPNG|优化压缩]
+[PDF]  ->  [PNG]
+
+[GIFSKI|合成转换|
+  [PNG]导入-->[GIFSKI]
+  [GIFSKI]合成-:>[GIF]
+]  -> [GIF]
+
+[GIF] <- [ImageMagick|合成转换|
+  [PNG]导入-->[ImageMagick]
+  [ImageMagick]合成-:>[GIF]
+]
+
+[PNG] <- [GraphicsMagick|合成转换|
+  [PNG]导入-->[GraphicsMagick]
+  [GraphicsMagick]转换-:>[PNG]
+]
+
+[GhostScript|字体嵌入] ->[PDF]
+
+
+// [PNG] -> [GIF]
+[PNG] -> [PDF]
+
+[PNG] <- [Graphviz|编译生成] 
+[SVG] <- [Graphviz] 
+[PDF] <- [Graphviz] 
+
+[PNG] <- [PhantomJS|转化生成|
+
+  [HTML]导入-->[PhantomJS]
+  [PhantomJS]转换-:>[PNG]
+  
+]
+")
+```
+
+[Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/javierluraschi/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
+
+## Graphviz 流程图 {#sec:graphviz}
+
+```{r data-workflow, engine = "dot", echo=FALSE, fig.cap="数据分析流程图", cache=TRUE}
+digraph demo {
+graph [layout = circo];
+
+node [shape = rectangle, style = filled, fillcolor = Linen];
+
+data [label = "数据集", shape = folder, fillcolor = Beige];
+Import [label = "数据导入"];
+Tidy [label = "数据清理"];
+Transform [label =  "数据处理"];
+Explore [label = "探索性分析"];
+Modeling [label = "数据建模"];
+Explain [label= "结果解释"];
+Visualize [label = "结果展示"];
+Communicate [label = "交流分析"];
+
+edge [style=dashed, color=red];
+data -> Import -> Tidy  -> Transform -> Explore -> Modeling -> Explain -> Visualize -> Communicate;
+Modeling -> Transform;
+Communicate -> Transform;
+}
+```
+
+## LaTeX 排版工具 {#sec:latex}
+
+
+另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。
+
+TikZ 绘制 Excel 风格的 Smart 图
+
+```{r smart-diagram, engine = "tikz", echo=FALSE, fig.cap = "Excel Smart Diagram", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
+\smartdiagram[descriptive diagram]{
+  {Style,{Define shapes, colors, shading,
+          and line styles for nodes and arrows}},
+  {Position, {Place nodes using a matrix,
+              relative or absolute positioning}},
+  {Relation, Insert edges or arrows
+             between selected nodes},
+  {Label, Add labels on edges or arrows}}
+```
+
+
+TikZ 绘制 Venn 图
+
+```{r art-stat, engine = "tikz", echo=FALSE, fig.cap = "现代统计是一门跨学科交叉应用的艺术", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
+\begin{tikzpicture}
+  \begin{scope}[blend group = soft light]
+    \fill[red!30!white]   ( 90:1.2) circle (2);
+    \fill[green!30!white] (210:1.2) circle (2);
+    \fill[blue!30!white]  (330:1.2) circle (2);
+  \end{scope}
+  \node at ( 90:2)    {数学分析};
+  \node at ( 210:2)   {高等代数};
+  \node at ( 330:2)   {解析几何};
+  \node [font=\Large] {现代统计};
+\end{tikzpicture}
+```
+
+TikZ 绘制气泡图
+
+```{r latex-eco, engine = "tikz", echo=FALSE, fig.cap = "LaTeX 家族", out.width="50%", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
+\smartdiagram[bubble diagram]{\TeX\ engines,
+  \TeX\ (dvi), pdf\TeX, \XeTeX, \LuaTeX, Con\TeX t}
+```
+
+TikZ 绘制树形项目结构图
+
+```{r project-tree, engine = "tikz", fig.cap = "树形项目结构图", cache=TRUE, echo=FALSE, fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'png', out.width="85%", engine.opts = list(template = "tikz-template.tex")}
+\usetikzlibrary{trees}
+% Set node styles
+\tikzstyle{DirBox} = [draw=black, rectangle, minimum width=5em, very thick, font=\small]
+
+\tikzstyle{every node} = [draw=gray, thin, anchor=west, font=\small]
+
+% Begin tikz picture
+\begin{tikzpicture}[%
+  grow via three points={one child at (0.5,-0.7) and
+  two children at (0.5,-0.7) and (0.5,-1.4)},
+  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  % Root Directory
+  \node (root) at (5, 10) [DirBox]{Root};
+  % Project Directory
+  \node (project) at (4.5, 8.5) [DirBox]{example-project}
+        child {node {{\small{paper.Rmd}}}}
+        child {node {{\small{slideshow.Rmd}}}}
+        child {node {{\small{website.Rmd}}}}
+        child {node {{\small{main.bib}}}}
+            ;
+  % Data Directory
+  \node (data) at (0, 4.5) [DirBox]{data}
+      child {node {{\small{main-data.csv}}}}
+      child {node {{\small{Makefile}}}}
+      child {node {{\small{merge-data.R}}}}
+      child {node {{\small{gather-1.R}}}}
+      child {node {{\small{gather-2.R}}}}
+      child {node {{\small{main-data-variable-descriptions.md}}}}
+      child {node {{\small{README.Rmd}}}}
+        ;
+  % Analysis subdirectores/files
+  \node (analysis) at (1.5, 7) [DirBox]{analysis}
+      child {node {{\small{analysis-1.R}}}}
+      child {node {{\small{analysis-2.R}}}}
+        ;
+  % README and .Rproj files
+  \node (readme) at (9, 7) {README.md};
+  \node (rproj) at (10, 6) {example-project.Rproj};
+  % Connect boxes that are not explicit children
+  \draw (root) -- (project);
+  \draw (project) -| (analysis);
+  \draw (project) -| (data);
+  \draw (project) -| (readme);
+  \draw (project) -| (rproj);
+\end{tikzpicture}
+```
+
+TikZ 绘制三维图
+
+```{r plot3d-tikz, engine = "tikz", echo=FALSE,out.width="55%", fig.cap = "TikZ 绘制的 Octave 图标", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
+\begin{tikzpicture}
+\begin{axis}[
+    hide axis,
+    colormap/viridis,
+]
+\addplot3[
+    mesh,
+    samples=50,
+    domain=-8:8,
+]
+{sin(deg(sqrt(x^2+y^2)))/sqrt(x^2+y^2)};
+% \addlegendentry{$\frac{\sin(r)}{r}$}
+\end{axis}
+\end{tikzpicture}
+```
+```{r clean-tikz-template,include=FALSE}
+if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
+```
 
