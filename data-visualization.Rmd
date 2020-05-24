@@ -7,6 +7,73 @@
 ## 字体 {#sec:fonts}
 
 
+### 思源字体 {subsec:showtext}
+
+丘怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体导入 Base R 和 ggplot2 图形中，图 \@ref(fig:showtext) 嵌入了 5号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 @Qiu2015。
+
+```{r showtext, fig.cap="showtext包处理图里的中文",fig.showtext=TRUE}
+library(ggplot2)
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  scale_colour_brewer(palette = "Set1") +
+  labs(
+    title = "鸢尾花数据的散点图",
+    x = "萼片长度", y = "萼片宽度", colour = "鸢尾花类别"
+  ) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
+  theme(
+    legend.text = element_text(family = "serif", size = 10.54),
+    axis.text = element_text(family = "serif", size = 10.54)
+    )
+```
+
+
+### 数学字体 {#subsec:fontcm}
+
+Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，
+
+```{r}
+library(extrafont)
+font_addpackage(pkg = "fontcm")
+```
+
+查看可被 `pdf()` 图形设备使用的字体列表
+
+```{r}
+# 可用的字体
+fonts()
+```
+
+fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
+
+```{r fontcm, fig.cap = "fontcm 处理数学公式", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png'))}
+library(fontcm)
+library(ggplot2)
+library(extrafont)
+library(patchwork)
+p <- qplot(c(1, 5), c(1, 5)) +
+  xlab("Made with CM fonts") + ylab("Made with CM fonts") +
+  ggtitle("Made with CM fonts")
+# 公式
+eq <- "italic(sum(frac(1, n*'!'), n==0, infinity) ==
+       lim(bgroup('(', 1 + frac(1, n), ')')^n, n %->% infinity))"
+# 默认字体
+p1 <- p + annotate("text", x = 3, y = 3, parse = TRUE, label = eq)
+# 使用 CM Roman 字体
+p2 <- p + annotate("text",
+  x = 3, y = 3, parse = TRUE,
+  family = "CM Roman", label = eq
+) +
+  theme(
+    text = element_text(size = 16, family = "CM Roman"),
+    axis.title.x = element_text(face = "italic"),
+    axis.title.y = element_text(face = "bold")
+  )
+p1 + p2
+```
+
+
+
 ### 漫画字体 {#subsec:xkcd-comic}
 
 下载 XKCD 字体，并刷新系统字体缓存

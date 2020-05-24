@@ -7,3 +7,14 @@ to_png <- function(fig_path) {
                       density = 300, quality = 100)
   return(png_path)
 }
+
+# embed math fonts to pdf
+embed_math_fonts <- function(fig_path) {
+  if(knitr::is_latex_output()){
+    embedFonts(
+      file = fig_path, outfile = fig_path,
+      fontpaths = system.file("fonts", package = "fontcm")
+    )
+  }
+  return(fig_path)
+}
