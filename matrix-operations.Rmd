@@ -1,0 +1,510 @@
+# 矩阵运算 {#chap:matrix-operations}
+
+> Eigenvectors from Eigenvalues [@Denton_2019_Eigen]
+
+> 参考 [matlib](https://github.com/friendly/matlib) 和 Matrix 包，[SparseM](https://CRAN.R-project.org/package=SparseM) 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares [@Boyd_2018_matrix] 及其 [Julia 语言实现](https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf)，矩阵分解部分参考 [Introduction to Linear Algebra, 5th Edition](http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf)
+
+
+<!-- 解释基本的矩阵概念，比如秩、迹、行列式、直积等 -->
+
+分块矩阵操作，各类分解算法，及其 R 实现
+
+```{r}
+library(Matrix)
+```
+
+以 attitude 数据集为例介绍各种矩阵操作
+
+```{r}
+head(attitude)
+```
+
+rating 总体评价
+complaints 处理员工投诉
+privileges 不允许特权
+learning 学习机会
+raises	根据表现晋升
+critical 批评
+advancel 进步
+
+```{r}
+fit <- lm(rating ~. , data = attitude)
+summary(fit) # 模型是显著的，很多变量的系数不显著
+anova(fit)
+```
+
+<!-- 矩阵变换对应的几何意义，和实际数据对应的意义 -->
+
+```{r}
+attitude_mat <- as.matrix.data.frame(attitude)
+# 生成演示用的矩阵
+demo_mat <- t(attitude_mat[, -1]) %*% attitude_mat[, -1]
+```
+
+
+## 矩阵乘法 {#subsec:matrix-multiplication}
+
+```{r}
+A <- matrix(c(1, 2, 2, 3), nrow = 2)
+A
+B <- matrix(c(1, 2, 3, 4, 5, 6), nrow =2)
+B
+```
+
+通常的矩阵乘法也叫矩阵内积
+
+```{r}
+A %*% B
+```
+
+```{r}
+A ** 2
+A ^ 2
+```
+
+```{r}
+A ** A
+```
+
+## Hadamard 积 {#subsec:hadamard-product}
+
+Hadamard 积（法国数学家 Jacques Hadamard）也叫 Schur 积（德国数学家Issai Schur ）或 entrywise 积是两个维数相同的矩阵对应元素相乘，特别地，$A^2$ 表示将矩阵 $A$ 的每个元素平方
+
+$$
+(A\circ B)_{ij} = (A)_{ij}(B)_{ij}
+$$
+
+$$
+\begin{bmatrix}
+ a_{11} & a_{12}  & a_{13} \\ 
+ a_{21} & a_{22}  & a_{23} \\ 
+ a_{31} & a_{32}  & a_{33} 
+\end{bmatrix}
+\circ
+\begin{bmatrix}
+ b_{11} & b_{12}  & b_{13} \\ 
+ b_{21} & b_{22}  & b_{23} \\ 
+ b_{31} & b_{32}  & b_{33} 
+\end{bmatrix}
+= 
+\begin{bmatrix}
+ a_{11}b_{11} & a_{12}b_{12}  & a_{13}b_{13} \\ 
+ a_{21}b_{21} & a_{22}b_{22}  & a_{23}b_{23} \\ 
+ a_{31}b_{31} & a_{32}b_{32}  & a_{33}b_{33} 
+\end{bmatrix}
+$$
+
+```{r}
+A^2
+```
+
+## 矩阵转置 {#subsec:matrix-transpose}
+
+```{r}
+t(B)
+```
+
+
+## 矩阵外积 {#subsec:outer-product}
+
+```{r}
+A %o% B # outer(A, B, FUN = "*")
+```
+
+直积/克罗内克积
+
+```{r}
+A %x% B # kronecker(A, B, FUN = "*")
+```
+
+## 矩阵乘方 {#subsec:matrix-exp}
+
+矩阵 A 首先是一个方阵，对称性和正定性未知，n 个 矩阵 A 相乘
+
+统计之都论坛讨论如何求矩阵的乘方 <https://d.cosx.org/d/5619-svd>
+
+```r
+"%^%" <- function(mat, pow) {
+  if (!is.matrix(mat)) mat <- as.matrix(mat)
+  stopifnot(!diff(dim(mat)))
+  if (pow < 0) {
+    pow <- -pow
+    mat <- solve(mat)
+  }
+  pow <- round(pow)
+  switch(pow + 1, return(diag(1, nrow(mat))), return(mat))
+  get.exponents <- function(pow)
+    if (pow == 0) NULL else c(k <- 2^floor(log2(pow)), get.exponents(pow - k))
+  ans <- diag(nrow(mat))
+  dlog2exp <- rev(-diff(c(log2(get.exponents(pow)), 0)))
+  for (j in 1:length(dlog2exp)) {
+    if (dlog2exp[j]) for (i in 1:dlog2exp[j]) mat <- mat %*% mat
+    ans <- ans %*% mat
+  }
+  ans
+}
+```
+
+奇异值分解
+
+```{r}
+s <- svd(A)
+all.equal(s$u%*%diag(s$d)%*%t(s$v),A)
+```
+
+特征值及分解 $A = V \Lambda V^{-1}$ 求解矩阵 A 的 n 次方
+
+```{r}
+eigen(A)
+
+eigen(A)$vectors %*% diag(eigen(A)$values) %*% solve(eigen(A)$vectors)
+eigen(A)$vectors %*% diag(eigen(A)$values)^3 %*% solve(eigen(A)$vectors)
+A %*% A %*% A
+```
+
+## 矩阵求幂 {#subsec:matrix-power}
+
+```{r}
+2^A
+exp(A)
+```
+
+[expm](https://cran.r-project.org/web/packages/expm/index.html) 包含 更多关于矩阵开方、取对数等计算
+
+## 矩阵交叉积 {#subsec:matrix-crossproduct}
+
+交叉积 $A^{\top}A$
+
+```{r}
+crossprod(A, A)  #  t(x) %*% y
+tcrossprod(A, A) #  x %*% t(y)
+```
+
+## 矩阵行列式 {#subsec:matrix-determinant}
+
+```{r}
+det(A)
+```
+
+expm 包计算矩阵 $e^{\mathbf{A}}$
+
+## 矩阵条件数 {#subsec:matrix-cond-num}
+
+```{r}
+library(Matrix)
+base::rcond(A)
+kappa(A)
+Matrix::rcond(Matrix::Hilbert(6))
+Matrix::rcond(A)
+```
+
+## 矩阵求逆 {#subsec:matrix-inverse}
+
+```{r}
+solve(A)
+```
+
+应用之线性方程组
+
+```{r}
+B <- Hilbert(6)
+b <- rowSums(B)
+# not inv
+solve(B,b) 
+
+# inv
+solve(B) %*% b
+```
+
+
+Moore-Penrose generalized inverse 广义逆，如果 A 可逆则，广义逆就是逆
+
+```{r}
+library(MASS) # ginv 来自 MASS 包
+ginv(A)
+A %*% ginv(A) %*% A
+ginv(A) %*% A %*% ginv(A)
+t(A %*% ginv(A))
+A %*% ginv(A)
+t(ginv(A) %*% A)
+ginv(A) %*% A
+```
+
+## 矩阵伴随 {#subsec:matrix-adjoint}
+
+伴随矩阵 $A*A^{\star} = A^{\star} *A = |A|*I, A^{\star} = |A|*A^{-1}$
+
+- $|A^{\star}| = |A|^{n-1}, A \in \mathbb{R}^{n\times n},n \geq 2$
+- $(A^{\star})^{\star} = |A|^{n-2}A, A \in \mathbb{R}^{n\times n},n \geq 2$
+- $(A^{\star})^{\star}$ A 的 n 次伴随是？
+
+
+```{r}
+det(A)*solve(A)
+```
+
+
+
+
+## 矩阵范数 {#subsec:matrix-norm}
+
+向量和矩阵的范数，包括1，2，无穷范数，其他操作看 Matrix 包，尤其关于稀疏矩阵计算部分
+
+$1$-范数
+:  列和绝对值最大的
+
+$\infty$ - 范数
+:  行和绝对值最大的
+
+Frobenius - 范数
+:  Euclidean 范数
+
+$M$ - 范数
+:  矩阵里模最大的元素，矩阵里面的元素可能含有复数，所以取模最大
+
+$2$ - 范数
+:  又称谱范数，矩阵最大的奇异值，如果是方阵，就是最大的特征值
+
+```{r}
+norm(A, type = "1") # max(abs(colSums(A)))
+norm(A, type = "I") # max(abs(rowSums(A)))
+norm(A, type = "F")
+norm(A, type = "M") #
+norm(A, type = "2") # max(svd(A)$d)
+```
+
+::: sidebar
+显然，$1-,\infty-,M-$ 的范数计算比 $F-$ 范数快，函数 `norm` 默认情况下求 $1-$ 范数
+:::
+
+## 矩阵求秩 {#subsec:matrix-rank}
+
+```{r}
+qr(A)$rank # or qr.default(A)$rank
+```
+
+## 矩阵求迹 {#subsec:matrix-trace}
+
+若
+
+$$
+A = \begin{bmatrix}
+ a_{11} & a_{12}  & a_{13} \\ 
+ a_{21} & a_{22}  & a_{23} \\ 
+ a_{31} & a_{32}  & a_{33} 
+\end{bmatrix}
+$$
+
+则矩阵 $A$ 的迹 $\operatorname{tr}(A) = \sum_{i=1}^{n}a_{ii}$
+
+```{r}
+sum(diag(A))
+```
+
+
+特殊矩阵的构造
+
+## 单位矩阵 {#subsec:identity-matrix}
+
+矩阵对角线上全是1，其余位置都是0
+
+$$
+A = \begin{bmatrix}
+ 1 & 0  & 0 \\ 
+ 0 & 1  & 0 \\ 
+ 0 & 0  & 1 
+\end{bmatrix}
+$$
+
+```{r}
+diag(rep(3))
+```
+
+而全1矩阵是所有元素都是1的矩阵，可以借助外积运算构造，如3阶全1矩阵
+
+```{r}
+rep(1,3) %o% rep(1,3) 
+```
+
+
+## 对角矩阵 {#subsec:matrix-diagonals}
+
+```{r}
+diag(A)       # diagonal of a matrix
+diag(diag(A)) # construct a diagonal matrix
+```
+
+## 上/下三角矩阵 {#subsec:upper-matrix}
+
+矩阵下三角
+
+row 和 col
+
+```{r}
+row(A)
+col(A)
+A[row(A)]
+```
+
+```{r}
+upper.tri(A) # 矩阵上三角
+A[upper.tri(A)]
+A[lower.tri(A)] <- 0 # 获得上三角矩阵
+A
+```
+
+- 下三角矩阵
+
+```{r}
+A <- matrix(c(1, 2, 2, 3), nrow = 2)
+A
+lower.tri(A)
+A[lower.tri(A)]
+A[upper.tri(A)] <- 0 # 获得下三角矩阵
+A
+A <- matrix(c(1, 2, 2, 3), nrow = 2)
+A[row(A) < col(A)] <- 0
+A
+```
+
+## 稀疏矩阵 {#subsec:sparse-matrix}
+
+```{r}
+dn <- list(LETTERS[1:3], letters[1:5])
+## pointer vectors can be used, and the (i,x) slots are sorted if necessary:
+## 使用指针构造
+m <- sparseMatrix(i = c(3,1, 3:2, 2:1), p= c(0:2, 4,4,6), x = 1:6, dimnames = dn)
+m
+## 典型构造方式
+i <- c(1,3:8); j <- c(2,9,6:10); x <- 7 * (1:7)
+(AA <- sparseMatrix(i, j, x = x))                    ##  8 x 10 "dgCMatrix"
+```
+
+## 三对角矩阵 {#subsec:triangular-matrix}
+
+
+
+
+<!-- 各类矩阵分解技术，及其算法实现、适用范围，最常见的 LU 分解、SVD 和 QR 分解，参考 R 内置的帮助文档及其实现 -->
+
+
+
+
+## LU 分解 {#subsec:lu-decomposition}
+
+## Schur 分解 {#subsec:schur-decomposition}
+
+## Cholesky 分解 {#subsec:Choleski-Decomposition}
+
+实对称正定矩阵的 Choleski 分解
+
+```{r}
+chol(A + diag(rep(1,2)))
+# Inverse from Choleski (or QR) Decomposition
+Matrix::chol2inv(A + diag(rep(1,2)))
+```
+
+`Matrix::Cholesky` 实现稀疏 Cholesky 分解
+
+
+
+
+## 特征值分解 {#subsec:Eigenvalues-Decomposition}
+
+特征值分解（Eigenvalues Decomposition）也叫谱分解（Spectral Decomposition）
+
+```{r}
+eigen(A)
+```
+
+
+## SVD 分解 {#subsec:Singular-Value-Decomposition}
+
+[Fast truncated singular value decompositions](https://github.com/bwlewis/irlba) 
+奇异值分解是特征值分解的推广
+
+```{r}
+svd(A)
+svd(A)$d
+```
+
+邱怡轩将奇异值分解用于图像压缩 <https://cosx.org/2014/02/svd-and-image-compression> 并制作了 [Shiny App](https://yihui.shinyapps.io/imgsvd/) 交互式演示
+
+## QR 分解 {#subsec:QR-Decomposition}
+
+```{r}
+qr.default(A)
+qr.X(qr.default(A))
+qr.Q(qr.default(A))
+qr.R(qr.default(A))
+qr.Q(qr.default(A)) %*% qr.R(qr.default(A))
+```
+
+用 [Householder 变换](https://www.wikiwand.com/en/Householder_transformation) 做 QR 分解 [@Bates_1988_Nonlinear] 及其 R 语言实现 <https://rpubs.com/aaronsc32/qr-decomposition-householder>
+
+Householder 变换是平面反射的一般情况：
+要计算 $N\times P$ 维矩阵 $X$ 的 QR 分解，我们采用 Householder 变换
+
+$$
+\mathbf{H}_{u} = \mathbf{I} -2\mathbf{u}\mathbf{u}^{\top}
+$$
+
+其中 $I$ 是 $N\times N$ 维的单位矩阵，$u$ 是 $N$ 维单位向量，即 $\| \mathbf{u}\| = \sqrt{\mathbf{u}\mathbf{u}^{\top}} = 1$。则 $H_u$ 是对称正交的，因为
+
+$$
+\mathbf{H}_{u}^{\top} = \mathbf{I}^{\top} - 2\mathbf{u}\mathbf{u}^{\top} = \mathbf{H}_{u}
+$$
+
+并且
+
+$$
+\mathbf{H}_{u}^{\top}\mathbf{H}_{u} =  \mathbf{I} -4\mathbf{u}\mathbf{u}^{\top} + 4\mathbf{u}\mathbf{u}^{\top}\mathbf{u}\mathbf{u}^{\top} = \mathbf{I}
+$$
+
+让 $\mathbf{H}_{u}$ 乘以向量 $\mathbf{y}$，即
+
+$$
+\mathbf{H}_{u}\mathbf{y} = \mathbf{y} - 2\mathbf{u}\mathbf{u}^{\top}\mathbf{y}
+$$
+
+它是 $y$ 关于垂直于过原点的 $u$ 的直线的反射，只要
+
+
+\begin{equation}
+\mathbf{u} = \frac{\mathbf{y} - \| \mathbf{y} \|\mathbf{e}_{1}}{\| \mathbf{y} - \| \mathbf{y} \|\mathbf{e}_{1}\|} (\#eq:householder-negative)
+\end{equation}
+
+
+或者
+
+
+\begin{equation}
+\mathbf{u} = \frac{\mathbf{y} + \| \mathbf{y} \|\mathbf{e}_{1}}{\| \mathbf{y} + \| \mathbf{y} \|\mathbf{e}_{1}\|} (\#eq:householder-positive)
+\end{equation}
+
+
+其中 $\mathbf{e}_{1} = (1,0,\ldots,0)^{\top}$，Householder 变换使得向量 $y$ 成为 $x$ 轴，在新的坐标系统中，向量 $H_{u}y$ 的坐标为 $(\pm\|y\|, 0, \ldots, 0)^\top$
+
+举个例子
+
+
+借助 Householder 变换做 QR 分解的优势：
+
+1. 更快、数值更稳定比直接构造 Q，特别当 N 大于 P 的时候
+1. 相比于存储矩阵 Q 的 $N^2$ 个元素，Householder 变换只存储 P 个向量 $u_1,\ldots,u_P$
+1. QR 分解的真实实现，比如在 LINPACK 中，定义 $u$ 的时候，公式 \@ref(eq:householder-negative) 或 \@ref(eq:householder-positive) 的选择基于$y$的第一个坐标的符号。如果坐标是负的，使用公式\@ref(eq:householder-negative)，如果是正的，使用公式 \@ref(eq:householder-positive)， 这个做法可以使得数值计算更加稳定。
+
+
+Stan 实现的 QR 分解在贝叶斯线性回归模型中的应用[^qr-stan]
+
+[^qr-stan]: https://mc-stan.org/users/documentation/case-studies/qr_regression.html
+  
+## Jordan 分解 {#subsec:jordan-Decomposition}
+
+
+## Givens 旋转 {#subsec:Givens-Rotation}
+
+- Givens 旋转 <https://www.wikiwand.com/en/Givens_rotation>
+
+
+- 帽子矩阵在统计中的应用 回归与方差分析 [@David_1978_Hat]

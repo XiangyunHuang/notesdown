@@ -1,0 +1,316 @@
+# 时序分析 {#chap:time-series-analysis}
+
+```{r,include=FALSE}
+library(formatR)
+library(magrittr)
+library(ggplot2)
+library(gganimate)
+library(ggfortify)
+library(highcharter)
+```
+
+
+
+David R. Brillinger 的 Time Series: Data Analysis and Theory (1975) [@Brillinger_2001_TSD] 从时间序列分析的综述上开始看 <https://www.stat.berkeley.edu/~brill/Papers/encysbs.pdf> 
+- 参考 Applied Time Series Analysis 课程 <https://newonlinecourses.science.psu.edu/stat510/> 
+- 参考 Time Series Analysis and Its Applications With R Examples - 4th Edition <https://www.stat.pitt.edu/stoffer/tsa4/>
+
+从时间序列中寻找规律，这样才是真的数据建模，从数据到模型，而不是相反 [Finding Patterns in Time Series](https://mason.gmu.edu/~jgentle/papers/FindingPatternsTimeSeriesDraft.pdf)
+
+可以从雅虎财经获取数据 <https://finance.yahoo.com/>
+
+从 ARIMA 过渡到异方差，非高斯分布 <https://mason.gmu.edu/~jgentle/talks/CompFin_Tutorial.pdf>
+金融时间序列的模式识别和统计学习
+
+ARCH or GARCH 的综述 <http://public.econ.duke.edu/~boller/Papers/glossary_arch.pdf>
+
+- `diff` 差分
+- `filter` 时间序列线性过滤
+- `fft` 快速离散傅里叶变换
+
+时序数据对象
+时间日期数据操作
+处理时序数据的工具，时序图、相关图、平稳性检验，相关检验，之后才是模型
+
+
+
+## 时序数据 {#sec:ts-data}
+
+```{r,echo=FALSE}
+class(AirPassengers)
+mode(AirPassengers)
+str(AirPassengers)
+```
+
+```{r}
+start(AirPassengers)
+end(AirPassengers)
+```
+
+```{r}
+time(AirPassengers)
+```
+
+```{r}
+tsp(AirPassengers)
+```
+
+## 时序图 {#sec:ts-plot}
+
+```{r nhtemp,eval=knitr::is_html_output()}
+library(highcharter)
+plot(nhtemp, main = "Mean annual temperature in New Haven, CT (deg. F)")
+
+# Average Yearly Temperatures in New Haven 纽黑文
+highchart() %>%
+  hc_xAxis(type = "datetime") %>%
+  hc_add_series(data = nhtemp,  name = "nhtemp")
+```
+
+
+## 时序检验 {#sec:ts-tests}
+
+
+
+参数的计算公式，实现的 R 代码
+
+- [ ] Applies linear filtering to a univariate time series or to each series separately of a multivariate time series. 过滤
+
+一元时间序列的线性过滤，或者对多元时间序列的单个序列分别做线性过滤
+
+$$y[i] = x[i] + f[1]*y[i-1] +\ldots+ f[p]*y[i-p]$$
+
+$$
+y[i] = f[1]*x[i+o] + \ldots + f[p]*x[i+o-(p-1)]
+$$
+
+其中 $o$ 代表 offset
+
+
+介绍 FTT 算法细节
+
+不同的方法对时间序列平滑的影响 FTT 快速傅里叶变换算法
+
+```{r}
+usage(stats::filter)
+```
+
+## 指数平滑 {#sec:exponential-smoothing}
+
+
+
+
+## Holt-Winters {#sec:holt-winters}
+
+**可加** Holt-Winters [@Winters_1960_Forecasting;@Holt_2004_Forecasting] 预测函数，周期长度为 p
+
+$\hat{Y}[t+h] = a[t] + h * b[t] + s[t - p + 1 + (h - 1) \mod p]$
+
+其中 $a[t], b[t], s[t]$ 由以下决定
+
+
+\begin{align}
+a[t] &= \alpha (Y[t] - s[t-p]) + (1-\alpha) (a[t-1] + b[t-1]) \\
+b[t] &= \beta (a[t] - a[t-1]) + (1-\beta) b[t-1] \\
+s[t] &= \gamma (Y[t] - a[t]) + (1-\gamma) s[t-p]
+\end{align}
+
+
+可乘 Holt-Winters
+
+$$
+\hat{Y}[t+h] = (a[t] + h * b[t]) * s[t - p + 1 + (h - 1) \mod p]
+$$
+
+其中  $a[t], b[t], s[t]$ 由如下决定
+
+
+\begin{align}
+a[t] &= \alpha (Y[t] / s[t-p]) + (1-\alpha) (a[t-1] + b[t-1]) \\
+b[t] &= \beta (a[t] - a[t-1]) + (1-\beta) b[t-1] \\
+s[t] &= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
+\end{align}
+
+ 
+- [ ] `HoltWinters` 用 Shiny App 的形式展示 $\alpha, \beta, \gamma$ 三个参数对模型预测的影响，参数的确定通过最小化预测均方误差
+
+```{r,eval=FALSE}
+## Seasonal Holt-Winters
+(m <- HoltWinters(co2))
+plot(m)
+plot(fitted(m))
+
+p <- predict(m, 50, prediction.interval = TRUE)
+plot(m, p)
+
+(m <- HoltWinters(AirPassengers, seasonal = "mult"))
+plot(m)
+
+## 指数平滑 Exponential Smoothing
+m2 <- HoltWinters(x, gamma = FALSE, beta = FALSE)
+lines(fitted(m2)[,1], col = 3)
+```
+
+## 1749-2013 年太阳黑子数据 {#sec:sunspots}
+
+再从官网拿到最近的数据
+
+
+```{r sunspot-month,fig.show='hold',fig.width=8,fig.height=4,fig.cap="时序图：太阳黑子月均数量"}
+plot(sunspot.month, xlab = "Year", ylab = "Monthly sunspot numbers",
+     main = "Monthly mean relative sunspot numbers from 1749 to 2013")
+
+library(ggfortify)
+autoplot(sunspot.month,
+  main = "Monthly mean relative sunspot numbers from 1749 to 2013",
+  xlab = "Year", ylab = "Monthly sunspot numbers"
+) +
+  theme_minimal()
+```
+
+```{r}
+autoplot(sunspots)
+```
+
+```{r sunspots-year-tsplot,fig.cap="太阳黑子数量年平均时序图"}
+autoplot(sunspot.year, xlab = "Year", ylab = "Yearly Sunspot Data, 1700-1988") +
+  theme_minimal()
+```
+
+<!-- 研究一下 dygraphs 怎么用 -->
+
+```{r sunspot-dygraphs,eval=knitr::is_html_output()}
+library(dygraphs)
+dygraph(sunspot.month)
+
+hw <- HoltWinters(sunspot.month)
+predicted <- predict(hw, n.ahead = 72, prediction.interval = TRUE)
+
+dygraph(predicted, main = "Predicted sunspot numbers") %>%
+  dyAxis("x", drawGrid = FALSE) %>%
+  dySeries(c("lwr", "fit", "upr"), label = "sunspot") %>%
+  dyOptions(colors = hcl.colors(3))
+```
+
+
+```{r sunspot-highcharter,eval=knitr::is_html_output()}
+library(highcharter)
+highchart() %>% 
+  hc_xAxis(type = "datetime") %>% 
+  hc_add_series(data = sunspot.month) %>% 
+  hc_add_series(data = sunspots)
+```
+
+## 1821-1934 年加拿大山猫陷阱数量 {#sec:lynx}
+
+```{r}
+library(ggfortify)
+autoplot(lynx)
+```
+
+
+```{r lynx,eval=knitr::is_html_output()}
+highchart() %>% 
+  hc_xAxis(type = "datetime") %>% 
+  hc_add_series(data = lynx,  name = "lynx")
+```
+
+
+## 1991-1998 年欧洲主要股票市场日闭市价格指数 {#sec:EuStockMarkets}
+
+```{r,fig.cap="1991-1998年间欧洲主要股票市场日闭市价格指数图 \n 德国 DAX (Ibis), Switzerland SMI, 法国 CAC 和 英国 FTSE"}
+matplot(time(EuStockMarkets), EuStockMarkets,
+  main = "",
+  xlab = "Date", ylab = "closing prices",
+  pch = 17, type = "l", col = 1:4
+)
+legend("topleft", colnames(EuStockMarkets), pch = 17, lty = 1, col = 1:4)
+```
+
+```{r EuStockMarkets,fig.width=6,fig.height=5}
+# 考虑收集加入最新的数据 1991~1998年的数据
+plot(EuStockMarkets, plot.type = "single", col = hcl.colors(4))
+legend("topleft", colnames(EuStockMarkets),
+  col = hcl.colors(4), text.col = hcl.colors(4), lty = 1,
+  box.col = NA, inset = 0.05
+)
+```
+
+
+
+
+
+## 自回归模型 {#sec:autoregressive}
+
+`ar()` 
+
+## 移动平均模型 {#sec:moving-average}
+
+`arima()`
+
+## 自回归移动平均模型 {#sec:autoregressive-movement-average}
+
+`arima()` ARIMA 
+
+## 自回归条件异方差模型 {#sec:autoregressive-conditional-heteroskedasticity}
+
+自回归条件异方差模型 ARCH
+
+## 广义自回归条件异方差模型 {#sec:generalized-autoregressive-conditional-heteroskedasticity}
+
+广义自回归条件异方差模型 （Generalized Autoregressive Conditional Heteroskedasticity，简称 GARCH ）
+
+
+
+[prophet](https://github.com/facebook/prophet) 基于可加模型的时间序列预测
+
+[AnomalyDetection](https://github.com/twitter/AnomalyDetection) 时间序列数据中的异常值检测
+
+## 其它特征的时间序列 {#sec:other-ts}
+
+时间序列差分平稳性
+
+```{r johnson,eval=knitr::is_html_output()}
+highchart() %>% 
+  hc_xAxis(type = "datetime") %>% 
+  hc_add_series(data = JohnsonJohnson,  name = "JohnsonJohnson")
+```
+
+时间序列周期性
+
+```{r airpassengers,eval=knitr::is_html_output()}
+highchart() %>% 
+  hc_xAxis(type = "datetime") %>% 
+  hc_add_series(data = AirPassengers, color = "Orange", name = "AirPassengers")
+```
+
+周期性
+
+```{r nottem,eval=knitr::is_html_output()}
+# Average Monthly Temperatures at Nottingham, 1920-1939
+highchart() %>%
+  hc_xAxis(type = "datetime") %>%
+  hc_add_series(data = nottem,  name = "nottem")
+```
+
+
+## 51Talk 公司股价走势 {#sec:51talk-stack-price}
+
+51talk 于 2016年6月10日在美国纽交所上市，股票代码 COE， 2020年1月22日，武汉封城，受新冠肺炎病毒影响，政府停课不停学的号召，线下教育纷纷转线上，线上教育的春天来临，股价开始回升到发行价的水平，在公司将资源转变为能力后，预期公司股价继续翻倍，回到理性的水平。
+
+```{r,eval=knitr::is_html_output(),cache=TRUE}
+coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2016-06-10')
+```
+
+
+```{r,eval=knitr::is_html_output()}
+hchart(coe)
+```
+
+
+
+## 运行环境 {#sec:tsa-sessioninfo}
+
+```{r}
+sessionInfo()
+```

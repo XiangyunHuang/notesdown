@@ -1,0 +1,254 @@
+# 案例研究 {#chap:case-study}
+
+```{r,include=FALSE}
+library(magrittr)
+library(ggplot2)
+```
+
+统计建模：两种文化 [@Breiman_2001_Modeling] 和 tidyverse [@Hadley_2019_tidyverse]
+
+> 这些案例来自 Kaggle、 Tudesday 或者自己找的数据集，而不是论文里，或者 R 包里的小数据集，应该更加真实，贴近实际问题，考虑更多细节
+
+## 统计学家生平 {#sec:life-of-statisticians}
+
+<!-- 定位：不用任何数据建模的手段，我只是呈现数据本身，但是给人的感觉要达到，一眼就能获得一个直接的感觉，读者立马就能有个感觉，这个感觉就是知道影响统计学家寿命的重大因素有哪些，后续的检验只是帮助我们更加准确地知道影响的大小 -->
+
+世纪统计学家 100 位统计学家，寿命的影响因素，关联分析，图展示数据本身的
+
+<!-- https://github.com/XiangyunHuang/MSG-Book/issues/74 -->
+
+注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力
+
+参考文献 [@Statisticians_1997_Johnson]
+
+## R 语言发展历史 {#sec:history-of-r}
+
+R 语言发展历史和现状，用图来表达
+
+## 不同实验条件下植物生长情况 {#sec:PlantGrowth}
+
+PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》[@Dobson_1983_Modelling] 第 2 章第 2 节的案例 --- 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 \@ref(tab:PlantGrowth-data) 所示
+
+```{r PlantGrowth-data}
+## 或者
+# do.call("cbind", lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = "weight"))
+library(magrittr)
+split(PlantGrowth, f = PlantGrowth$group) %>% # 分组
+  lapply(., subset, select = "weight") %>% # 计算
+  Reduce("cbind", .) %>% # 合并
+  setNames(., levels(PlantGrowth$group)) %>% # 重命名 `colnames<-`(., levels(PlantGrowth$group))
+  knitr::kable(.,
+    caption = "不同生长环境下植物的干重", row.names = TRUE,
+    align = "c"
+  )
+```
+
+::: rmdtip
+
+PlantGrowth 数据集的重塑操作也可以使用内置的函数 `reshape()` 实现 
+
+```{r data-frame-PlantGrowth}
+PlantGrowth$id <- rep(1:10, 3)
+reshape(
+  data = PlantGrowth, idvar = "group", v.names = "weight",
+  timevar = "id", direction = "wide",
+  sep = ""
+) %>% 
+knitr::kable(.,
+  caption = "不同生长环境下植物的干重", row.names = FALSE,
+  col.names = gsub("(weight)", "", names(.)),
+  align = "c"
+)
+```
+
+或者，我们也可以使用 **tidyr** 包提供的 `pivot_wider()` 函数
+
+```{r data-tibble-PlantGrowth}
+tidyr::pivot_wider(
+  data = PlantGrowth, id_cols = id,
+  names_from = group, values_from = weight
+)
+```
+
+或者，我们还可以使用 **data.table** 包提供的 `dcast()` 函数，用于将长格式的数据框重塑为宽格式的
+
+```{r data-table-PlantGrowth}
+library(data.table)
+PlantGrowth_DT <- as.data.table(PlantGrowth)
+# 纵
+dcast(PlantGrowth_DT, id ~ group, value.var = "weight")
+# 横
+dcast(PlantGrowth_DT, group ~ id, value.var = "weight")
+```
+
+:::
+
+设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响
+
+```{r}
+summary(PlantGrowth)
+```
+
+每个组都有10颗植物，生长情况如图\@ref(fig:plant-growth-fig)所示
+
+```{r plant-growth-fig,echo=FALSE,fig.width=4,fig.height=4,fig.cap="植物干重",fig.show='hold',out.width='50%'}
+## Annette J. Dobson 扩展的 Plant Weight Data 数据，见 59 页
+boxplot(weight ~ group,
+  data = PlantGrowth, main = "PlantGrowth data",
+  ylab = "Dried weight of plants", col = "lightgray",
+  notch = FALSE, varwidth = TRUE
+)
+library(ggplot2)
+ggplot(data = PlantGrowth, aes(x = group, y = weight, color = group)) +
+  geom_boxplot() +
+  geom_jitter() +
+  theme_minimal()
+```
+
+实验条件 trt1 和 trt2 对植物生长状况有显著的影响，为了量化这种影响，建立线性回归模型
+
+```{r sub-lm}
+fit_sublm <- lm(weight ~ group,
+  data = PlantGrowth,
+  subset = group %in% c("ctrl", "trt1")
+)
+anova(fit_sublm)
+summary(fit_sublm)
+```
+
+下面再通过检验的方式比较实验组和对照组相比，是否有显著作用
+
+```{r t-test-plant-growth}
+# 控制组和实验组1比较
+t.test(weight ~ group, data = PlantGrowth, subset = group %in% c("ctrl", "trt1"))
+# 控制组和实验组2比较
+t.test(weight ~ group, data = PlantGrowth, subset = group %in% c("ctrl", "trt2"))
+```
+
+检验结果表明，实验条件 trt2 会对植物生长产生显著效果，而实验条件 trt1 不会。在假定同方差的情况下，建立线性回归模型，同时考虑实验条件 trt1 和 trt2
+
+```{r}
+# 模型拟合
+fit_lm <- lm(weight ~ group, data = PlantGrowth)
+
+## 模型输出
+summary(fit_lm)
+
+## 方差分析
+anova(fit_lm)
+
+## 参数估计
+coef(summary(fit_lm))
+```
+
+模型输出整理成表 \@ref(tab:lm-plant-growth-output) 所示
+
+```{r lm-plant-growth-output,echo=FALSE}
+# 整理模型输出到数据框
+fit_lm_output <- round(coef(summary(fit_lm)), 4)
+# 指定行名和列名
+rownames(fit_lm_output) <- c("$\\alpha$", "$\\beta_1$", "$\\beta_2$")
+colnames(fit_lm_output)[4] <- "$P(T > |t|)$"
+knitr::kable(fit_lm_output,
+  escape = FALSE, caption = "线性回归的输出",
+  col.names = c("估计值", "标准差", "t 统计量", "P 值")
+)
+```
+
+还可以将模型转化为数学公式
+
+```{r eq-lm-plant-growth, results='asis'}
+# 理论模型
+equatiomatic::extract_eq(fit_lm)
+# 拟合模型
+equatiomatic::extract_eq(fit_lm, use_coefs = TRUE)
+```
+
+进一步地，我们在线性模型的基础上考虑每个实验组有不同的方差，先做方差齐性检验。
+
+```{r homogeneity-of-variances}
+bartlett.test(weight ~ group, data = PlantGrowth)
+fligner.test(weight ~ group, data = PlantGrowth)
+```
+
+检验的结果显示，可以认为三个组的方差没有显著差异，但我们还是考虑每个组有不同的方差，看看放开假设能获得多少提升，后续会发现，从对数似然的角度来看，实际提升量很小，只有 7.72\%
+
+::: rmdnote
+上面同时比较多个总体的方差，会发现方差没有显著差异，那么接下来在假定方差齐性的条件下，比较均值的差异是否显著？
+
+```{r homogeneity-variance}
+# 参数检验，假定异方差
+oneway.test(weight ~ group, data = PlantGrowth, var.equal = FALSE)
+# 参数检验，假定方差齐性
+oneway.test(weight ~ group, data = PlantGrowth, var.equal = TRUE)
+# 非参数检验
+kruskal.test(weight ~ group, data = PlantGrowth)
+```
+
+检验结果显示它们的均值是有显著差异的！
+:::
+
+```{r gls-plant-growth}
+fit_gls <- nlme::gls(weight ~ 1,
+  weights = nlme::varIdent(form = ~ 1 | group),
+  data = PlantGrowth, method = "REML"
+)
+summary(fit_gls)
+# 这二者之间的区别是什么
+fit_lme <- nlme::lme(weight ~ 1, random = ~ 1 | group, data = PlantGrowth)
+summary(fit_lme)
+```
+
+$\sigma_i^2 = Var(\epsilon_{ij}), i = 1,2,3$ 表示第 $i$ 组的方差，
+
+$$
+y_{ij} = \mu + \epsilon_{ij}, i = 1,2,3
+$$
+
+其中 $\mu$ 是固定的未知参数，我们和之前假定同方差情形下的模型比较一下，现在异方差情况下模型提升的情况，从对数似然的角度来看
+
+```{r loglik-lm-vs-gls, collapse=TRUE}
+logLik(fit_lm)
+logLik(fit_lm, REML = TRUE)
+logLik(fit_gls)
+logLik(fit_lme)
+```
+
+进一步地，我们考虑两水平模型，认为不同的实验组其均值和方差都不一样，检验三样本均值是否相等？
+
+$\mu_1 = \mu_2 = \mu_3$ 检验，这里因为每组的样本量都一样，因此考虑 Turkey 的 T 法检验，检验均值是否有显著差别，实际上这里因为实验组数量只有2个，可以两两比对，如前所述。但是这里我们想扩展一下，考虑多组比较的问题。
+
+<!-- 书籍 《概率论与数理统计教程》438 页重复数相等场合下的多重比较 T 法 [@Prob_2011_Mao] -->
+
+和上面用 `gls` 拟合的模型是一致的。
+
+\begin{align}
+y_{ij}& = \mu_i + \epsilon_{ij}, \\
+\mu_i & = \mu_{\theta} + \xi_i. \quad i  = 1,\ldots,3; \quad j = 1, \ldots, 10.
+\end{align}
+
+其中 $\mu_i$ 是随机的未知变量，服从均值为 $\mu_{\theta}$ 方差为 $Var(\xi_i) = \tau^2$ 的正态分布
+
+我们用 **MASS** 包提供的 `glmmPQL()` 函数拟合该数据集
+
+```{r lme-plant-growth-pql}
+fit_lme_pql <- MASS::glmmPQL(weight ~ 1,
+  random = ~ 1 | group, verbose = FALSE,
+  family = gaussian(), data = PlantGrowth
+)
+summary(fit_lme_pql)
+```
+
+我们再借助 **brms** 包从贝叶斯的角度来分析数据，并建模
+
+<!-- 就以 brms 包为例谈谈先验、参数设置，默认的先验有可能太宽泛了，导致不是很合理 <https://discourse.mc-stan.org/t/11584> -->
+
+```{r lme-plant-growth-brms,eval=FALSE}
+# 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/
+library(Rcpp)
+fit_lme_brm <- brms::brm(weight ~ 1 + (1 | group),
+  data = PlantGrowth, family = gaussian(), 
+  refresh = 0, seed = 2019
+)
+summary(fit_lme_brm)
+```

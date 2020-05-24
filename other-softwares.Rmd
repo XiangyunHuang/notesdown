@@ -1,5 +1,26 @@
 # 其它软件 {#chap:other-softwares}
 
+```{r setup, include=FALSE}
+library(reticulate)
+knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
+# 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
+if (identical(.Platform$OS.type, "windows")) {
+  # 在我的 Windows 机器上用的是 Miniconda3
+  reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+}
+Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN") # 用于 tools::CRAN_package_db()
+```
+
+
+> I think, therefore I R.
+>
+> --- William B. King [^William-King]
+
+[^William-King]: https://ww2.coastal.edu/kingw/statistics/R-tutorials/
+
+
 Pandoc Graphviz UML TikZ ImageMagick
 
 ## 文本编辑器 {#sec:text-editor}
@@ -25,6 +46,28 @@ knitr::include_graphics(path = c('screenshots/typora-theme-default.png', 'screen
 
 设置中文环境，并且将主题风格样式配置为 Vue，见图\@ref(fig:typora-theme)（右），Vue 主题可从 Typora 官网下载 <https://theme.typora.io/theme/Vue/>。
 
+1. Atom 编辑器 <https://atom.io/>
+
+  ```bash
+  sudo add-apt-repository ppa:webupd8team/atom
+  sudo apt-get update
+  sudo apt-get install atom
+  ```
+
+1. Code 编辑器微软出品 <https://code.visualstudio.com/>
+
+1. Notepad++ 开源的 Windows 平台上的编辑器 <https://notepad-plus-plus.org/>
+
+1. VI & VIM 开源的跨平台编辑器
+
+1. Atom 和 Code 有商业公司支持的开源免费的跨平台的编辑器
+
+1. VI/VIM 和 Emacs 是跨平台的编辑器
+
+1. Markdown 编辑器 + blogdown 记笔记
+
+1. Typora Markdown 编辑器，支持自定义 CSS 样式
+
 
 ## 代码编辑器 {#sec:code-editor}
 
@@ -34,7 +77,345 @@ VS Code, Sublime Text 和 Atom
 
 [RStudio 公司的愿景](https://rstudio.com/slides/rstudio-pbc/)，介绍 RStudio 开发环境提供的效率提升工具或功能
 
+
+### RStudio 桌面版 {#rstudio-desktop-ide}
+
+```{r,fig.cap="开源桌面版 RStudio 集成开发环境",echo=FALSE}
+knitr::include_graphics(path = 'screenshots/rstudio-desktop.png')
+```
+
+### RStudio 服务器版 {#rstudio-server-ide}
+
+RStudio Server 开源服务器版可以放在虚拟机里或者容器里，RStudio 桌面版装在服务器上，服务器为 Ubuntu/CentOS/Windows 系统，然后本地是 Windows 系统，可以通过远程桌面连接服务器，使用 RStudio；
+
+```{r,fig.cap="虚拟机里的 RStudio",echo=FALSE}
+knitr::include_graphics(path = 'screenshots/rstudio-vbox.png')
+```
+
+服务器上启动 Docker ，运行 RStudio 镜像，本地通过桌面浏览器，如谷歌浏览器登陆连接。
+
+```{r,fig.cap="容器里的 RStudio",echo=FALSE}
+knitr::include_graphics(path = 'screenshots/rstudio-docker.png')
+```
+
+1. 下载 RStudio IDE
+ 
+   我们从 RStudio 官网[下载][rstudio-download]开源桌面或服务器版本，服务器版本的使用介绍见[文档](https://docs.rstudio.com/ide/server-pro/)，最常见的就是设置端口
+
+   ```bash
+   wget https://download2.rstudio.org/rstudio-server-1.1.456-amd64.deb
+   sudo apt-get install gdebi
+   sudo gdebi rstudio-server-1.1.456-amd64.deb
+   ```
+
+1. 设置端口
+   
+   在文件 `/etc/rstudio/rserver.conf` 下，设置
+
+   ```
+   www-port=8181
+   ```
+
+   注意：修改 `rserver.conf` 文件后需要重启才会生效
+   
+   ```bash
+   sudo rstudio-server stop
+   sudo rstudio-server start
+   ```
+
+   接着获取机器的 IP 地址，如 192.168.141.3
+
+   ```bash
+   ip addr
+   ```
+   ```
+   1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+   2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+       link/ether 08:00:27:59:c0:fb brd ff:ff:ff:ff:ff:ff
+       inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+          valid_lft 83652sec preferred_lft 83652sec
+       inet6 fe80::a00:27ff:fe59:c0fb/64 scope link
+          valid_lft forever preferred_lft forever
+   3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+       link/ether 08:00:27:09:33:0d brd ff:ff:ff:ff:ff:ff
+       inet 192.168.141.3/24 brd 192.168.141.255 scope global dynamic enp0s8
+          valid_lft 547sec preferred_lft 547sec
+       inet6 fe80::a00:27ff:fe09:330d/64 scope link
+          valid_lft forever preferred_lft forever
+   ```
+
+   然后，就可以从本地浏览器登陆 RStudio 服务器版本，如 <http://192.168.141.3:8181/>
+
+
+[rstudio-download]: https://www.rstudio.com/products/rstudio/download/
+
+### Shiny 服务器版 {#shiny-server}
+
+shiny 开源服务器版
+
+### Eclipse + StatET {#eclipse-plus-statet}
+
+Eclipse 配合 StatET 插件 <http://www.walware.de/goto/statet> 提供R语言的集成开发环境 <https://projects.eclipse.org/projects/science.statet>
+
+```{r eclipse-statet,fig.cap="基于 Eclipse 的 R 集成开发环境 StatET",echo=FALSE}
+knitr::include_graphics(path = "screenshots/eclipse-statet.png")
+```
+
+StatET 基于 Eclipse 首次建立索引很慢，估计半小时到一个小时，添加新的 R 包后，每次启动 StatET 也会建立索引缓存，此外，Eclipse 开发环境占用内存比较多，配置 StatET 的过程如下
+
+
+### Emacs + ESS {#emacs-plus-ess}
+
+Emacs 配合 ESS 插件 <https://ess.r-project.org/>
+
+
+### Nvim-R {#vim-plus-r}
+
+Nvim-R 是一个基于 Vim 的集成开发环境 <https://github.com/jalvesaq/Nvim-R>
+
+
 ## Git 版本控制 {#sec:version-control}
+
+只考虑 Ubuntu 18.04 环境下的三剑客 Git & Github & Gitlab
+
+### 安装配置 {#git-setup}
+
+Ubuntu 16.04.5 默认安装的 Git 版本是 2.7.4，下面安装最新版本Git和配置自己的GitHub账户
+
+1. 根据官网安装指导 <https://git-scm.com/download/linux>，在 Ubuntu 14.04.5 和 Ubuntu 16.04.5 安装最新版 GIT 
+
+   ```bash
+   sudo add-apt-repository -y ppa:git-core/ppa
+   sudo apt update && sudo apt install git
+   ```
+
+1. 配置账户
+
+   ```bash
+   git config --global user.name "你的名字"
+   git config --global user.email "你的邮件地址"
+   touch .git-credentials
+   # 记住密码
+   echo "https://username:password@github.com" >> .git-credentials
+   git config --global credential.helper store
+   ```
+
+
+<!-- Git 使用的数据库 -->
+
+以 Fedora 为例 [安装 tig](https://github.com/jonas/tig/blob/master/INSTALL.adoc)，首先安装必要的依赖，然后从官网下载源码，编译安装，之后切到任意本地 Git 仓库下，输入 `tig` 就可以看到如图 \@ref(fig:tig) 所示的样子了
+
+```bash
+sudo yum install readline-devel ncurses-devel asciidoc docbook-utils xmlto
+```
+
+tig 主要用于查看 git 提交的历史日志
+
+```{r tig,fig.cap="Git 日志查看器",echo=FALSE,out.width="55%"}
+knitr::include_graphics(path = 'screenshots/git-tig.png', dpi = NA)
+```
+
+### 追踪文件 {#git-add}
+
+
+```bash
+git add .
+```
+
+提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
+
+```bash
+git add -u
+```
+
+提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)，`git add --update`的缩写
+
+```bash
+git add -A
+```
+
+提交所有变化，`git add --all` 的缩写
+
+- 往远程的空的 Github 仓库添加本地文件
+
+```bash
+git init
+git remote add origin https://github.com/XiangyunHuang/notesdown.git
+git add -A
+git commit -m "balabala"
+git push -u origin master
+```
+
+### 合并上流 {#git-upstream}
+
+```bash
+git clone --depth=5 https://github.com/XiangyunHuang/cosx.org.git
+git submodule update --init --recursive
+```
+
+查看远程分支
+
+```bash
+cd cosx.org
+git remote -v
+```
+```
+origin  https://github.com/XiangyunHuang/cosx.org.git (fetch)
+origin  https://github.com/XiangyunHuang/cosx.org.git (push)
+```
+
+```bash
+# 添加上流分支
+git remote add upstream https://github.com/cosname/cosx.org.git
+# 查看远程分支
+git remote -v
+```
+```
+origin  https://github.com/XiangyunHuang/cosx.org.git (fetch)
+origin  https://github.com/XiangyunHuang/cosx.org.git (push)
+upstream        https://github.com/cosname/cosx.org.git (fetch)
+upstream        https://github.com/cosname/cosx.org.git (push)
+```
+
+```bash
+# 获取上流 commit 并且合并到我的 master 分支
+git fetch upstream
+git merge upstream/master master
+git push origin master
+```
+
+### 大文件支持 {#git-lfs}
+
+```bash
+sudo apt install git-lfs
+git lfs install
+git lfs track "*.psd"
+git add .gitattributes
+git commit -m "track *.psd files using Git LFS"
+git push origin master
+```
+
+这玩意迟早需要你购买存储空间，慎用
+
+### 新建分支 {#git-checkout}
+
+
+```bash
+git checkout -b stan     # 新建 stan 分支
+git branch -v            # 查看本地分支 stan 前有个星号标记
+git pull --rebase git@github.com:XiangyunHuang/cosx.org.git master
+# 同步到远程分支 stan
+git push --set-upstream origin stan
+git push origin master:stan
+
+git add .
+git commit -m "balabala"
+git push --set-upstream origin stan
+```
+
+本地新建仓库推送至远程分支
+
+```bash
+git remote add origin https://github.com/XiangyunHuang/notesdown.git
+git add .
+git commit -m "init cos-art"
+# 此时远程仓库 notesdown 还没有 cos-art 分支
+git push origin master:cos-art
+```
+
+位于 [Github](https://github.com/liuhui998/gitbook) [Git Community Book 中译本](http://gitbook.liuhui998.com/)
+
+
+### 创建站点 {#git-gh-pages}
+
+基于 GitHub Pages 创建站点用于存放图片和数据
+
+1. 在Github上创建一个空的仓库，命名为 uploads，没有 readme.md 和 LICENSE
+2. 在本地创建目录 uploads 
+3. 切换到 uploads 目录下
+
+```bash
+git init 
+git checkout -b gh-pages
+git remote add origin https://github.com/XiangyunHuang/uploads.git
+```
+
+添加图片或者数据，并且 git add 和 commit 后
+
+```bash
+git push --set-upstream origin gh-pages
+```
+
+这样仓库 uploads 只包含 gh-pages 分支，数据地址即为以日期为分割线
+
+<https://xiangyunhuang.github.io/uploads/data/eqList2018_05_18.xls>
+
+### 回车换行 {#git-crlf}
+
+CR (Carriage Return) 表示回车，LF (Line Feed) 表示换行，Windows 下用回车加换行表示下一行，UNIX/Linux 采用换行符 (LF) 表示下一行，MAC OS 则采用回车符 (CR) 表示下一行
+
+```bash
+git config --global core.autocrlf false
+```
+
+### 子模块 {#git-submodule}
+
+- 添加子模块到目录 `templates/` 下
+
+```bash
+git submodule add git://github.com/jgm/pandoc-templates.git templates
+```
+
+- 移除子模块
+
+<https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule/>
+
+
+### 克隆项目 {#git-clone}
+
+```bash
+git clone --depth=10 --branch=master --recursive \
+    git@github.com:XiangyunHuang/pandoc4everything.git
+```
+
+
+
+### 创建 PR {#git-create-pr}
+
+```bash
+git pull --rebase git@github.com:yihui/xaringan.git master
+# then force push to your master branch
+```
+
+参考 <https://github.com/yihui/xaringan/pull/107>
+
+> I don't recommend you to use your master branch for pull requests, because all commits will be squashed before merging, e.g. c2c2055 Then you will have some trouble with syncing your master branch with the master branch here (your choices are (1) delete your repo and fork again; or (2) force push; either option is not good). For pull requests, I recommend that you always use different branches for different pull requests.
+
+### 修改 PR {#git-edit-pr}
+
+> 之前一直有一个思想在阻止自己，就是别人的 repo 我是不能修改的，但是在这里，我拥有修改原始仓的权限，那么别人的复制品衍生的分支，我也有修改权限
+
+```bash
+git fetch origin refs/pull/771/head:patch-2
+# 771 是 PR 对应的编号
+git checkout patch-2
+
+# 你的修改
+
+git add -u
+git commit -m "描述你的修改"
+
+git remote add LalZzy https://github.com/LalZzy/cosx.org.git
+
+git push --set-upstream LalZzy patch-2
+```
+
+> 整理自统计之都论坛的讨论 https://d.cosx.org/d/420363
 
 
 
@@ -100,6 +481,8 @@ nomnoml::nomnoml("
 
 ## Graphviz 流程图 {#sec:graphviz}
 
+Graphviz 官网 <http://www.graphviz.org/>，常用于绘制流程图，广泛用于 tensorflow 和 mxnet 的模型描述中
+
 ```{r data-workflow, engine = "dot", echo=FALSE, fig.cap="数据分析流程图", cache=TRUE}
 digraph demo {
 graph [layout = circo];
@@ -126,6 +509,18 @@ Communicate -> Transform;
 ## LaTeX 排版工具 {#sec:latex}
 
 另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。
+
+### TinyTeX 发行版 {#sub:latex-tinytex}
+
+
+
+### TikZ 绘图工具 {#subsec:latex-tikz}
+
+TikZ 绘制书籍封面 <https://latexdraw.com/how-to-create-a-beautiful-cover-page-in-latex-using-tikz/>
+
+TikZ 绘制知识清单，书籍章节结构等 <https://www.latexstudio.net/index/lists/barsearch/author/1680.html>
+
+更多例子参考 <https://github.com/FriendlyUser/LatexDiagrams>
 
 TikZ 绘制 Excel 风格的 Smart 图
 
@@ -256,5 +651,264 @@ if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
 
 
 
+## Python 绘图 {#setup-python}
 
+我们推荐读者创建一个 Python 虚拟环境来使用，环境隔离可以减少对系统的侵入，方便迭代更新和项目管理。创建一个虚拟环境，步骤非常简单，下面以 CentOS 8 为例：
+
+1. 安装虚拟模块 virtualenv
+
+   ```bash
+   sudo dnf install -y virtualenv
+   ```
+
+1. 准备 Python 虚拟环境存放位置
+
+   ```bash
+   sudo mkdir -p /opt/.virtualenvs/r-tensorflow
+   ```
+
+1. 给虚拟环境必要的访问权限
+
+   ```bash
+   sudo chown -R $(whoami):$(whoami) /opt/.virtualenvs/r-tensorflow
+   ```
+
+1. 初始化虚拟环境
+
+   ```bash
+   virtualenv -p /usr/bin/python3 /opt/.virtualenvs/r-tensorflow
+   ```
+
+1. 激活虚拟环境，安装必要的模块
+
+   ```bash
+   source /opt/.virtualenvs/r-tensorflow/bin/activate
+   pip install numpy
+   ```
+   
+::: sidebar
+一般来讲，系统自带的 pip 版本较低，可以考虑升级 pip 版本。
+
+```bash
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
+```
+
+根据项目配置文件 requirements.txt 安装多个 Python 模块，每个 Python 项目都应该有这么个文件来描述项目需要的依赖环境，包含 Python 模块及其版本号。
+
+```bash
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+```
+
+指定 Python 模块的镜像地址，加快下载速度，特别是对于国内的环境，加速镜像站点非常有意义，特别是遇到大型的 Python 模块，比如 tensorflow 框架
+
+```bash
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow
+```
+:::
+
+Python 的 matplotlib 模块支持保存的图片格式有 eps, pdf, pgf, png, ps, raw, rgba, svg, svgz，不支持 cairo\_pdf 绘图设备，所以这里使用 pdf 设备，但是这样会导致图形没有字体嵌入，从而不符合出版要求。一个解决办法是在后期嵌入字体，图形默认使用数学字体 [STIX](http://www.stixfonts.org/) 和英文字体 [DejaVu Sans](https://dejavu-fonts.github.io/)，所以需要预先安装这些字体。
+
+```bash
+# CentOS 8
+sudo dnf install -y dejavu-fonts-common dejavu-sans-fonts \
+  dejavu-serif-fonts dejavu-sans-mono-fonts
+```
+
+借助 **grDevices** 包提供的 `embedFonts()` 函数，它支持 postscript 和 pdf 图形设备，嵌入字体借助了 [Ghostscript](https://www.ghostscript.com/) 以及 PDF 阅读器 [MuPDF](https://www.mupdf.com/)
+
+::: rmdnote
+Windows 系统下需要手动指定 Ghostscript 安装路径，特别地，如果你想增加可选字体范围，需要指定相应字体搜索路径，而 Linux/MacOS 平台下不需要关心 Ghostscript 的安装路径问题，
+
+```{r,eval=FALSE,echo=TRUE}
+Sys.setenv(R_GSCMD = "C:/Program Files/gs/gs9.26/bin/gswin64c.exe")
+embedFonts(
+  file = "cm.pdf", outfile = "cm-embed.pdf",
+  fontpaths = system.file("fonts", package = "fontcm")
+)
+embedFonts(file = "cm.pdf", outfile = "cm-embed.pdf") 
+```
+:::
+
+另一个解决办法是使用 LaTeX 渲染图片中的文字，这就需要额外安装一些 LaTeX 宏包，此时默认执行渲染的 LaTeX 引擎是 PDFLaTeX。
+
+```bash
+tlmgr install type1cm cm-super dvipng psnfss ucs ncntrsbk helvetic
+```
+
+每年 4 月是 TeX Live 的升级月，升级指导见 <https://www.tug.org/texlive/upgrade.html>，升级之后，需要更新所有 LaTeX 宏包。
+
+```bash
+tlmgr update --self --all
+```
+
+如图 \@ref(fig:matplotlib) 所示，我们采用第二个方法，它可以支持更好的数学公式显示，更多详情见 <https://matplotlib.org/tutorials/text/mathtext.html>。
+
+```{python matplotlib, fig.cap = "matplotlib 示例", echo = FALSE, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), out.width='.8\\textwidth'}
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
+rcParams.update({'font.size': 18, 'text.usetex': True}) # 其它可配置选项见 rcParams.keys()
+plt.switch_backend('agg')
+plt.plot([0, 2, 1, 4])
+plt.xlabel(r'$x$')
+plt.ylabel(r'$y$')
+plt.show()
+```
+
+::: rmdtip
+如果你的系统是 Windows/MacOS 可以添加 GPG 验证以增加安全性，最简单的方式就是：
+
+```bash
+tlmgr --repository http://www.preining.info/tlgpg/ install tlgpg
+```
+:::
+
+
+
+## CmdStan 概率编程 {#setup-cmdstan}
+
+```{r,eval=FALSE}
+remotes::install_github('stan-dev/cmdstanr')
+```
+
+Stan 的命令行接口功能最全全新，使用 cmdstanr 包可以滚动更新 CmdStan，相比于 rstan/rstanarm 包，cmdstanr 包的一个巨大优势是和 Stan 软件的更新分离。由此带来的好处，后续可以在文中见到
+
+```{r stan-binom,results = ifelse(knitr::is_latex_output(), 'hide', 'hold')}
+library(cmdstanr)
+
+file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")
+mod <- cmdstan_model(file)
+
+data_list <- list(N = 10, y = c(0, 1, 0, 0, 0, 0, 0, 0, 0, 1))
+fit <- mod$sample(
+  data = data_list,
+  seed = 2020,
+  num_chains = 2,
+  num_cores = 2
+)
+
+fit$cmdstan_summary()
+```
+
+
+## Docker 虚拟环境 {#virtual-env}
+
+本节介绍与本书配套的 VBox 镜像和 Docker 容器镜像，方便读者直接运行书籍原稿中的例子，尽量不限于软件环境配置的苦海中，因为对于大多数初学者来说，软件配置是一件不小的麻烦事。
+
+本书依赖的 R 包和配置环境比较复杂，所以将整个运行环境打包成 Docker 镜像，方便读者重现，构建镜像的 Dockerfile 文件随同书籍源文件一起托管在 Github 上，方便读者研究。本地编译书籍只需三步走，先将存放在 Github 上的书籍项目克隆到本地，如果本地环境中没有 Git，你需要从它的官网 <https://git-scm.com/> 下载安装适配本地系统的 Git 软件。
+
+```bash
+git clone https://github.com/XiangyunHuang/masr.git
+```
+
+然后在 Git Bash 的模拟终端器中，启动虚拟机，拉取准备好的镜像文件。为了方便读者重现本书的内容，特将书籍的编译环境打包成 Docker 镜像。在启动镜像前需要确保本地已经安装 Docker 软件 <https://www.docker.com/products/docker-desktop>，安装过程请看官网教程。
+
+```bash
+docker-machine.exe start default
+docker pull xiangyunhuang/masr
+```
+
+最后 `cd` 进入书籍项目所在目录，运行如下命令编译书籍
+
+```bash
+docker run --rm -u docker -v "/${PWD}://home/docker/workspace" \
+  xiangyunhuang/masr make gitbook
+```
+
+编译成功后，可以在目录 `_book/` 下看到生成的文件，点击文件 `index.html` 选择谷歌浏览器打开，不要使用 IE 浏览器，推荐使用谷歌浏览器获取最佳阅读体验，尽情地阅读吧！
+
+如果你想了解编译书籍的环境和过程，我推荐你阅读随书籍源文件一起的 Dockerfile 文件， [Docker Hub](https://hub.docker.com/) 是根据此文件构建的镜像，打包成功后，大约占用空间 2 Gb，本书在 RStudio IDE 下用 R Markdown [@xie2018] 编辑的，编译本书获得电子版还需要一些 R 包和软件。Pandoc <https://pandoc.org/> 软件是系统 Fedora 30 仓库自带的，版本是 2.2.1，较新的 RStudio IDE 捆绑的 Pandoc 软件一般会高于此版本。如果你打算在本地系统上编译书籍，RStudio IDE 捆绑的 Pandoc 软件版本已经足够，当然你也可以在 <https://github.com/jgm/pandoc/releases/latest> 下载安装最新版本，此外，你还需参考书籍随附的 Dockerfile 文件配置 C++ 代码编译环境，安装所需的 R 包，并确保本地安装的版本不低于镜像内的版本。
+
+镜像中已安装的 R 包列表可运行如下命令查看。
+
+```bash
+docker run --rm xiangyunhuang/masr \ 
+  Rscript -e 'xfun::session_info(.packages(TRUE))'
+```
+
+
+
+## 安装的 R 包 {#setup-r}
+
+::: rmdwarn
+本小节仅用于展示目前书籍写作过程中安装的 R 包依赖，不会出现在最终的书稿中
+:::
+
+
+```{r all-pkgs,eval=!is.na(Sys.getenv('CI', NA))}
+library(magrittr)
+pdb <- tools::CRAN_package_db()
+pkg <- subset(desc::desc_get_deps(), subset = type == "Imports", select = "package", drop = TRUE)
+pkg <- tools::package_dependencies(packages = pkg, db = pdb, recursive = FALSE) %>% # 是否包含递归依赖
+  unlist() %>%
+  as.vector() %>%
+  c(., pkg) %>%
+  unique() %>%
+  sort()
+
+pkg_quote <- c(
+  "Armadillo", "Rcpp", "R", "Stan", "DataTables", "Dygraphs", "ggplot2",
+  "Grobs", "Geospatial", "Eigen", "Sundown", "plog", "TeX Live", "Tidyverse",
+  "LaTeX", "ADMB", "matplotlib", "Yihui Xie", "With", "Highcharts",
+  "kable", "plotly.js", "Python", "Formattable"
+)
+# 单引号
+pkg_regexp <- paste("'(", paste(pkg_quote, collapse = "|"), ")'", sep = "")
+# R 包列表
+subset(pdb,
+  subset = !duplicated(pdb$Package) & Package %in% pkg,
+  select = c("Package", "Version", "Title")
+) %>%
+  transform(.,
+    Title = gsub("(\\\n)", " ", Title),
+    Package = paste("**", Package, "**", sep = "")
+  ) %>%
+  transform(., Title = gsub(pkg_regexp, "\\1", Title)) %>%
+  transform(., Title = gsub('"(Grid)"', "\\1", Title)) %>%
+  knitr::kable(.,
+    caption = "依赖的 R 包", format = "pandoc",
+    booktabs = TRUE, row.names = FALSE
+  )
+```
+
+::: rmdtip
+本书意欲覆盖的内容
+:::
+
+```{r book-pkgs,eval=!is.na(Sys.getenv('CI', NA))}
+inla_pdb <- data.frame(
+  Package = "INLA",
+  Title = paste(
+    "Full Bayesian Analysis of Latent Gaussian Models",
+    "using Integrated Nested Laplace Approximations"
+  )
+)
+pkgs <- c(
+  "ggplot2", "cowplot", "patchwork", "rgl", "MASS", "nlme", "mgcv",
+  "lme4", "gee", "gam", "gamm4", "cgam", "cglm", "pscl",
+  "GLMMadaptive", "gee4", "geoR", "LaplacesDemon", "glmnet",
+  "betareg", "quantreg", "agridat", "moments", "R2BayesX",
+  "geoRglm", "spaMM", "spBayes", "CARBayes", "PrevMap",
+  "FRK", "lgcp", "HSAR", "spNNGP", "MuMIn", "BANOVA",
+  "rpql", "QGglmm", "glmmsr", "glmmboot", "glmm",
+  "glmmML", "glmmEP", "r2glmm", "hglm", "glmmLasso",
+  "blme", "MCMCglmm", "MCMCpack", "glmmTMB", "geepack",
+  "glmmfields", "rstan", "rstanarm", "brms", "greta",
+  "BayesX", "Boom", "nimble", "rjags", "R2OpenBUGS",
+  "R2BayesX", "BoomSpikeSlab", "inlabru", "INLABMA",
+  "lmtest", "VGAM", "plotly", "leaflet", "LatticeKrig"
+)
+pdb <- tools::CRAN_package_db()
+book_pdb <- subset(pdb,
+  subset = !duplicated(pdb$Package) & Package %in% pkgs,
+  select = c("Package", "Title")
+)
+book_pdb <- rbind.data.frame(book_pdb, inla_pdb)
+book_pdb$Title <- gsub("(\\\n)", " ", book_pdb$Title)
+book_pdb$Title <- gsub("'(Armadillo|BayesX|Eigen|ggplot2|lme4|mgcv|Stan|Leaflet|plotly.js)'", "\\1", book_pdb$Title)
+book_pdb$Package <- paste("**", book_pdb$Package, "**", sep = "")
+knitr::kable(book_pdb,
+  caption = "本书使用的 R 包", format = "pandoc",
+  booktabs = TRUE, row.names = FALSE
+)
+```
 

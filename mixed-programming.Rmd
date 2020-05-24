@@ -1,0 +1,127 @@
+# 混合编程 {#chap:mixed-programming}
+
+```{r,include=FALSE}
+library(magrittr)
+library(shiny)
+library(htmlwidgets)
+library(reticulate)
+library(Rcpp)
+knitr::opts_chunk$set(python.reticulate = TRUE)
+reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+```
+
+
+
+R 与不同的编程语言如何交互
+
+## R 与 JavaScripts {#sec:r-javascripts}
+
+<!-- roughviz.js 为例介绍如何使用 htmlwidgets 制作将 JavaScripts 库打包成 R 包 -->
+
+```{r}
+library(htmlwidgets)
+```
+
+## R 与 Python {#sec:r-python}
+
+R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块， reticulate 包还支持 Python 和 R 之间的数据对象通信交流。
+
+```{r}
+library(reticulate)
+```
+
+如图 \@ref(fig:reticulate-matplotlib) 所示，在 R Markdown 中执行 Python 绘图代码，并且将图形插入文档。
+
+```{python reticulate-matplotlib,fig.cap="Python 图形",collapse=TRUE, dev = if(knitr::is_latex_output()) 'pdf'}
+import matplotlib.pyplot as plt
+plt.switch_backend('agg')
+
+plt.plot([0, 2, 1, 4])
+plt.show()
+```
+
+## R 与 C++ {#sec:r-cpp}
+
+```{r}
+library(Rcpp)
+```
+
+## R 与 LaTeX {#sec:r-latex}
+
+<!-- TeX 的历史一小段介绍，tikzDevice 对公式的加强， 引入 TikZ 图形，常用 LaTeX 语法 <https://wch.github.io/latexsheet/latexsheet-a4.pdf> -->
+
+**tikzDevice** 包将 LaTeX 公式和绘图系统 [TikZ](https://en.wikipedia.org/wiki/PGF/TikZ) 引入 R 语言生态，贡献在于提供更加漂亮的公式输出，对图形进行后期布局排版加工，达到设计师出品的质量水平。图 \@ref(fig:tex-system) 展示了复杂的 TeX 生态系统， R 语言只是取其精华，使用 TikZ 绘制。
+
+```{cat, engine.opts=list(file = 'tikz-template.tex', lang = 'tex'), echo=FALSE}
+\documentclass[fontset=adobe,zihao=false]{ctexart}
+\include{preview}
+\usepackage[xetex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+
+\usepackage{smartdiagram} % 提供 Excel Smart Diagram
+\usepackage{metalogo} % 提供 LaTeX Logo
+\usepackage{pgfplots} % 提供三维图形
+\pgfplotsset{width=7cm,compat=1.17}
+
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+\end{preview}
+\end{document}
+```
+```{r tex-system, engine = "tikz", fig.cap = "TeX 系统", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
+\usetikzlibrary{mindmap}
+\begin{tikzpicture}
+  \path [
+    mindmap,
+    text = white,
+    level 1 concept/.append style =
+      {font=\Large\bfseries\sffamily, sibling angle=90, level distance=125},
+    level 2 concept/.append style =
+      {font=\normalsize\bfseries\sffamily},
+    level 3 concept/.append style =
+      {font=\small\bfseries\sffamily},
+    tex/.style     = {concept, ball color=blue,
+      font=\Huge\bfseries},
+    engines/.style = {concept, ball color=green!50!black},
+    formats/.style = {concept, ball color=purple!50!black},
+    systems/.style = {concept, ball color=red!90!black},
+    editors/.style = {concept, ball color=orange!90!black}
+  ]
+  node [tex] {\TeX} [clockwise from=0]
+    child[concept color=green!50!black, nodes={engines}] {
+      node {Engines} [clockwise from=90]
+        child { node {\TeX} }
+        child { node {pdf\TeX} }
+        child { node {XeTeX} }
+        child { node {Lua\TeX} }}
+    child [concept color=purple, nodes={formats}] {
+      node {Formats} [clockwise from=300]
+        child { node {\LaTeX} }
+        child { node {Con\TeX t} }}
+    child [concept color=red, nodes={systems}] {
+      node {Systems} [clockwise from=210]
+        child { node {\TeX Live} [clockwise from=300]
+          child { node {Mac \TeX} }}
+        child { node {MiK\TeX} [clockwise from=60]
+          child { node {Pro \TeX t} }}}
+    child [concept color=orange, nodes={editors}] {
+      node {Editors} [clockwise from=180]
+        child { node {WinEdt} }
+        child { node {\TeX works} }
+        child { node {\TeX studio} }
+        child { node {\TeX maker} }};
+\end{tikzpicture}
+```
+```{r,include=FALSE}
+if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
+```
+
+
+## 运行环境 {#sec:mixed-programming-session-info}
+
+```{r}
+sessionInfo()
+```

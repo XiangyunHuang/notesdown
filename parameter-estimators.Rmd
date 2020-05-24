@@ -1,0 +1,297 @@
+# 参数估计 {#chap:parameter-estimators}
+
+<!-- 本章开始介绍参数估计的内容，先从第 \@ref(sec:point-estimator) 节点估计开始 -->
+
+> Jeremy Koster: My students were looking at the estimated varying intercepts for each higher-level group (or the "BLUP's", as some people seem to call them).
+> 
+> Douglas Bates: As Alan James once said, "these values are just like the BLUPs - Best Linear Unbiased Predictors - except that they aren't linear and they aren't unbiased and there is no clear sense in which they are "best", but other than that ..."
+>
+>   --- Jeremy Koster and Douglas Bates [^JK-help-2012]
+
+[^JK-help-2012]: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q3/018817.html>
+
+## 点估计 {#sec:point-estimator}
+
+
+
+- 矩估计
+- 极大似然估计
+- 最小二乘估计
+- 同变估计
+- 稳健估计
+
+单参数和多参数模型的参数估计，比如指数分布、泊松分布、二项分布、正态分布，线性模型各个估计的推导过程
+
+::: rmdnote
+应当考虑 $(X^{\top}X)^{-1}$ 不存在的情况，在均方误差最小的意义下，不必要求 $\beta$ 的估计 $\hat{\beta}$ 满足无偏性的要求，所以介绍岭回归估计 $\hat{\beta}_{ridge}$、压缩估计 $\hat{\beta}_{jse}$、主成分估计 $\hat{\beta}_{pca}$ 和偏最小二乘估计 $\hat{\beta}_{pls}$。相比于 $\hat{\beta}_{pca}$， $\hat{\beta}_{pls}$ 考虑了响应变量的作用。《数理统计引论》第5章第5节线性估计类从改进 LS 估计出发，牺牲一部分估计的偏差，即采用有偏的估计，达到总体均方误差更小的效果 [@Stat_1981_Chen]
+
+James-Stein 估计可不可以看作一种压缩估计？从它牺牲一部分偏差，获取整体方差的降低来看和上面应该有某种联系
+:::
+
+- [ ] [昔日因，今日意](https://cosx.org/2014/04/lmm-and-me) 讲线性混合效应模型和很多模型之间的联系
+- [ ] [那些年，我们一起追的 EB](https://cosx.org/2012/05/chase-after-eb)  James-Stein 估计和岭回归估计的联系
+- [ ] [统计学习那些事](https://cosx.org/2011/12/stories-about-statistical-learning)  lasso 和 boosting 之间的联系
+
+
+### 矩估计 {#sec:moments-estimation}
+
+### 最小二乘估计 {#sec:lse}
+
+谈非线性最小二乘，这段话的意思是非线性模型不要谈 ANOVA 和 R^2 之类的东西
+
+> As one of the developers of the `nls` function I would like to state that the lack of automatic ANOVA, $R^2$ and $adj. R^2$ from `nls` is a feature, not a bug :-)
+>
+>   --- Douglas Bates [^DB-help-2000]
+
+[^DB-help-2000]: <https://stat.ethz.ch/pipermail/r-help/2000-August/007778.html>
+
+> 最小二乘估计是一种非参数估计方法（对数据分布没有假设，只要预测误差达到最小即可），而极大似然估计是一种参数估计方法（观测数据服从带参数的多元分布）
+
+非线性最小二乘估计
+
+```{r,eval=FALSE}
+# Nonlinear least-squares using nlm()
+# demo(nlm)
+
+# Helical Valley Function
+# 非线性最小二乘
+
+theta <- function(x1, x2) (atan(x2 / x1) + (if (x1 <= 0) pi else 0)) / (2 * pi)
+## 更加简洁的表达
+theta <- function(x1, x2) atan2(x2, x1) / (2 * pi)
+# 目标函数
+f <- function(x) {
+  f1 <- 10 * (x[3] - 10 * theta(x[1], x[2]))
+  f2 <- 10 * (sqrt(x[1]^2 + x[2]^2) - 1)
+  f3 <- x[3]
+  return(f1^2 + f2^2 + f3^2)
+}
+
+## explore surface {at x3 = 0}
+x <- seq(-1, 2, length.out = 50)
+y <- seq(-1, 1, length.out = 50)
+z <- apply(as.matrix(expand.grid(x, y)), 1, function(x) f(c(x, 0)))
+
+contour(x, y, matrix(log10(z), 50, 50))
+
+nlm.f <- nlm(f, c(-1, 0, 0), hessian = TRUE)
+
+points(rbind(nlm.f$estim[1:2]), col = "red", pch = 20)
+```
+
+
+```{r,eval=FALSE}
+### the Rosenbrock banana valley function 香蕉谷函数
+
+fR <- function(x) {
+  x1 <- x[1]
+  x2 <- x[2]
+  100 * (x2 - x1 * x1)^2 + (1 - x1)^2
+}
+
+## explore surface
+fx <- function(x) { ## `vectorized' version of fR()
+  x1 <- x[, 1]
+  x2 <- x[, 2]
+  100 * (x2 - x1 * x1)^2 + (1 - x1)^2
+}
+x <- seq(-2, 2, length.out = 100)
+y <- seq(-0.5, 1.5, length.out = 100)
+z <- fx(expand.grid(x, y))
+op <- par(mfrow = c(2, 1), mar = 0.1 + c(3, 3, 0, 0))
+contour(x, y, matrix(log10(z), length(x)))
+
+nlm.f2 <- nlm(fR, c(-1.2, 1), hessian = TRUE)
+points(rbind(nlm.f2$estim[1:2]), col = "red", pch = 20)
+
+## Zoom in :
+rect(0.9, 0.9, 1.1, 1.1, border = "orange", lwd = 2)
+x <- y <- seq(0.9, 1.1, length.out = 100)
+z <- fx(expand.grid(x, y))
+contour(x, y, matrix(log10(z), length(x)))
+mtext("zoomed in")
+box(col = "orange")
+points(rbind(nlm.f2$estim[1:2]), col = "red", pch = 20)
+par(op)
+```
+
+
+```{r,eval=FALSE}
+with(
+  nlm.f2,
+  stopifnot(
+    all.equal(estimate, c(1, 1), tol = 1e-5),
+    minimum < 1e-11, abs(gradient) < 1e-6, code %in% 1:2
+  )
+)
+```
+
+
+```{r,eval=FALSE}
+fg <- function(x) {
+  gr <- function(x1, x2) {
+    c(-400 * x1 * (x2 - x1 * x1) - 2 * (1 - x1), 200 * (x2 - x1 * x1))
+  }
+  x1 <- x[1]
+  x2 <- x[2]
+  structure(100 * (x2 - x1 * x1)^2 + (1 - x1)^2,
+    gradient = gr(x1, x2)
+  )
+}
+
+nfg <- nlm(fg, c(-1.2, 1), hessian = TRUE)
+str(nfg)
+```
+
+
+```{r,eval=FALSE}
+with(
+  nfg,
+  stopifnot(
+    minimum < 1e-17, all.equal(estimate, c(1, 1)),
+    abs(gradient) < 1e-7, code %in% 1:2
+  )
+)
+```
+
+
+```{r,eval=FALSE}
+## or use deriv to find the derivatives
+
+fd <- deriv(~ 100 * (x2 - x1 * x1)^2 + (1 - x1)^2, c("x1", "x2"))
+fdd <- function(x1, x2) {}
+body(fdd) <- fd
+
+nlfd <- nlm(function(x) fdd(x[1], x[2]), c(-1.2, 1), hessian = TRUE)
+str(nlfd)
+```
+
+
+```{r,eval=FALSE}
+with(
+  nlfd,
+  stopifnot(
+    minimum < 1e-17, all.equal(estimate, c(1, 1)),
+    abs(gradient) < 1e-7, code %in% 1:2
+  )
+)
+```
+
+
+```{r,eval=FALSE}
+fgh <- function(x) {
+  gr <- function(x1, x2) {
+    c(-400 * x1 * (x2 - x1 * x1) - 2 * (1 - x1), 200 * (x2 - x1 * x1))
+  }
+  h <- function(x1, x2) {
+    a11 <- 2 - 400 * x2 + 1200 * x1 * x1
+    a21 <- -400 * x1
+    matrix(c(a11, a21, a21, 200), 2, 2)
+  }
+  x1 <- x[1]
+  x2 <- x[2]
+  structure(100 * (x2 - x1 * x1)^2 + (1 - x1)^2,
+    gradient = gr(x1, x2),
+    hessian  =  h(x1, x2)
+  )
+}
+
+nlfgh <- nlm(fgh, c(-1.2, 1), hessian = TRUE)
+
+str(nlfgh)
+```
+
+
+```{r,eval=FALSE}
+## NB: This did _NOT_ converge for R version <= 3.4.0
+with(
+  nlfgh,
+  stopifnot(
+    minimum < 1e-15, # see 1.13e-17 .. slightly worse than above
+    all.equal(estimate, c(1, 1), tol = 9e-9), # see 1.236e-9
+    abs(gradient) < 7e-7, code %in% 1:2
+  )
+) # g[1] = 1.3e-7
+```
+
+
+
+### 极大似然估计 {#sec:mle}
+
+<!-- 极大似然估计最初由德国数据学家 Gauss 于 1821 年提出，但未得到重视，后来， R. A. Fisher 在 1922 年再次提出极大似然的思想，探讨了它的性质，使它得到广泛的研究和应用。 -->
+
+教材简短一句话，这里面有很多信息值得发散，一个数学家提出了统计学领域极其重要的一个核心思想，他是在研究什么的时候提出了这个想法，为什么后来没有得到重视，虽然这可能有点离题，但是对于读者可能有很多别的启迪。整整100 年以后，Fisher 又是怎么提出这一思想的呢？他做了什么使得这个思想被广泛接受和应用？
+
+统计决策理论，任何统计推断都应该依赖损失函数，而极大似然估计未曾考虑到，这是它的局限性。 Lasso 和贝叶斯先验的关系，和损失函数的关系
+
+是最大似然估计还是极大似然估计？当然是极大似然估计，如果有人告诉你是最大似然估计那一定是假的，这两个概念归根结底是极值和最值得区别
+
+书本定义和性质，在后续章节介绍
+
+介绍线性模型为何引入 REML 减少偏差
+
+极大似然估计 Maximum likelihood 简称 ML
+
+限制极大似然 Restricted Maximum likelihood, 简称 REML
+
+惩罚拟似然 Penalized Quasi-Likelihood, 简称 PQL 和边际拟似然 Marginal Quasi-Likelihood, 简称 MQL，Profile Maximal Likelihood, 简称 PML
+
+Penalized maximum likelihood estimates are calculated using optimization methods such as the limited memory Broyden-Fletcher-Goldfarb-Shanno algorithm (L-BFGS).
+
+BFGS 拟牛顿法和采样器 <https://bookdown.org/rdpeng/advstatcomp>
+
+## 区间估计 {#chap:interval-estimation}
+
+<!--
+
+## 分布与似然之间的联系 {#Distribution-Likelihood}
+
+费舍尔的照片
+
+极大似然估计是费舍尔提出来的
+
+似然推断知多少 --- 基于似然的统计推断方法综述
+
+边际似然 Marginal Likelihood
+条件似然 conditional lkelihood
+完全似然 complete Likelihood
+
+层次似然 Hierarchical likelihood
+部分似然 partial likelihood
+
+
+
+[拟似然估计](https://en.wikipedia.org/wiki/Quasi-maximum_likelihood_estimate)
+
+[极大似然估计](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation)
+
+[似然函数](https://en.wikipedia.org/wiki/Likelihood_function)
+
+剖面似然 Profile Likelihood
+限制似然 Restricted Likelihood 
+
+惩罚/边际拟似然 (PQL/MQL) Penalized Quasi-Likelihood/Marginal Quasi-Likelihood 
+
+分布 边际分布 条件分布
+
+似然 边际似然 条件似然
+
+-->
+
+## 最小角回归 {#sec:least-angle-regression}
+
+
+1. Efron, Bradley and Hastie, Trevor and Johnstone, Iain and Tibshirani, Robert. 2004. Least angle regression. The Annals of Statistics. 32(2): 407--499. <https://doi.org/10.1214/009053604000000067>.
+
+方差缩减技术，修偏技术
+
+## 刀切法 {#sec:jackknife}
+
+1. Efron, B. 1979. Bootstrap Methods: Another Look at the Jackknife. The Annals of Statistics. 7(1):1--26. <https://doi.org/10.1214/aos/1176344552>
+
+## 重抽样 {#sec:resampling}
+
+
+## Delta 方法 {#sec:delta-methods}
+
+

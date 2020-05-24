@@ -1,0 +1,1295 @@
+# 假设检验 {#chap:hypothesis-test}
+
+```{r,include=FALSE}
+library(formatR)
+library(magrittr)
+library(ggplot2)
+```
+
+> The Earth is Round ($p < .05$)
+> 
+> --- Jacob Cohen [@Cohen_1994_Earth]
+
+Jacob Cohen 实际谈的是更加深刻的问题。开篇介绍为什么需要假设检验，做检验和不做检验有什么区别？ 
+
+呈现常见检验的公式，将手写代码和 R 内置函数计算结果进行比较，每一组原假设和备择假设要说明对应的 R 函数和及其参数设置 
+
+有了均值和方差，为什么还要位置参数和尺度参数？
+
+在本章完成一半的时候，可以在本章开头添加一幅思维导图，提纲挈领 
+
+R. A. Fisher 将抽样分布、参数估计和假设检验列为统计推断的三个中心内容 
+
+Jacob Cohen 的著作 Statistical Power Analysis for the Behavioral Sciences
+https://www.utstat.toronto.edu/~brunner/oldclass/378f16/readings/CohenPower.pdf
+
+见讨论帖 <https://d.cosx.org/d/420930/11> 杨灿老师提出检验的作用和实际应用问题
+
+谢益辉谈检验问题 [统计分布的检验](https://yihui.org/cn/2009/02/test-statistical-distributions/)
+
+[Bootstrap 方法和置换/秩检验（Permutation Test）的入门读物](https://yihui.org/cn/2008/09/introduction-to-bootstrap-and-permutation-test/)
+
+
+1. 基本概念
+  - 假设：如何设置假设
+  - 检验：检验的原理是什么
+  - 拒绝域：如何确定拒绝域
+  - 检验统计量：如何构造
+  - 势函数：用来干什么
+  - 检验的功效：用来干什么
+  - 检验的水平：用来干什么
+
+1. 一般理论
+  - wilks 检验 似然比检验 极限分布是卡方分布
+  - Rao 检验 极限分布是卡方分布
+  - Wald 检验，极限分布是正态分布
+
+1. 均值检验
+  - 参数检验
+    - 正态总体均值的检验
+      - 方差已知 u 检验
+      - 方差未知 t 检验
+    - 二项总体比例的检验
+      - 两样本 `binom.test()`  
+      - 多样本 `prop.test()`
+    - 泊松总体比率的检验：`poisson.test()`
+  - 非参数检验
+
+1. 方差检验
+  - 参数检验：注意同一栏目下各种检验的区别和联系
+    - `var.test()` 两样本
+    - `bartlett.test()` 多样本
+  - 非参数检验
+    - `mood.test()` 两样本
+    - `fligner.test()` 多样本
+    - `ansari.test()` 两样本
+    - `mood.test()` 两样本
+
+1. 分布检验
+  - `ks.test()` 同分布检验
+  - `shapiro.test()` 正态分布检验
+
+1. 配对样本的检验
+  - 配对比例检验 `pairwise.prop.test()`
+  - 配对 t 检验 `pairwise.t.test()`
+  - 配对 Wilcoxon 检验 `pairwise.wilcox.test()`
+  - 配对样本相关性检验 `cor.test()`
+
+1. 名人检验
+  - Mauchly 球形检验 `mauchly.test()`
+
+1. 图检验： 
+  - 箱线图 boxplot 检查数据中的异常值 
+  - QQ 图 qqplot 检查数据的正态性 
+  - 自相关图 acf 检查数据的自相关性
+
+1. 其它检验
+  - 游程检验
+  - 平稳性检验 
+  - 单位根检验
+    - 振幅（波动）
+    - 频率（疏密）
+
+1. 常见检验的功效
+  - t 检验
+  - 比例检验
+  - 多样本均值检验：方差分析的功效
+
+1. 拟合优度检验和列联表独立性检验（分类、计数数据）
+
+
+做个关于方差分析的 Shiny 应用，并把它嵌入书籍中也不错哦！比如 Danilo Pecorino 制作的 [DIY_ANOVA](https://github.com/DaniloPecorino/DIY_ANOVA) <https://testing-apps.shinyapps.io/diy_anova/>，数据集就以 PlantGrowth 为例展示，把方差分析和 PlantGrowth 数据分析整合在 shiny 中。
+
+```{r,eval=FALSE,include=FALSE}
+data("PlantGrowth", package = "datasets")
+if(!dir.exists("data-raw/")) dir.create("data-raw/", recursive = TRUE)
+write.table(PlantGrowth, file = "data-raw/PlantGrowth.csv", 
+            row.names = FALSE, quote = FALSE, sep = ",")
+```
+
+ 
+## Ansari-Bradley 检验 `ansari.test` {#sec:ansari-test}
+
+Ansari-Bradley 检验目的是检验两样本的尺度参数是否有显著性差异
+
+尺度参数可以理解为方差 $\sigma^2$
+
+位置参数可以理解为均值 $\mu$
+
+```{r,collapse=TRUE,comment=NA}
+usage(ansari.test)
+usage("ansari.test.default")
+usage("ansari.test.formula")
+```
+
+
+## Bartlett 检验 `bartlett.test` {#sec:bartlett-test}
+
+`ansari.test` 和 `mood.test` 是基于秩的两样本尺度参数显著性差异检验，是非参数检验
+
+Bartlett 检验：检验各个组的方差是否有显著性差异，即方差齐性检验。
+
+`var.test` 和 `bartlett.test` 都属于参数检验，用于检验方差齐性问题，前者考虑正态总体下方差齐性检验，后者没有对总体的分布形式做限定。
+
+```{r,collapse=TRUE,comment=NA}
+usage(bartlett.test)
+usage("bartlett.test.default")
+usage("bartlett.test.formula")
+```
+
+## 二项检验 `binom.test` {#sec:binom-test}
+
+比例 $p$ 的检验， 做 $n$ 次独立试验，样本 $X_1,\ldots,X_n \sim b(1, p)$，事件发生的总次数  $\sum_{i=1}^{n}X_i$   
+
+
+函数 `binom.test` 用来检验伯努利试验中成功概率 $p$ 和给定概率 $p_0$ 的关系，属于精确检验。
+
+编程手动实现一个，再调用函数计算，比较结果
+
+```{r}
+# 模拟一组样本
+x <- sample(x = c(0, 1), size = 100, replace = TRUE, prob = c(0.8, 0.2))
+```
+
+二项分布中成功概率的检验
+
+```{r}
+binom.test(sum(x), n = 100, p = 0.5)
+```
+
+检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
+
+```{r}
+binom.test(sum(x), n = 100, p = 0.2)
+```
+
+检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
+
+
+二项检验 [@Test_1934_binom]
+
+```{r,comment=NA}
+usage(binom.test)
+```
+
+## 时间序列独立性检验 `Box.test` {#sec:Box-test}
+
+计算 Box-Pierce 或 Ljung-Box 检验统计量来检查给定时间序列的独立性假设。
+
+```{r,comment=NA}
+usage(Box.test)
+```
+
+## 皮尔逊卡方检验 `chisq.test` {#sec:chisq-test}
+
+用于计数数据的皮尔逊卡方检验：列联表独立性检验和拟合优度检验
+
+`chisq.test` $\chi^2$ 检验：列联表检验和拟合优度检验
+
+```{r,comment=NA}
+usage(chisq.test)
+```
+
+
+## 费舍尔精确检验 `fisher.test` {#sec:fisher-test}
+
+固定边际的情况下，检验列联表行和列之间的独立性
+
+```{r,comment=NA}
+usage(fisher.test)
+```
+
+## 方差齐性检验 `fligner.test` {#sec:fligner-test}
+
+Fligner-Killeen (中位数) 检验各个组的样本方差是不是一致的，也是方差齐性检验
+
+
+```{r,collapse=TRUE,comment=NA}
+usage(fligner.test)
+usage("fligner.test.default")
+usage("fligner.test.formula")
+```
+
+## Friedman 秩和检验 `friedman.test` {#sec:friedman-test}
+
+Friedman 秩和检验
+
+Performs a Friedman rank sum test with unreplicated blocked data.
+
+```{r,collapse=TRUE,comment=NA}
+usage(friedman.test)
+usage("friedman.test.default")
+usage("friedman.test.formula")
+```
+
+## Kruskal-Wallis 秩和检验 `kruskal.test` {#sec:kruskal-test}
+
+Kruskal-Wallis 秩和检验
+
+```{r,collapse=TRUE,comment=NA}
+usage(kruskal.test)
+usage("kruskal.test.default")
+usage("kruskal.test.formula")
+```
+
+
+
+
+
+
+## 同分布检验 `ks.test` {#sec:ks-test}
+
+Lilliefors 检验 [^Lilliefors-test] 和单样本的 ks 检验的关系
+
+[^Lilliefors-test]: <https://personal.utdallas.edu/~herve/Abdi-Lillie2007-pretty.pdf>
+
+> As to whether you can do a **Lilliefors test** for several groups, that depends entirely on your ability to understand what the underlying question would be (see Adams D 1979).
+>
+>   --- Knut M. Wittkowski [^KW-help-2004]
+
+[^KW-help-2004]: <https://stat.ethz.ch/pipermail/r-help/2004-February/045597.html>
+
+Kolmogorov-Smirnov 检验：单样本或两样本的同分布检验
+
+```{r,comment=NA}
+usage(ks.test)
+```
+
+## Cochran-Mantel-Haenszel 卡方检验 `mantelhaen.test` {#sec:mantelhaen-test}
+
+用于计数数据的 Cochran-Mantel-Haenszel 卡方检验
+
+Performs a Cochran-Mantel-Haenszel chi-squared test of the null that two nominal variables are conditionally independent in each stratum, assuming that there is no three-way interaction.
+
+```{r,comment=NA}
+usage(mantelhaen.test)
+```
+
+## Mauchly 球形检验 `mauchly.test` {#sec:mauchly-test}
+
+检验：Wishart 分布的协方差矩阵是否正比于给定的矩阵
+
+Mauchly's Test of Sphericity
+
+Tests whether a Wishart-distributed covariance matrix (or transformation thereof) is proportional to a given matrix.
+
+```{r,collapse=TRUE,comment=NA}
+usage(mauchly.test)
+usage("mauchly.test.mlm")
+usage("mauchly.test.SSD")
+```
+
+## McNemar 卡方检验 `mcnemar.test` {#sec:mcnemar-test}
+
+两种统计量的比较 参看谢益辉的博文 [渐近理想国：McNemar 检验的两种统计量](https://yihui.org/cn/2010/05/asymptotia-mcnemar-test-statistics/)
+
+用于计数数据的 McNemar's 卡方检验
+
+McNemar's $\chi^2$ 检验：检验二维列联表行和列的对称性
+
+<!-- 怎么理解对称性？ -->
+
+```{r,comment=NA}
+usage(mcnemar.test)
+```
+
+## Mood 方差检验 `mood.test` {#sec:mood-test}
+
+检验方差
+
+Mood's 两样本检验：检验两样本尺度参数之间的差异性
+
+
+```{r,collapse=TRUE,comment=NA}
+usage(mood.test)
+usage("mood.test.default")
+usage("mood.test.formula")
+```
+
+
+
+
+## 单因素多重比较 `oneway.test` {#sec:oneway-test}
+
+单因素方差分析，各个组的方差不一定相同，检验两个及以上来自正态分布的样本是否有相同的均值？
+
+```{r,comment=NA}
+usage(oneway.test)
+```
+
+
+```{r}
+## 假定方差不等
+oneway.test(extra ~ group, data = sleep)
+## 假定方差相等
+oneway.test(extra ~ group, data = sleep, var.equal = TRUE)
+## 和线性回归结果一样
+anova(lm(extra ~ group, data = sleep))
+```
+
+CO2 数据
+
+```{r CO2,fig.width=8,fig.height=6,fig.cap="草类植物吸收 CO2"}
+# coplot(uptake ~ conc | Plant, data = CO2, show.given = FALSE, type = "b")
+# levels(CO2$Plant) # Plant 是有序的
+library(ggplot2)
+library(patchwork)
+p1 <- ggplot(data = CO2, aes(x = conc, y = uptake)) +
+  geom_point(aes(color = Treatment)) +
+  geom_line(aes(color = Treatment)) +
+  facet_wrap(~Plant, ncol = 4, dir = "v")
+p2 <- ggplot(data = CO2, aes(x = conc, y = uptake)) +
+  geom_point(aes(color = Type)) +
+  geom_line(aes(color = Type)) +
+  facet_wrap(~Plant, ncol = 4, dir = "v")
+p1 / p2
+```
+
+## 配对样本的检验 {#sec:pairwise-test}
+
+配对样本和单样本的等价转化
+
+### 配对比例检验 `pairwise.prop.test` {#subsec:pairwise-prop-test}
+
+配对数据的比例检验
+
+Pairwise comparisons for proportions
+
+Calculate pairwise comparisons between pairs of proportions with correction for multiple testing
+
+```{r,comment=NA}
+usage(pairwise.prop.test)
+```
+
+### 配对 t 检验 `pairwise.t.test` {#subsec:pairwise-t-test}
+
+Calculate pairwise comparisons between group levels with corrections for multiple testing
+
+```{r,comment=NA}
+usage(pairwise.t.test)
+```
+
+
+谢益辉以配对组 t 检验谈 [Cohen's d](https://yihui.org/cn/2018/02/cohen-s-d/)
+
+### 配对 Wilcoxon 检验 `pairwise.wilcox.test` {#subsec:pairwise-wilcox-test}
+
+Pairwise Wilcoxon Rank Sum Tests 配对的 Wilcoxon 秩和检验
+
+Calculate pairwise comparisons between group levels with corrections for multiple testing.
+
+```{r,comment=NA}
+usage(pairwise.wilcox.test)
+```
+
+### 配对样本相关性检验 `cor.test` {#subsec:cor-test}
+
+配对样本的相关性检验：Pearson's 相关系数
+
+Test for association between paired samples, using one of Pearson's product moment correlation coefficient, 
+
+Kendall's $\tau$ 检验或者 Spearman's $\rho$ 检验.
+
+```{r,comment=NA}
+usage(cor.test)
+```
+
+- `Kendall::Kendall` [@Kendall]
+- `SuppDists::pKendall` 和 `SuppDists::pSpearman` [@SuppDists]
+- `pspearman::spearman.test` [@pspearman]
+
+
+## 精确泊松检验 `poisson.test` {#sec:poisson-test}
+
+泊松分布是 1837年由法国数学家泊松 (Poisson, 1781-1840) 首次提出
+
+<!-- 发现泊松分布的历史故事作为泊松分布的介绍怎么样？ -->
+
+泊松分布的参数 $\lambda (>0)$ 的精确检验
+
+Performs an exact test of a simple null hypothesis about the rate parameter in Poisson distribution, or for the ratio between two rate parameters. 适用于单样本和两样本
+
+```{r,comment=NA}
+usage(poisson.test)
+```
+
+
+## 单位根检验 `PP.test` {#sec:PP-test}
+
+时间序列平稳性检验
+
+Phillips-Perron 的单位根检验
+
+Computes the Phillips-Perron test for the null hypothesis that x has a unit root against a stationary alternative.
+
+```{r,comment=NA}
+usage(PP.test)
+```
+
+
+## 比例检验 `prop.test` {#sec:prop-test}
+
+函数 `prop.test` 用来检验两组或多组二项分布的成功概率（比例）是否相等，或等于给定的值。近似检验
+
+```{r,comment=NA}
+usage(prop.test)
+```
+
+
+
+设随机变量 X 服从参数为 $p$ 的二项分布 $b(n, p)$， $Y$ 服从参数为 $\theta$ 的二项分布 $b(m,\theta)$， $m,n$ 都假定为较大的正整数，检验如下问题
+
+$$
+H_0: P_A \geq P_B \quad vs. \quad H_1: P_A < P_B
+$$
+
+根据中心极限定理
+
+$$
+\frac{\bar{X} - \bar{Y}}{\sqrt{\frac{p(1-p)}{n} + \frac{\theta(1-\theta)}{m}}}
+$$
+近似服从标准正态分布 $N(0,1)$。如果用矩估计 $\bar{X}$ 和 $\bar{Y}$ 分别替代总体参数 $p$ 和 $\theta$，构造检验统计量
+
+$$
+T = \frac{\bar{X} - \bar{Y}}{\sqrt{\frac{\bar{X}(1-\bar{X})}{n} + \frac{\bar{Y}(1-\bar{Y})}{m}}}
+$$
+根据 Slutsky 定理，检验统计量 $T$ 近似服从标准正态分布，当 $T$ 偏大时，拒绝 $H_0$。该方法的优势在于当 $n,m$ 比较大时，二项分布比较复杂，无法建立统计表，利用标准正态分布表来给出检验所需要的临界值，简便易行！
+
+当 $p$ 和 $\theta$ 都比较小，上述方法检验效果不好，原因在于由中心极限定理对 $\bar{X}$ 和 $\bar{Y}$ 的正态分布近似效果不好，或者间接地导致 $\bar{X}-\bar{Y}$ 的方差偏小，进而 $T$ 的分辨都不好，而且当 $p,\theta$ 很接近 1 时，上述现象也会产生！
+
+下面介绍新的解决办法
+
+上面的检验问题等价于
+
+$$
+H_0: \frac{P_A}{P_B} \geq 1 \quad vs. \quad H_1: \frac{P_A}{P_B} < 1
+$$
+
+引入检验统计量 
+
+$$
+T^{\star} = \frac{\bar{X}}{\bar{Y}}
+$$
+同样由 Slutsky 定理和中心极限定理可知， $\bar{X}/\bar{Y}$ 近似服从 正态分布$N(1,\frac{1-\theta}{m\theta})$
+
+当 $(T^\star - 1)/\hat\sigma$ 偏大时接受 $H_0$，临界值可通过 $N(0, \hat\sigma^2)$ 分布表计算得到， $\hat\sigma^2$ 是对 $\frac{1-\theta}{m\theta}$ 的估计，比如取 $\hat\sigma^2 = \frac{1-\bar{Y}}{m}\cdot \frac{1}{\bar{Y}}$ 或取 $\hat\sigma^2 = \frac{1-\bar{Y}}{m}\cdot \frac{1}{\bar{X}}$ 
+
+由于渐近方差形如 $\frac{1-\theta}{m\theta}$，因而在 $\theta$ 较小，渐近方差较大，克服了之前 $\bar{X} - \bar{Y}$的方差较小的问题
+
+$p,\theta$ 很接近 1 时，我们取检验统计量
+
+$$
+T^{\star\star} = \frac{1-\bar{Y}}{1-\bar{X}}
+$$
+结论和 $T^\star$ 类似，当 $T^{\star\star}$ 偏大时，拒绝 $H_0$。
+
+::: sidebar
+两个二项总体成功概率的比较 [@Prop_2011_Song]
+:::
+
+### 两个独立二项总体等价性检验 {#subsec:equivalent-test}
+
+关于比例的检验问题
+
+\begin{align}
+H_0: P_A = P_B \quad vs. \quad H_1: P_A > P_B \\
+H_0: P_A = P_B \quad vs. \quad H_1: P_A < P_B
+\end{align}
+
+$H_0$ 成立的情况下，暗示着两个样本来自同一总体。在这种假设设置下，拒绝原假设是不是意味着接受备择假设？如何判断样本点会落在哪个拒绝域内呢？
+
+
+
+2009 年东南大学韦博成教授将两个独立二项总体的等价性检验应用于《红楼梦》前80回与后40回某些文风差异的统计分析 [@Stone_2009_Wei]
+
+
+### 不同页面的点击率问题 {#subsec:ctr}
+
+CTR：点击率 Click Ratio
+
+
+矩阵 x 第一行表示页面 A 的点击情况，即 1000 次展示有 500 次点击，第二行表示页面 B 的点击情况，即 100 次展示有 80 次点击。通过统计检验的方式比较页面 A 和 B 的点击率哪个更好？
+
+|     |  S  |  F  |
+| :-: | :-: | :-: |
+|  A  | 500 | 500 |
+|  B  | 80  | 20  |
+
+
+```{r}
+(x <- matrix(c(500, 80, 500, 20), nrow = 2, ncol = 2, byrow = FALSE))
+# 等价于 prop.test(x, alternative = "two.sided", correct = TRUE)
+prop.test(x) # 默认参数设置情形是双边检验
+```
+
+默认的假设检验问题
+
+$$
+H_0: P_A = P_B \quad vs. \quad H_1: P_A \ne P_B
+$$
+
+
+输出结果中 alternative hypothesis 表示备择假设，参数 `alternative` 指定备择假设的形式
+
+<!-- 不要调用 **broom** 包的 `tidy()` 函数对 `prop_test` 计算结果进行整理，因为要引入新的依赖 -->
+
+备择假设 $P_A < P_B$ 对应
+
+```{r}
+prop.test(x, alternative = "less")
+```
+
+P 值 $9.315\times 10^{-09}$ 结论是拒绝原假设，并且接受备择假设，即 $P_A < P_B$，在原假设成立的情况下，样本落入拒绝域的概率很小，小于 0.05，即在一次实验中，样本不可能落入拒绝域，应当接受原假设，因为将备择假设设为
+
+备择假设 $P_A > P_B$
+
+```{r}
+prop.test(x, alternative = "greater")
+```
+
+P 值为 1 不能拒绝原假设，在原假设成立的情况下，样本落入拒绝域的概率是 1
+
+
+备择假设和原假设在这里是对立的关系
+
+
+页面 A 观测到的点击率为 $50\%$ 页面 B 观测到的点击率为 $80\%$，设置检验问题
+
+$$
+H_0: P_A = P_B \quad vs. \quad H_1: P_A \leq P_B
+$$
+
+页面点击率 A 等于 B，则备择假设页面点击率 A 不大于 B
+
+::: rmdnote
+默认启用 Yates' 连续性校正 (continuity correction, 简称 CC) 
+:::
+
+### 比例齐性检验 {#subsec:prop-home}
+
+原假设四个组里面病人中吸烟的比例是相同的，备择假设是四个组里面至少有一个组的吸烟比例是不同的
+
+```{r}
+## Data from Fleiss (1981), p. 139.
+## H0: The null hypothesis is that the four populations from which
+##     the patients were drawn have the same true proportion of smokers.
+## A:  The alternative is that this proportion is different in at
+##     least one of the populations.
+
+smokers <- c(83, 90, 129, 70)
+patients <- c(86, 93, 136, 82)
+prop.test(smokers, patients)
+```
+
+Wilson 检验统计量 [@Test_1927_prop] 考虑单样本比例 $p$ 的区间估计问题，
+
+Probable Inference (Usual): 可能的推断，或然推断，概率推断
+  
+在某个总体中抽取 n 个样本，观测到某个比率/频率 $p_0$，相应的标准差 $\sigma_0 = (p_0q_0/n)^{1/2}$，常见的概率推断表述是说：比率 $p$ 的真值落在区间 $[p_0 - \lambda\sigma_0, p_0 + \lambda\sigma_0]$ 外的概率小于等于 $P_\lambda$，并且随着 $\lambda$ 增大， $P_\lambda$ 减小。
+
+如果使用 Tchebysheff 切比雪夫准则，我们知道 $P_\lambda$ 本身小于 $1/\lambda^2$，但是如果使用概率表 $P_\lambda$ 是概率密度曲线与坐标 $\pm\lambda\sigma_0$ 之外的部分围成的面积。尽管切比雪夫准则在估计 $P_\lambda$ 的时候过于保守，但是概率表给出了一个本质的估计。
+
+
+严格来说，上面给出的概率推断的表述是简略的。真实概率$p$落在指定范围之外的机会要么是 0 要么是 1，就是说 $p$ 要么在那个范围要么不在那个范围。观测的比率 $p_0$ 有更大或更小的机会落在真实比率 $p$ 的某个区间。观测者运气不好，观测到一个相对罕见的事件发生了，基于已有的推断理论，他会获得一个相当宽的标记。
+
+Probable Inference (Improved):
+
+一个更好的方式来阐述推理过程：
+
+有某个比率 $p$ 它的标准差是 $(pq/n)^{1/2} = \sigma$，一个观测糟糕如 $p_0$ 发生的可能性，即 $p_0$ 落在区间 $[p - \lambda\sigma,p + \lambda\sigma]$ 是小于等于 $P_\lambda$。
+
+这个表述强调了特殊观测相对于一般典型情况更容易犯的错误。
+
+
+
+两样本比例 $p$ 的检验问题。
+
+
+
+
+
+
+
+思路需要推导，考虑如下检验问题
+
+$$
+H_0: P_A \geq P_B \quad vs. \quad H_1: P_A < P_B
+$$
+
+
+比例检验，未知 p 的情况下，且样本量有限，是 t 分布 
+多种二项检验的办法 [@Interval_1998_Newcombe]
+
+
+::: sidebar
+切比雪夫不等式 Chebyshev, 1821-1894 
+
+设随机变量 $X$ 的数学期望和方差都存在，则对任意常数 $\epsilon > 0$，有
+
+
+\begin{align}
+P(|X - EX| \geq \epsilon) & \leq \frac{Var(X)}{\epsilon^2} \\
+P(|X - EX| \leq \epsilon) & \geq 1 - \frac{Var(X)}{\epsilon^2}
+\end{align}
+
+:::
+
+
+## 比例趋势检验 `prop.trend.test` {#sec:prop-trend-test}
+
+Performs $\chi^2$ test for trend in proportions, i.e., a test asymptotically optimal for local alternatives where the log odds vary in proportion with score. By default, score is chosen as the group numbers.
+
+```{r,comment=NA}
+usage(prop.trend.test)
+```
+
+## Quade 检验 `quade.test` {#sec:quade-test}
+
+Quade Test
+
+Performs a Quade test with unreplicated blocked data.
+
+```{r,collapse=TRUE,comment=NA}
+usage(quade.test)
+usage("quade.test.default")
+usage("quade.test.formula")
+```
+
+## 正态性检验 `shapiro.test` {#sec:shapiro-test}
+
+> Usually (but not always) doing tests of normality reflect a lack of understanding of the power of rank tests, and an assumption of high power for the tests (qq plots don't always help with that because of their subjectivity). When possible it's good to choose a robust method. Also, doing pre-testing for normality can affect the type I error of the overall analysis.  
+>
+>   --- Frank Harrell [^FH-help-2005-I]
+      
+[^FH-help-2005-I]: <https://stat.ethz.ch/pipermail/r-help/2005-April/070508.html>
+
+检验：拒绝原假设和接受原假设的风险，数据本身和理论的正态分布的距离，抛开 P 值
+
+<!-- nortest 包 -->
+
+Shapiro 和 Wilk's 提出的 W 检验
+
+Performs the Shapiro-Wilk test of normality.
+
+```{r,comment=NA}
+usage(shapiro.test)
+```
+
+## 正态性检验 Epps-Pully 检验 {#sec:ep-test}
+
+> The issue really comes down to the fact that the questions: "exactly normal?", and "normal enough?" are 2 very different questions (with the difference becoming greater with increased sample size) and while the first is the easier to answer, the second is generally the more useful one.
+>
+>   --- Greg Snow [^GS-help-2009]
+
+[^GS-help-2009]: <https://stat.ethz.ch/pipermail/r-help/2009-May/390164.html>
+
+EP 检验对多种备择假设有较高的效率，利用样本的特征函数和正态分布的特征函数的差的模的平方产生的一个加权积分得到 EP 检验统计量 [@EP_1983_normality]
+
+::: sidebar
+样本量 $n \geq 200$ EP 检验统计量 $T_{EP}$ 非常接近 $n = \infty$ 时 $T_{EP}$ 的分位数。
+:::
+
+设 $x_1, \ldots, x_n$ 是来自正态总体 $N(\mu,\sigma^2)$ 的样本， EP 检验统计量定义为
+
+$$
+T_{EP} = 1 + \frac{n}{\sqrt{3}} + \frac{2}{n}\sum_{i=2}^{n}\sum_{j=1}^{i-1}\exp\big\{ - \frac{(x_j - x_i)^2}{2s^2_{\star}}  \big\} - \sqrt{2} \sum_{i=1}^{n}\exp\big\{- \frac{(x_i - \bar{x})^2}{4s^2_{\star}}  \big\}
+$$
+
+其中 $\bar{x},s^2_{\star}$ 就是样本均值和（除以 $n$ 的）样本方差
+
+
+
+
+::: sidebar
+几个正态性检验的功效比较 <https://arxiv.org/ftp/arxiv/papers/1605/1605.06293.pdf> 和 PoweR 包 [@JSS_2016_PoweR]
+:::
+
+## 学生 t 检验 `t.test` {#sec:t-test}
+
+<!-- 大写字母 X 表示随机变量，小写字母 x 表示样本，即随机变量的取值 -->
+<!-- t 检验只考虑两样本的情况 -->
+> t 分布的推导、 t 分布的形式
+> 两样本的均值检验到 Behrens-Fisher 问题到大规模推荐系统中的 A/B 检验
+
+
+### 正态总体两样本的均值之差的检验 {#subsec:two-samples}
+
+常见检验问题
+
+
+\begin{align}
+\mathrm{I}   \quad H_0: \mu_1 - \mu_2 \leq 0 \quad vs. \quad H_1: \mu_1 - \mu_2 > 0 \\
+\mathrm{II}  \quad H_0: \mu_1 - \mu_2 \geq 0 \quad vs. \quad H_1: \mu_1 - \mu_2 < 0 \\
+\mathrm{III} \quad H_0: \mu_1 - \mu_2 = 0 \quad vs. \quad H_1: \mu_1 - \mu_2 \neq 0
+\end{align}
+
+
+#### 方差 $\sigma^2_1,\sigma^2_2$ 已知
+
+> 检验统计量服从标准正态分布
+
+```{r}
+set.seed(2019)
+x1 <- rnorm(100, mean = 10, sd = 2.5)
+y1 <- rnorm(80, mean = 6, sd = 4.5)
+u0 <- (mean(x1) - mean(y1)) / sqrt(2.5^2 / 100 + 4.5^2 / 80)
+```
+
+$$
+u = \frac{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma^2_1}{m} + \frac{\sigma^2_2}{n}} }
+$$
+
+$u \sim N(0,1)$，检验统计量 $u$ 对应的样本值 $u_0$，检验的拒绝域和 $P$ 值如下
+
+$$
+W_1 = \{u \geq u_{1 - \alpha} \}, \quad p_1 = 1 - \varPhi(u_0) 
+$$
+
+对检验问题 I，给定显著性水平 $\alpha = 0.05$，得出拒绝域 $\{ u \geq 1.645\}$，计算样本观察值得到的检验统计量的值 $u_0 = 7.946$，而该值落在拒绝域，所以拒绝原假设，即拒绝 $\mu_1 - \mu_2 \leq 0$，则接受 $\mu_1 - \mu_2 > 0$。
+
+```{r}
+# 计算拒绝域
+qnorm(1 - 0.05)
+# 计算 P 值
+1 - pnorm(u0)
+```
+
+
+#### 方差 $\sigma^2_1 = \sigma^2_2 = \sigma^2$ 未知
+
+> 检验统计量服从自由度为 $m + n - 2$ 的 t 分布
+
+```{r}
+set.seed(2019)
+x1 <- rnorm(100, mean = 10, sd = 4.5)
+y1 <- rnorm(80, mean = 6, sd = 4.5)
+s_w <- sqrt(1 / (100 + 80 - 2) * ((100 - 1) * var(x1) + (80 - 1) * var(y1)))
+t0 <- (mean(x1) - mean(y1)) / (s_w * sqrt(1 / 100 + 1 / 80))
+```
+
+样本观察值 $t_0 = 6.6816 > t_{0.95}(100 + 80 -2) = 1.653$ 落在拒绝域内，对于检验问题 I 我们要拒绝原假设
+
+```{r}
+# 临界值：0.95 分位点对应的分位数
+qt(1 - 0.05, df = 100 + 80 - 2)
+# p 值
+1 - pt(t0, df = 100 + 80 - 2, lower.tail = TRUE)
+```
+
+利用 R 内置的 `t.test` 函数计算
+
+```{r}
+t.test(x = x1, y = y1, alternative = "greater", var.equal = TRUE)
+```
+
+与线性回归比较
+
+```{r}
+dat <- data.frame(
+  value = c(x1, y1),
+  group = c(rep("x1", length(x1)), rep("y1", length(y1)))
+)
+fit <- lm(value ~ 1 + I(group == "y1"), data = dat)
+# fit <- lm(value ~ 0 + I(group == "y1"), data = dat) # 无截距项
+summary(fit)
+```
+
+::: rmdnote
+lm 回归和 t 检验的差别，回归系数第二行， t 统计量为 -6.682，P 值为 2.92e-10，前者是因为截距项，后者是因为双边检验（模型系数显著性检验是和0比较），所以有2倍的关系。直观解释详见 [翻译：常见统计检验的本质都是线性模型（或：如何教统计学）](https://cosx.org/2019/09/common-tests-as-linear-models/)
+:::
+
+
+两样本方差不齐、样本量严重不等，在大样本和小样本情况下的比较， [t 检验方差不齐有多重要](https://yihui.org/cn/2010/01/unequal-variance-in-t-test/)
+
+
+#### 方差 $\sigma^2_1 / \sigma^2_2$ 已知
+
+方差比 $c = \sigma^2_1 / \sigma^2_2$ 已知
+
+#### 方差 $\sigma^2_1 / \sigma^2_2$ 未知
+
+
+
+英国统计学家 William Sealy Gosset (1876-1937) 于 1908 年在杂志 《Biometrics》 上以笔名 Student 发表论文《The probable error of a mean》[@Students_1908_Gosset]，论文中展示了独立同正态分布的样本 $x_1, \ldots, x_n \stackrel{i.i.d}{\sim} \mathcal{N}(\mu,\sigma^2)$ 的样本方差 $s^2$ 和样本标准差 $s$ 的抽样分布，根据均值和标准差不相关的性质导出 t 分布，宣告 t 分布的诞生，因其在小样本领域的突出贡献，W. S. Gosset 进入世纪名人录 [@Statisticians_2001_Heyde]
+
+
+$$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)$$
+
+$$\frac{\bar{x} - \mu}{s/\sqrt{n}} \sim t(n-1)$$
+
+$$E(s^2) = \sigma^2, \quad Var(s^2) = \frac{2\sigma^4}{n-1}$$
+
+1. 两样本的样本量很大，总体方差未知，检验两样本均值的显著性检验，极限分布是正态，$u$ 检验
+1. 两个样本的样本量不是很大，总体方差也未知，检验两样本均值的显著性检验，即著名的 Behrens-Fisher 问题， Welsh 在 1938 年提出近似服从自由度为 l 的 t 分布。
+
+Egon Pearson 接过他父亲 Karl Pearson 的职位，担任伦敦大学学院的高尔顿统计教授
+
+许宝騄在 Jerzy Neyman 和 Egon Pearson 主编的杂志《Statistical Research Memoirs》发表第一篇关于 Behrens-Fisher 问题的论文
+
+这里提及许宝騄（Pao-Lu Hsu）的贡献[@Student_1938_HSU]，
+
+陈家鼎和郑忠国一起整理了许宝騄的生平事迹和学术成就，见《许宝騄先生的生平和学术成就》 <http://www.math.pku.edu.cn/misc/probstat/doc.pdf>。
+
+1998 年关于 Behrens-Fisher 问题的综述 [@Behrens_1998_Kim]
+
+钟开涞（Kai-Lai Chung）将许宝騄的论文集整理出版[@Collected_1983_HSU]
+
+
+
+
+
+Performs one and two sample t-tests on vectors of data.
+
+```{r,collapse=TRUE,comment=NA}
+usage(t.test)
+usage("t.test.default")
+usage("t.test.formula")
+```
+
+学生睡眠数据 sleep 见图 \@ref(fig:sleep)
+
+```{r sleep,echo=FALSE,fig.show='hold',fig.width=4,fig.height=4,out.width='50%',fig.cap="学生睡眠数据 sleep"}
+plot(extra ~ group, data = sleep)
+library(ggplot2)
+ggplot(aes(x = group, y = extra, color = group), data = sleep) +
+  geom_boxplot() +
+  geom_jitter()
+```
+
+两个样本的 Welch's t 检验，总体方差未知，样本量也不大，两样本均值差的显著性检验
+
+```{r}
+## 等价于 with(sleep, t.test(extra[group == 1], extra[group == 2]))
+t.test(extra ~ group, data = sleep)
+```
+
+实际上睡眠数据是配对的，我们可以做配对数据的检验
+
+```{r}
+## 数据变形操作，长格式变为宽格式
+sleep2 <- reshape(sleep,
+  direction = "wide",
+  idvar = "ID", timevar = "group"
+)
+# R 4.0.0
+# t.test(Pair(extra.1, extra.2) ~ 1, data = sleep2)
+```
+
+::: sidebar
+使用 `t.test` 和 `wilcox.test` 的公式接口要求 R 版本 4.0.0 及以上
+:::
+
+## 方差比检验 `var.test` {#sec:var-test}
+
+F 检验：来自正态总体的两个样本的方差比较
+
+```{r,collapse=TRUE,comment=NA}
+usage(var.test)
+usage("var.test.default")
+usage("var.test.formula")
+```
+
+## Wilcoxon 秩和检验 `wilcox.test` {#sec:wilcox-test}
+
+单样本 Wilcoxon 秩和检验，两样本 Wilcoxon 符号秩检验，也叫 Mann-Whitney 检验
+
+Wilcoxon Rank Sum and Signed Rank Tests
+
+Performs one- and two-sample Wilcoxon tests on vectors of data; the latter is also known as ‘Mann-Whitney’ test.
+
+```{r,collapse=TRUE,comment=NA}
+usage(wilcox.test)
+usage("wilcox.test.default")
+usage("wilcox.test.formula")
+```
+
+- `coin::wilcox_test` for exact, asymptotic and Monte Carlo conditional p-values, including in the presence of ties.
+
+coin 包 [@Hothorn_2008_coin] 提供大量基于秩的检验
+
+### ROC 曲线和 wilcox.test 检验的关系 {#wilcox-test-roc}
+
+<https://github.com/xrobin/pROC/wiki/FAQ---Frequently-asked-questions#can-i-test-if-a-single-roc-curve-is-significantly-different-from-05>
+
+ROC 曲线越往左上角拱越好， AUC 是 ROC 曲线下的面积，所以 AUC 指标越接近 1 越好。
+
+对每个标签的预测概率指定服从均匀分布，相当于随机猜测，所以最后 ROC 会接近对角线，而且样本量越大越接近，AUC 会越来越接近 0.5
+
+[^order]: radix 排序翻译过来叫桶排序或基数排序，详细描述见 `?sort`
+
+> 再往深一点就是研究一下 R 内置的排序算法，因为计算 AUC 最核心的步骤是排序。
+`order` 函数默认的排序方法是 `auto` 即当数据量较小的时候，自动选择 radix 排序，当数据量比较大的时候，自动选择 shell 排序[^order]
+
+```{r}
+# 模拟一些数据
+set.seed(2019) # 设置随机数种子
+N <- 10^5 # 样本量
+sim_dat <- cbind.data.frame(
+  pred = runif(N),
+  label = rbinom(N, size = 1, prob = 0.95)
+)
+
+# 计算 auc 的函数
+# dat is a data.frame as input return AUC value
+comp_auc <- function(dat, show_roc = TRUE) {
+  # order label by predicted probability
+  dat <- dat[order(dat$pred, dat$label, decreasing = TRUE), ]
+
+  # total samples
+  n_total <- length(dat$label)
+
+  # number of positive label 1
+  n_pos <- sum(dat$label)
+
+  # number of negative label 0
+  n_neg <- n_total - n_pos
+
+  # calculate TPR and FPR
+  tpr <- cumsum(dat$label) / n_pos
+  fpr <- (1:n_total - cumsum(dat$label)) / n_neg
+
+  # calculate auc
+  auc <- 0
+  for (i in 1:(n_total - 1)) {
+    auc <- auc + (fpr[i + 1] - fpr[i]) * tpr[i]
+  }
+  # show ROC curve or not?
+  if (show_roc) {
+    plot(fpr, tpr, type = "l")
+  }
+  auc
+}
+
+comp_auc(dat = sim_dat, show_roc = FALSE)
+```
+
+模拟一个逻辑回归模型测试自编 AUC 计算程序和 R 包 pROC 计算结果
+
+```{r}
+set.seed(2018)
+N <- 10^4 # 样本量
+x <- rnorm(N)
+beta_0 <- 0.5
+beta_1 <- 0.3
+eta <- beta_0 + beta_1 * x
+# 模拟数据集
+dat <- data.frame(x = x, y = rbinom(N, 1, prob = exp(eta) / (1 + exp(eta))))
+
+# 数据集分隔
+is_train <- sample(1:nrow(dat), N * 0.7)
+train <- dat[is_train, ]
+test <- dat[-is_train, ]
+# 模型拟合
+fit <- glm(y ~ x, data = train, family = binomial(link = "logit"))
+# 预测
+y_pred <- predict(fit, newdata = test, type = "response")
+
+dat2 <- data.frame(pred = y_pred, label = test$y)
+# 计算 auc
+comp_auc(dat = dat2, show_roc = FALSE)
+```
+
+对比 R 包 pROC 的计算结果是一致的
+
+```{r,eval=FALSE}
+pROC::auc(test$y, y_pred)
+```
+
+计算一下运行时间
+
+```{r}
+# 100 万样本
+system.time(comp_auc(dat = dat2, show_roc = FALSE))
+```
+
+更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。
+
+```{r}
+# https://stat.ethz.ch/pipermail/r-help/2005-April/069217.html
+trap.rule <- function(x, y) sum(diff(x) * (y[-1] + y[-length(y)])) / 2
+```
+
+
+## 功效分析 {#sec:power-analysis}
+
+> 比较功效的作用是啥？计算试验设计需要的最小样本量
+
+### 方差分析检验的功效 `power.anova.test` {#subsec:power-anova-test}
+
+计算平衡的单因素方差分析检验的功效
+
+```{r,comment=NA}
+usage(power.anova.test)
+```
+
+
+```{r}
+power.anova.test(
+  groups = 4,  # 4个组  
+  between.var = 1, # 组间方差为 1
+  within.var = 3, # 组内方差为 3
+  power = 0.95 # 1 - 犯第二类错误的概率
+)
+```
+
+
+### 比例检验的功效 `power.prop.test` {#subsec:power-prop-test}
+
+计算两样本比例检验的功效
+
+```{r,comment=NA}
+usage(power.prop.test)
+```
+
+功效可以用来计算实验所需要的样本量，检验统计量的功效越大/高，检验方法越好，实验所需要的样本量越少
+
+```{r}
+# p1 >= p2 的检验 单边和双边检验
+power.prop.test(p1 = .65, p2 = 0.6, sig.level = .05, power = 0.90,  alternative = "one.sided")
+
+power.prop.test(p1 = .65, p2 = 0.6, sig.level = .05, power = 0.90,  alternative = "two.sided")
+```
+
+**pwr** 包 `pwr.2p.test()` 函数提供了类似 `power.prop.test()` 函数的功能
+
+```{r}
+library(pwr)
+# 明确 p1 > p2 的检验
+# 单边检验拆分更加明细，分为大于和小于
+pwr.2p.test(h = ES.h(p1 = 0.65, p2 = 0.6), 
+            sig.level = 0.05, power = 0.9, alternative = "greater")
+```
+
+已知两样本的样本量不等，检验 H0: $p_1 = p_2$  H1: $p_1 \neq p_2$ 的功效
+
+```{r}
+library(pwr)
+pwr.2p2n.test(h = 0.30, n1 = 80, n2 = 245, sig.level = 0.05, alternative = "greater")
+```
+
+h 表示两个样本的差异，计算得到的功效是 0.75
+
+### t 检验的功效 `power.t.test` {#subsec:power-t-test}
+
+计算单样本或两样本的 t 检验的功效，或者根据功效计算参数，如样本量
+
+[Cohen's d](https://yihui.org/cn/2018/02/cohen-s-d/) 单样本/配对 t 检验的功效分析
+
+```{r power-t-test,fig.cap="t 检验的功效"}
+n = 30  # 样本量（只是一个例子）
+x = seq(0, 12, 0.01)
+library(ggplot2)
+dat <- data.frame(xx = x/sqrt(n), yy = 2 * (1 - pt(x, n - 1)))
+ggplot(data = dat, aes(x = xx, y = yy)) +
+  geom_line() +
+  geom_vline(xintercept = c(0.01, 0.2, 0.5, 0.8, 1.2, 2), linetype = 2) +
+  theme_minimal() +
+  labs(x = "d = t / sqrt(n)", y = "2 * (1 - pt(x, n - 1))")
+```
+
+```{r,comment=NA}
+usage(power.t.test)
+```
+
+```{r}
+power.t.test(
+  n = 100, delta = 2.2 / 6.4,
+  sd = 1, sig.level = 0.05,
+  type = c("two.sample"),
+  alternative = c("two.sided")
+)
+```
+
+函数 `power.t.test` 的参数
+
+`n`
+:  每组的观测量
+
+`delta`
+:  均值之差
+
+`sd`
+:  标准差，默认是 1
+
+`sig.level`
+:  显著性水平，默认是 0.05 （犯第 I 类错误的概率）
+
+`power`
+:  检验的功效（1 - 犯第 II 类错误的概率）
+
+`type`
+:  t 检验的类型，取值为 `"two.sample"`、 `"one.sample"`或 `"paired"`
+
+`alternative`
+:  单边或双边检验，取值为 `"two.sided"` 或 `"one.sided"`
+
+参数 `n`， `delta`， `power`， `sd` 和 `sig.level` 必须有一个值为 `NULL`，为 `NULL` 的参数是由其它参数决定的。
+
+### 其它检验的功效 {#subsec:other-power-analysis}
+
+<!-- 试验设计 [@Design_2004_Mao] 可以视为一种组织形式，包括各类检验， R 语言实战 [@Action_2015_Robert] 作者 Robert I. Kabacoff 创建了网站 [Quick-R](https://www.statmethods.net/)，实战这本书第 10 章功效分析主要基于 pwr 包来介绍 -->
+
+```{r,message=FALSE}
+library(pwr) # https://github.com/heliosdrm/pwr
+# library(Matrix)
+# library(lme4)
+# library(pbkrtest) # http://people.math.aau.dk/~sorenh/software/pbkrtest/
+# library(ANOVApower) # https://github.com/Lakens/ANOVApower
+```
+
+CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效应模型和统计检验，提供对应的 R 实现。
+
+此外还有 [lmerTest](https://github.com/runehaubo/lmerTestR) [@Kuznetsova_2017_lmerTest] 和 lmtest [@Zeileis_2002_lmtest] 
+
+
+<!-- **lmerTest** 和 **lmtest** 从命名空间导入函数的方式来计算，以免引起冲突、同时能尽量减少对运行环境的污染 -->
+
+[**powerlmm** 包](https://github.com/rpsychologist/powerlmm) 用于计算两、三个水平的纵向多水平/线性混合效应模型的功效
+
+[Jacob Cohen](https://en.wikipedia.org/wiki/Jacob_Cohen_(statistician)) 提出的 Cohen's d 和 Cohen's f 详见书籍 [@Cohen1988] 
+
+他的代表性文章，地球是圆的 [@Cohen_1994_Earth]
+
+```{r}
+# 前面 t 检验和方差分析检验的等价功效计算
+library(pwr)
+pwr.t.test(
+  d = 2.2 / 6.4,
+  n = 100,
+  sig.level = 0.05,
+  type = "two.sample",
+  alternative = "two.sided"
+)
+# f 是如何和上面的组间/组内方差等价指定的
+pwr.anova.test(
+  k = 4, # 组数
+  f = 0.5,
+  power = 0.95 # 检验的效
+)
+```
+
+```{r,eval=FALSE}
+dat <- aggregate(
+  data = PlantGrowth, weight ~ group,
+  function(x) c(mean(x), sd(x)), drop = TRUE
+)
+library(ANOVApower)
+design_result <- ANOVA_design(
+  design = "3b", n = 100,
+  mu = dat$weight[, 1],
+  sd = mean(dat$weight[, 2]), # 三个组方差的平均值
+  labelnames = c("PlantGrowth", "ctrl", "trt1", "trt2")
+)
+ANOVA_exact(design_result)$main_results$power
+```
+
+::: rmdnote
+R 3.5.0 以后，函数 `aggregate` 的参数 `drop` 默认设置为 `TRUE` 表示扔掉未用来分组的变量，聚合返回的是一个矩阵类型的数据对象。
+:::
+
+
+## 3 + 1 统计检验 {#sec:three-plus-one-tests}
+
+<!-- https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval -->
+
+Wald 检验，似然比检验/ Wilks 检验，得分检验/Rao 检验，梯度检验
+
+> Unfortunately, this is one of those situations where as far as I can tell all of the real statisticians are out there playing with large data sets where the small-sample corrections are not so important and leaving the rest of us to figure it out for ourselves ...
+>
+>   --- Ben Bolker [^BB-help-2011]
+
+[^BB-help-2011]: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q4/017392.html>
+
+## 经典案例 {#sec:classical-case-study}
+
+### 1973 年加州大学伯克利分校的学生招生 {#subsec:UCBAdmissions}
+
+录取人数按院系和性别分类统计，研究目标是各个院系在录取学生的时候是否有性别歧视？统计数据见表 \@ref(tab:UCBAdmissions-data)
+
+```{r UCBAdmissions-data,fig.cap="UCBAdmissions 数据集"}
+as.data.frame(UCBAdmissions) %>%
+  reshape(.,
+    v.names = "Freq", idvar = c("Admit", "Gender"),
+    timevar = "Dept", direction = "wide", sep = ""
+  ) %>%
+  knitr::kable(.,
+    caption = "伯克利大学各个院系的录取人数",
+    row.names = FALSE, col.names = gsub("(Freq)", "Dept", names(.)),
+    align = "c"
+  )
+```
+
+
+```{r UCBAdmissions,fig.cap="UCBAdmissions 马赛克图"}
+# plot(UCBAdmissions, col = "lightblue", border = "white")
+library(ggmosaic)
+ggplot(data = as.data.frame(UCBAdmissions)) +
+  geom_mosaic(aes(weight = Freq, x = product(Gender, Admit), fill = Dept)) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Admit", y = "Gender")
+```
+
+### 1976~1977年美国佛罗里达州的凶杀案件中被告肤色和死刑判决的关系 {#subsec:ethnicity}
+
+<!-- 高维列联表，独立性检验 -->
+
+| 被告 | 被害人 |  判死  |  不判死  |
+| :--: | :----: | :--: | :--: | 
+| 白人 |  白人  |  19  | 132  | 
+|      |  黑人  |  0   |  9   | 
+| 黑人 |  白人  |  11  |  32  | 
+|      |  黑人  |  6   |  97  |
+
+```{r sub-mtcars-table}
+library(knitr)
+library(kableExtra)
+
+kable(mtcars[1:5, 1:4], caption = "Demo Table") %>%
+  kable_styling(full_width = F) %>%
+  add_header_above(c(" ", "Group 1" = 2, "Group 2[note]" = 2)) %>%
+  add_footnote(c("table footnote"))
+```
+
+```{r check-table}
+knitr::kable(
+  rbind(c("", "continuous", "discrete"),
+        c("nominal", "$\\times$", "$\\checkmark$"),
+        c("ordinal", "$\\circ$", "$\\checkmark$"),
+        c("interval", "$\\checkmark$", "$\\checkmark$"),
+        c("ratio", "$\\checkmark$", "$\\checkmark$")
+    
+  ), caption = 'The relationship between the scales of measurement and the discrete/continuity distinction. Cells with a tick mark correspond to things that are possible.', align="lcc",
+  booktabs = TRUE
+)
+```
+
+### 统计专业学生的头发和眼睛的颜色 {#subsec:HairEyeColor}
+
+<!-- 用来描述标准 $\chi^2$ 检验和对数线性模型 -->
+
+HairEyeColor 是一个 table 类型的数据对象，和数组的关系 array
+
+```{r}
+class(HairEyeColor)
+str(HairEyeColor)
+apply(HairEyeColor, c(1, 2), sum)
+```
+
+```{r HairEyeColor,fig.cap="头发、眼睛颜色和性别的比例"}
+# plot(HairEyeColor, col = "lightblue", border = "white")
+library(ggmosaic)
+ggplot(data = as.data.frame(HairEyeColor)) +
+  geom_mosaic(aes(weight = Freq, x = product(Hair, Eye), fill = Sex)) +
+  theme_minimal() +
+  labs(x = "Hair", y = "Eye")
+```
+
+
+
+## 运行环境 {#sec:tests-sessioninfo}
+
+```{r}
+sessionInfo()
+```
+

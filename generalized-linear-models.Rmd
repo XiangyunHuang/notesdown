@@ -1,0 +1,521 @@
+# 广义线性模型 {#chap:generalized-linear-models}
+
+主要参考 David W. Hosmer 和 Stanley Lemeshow [@David_2000_Logistic]
+
+主要参考 Peter McCullagh 和 John Nelder [@McCullagh_1989_Generalized] Annette J. Dobson 和 Adrian G. Barnett [@Dobson_2018_Generalized]
+逻辑回归模型主要参考 Applied Logistic Regression [@David_2000_Logistic] 和 Discrete Choice Methods with Simulation [@Train_2009_mlogit]
+
+- 大数据集`biglm::bigglm` [speedglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/speedglm/index.html) [bigReg](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/bigReg/index.html)
+- `fastglm::fastglm` 加快 `glm` 收敛效果比 `glm` 和 `glm2` 好
+- `glm2::glm2` 补充 `glm`
+- 有序输出的回归 [lcpm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/lcpm/index.html) [oglmx](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/oglmx/index.html)
+- 多项逻辑回归 gmnl [mlogit](https://CRAN.R-project.org/package=mlogit) [@Train_2009_mlogit]和  mnlogit [@mnlogit_2016_JSS]
+- 计数数据回归 pscl
+- 条件GLM [cglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/cglm/index.html)
+- 多重 GLM [MGLM](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/MGLM/index.html) 多个响应变量
+- 有限内存的 GLM [biglmm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/biglmm/index.html)
+- 借助混合模型的稳健的 GLM [robmixglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/robmixglm/index.html) 
+- 聚类数据的 GLM [ClusterBootstrap](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/ClusterBootstrap/index.html) [glmmML](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmmML/index.html)
+- [glmnet](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmnet/index.html) [glmpath](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmpath/index.html)
+- 贝叶斯变量选择方法 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>
+- spikeslab: Prediction and variable selection using spike and slab regression [@spikeslab_2005_Ishwaran] 
+- BoomSpikeSlab  MCMC for Spike and Slab Regression 
+- 17 种分类算法应用于信用评分，等级，参考 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
+- [Cyclops](https://github.com/OHDSI/Cyclops) 采用 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间
+
+> 每个模型都给出 rstan/rstanarm 中的实现方式
+
+将线性回归模型，方差分析模型，协方差分析模型统一地看待
+
+Generalized Least Squares 广义最小二乘
+
+GLM General Linear Models 一般线性模型 `lm` 
+
+- 允许线性模型方差非齐性、相关`nlme::gls` 
+- 也包括线性混合效应模型
+
+参考文献 An Introduction to Generalized Linear Models [@Dobson_2018_Generalized] 和 Generalized Linear Models [@McCullagh_1989_Generalized]
+
+- [plsRglm](https://github.com/fbertran/plsRglm) 偏最小二乘回归方法用于广义线性模型
+- [glmnet](http://www.jstatsoft.org/v33/i01/) Lasso and Elastic-Net Regularized Generalized Linear Models
+
+ 
+```{r,include=FALSE}
+library(magrittr)
+library(ggplot2)
+library(patchwork) # patchwork 和 MASS 包冲突
+```
+
+> It's not meant for sampling weights. It's meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the wrong answer if you just use the `weights =` argument.
+> 
+>   --- Thomas Lumley [^TL-help-2012]
+
+[^TL-help-2012]: <https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html>
+
+## 介绍 {#glm:introduction}
+
+模型结构，模型种类，参数估计办法，相当于综述
+
+响应变量分别服从二项分布、多项分布、对数正态分布、泊松分布、伽马分布
+
+
+## 理论基础 {#sec:glm-theory}
+
+分两个段落分别介绍指数族和 GLM 
+
+$$
+f(y;\theta,\phi) = \exp[(a(y) b(\theta) + c(\theta))/f(\phi) + d(y,\phi)]
+$$
+
+泊松分布 (with $\lambda \to \theta$, $x \to y$) ($\phi=1$):
+
+
+\begin{equation}
+\begin{split}
+f(y,\theta) & = \exp(-\theta) \theta^y/(y!) \\
+            & = \exp\left( \underbrace{y}_{a(y)} 
+                           \underbrace{\log \theta}_{b(\theta)} + 
+                           \underbrace{(-\theta)}_{c(\theta)} + 
+                           \underbrace{(- \log(y!))}_{d(y)} \right)
+\end{split}
+\end{equation}
+
+
+<!-- 如果能以非常直观的几何展示方式表现高深的高维模型和算法理论，将是非常有意义的 -->
+
+### 岭回归 {#subsec:glm-ridge}
+
+Geometry and properties of generalized ridge regression in high dimensions <http://web.ccs.miami.edu/~hishwaran/papers/IR.conmath2014.pdf>
+
+这篇文章借助三维几何图形展示高维情形下的广义岭回归
+
+
+### Lasso {#subsec:glm-lasso}
+
+glmnet: Lasso and Elastic-Net Regularized Generalized Linear Models <https://glmnet.stanford.edu>
+
+### 最优子集回归 {#subset:glm-best-subset}
+
+bestglm: Best Subset GLM and Regression Utilities
+
+
+
+## 吸烟喝酒和食道癌的关系 {#sec:alcohol}
+
+存在有序分类数据
+
+酒精的作用 effects of alcohol, tobacco and interaction, age-adjusted
+数据集描述见 `help(esoph)`
+
+```{r}
+head(esoph)
+str(esoph)
+```
+
+```{r}
+library(ggplot2)
+library(patchwork)
+p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / ncontrols, color = agegp)) +
+  geom_boxplot(show.legend = FALSE) +
+  geom_jitter(show.legend = FALSE) +
+  theme_minimal()
+
+p2 <- ggplot(data = esoph, aes(x = alcgp, y = ncases / ncontrols, color = alcgp)) +
+  geom_boxplot(show.legend = FALSE) +
+  geom_jitter(show.legend = FALSE) +
+  theme_minimal()
+
+p3 <- ggplot(data = esoph, aes(x = tobgp, y = ncases / ncontrols, color = tobgp)) +
+  geom_boxplot(show.legend = FALSE) +
+  geom_jitter(show.legend = FALSE) +
+  theme_minimal()
+
+p1 / (p2 + p3)
+```
+
+
+```{r}
+fit_esoph_glm <- glm(cbind(ncases, ncontrols) ~ agegp + tobgp * alcgp,
+  data = esoph, family = binomial(link = "logit")
+)
+```
+
+
+```{r,eval=FALSE}
+library(Rcpp)
+fit_esoph_brm <- brms::brm(ncases | trials(ncases + ncontrols) ~ agegp + tobgp * alcgp,
+  data = esoph, family = binomial(link = "logit"), refresh = 0
+)
+```
+
+## 自然流产和人工流产后的不育 {#sec:infert}
+
+`help(infert)`
+
+```{r}
+head(infert)
+str(infert)
+```
+
+
+存在无序分类变量
+
+```{r}
+infert_glm_1 <- glm(case ~ spontaneous + induced,
+  data = infert, family = binomial()
+)
+summary(infert_glm_1)
+```
+
+考虑其他潜在的因素
+
+```{r}
+infert_glm_2 <- glm(case ~ age + parity + education + spontaneous + induced,
+  data = infert, family = binomial()
+)
+summary(infert_glm_2)
+```
+
+实际上应该使用条件逻辑回归， 调用 **survival** 包
+
+```{r}
+library(survival)
+infert_glm_3 <- clogit(case ~ spontaneous + induced + strata(stratum),
+  data = infert
+)
+summary(infert_glm_3)
+```
+
+## 细菌数据集 {#sec:australia-bacteria}
+
+流感嗜血杆菌的细菌与中耳炎患儿
+
+```{r bacteria}
+data(bacteria, package = "MASS")
+```
+
+
+```{r fit-glmmpql}
+# 惩罚拟似然
+fit_glmmpql <- MASS::glmmPQL(y ~ trt + I(week > 2),
+  random = ~ 1 | ID, verbose = FALSE,
+  family = binomial, data = bacteria
+)
+summary(fit_glmmpql)
+```
+
+
+```{r fit-glmer}
+# 拉普拉斯近似
+fit_glmer <- lme4::glmer(y ~ trt + I(week > 2) + (1 | ID),
+  family = binomial, data = bacteria
+)
+summary(fit_glmer)
+```
+
+
+## 研究婴儿出生体重低的相关危险因素 {#sec:birthwt}
+
+<!-- 多项逻辑回归模型 Multinomial-Logistic-Regression-Models -->
+
+在线性回归的基础上，响应变量是离散的类别，且无序 [@mnlogit_2016_JSS]
+
+
+
+birthwt 数据是 1986 年在马萨诸塞州斯普林菲尔德的 Baystate 医疗中心收集的，用于研究婴儿出生体重低的相关危险因素
+
+```{r}
+# 加载数据
+# library(MASS)
+data(birthwt, package = "MASS")
+# 查看 birthwt 数据集 `help(birthwt)`
+head(birthwt)
+str(birthwt)
+```
+
+`low` 表示婴儿出生体重小于 2.5kg，`age` 表示母亲的年龄（年），`lwt` 母亲最后一次月经期间的体重(磅)，`race` 母亲的种族(1 =白人，2 =黑人，3 =其他)。，`smoke` 怀孕期间的吸烟状况，`ptl` 以前早产的次数，`ht` 高血压病史，`ui` 子宫过敏，`ftv` 妊娠头三个月的医生就诊次数，`bwt` 出生体重（克） 
+
+```{r}
+with(birthwt, tapply(lwt, ui, var))
+t.test(lwt ~ ui, data = birthwt, var.equal = TRUE)
+t.test(lwt ~ ui, data = birthwt)
+```
+
+
+```{r}
+# birthwt$ui <- as.factor(birthwt$ui)
+# library(lattice)
+# bwplot(lwt ~ ui, data = birthwt, pch = "|")
+
+boxplot(lwt ~ ui, data = birthwt)
+```
+
+```{r}
+# 重新编码，数据预处理，方便代入模型
+bwt <- with(birthwt, {
+  race <- factor(race, labels = c("white", "black", "other"))
+  ptd <- factor(ptl > 0)
+  ftv <- factor(ftv)
+  levels(ftv)[-(1:2)] <- "2+" # 除了前两个水平外，其余的都编码为 2+
+  data.frame(
+    low = factor(low), age, lwt, race, smoke = (smoke > 0),
+    ptd, ht = (ht > 0), ui = (ui > 0), ftv
+  )
+})
+# 查看编码后的数据
+head(bwt)
+str(bwt)
+```
+
+广义线性模型拟合，二项逻辑回归，响应变量为婴儿出生的体重，以2.5kg为界，它被编码成二分类变量 0或1
+
+```{r,echo=TRUE}
+options(contrasts = c("contr.treatment", "contr.poly"))
+glm(formula = low ~ ., family = binomial, data = bwt)
+```
+
+多项逻辑回归
+
+```{r}
+library(nnet)
+(bwt.mu <- multinom(formula = low ~ ., data = bwt))
+summary(bwt.mu)
+```
+
+计算 Z 分数和 P 值
+
+```{r}
+z <- summary(bwt.mu)$coefficients / summary(bwt.mu)$standard.errors
+z
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+```
+
+> 模型解释
+
+## 哥本哈根住房状况调查 {#sec:housing}
+
+<!-- 有序逻辑回归模型 Ordinal-Logistic-Regression-Models -->
+
+响应变量是离散类别，且存在强弱，等级，大小之分
+
+调用函数 `MASS::polr` 
+
+数据集 housing 哥本哈根住房状况调查中的次数分布表，`Sat` 住户对目前居住环境的满意程度，是一个有序的因子变量，`Infl` 住户对物业管理的感知影响程度，`Type` 租赁住宿类型，如塔楼、中庭、公寓、露台，`Cont` 联系居民可与其他居民联系(低、高)，`Freq` 每个类中的居民人数，调查的人数
+
+```{r}
+data("housing", package = "MASS")
+# 查看数据 help(housing)
+head(housing)
+str(housing)
+```
+
+居民对居住环境满意度 Sat 三个等级的有序回归
+
+```{r}
+options(contrasts = c("contr.treatment", "contr.poly"))
+house.plr <- MASS::polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing)
+house.plr
+```
+
+拟合结果
+
+```{r}
+summary(house.plr, digits = 3)
+```
+
+再计算一下 P 值，置信区间
+
+```{r}
+ctable <- coef(summary(house.plr))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+# confidence intervals 计算置信区间
+ci <- confint(house.plr)
+exp(coef(house.plr))
+## OR and CI
+exp(cbind(OR = coef(house.plr), ci))
+```
+
+> 模型解释
+
+参考文档 `help(housing)` 包含泊松回归、多项回归、比例风险模型，以及 <https://www.analyticsvidhya.com/blog/2016/02/multinomial-ordinal-logistic-regression/>
+
+> 好好看文档 `help(housing)` 和对应的参考书籍，把原理弄清楚
+
+> 有序因子变量是如何实现编码的
+
+
+
+## 癫痫病发作次数 {#sec:epileptics-counts}
+
+纵向数据 [@Peter_1990_epil]，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立
+
+数据集 epil 记录癫痫发作的次数及病人的特征，下面是数据建模分析过程
+
+```{r epil, eval=FALSE}
+data(epil, package = "MASS")
+fit_glm_epil <- glm(y ~ lbase * trt + lage + V4,
+  family = poisson,
+  data = epil
+)
+summary(fit_glm_epil, cor = FALSE)
+
+epil2 <- epil[epil$period == 1, ]
+epil2["period"] <- rep(0, 59)
+epil2["y"] <- epil2["base"]
+epil["time"] <- 1
+epil2["time"] <- 4
+epil2 <- rbind(epil, epil2)
+epil2$pred <- unclass(epil2$trt) * (epil2$period > 0)
+epil2$subject <- factor(epil2$subject)
+
+epil3 <- aggregate(
+  epil2, list(epil2$subject, epil2$period > 0),
+  function(x) if (is.numeric(x)) sum(x) else x[1]
+)
+epil3$pred <- factor(epil3$pred,
+  labels = c("base", "placebo", "drug")
+)
+contrasts(epil3$pred) <- structure(MASS::contr.sdif(3),
+  dimnames = list(NULL, c("placebo-base", "drug-placebo"))
+)
+
+summary(glm(y ~ pred + factor(subject) + offset(log(time)),
+  family = poisson, data = epil3
+), cor = FALSE)
+
+summary(MASS::glmmPQL(y ~ lbase * trt + lage + V4,
+  random = ~ 1 | subject,
+  family = poisson, data = epil
+))
+
+summary(MASS::glmmPQL(y ~ pred,
+  random = ~ 1 | subject,
+  family = poisson, data = epil3
+))
+```
+
+## 对数线性模型 {#Generalized-Log-Linear-Model}
+
+gllm: Generalised log-Linear Model
+
+Routines for log-linear models of incomplete contingency tables, including some latent class models, via EM and Fisher scoring approaches. Allows bootstrapping. See Espeland and Hui (1987) <doi:10.2307/2531553> for general approach.
+
+## 泊松回归模型 {#Generalized-Possion-Linear-Model}
+
+加载数据
+
+```{r}
+data(beall.webworms, package = "agridat")
+```
+
+查看数据
+
+```{r}
+head(beall.webworms)
+```
+
+描述响应变量的分布
+
+```{r}
+hist(beall.webworms$y, main = "Histogram of Worm Count", xlab = "Number of Worms")
+```
+
+```{r}
+boxplot(y ~ trt, data = beall.webworms)
+```
+
+抖动图
+
+```{r}
+plot(y ~ trt, data = beall.webworms, xlab = "Types of Worms", ylab = "Worm Count")
+```
+
+```{r}
+library(ggplot2)
+ggplot(beall.webworms, aes(trt, y)) +
+  geom_boxplot(colour = "red") +
+  geom_jitter() +
+  labs(x = "Types of Worms", y = "Worm Count") +
+  theme_minimal()
+```
+
+
+```{r}
+pois.mod <- glm(y ~ trt, data = beall.webworms, family = "poisson")
+summary(pois.mod)
+```
+
+模型系数 T2 的解释，这里 GLM 使用了对数联系函数(log link function) ，因此 -1.02 是对数变换后的值，T2的系数实际是 `r exp(-1.02)` ，实际意义是相对于T1，T2 类型的蠕虫数量是 T1 的 `r exp(-1.02)` 倍
+
+
+The first valuable information is related to the residuals of the model, which should be symmetrical as for any normal linear model. From this output we can see that minimum and maximum, as well as the first and third quartiles, are similar, so this assumption is confirmed. Then we can see that the variable trt (i.e. treatment factor) is highly significant for the model, with very low p-values. The statistical test in this case is not a t-test, as in the output of the function lm, but a Wald Test ([Wald Test](http://www.blackwellpublishing.com/specialarticles/jcn_10_774.pdf)). This test computes the probability that the coefficient is 0, if the p is significant it means the chances the coefficient is zero are very low so the variable should be included in the model since it has an effect on y.
+
+Another important information is the deviance, particularly the residual deviance. As a general rule, this value should be lower or in line than the residuals degrees of freedom for the model to be good. In this case the fact that the residual deviance is high (even though not dramatically) may suggests the explanatory power of the model is low. We will see below how to obtain p-value for the significance of the model.
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(pois.mod)
+```
+
+
+```{r}
+predict(pois.mod, newdata = data.frame(trt = c("T1", "T2")))
+```
+
+模型的P值
+
+```{r}
+1 - pchisq(deviance(pois.mod), df.residual(pois.mod))
+```
+
+模型选择
+
+```{r}
+pois.mod2 <- glm(y ~ block + spray * lead, data = beall.webworms, family = "poisson")
+```
+
+两模型的 AIC 比较
+
+```{r}
+AIC(pois.mod, pois.mod2)
+```
+
+假设响应变量 Y 服从泊松分布，意味着随机变量 Y 的期望和方差相等
+ 
+```{r}
+mean(beall.webworms$y)
+var(beall.webworms$y)
+```
+
+实际上方差比均值大，这种情况称之为过度发散 (overdispersed)，分布应该修正为拟（似然）泊松分布
+
+```{r}
+pois.mod3 <- glm(y ~ trt, data = beall.webworms, family = c("quasipoisson"))
+summary(pois.mod3)
+```
+
+计算得知发散参数(dispersion parameter) 是 1.35472，可见数据Y并不是发散得离谱，泊松分布可能仍然是对这个数据的合理假设
+
+AER 包是书籍 Applied Econometrics with R 的配套材料 [@AER_2008_Kleiber]，可用于直接检验发散参数是否大于1
+
+```{r}
+# AER::dispersiontest(pois.mod, alternative="greater")
+```
+
+如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 [@MASS_2002_Venables] 提供的 `glm.nb`函数
+
+```{r}
+NB.mod1 <- MASS::glm.nb(y ~ trt, data = beall.webworms)
+summary(NB.mod1)
+```
+
+两个模型的方差分析
+
+```{r}
+anova(pois.mod, pois.mod2, test = "Chisq")
+```
+
+从方差分析比较的结果来看，P值告诉我们，两模型是显著不同的，由上面对两模型的 AIC 计算结果来看，模型 pois.mod2 比模型 pois.mod 要好，模型的 AIC 值越小，表明拟合得越准确。 
