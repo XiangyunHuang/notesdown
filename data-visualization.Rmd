@@ -91,7 +91,7 @@ p1 + p2
 tikzDevice::tikzTest()
 ```
 
-确认没有问题后，下面图 \@ref(fig:tikz-regression) 的坐标轴标签，标题，图例等位置都支持数学公式。更多功能的介绍见 <https://www.daqana.org/tikzDevice/>。
+确认没有问题后，下面图 \@ref(fig:tikz-regression) 的坐标轴标签，标题，图例等位置都支持数学公式，使用 **tikzDevice** 打造出版级的效果图。更多功能的介绍见 <https://www.daqana.org/tikzDevice/>。
 
 ```{r tikz-regression, dev = 'tikz', fig.cap = "线性回归模型", fig.ext='tex', out.width="55%", fig.process=to_png,cache=TRUE,fig.align='center',fig.asp=1,fig.width=4,fig.height=4}
 x <- rnorm(10)
@@ -116,6 +116,36 @@ legend("bottomright",
   bty = "n"
 )
 ```
+
+推荐的全局 LaTeX 环境配置如下：
+
+```{r setup-tinytex,eval=FALSE}
+options(
+  tinytex.engine = "xelatex",
+  tikzDefaultEngine = "xetex",
+  tikzDocumentDeclaration = "\\documentclass[UTF8,fontset=adobe]{ctexart}\n",
+  tikzXelatexPackages = c(
+    "\\usepackage[colorlinks,breaklinks]{hyperref}",
+    "\\usepackage{color,times,tikz}",
+    "\\usepackage[active,tightpage,xetex]{preview}",
+    "\\PreviewEnvironment{pgfpicture}",
+    "\\usepackage{amsmath,amsfonts,mathrsfs,amssymb}"
+  )
+)
+```
+
+设置默认的 LaTeX 编译引擎为 XeLaTeX，相比于 PDFLaTeX，它对中文的兼容性更好，支持多平台下的中文环境，中文字体这里采用了 Adobe 的字体，默认加载了 mathrsfs 宏包支持 `\mathcal`、`\mathscr` 等命令，此外， LaTeX 发行版采用谢益辉自定义的 [TinyTeX](https://yihui.org/tinytex/)。绘制独立的 PDF 图形的过程如下：
+
+```{r,eval=FALSE}
+library(tikzDevice)
+tf <- file.path(getwd(), "tikz-regression.tex")
+tikz(tf, width = 6, height = 5.5, pointsize = 30, standAlone = TRUE)
+# 绘图代码
+dev.off()
+# 编译成 PDF 图形
+tinytex::latexmk(file = "tikz-regression.tex")
+```
+
 
 ### 漫画字体 {#subsec:xkcd-comic}
 
