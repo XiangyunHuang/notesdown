@@ -1,0 +1,36 @@
+# 数据可视化 {#chap:data-visualization}
+
+
+
+
+
+## 字体 {#sec:fonts}
+
+
+### 漫画字体 {#subsec:xkcd-comic}
+
+下载 XKCD 字体，并刷新系统字体缓存
+
+```bash
+mkdir -p ~/.fonts
+curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
+fc-cache -fsv
+```
+
+将 XKCD 字体导入到 R 环境，以便后续被 ggplot2 图形设备调用。
+
+```r
+R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
+```
+
+图 \@ref(fig:xkcd-graph) 是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
+
+```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png"}
+library(extrafont)
+library(xkcd)
+ggplot(aes(mpg, wt), data = mtcars) + geom_point() +
+    theme_xkcd()
+```
+
+## 配色 {#sec:colors}
+

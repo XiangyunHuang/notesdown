@@ -84,6 +84,7 @@ jobs:
           mkdir -p ~/.fonts
           curl -fLo Adobe-Fonts.zip https://github.com/XiangyunHuang/fonts/releases/download/v0.1/Adobe-Fonts.zip
           unzip Adobe-Fonts.zip -d ~/.fonts/adobe
+          curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
           fc-cache -fsv
 
       - name: Cache R packages
@@ -105,10 +106,20 @@ jobs:
           R -e 'install.packages("remotes")'
           xvfb-run --auto-servernum R -e 'update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])'
           xvfb-run --auto-servernum R -e 'remotes::install_deps(dependencies = TRUE)'
+
+      - name: Check R packages
+        run: |
           R -e 'sessionInfo(sort(.packages(T)))'
           # check TinyTeX
           export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
           R -e 'tinytex:::is_tinytex()'
+
+
+      - name: Install Extra Fonts
+        run: |
+          R -e 'library(showtext);font_install(source_han_serif());font_install(source_han_sans())'
+          # XKCD
+          R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 
       - name: Build Book
         run: |
