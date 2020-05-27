@@ -51,6 +51,7 @@ options(
   kableExtra.latex.load_packages = FALSE,
   dev.args = list(width = 960, height = 600),
   tidyverse.quiet = TRUE,
+  crayon.enabled = FALSE,
   tidymodels.quiet = TRUE,
   memory.profiling = TRUE,
   reprex.styler = TRUE,
