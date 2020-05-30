@@ -9,12 +9,13 @@ JAGS 的 R 接口有苏毓松开发的 R2jags 包 [@R-R2jags]
 
 加载 rstan，如果你的电脑配置有多核处理器，内存也充足，那么可以考虑使用并行方式去估计你的模型参数
 
-```{r,message=FALSE,warning=FALSE}
+```{r stan-setup,message=FALSE,warning=FALSE}
 library(rstan)
-# 将编译后的模型写入磁盘，避免重新编译
-rstan_options(auto_write = TRUE)
+# 将编译后的模型写入磁盘，避免重新编译，在 Github Action 异构集群上应每次重新编译，否则容易触发错误 caught illegal operation
+# rstan_options(auto_write = TRUE)
 # 如果CPU和内存足够，设置成与马尔科夫链一样多
-options(mc.cores = max(c(floor(parallel::detectCores() / 2), 1L)))
+# options(mc.cores = max(c(floor(parallel::detectCores() / 2), 1L)))
+options(mc.cores = 1L)
 
 custom_colors <- c(
   "#4285f4", # GoogleBlue
@@ -143,7 +144,7 @@ normal_fit <- sampling(normal_dist,
   warmup = 1000, # 每条链预处理迭代次数
   iter = 2000, # 每条链总迭代次数
   chains = nchains, # 马尔科夫链的数目
-  cores = 2, # 指定 CPU 核心数，可以给每条链分配一个
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
   verbose = FALSE, # 不显示迭代的中间过程
   refresh = 0, # 不显示采样的进度
   seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
@@ -219,7 +220,7 @@ eight_schools_fit <- sampling(eight_schools,
   warmup = 1000, # 每条链预处理迭代次数
   iter = 2000, # 每条链总迭代次数
   chains = 4, # 马尔科夫链的数目
-  cores = 2, # 指定 CPU 核心数，可以给每条链分配一个
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
   verbose = FALSE, # 不显示迭代的中间过程
   refresh = 0, # 不显示采样的进度
   seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
@@ -260,7 +261,7 @@ eight_schools_fit <- stan(
   warmup = 1000, # 每条链预处理迭代次数
   iter = 2000, # 每条链总迭代次数
   chains = 4, # 马尔科夫链的数目
-  cores = 2, # 指定 CPU 核心数，可以给每条链分配一个
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
   verbose = FALSE, # 不显示迭代的中间过程
   refresh = 0, # 不显示采样的进度
   seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
