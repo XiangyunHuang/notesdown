@@ -2,6 +2,51 @@
 
 
 
+## 函数图 {#sec:function}
+
+```{r,warning=FALSE}
+x <- sort(c(seq(-3, 4, length.out = 201), outer(0:-3, (-1:1)*1e-6, "+")))
+plot(x, gamma(x), ylim = c(-20,20), col = "red", type = "l", lwd = 2,
+     main = expression(Gamma(x)), xlab = expression(x), ylab = expression(y))
+abline(h = 0, v = -3:0, lty = 3, col = "midnightblue")
+```
+
+样条函数图
+
+```{r}
+xx <- -9:9
+plot(xx, sqrt(abs(xx)),  col = "red", xlab = expression(x), ylab = expression(sqrt(abs(x))))
+lines(spline(xx, sqrt(abs(xx)), n=101), col = "pink")
+```
+
+
+```{r}
+# 稳健估计
+x <- sort(rnorm(100))
+cH <- 1.35
+plot(x, pmin(cH, pmax(-cH, x)), type = "b", main =  "Huber's function")
+```
+
+
+```{r}
+cut01 <- function(x) pmax(pmin(x, 1), 0)
+curve(      x^2 - 1/4, -1.4, 1.5, col = 2, xlab = expression(x), ylab = "", main = expression(x^2 - frac(1,4)))
+curve(cut01(x^2 - 1/4), col = "blue", add = TRUE, n = 500)
+```
+
+平滑插值
+
+```{r}
+# example("smooth", package = "stats", lib.loc = .Library)
+presidents[is.na(presidents)] <- 0 # silly
+sm <- smooth(presidents)
+sm2 <- smooth(presidents, "3RSS")
+sm3 <- smooth(presidents, "3R")
+
+plot(presidents, main = "smooth(presidents0, *) :  3R and default 3RS3R")
+lines(sm3, col = 3, lwd = 1.5)
+lines(sm, col = 2, lwd = 1.25)
+```
 
 
 ## 字体 {#sec:fonts}
@@ -168,9 +213,29 @@ R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 ```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png"}
 library(extrafont)
 library(xkcd)
-ggplot(aes(mpg, wt), data = mtcars) + geom_point() +
-    theme_xkcd()
+ggplot(aes(mpg, wt), data = mtcars) +
+  geom_point() +
+  theme_xkcd()
 ```
 
 ## 配色 {#sec:colors}
 
+
+```{r old-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("terrain.colors 调色板", "heat.colors 调色板", "topo.colors 调色板", "cm.colors 调色板"), fig.cap="R 3.6.0 以前的调色板",fig.ncol = 2}
+filled.contour(volcano, nlevels = 10, color.palette = terrain.colors)
+filled.contour(volcano, nlevels = 10, color.palette = heat.colors)
+filled.contour(volcano, nlevels = 10, color.palette = topo.colors)
+filled.contour(volcano, nlevels = 10, color.palette = cm.colors)
+```
+
+
+```{r new-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("Grays 调色板", "YlOrRd 调色板", "Purples 3 调色板", "Viridis 调色板"),fig.cap="R 3.6.0 以后的调色板",fig.ncol = 2}
+filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.colors(n, "Grays", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.colors(n, "YlOrRd", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.colors(n, "purples", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.colors(n, "viridis", rev = FALSE, ...))
+```
+
+::: rmdnote
+`hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
+:::
