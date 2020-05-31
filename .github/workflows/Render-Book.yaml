@@ -127,6 +127,12 @@ jobs:
           R -e 'webshot::is_phantomjs_installed()'
           if make gitbook; then make pdf; fi
 
+      - name: Encryption PDF Book
+        env:
+          PWD_BOOK: ${{ secrets.PWD_BOOK }}
+        run: |
+          R -e 'if(file.exists("_book/masr.pdf")) qpdf::pdf_compress(input = "_book/masr.pdf", output = "_book/masr_pwd.pdf", password = Sys.getenv("PWD_BOOK"))'
+
       - uses: actions/upload-artifact@v2
         if: success()
         with:

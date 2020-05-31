@@ -22,8 +22,6 @@ library(nomnoml)
 [^William-King]: https://ww2.coastal.edu/kingw/statistics/R-tutorials/
 
 
-Pandoc Graphviz UML TikZ ImageMagick
-
 ## 文本编辑器 {#sec:text-editor}
 
 代码文件也是纯文本，RStudio 集成了编辑器，支持语法高亮。Windows 系统上优秀的代码编辑器有 Notepad++ 非常轻量。Markdown 文本编辑器我们推荐 Typora 编辑器，它是跨平台的，下面以 Ubuntu 环境为例，介绍安装和使用过程：
@@ -83,6 +81,28 @@ VS Code, Sublime Text 和 Atom
 
 ```{r,fig.cap="开源桌面版 RStudio 集成开发环境",echo=FALSE,out.width="75%"}
 knitr::include_graphics(path = 'screenshots/rstudio-desktop.png')
+```
+
+
+```bash
+# mongolite
+sudo dnf install -y  openssl-devel cyrus-sasl-devel
+# sodium
+sudo dnf install -y  libsodium-devel
+# rJava
+R CMD javareconf
+```
+
+```{r,eval=FALSE}
+# https://github.com/s-u/rJava
+# shinytest::installDependencies()
+db <- rstudioapi::getRStudioPackageDependencies()
+
+invisible(lapply(db$name, function(pkg) {
+  if (system.file(package = pkg) == "") {
+    install.packages(pkg)
+  }
+}))
 ```
 
 ### RStudio 服务器版 {#rstudio-server-ide}
@@ -183,6 +203,12 @@ Nvim-R 是一个基于 Vim 的集成开发环境 <https://github.com/jalvesaq/Nv
 ## Git 版本控制 {#sec:version-control}
 
 只考虑 Ubuntu 18.04 环境下的三剑客 Git & Github & Gitlab
+
+```{r}
+git2r::repository()
+```
+
+![](https://www.ardata.fr/img/hexbin/git.svg)
 
 ### 安装配置 {#git-setup}
 
@@ -418,7 +444,53 @@ git push --set-upstream LalZzy patch-2
 
 > 整理自统计之都论坛的讨论 https://d.cosx.org/d/420363
 
+## ImageMagick 图像操作 {#sec:ImageMagick}
 
+图像的各种操作，包括合成、转换、旋转等等
+
+## Inkscape 矢量绘图 {#sec:inkscape}
+
+[Inkscape](https://inkscape.org/) 是一款开源、免费、跨平台的矢量绘图软件。是替代 Adobe Illustrator（简称 AI） 最佳工具，没有之一
+
+```bash
+# Ubuntu 20.04 及之前版本
+sudo add-apt-repository ppa:inkscape.dev/stable
+sudo apt update
+sudo apt install inkscape
+```
+
+
+PDF 图片格式转化为 SVG 格式
+
+```bash
+inkscape -l output-filename.svg input-filename.pdf
+```
+
+SVG 转 PDF 格式
+
+```bash
+inkscape -f input-filename.svg -A output-filename.pdf
+```
+
+Jeroen Ooms 开发的 [rsvg](https://github.com/jeroen/rsvg) 包支持将 SVG 格式图片导出为 PNG、PDF、PS 等格式。使用它可以批量将 SVG 格式文件转化为其它格式文件，比如 PDF（`rsvg::rsvg_pdf`），PS （`rsvg::rsvg_ps`）和 PNG（`rsvg::rsvg_png`）
+
+```{r rsvg, eval = FALSE, echo = TRUE}
+svg_paths = list.files(path = "images", pattern = "*.svg", full.names = T)
+for (svg in svg_paths) {
+  rsvg::rsvg_pdf(svg, file = gsub(pattern  = "\\.svg", replacement=  "\\.pdf", svg))
+}
+```
+
+
+## QPDF PDF 文件操作 {#sec:qpdf}
+
+Jeroen Ooms 开发的另一个 [qpdf](https://github.com/ropensci/qpdf) 包将 C++ 库 [qpdf](https://github.com/qpdf/qpdf) 搬运到 R 环境中，用于 PDF 文件的拆分 `pdf_split()`，组合 `pdf_combine()`，加密（ 传递 `password` 参数值即可加密），提取 `pdf_subset()` 和压缩 `pdf_compress()` 等。下面以组合为例，就是将多个 PDF 文件合成一个 PDF 文件。
+
+```{r qpdf,eval=FALSE,echo=TRUE}
+library(qpdf)
+pdf_paths = list.files(path = "images", pattern = "*.pdf", full.names = T)
+pdf_combine(input = pdf_paths, output = "images/all.pdf", password = "")
+```
 
 ## UML 标准建模图 {#sec:nomnoml}
 
@@ -474,11 +546,13 @@ nomnoml::nomnoml("
   [HTML]导入-->[PhantomJS]
   [PhantomJS]转换-:>[PNG]
   
-]
-")
+]")
 ```
 
-[Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/javierluraschi/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
+
+
+
+[Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/rstudio/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
 
 ## Graphviz 流程图 {#sec:graphviz}
 
@@ -513,6 +587,34 @@ Communicate -> Transform;
 
 ### TinyTeX 发行版 {#sub:latex-tinytex}
 
+```{r,eval=FALSE}
+library(tinytex)
+# 升级 TinyTeX 发行版
+upgrade_tinytex <- function(repos = NULL) {
+  # 此处还要考虑用户输错的情况和选择离用户最近（快）的站点
+  if(is.null(repos)) repos = "https://mirrors.tuna.tsinghua.edu.cn/CTAN/"
+  
+  file_ext <- if (.Platform$OS.type == "windows") ".exe" else ".sh"
+  tlmgr_url <- paste(repos, "/systems/texlive/tlnet/update-tlmgr-latest", file_ext, sep = "")
+  file_name <- paste0("update-tlmgr-latest", file_ext)
+  download.file(url = tlmgr_url, destfile = file_name, 
+                mode = if (.Platform$OS.type == "windows") "wb" else "w")
+  
+  # window下 命令行窗口下 如何执行 exe 文件
+  if(.Platform$OS.type == "windows"){
+    shell.exec(file = file_name)
+    file.remove("update-tlmgr-latest.exe")
+  }
+  else{
+    system("sudo sh update-tlmgr-latest.sh  -- --upgrade")
+    
+    file.remove("update-tlmgr-latest.sh")
+  }
+  
+  # 类似地 Linux 下执行 sh
+  # 升级完了 删除 update-tlmgr-latest.exe
+}
+```
 
 
 ### TikZ 绘图工具 {#subsec:latex-tikz}
@@ -837,6 +939,11 @@ docker run --rm xiangyunhuang/masr \
 ::: rmdwarn
 本小节仅用于展示目前书籍写作过程中安装的 R 包依赖，不会出现在最终的书稿中
 :::
+
+
+```{r,eval=!is.na(Sys.getenv('CI', NA))}
+sessionInfo(sort(.packages(T)))
+```
 
 
 ```{r all-pkgs,eval=!is.na(Sys.getenv('CI', NA))}

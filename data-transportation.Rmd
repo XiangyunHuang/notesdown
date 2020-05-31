@@ -1,0 +1,62 @@
+# 数据搬运 {#chap:data-transportation}
+
+
+
+
+## 数据库与 R 语言 {#sec:database}
+
+仅介绍 RSQLite 和  odbc 两个 R 包，其余数据库与 R 连接和使用的方式类似。
+
+
+
+## 批量读取 csv 文件
+
+```{r,eval=FALSE}
+library(data.table)
+
+merged_df <- do.call('rbind', lapply(list.files(pattern = "*.csv", path = "data/"), fread ) )
+```
+
+
+```{r,eval=FALSE}
+xdf$date <- as.Date(xdf$date)
+xdf$ts <- as.POSIXct(as.numeric(xdf$ts), origin = "1978-01-01")
+split(xdf[order(xdf$ts), ], interaction(xdf$study, xdf$port)) %>%
+  lapply(function(.x) {
+    .x[nrow(.x), ]
+  }) %>%
+  unname() %>%
+  Filter(function(.x) {
+    nrow(.x) > 0
+  }, .) %>%
+  do.call(rbind.data.frame, .)
+
+library(dplyr)
+xdf %>%
+  mutate(
+    date = as.Date(date),
+    ts = anytime::anytime(as.numeric(ts))
+  ) %>%
+  arrange(ts) %>%
+  group_by(study, port) %>%
+  slice(n()) %>%
+  ungroup()
+```
+
+
+```{r}
+library(tibble)
+library(magrittr)
+
+mtcars <- tibble(mtcars)
+
+mtcars %>% 
+  print(n = 16, width = 80)
+```
+
+
+```{r}
+mtcars %>% 
+  print(., n = nrow(.)/4)
+```
+

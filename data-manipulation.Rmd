@@ -1,2 +1,165 @@
 # 数据操作 {#chap:data-manipulation}
 
+- A data.table and dplyr tour <https://atrebas.github.io/post/2019-03-03-datatable-dplyr/>
+- Big Data in Economics: Data cleaning and wrangling <https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html>
+- DataCamp’s data.table cheatsheet <https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf>
+
+
+## 子集过滤 {#sec:subset}
+
+```{r}
+iris[iris$Species == 'setosa' & iris$Sepal.Length > 5.5, grepl('Sepal', colnames(iris))]
+subset(iris, subset = Species == 'setosa' & Sepal.Length > 5.5, select = grepl('Sepal', colnames(iris)))
+```
+
+
+## with 选项 {#sec:option-with}
+
+注意 data.table 与 Base R 不同的地方
+
+```{r}
+# https://github.com/Rdatatable/data.table/issues/4513
+# https://d.cosx.org/d/421532-datatable-base-r
+library(data.table)
+iris <- as.data.table(iris)
+```
+
+
+
+```{r}
+iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris))]
+```
+
+需要使用 `with = FALSE` 选项
+
+```{r}
+iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris)), with = FALSE]
+```
+
+不使用 with 选项，用函数 `mget()` 将字符串转变量
+
+```{r}
+iris[Species == "setosa" & Sepal.Length > 5.5, mget(grep("Sepal", colnames(iris), value = TRUE))]
+```
+
+更加 data.table 风格的方式见
+
+```{r}
+iris[Species == 'setosa' & Sepal.Length > 5.5, .SD, .SDcols = patterns('Sepal')]
+```
+
+:::::: {.columns}
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+```{r datatable-ggplot2,eval=FALSE}
+library(magrittr)
+library(ggplot2)
+iris %>%
+  as.data.table(.) %>%
+  .[Species == "setosa"] %>% # 行过滤
+  .[Sepal.Length > 5.5] %>% # 行过滤
+  # .[, mget(grep("Sepal", colnames(.), value = TRUE))] %>% # 列过滤
+  .[, grepl("Sepal", colnames(.)), with = FALSE] %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + # 绘图
+  geom_point()
+```
+:::
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+```{r datatable-ggplot2-plot, ref.label="datatable-ggplot2", fig.cap="data.table 和 ggplot2 的结合"}
+
+```
+:::
+::::::
+
+
+
+## 分组聚合 {#sec:aggregate}
+
+```{r}
+library(data.table)
+
+dt <- data.table(
+  x = rep(1:3, each = 3), y = rep(1:3, 3),
+  z = rep(c("A", "B", "C"), 3), w = rep(c("a", "b", "a"), each = 3)
+)
+
+dt[, .(x_sum = sum(x), y_sum = sum(y)), by = .(z, w)]
+dt[, .(x_sum = sum(x), y_sum = sum(y)), by = mget(c("z", "w"))]
+```
+
+shiny 前端传递字符串向量，借助 `mget()` 函数根据选择的变量分组统计计算，只有一个变量可以使用 `get()` 传递变量给 data.table 
+
+```{r multi-columns,eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  fluidRow(
+    column(
+      6,
+      selectInput("input_vars",
+        label = "变量", # 给筛选框取名
+        choices = c(z = "z", w = "w"), # 待选的值
+        selected = "z", # 指定默认值
+        multiple = TRUE # 允许多选
+      ),
+      DT::dataTableOutput("output_table")
+    )
+  )
+)
+
+library(data.table)
+library(magrittr)
+
+dt <- data.table(
+  x = rep(1:3, each = 3), y = rep(1:3, 3),
+  z = rep(c("A", "B", "C"), 3), w = rep(c("a", "b", "a"), each = 3)
+)
+
+server <- function(input, output, session) {
+  output$output_table <- DT::renderDataTable(
+    {
+      dt[, .(x_sum = sum(x), y_sum = sum(y)), by = mget(input$input_vars)] %>%
+        DT::datatable()
+    },
+    server = FALSE
+  )
+}
+
+# 执行
+shinyApp(ui = ui, server = server)
+```
+
+## 合并操作 {#sec:merge-two-tables}
+
+```{r}
+experiment <- data.frame(times = c(0, 0, 10, 10, 20, 20, 30, 30), expval = c(1, 1, 2, 2, 3, 3, 4, 4))
+simul <- data.frame(times = c(0, 10, 20, 30), simul = c(3, 4, 5, 6))
+
+exp.sim <- data.frame(experiment, simul = simul$simul[match(experiment$times, simul$times)])
+
+exp.sim <- merge(experiment, simul)
+```
+
+保留两个数据集中的所有行
+
+## 对符合条件的列操作 {#sec:filter-columns}
+
+
+```{r}
+# 数值型变量的列的位置
+which(sapply(iris, is.numeric))
+```
+
+```{r}
+iris[which(sapply(iris, is.numeric))]
+```
+
+
+```{r}
+class(iris)
+```
+

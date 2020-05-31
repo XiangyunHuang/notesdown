@@ -1,0 +1,120 @@
+# 动态文档 {#chap:dynamic-documents}
+
+```{r}
+library(nomnoml)
+```
+
+文档元素：图 UML、表 gt 、引用 citr、输出格式
+
+- [officer](https://github.com/davidgohel/officer) 提供了一些扩展的功能
+- [minidown](https://github.com/atusy/minidown)
+- Reproducible Research Data and Project Management in R <https://annakrystalli.me/rrresearchACCE20/>
+- RMarkdown for Scientists <https://rmd4sci.njtierney.com/>
+- Getting Used to R, RStudio, and R Markdown <https://rbasics.netlify.app/>
+- [Getting started with Zotero, Better BibTeX, and RMarkdown](https://fishandwhistle.net/post/2020/getting-started-zotero-better-bibtex-rmarkdown/)
+- 制作简历 https://github.com/nstrayer/datadrivencv
+- Using SQL in RStudio <https://irene.rbind.io/post/using-sql-in-rstudio/>
+- Theme ggplot2, lattice, and base graphics based on a few simple settings. <https://github.com/rstudio/thematic/>
+- Statistical Inference via Data Science: A ModernDive into R and the tidyverse <https://moderndive.com/>
+- 参数化报告 <https://github.com/jenniferthompson/ParamRmdExample> 和 <https://elastic-lovelace-155848.netlify.app/gallery/themes/flatly.html>
+- Sharing analyses with RMarkdown <https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html>
+- Introduction to the Normal Distribution <https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html>
+- Materials for my Mixed Model Workshop <https://github.com/singmann/mixed_model_workshop>
+
+- flextable <https://github.com/davidgohel/flextable>
+- posterdown <https://github.com/brentthorne/posterdown>
+- officedown <https://github.com/davidgohel/officedown>
+- icon: Making RMarkdown Awesome <https://github.com/ropenscilabs/icon>
+- Reversible Reproducible Documents <https://github.com/noamross/redoc>
+- Word counts and readability statistics in R markdown documents <https://github.com/benmarwick/wordcountaddin>
+- nomnoml <https://github.com/rstudio/nomnoml>
+
+## Pandoc {#sec:pandoc}
+
+```{r, fig.ncol = 4, fig.show='hold',fig.cap="rmarkdown 支持的输出格式",out.width="23%",echo=FALSE,fig.link="https://www.ardata.fr/img/illustrations"}
+knitr::include_graphics(path = paste0("images/",
+  c("html5", "word", "powerpoint", "pdf"), ifelse(knitr::is_latex_output(), ".pdf", ".svg")
+))
+```
+
+
+复杂的例子 <https://github.com/rstudio/nomnoml/issues/5>
+
+
+
+```{r,fig.width=8,fig.height=4}
+nomnoml::nomnoml(" 
+#stroke: orange
+#.box: fill=#8f8 dashed visual=note
+#direction: down
+
+[markdown|Pandoc] -> [rmarkdown|文档]
+[rmarkdown] -> [bookdown|书籍]
+[rmarkdown] -> [blogdown|网站]
+[blogdown] -> [hugodown|轻量]
+[rmarkdown] -> [pagedown|文章]
+[rmarkdown] -> [rolldown|幻灯片]
+[rmarkdown] -> [thesisdown|论文]
+[rmarkdown] -> [posterdown|海报]
+[rmarkdown] -> [minidown|短文]
+[rmarkdown] -> [pkgdown|R 包手册]
+[rmarkdown] -> [officedown|PPTX/DOCX]")
+```
+
+
+```{r,fig.width=8,fig.height=2}
+nomnoml::nomnoml(" 
+#stroke: orange
+#.box: fill=#8f8 dashed visual=note
+
+[动态文档]-[交互图形]
+[交互图形]-[<box>动态图形]")
+```
+
+
+R Markdown 报告/网站/书籍/模型部署
+
+详见[PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/pdf-document.Rmd)
+
+双栏排版改为普通排版，只需替换文档类，将 YAML 元数据中的
+
+```yaml
+documentclass: proc
+```
+
+变为
+
+```yaml
+documentclass: article
+```
+
+进一步将文档类型做成参数化，实现在运行时自由选择，只需将如下两行替换掉上述一行
+
+```yaml
+params:
+  documentclass: article
+documentclass: "`r knitr::inline_expr('params$documentclass')`"
+```
+
+如果想要双栏的排版风格，编译时传递 documentclass 参数值，覆盖掉默认的参数值即可
+
+```r
+rmarkdown::render(input = "rmdexamples/pdf-document.Rmd", params = list(documentclass = "proc"))
+```
+
+此外， [ElegantTufteBookdown](https://github.com/XiangyunHuang/ElegantTufteBookdown) 项目提供了 tufte 风格的书籍模板，本书配套的仓库目录 `examples/` 下准备了一系列常用模板。
+
+## 微软办公文档 {#sec:officer}
+
+探索 Markdown + Pandoc 以 Word 格式作为最终交付的可能性
+
+R Markdown 借助 Pandoc 将 Markdown 转化为 Word 文档， 
+
+
+
+## 运行环境 {#sec:dynamic-documents-session-info}
+
+```{r}
+sessionInfo()
+```
+

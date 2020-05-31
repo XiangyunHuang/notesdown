@@ -1,0 +1,84 @@
+---
+title: "R Markdown 制作 beamer 幻灯片"
+author: "xx"
+date: "`r Sys.Date()`"
+documentclass: ctexbeamer
+output: 
+  bookdown::pdf_book: 
+    number_sections: yes
+    toc: no
+    base_format: rmarkdown::beamer_presentation
+    latex_engine: xelatex
+    citation_package: natbib
+    keep_tex: no # yes for debug
+    template: null
+    theme: Verona 
+    pandoc_args: !expr rmarkdown:::pandoc_lua_filters("latex-div.lua")
+themeoptions: 
+  - colorblocks
+biblio-style: plainnat
+bibliography: 
+  - packages.bib
+classoption: "UTF8,fontset=adobe,zihao=false"
+link-citations: yes
+colorlinks: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## 设置主题 {#sec:setup-verona}
+ 
+Ivan Valbusa 开发了 [Verona 主题的 Beamer 模版](https://bitbucket.org/rivanvx/beamer)，
+目前 CTAN 上的版本是 0.2，文档说明见 <https://www.ctan.org/pkg/beamer-verona>
+这个主题的宏包依赖很少！我很喜欢！
+
+```r
+tinytex::tlmgr_install('beamer-verona')
+```
+
+
+## 自定义的块 {#sec:custom-blocks}
+
+::: {.exampleblock data-latex="{提示}"}
+提示
+:::
+
+. . .
+
+::: {.alertblock data-latex="{警告}"}
+警告
+:::
+
+. . .
+
+::: {.block data-latex="{注意}"}
+请读者注意
+:::
+
+
+## 运行环境 {#session-info .allowframebreaks}
+
+制作此幻灯片，我们使用了  bookdown 包 [@bookdown2016]、 rmarkdown 包 [@rmarkdown2018] 和 knitr 包 [@knitr2015]，以及  `r R.version.string` 其它软件和环境信息见下方
+
+```{r,comment=NA,echo=TRUE}
+xfun::session_info(c(
+  "bookdown", "rmarkdown", "knitr"
+), dependencies = TRUE)
+```
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown"
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+xfun::write_utf8(bib, "packages.bib")
+```
+
+
