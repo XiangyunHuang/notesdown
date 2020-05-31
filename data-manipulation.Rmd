@@ -25,7 +25,6 @@ iris <- as.data.table(iris)
 ```
 
 
-
 ```{r}
 iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris))]
 ```
@@ -47,33 +46,6 @@ iris[Species == "setosa" & Sepal.Length > 5.5, mget(grep("Sepal", colnames(iris)
 ```{r}
 iris[Species == 'setosa' & Sepal.Length > 5.5, .SD, .SDcols = patterns('Sepal')]
 ```
-
-:::::: {.columns}
-::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
-```{r datatable-ggplot2,eval=FALSE}
-library(magrittr)
-library(ggplot2)
-iris %>%
-  as.data.table(.) %>%
-  .[Species == "setosa"] %>% # 行过滤
-  .[Sepal.Length > 5.5] %>% # 行过滤
-  # .[, mget(grep("Sepal", colnames(.), value = TRUE))] %>% # 列过滤
-  .[, grepl("Sepal", colnames(.)), with = FALSE] %>%
-  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + # 绘图
-  geom_point()
-```
-:::
-::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
-<!-- an empty Div (with a white space), serving as
-a column separator -->
-:::
-::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
-```{r datatable-ggplot2-plot, ref.label="datatable-ggplot2", fig.cap="data.table 和 ggplot2 的结合"}
-
-```
-:::
-::::::
 
 
 
@@ -136,12 +108,12 @@ shinyApp(ui = ui, server = server)
 ## 合并操作 {#sec:merge-two-tables}
 
 ```{r}
-experiment <- data.frame(times = c(0, 0, 10, 10, 20, 20, 30, 30), expval = c(1, 1, 2, 2, 3, 3, 4, 4))
-simul <- data.frame(times = c(0, 10, 20, 30), simul = c(3, 4, 5, 6))
+dat1 <- data.frame(x = c(0, 0, 10, 10, 20, 20, 30, 30), y = c(1, 1, 2, 2, 3, 3, 4, 4))
+dat2 <- data.frame(x = c(0, 10, 20, 30), z = c(3, 4, 5, 6))
 
-exp.sim <- data.frame(experiment, simul = simul$simul[match(experiment$times, simul$times)])
+data.frame(dat1, z = dat2$z[match(dat1$x, dat2$x)])
 
-exp.sim <- merge(experiment, simul)
+merge(dat1, dat2)
 ```
 
 保留两个数据集中的所有行
@@ -155,11 +127,27 @@ which(sapply(iris, is.numeric))
 ```
 
 ```{r}
-iris[which(sapply(iris, is.numeric))]
+iris[,sapply(iris, is.numeric), with = F][Sepal.Length > 7.5]
 ```
 
 
 ```{r}
 class(iris)
+```
+
+
+## data.table 与 ggplot2 {#sec:datatable-ggplot2}
+
+```{r datatable-ggplot2}
+library(magrittr)
+library(ggplot2)
+iris %>%
+  as.data.table(.) %>%
+  .[Species == "setosa"] %>% # 行过滤
+  .[Sepal.Length > 5.5] %>% # 行过滤
+  # .[, mget(grep("Sepal", colnames(.), value = TRUE))] %>% # 列过滤
+  .[, grepl("Sepal", colnames(.)), with = FALSE] %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + # 绘图
+  geom_point()
 ```
 
