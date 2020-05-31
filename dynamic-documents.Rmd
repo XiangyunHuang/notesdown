@@ -1,13 +1,7 @@
 # 动态文档 {#chap:dynamic-documents}
 
-```{r}
-library(nomnoml)
-```
-
 文档元素：图 UML、表 gt 、引用 citr、输出格式
 
-- [officer](https://github.com/davidgohel/officer) 提供了一些扩展的功能
-- [minidown](https://github.com/atusy/minidown)
 - Reproducible Research Data and Project Management in R <https://annakrystalli.me/rrresearchACCE20/>
 - RMarkdown for Scientists <https://rmd4sci.njtierney.com/>
 - Getting Used to R, RStudio, and R Markdown <https://rbasics.netlify.app/>
@@ -20,10 +14,8 @@ library(nomnoml)
 - Sharing analyses with RMarkdown <https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html>
 - Introduction to the Normal Distribution <https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html>
 - Materials for my Mixed Model Workshop <https://github.com/singmann/mixed_model_workshop>
-
 - flextable <https://github.com/davidgohel/flextable>
 - posterdown <https://github.com/brentthorne/posterdown>
-- officedown <https://github.com/davidgohel/officedown>
 - icon: Making RMarkdown Awesome <https://github.com/ropenscilabs/icon>
 - Reversible Reproducible Documents <https://github.com/noamross/redoc>
 - Word counts and readability statistics in R markdown documents <https://github.com/benmarwick/wordcountaddin>
@@ -31,18 +23,17 @@ library(nomnoml)
 
 ## Pandoc {#sec:pandoc}
 
+Pandoc 可以将 Markdown 文件转化为 HTML5、Word、PowerPoint 和 PDF 等文档格式。
+
 ```{r, fig.ncol = 4, fig.show='hold',fig.cap="rmarkdown 支持的输出格式",out.width="23%",echo=FALSE,fig.link="https://www.ardata.fr/img/illustrations"}
 knitr::include_graphics(path = paste0("images/",
   c("html5", "word", "powerpoint", "pdf"), ifelse(knitr::is_latex_output(), ".pdf", ".svg")
 ))
 ```
 
+rmarkdown 自 2014年09月17日在 CRAN 上发布第一个正式版本以来，逐渐形成了一个强大的生态系统，世界各地的开发者贡献各种各样的扩展功能，见图 \@ref(fig:rmarkdown-ecosystem)
 
-复杂的例子 <https://github.com/rstudio/nomnoml/issues/5>
-
-
-
-```{r,fig.width=8,fig.height=4}
+```{r rmarkdown-ecosystem,fig.width=8,fig.height=4,echo=FALSE,fig.cap="rmarkdown 生态系统"}
 nomnoml::nomnoml(" 
 #stroke: orange
 #.box: fill=#8f8 dashed visual=note
@@ -53,11 +44,12 @@ nomnoml::nomnoml("
 [rmarkdown] -> [blogdown|网站]
 [blogdown] -> [hugodown|轻量]
 [rmarkdown] -> [pagedown|文章]
+[pagedown] -> [datadrivencv|简历]
 [rmarkdown] -> [rolldown|幻灯片]
-[rmarkdown] -> [thesisdown|论文]
-[rmarkdown] -> [posterdown|海报]
+[bookdown] -> [thesisdown|论文]
+[pagedown] -> [posterdown|海报]
 [rmarkdown] -> [minidown|短文]
-[rmarkdown] -> [pkgdown|R 包手册]
+[rmarkdown] -> [pkgdown|R 包]
 [rmarkdown] -> [officedown|PPTX/DOCX]")
 ```
 
@@ -72,45 +64,102 @@ nomnoml::nomnoml("
 ```
 
 
-R Markdown 报告/网站/书籍/模型部署
+## PDF 文档 {#sec:pdf-document}
+
+### 文档汉化 {#subsec:chinese-document}
+
+
+默认的 PDF 文档 [PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/pdf-default.Rmd)
+
+
+不推荐使用 rticles 包提供的中文模版 `rticles::ctex()`，主要是因为 Pandoc 自带的模版简单配置后即可完美支持中文，Pandoc 近年来大大加强了 LaTeX 的中文支持。 ctex 宏包提供了强大的中文支持，详见文档 <https://mirrors.tuna.tsinghua.edu.cn/CTAN/language/chinese/ctex/ctex.pdf>。
 
 详见[PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/pdf-document.Rmd)
 
-双栏排版改为普通排版，只需替换文档类，将 YAML 元数据中的
+### 添加水印 {#subsec:draft-watermark}
+
+
+[draftwatermark](https://github.com/callegar/LaTeX-draftwatermark)
+
+
+### 双栏排版 {#subsec:two-column}
+
+普通单栏排版改为双栏排版，只需添加文档类选项 `"twocolumn"`，将 YAML 元数据中的
 
 ```yaml
-documentclass: proc
+classoption: "UTF8,a4paper,fontset=adobe,zihao=false"
 ```
 
 变为
 
 ```yaml
-documentclass: article
+classoption: "UTF8,a4paper,fontset=adobe,zihao=false,twocolumn"
 ```
+
+其中，参数 `UTF8` 设定文档编码类型， `a4paper` 设置版面为 A4 纸大小，`fontset=adobe` 指定中文字体为 Adobe 字体，`zihao=false` 不指定字体大小，使用文档类 ctexart 默认的字号,
+
+
+### 参数化报告 {#subsec:parameterized-reports}
+
+[参数化文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/parameterized-document.Rmd)
+
 
 进一步将文档类型做成参数化，实现在运行时自由选择，只需将如下两行替换掉上述一行
 
 ```yaml
 params:
-  documentclass: article
-documentclass: "`r knitr::inline_expr('params$documentclass')`"
+  classoption: twocolumn
+classoption: "`r knitr::inline_expr('params$classoption')`"
 ```
 
 如果想要双栏的排版风格，编译时传递 documentclass 参数值，覆盖掉默认的参数值即可
 
 ```r
-rmarkdown::render(input = "rmdexamples/pdf-document.Rmd", params = list(documentclass = "proc"))
+rmarkdown::render(input = "examples/pdf-document.Rmd", params = list(classoption = c("twocolumn")))
 ```
+
+
+
+### 学术幻灯片 {#sec:beamer-slides}
+
+beamer 幻灯片也是一种 PDF 文档 [PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/beamer-verona.Rmd)
+
+
+## HTML 文档 {#sec:html-document}
+
+丘怡轩开发的 [prettydoc](https://github.com/yixuan/prettydoc) 包提供了一系列模版，方便快速提高网页逼格。另有 Atsushi Yasumoto 开发的 [minidown](https://github.com/atusy/minidown) 包非常轻量，但是常用功能都覆盖了。
+
+
+
+
+## bookdown 书籍 {#sec:bookdown}
 
 此外， [ElegantTufteBookdown](https://github.com/XiangyunHuang/ElegantTufteBookdown) 项目提供了 tufte 风格的书籍模板，本书配套的仓库目录 `examples/` 下准备了一系列常用模板。
 
-## 微软办公文档 {#sec:officer}
 
-探索 Markdown + Pandoc 以 Word 格式作为最终交付的可能性
-
-R Markdown 借助 Pandoc 将 Markdown 转化为 Word 文档， 
+## blogdown 网站 {#sec:blogdown}
 
 
+
+
+
+## Office 文档 {#sec:office-document}
+
+[officer](https://github.com/davidgohel/officer) 和 [officedown](https://github.com/davidgohel/officedown) 大大扩展了 rmarkdown 在制作 Word/PPT 方面的功能。
+
+本节探索 Markdown + Pandoc 以 Word 格式作为最终交付的可能性。R Markdown 借助 Pandoc 将 Markdown 转化为 Word 文档，继承自 Pandoc 的扩展性， R Markdown 也支持自定义 Word 模版，那如何自定义呢？首先，我们需要知道 Pandoc 内建的 Word 模版长什么样子，然后我们依样画葫芦，制作适合实际需要的模版。获取 Pandoc 2.9.2 自带的 Word 和 PPT 模版，我们需要在命令行中执行
+
+```{bash,eval=FALSE}
+# DOCX 模版
+pandoc -o custom-reference.docx --print-default-data-file reference.docx
+# PPTX 模版
+pandoc -o custom-reference.pptx --print-default-data-file reference.pptx
+```
+
+详情见 <https://pandoc.org/MANUAL.html#option--reference-doc>，如何深度自定义文档模版见 <https://bookdown.org/yihui/rmarkdown/word-document.html> 
+，其它模版见 GitHub 仓库 [pandoc-templates](https://github.com/jgm/pandoc-templates)。
+
+[Word 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/word-document.Rmd)
 
 ## 运行环境 {#sec:dynamic-documents-session-info}
 

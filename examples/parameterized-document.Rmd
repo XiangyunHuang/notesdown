@@ -1,0 +1,68 @@
+---
+title: "Dynamic Documents: R Markdown"
+geometry: margin=1.18in
+# documentclass: ctexart # zh
+# documentclass: ctexbook # zh
+# documentclass: article # en
+# documentclass: book # en
+documentclass: scrbook
+# documentclass: memoir 
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    number_sections: yes
+    toc: yes
+    # pandoc_args: ["--top-level-division=chapter"] # only for ctexbook or book class
+link-citations: yes
+colorlinks: yes
+classoption: "a4paper"
+bibliography: 
+ - packages.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Document
+
+## R Markdown
+
+This is an R Markdown document [@rmarkdown2018]. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Session Info
+
+```{r}
+xfun::session_info('rmarkdown')
+```
+
+# References {#chap:refer}
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown"
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+xfun::write_utf8(bib, "packages.bib")
+```

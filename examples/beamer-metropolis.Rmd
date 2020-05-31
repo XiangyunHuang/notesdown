@@ -1,0 +1,100 @@
+---
+title: "R Markdown 制作 beamer 幻灯片"
+author: "黄湘云"
+institute: "理学院 \\and 计算数学与统计系 \\and 中国矿业大学（北京）理学院 "
+date: "最近一次编译时间 `r format(Sys.time(), '%Y年%m月%d日%H时%M分%S秒')`"
+documentclass: ctexbeamer
+output: 
+  bookdown::pdf_book: 
+    number_sections: yes
+    toc: no
+    fig_crop: false
+    base_format: rmarkdown::beamer_presentation
+    latex_engine: xelatex
+    citation_package: natbib
+    dev: "cairo_pdf"
+    template: null
+    theme: metropolis # https://www.ctan.org/pkg/beamertheme-metropolis https://github.com/matze/mtheme
+    quote_footer: ["\\hspace*{\\fill} ", ""]
+bibliography: 
+ - packages.bib
+classoption: "fontset=adobe,zihao=false"
+biblio-style: plainnat
+natbiboptions: "authoryear,round"
+link-citations: yes
+colorlinks: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 动态文档 {#chap:doc}
+
+## 介绍 {#chap:intro-rmarkdown}
+
+> A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions.  
+> 
+> --- John Gruber
+
+这是一份 R Markodwn 文档 [@rmarkdown2018] 介绍如何插入图片。 Markdown 提供一种简洁的格式语法，用来编辑 HTML、PDF 和 MS Word 文档。更多详情见 <https://rmarkdown.rstudio.com>。
+
+## 运行 {#sec:run}
+
+当你点击 **Knit** 按钮时，就会生成一份包含正文和代码执行结果的文档。你可以像这样嵌入 R 代码块：
+
+```{r cars,echo=TRUE}
+summary(cars)
+```
+
+## 插图 {#sec:figure}
+
+[^sleep-data]: “Student” 收集的睡眠数据
+
+我们可以在 R Markdown 文档中插入图片，如图 \@ref(fig:sleep) 所示，数据集 sleep 记录了两种药物对病人睡眠时间的影响[^sleep-data]
+
+1. Bullet 1
+1. Bullet 2
+1. Bullet 3
+
+在代码块控制选项里设置参数 `echo = FALSE` 可以隐藏生成图\@ref(fig:sleep)的代码。
+
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+
+## 数据集 {#sec:datasets}
+
+```{r sleep, fig.cap="药物对睡眠时长的影响",fig.width=4,fig.height=3}
+library(ggplot2)
+ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
+  geom_boxplot() +
+  geom_jitter() +
+  theme_minimal()
+```
+
+## 小鸡体重数据 {#sec:ChickWeight}
+
+```{r ChickWeight,fig.cap="不同喂食方式对小鸡体重的影响",fig.width=4,fig.height=3}
+ggplot(data = ChickWeight, aes(x = Time, y = weight, group = Chick, color = Diet)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~Diet) +
+  theme_minimal()
+```
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown"
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+bib <- gsub("'(Eigen|ggplot2|Stan)'", "\\1", bib)
+xfun::write_utf8(bib, "packages.bib")
+```

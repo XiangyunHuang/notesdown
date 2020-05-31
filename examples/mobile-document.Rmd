@@ -1,0 +1,83 @@
+---
+title: "在R Markdown文档中使用中文"
+author:
+  - 谢益辉
+  - 邱怡轩
+  - 于淼
+documentclass: ctexart
+geometry: a6paper,margin=1mm
+output: 
+  bookdown::pdf_book: 
+    number_sections: yes
+    toc: yes
+    fig_crop: no
+    base_format: rmarkdown::pdf_document
+    latex_engine: xelatex
+    citation_package: natbib
+    dev: "cairo_pdf"
+    template: null
+    extra_dependencies:
+      sourcecodepro:
+       - scale=0.85
+      sourceserifpro:
+       - rmdefault
+      sourcesanspro:
+       - sfdefault
+    quote_footer: ["\\hspace*{\\fill} ", ""]
+bibliography: 
+ - packages.bib
+biblio-style: plainnat
+natbiboptions: "authoryear,round"
+classoption: "UTF8,fontset=adobe,zihao=false"
+link-citations: yes
+colorlinks: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 介绍 {#chap:intro-rmarkdown}
+
+> A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions.  
+> 
+> --- John Gruber
+
+这是一份 R Markodwn 文档 [@rmarkdown2018] 第\@ref(sec:figure)节介绍如何插入图片。 Markdown 提供一种简洁的格式语法，用来编辑 HTML、PDF 和 MS Word 文档。更多详情见 <http://rmarkdown.rstudio.com>。
+
+当你点击 **Knit** 按钮时，就会生成一份包含正文和代码执行结果的文档。你可以像这样嵌入 R 代码块：
+
+```{r cars}
+summary(cars)
+```
+
+## 插图 {#sec:figure}
+
+[^sleep-data]: “Student” 收集的睡眠数据
+
+我们可以在 R Markdown 文档中插入图片，如图 \@ref(fig:sleep) 所示，数据集 sleep 记录了两种药物对病人睡眠时间的影响[^sleep-data]
+
+```{r sleep, echo=FALSE,fig.cap="药物对睡眠时长的影响"}
+library(ggplot2)
+ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
+  geom_boxplot() +
+  geom_jitter() +
+  theme_minimal(base_size = 16)
+```
+
+在代码块控制选项里设置参数 `echo = FALSE` 可以隐藏生成图\@ref(fig:sleep)的代码。
+
+# 参考文献 {#chap:refer}
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown"
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+xfun::write_utf8(bib, "packages.bib")
+```
