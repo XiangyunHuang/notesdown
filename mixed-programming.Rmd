@@ -7,10 +7,14 @@ library(htmlwidgets)
 library(reticulate)
 library(Rcpp)
 knitr::opts_chunk$set(python.reticulate = TRUE)
-reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+
+if (identical(.Platform$OS.type, "windows")) {
+  # 在本地 Windows 系统上虚拟环境是用 miniconda3 创建的
+  reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+}
 ```
-
-
 
 R 与不同的编程语言如何交互
 
@@ -39,6 +43,10 @@ plt.switch_backend('agg')
 plt.plot([0, 2, 1, 4])
 plt.show()
 ```
+
+
+
+
 
 ## R 与 C++ {#sec:r-cpp}
 
