@@ -1,0 +1,85 @@
+---
+title: "R Markdown 制作 beamer 幻灯片"
+author: "黄湘云"
+institute: "理学院 \\and 计算数学与统计系 \\and 中国矿业大学（北京）理学院 "
+date: "最近一次编译时间 `r format(Sys.time(), '%Y年%m月%d日%H时%M分%S秒')`"
+documentclass: ctexbeamer
+output: 
+  beamer_presentation: 
+    theme: Warsaw
+    latex_engine: xelatex
+    citation_package: natbib
+    keep_tex: no # yes for debug
+    template: null
+biblio-style: plainnat
+bibliography: 
+  - packages.bib
+classoption: "UTF8,fontset=adobe,zihao=false,compress"
+link-citations: yes
+colorlinks: yes
+linkcolor: white
+thanks: "感谢 Pandoc 开发者"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 介绍 {#intro}
+
+## R 语言 {#sec:rlang}
+
+> A Markdown-formatted document should be publishable as-is, as plain text, 
+without looking like it’s been marked up with tags or formatting instructions.  
+> 
+> --- John Gruber
+
+
+Markdown 提供一种简洁的格式语法，用来编辑 HTML、PDF 和 MS Word 文档。
+介绍 R Markodwn 文档如何插入图片，更多详情见 <https://rmarkdown.rstudio.com> [@rmarkdown2018]。
+
+R 语言的命名部分来源于最初的两位作者的姓名的首字母 Robert Gentleman 和 Ross Ihaka，
+部分是由于贝尔实验室推出的 S 语言 [@base]。
+
+## 压力数据 pressure {#sec:pressure}
+
+
+```{r pressure, fig.width = 4.4/1.2, fig.height = 3.8/1.2, fig.cap="压力和温度的关系"}
+par(mar = c(4, 4, 2, 1))
+plot(pressure,
+  log = "y", yaxt = "n",
+  xlab = "Temperature (deg C)",
+  ylab = "Pressure (mm of Hg)"
+)
+axis(2,
+  at = 10^(-3:3), las = 1,
+  labels = expression(10^-3, 10^-2, 10^-1, 10^0, 10^1, 10^2, 10^3)
+)
+```
+
+
+## 运行环境 {#session-info .allowframebreaks}
+
+制作此幻灯片，我们使用了  bookdown 包 [@bookdown2016]、 rmarkdown 包 [@rmarkdown2018] 和 knitr 包 [@knitr2015]，以及  `r R.version.string` 其它软件和环境信息见下方
+
+```{r,comment=NA,echo=TRUE}
+xfun::session_info(c(
+  "bookdown", "rmarkdown", "knitr"
+), dependencies = TRUE)
+```
+
+```{r bib,include=FALSE,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown"
+  ), file = NULL, prefix = ""
+)
+bib <- unlist(bib)
+# remove the ugly single quotes required by CRAN policy
+bib <- gsub("(\\\n)", " ", bib)
+xfun::write_utf8(bib, "packages.bib")
+```
+
+
+
