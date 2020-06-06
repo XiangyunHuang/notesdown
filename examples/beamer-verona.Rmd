@@ -1,6 +1,7 @@
 ---
 title: "R Markdown 制作 beamer 幻灯片"
-author: "xx"
+author: "黄湘云"
+institute: "中国矿业大学（北京）"
 date: "`r Sys.Date()`"
 documentclass: ctexbeamer
 output: 
@@ -16,11 +17,14 @@ output:
     pandoc_args: !expr rmarkdown:::pandoc_lua_filters("latex-div.lua")
 themeoptions: 
   - colorblocks
+  - showheader
+  - red
 biblio-style: plainnat
 bibliography: 
   - packages.bib
 classoption: "UTF8,fontset=adobe,zihao=false"
 link-citations: yes
+section-titles: false
 colorlinks: yes
 ---
 
@@ -28,26 +32,22 @@ colorlinks: yes
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+# 介绍 {#intro}
+
 ## 目录 {#outline}
 
 1. Markdown
 
    1. John Gruber’s Markdown
-   
    1. Pandoc’s Markdown
-   
    1. Hugo's Markdown/Blackfriday’s Markdown 
-   
    1. R Markdown
 
 1. R Markdown
 
    1. Pandoc
-  
    1. LaTeX
-  
    1. CSS/JS/HTML
-   
    1. Lua
 
 1. Pandoc
@@ -57,10 +57,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## R 语言 {#sec:rlang}
 
-> A Markdown-formatted document should be publishable as-is, as plain text, 
+
+::: {.quotation data-latex="[John Gruber]"}
+A Markdown-formatted document should be publishable as-is, as plain text, 
 without looking like it’s been marked up with tags or formatting instructions.  
-> 
-> --- John Gruber
+:::
 
 
 Markdown 提供一种简洁的格式语法，用来编辑 HTML、PDF 和 MS Word 文档。
@@ -105,12 +106,12 @@ Table: (\#tab:insert-tab) 表格标题^[附有脚注]
 ![...](...){...}
 ```
 
-![(\#fig:fig-markdown) 默认图片位置居左^[这里是脚注]](`r knitr::fig_chunk('sleep', 'pdf')`){ width=55% }
+![(\#fig:fig-markdown) 默认图片位置居左^[这里是脚注]](`r knitr::fig_chunk('sleep', 'pdf')`){ width=50% }
 
 
 ## 睡眠数据 sleep {#sec:sleep}
 
-```{r sleep, fig.width = 4, fig.height = 3, fig.cap = "药物对睡眠时长的影响"}
+```{r sleep, fig.width = 6, fig.height = 4.5, fig.cap = "药物对睡眠时长的影响",out.width="70%"}
 library(ggplot2)
 ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
   geom_boxplot() +
@@ -121,7 +122,7 @@ ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
 ## 压力数据 pressure {#sec:pressure}
 
 
-```{r pressure, fig.width = 4.4/1.2, fig.height = 3.8/1.2, fig.cap="压力和温度的关系"}
+```{r pressure, fig.width = 4.4, fig.height = 3.8, fig.cap="压力和温度的关系",out.width="65%"}
 par(mar = c(4, 4, 2, 1))
 plot(pressure,
   log = "y", yaxt = "n",
@@ -147,6 +148,13 @@ tinytex::tlmgr_install('beamer-verona')
 
 
 ## 自定义的块 {#sec:custom-blocks}
+
+::: {.quotation data-latex="[Donald E. Knuth, The \TeX book]"}
+Gentle reader: This is a handbook about TEX, a new typesetting
+system G intended for the creation of beautiful books—and
+especially for books that contain a lot of mathematics.
+:::
+
 
 ::: {.exampleblock data-latex="{提示}"}
 提示

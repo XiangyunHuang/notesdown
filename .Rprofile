@@ -35,7 +35,8 @@ options(
   stringsAsFactors = FALSE,
   knitr.graphics.auto_pdf = TRUE,
   rgl.printRglwidget = TRUE,
-  rgl.useNULL = TRUE,
+  rgl.useNULL = TRUE, # used in vbox
+  yaml.eval.expr = TRUE, # used by yaml.load
   width = 69,
   sciopen = 999,
   demo.ask = FALSE,
