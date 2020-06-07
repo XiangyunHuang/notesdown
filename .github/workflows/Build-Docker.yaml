@@ -7,12 +7,12 @@ name: Build-Docker
 jobs:
   build:
     if: "contains(github.event.head_commit.message, '[docker]')"
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ubuntu-latest
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
     strategy:
       matrix:
         config:
-          - {os: ubuntu-18.04, r: '4.0.0'}
+          - {os: fedora-33, r: '3.6.3'}
 
     steps:
       - name: Checkout repo
@@ -25,10 +25,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: xiangyunhuang/masr
           tags: latest
-
-      - name: Test Docker
-        run: |
-          docker run --rm -it xiangyunhuang/masr Rscript -e "sessionInfo(sort(.packages(T)));capabilities();extSoftVersion()"
-          docker run --rm -it xiangyunhuang/masr sh -c 'fc-list :lang=zh-cn | sort; fc-list :lang=en-us | sort; pandoc -v; tex -v; xelatex -v; pdflatex -v'
-          docker run --rm -it xiangyunhuang/masr sh -c 'fc-list :lang=zh-cn family style | sort; fc-list :lang=en-us family style | sort'
-          docker run --rm -it xiangyunhuang/masr sh -c 'locale'
