@@ -11,8 +11,6 @@ LABEL org.label-schema.license="GPL-3.0" \
 # System dependencies required for R packages
 RUN dnf -y upgrade \
   && dnf -y install dnf-plugins-core \
-  && dnf config-manager --set-enabled PowerTools \
-  && dnf -y update \
   && dnf -y install pandoc \
    pandoc-citeproc \
    pandoc-pdf \
