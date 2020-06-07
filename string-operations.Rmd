@@ -1,2 +1,43 @@
 # 字符串操作 {#chap:string-operations}
 
+
+```{r}
+shopping_list <- c("apples x4", "bag of flour", "bag of sugar", "milk x2")
+
+stringr::str_replace(string = shopping_list, pattern = "\\d", replacement = "aa")
+```
+
+
+
+
+```{r,eval=FALSE}
+# https://github.com/hadley/stringb/issues/5
+# x is vector
+str_replace <- function(x, pattern, fun, ...) {
+  loc <- gregexpr(pattern, text = x, perl = TRUE)
+  matches <- regmatches(x, loc)
+  out <- lapply(matches, fun, ...)
+
+  regmatches(x, loc) <- out
+  x
+}
+
+
+loc <- gregexpr(pattern = "\\d", text = shopping_list, perl = TRUE)
+
+matches = regmatches(x = shopping_list, loc)
+
+matches
+
+out <- lapply(matches, transform, "aa")
+
+regmatches(x = shopping_list, loc) <- out
+
+
+shopping_list
+
+
+str_replace(shopping_list, pattern = "\\\\d", replace = "aa")
+```
+
+

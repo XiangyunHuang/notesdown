@@ -35,7 +35,7 @@ lines(spline(xx, sqrt(abs(xx)), n=101), col = "pink")
 # 稳健估计
 x <- sort(rnorm(100))
 cH <- 1.35
-plot(x, pmin(cH, pmax(-cH, x)), type = "b", main =  "Huber's function")
+plot(x, pmin(cH, pmax(-cH, x)), type = "b", main =  "Huber's function", col = "red")
 ```
 
 
@@ -249,3 +249,16 @@ filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.color
 `hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
 :::
 
+
+## 交互图形 {#sec:interactive-graphics}
+
+- plotly
+
+```{r,eval=FALSE}
+library(plotly)
+plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1") %>%
+  add_boxplot() %>%
+  config(toImageButtonOptions = list(
+    format = "svg", filename = "plot"
+  ), displaylogo = FALSE, locale = "zh-CN")
+```
