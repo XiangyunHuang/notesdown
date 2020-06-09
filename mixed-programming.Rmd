@@ -45,7 +45,35 @@ plt.show()
 ```
 
 
+## R 与 C {#sec:r-c}
 
+knitr 支持在 R Markdown 中嵌入 C 语言代码
+
+```{c}
+void useC(int *i){
+  i[0] = 11;
+}
+```
+```{r}
+a <- rep(2,10)
+out <- .C("useC", b = as.integer(a))
+out
+out$b
+```
+
+
+一步一步地命令行操作
+
+```bash
+R CMD SHLIB useC1.c
+```
+
+```r
+dyn.load("useC1.dll")
+a <- rep(2,10)
+out <- .C("useC", b = as.integer(a))
+out$b
+```
 
 
 ## R 与 C++ {#sec:r-cpp}
