@@ -37,7 +37,7 @@ rstan_gg_options(
 
 模拟高斯过程例子来自 Stan 参考手册 [@Stan_2018_Bayesian]
 
-```{stan output.var="normal_gp",cache=TRUE}
+```{stan output.var="normal_gp",eval=FALSE}
 data {
   int<lower=1> N;
   real x[N];
@@ -61,10 +61,14 @@ model {
   y ~ multi_normal(mu, K);
 }
 ```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/normal_gp.stan")
+```
 
 stan 库内置了核函数为二次幂指数的实现，因此可以直接调用 `cov_exp_quad` 函数计算协方差矩阵
 
-```{stan output.var="compat_gp",cache=TRUE}
+```{stan output.var="compat_gp",eval=FALSE}
 data {
   int<lower=1> N;
   real x[N];
@@ -81,6 +85,10 @@ parameters {
 model {
   y ~ multi_normal(mu, K);
 }
+```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/compat_gp.stan")
 ```
 
 以 MASS 的 topo 数据集引出高斯过程回归模型问题复杂性
@@ -114,10 +122,15 @@ model {
   y ~ normal(mu, sigma);
 }
 ```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/normal_dist.stan")
+```
 
 打包观测数据，初始化待估参数值，指定链条数，其中 `dataList` 必须与 stan 代码中数据块声明保持一致（如变量名称，长度），每条链使用不同的初始值，选择合适的初始值可以有效地提高收敛的速度。
 
-```{r,message=FALSE,warning=FALSE}
+```{r}
+# 数据准备
 set.seed(20190427)
 # 设置参数
 mu <- 10
@@ -134,6 +147,9 @@ inits_data <- lapply(1:nchains, function(i) {
     sigma = runif(1, 1, 10)
   )
 })
+```
+
+```{r}
 # 拟合模型
 normal_fit <- sampling(normal_dist,
   data = list(
@@ -143,6 +159,22 @@ normal_fit <- sampling(normal_dist,
   init = inits_data,
   warmup = 1000, # 每条链预处理迭代次数
   iter = 2000, # 每条链总迭代次数
+  chains = nchains, # 马尔科夫链的数目
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
+  verbose = FALSE, # 不显示迭代的中间过程
+  refresh = 0, # 不显示采样的进度
+  seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
+)
+```
+```{r,eval=FALSE}
+normal_fit <- mod$sample(
+  data = list(
+    N = nobs,
+    y = y
+  ),
+  init = inits_data,
+  iter_warmup = 1000, # 每条链预处理迭代次数
+  iter_sampling = 2000, # 每条链总迭代次数
   chains = nchains, # 马尔科夫链的数目
   cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
   verbose = FALSE, # 不显示迭代的中间过程
@@ -208,8 +240,12 @@ model {
   target += normal_lpdf(y | theta, sigma); // log-likelihood
 }
 ```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/eight_schools.stan")
+```
 
-```{r,warning=FALSE,message=FALSE}
+```{r}
 # 模型拟合
 eight_schools_fit <- sampling(eight_schools,
   data = list( # 观测数据
@@ -219,6 +255,22 @@ eight_schools_fit <- sampling(eight_schools,
   ),
   warmup = 1000, # 每条链预处理迭代次数
   iter = 2000, # 每条链总迭代次数
+  chains = 4, # 马尔科夫链的数目
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
+  verbose = FALSE, # 不显示迭代的中间过程
+  refresh = 0, # 不显示采样的进度
+  seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
+)
+```
+```{r,eval=FALSE}
+eight_schools_fit <- mod$sample(
+  data = list( # 观测数据
+    J = 8,
+    y = c(28, 8, -3, 7, -1, 1, 18, 12),
+    sigma = c(15, 10, 16, 11, 9, 11, 10, 18)
+  ),
+  iter_warmup = 1000, # 每条链预处理迭代次数
+  iter_sampling = 2000, # 每条链总迭代次数
   chains = 4, # 马尔科夫链的数目
   cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
   verbose = FALSE, # 不显示迭代的中间过程
@@ -404,6 +456,7 @@ source('data/8schools.rdump')
 ### Rats 数据贝叶斯分层建模 {}
 
 ```{r}
+# 数据准备
 # modified code from https://github.com/stan-dev/example-models/tree/master/bugs_examples/vol1/rats
 N <- 30
 T <- 5
@@ -423,10 +476,9 @@ y <- structure(c(
 ), .Dim = c(30, 5))
 x <- c(8.0, 15.0, 22.0, 29.0, 36.0)
 xbar <- 22.0
-```
 
 
-```{r,cache=TRUE}
+# 模型参数设置
 chains <- 4
 iter <- 1000
 
@@ -436,7 +488,10 @@ init <- rep(list(list(
   tausq_c = 1, tausq_alpha = 1,
   tausq_beta = 1
 )), chains)
+```
 
+
+```{r,cache=TRUE}
 rats_fit <- stan(
   model_name = "rats",
   model_code = "
@@ -486,6 +541,22 @@ rats_fit <- stan(
   ",
   data = list(N = N, T = T, y = y, x = x, xbar = xbar),
   chains = chains, init = init, iter = iter
+)
+```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/rats.stan")
+
+rats_fit <- mod$sample(
+  data = list(N = N, T = T, y = y, x = x, xbar = xbar),
+  init = init,
+  iter_warmup = 1000, # 每条链预处理迭代次数
+  iter_sampling = 2000, # 每条链总迭代次数
+  chains = chains, # 马尔科夫链的数目
+  cores = 1, # 指定 CPU 核心数，可以给每条链分配一个
+  verbose = FALSE, # 不显示迭代的中间过程
+  refresh = 0, # 不显示采样的进度
+  seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
 )
 ```
 
