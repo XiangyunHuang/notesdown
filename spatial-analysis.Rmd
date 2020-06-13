@@ -1,1 +1,102 @@
 # 空间分析  {#chap:spatial-analysis}
+
+
+## 西非眼线虫病 {#sec:cameroon-eyeworm}
+
+loaloa 眼线虫病，人群感染，村庄水平， 响应变量服从二项分布 $Y \sim b(n,p)$，每个村庄感染的人数 $Y_i \sim b(n_i, p_i)$ 其中 $n_i$ 是第 $i$ 个村庄调查的人数， $p_i$ 是观测的感染率
+
+```{r,eval=FALSE}
+data("loaloa", package = "PrevMap")
+```
+
+
+大规模空间数据建模，低秩近似和最近邻算法
+
+1. Zhang, Lu and Datta, Abhirup and Banerjee, Sudipto. 2019. Practical Bayesian modeling and inference for massive spatial data sets on modest computing environments. Statistical Analysis and Data Mining: The ASA Data Science Journal.12(3):179--209. <doi:10.1002/sam.11413>
+
+1. A. V. Vecchia. 1988. Estimation and Model Identification for Continuous Spatial Processes. Journal of the Royal Statistical Society. Series B (Methodological). 50(2):297--312. <http://www.jstor.org/stable/2345768>
+
+## 冈比亚儿童疟疾 {#sec:gambia-malaria}
+
+
+```{r}
+library(sp)
+library(RColorBrewer)
+library(raster)
+library(lattice)
+library(latticeExtra)
+library(rasterVis) # https://oscarperpinan.github.io/rastervis/
+# https://oscarperpinan.github.io/rastervis/FAQ.html
+library(sf)
+# library(geoR)
+# library(geoRglm)
+```
+
+冈比亚儿童疟疾数据集
+
+```{r gambia-altitude,fig.cap="冈比亚地形海拔数据",fig.width=8,fig.height=4,message=FALSE}
+sp_path <- "tmp/data" # 存储临时地形文件
+if (!dir.exists(sp_path)) dir.create(sp_path, recursive = TRUE)
+# Gambia 海拔数据
+gambia_alt <- raster::getData(name = "alt", country = "GMB", mask = TRUE, path = sp_path)
+# Gambia 市级行政边界数据
+gambia_map <- raster::getData("GADM", country = "GMB", level = 2, path = sp_path)
+# 绘制冈比亚地形
+rasterVis::levelplot(gambia_alt,
+  margin = FALSE,
+  main = "Elevation",
+  colorkey = list(
+    space = "top",
+    labels = list(at = seq(from = -5, to = 65, by = 10)),
+    axis.line = list(col = "black")
+  ),
+  par.settings = list(
+    axis.line = list(col = "transparent")
+  ),
+  scales = list(draw = FALSE),
+  col.regions = hcl.colors,
+  at = seq(-5, 65, len = 101)
+) +
+  latticeExtra::layer(sp::sp.polygons(gambia_map, lwd = 1.5))
+```
+
+```{r,fig.cap="各个村庄疟疾感染度",fig.width=8,fig.height=4}
+# library(geoR)
+# library(geoRglm)
+# 加载数据
+data(gambia, package = "geoR")
+# 坐标变换
+library(rgdal)
+sps <- SpatialPoints(gambia[, c("x", "y")],
+  proj4string = CRS("+proj=utm +zone=28")
+)
+spst <- spTransform(sps, CRS("+proj=longlat +datum=WGS84"))
+gambia[, c("x", "y")] <- coordinates(spst)
+# 聚合数据
+gambia_agg <- aggregate(
+  formula = cbind(pos, netuse, treated) ~ x + y + green + phc,
+  data = gambia, FUN = function(x) sum(x) / length(x)
+)
+# 抽取指定位置的海拔数据
+# raster::extract(gambia_alt, gambia[, c("x", "y")])
+```
+
+$Y \sim b(1,p)$ 每个人检验结果，就是感染 1 或是没有感染 0，感染率 $p$ 的建模分析，个体水平
+
+```{r}
+## 绘图
+library(ggplot2)
+ggplot(aes(x = x, y = y), data = gambia_agg) +
+  geom_point(aes(color = pos, size = pos),
+    show.legend = c("color" = F, "size" = T)
+  ) +
+  scale_color_viridis_c(option = "C", direction = -1) +
+  labs(x = "Longitude", y = "Latitude") +
+  theme_minimal()
+```
+
+
+
+Paula Moraga 的新书 [Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny](https://paula-moraga.github.io/book-geospatial/)
+
+Elias T. Krainski, Virgilio Gómez-Rubio, Haakon Bakka, Amanda Lenzi, Daniela Castro-Camilo, Daniel Simpson, Finn Lindgren and Håvard Rue 合著的新书 [Advanced Spatial Modeling with Stochastic Partial Differential Equations Using R and INLA](https://becarioprecario.bitbucket.io/spde-gitbook/)

@@ -160,4 +160,38 @@ gzip filename.gz -d ~/tmp
 ```
 
 
+## 安装软件 {#install-softwares}
 
+本书在后续章节中陆续用到新的 R 包，其安装过程不会在正文中呈现，下面以在 CentOS 8 上安装 **sf** 包为例介绍。首先需要安装一些系统依赖，具体安装哪些依赖参见 **sf** 包开发站点 <https://github.com/r-spatial/sf>。
+
+```bash
+sudo dnf config-manager --set-disabled PowerTools
+sudo dnf copr enable/disable simc/stable # 获取 gdal-devel
+sudo dnf install -y sqlite-devel gdal-devel \
+  proj-devel geos-devel udunits2-devel
+```
+
+然后，在 R 命令行窗口中，执行安装命令：
+
+```r
+install.packages('sf')
+```
+
+至此，安装完成。如遇本地未安装的新 R 包，可从其官方文档中找寻安装方式。如果你完全不知道自己应该安装哪些，考虑把下面的依赖都安装上
+
+```bash
+sudo dnf install -y \
+  # magick
+  ImageMagick-c++-devel \ 
+  # pdftools
+  poppler-cpp-devel \ 
+  # gifski
+  cargo 
+```
+
+软件包管理器架构图，各个命令分别担负什么样的功能，每个命令学习的一般路径是什么，而不是详细介绍每个命令、每个参数的使用，只需给出一个命令的完整使用即可，其余给出一个查询命令帮助手册
+
+```bash
+dnf copr
+dnf config-manager
+```
