@@ -1,0 +1,92 @@
+# 支持向量机 {#Support-Vector-Machines}
+
+> 主要参考 R 包 e1071 内置的手册
+
+David Meyer 基于 [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) 开发了 [e1071](https://r-forge.r-project.org/projects/e1071) 包[@R-e1071]，实现了非线性回归分类算法
+
+e1071 聚类/分类/支持向量机/模型 包内置文档
+
+```{r}
+library(e1071)
+```
+
+```{r}
+svmpred <- function(m, newdata, K = crossprod) {
+  ## this guy does the computation:
+  pred.one <- function(x)
+    sign(sum(sapply(1:m$tot.nSV, function(j)
+      K(m$SV[j, ], x) * m$coefs[j])) - m$rho)
+
+  ## this is just for convenience:
+  if (is.vector(newdata)) {
+    newdata <- t(as.matrix(x))
+  }
+  sapply(
+    1:nrow(newdata),
+    function(i) pred.one(newdata[i, ])
+  )
+}
+```
+
+
+```{r}
+## Linear Kernel function
+K <- function(i, j) crossprod(i, j)
+
+predsvm <- function(object, newdata) {
+  ## compute start-index
+  start <- c(1, cumsum(object$nSV) + 1)
+  start <- start[-length(start)]
+
+  ## compute kernel values
+  kernel <- sapply(
+    1:object$tot.nSV,
+    function(x) K(object$SV[x, ], newdata)
+  )
+
+  ## compute raw prediction for classifier (i,j)
+  predone <- function(i, j) {
+    ## ranges for class i and j:
+    ri <- start[i]:(start[i] + object$nSV[i] - 1)
+    rj <- start[j]:(start[j] + object$nSV[j] - 1)
+
+    ## coefs for (i,j):
+    coef1 <- object$coefs[ri, j - 1]
+    coef2 <- object$coefs[rj, i]
+
+    ## return raw values:
+    crossprod(coef1, kernel[ri]) + crossprod(coef2, kernel[rj])
+  }
+
+  ## compute votes for all classifiers
+  votes <- rep(0, object$nclasses)
+  c <- 0 # rho counter
+  for (i in 1:(object$nclasses - 1)) {
+    for (j in (i + 1):object$nclasses) {
+      if (predone(i, j) > object$rho[c <- c + 1]) {
+        votes[i] <- votes[i] + 1
+      } else {
+        votes[j] <- votes[j] + 1
+      }
+    }
+  }
+
+  ## return winner (index with max. votes)
+  object$levels[which(votes %in% max(votes))[1]]
+}
+```
+
+
+```{r,eval=FALSE}
+if (any(object$scaled)) {
+  newdata[, object$scaled] <-
+    scale(newdata[, object$scaled, drop = FALSE],
+      center = object$x.scale$"scaled:center",
+      scale = object$x.scale$"scaled:scale"
+    )
+}
+```
+
+### 支持向量机回归 {#SVM-Regression}
+
+这种基于算法的回归方法应该放在支持向量机的算法介绍中，作为它的应用，即支持向量机算法用于回归分析
