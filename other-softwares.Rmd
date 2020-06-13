@@ -870,6 +870,39 @@ tlmgr --repository http://www.preining.info/tlgpg/ install tlgpg
 :::
 
 
+二维函数 $f(x,y) = 20 + x^2 + y^2 - 10*\cos(2*\pi*x) - 10*\cos(2*\pi*y)$ 最小值 0 最大值 80
+
+```{python rastrigin-function, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), out.width='.8\\textwidth',collapse=TRUE}
+from math import cos, pi
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+from matplotlib import cm
+
+from matplotlib import rcParams
+rcParams.update({'font.size': 18, 'text.usetex': True}) # 其它可配置选项见 rcParams.keys()
+plt.switch_backend('agg')
+
+xDomain = np.arange(-5.12, 5.12, .08)
+yDomain = np.arange(-5.12, 5.12, .08)
+
+X, Y = np.meshgrid(xDomain, yDomain)
+z = [20 + x**2 + y**2 - (10*(cos(2*pi*x) + cos(2*pi*y))) for x in xDomain for y in yDomain]
+Z = np.array(z).reshape(128,128)
+
+fig = plt.figure(figsize = (12,10))
+ax = fig.gca(projection='3d')
+surf = ax.plot_surface(X, Y, Z, cmap=cm.RdYlGn, linewidth=1, antialiased=False)
+
+ax.set_xlim(-5.12, 5.12)
+ax.set_ylim(-5.12, 5.12)
+ax.set_zlim(0, 80)
+fig.colorbar(surf, aspect=30)
+
+plt.title(r'Rastrigin Function in Two Dimensions')
+plt.show()
+```
+
 
 ## CmdStan 概率编程 {#setup-cmdstan}
 

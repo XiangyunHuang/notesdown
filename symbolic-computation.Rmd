@@ -1,0 +1,27 @@
+# 符号计算 {#chap:symbolic-computation}
+
+```{r setup, include=FALSE}
+library(reticulate)
+knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
+# 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
+if (identical(.Platform$OS.type, "windows")) {
+  # 在我的 Windows 机器上用的是 Miniconda3
+  reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+}
+```
+
+Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/> 
+
+```{python}
+from sympy import * 
+# 设置显示样式
+init_printing(use_unicode=False, wrap_line=False)
+x = Symbol('x')
+# 积分
+integrate(x**2 + x + 1, x)
+# 因式分解
+factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
+```
+
