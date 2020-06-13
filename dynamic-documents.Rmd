@@ -193,11 +193,31 @@ pandoc -o custom-reference.pptx --print-default-data-file reference.pptx
 
 ## 发送邮件 {#sec:send-emails}
 
-[emayili](https://github.com/datawookie/emayili) 是非常轻量的实现邮件发送的 R 包，其它功能类似的 R 包有 [blastula](https://github.com/rich-iannone/blastula) [mailR](https://github.com/rpremraj/mailR)
+[emayili](https://github.com/datawookie/emayili) 是非常轻量的实现邮件发送的 R 包，其它功能类似的 R 包有 [blastula](https://github.com/rich-iannone/blastula) [mailR](https://github.com/rpremraj/mailR)。Rahul Premraj 基于 rJava 开发的 [mailR](https://github.com/rpremraj/mailR) 虽然还未在 CRAN 上正式发布，但是已得到很多人的关注，也被广泛的使用，目前作者已经不维护了，继续使用有一定风险。 RStudio 公司 Richard Iannone 新开发的 [blastula](https://github.com/rich-iannone/blastula) 扔掉了 Java 的重依赖，更加轻量化、现代化。 [curl](https://github.com/jeroen/curl) 包提供的函数 `send_mail()` 本质上是在利用 [curl](https://curl.haxx.se/) 软件发送邮件，举个例子，邮件内容如下：
 
-curl 发邮件，通过 curl 访问接口，传递数据参数，调用模型返回结果
+```
+From: "黄湘云" <公司邮箱地址>
+To: "黄湘云" <公司邮箱地址>
+Subject: 测试邮件
 
-Rahul Premraj 基于 rJava 开发的 [mailR](https://github.com/rpremraj/mailR) 虽然还未在 CRAN 上正式发布，但是已得到很多人的关注，也被广泛的使用，目前作者已经不维护了，继续使用有一定风险。 RStudio 公司 Richard Iannone 新开发的 [blastula](https://github.com/rich-iannone/blastula) 扔掉了 Java 的重依赖，更加轻量化、现代化。
+你好：
+
+这是一封测试邮件！
+```
+
+将邮件内容保存为 mail.txt 文件，然后使用 curl 命令行工具将邮件内容发出去。
+
+```{bash,eval=FALSE}
+curl --url 'smtp://公司邮件服务器地址:开放的端口号' \
+  --ssl-reqd --mail-from '本人公司邮箱地址' \
+  --mail-rcpt '他人公司邮箱地址' \
+  --upload-file data/mail.txt \
+  --user '本人公司邮箱地址:邮箱登陆密码'
+```
+
+注意 Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。
+
+
 
 
 ## 运行环境 {#sec:dynamic-documents-session-info}
