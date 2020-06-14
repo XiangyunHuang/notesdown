@@ -154,6 +154,12 @@ gzip filename.gz -d ~/tmp
 
 ## 从源码安装 R {#build-source-code}
 
+从源码编译 R 的需求大概有以下几点：
+
+1. 爱折腾的极客：玩配置，学习 make 相关工具和 Linux 世界的依赖
+2. 追求性能：如 [LFS 支持](http://users.suse.com/~aj/linux_lfs.html) 和 [Intel MKL 加速](http://dirk.eddelbuettel.com/blog/2018/04/15/#018_mkl_for_debian_ubuntu)
+3. 环境限制：CentOS 6/7 或者红帽系统，自带的 R 版本比较落后
+
 ```bash
 ./configure --prefix=/opt/R/R-4.0.1  --enable-R-shlib --enable-byte-compiled-packages \
 --enable-BLAS-shlib --enable-memory-profiling --with-blas="-lopenblas"
@@ -195,3 +201,67 @@ sudo dnf install -y \
 dnf copr
 dnf config-manager
 ```
+
+
+## 软件包管理器 apt {#sec:apt-get}
+
+添加或删除 PPA (Personal Package Archive)，比如在 Ubuntu 20.04 及之前的版本上安装[新版 Inkscape](https://inkscape.org/release/inkscape-1.0/gnulinux/ubuntu/ppa/dl/) 
+
+```bash
+sudo add-apt-repository ppa:inkscape.dev/stable
+sudo add-apt-repository --remove ppa:inkscape.dev/stable
+```
+
+
+```bash
+sudo apt-get install build-essential # 修复依赖问题
+sudo apt update # 更新资源列表
+sudo apt-get upgrade # 更新软件包
+sudo apt-get autoclean # 删除已卸的软件的备份
+sudo apt-get clean # 删除已装或已卸的软件的备份
+sudo apt-get autoremove --purge * # 推荐卸载软件的方式
+apt-get list --upgradable # 列出可升级的包
+```
+
+
+找到并删除旧的内核
+
+```bash
+dpkg --list | grep linux-image
+sudo apt-get purge linux-image-3.19.0-{18,20,21,25}
+sudo update-grub2
+```
+
+
+```bash
+# 搜索
+apt-cache search octave | grep octave
+# 查询
+apt show octave
+# 安装
+sudo apt install octave
+```
+
+```bash
+sudo apt-get install lsb-core
+lsb_release -a
+```
+
+```bash
+adduser cloud2016 # 添加用户
+passwd cloud2016  # 用户密码设为 cloud
+whereis sudoers   # 查找文件位置
+chmod -v u+w /etc/sudoers # 给文件 sudoers 添加写权限
+vim /etc/sudoers # 添加 cloud2016 管理员权限
+chmod -v u-w /etc/sudoers # 收回权限
+```
+
+
+安装确认 openssh-server 服务
+
+```bash
+sudo apt install openssh-server
+sudo /etc/init.d/ssh start
+ps -aux | grep ssh
+```
+

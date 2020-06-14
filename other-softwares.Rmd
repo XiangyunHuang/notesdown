@@ -183,7 +183,7 @@ shiny 开源服务器版
 
 Eclipse 配合 StatET 插件 <http://www.walware.de/goto/statet> 提供R语言的集成开发环境 <https://projects.eclipse.org/projects/science.statet>
 
-```{r eclipse-statet,fig.cap="基于 Eclipse 的 R 集成开发环境 StatET",echo=FALSE}
+```{r eclipse-statet,fig.cap="基于 Eclipse 的 R 集成开发环境 StatET",echo=FALSE,out.width="75%"}
 knitr::include_graphics(path = "screenshots/eclipse-statet.png")
 ```
 
@@ -447,9 +447,148 @@ git push --set-upstream LalZzy patch-2
 
 > 整理自统计之都论坛的讨论 https://d.cosx.org/d/420363
 
+
+
+## Pandoc
+
+1. Pandoc 是一个万能文档转化器，安装 pandoc，下载网址 <https://github.com/jgm/pandoc/releases/latest>
+
+   ```bash
+   sudo apt-get install gdebi-core
+   wget https://github.com/jgm/pandoc/releases/download/2.5/pandoc-2.5-1-amd64.deb
+   sudo chmod +x pandoc-2.5-1-amd64.deb
+   sudo gdebi pandoc-2.5-1-amd64.deb
+   ```
+   
+   rmarkdown 包裹了 Pandoc 工具，所以使用 `rmarkdown::render` 函数，即可将 R Markdown 文档转化为 HTML、LaTeX 和 Markdown 等格式。
+
+## Calibre
+
+1. 安装 calibre
+
+   ```bash
+   sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+   ```
+
+   calibre 可以将 epub 格式电子书文档转化为 mobi 格式，bookdown 已经给这个工具穿上了一件马甲，所以用户只需调用 `bookdown::calibre` 函数即可。
+
+[Calibre](https://calibre-ebook.com) 电子书转化器和管理器，bookdown 包提供了 `bookdown::calibre()` 函数去调用
+
+
 ## ImageMagick 图像操作 {#sec:ImageMagick}
 
 图像的各种操作，包括合成、转换、旋转等等
+
+
+首先安装 ImageMagick 软件包中的 convert 程序
+
+```bash
+asy -f jpg test.asy
+```
+
+指定分辨率
+
+```bash
+convert -geometry 1000x3000 -density 300 -units PixelsPerInch example.eps example.png
+```
+
+这样不改变图像的像素数，只是给出一个每个像素应该显示多大的提示。
+
+```bash
+convert -quality 100 -density 300x300 filename.pdf filename.png
+```
+
+高质量大图，给定像素，转化 eps 格式图片，需要先安装 Ghostscript
+
+```bash
+convert -geometry 1000x3000 example.eps example.png
+```
+
+
+## OptiPNG {#sec:optipng}
+
+[OptiPNG](http://optipng.sourceforge.net/) 是一个非常好的图片压缩、优化工具
+
+现在，我们设置 chunk 选项 `optipng` 为非空(non-`NULL`)的值，例如，`''` 去激活这个 hook （益辉称之为钩子，这里勾的是 optipng 这个图片优化工具）
+
+```{r}
+knitr::knit_hooks$set(optipng = knitr::hook_optipng)
+```
+
+```{r optipng,fig.cap="没有优化", optipng = NULL}
+library(ggplot2)
+ggplot(data = diamonds, aes(x = carat, y = price)) +
+  geom_point()
+```
+
+
+```{r optimize-png,fig.cap="优化", ref.label="optipng", optipng = '-o5'}
+```
+
+```bash
+optipng -o5 filename.png
+```
+
+
+## PDFCrop {#sec:pdfcrop}
+
+[PDFCrop](http://pdfcrop.sourceforge.net/) 可将 PDF 图片中留白的部分裁去，再也不用纠结 par 了
+
+
+## PhantomJS {#sec:phantomjs}
+
+Winston Chang 开发了 [webshot](https://github.com/wch/webshot) 包网页截图，它依赖 [PhantomJS](https://github.com/ariya/phantomjs/)，所以首先需要安装
+
+```{r,eval=FALSE,echo=TRUE}
+install.packages("webshot")
+webshot::install_phantomjs()
+```
+
+以截取网页 <https://www.r-project.org/> 为例，
+
+```{r,eval=FALSE,echo=TRUE}
+library(webshot)
+webshot("https://www.r-project.org/", "r.png")
+webshot("https://www.r-project.org/", "r.pdf") # Can also output to PDF
+```
+
+还可以截取 R Markdown 文档内容，注意是先编译 R Markdown 文档为 HTML 文档，然后截取网页
+
+```{r,eval=FALSE,echo=TRUE}
+rmdshot(system.file("examples/knitr-minimal.Rmd", package = "knitr"), file = "screenshots/knitr-minimal.png")
+```
+
+裁剪出特定大小的图片，需要额外的系统依赖 GraphicsMagick (recommended) or ImageMagick installed
+
+```{r,eval=FALSE,echo=TRUE}
+# Can specify pixel dimensions for resize()
+webshot("https://www.r-project.org/", "r-small.png") %>%
+  resize("400x") %>%
+  shrink()
+```
+```
+** Processing: r-small.png
+400x442 pixels, 4x8 bits/pixel, RGB+alpha
+Reducing image to 3x8 bits/pixel, RGB
+Input IDAT size = 70570 bytes
+Input file size = 70867 bytes
+
+Trying:
+  zc = 9  zm = 8  zs = 0  f = 0         IDAT size = 59441
+  zc = 9  zm = 8  zs = 1  f = 0
+  zc = 1  zm = 8  zs = 2  f = 0
+  zc = 9  zm = 8  zs = 3  f = 0
+  zc = 9  zm = 8  zs = 0  f = 5
+  zc = 9  zm = 8  zs = 1  f = 5
+  zc = 1  zm = 8  zs = 2  f = 5
+  zc = 9  zm = 8  zs = 3  f = 5
+                               
+Selecting parameters:
+  zc = 9  zm = 8  zs = 0  f = 0         IDAT size = 59441
+
+Output IDAT size = 59441 bytes (11129 bytes decrease)
+Output file size = 59714 bytes (11153 bytes = 15.74% decrease)
+```
 
 ## Inkscape 矢量绘图 {#sec:inkscape}
 
@@ -620,6 +759,74 @@ upgrade_tinytex <- function(repos = NULL) {
 ```
 
 [Winston Chang](https://github.com/wch) 整理了一份 LaTeX 常用命令速查小抄 <https://wch.github.io/latexsheet/latexsheet.pdf>
+
+
+
+### 安装和更新 {#subsec:tlmgr-setup}
+
+tlmgr (TeXLive Manager) 是 LaTeX 包管理器
+
+```bash
+# 就近选择 CTAN 镜像站点
+tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
+tlmgr option repository http://mirror.ctan.org/systems/texlive/tlnet
+# 可更新的 TeX 包列表
+tlmgr update --list
+# 更新所有已经安装的 TeX 包
+tlmgr update --all
+# 更新 tlmgr 管理器本身
+tlmgr update --self
+# 安装
+tlmgr install ctex fandol
+# 列出套装
+tlmgr list schemes
+tlmgr list collections
+# 列出已经安装的 TeX 包
+tlmgr list --only-installed
+# 安装 GPG 公钥（只限Win/Mac）
+tlmgr --repository http://www.preining.info/tlgpg/ install tlgpg
+```
+
+### 查询和搜索 {#subsec:tlmgr-search}
+
+```bash
+tlmgr search *what*
+```
+
+参数 `\*what\*` 是正则表达式
+
+```{bash}
+tlmgr search --file tikz.sty
+```
+
+等价于
+
+```{r}
+tinytex::tlmgr_search('tikz.sty')
+```
+
+这样，我们就可以知道要使用 `\usepackage{tikz}` 就得先安装 **pgf** 包，此外，管道命令也是支持的
+
+```bash
+tlmgr search --file font | grep math
+```
+
+查询 CTAN 仓库列表
+
+```bash
+tlmgr repository list
+```
+
+
+一般地， 只显示已安装的 LaTeX 宏包的名字及大小
+
+```bash
+tlmgr info --list --only-installed --data name,size
+```
+
+
+更多命令详见[tlmgr 管理器手册](https://www.tug.org/texlive/doc/tlmgr.html#install-option-...-pkg)
+
 
 ### TikZ 绘图工具 {#subsec:latex-tikz}
 
@@ -937,6 +1144,19 @@ fit$summary()
 
 ## Docker 虚拟环境 {#virtual-env}
 
+Docker 相比虚拟机占用资源少，拉起来就可以用，虚拟机还需要各种环境配置，很多与R有关的项目现在都提供Docker镜像，大大方便了开发人员和数据分析师。当然 docker 的环境隔离性，对主机系统侵入小，即使挂了，再拉起来也就是了，安全性和可靠性高。
+
+基于 The Rocker Project^[<https://www.rocker-project.org/>] 快速构建数据分析环境，[Rocker项目](https://github.com/rocker-org/rocker) 站在 [Debian](https://www.debian.org/) 和 [R](https://www.r-project.org/) 的肩膀上，在 [Docker](https://www.docker.com/)内配置众多数据分析和开发的工具，免去用户手动配置的复杂性。此事非有心者不能为之 ，因为需费时费力找寻依赖库，编译 R 包，还要尽可能地给 Docker 镜像减负，以便部署。如果想抢先试水的赶快去 Rocker 项目主页。
+
+- 由 Dirk Eddelbuettel 等人担纲的 Rocker 项目， [项目主页](https://github.com/rocker-org/rocker) 和 [Docker镜像](https://hub.docker.com/u/rocker/) 
+- Wei-Chen Chen 等人的大数据编程项目 Programming with Big Data in R， [项目主页](https://rbigdata.github.io/) 和 [Docker 镜像](https://hub.docker.com/u/rbigdata/) 
+- [非常详细的docker笔记](http://m.blog.csdn.net/sdgihshdv/article/details/75142367) 
+- Dockerfile <https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>
+- build <https://docs.docker.com/engine/reference/builder/#usage>
+
+其它容器相关项目有 [Singularity](https://github.com/bwlewis/r-and-singularity) 和 [Kubernetes 容器集群管理](https://www.kubernetes.org.cn)，更多参见高策的博客 <http://gaocegege.com>
+    
+    
 本节介绍与本书配套的 VBox 镜像和 Docker 容器镜像，方便读者直接运行书籍原稿中的例子，尽量不限于软件环境配置的苦海中，因为对于大多数初学者来说，软件配置是一件不小的麻烦事。
 
 本书依赖的 R 包和配置环境比较复杂，所以将整个运行环境打包成 Docker 镜像，方便读者重现，构建镜像的 Dockerfile 文件随同书籍源文件一起托管在 Github 上，方便读者研究。本地编译书籍只需三步走，先将存放在 Github 上的书籍项目克隆到本地，如果本地环境中没有 Git，你需要从它的官网 <https://git-scm.com/> 下载安装适配本地系统的 Git 软件。
@@ -969,6 +1189,177 @@ docker run --rm -u docker -v "/${PWD}://home/docker/workspace" \
 docker run --rm xiangyunhuang/masr \ 
   Rscript -e 'xfun::session_info(.packages(TRUE))'
 ```
+
+Docker & Docker Machine & Docker Swarm
+
+1. 容器与镜像的操作
+
+   ```bash
+   docker --version
+   # Docker version 18.03.0-ce, build 0520e24302
+   ```
+
+   查看容器  
+   
+   ```bash
+   docker ps -a
+   ```
+
+   删除容器 `docker rm 容器 ID`，删除前要确认已经停止该容器的运行
+   
+   ```bash
+   docker rm 6f932357e6ce
+   ```
+
+   查看镜像 
+   
+   ```bash
+   docker images
+   ```
+
+   删除镜像 
+   
+   `docker rmi 镜像 ID`
+   
+   ```bash
+   docker rmi 811281c54b23
+   ```
+
+1. 拉取镜像
+
+   ```bash
+   docker pull rocker/verse:latest
+   ```
+
+1. 运行容器
+
+   ```bash
+   docker run --name verse -d -p 8282:8080 -e ROOT=TRUE \
+      -e USER=rstudio -e PASSWORD=cloud rocker/verse
+   ```
+   
+   将主机端口 8282 映射给虚拟机/容器的 8080 端口，RStudio Server 默认使用的端口是 8787，因此改为 8080 需要修改 `/etc/rstudio/rserver.conf` 文件，添加
+   
+   ```
+   www-port=8080
+   ```
+   
+   然后重启 RStudio Server，之后可以在浏览器中登陆，登陆网址为 <http://ip-addr:8080>，其中 `ip-addr` 可在容器中运行如下一行命令获得
+   
+   ```bash
+   ip addr
+   ```
+   
+更多关于服务器版本的 RStudio 介绍，请参考 <https://docs.rstudio.com/ide/server-pro/access-and-security.html>
+
+[Docker Machine](https://github.com/docker/machine)
+
+基本命令
+
+* 查看 docker machine 版本信息
+
+   ```{r,engine="bash",eval=FALSE,echo=TRUE}
+   docker-machine --version
+   # docker-machine.exe version 0.14.0, build 89b8332
+   ```
+
+* 列出创建的虚拟机
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   # 启动前
+   docker-machine ls
+   # NAME      ACTIVE   DRIVER       STATE     URL   SWARM   DOCKER    ERRORS
+   # default   -        virtualbox   Stopped                 Unknown
+   # 启动后
+   docker-machine ls
+   # NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+   # default   *        virtualbox   Running   tcp://192.168.99.100:2376           v18.03.0-ce
+   ```
+
+* 查看虚拟机 default 的 ip
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker-machine ip default
+   # 192.168.99.100
+   ```
+
+* 启动虚拟机
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker-machine start default
+   # Starting "default"...
+   # (default) Check network to re-create if needed...
+   # (default) Windows might ask for the permission to configure a dhcp server. Sometimes, such confirmation window is minimized in the taskbar.
+   # (default) Waiting for an IP...
+   # Machine "default" was started.
+   # Waiting for SSH to be available...
+   # Detecting the provisioner...
+   # Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.
+   ```
+
+* 进入 Docker 环境
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker-machine ssh default
+   ```
+   ```
+                           ##         .
+                     ## ## ##        ==
+                  ## ## ## ## ##    ===
+              /"""""""""""""""""\___/ ===
+         ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+              \______ o           __/
+                \    \         __/
+                 \____\_______/
+    _                 _   ____     _            _
+   | |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+   | '_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ '__|
+   | |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   <  __/ |
+   |_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+   Boot2Docker version 18.03.0-ce, build HEAD : 404ee40 - Thu Mar 22 17:12:23 UTC 2018
+   Docker version 18.03.0-ce, build 0520e24
+   ```
+
+* 查看容器
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker ps -a
+   # CONTAINER ID        IMAGE               COMMAND             CREATED            STATUS                   PORTS               NAMES
+   # 69e6929d269e        rocker/verse        "/init"             3 weeks ago        Exited (0) 10 days ago                       verse
+   ```
+
+* 启动/停止容器
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker start verse
+   # verse
+   docker stop verse
+   # verse
+   ```
+
+* 查看虚拟机 default 的环境
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker-machine env default
+   # export DOCKER_TLS_VERIFY="1"
+   # export DOCKER_HOST="tcp://192.168.99.100:2376"
+   # export DOCKER_CERT_PATH="D:\Docker\machines\default"
+   # export DOCKER_MACHINE_NAME="default"
+   # export COMPOSE_CONVERT_WINDOWS_PATHS="true"
+   # # Run this command to configure your shell:
+   # # eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env default)
+   ```
+
+* 关闭虚拟机 default
+
+   ```{r, engine = "bash",eval=FALSE,echo=TRUE}
+   docker-machine stop default
+   # Stopping "default"...
+   # Machine "default" was stopped.
+   ```
+
+
+更多详情见帮助文档 <https://docs.docker.com/machine/get-started>
 
 
 

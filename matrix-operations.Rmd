@@ -508,3 +508,109 @@ Stan 实现的 QR 分解在贝叶斯线性回归模型中的应用[^qr-stan]
 
 
 - 帽子矩阵在统计中的应用 回归与方差分析 [@David_1978_Hat]
+
+
+
+## 特殊函数 {#sec:special-functions}
+
+### 阶乘 {#factorial}
+
+- 阶乘 $n! = 1\times 2\times 3\cdots n$ 
+- 双阶乘 $(2n+1)!! = 1 \times 3\times 5 \times \cdots \times (2n+1), n = 0,1,2,\cdots$
+
+```{r}
+factorial(5) # 阶乘
+seq(from = 1, to = 5, length.out = 3)
+prod(seq(from = 1, to = 5, length.out = 3)) # 连乘 双阶乘
+
+seq(5)
+cumprod(seq(5)) # 累积
+cumsum(seq(5)) # 累和
+```
+
+此外还有 `cummax` 和 `cummin`
+
+- 组合数 $C_{n}^{k} = \frac{n(n-1)…(n-k+1)}{k!}$
+
+$C_{5}^{3} = \frac{5 \times 4 \times 3}{3 \times 2 \times 1}$
+
+```{r}
+choose(5,3)
+```
+
+> 斯特林公式
+
+### 伽马函数 {#gamma}
+
+$\Gamma(x) = \int_{0}^{\infty} t^{x-1}\exp(-t)dt$
+$\Gamma(n) = (n-1)!, n \in \mathbb{Z}^{+}$
+
+```{r gamma-ex}
+gamma(2)
+gamma(10)
+gamma2 <- function(t,x){
+  t^(x-1)*exp(-t)
+}
+integrate(gamma2, lower = 0, upper = + Inf, x = 10)
+```
+
+- psigamma(x, deriv) 表示 $\psi(x)$ 的 `deriv` 阶导数
+
+$\mathrm{digamma}(x) \triangleq \psi(x) = \frac{d}{dx}{\ln \Gamma(x)} = \Gamma'(x) / \Gamma(x)$
+
+```{r psigamma-ex}
+# 例1
+x <- 2
+eval(deriv(~ gamma(x), "x"))/gamma(x)
+# 与此等价
+psigamma(2, 0)
+
+digamma(x) # psi(x) 的一阶导数
+trigamma(x) # psi(x) 的二阶导数
+
+# 例2
+eval(deriv(~ psigamma(x, 1), "x"))
+# 与此等价
+psigamma(2, 2)
+
+# 注意与下面这个例子比较
+dx2x <- deriv(~ x^3, "x")
+eval(dx2x)
+```
+
+### 贝塔函数 {#beta}
+
+$B(a,b) = \Gamma(a)\Gamma(b)/\Gamma(a+b) = \int_{0}^{1} t^{a-1} (1-t)^{b-1} dt$
+
+```{r beta-ex}
+beta(1, 1)
+beta(2, 3)
+beta2 <- function(t, a, b) {
+  t^(a - 1) * (1 - t)^(b - 1)
+}
+integrate(beta2, lower = 0, upper = 1, a = 2, b = 3)
+```
+
+### 贝塞尔函数 {#bessel}
+
+```r
+besselI(x, nu, expon.scaled = FALSE) # 修正的第一类
+besselK(x, nu, expon.scaled = FALSE) # 修正的第二类
+besselJ(x, nu) # 第一类
+besselY(x, nu) # 第二类
+```
+
+- $\nu$ 贝塞尔函数的阶，可以是分数
+- expon.scaled 是否使用指数表示
+
+```{r modified-bessel}
+nus <- c(0:5, 10, 20)
+x <- seq(0, 4, length.out = 501)
+plot(x, x,
+  ylim = c(0, 6), ylab = "", type = "n",
+  main = "Bessel Functions  I_nu(x)"
+)
+for (nu in nus) lines(x, besselI(x, nu = nu), col = nu + 2)
+legend(0, 6, legend = paste("nu=", nus), col = nus + 2, lwd = 1)
+```
+

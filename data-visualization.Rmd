@@ -1,17 +1,80 @@
 # 数据可视化 {#chap:data-visualization}
 
+```{r}
+library(magrittr)
+library(ggplot2)
+```
 
 - The fragile and perilous art of flipbooking With flipbookr and xaringan <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
 
 ## 元素 {#sec:elements}
+
+### 标签 {#subsec:axis-label}
+
+
+```{r usa-quarterly-approval-ratings, fig.showtext=TRUE, fig.cap="美国总统支持率：自1945年第一季度至1974年第四季度"}
+data.frame(
+  dates = seq.Date(from = as.Date("1945-01-01"), to = as.Date("1974-12-31"), by = "quarter"),
+  presidents = as.vector(presidents)
+) %>%
+  ggplot(aes(x = dates, y = presidents)) +
+  geom_line() +
+  geom_point(size = 1.5) +
+  scale_x_date(date_breaks = "4 year", date_labels = "%Y") +
+  labs(
+    title = "1945年至1974年美国总统每季度支持率",
+    y = "支持率 (%)",
+    caption = " 数据源: R 包 datasets "
+  ) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn")
+```
+
 
 ### 注释 {#subsec:annotation}
 
 
 [ggtext](https://github.com/wilkelab/ggtext) 包介绍网站 <https://wilkelab.org/ggtext/>
 
+```{r}
+library(ggrepel)
+set.seed(2020)
+
+dat <- data.frame(
+  x = seq(100),
+  y = cumsum(rnorm(100))
+)
+
+anno_data <- dat %>%
+  subset(x %% 25 == 10) %>%
+  transform(text = "text")
+
+dat %>%
+  ggplot(aes(x, y)) +
+  geom_line() +
+  geom_label_repel(aes(label = text),
+    data = anno_data,
+    direction = "y",
+    nudge_y = c(-5, 5, 5, 5)
+  ) +
+  theme_minimal()
+```
+
 
 ## 图形 {#sec:figures}
+
+### 瓦片图 {#subsec:tile}
+
+```{r,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.asp=.8}
+expand.grid( months = month.abb, years = 1949:1960) %>% 
+  transform(num = as.vector(AirPassengers)) %>% 
+  ggplot(aes(x = years, y = months, fill = num)) +
+  scale_fill_continuous(limits = range(AirPassengers), type = "viridis") +
+  geom_tile(color = "white", size = 0.4) +
+  scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1949, 1960, by = 1), labels = 1949:1960) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
+  labs(x = "年", y = "月", fill = "人数")
+```
+
 
 ### 函数图 {#subsec:function}
 

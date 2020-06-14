@@ -19,7 +19,7 @@
 - Reversible Reproducible Documents <https://github.com/noamross/redoc>
 - Word counts and readability statistics in R markdown documents <https://github.com/benmarwick/wordcountaddin>
 - sending an email from R with blastula to groups of students <https://thecoatlessprofessor.com/programming/r/sending-an-email-from-r-with-blastula-to-groups-of-students/>
-
+- 基于 thematic 和 bootstraplib 包美化 Rmd 文档 https://www.tillac-data.com/2020-fast-rmd-theming-with-thematic-and-bootstraplib/
 
 表格
 
@@ -215,7 +215,56 @@ curl --url 'smtp://公司邮件服务器地址:开放的端口号' \
   --user '本人公司邮箱地址:邮箱登陆密码'
 ```
 
-注意 Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。
+注意 Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。 下面以 blastula 包为例怎么支持 Gmail/Outlook/QQ 等邮件发送，过程分两步，第一步配置密钥
+
+```bash
+# CentOS 8 上安装依赖
+sudo dnf install -y libsecret-devel libsodium-devel
+```
+
+```{r,eval=FALSE}
+# 安装 R 包 keyring
+install.packages("keyring")
+# 配置密钥证书，到底如何在 Linux 服务器上配置还不知道
+library(keyring)
+
+# creds_envvar(
+#   user = Sys.getenv("SMTP_USER"),
+#   pass_envvar = Sys.getenv("SMTP_PASSWORD"),
+#   provider = "outlook",
+#   use_ssl = TRUE
+# )
+
+library(blastula)
+# 运行一次就可以了
+create_smtp_creds_key(
+  id = "outlook", 
+  user = "xiangyunfaith@outlook.com", # 邮件地址
+  provider = "outlook"
+)
+```
+
+第二步，准备邮件内容，包括邮件主题、发/收件人、抄送人、邮件主体和附件
+
+```{r,eval=FALSE}
+library(blastula)
+
+attachment <- "data/mail.txt" # 如果没有附件，引号内留空即可。
+body <- "examples/email-blastula.Rmd" # 这个Rmd文件渲染后就是邮件的正文
+
+email <- render_email(body) %>%
+  add_attachment(file = attachment)
+
+# 发送邮件
+smtp_send(
+  from = c("黄湘云" = "xiangyunfaith@outlook.com"), # 发件人
+  to = c("黄湘云" = "xiangyunfaith@gmail.com"), # 收件人
+  subject = "这是一封测试邮件",
+  email = email,
+  credentials = creds_key(id = "outlook")
+)
+```
+
 
 
 
