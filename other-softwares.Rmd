@@ -1121,6 +1121,8 @@ Stan 的命令行接口功能最全全新，使用 cmdstanr 包可以滚动更�
 
 ```{r stan-binom, results = ifelse(knitr::is_latex_output(), 'hide', 'hold')}
 library(cmdstanr)
+library(bayesplot)
+# library(posterior)
 
 file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")
 mod <- cmdstan_model(file)
@@ -1131,7 +1133,7 @@ fit <- mod$sample(
   data = data_list,
   seed = 2020,
   chains = 2,
-  cores = 2
+  parallel_chains = 2
 )
 ```
 
@@ -1141,6 +1143,19 @@ fit <- mod$sample(
 fit$cmdstan_summary()
 fit$summary()
 ```
+
+```{r}
+# this is a draws_array object from the posterior package
+draws_array <- fit$draws()
+str(draws_array)
+```
+
+```{r}
+# can be passed directly to bayesplot to plot posterior distribution
+mcmc_hist(fit$draws("theta"))
+```
+
+
 
 ## Docker 虚拟环境 {#virtual-env}
 
