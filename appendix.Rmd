@@ -171,7 +171,7 @@ gzip filename.gz -d ~/tmp
 本书在后续章节中陆续用到新的 R 包，其安装过程不会在正文中呈现，下面以在 CentOS 8 上安装 **sf** 包为例介绍。首先需要安装一些系统依赖，具体安装哪些依赖参见 **sf** 包开发站点 <https://github.com/r-spatial/sf>。
 
 ```bash
-sudo dnf config-manager --set-disabled PowerTools
+sudo dnf config-manager --set-disabled PowerTools # openblas-devel
 sudo dnf copr enable/disable simc/stable # 获取 gdal-devel
 sudo dnf install -y sqlite-devel gdal-devel \
   proj-devel geos-devel udunits2-devel
@@ -203,7 +203,107 @@ dnf config-manager
 ```
 
 
-## 软件包管理器 apt {#sec:apt-get}
+## 软件包管理器 {#sec:software-manager}
+
+### dnf {#subsec:dnf-yum}
+
+
+#### 清理升级后的 CentOS 8 系统内核 {#clean-old-kernels}
+
+查找系统安装的内核
+
+```bash
+rpm -qa | sort | grep kernel
+```
+```
+kernel-4.18.0-147.8.1.el8_1.x86_64
+kernel-4.18.0-193.6.3.el8_2.x86_64
+kernel-core-4.18.0-147.8.1.el8_1.x86_64
+kernel-core-4.18.0-193.6.3.el8_2.x86_64
+kernel-headers-4.18.0-193.6.3.el8_2.x86_64
+kernel-modules-4.18.0-147.8.1.el8_1.x86_64
+kernel-modules-4.18.0-193.6.3.el8_2.x86_64
+kernel-tools-4.18.0-193.6.3.el8_2.x86_64
+kernel-tools-libs-4.18.0-193.6.3.el8_2.x86_64
+```
+
+仅保留一个版本的内核，其它旧的内核都删除掉
+
+```bash
+sudo dnf remove $(dnf repoquery --installonly --latest-limit=-1 -q)
+```
+```
+模块依赖问题
+
+ 问题 1: conflicting requests
+  - nothing provides module(perl:5.26) needed by module perl-DBD-MySQL:4.046:8010020191114030811:073fa5fe-0.x86_64
+ 问题 2: conflicting requests
+  - nothing provides module(perl:5.26) needed by module perl-DBI:1.641:8010020191113222731:16b3ab4d-0.x86_64
+ 问题 3: conflicting requests
+  - nothing provides module(perl:5.26) needed by module perl-YAML:1.24:8010020191114031501:a5949e2e-0.x86_64
+依赖关系解决。
+=======================================================================================================================
+ 软件包                        架构                  版本                                 仓库                    大小
+=======================================================================================================================
+移除:
+ kernel                        x86_64                4.18.0-147.8.1.el8_1                 @BaseOS                  0  
+ kernel-core                   x86_64                4.18.0-147.8.1.el8_1                 @BaseOS                 58 M
+ kernel-modules                x86_64                4.18.0-147.8.1.el8_1                 @BaseOS                 20 M
+
+事务概要
+=======================================================================================================================
+移除  3 软件包
+
+将会释放空间：78 M
+确定吗？[y/N]： y
+运行事务检查
+事务检查成功。
+运行事务测试
+事务测试成功。
+运行事务
+  准备中  :                                                                                                        1/1 
+  删除    : kernel-4.18.0-147.8.1.el8_1.x86_64                                                                     1/3 
+  运行脚本: kernel-4.18.0-147.8.1.el8_1.x86_64                                                                     1/3 
+  删除    : kernel-modules-4.18.0-147.8.1.el8_1.x86_64                                                             2/3 
+  运行脚本: kernel-modules-4.18.0-147.8.1.el8_1.x86_64                                                             2/3 
+  运行脚本: kernel-core-4.18.0-147.8.1.el8_1.x86_64                                                                3/3 
+  删除    : kernel-core-4.18.0-147.8.1.el8_1.x86_64                                                                3/3 
+  运行脚本: kernel-core-4.18.0-147.8.1.el8_1.x86_64                                                                3/3 
+  验证    : kernel-4.18.0-147.8.1.el8_1.x86_64                                                                     1/3 
+  验证    : kernel-core-4.18.0-147.8.1.el8_1.x86_64                                                                2/3 
+  验证    : kernel-modules-4.18.0-147.8.1.el8_1.x86_64                                                             3/3 
+
+已移除:
+  kernel-4.18.0-147.8.1.el8_1.x86_64                          kernel-core-4.18.0-147.8.1.el8_1.x86_64                 
+  kernel-modules-4.18.0-147.8.1.el8_1.x86_64                 
+
+完毕！
+```
+
+[解决上述模块依赖问题的办法](https://unix.stackexchange.com/questions/587853/centos-8-modular-dependency-problems) 是重置三个 Perl 模块
+
+```bash
+sudo dnf module reset perl-DBD-MySQL perl-YAML perl-DBI
+```
+```
+依赖关系解决。
+=======================================================================================================================
+ 软件包                      架构                       版本                         仓库                         大小
+=======================================================================================================================
+重置模块:
+ perl-DBD-MySQL                                                                                                       
+ perl-DBI                                                                                                             
+ perl-YAML                                                                                                            
+
+事务概要
+=======================================================================================================================
+
+确定吗？[y/N]： y
+完毕！
+```
+
+
+### apt {#subsec:apt-get}
 
 添加或删除 PPA (Personal Package Archive)，比如在 Ubuntu 20.04 及之前的版本上安装[新版 Inkscape](https://inkscape.org/release/inkscape-1.0/gnulinux/ubuntu/ppa/dl/) 
 
