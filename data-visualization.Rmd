@@ -64,11 +64,11 @@ dat %>%
 
 ### 瓦片图 {#subsec:tile}
 
-```{r,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.asp=.8}
+```{r geom-tile,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.asp=.8}
 expand.grid( months = month.abb, years = 1949:1960) %>% 
   transform(num = as.vector(AirPassengers)) %>% 
   ggplot(aes(x = years, y = months, fill = num)) +
-  scale_fill_continuous(limits = range(AirPassengers), type = "viridis") +
+  scale_fill_continuous(type = "viridis") +
   geom_tile(color = "white", size = 0.4) +
   scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1949, 1960, by = 1), labels = 1949:1960) +
   theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
@@ -323,7 +323,6 @@ colors_vec <- c("#FF3200", "#E9A17C", "#E9E4A6", "#1BB6AF", "#0076BB", "#172869"
 # 代码来自 ?colorspace::rainbow_hcl
 pal <- function(n = 20, colors = colors, border = "light gray", ...) {
   colorname <- (grDevices::colorRampPalette(colors))(n)
-
   plot(0, 0,
     type = "n", xlim = c(0, 1), ylim = c(0, 1),
     axes = FALSE, ...
@@ -348,6 +347,141 @@ create_palette(n = 1000, colors = c("darkgreen", "yellow", "orangered"))
 create_palette(n = 1000, colors = c("blue", "white", "orangered"))
 par(op)
 ```
+
+```{r rcolorbrewer-palette,fig.height=8,fig.cap="RColorBrewer 调色板"}
+op <- par(mar = c(0, 4, 0, 0))
+RColorBrewer::display.brewer.all()
+par(op)
+```
+
+
+```{r colorspace-palette, fig.width=8,fig.height=8,fig.cap="colorspace 调色板", collapse=TRUE}
+library(colorspace)
+## a few useful diverging HCL palettes
+op <- par(mar = c(0,0,2,0), mfrow = c(16, 2))
+
+pal(n = 16, diverge_hcl(16), main = "diverging HCL palettes")
+pal(n = 16, diverge_hcl(16, h = c(246, 40), c = 96, l = c(65, 90)))
+pal(n = 16, diverge_hcl(16, h = c(130, 43), c = 100, l = c(70, 90)))
+pal(n = 16, diverge_hcl(16, h = c(180, 70), c = 70, l = c(90, 95)))
+
+pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
+pal(n = 16, diverge_hcl(16, h = c(128, 330), c = 98, l = c(65, 90)))
+pal(n = 16, diverge_hcl(16, h = c(255, 330), l = c(40, 90)))
+pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90), power = 1))
+
+## sequential palettes
+pal(n = 16, sequential_hcl(16), main= "sequential palettes")
+pal(n = 16, heat_hcl(16, h = c(0, -100), l = c(75, 40), c = c(40, 80), power = 1))
+pal(n = 16, terrain_hcl(16, c = c(65, 0), l = c(45, 95), power = c(1/3, 1.5)))
+pal(n = 16, heat_hcl(16, c = c(80, 30), l = c(30, 90), power = c(1/5, 1.5)))
+
+## compare base and colorspace palettes
+## (in color and desaturated)
+## diverging red-blue colors
+pal(n = 16, diverge_hsv(16), main = "diverging red-blue colors")
+pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90)))
+pal(n = 16, desaturate(diverge_hsv(16)))
+pal(n = 16, desaturate(diverge_hcl(16, c = 100, l = c(50, 90))))
+
+## diverging cyan-magenta colors
+pal(n = 16, cm.colors(16), main = "diverging cyan-magenta colors")
+pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
+pal(n = 16, desaturate(cm.colors(16)))
+pal(n = 16, desaturate(diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95))))
+
+## heat colors
+pal(n = 16, heat.colors(16), main = "heat colors")
+pal(n = 16, heat_hcl(16))
+pal(n = 16, desaturate(heat.colors(16)))
+pal(n = 16, desaturate(heat_hcl(16)))
+
+## terrain colors
+pal(n = 16, terrain.colors(16), main = "terrain colors")
+pal(n = 16, terrain_hcl(16))
+pal(n = 16, desaturate(terrain.colors(16)))
+pal(n = 16, desaturate(terrain_hcl(16)))
+
+pal(n = 16, rainbow_hcl(16, start = 30, end = 300), main = "dynamic")
+pal(n = 16, rainbow_hcl(16, start = 60, end = 240), main = "harmonic")
+pal(n = 16, rainbow_hcl(16, start = 270, end = 150), main = "cold")
+pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
+
+par(op)
+```
+
+
+除之前提到的 grDevices 包[@R-base] 、colorspace 包 [@R-colorspace]和 RColorBrewer 包 [@R-RColorBrewer] 之外，此处还收录 yarrr 包 、dichromat 包、colormap 包、viridis 包、pals 包 、ColorPalette 包、colorRamps包、colortools包 ，此外还有 palr 包 就不一一详细介绍了。
+
+
+
+```{r select-color,fig.cap="源起",fig.height=12,collapse=TRUE}
+op <- par(mar = c(1, 2, 1, 0), mfrow = c(3, 2))
+set.seed(1234)
+x <- sample(seq(8), 8, replace = FALSE)
+barplot(x, col = palette(), border = "white")
+barplot(x, col = heat.colors(8), border = "white")
+barplot(x, col = gray.colors(8), border = "white")
+barplot(x, col = "lightblue", border = "white")
+barplot(x, col = colorspace::sequential_hcl(8), border = "white")
+barplot(x, col = colorspace::diverge_hcl(8, h = c(130, 43), c = 100, l = c(70, 90)), border = "white")
+par(op)
+```
+
+
+与图 \@ref(fig:geom-tile) 对比，图\@ref(fig:palette-spectral) 的层次更加丰富，识别性更高
+
+```{r palette-spectral,fig.cap="Spectral 调色板",fig.showtext=TRUE,fig.asp=.8}
+expand.grid( months = month.abb, years = 1949:1960) %>% 
+  transform(num = as.vector(AirPassengers)) %>% 
+  ggplot(aes(x = years, y = months, fill = num)) +
+  scale_fill_distiller(palette = "Spectral") +
+  geom_tile(color = "white", size = 0.4) +
+  scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1949, 1960, by = 1), labels = 1949:1960) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
+  labs(x = "年", y = "月", fill = "人数")
+```
+
+
+
+再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
+
+```{r faithfuld,fig.cap="美国黄石国家公园的老忠实泉"}
+erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) +
+  scale_y_continuous(NULL, expand = c(0, 0)) +
+  theme(legend.position = "none")
+p1 <- erupt + scale_fill_gradientn(colours = gray.colors(7))
+p2 <- erupt + scale_fill_distiller(palette = "Spectral")
+p3 <- erupt + scale_fill_gradientn(colours = terrain.colors(7))
+p4 <- erupt + scale_fill_continuous(type = 'viridis')
+(p1 + p2) / (p3 + p4)
+```
+
+RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging)  三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
+
+```{r,echo=TRUE}
+ls("package:ggplot2", pattern = "scale_col(ou|o)r_")
+ls("package:ggplot2", pattern = "scale_fill_")
+```
+
+### 颜色模式 {#subsec:color-schames}
+
+注意和 LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 的联系
+
+```{r color-exchange,echo=TRUE}
+col2rgb("lightblue") # color to  RGB
+scales::col2hcl("lightblue") # color to HCL
+# palr::col2hex("lightblue") # color to HEX
+# colortools::col2HSV("lightblue") # color to HSV
+
+rgb(173, 216, 230, maxColorValue = 255) # RGB to HEX
+colorspace::hex2RGB("#ADD8E6") # HEX to RGB
+rgb(.678, .847, .902, maxColorValue = 1) # RGB to HEX
+rgb2hsv(173, 216, 230, maxColorValue = 255) # RGB to HSV
+```
+
 
 ## 交互图形 {#sec:interactive-graphics}
 
