@@ -3,6 +3,7 @@
 ```{r}
 library(magrittr)
 library(ggplot2)
+library(patchwork)
 ```
 
 - The fragile and perilous art of flipbooking With flipbookr and xaringan <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
@@ -125,6 +126,46 @@ lines(sm, col = 2, lwd = 1.25)
 
 ## 字体 {#sec:fonts}
 
+### 系统字体 {#subsec:system-fonts}
+
+```{r font-in-ggplot,fig.showtext=TRUE,fig.cap="在 ggplot2 绘图系统中设置中英文字体"}
+p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_point() +
+  ggtitle(label = "默认字体设置")
+
+p2 <- p1 + theme(
+  axis.title = element_text(family = "DejaVu Sans"),
+  axis.text = element_text(family = "DejaVu Serif")
+) +
+  ggtitle(label = "英文字体设置")
+
+p3 <- p1 + labs(x = "温度", y = "压力") +
+  theme(
+    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.text = element_text(family = "DejaVu Serif")
+  ) +
+  ggtitle(label = "中文字体设置")
+
+p4 <- p1 + labs(
+  x = "温度", y = "压力", title = "散点图",
+  subtitle = "Vapor Pressure of Mercury as a Function of Temperature",
+  caption = paste("Data on the relation between temperature in degrees Celsius and",
+    "vapor pressure of mercury in millimeters (of mercury).",
+    sep = "\n"
+  )
+) +
+  theme(
+    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.text.x = element_text(family = "DejaVu Serif"),
+    axis.text.y = element_text(family = "DejaVu Sans"),
+    title = element_text(family = "source-han-serif-cn"),
+    plot.subtitle = element_text(family = "DejaVu Sans", size = rel(0.7)),
+    plot.caption = element_text(family = "DejaVu Sans", size = rel(0.6))
+  ) +
+  ggtitle(label = "任意字体设置")
+
+(p1 + p2) / (p3 + p4)
+```
 
 
 ### 思源字体 {#subsec:showtext}
@@ -412,7 +453,7 @@ par(op)
 
 
 
-```{r demo-colors fig.width=8, fig.height=11, fig.align='center', fig.cap="grDevices 调色板", out.width="100%"}
+```{r demo-colors, fig.width=8, fig.height=11, fig.cap="grDevices 调色板", out.width="100%"}
 op <- par(mfrow = c(33, 1), mar = c(0, 0, .8, 0))
 for (i in seq(32)) {
   pal(n = length((1 + 20 * (i - 1)):(20 * i)), colors()[(1 + 20 * (i - 1)):(20 * i)], main = paste(1 + 20 * (i - 1), "to", 20 * i))
