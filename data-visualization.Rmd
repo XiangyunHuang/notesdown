@@ -355,6 +355,47 @@ par(op)
 ```
 
 
+```{r builtin-palettes,fig.height=5.5,fig.width=6,fig.cap="grDevices 调色板 "}
+# 代码来自 ?palettes
+demo.pal <-
+  function(n, border = if (n < 32) "light gray" else NA,
+           main = paste("color palettes: alpha = 1,  n=", n),
+           ch.col = c(
+             "rainbow(n, start=.7, end=.1)", "heat.colors(n)",
+             "terrain.colors(n)", "topo.colors(n)",
+             "cm.colors(n)", "gray.colors(n, start = 0.3, end = 0.9)"
+           )) {
+    nt <- length(ch.col)
+    i <- 1:n
+    j <- n / nt
+    d <- j / 6
+    dy <- 2 * d
+    plot(i, i + d, type = "n", axes = FALSE, ylab = "", xlab = "", main = main)
+    for (k in 1:nt) {
+      rect(i - .5, (k - 1) * j + dy, i + .4, k * j,
+        col = eval(parse(text = ch.col[k])), border = border
+      )
+      text(2 * j, k * j + dy / 4, ch.col[k])
+    }
+  }
+n <- if (.Device == "postscript") 64 else 16
+# Since for screen, larger n may give color allocation problem
+op <- par(mar = c(0, 0, 2, 0))
+demo.pal(n)
+par(op)
+```
+
+
+
+```{r demo-colors fig.width=8, fig.height=11, fig.align='center', fig.cap="grDevices 调色板", out.width="100%"}
+op <- par(mfrow = c(33, 1), mar = c(0, 0, .8, 0))
+for (i in seq(32)) {
+  pal(n = length((1 + 20 * (i - 1)):(20 * i)), colors()[(1 + 20 * (i - 1)):(20 * i)], main = paste(1 + 20 * (i - 1), "to", 20 * i))
+}
+pal(n = 17, colors()[641:657], main = "641 to 657")
+par(op)
+```
+
 ```{r colorspace-palette, fig.width=8,fig.height=8,fig.cap="colorspace 调色板", collapse=TRUE}
 library(colorspace)
 ## a few useful diverging HCL palettes
@@ -411,7 +452,27 @@ par(op)
 ```
 
 
-除之前提到的 grDevices 包[@R-base] 、colorspace 包 [@R-colorspace]和 RColorBrewer 包 [@R-RColorBrewer] 之外，此处还收录 yarrr 包 、dichromat 包、colormap 包、viridis 包、pals 包 、ColorPalette 包、colorRamps包、colortools包 ，此外还有 palr 包 就不一一详细介绍了。
+除之前提到的 grDevices 包
+
+- [colorspace](http://colorspace.r-forge.r-project.org/) 包 [@R-colorspace] 
+
+- [RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@R-RColorBrewer] <http://colorbrewer2.org/>
+
+- [viridis](https://github.com/sjmgarnier/viridis) 包、
+
+- [dichromat](https://CRAN.R-project.org/package=dichromat) 包
+
+- [colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
+
+- [pals](https://github.com/kwstat/pals) 包
+
+- [palr](https://github.com/AustralianAntarcticDivision/palr) 包
+
+- [paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。
+
+- [yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate’s Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
+
+此外还有 [colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
 
 
 
@@ -464,6 +525,100 @@ RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 
 ```{r,echo=TRUE}
 ls("package:ggplot2", pattern = "scale_col(ou|o)r_")
 ls("package:ggplot2", pattern = "scale_fill_")
+```
+
+
+
+```r
+library(ColorPalette)
+op <- par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+pal(generateMonochromaticColors("lightblue", 16), main = "generateMonochromaticColors")
+pal(complementColors("lightblue", 16), main = "complementColors")
+pal(tetradicColors("lightblue", 16), main = "tetradicColors")
+pal(triadicColors("lightblue", 16), main = "triadicColors")
+par(op)
+
+library(colorRamps)
+op <- par(mfrow = c(6, 1), mar = c(0, 0, 2, 0))
+n <- 16
+pal(matlab.like(n), main = "matlab.like")
+pal(matlab.like2(n), main = "matlab.like2")
+pal(blue2green2red(n), main = "blue2green2red")
+pal(primary.colors(n), main = "primary.colors")
+pal(ygobb(n), main = "ygobb")
+pal(rgb.tables(n), main = "rgb.tables")
+par(op)
+
+library(viridisLite)
+n <- 16
+op <- par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+pal(magma(n, alpha = 1, begin = 0, end = 1))
+pal(inferno(n, alpha = 1, begin = 0, end = 1))
+pal(plasma(n, alpha = 1, begin = 0, end = 1))
+pal(viridis(n, alpha = 1, begin = 0, end = 1))
+par(op)
+
+op <- par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+library(pals)
+pals::pal.bands(coolwarm, parula, ocean.haline, cubicl, kovesi.rainbow,
+  ocean.phase, brewer.paired(12), stepped,
+  main = "Colormap suggestions"
+)
+
+# Qualtitative
+pals::pal.bands(brewer.accent(8), brewer.dark2(8), brewer.paired(12), brewer.pastel1(9),
+  brewer.pastel2(8), brewer.set1(9), brewer.set2(8), brewer.set3(10),
+  labels = c(
+    "brewer.accent", "brewer.dark2", "brewer.paired", "brewer.pastel1",
+    "brewer.pastel2", "brewer.set1", "brewer.set2", "brewer.set3"
+  ),
+  main = "Brewer qualitative"
+)
+par(op)
+
+op <- par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+# Sequential
+pals::pal.bands(brewer.blues, brewer.bugn, brewer.bupu, brewer.gnbu, brewer.greens,
+  brewer.greys, brewer.oranges, brewer.orrd, brewer.pubu, brewer.pubugn,
+  brewer.purd, brewer.purples, brewer.rdpu, brewer.reds, brewer.ylgn,
+  brewer.ylgnbu, brewer.ylorbr, brewer.ylorrd,
+  main = "Brewer sequential"
+)
+
+# Diverging
+pals::pal.bands(brewer.brbg, brewer.piyg, brewer.prgn, brewer.puor, brewer.rdbu,
+  brewer.rdgy, brewer.rdylbu, brewer.rdylgn, brewer.spectral,
+  main = "Brewer diverging"
+)
+par(op)
+
+colortools::pals()
+
+colortools::wheel(colortools::pals("fish")[1], bg = "white")
+
+yarrr::piratepal(palette = "all")
+
+library(dichromat)
+op <- par(mar = c(0, 0, 2, 0), mfrow = c(9, 2))
+for (i in seq(17)) {
+  pal(colorschemes[[i]], main = names(colorschemes)[i])
+}
+par(op)
+
+library(colormap)
+color_map <- function(colorname, border = "light gray") {
+  col <- colormap_pal(colormap = colorname)(25)
+  n <- length(col)
+  plot(0, 0,
+    type = "n", xlim = c(0, 1), ylim = c(0, 1),
+    axes = FALSE, xlab = "", ylab = ""
+  )
+  rect(0:(n - 1) / n, 0, 1:n / n, 1, col = col, border = border)
+  text(.5, .5, labels = colorname)
+}
+op <- par(mfrow = c(22, 2), mar = c(0, 0, 1, 0))
+invisible(lapply(unlist(colormaps), color_map))
+par(op)
 ```
 
 ### 颜色模式 {#subsec:color-schames}
