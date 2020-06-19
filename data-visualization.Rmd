@@ -315,6 +315,31 @@ filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.color
 
 ### 调色板 {#subsec:color-palettes}
 
+R 预置的灰色有224种，挑出其中的调色板
+
+```{r echo=TRUE}
+grep("^gr(a|e)y", grep("gr(a|e)y", colors(), value = TRUE), value = TRUE, invert = TRUE)
+```
+
+```{r gray-palettes,fig.cap="灰度调色板"}
+gray_colors <- paste0(rep(c("slategray", "darkslategray"), each = 4), seq(4))
+barplot(1:8, col = gray_colors, border = NA)
+```
+
+gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式的差别，且看
+
+```{r,echo=TRUE}
+all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
+```
+
+`gray100` 代表白色，`gray0` 代表黑色，提取灰色调色板，去掉首尾部分是必要的
+
+```{r gray-colors, fig.cap="提取 10 种灰色做调色板"}
+barplot(1:8, col = gray.colors(8, start = .3, end = .9), main = "gray.colors function", border = NA)
+```
+
+
+
 首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
 
 ```{r peach-pear-palette,fig.cap="桃色至梨色的渐变",fig.width=8,fig.height=1,collapse=TRUE}
