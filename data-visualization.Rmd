@@ -313,6 +313,42 @@ filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.color
 :::
 
 
+### 调色板 {#subsec:color-palettes}
+
+首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
+
+```{r peach-pear-palette,fig.cap="桃色至梨色的渐变",fig.width=8,fig.height=1,collapse=TRUE}
+# Colors from https://github.com/johannesbjork/LaCroixColoR
+colors_vec <- c("#FF3200", "#E9A17C", "#E9E4A6", "#1BB6AF", "#0076BB", "#172869")
+# 代码来自 ?colorspace::rainbow_hcl
+pal <- function(n = 20, colors = colors, border = "light gray", ...) {
+  colorname <- (grDevices::colorRampPalette(colors))(n)
+
+  plot(0, 0,
+    type = "n", xlim = c(0, 1), ylim = c(0, 1),
+    axes = FALSE, ...
+  )
+  rect(0:(n - 1) / n, 0, 1:n / n, 1, col = colorname, border = border)
+}
+op <- par(mar = rep(0, 4))
+pal(n = 20, colors = colors_vec, xlab = "Colors from Peach to Pear", ylab = "")
+par(op)
+```
+
+`colorRampPalette()` 自制调色板
+
+```{r custom-palettes,fig.cap="colorRampPalette 自制调色板", collapse=TRUE}
+create_palette <- function(n = 1000, colors = c("blue", "orangeRed")) {
+  color_palette <- colorRampPalette(colors)(n)
+  barplot(rep(1, times = n), col = color_palette, border = color_palette, axes = FALSE)
+}
+op <- par(mfrow = c(3, 1), mar = c(0.1, 0.1, 0.5, 0.1), xaxs = "i", yaxs = "i")
+create_palette(n = 1000, colors = c("blue", "orangeRed"))
+create_palette(n = 1000, colors = c("darkgreen", "yellow", "orangered"))
+create_palette(n = 1000, colors = c("blue", "white", "orangered"))
+par(op)
+```
+
 ## 交互图形 {#sec:interactive-graphics}
 
 - plotly
