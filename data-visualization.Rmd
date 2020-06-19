@@ -76,6 +76,11 @@ expand.grid( months = month.abb, years = 1949:1960) %>%
   labs(x = "年", y = "月", fill = "人数")
 ```
 
+### 日历图 {#subsec:calendar-heatmap}
+
+```{bash}
+curl -s "https://github.com/users/XiangyunHuang/contributions" | head -n 12
+```
 
 ### 函数图 {#subsec:function}
 
@@ -121,6 +126,43 @@ sm3 <- smooth(presidents, "3R")
 plot(presidents, main = "smooth(presidents0, *) :  3R and default 3RS3R")
 lines(sm3, col = 3, lwd = 1.5)
 lines(sm, col = 2, lwd = 1.25)
+```
+
+
+
+```{r,eval=FALSE,echo=FALSE}
+# 数据集很简单
+# 图的效果，我要 ISLR 统计学习应用与 R 的封面或者 Stanford 统计学习课程 logo 那样
+# Girth Height Volume
+# help(trees) 自带的例子
+pairs(trees, panel = panel.smooth, main = "trees data")
+plot(Volume ~ Girth, data = trees, log = "xy")
+coplot(log(Volume) ~ log(Girth) | Height,
+  data = trees,
+  panel = panel.smooth
+)
+# summary(fm1 <- lm(log(Volume) ~ log(Girth), data = trees))
+# summary(fm2 <- update(fm1, ~ . + log(Height), data = trees))
+# step(fm2)
+## i.e., Volume ~= c * Height * Girth^2  seems reasonable
+
+
+# 抽样 Tossing a coin
+
+set.seed(2018)
+N <- 10000 # 硬币抛掷次数 Tossing a coin 重复 N 次
+coin_seq <- sample(c(0, 1), N, replace = TRUE) #
+
+# 正面朝上的比例
+
+ratio <- cumsum(coin_seq) / seq(1:N)
+
+plot(ratio[1:10] ~ seq(10), xlab = "# of tosses", ylab = "proportion of heads")
+abline(h = 0.5)
+plot(ratio[1:100] ~ seq(100), xlab = "# of tosses", ylab = "proportion of heads")
+abline(h = 0.5)
+plot(ratio[1:1000] ~ seq(1000), xlab = "# of tosses", ylab = "proportion of heads")
+abline(h = 0.5)
 ```
 
 
@@ -332,6 +374,24 @@ ggplot(aes(mpg, wt), data = mtcars) +
 ```
 
 ## 配色 {#sec:colors}
+
+君子爱色，取之有道：有些人功力深厚，黑白灰几乎打遍天下无敌手，如科波拉执导的《教父》、沃卓斯基执导的《黑客帝国》等等，但我还是要说，好色乃人之本性也，花花世界，岂能都是法印眼中的白骨！再说《红楼梦》里，芍药丛中，桃花树下，滴翠亭边，栊翠庵里，处处都是湘云、黛玉、宝钗、妙玉留下的诗歌。
+
+黑西装、黑领带和白衬衫，让人一下子想到了电影《黑客帝国》，构建了整幅画轴，黑领带换黑领结和红玫瑰，转而又想到电影《教父》的主角维托·唐·科莱昂，黑白灰就占了电影的主色调。这么素的颜色怎么就能这么丰富呢？这就是配色的技艺了！
+
+早些时候我在统计之都论坛上发帖 -- R语言绘图用调色板大全 <https://d.cosx.org/d/419378-r>
+
+阐述色理 HCL RGB CMYK 
+Adobe RGB  sRGB   P3广色域  
+2K 4K 5K  视网膜屏  普清  高清 超高清 全高清 显示器 
+打印机  照相机 
+
+为什么需要这么多颜色模式
+
+知道颜色模式及其之间的转化
+颜色空间及其区别 HCL and HSV color spaces
+基于网页、人眼、打印机使用不同的颜色模式为何
+
 
 
 ```{r old-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("terrain.colors 调色板", "heat.colors 调色板", "topo.colors 调色板", "cm.colors 调色板"), fig.cap="R 3.6.0 以前的调色板",fig.ncol = 2}
@@ -688,6 +748,92 @@ par(op)
 ```
 
 ### 颜色模式 {#subsec:color-schames}
+
+
+#### RGB 
+
+红(red)、绿(green)、蓝(blue)是三原色
+
+```r
+rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)
+```
+
+函数参数说明：
+
+- __red, blue, green, alpha__ 取值范围[0,M]，M 是 *maxColorValue*
+- __names__ 字符向量，给这组颜色值取名
+- __maxColorValue__ 红，绿，蓝三色范围的最大值 
+
+The colour specification refers to the standard sRGB colorspace (IEC
+standard 61966).
+
+rgb 产生一种颜色，如 `rgb(255, 0, 0, maxColorValue = 255)` 的颜色是 `"#FF0000"` ，这是一串16进制数，每两个一组，那么一组有 $16^2 = 256$ 种组合，整个一串有 $256^3 = 16777216$ 种组合，这就是RGB表达的所有颜色。
+
+
+#### HSL
+
+色相饱和度亮度 hue–saturation–luminance (HSL)
+
+#### HSV 
+
+Create a vector of colors from vectors specifying hue, saturation and value.	色相饱和度值
+
+```r	
+hsv(h = 1, s = 1, v = 1, alpha)
+```
+
+This function creates a vector of colors corresponding to the given values in HSV space.
+rgb and rgb2hsv for RGB to HSV conversion;
+
+
+hsv函数通过设置色调、饱和度和亮度获得颜色，三个值都是0-1的相对量
+
+RGB HSV HSL 都是不连续的颜色空间，缺点
+
+
+#### HCL 
+
+基于感知的颜色空间替代RGB颜色空间
+
+通过指定色相(hue)，色度(chroma)和亮度(luminance/lightness)，创建一组（种）颜色
+
+```r			
+hcl(h = 0, c = 35, l = 85, alpha, fixup = TRUE)
+```
+
+函数参数说明：
+
+- __h__ 颜色的色调，取值范围为[0,360]，0、120、240分别对应红色、绿色、蓝色
+
+- __c__ 颜色的色度，其上界取决于色调和亮度
+
+- __l__ 颜色的亮度，取值范围[0,100]，给定色调和色度，只有一部分子集可用
+
+- __alpha__ 透明度，取值范围[0,1]，0 和1分别表示透明和不透明
+
+This function corresponds to polar coordinates in the CIE-LUV color space
+
+选色为什么这么难
+
+色相与阴影相比是无关紧要的，色相对于标记和分类很有用，但表示（精细的）空间数据或形状的效果较差。颜色是改善图形的好工具，但糟糕的配色方案 (color schemes) 可能会导致比灰度调色板更差的效果。[@colorspace_2009_rainbow]
+
+黑、白、灰，看似有三种颜色，其实只有一种颜色，黑和白只是灰色的两极，那么如何设置灰色梯度，使得人眼比较好区分它们呢？这样获得的调色板适用于什么样的绘图环境呢？
+
+
+#### CMYK
+
+印刷三原色：青 (cyan)、品红 (magenta)、黄 (yellow)
+
+- 颜色模式转化
+
+`col2rgb()` 、`rgb2hsv()` 和 `rgb()` 函数
+`hex2RGB()` 函数 colorspace
+`col2hcl()` 函数 scales
+`col2HSV()`  colortools
+`col2hex()`
+
+
+### LaTeX 配色 {#subsec:latex-xcolor}
 
 注意和 LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 的联系
 
