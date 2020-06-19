@@ -36,9 +36,8 @@ jobs:
 
       - name: Install TinyTeX
         run: |
-          curl -fLo /tmp/tinytex.tar.gz https://travis-bin.yihui.org/tinytex.tar.gz
-          tar -xzf /tmp/tinytex.tar.gz -C $HOME
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt()'
+          export PATH=$HOME/bin:$PATH
           curl -fsSL https://www.preining.info/rsa.asc | tlmgr key add -
           tlmgr update --self --all --no-auto-install --repository=${{ env.CTAN_URL }}/systems/texlive/tlnet/
           tlmgr install $(cat texlive.txt | tr '\n' ' ') || true
@@ -112,7 +111,7 @@ jobs:
         run: |
           R -e 'sessionInfo(sort(.packages(T)))'
           # check TinyTeX
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          export PATH=$HOME/bin:$PATH
           R -e 'tinytex:::is_tinytex()'
 
 
@@ -124,7 +123,7 @@ jobs:
 
       - name: Build Book
         run: |
-          export PATH=$HOME/.TinyTeX/bin/x86_64-linux:$PATH
+          export PATH=$HOME/bin:$PATH
           R -e 'webshot::is_phantomjs_installed()'
           if make gitbook; then make pdf; fi
 
