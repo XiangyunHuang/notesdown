@@ -7,9 +7,18 @@
 
 仅介绍 RSQLite 和  odbc 两个 R 包，其余数据库与 R 连接和使用的方式类似。
 
-
-
 ## 批量读取 csv 文件
+
+iris 拆分成 csv xlsx 文件，分别用 fread/openxlsx 批量读取、导出
+
+按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示
+
+```{r,eval=FALSE}
+# 批量分组导出
+library(data.table)
+as.data.table(iris)[, fwrite(.SD, paste0("data/user_", unique(Species), ".csv")), by = Species, .SDcols = colnames(iris)]
+```
+
 
 ```{r,eval=FALSE}
 library(data.table)

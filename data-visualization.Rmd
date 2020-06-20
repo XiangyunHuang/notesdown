@@ -63,6 +63,56 @@ dat %>%
 
 ## 图形 {#sec:figures}
 
+
+两个分布比较
+
+[beanplot](https://cran.r-project.org/package=beanplot) [@beanplot_2008_jss]
+[vioplot](https://github.com/TomKellyGenetics/vioplot)
+[ggnormalviolin](https://github.com/wjschne/ggnormalviolin) 密度曲线
+[ggbeeswarm](https://github.com/eclarke/ggbeeswarm) 散点图
+
+
+```{r,eval=FALSE}
+library(vioplot)
+vioplot(Sepal.Length ~ Species, data = iris)
+
+library(ggplot2)
+ggplot(iris, aes(Species, Sepal.Length)) +
+  geom_violin()
+```
+
+
+```{r}
+library(beanplot)
+boxplot(count ~ spray, data = InsectSprays, col = "lightgray")
+beanplot(count ~ spray, data = InsectSprays, col = "lightgray", border = "grey", cutmin = 0)
+```
+
+
+```{r}
+library(ggplot2)
+library(ggnormalviolin)
+
+library(data.table)
+iris <- as.data.table(iris)
+iris[, .(dist_mean = mean(Sepal.Length), dist_sd = sd(Sepal.Length)), by = .(Species)] %>%
+  ggplot(aes(x = Species, mu = dist_mean, sigma = dist_sd, fill = Species)) +
+  geom_normalviolin()
+```
+
+
+```{r}
+library(ggplot2)
+library(ggbeeswarm)
+ggplot(iris, aes(Species, Sepal.Length)) +
+  geom_jitter()
+
+ggplot(iris, aes(Species, Sepal.Length)) +
+  geom_quasirandom()
+```
+
+
+
 ### 瓦片图 {#subsec:tile}
 
 ```{r geom-tile,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.asp=.8}
