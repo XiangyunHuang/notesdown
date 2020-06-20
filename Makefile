@@ -7,5 +7,5 @@ pdf:
 all:
 	xvfb-run --auto-servernum Rscript -e 'bookdown::render_book("index.Rmd", "all", quiet = TRUE)'
 
-examples:
-	xvfb-run --auto-servernum Rscript -e 'lapply(list.files(path = "examples/", pattern = ".Rmd$", full.names = T), rmarkdown::render, output_dir = "_book/")'
+pdf2:
+	Rscript -e 'lapply(list.files(path = "examples", pattern = "\\.Rmd", full.names = TRUE), rmarkdown::render, output_dir = "_book/")'
