@@ -15,4 +15,8 @@ RUN dnf -y upgrade \
    pandoc-citeproc \
    pandoc-pdf \
    NLopt-devel \
-   R-devel
+   unixODBC-devel \
+   sqlite-devel \
+   R-devel \
+   octave-devel \
+   ghostscript
