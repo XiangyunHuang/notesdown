@@ -723,6 +723,49 @@ Communicate -> Transform;
 }
 ```
 
+DiagrammeR 包将 Graphviz 引入 R 语言
+
+```{r,eval=FALSE}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(magrittr)
+library(rsvg)
+
+graph <-
+  "graph {
+        rankdir=LR; // Left to Right, instead of Top to Bottom
+        a -- { b c d };
+        b -- { c e };
+        c -- { e f };
+        d -- { f g };
+        e -- h;
+        f -- { h i j g };
+        g -- k;
+        h -- { o l };
+        i -- { l m j };
+        j -- { m n k };
+        k -- { n r };
+        l -- { o m };
+        m -- { o p n };
+        n -- { q r };
+        o -- { s p };
+        p -- { s t q };
+        q -- { t r };
+        r -- t;
+        s -- z;
+        t -- z;
+    }
+"
+# 导出图形
+grViz(graph) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("graph.pdf")
+grViz(graph) %>%
+  export_svg %>% charToRaw %>% rsvg_png("graph.png")
+grViz(graph) %>%
+  export_svg %>% charToRaw %>% rsvg_svg("graph.svg")
+```
+
+
 ## LaTeX 排版工具 {#sec:latex}
 
 另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。

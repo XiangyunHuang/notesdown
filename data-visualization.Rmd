@@ -132,6 +132,26 @@ expand.grid( months = month.abb, years = 1949:1960) %>%
 curl -s "https://github.com/users/XiangyunHuang/contributions" | head -n 12
 ```
 
+### 岭线图 {#subsec:ggridge}
+
+
+```{r}
+library(ggplot2)
+library(ggridges)
+
+ggplot(sleep, aes(x = extra, y = group, fill = group)) +
+  geom_density_ridges() +
+  theme_ridges()
+```
+
+
+```{r}
+ggplot(diamonds, aes(x = price, y = color, fill = color)) +
+  geom_density_ridges() +
+  theme_ridges()
+```
+
+
 ### 函数图 {#subsec:function}
 
 ```{r,warning=FALSE}
@@ -422,6 +442,23 @@ ggplot(aes(mpg, wt), data = mtcars) +
   geom_point() +
   theme_xkcd()
 ```
+
+### 表情字体 {#subsec:emoji-fonts}
+
+余光创开发的 [emojifont](https://github.com/GuangchuangYu/emojifont) 包和 Hadley 开发的 [emo](https://github.com/hadley/emo) 包
+
+```{r,eval=FALSE}
+# remotes::install_github("hadley/emo")
+library(ggplot2)
+library(magrittr)
+library(data.table)
+data.frame(category = c("pineapple", "apple", "watermelon"), value = c(5, 4, 3)) %>%
+  transform(category = sapply(category, emo::ji)) %>% 
+  ggplot(aes(x = category, y = value)) +
+  geom_text(aes(label = category), size = 12, vjust = 1) +
+  lims(y = c(0, 6))
+```
+
 
 ## 配色 {#sec:colors}
 

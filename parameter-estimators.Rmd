@@ -276,6 +276,147 @@ BFGS 拟牛顿法和采样器 <https://bookdown.org/rdpeng/advstatcomp>
 
 似然 边际似然 条件似然
 
+
+# 置信区间和信仰区间 Confidence or Fiducial Limits
+
+二项分布的参数估计，包括点估计和区间估计 [@Test_1934_binom]
+
+给定样本量 n = 10  0-1 分布 成功概率 p 分别取 0.1,0.2,...,1
+置信度为 95% 观测到 x 取 1,2,3,..,10 时 估计 p 的上下限
+
+```{r}
+set.seed(2019)
+x <- rbinom(n = 1, size = 10, prob = 0.1) # 结果解读
+```
+
+抛掷硬币 10 次，观测到2次正面朝上，估计正面朝上的概率
+
+观测到正面朝上 2 次 此时请以 95% 的信心给出 p 的区间 (p_low, p_up)
+
+绘制曲线 p 关于 x 的曲线
+
+```{r}
+set.seed(2019)
+p <- seq(from = 0, to = 1, length.out = 11)
+# 成功概率 总体参数 p 值
+sapply(rep(p, each = 10), rbinom, n = 1, size = 10)
+```
+
+计算每一次抽样获得的上下限
+
+Clopper-Pearson 方法，即求和搜索，在保持累积概率
+
+$$B(x,n;n,p) = \sum_{r = x}^{n} \binom{n}{r}p^r(1-p)^{n-r} = \alpha/2$$
+
+其中 n 表示试验次数，这里是 10， p 是未知待求，已知 $\alpha = 0.05$，而 $1-\alpha$ 表示置信水平，意思是说对于我给出的区间估计，长期来看，我有 95% 的信心认为，真实值 $p$ 会落在此区间内。
+
+对上尾部从 x 到 n 求和，计算 p，对每一个 x 都能计算出一个 p，根据二项分布的对称性，区间 $[0, x]$ 和 $[x,n]$ 的累积概率是相同的，各占 $\alpha/2$
+
+
+```{r}
+# 精确计算二项分布检验的 p
+# 调用符号计算
+# x = 7
+fun <- function(p, r = 8, n = 10) {
+  choose(n, n-2)*p^r*(1-p)^(n-r) + choose(n, n-1)*p^(n-1)*(1-p) + choose(n, n)*p^n - 0.025
+}
+uniroot(fun, lower = 0, upper = 1)
+
+
+
+# x = 8
+fun <- function(p) {
+  45*p^8*(1-p)^2 + 10*p^9*(1-p) + p^10 - 0.025
+}
+uniroot(fun, lower = 0, upper = 1)
+
+# x = 9
+fun <- function(x) {
+  9 * x^10 - 10 * x^9 + 0.025
+}
+# 0.555 计算下限
+uniroot(fun, lower = 0, upper = 1)
+
+# x = 10
+fun <- function(x) {
+  x^10 - 0.025
+}
+# 0.691
+uniroot(fun, lower = 0, upper = 1)
+```
+
+累积二项概率
+
+找到最小的 p 使得其等于 9
+
+```{r}
+# 已知概率求上分位点
+
+# 等于
+qbinom(0.025, size = 10, prob = 0.565, lower.tail = F)
+```
+
+找到使得函数为 0 的 p 中最小的那个，找到所有的根，然后取最小的那个
+
+```{r}
+fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = F) - r
+# 计算每个 x 对应的 p 
+(p <- sapply(1:10, function(x) uniroot(fun, lower = 0, upper = 1, r = x)$root))
+```
+
+
+
+```{r,fig.asp=1}
+plot(x = 1:10, y = p)
+```
+
+
+```{r}
+
+# 二项检验 菱形置信带
+set.seed(2019)
+
+
+dat <- replicate(10^6, expr = {
+  x = sample(0:1, size = 10, replace = TRUE, prob = c(0.8, 0.2))
+  sum(x)/10
+})
+
+# 成功概率 p = 0.2 每个样本量 10
+dat <- rbinom(n = 10^4, size = 10, prob = 0.2)/10
+table(dat)
+# 分布图 y 轴是密度
+# right = TRUE 区间形式 (a,b] 左开右闭
+hist(dat, probability = T, breaks = seq(from = -0.1, to = 1, by = 0.1))
+
+# 0.2^10 左闭右开区间
+hist(dat, probability = T, breaks = seq(from = 0, to = 1.1, by = 0.1),
+     right = FALSE, xlim = c(0, 1.1))
+
+
+# 分布
+library(ggplot2)
+library(magrittr)
+# 这个图里面会不会隐含什么信息，分布是怎样的？
+# 二项展开有关系吗
+dat1 <- as.data.frame(table(dat))
+
+
+ggplot(data = dat1, aes(x = dat, y = Freq)) +
+  geom_col()
+
+as.data.frame(table(dat)) %>%
+  head()
+
+
+ggplot(data = dat,aes(x = factor(dat), y = Freq, fill = factor(dat))) +
+  geom_col(position = "fill")
+
+ggplot(as.data.frame(dat), aes(x = dat)) +
+  geom_histogram(bins = 12)
+```
+
+
 -->
 
 ## 最小角回归 {#sec:least-angle-regression}
