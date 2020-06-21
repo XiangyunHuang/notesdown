@@ -230,36 +230,14 @@ with(
 
 介绍线性模型为何引入 REML 减少偏差
 
-极大似然估计 Maximum likelihood 简称 ML
-
-限制极大似然 Restricted Maximum likelihood, 简称 REML
-
-惩罚拟似然 Penalized Quasi-Likelihood, 简称 PQL 和边际拟似然 Marginal Quasi-Likelihood, 简称 MQL，Profile Maximal Likelihood, 简称 PML
-
-Penalized maximum likelihood estimates are calculated using optimization methods such as the limited memory Broyden-Fletcher-Goldfarb-Shanno algorithm (L-BFGS).
-
-BFGS 拟牛顿法和采样器 <https://bookdown.org/rdpeng/advstatcomp>
-
-## 区间估计 {#chap:interval-estimation}
-
-<!--
-
-## 分布与似然之间的联系 {#Distribution-Likelihood}
-
-费舍尔的照片
 
 极大似然估计是费舍尔提出来的
 
-似然推断知多少 --- 基于似然的统计推断方法综述
-
-边际似然 Marginal Likelihood
-条件似然 conditional lkelihood
-完全似然 complete Likelihood
-
-层次似然 Hierarchical likelihood
-部分似然 partial likelihood
-
-
+- 边际似然 Marginal Likelihood
+- 条件似然 conditional lkelihood
+- 完全似然 complete Likelihood
+- 层次似然 Hierarchical likelihood
+- 部分似然 partial likelihood
 
 [拟似然估计](https://en.wikipedia.org/wiki/Quasi-maximum_likelihood_estimate)
 
@@ -267,17 +245,25 @@ BFGS 拟牛顿法和采样器 <https://bookdown.org/rdpeng/advstatcomp>
 
 [似然函数](https://en.wikipedia.org/wiki/Likelihood_function)
 
-剖面似然 Profile Likelihood
-限制似然 Restricted Likelihood 
+- 剖面似然 Profile Likelihood
+- 限制似然 Restricted Likelihood 
+- 惩罚/边际拟似然 (PQL/MQL) Penalized Quasi-Likelihood/Marginal Quasi-Likelihood 
+- 分布 边际分布 条件分布
+- 似然 边际似然 条件似然
+- 极大似然估计 Maximum likelihood 简称 ML
+- 限制极大似然 Restricted Maximum likelihood, 简称 REML
+- 惩罚拟似然 Penalized Quasi-Likelihood, 简称 PQL 和边际拟似然 Marginal Quasi-Likelihood, 简称 MQL，Profile Maximal Likelihood, 简称 PML
 
-惩罚/边际拟似然 (PQL/MQL) Penalized Quasi-Likelihood/Marginal Quasi-Likelihood 
 
-分布 边际分布 条件分布
+Penalized maximum likelihood estimates are calculated using optimization methods such as the limited memory Broyden-Fletcher-Goldfarb-Shanno algorithm (L-BFGS).
 
-似然 边际似然 条件似然
+BFGS 拟牛顿法和采样器 <https://bookdown.org/rdpeng/advstatcomp>
+
+## 区间估计 {#chap:interval-estimation}
 
 
-# 置信区间和信仰区间 Confidence or Fiducial Limits
+
+### 置信区间和信仰区间 {#sec:confidence-fiducial-limits}
 
 二项分布的参数估计，包括点估计和区间估计 [@Test_1934_binom]
 
@@ -321,22 +307,29 @@ fun <- function(p, r = 8, n = 10) {
   choose(n, n-2)*p^r*(1-p)^(n-r) + choose(n, n-1)*p^(n-1)*(1-p) + choose(n, n)*p^n - 0.025
 }
 uniroot(fun, lower = 0, upper = 1)
+```
 
 
-
+```{r}
 # x = 8
 fun <- function(p) {
   45*p^8*(1-p)^2 + 10*p^9*(1-p) + p^10 - 0.025
 }
 uniroot(fun, lower = 0, upper = 1)
+```
 
+
+```{r}
 # x = 9
 fun <- function(x) {
   9 * x^10 - 10 * x^9 + 0.025
 }
 # 0.555 计算下限
 uniroot(fun, lower = 0, upper = 1)
+```
 
+
+```{r}
 # x = 10
 fun <- function(x) {
   x^10 - 0.025
@@ -372,19 +365,21 @@ plot(x = 1:10, y = p)
 
 
 ```{r}
-
 # 二项检验 菱形置信带
 set.seed(2019)
 
-
-dat <- replicate(10^6, expr = {
+dat <- replicate(10^3, expr = {
   x = sample(0:1, size = 10, replace = TRUE, prob = c(0.8, 0.2))
   sum(x)/10
 })
 
 # 成功概率 p = 0.2 每个样本量 10
-dat <- rbinom(n = 10^4, size = 10, prob = 0.2)/10
+dat <- rbinom(n = 10^3, size = 10, prob = 0.2)/10
 table(dat)
+```
+
+
+```{r}
 # 分布图 y 轴是密度
 # right = TRUE 区间形式 (a,b] 左开右闭
 hist(dat, probability = T, breaks = seq(from = -0.1, to = 1, by = 0.1))
@@ -392,8 +387,10 @@ hist(dat, probability = T, breaks = seq(from = -0.1, to = 1, by = 0.1))
 # 0.2^10 左闭右开区间
 hist(dat, probability = T, breaks = seq(from = 0, to = 1.1, by = 0.1),
      right = FALSE, xlim = c(0, 1.1))
+```
 
 
+```{r}
 # 分布
 library(ggplot2)
 library(magrittr)
@@ -405,19 +402,10 @@ dat1 <- as.data.frame(table(dat))
 ggplot(data = dat1, aes(x = dat, y = Freq)) +
   geom_col()
 
-as.data.frame(table(dat)) %>%
-  head()
-
-
-ggplot(data = dat,aes(x = factor(dat), y = Freq, fill = factor(dat))) +
-  geom_col(position = "fill")
-
 ggplot(as.data.frame(dat), aes(x = dat)) +
   geom_histogram(bins = 12)
 ```
 
-
--->
 
 ## 最小角回归 {#sec:least-angle-regression}
 
