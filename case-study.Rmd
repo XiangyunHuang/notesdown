@@ -5,6 +5,9 @@ library(magrittr)
 library(ggplot2)
 ```
 
+[tidymodels](https://github.com/tidymodels/tidymodels) 和 [easystats](https://github.com/easystats/easystats) 都是基于 [tidyverse](https://github.com/tidyverse/tidyverse) [@Hadley_2019_tidyverse] 的统计模型套件。
+
+[easystats](https://github.com/easystats/easystats) 包含 [insight](https://github.com/easystats/insight) [@ludecke2019insight] 和 [bayestestR](https://github.com/easystats/bayestestR) [@makowski2019bayestestr] 等共 9 个R 包，[tidymodels](https://github.com/tidymodels/tidymodels) 也包含差不多量的 R 包。
 
 ```{r workflow, fig.cap="模型", echo=FALSE}
 nomnoml::nomnoml("
@@ -26,7 +29,7 @@ nomnoml::nomnoml("
 ")
 ```
 
-统计建模：两种文化 [@Breiman_2001_Modeling] 和 tidyverse [@Hadley_2019_tidyverse]
+统计建模：两种文化 [@Breiman_2001_Modeling]
 
 > 这些案例来自 Kaggle、 Tudesday 或者自己找的数据集，而不是论文里，或者 R 包里的小数据集，应该更加真实，贴近实际问题，考虑更多细节
 
@@ -38,9 +41,7 @@ nomnoml::nomnoml("
 
 <!-- https://github.com/XiangyunHuang/MSG-Book/issues/74 -->
 
-注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力
-
-参考文献 [@Statisticians_1997_Johnson]
+注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力，参考文献 [@Statisticians_1997_Johnson]
 
 ## R 语言发展历史 {#sec:history-of-r}
 
@@ -51,8 +52,8 @@ R 语言发展历史和现状，用图来表达
 PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》[@Dobson_1983_Modelling] 第 2 章第 2 节的案例 --- 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 \@ref(tab:PlantGrowth-data) 所示
 
 ```{r PlantGrowth-data}
-## 或者
 # do.call("cbind", lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = "weight"))
+## 或者
 library(magrittr)
 split(PlantGrowth, f = PlantGrowth$group) %>% # 分组
   lapply(., subset, select = "weight") %>% # 计算
@@ -63,8 +64,6 @@ split(PlantGrowth, f = PlantGrowth$group) %>% # 分组
     align = "c"
   )
 ```
-
-
 
 PlantGrowth 数据集的重塑操作也可以使用内置的函数 `reshape()` 实现 
 
@@ -101,8 +100,6 @@ dcast(PlantGrowth_DT, id ~ group, value.var = "weight")
 # 横
 dcast(PlantGrowth_DT, group ~ id, value.var = "weight")
 ```
-
-
 
 设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响
 
