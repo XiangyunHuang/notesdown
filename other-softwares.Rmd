@@ -225,6 +225,22 @@ vapply(my_repos, "[[", "", "login")
 knitr::include_graphics(path = paste0("images/git", ifelse(knitr::is_latex_output(), ".pdf", ".svg")))
 ```
 
+[Jeroen Ooms](https://github.com/jeroen) 开发的 [gert](https://github.com/r-lib/gert) 包实现在 R 环境中操作 Git，我们可以从幻灯片 --- [Gert: A minimal git client for R](https://jeroen.github.io/gert2019) 学习重点内容。
+
+```{r,eval=FALSE}
+library(gert)
+```
+```
+Linking to libgit2 v1.0.0, ssh support: YES, https support: YES
+Default user: Xiangyun Huang <xiangyunfaith@outlook.com>
+```
+```{r,eval=FALSE}
+library(magrittr)
+git_log(max = 10) %>% 
+  subset(grepl("Yihui Xie", x = author), select = c("author", "message"))
+```
+
+提供了 `git_rm()`、 `git_status()`、 `git_add()` 和 `git_commit()` 等函数，其中包含 `git_reset()` 高级的 Git 操作。此外， 还有 `git_branch_*()` 系列分支操作函数
 
 ### 安装配置 {#git-setup}
 
@@ -462,33 +478,31 @@ git push --set-upstream LalZzy patch-2
 
 
 
-## Pandoc
+## Pandoc 文档处理 {#sec:pandoc}
 
-1. Pandoc 是一个万能文档转化器，安装 pandoc，下载网址 <https://github.com/jgm/pandoc/releases/latest>
+Pandoc 是一个万能文档转化器，安装 pandoc，下载网址 <https://github.com/jgm/pandoc/releases/latest>
 
-   ```bash
-   sudo apt-get install gdebi-core
-   wget https://github.com/jgm/pandoc/releases/download/2.5/pandoc-2.5-1-amd64.deb
-   sudo chmod +x pandoc-2.5-1-amd64.deb
-   sudo gdebi pandoc-2.5-1-amd64.deb
-   ```
-   
-   rmarkdown 包裹了 Pandoc 工具，所以使用 `rmarkdown::render` 函数，即可将 R Markdown 文档转化为 HTML、LaTeX 和 Markdown 等格式。
+```bash
+sudo apt-get install gdebi-core
+wget https://github.com/jgm/pandoc/releases/download/2.9.2/pandoc-2.9.2-1-amd64.deb
+sudo chmod +x pandoc-2.9.2-1-amd64.deb
+sudo gdebi pandoc-2.9.2-1-amd64.deb
+```
 
-## Calibre
+rmarkdown 包裹了 Pandoc 工具，使用 `rmarkdown::render()` 函数即可将 R Markdown 文档转化为 HTML、LaTeX 和 Markdown 等格式。
 
-1. 安装 calibre
+## Calibre 书籍管理 {#sec:calibre}
 
-   ```bash
-   sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-   ```
+[Calibre](https://calibre-ebook.com) 是一款电子书转化和管理软件，首先安装 calibre
 
-   calibre 可以将 epub 格式电子书文档转化为 mobi 格式，bookdown 已经给这个工具穿上了一件马甲，所以用户只需调用 `bookdown::calibre` 函数即可。
+```bash
+sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+```
 
-[Calibre](https://calibre-ebook.com) 电子书转化器和管理器，bookdown 包提供了 `bookdown::calibre()` 函数去调用
+calibre 可以将 epub 格式电子书文档转化为 mobi 格式，bookdown 已经给这个工具穿上了一件马甲，用户只需调用 `bookdown::calibre()` 函数即可实现电子书格式的转换。
 
 
-## ImageMagick 图像操作 {#sec:ImageMagick}
+## ImageMagick 图像处理 {#sec:ImageMagick}
 
 图像的各种操作，包括合成、转换、旋转等等
 
@@ -518,7 +532,7 @@ convert -geometry 1000x3000 example.eps example.png
 ```
 
 
-## OptiPNG {#sec:optipng}
+## OptiPNG 图片优化 {#sec:optipng}
 
 [OptiPNG](http://optipng.sourceforge.net/) 是一个非常好的图片压缩、优化工具
 
@@ -543,12 +557,12 @@ optipng -o5 filename.png
 ```
 
 
-## PDFCrop {#sec:pdfcrop}
+## PDFCrop 裁剪边空 {#sec:pdfcrop}
 
 [PDFCrop](http://pdfcrop.sourceforge.net/) 可将 PDF 图片中留白的部分裁去，再也不用纠结 par 了
 
 
-## PhantomJS {#sec:phantomjs}
+## PhantomJS 网页截图 {#sec:phantomjs}
 
 Winston Chang 开发了 [webshot](https://github.com/wch/webshot) 包网页截图，它依赖 [PhantomJS](https://github.com/ariya/phantomjs/)，所以首先需要安装
 
@@ -1019,7 +1033,7 @@ TikZ 绘制三维图
 if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
 ```
 
-## Octave {#sec:octave}
+## Octave 科学计算 {#sec:octave}
 
 ```{r, engine='octave', eval=FALSE}
 %% fig1
