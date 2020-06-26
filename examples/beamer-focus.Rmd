@@ -1,0 +1,111 @@
+---
+title: "beamer 中文幻灯片"
+author: "xx"
+date: "xx"
+institute: "XX 大学，XX 学院，XX 系"
+documentclass: ctexbeamer
+output: 
+  bookdown::pdf_book: 
+    base_format: rmarkdown::beamer_presentation
+    toc: no
+    keep_tex: no
+    latex_engine: xelatex
+    citation_package: natbib
+    theme: focus # 主题
+    template: null
+    dev: "cairo_pdf"
+    highlight: "pygments" # 代码高亮
+    pandoc_args: !expr rmarkdown:::pandoc_lua_filters("latex-div.lua")
+classoption: "fontset=adobe,zihao=false"
+aspectratio: 1610
+bibliography: 
+ - packages.bib
+biblio-style: plainnat
+natbiboptions: "authoryear,round"
+link-citations: yes
+colorlinks: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+# Markdown
+## R Markdown
+
+This is an R Markdown presentation[@rmarkdown2018]. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <https://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## 自定义块
+
+
+::: {.block data-latex=""}
+文本
+:::
+
+. . .
+
+::: {.exampleblock data-latex=""}
+示例
+:::
+
+. . .
+
+::: {.alertblock data-latex=""}
+警告
+:::
+
+
+## Slide with Plot
+
+```{r pressure,fig.width=6,fig.height=5,out.width="65%"}
+plot(pressure, family = "Dejavu Sans")
+```
+
+## 安装主题
+
+[focus](https://github.com/elauksap/focus-beamertheme) 主题已经发布在 CTAN 上 <https://ctan.org/pkg/beamertheme-focus>
+
+```bash
+tlmgr install beamertheme-focus appendixnumberbeamer fira
+```
+
+## Tables
+
+
+Table: (\#tab:demo) Demonstration of simple table syntax.
+
+  Right     Left     Center     Default
+-------     ------ ----------   -------
+     12     12        12            12
+    123     123       123          123
+      1     1          1             1
+
+## Figures
+
+![(\#fig:r-logo) Figure caption](`r knitr::fig_chunk('pressure', 'pdf')`){ width=50% }
+
+
+
+## 致谢
+
+Thanks for using **Focus**!
+
+```{r bib,cache=FALSE}
+# automatically create a bib database for R packages
+bib <- knitr::write_bib(
+  x = c(
+    .packages(), "knitr", "rmarkdown", "bookdown"
+  ), file = NULL, prefix = ""
+)
+xfun::write_utf8(unlist(bib), "packages.bib")
+```
