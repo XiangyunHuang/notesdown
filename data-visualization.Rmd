@@ -246,38 +246,51 @@ abline(h = 0.5)
 
 ### 系统字体 {#subsec:system-fonts}
 
-以 CentOS 系统为例，软件仓库中包含 Google 字体
+以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) 字体， [DejaVu](https://github.com/dejavu-fonts) 字体
 
 ```bash
-# 等宽字体
-sudo dnf install -y google-noto-mono-fonts \
+sudo dnf install -y \
+  google-noto-mono-fonts \
   google-noto-sans-fonts \
-  google-noto-serif-fonts
-# https://dejavu-fonts.github.io/
-sudo dnf install -y dejavu-fonts-common \
-  dejavu-sans-fonts dejavu-serif-fonts \
-  dejavu-sans-mono-fonts
+  google-noto-serif-fonts \
+  dejavu-sans-mono-fonts \
+  dejavu-sans-fonts \
+  dejavu-serif-fonts
 ```
 
-这四款字体分别用来替换 Windows 系统上的 Courier New/Arial Narrow/Arial/Times New Roman 字体
+liberation 系列的四款字体可以用来替换 Windows 系统上对应的四款字体，对应关系见表 \@ref(tab:fonts-centos-vs-win)
+
+Table: (\#tab:fonts-centos-vs-win) Windows 系统上四款字体的替代品
+
+|                 | CentOS 系统             | Windows 系统    |
+| :-------------- | :---------------------- | :-------------- |
+| 衬线体/宋体     | liberation-serif-fonts  | Times New Roman |
+| 无衬线体/黑体   | liberation-sans-fonts   | Arial           |
+| Arial 的细瘦版  | liberation-narrow-fonts | Arial Narrow    |
+| 等宽体/微软雅黑 | liberation-mono-fonts   | Courier New     |
+
+此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 [awesome-fonts](https://github.com/brabadu/awesome-fonts) 列表是一个不错的开始，比如图标字体 [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)，
 
 ```bash
-sudo dnf install -y liberation-mono-fonts \
-  liberation-narrow-fonts \
-  liberation-sans-fonts \
-  liberation-serif-fonts 
+sudo dnf install -y fontawesome-fonts fontawesome-fonts-web
 ```
 
-图标字体，可以在 LaTeX 文档中使用
+安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，
 
-```bash
-fontawesome-fonts fontawesome-fonts-web
+```tex
+\documentclass{article}
+\usepackage{fontawesome}
+\begin{document}
+Hello, \faGithub!
+\end{document}
 ```
+
+在 R 绘制的图形中
 
 ```{r pressure,fig.asp=.8,fig.cap="调用系统字体绘图"}
 plot(data = pressure, pressure ~ temperature, 
      xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
-     col.lab = "red", col.axis = "blue", 
+     col.lab = "red", col.axis = "blue",
      font.lab = 3, font.axis = 2, family = "DejaVu Sans")
 title(main = "Vapor Pressure of Mercury as a Function of Temperature", 
       family = "DejaVu Serif", font.main = 3)
