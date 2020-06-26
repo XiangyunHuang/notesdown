@@ -23,7 +23,13 @@ RUN dnf -y upgrade \
    R-littler-examples \
    octave-devel \
    ghostscript \
- #  dejavu-fonts \
+   dejavu-serif-fonts \
+   dejavu-sans-fonts \
+   dejavu-sans-mono-fonts \
+   liberation-narrow-fonts \
+   liberation-serif-fonts \
+   liberation-sans-fonts \
+   liberation-mono-fonts \
    inkscape \
    optipng \
    ImageMagick \
