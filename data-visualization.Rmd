@@ -272,22 +272,22 @@ Table: (\#tab:fonts-centos-vs-win) Windows 系统上四款字体的替代品
 此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 [awesome-fonts](https://github.com/brabadu/awesome-fonts) 列表是一个不错的开始，比如图标字体 [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)，
 
 ```bash
-sudo dnf install -y fontawesome-fonts fontawesome-fonts-web
+sudo dnf install -y fontawesome-fonts
 ```
 
-安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，
+再安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，下面这个示例推荐用 XeLaTeX 引擎编译。
 
 ```tex
-\documentclass{article}
+\documentclass[border=10pt]{standalone}
 \usepackage{fontawesome}
 \begin{document}
-Hello, \faGithub!
+Hello, \faGithub
 \end{document}
 ```
 
-在 R 绘制的图形中
+而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "DejaVu Sans"` 来调用系统无衬线 DejaVu 字体，效果见图 \@ref(fig:system-dejavu-fonts)。
 
-```{r pressure,fig.asp=.8,fig.cap="调用系统字体绘图"}
+```{r system-dejavu-fonts,fig.asp=.8,fig.cap="调用系统字体绘图"}
 plot(data = pressure, pressure ~ temperature, 
      xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
      col.lab = "red", col.axis = "blue",
@@ -298,7 +298,7 @@ title(sub = "Data Source: Weast, R. C",
       family = "DejaVu Mono", font.sub = 1)
 ```
 
-
+在 ggplot2 绘图中的调用方式是类似的，如图 \@ref(fig:font-in-ggplot)。
 
 ```{r font-in-ggplot,fig.showtext=TRUE,fig.cap="在 ggplot2 绘图系统中设置中英文字体"}
 p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
