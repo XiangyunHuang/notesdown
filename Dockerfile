@@ -33,6 +33,7 @@ RUN dnf -y upgrade \
    libxml2-devel \
    cairo-devel \
    igraph-devel \
+   python-virtualenv \
    texlive-sourceserifpro \
    texlive-sourcecodepro \
    texlive-sourcesanspro \
