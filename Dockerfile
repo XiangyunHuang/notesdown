@@ -58,7 +58,7 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && install.r docopt
 
 # Python virtual env
-COPY requirements.txt ./
-RUN RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow \
-  && virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV \
-  && /bin/bash -c "source $RETICULATE_PYTHON_ENV/bin/activate; pip3 install -r requirements.txt; pip3 list --format=columns; deactivate"
+# COPY requirements.txt ./
+# RUN RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow \
+#   && virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV \
+#   && /bin/bash -c "source $RETICULATE_PYTHON_ENV/bin/activate; pip3 install -r requirements.txt; pip3 list --format=columns; deactivate"
