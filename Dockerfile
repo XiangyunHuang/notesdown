@@ -56,6 +56,7 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && mkdir -p /usr/local/lib/R/site-library \
  && echo "options(repos = c(CRAN = 'https://mirrors.tuna.tsinghua.edu.cn/CRAN/'))" | tee -a /usr/lib64/R/etc/Rprofile.site \
  && chmod a+r /usr/lib64/R/etc/Rprofile.site \
+ && echo "LANG=en_US.UTF-8" >> /usr/lib64/R/etc/Renviron.site \
  && install.r docopt
 
 # Python virtual env
