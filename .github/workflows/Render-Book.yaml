@@ -1,9 +1,10 @@
 on:
   push:
     branches: '*'
-#  schedule:
-    # run every day at 11 PM
-#    - cron: '0 23 * * *'
+  pull_request:
+    branches:
+      - master
+      - devel
 
 name: Render-Book
 
@@ -36,7 +37,7 @@ jobs:
 
       - name: Install TinyTeX
         run: |
-          Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt()'
+          Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt(); tinytex::tinytex_root()'
           export PATH=$HOME/bin:$PATH
           curl -fsSL https://www.preining.info/rsa.asc | tlmgr key add -
           tlmgr update --self --all --no-auto-install --repository=${{ env.CTAN_URL }}/systems/texlive/tlnet/
