@@ -2,9 +2,9 @@
 function Span(el)
   if el.classes:includes("note") then
     return {
-      pandoc.RawInline("latex", "\\note{"),
+      pandoc.RawInline("latex", "\\note"),
       el,
-      pandoc.RawInline("latex", "}")
+      pandoc.RawInline("latex", "")
     }
   end
 end
