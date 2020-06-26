@@ -23,7 +23,7 @@ RUN dnf -y upgrade \
    R-littler-examples \
    octave-devel \
    ghostscript \
-   dejavu-fonts \
+ #  dejavu-fonts \
    inkscape \
    optipng \
    ImageMagick \
