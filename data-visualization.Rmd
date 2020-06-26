@@ -69,6 +69,58 @@ ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = cyl)) +
 
 ## 图形 {#sec:figures}
 
+### 饼图 {#sec:ggplot2-pie}
+
+```{r fig.asp=1}
+BOD %>% transform(., ratio = demand / sum(demand)) %>% 
+  ggplot(., aes(x = "", y = demand, fill = reorder(Time, demand))) +
+  geom_bar(stat = "identity", show.legend = FALSE, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(x = 1.6, label = paste0(round(ratio, digits = 4) * 100, "%")),
+    position = position_stack(vjust = 0.5), color = "black"
+  ) +
+  geom_text(aes(x = 1.2, label = Time),
+    position = position_stack(vjust = 0.5), color = "black"
+  ) +
+  theme_void(base_size = 14) +
+  labs(
+    x = "Time", y = "demand ratio",
+    title = "demand vs Time", fill = "Time"
+  )
+```
+
+### 地图 {#sec:ggplot2-map}
+
+
+
+```{r}
+library(maps)
+crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
+
+# Equivalent to crimes %>% tidyr::pivot_longer(Murder:Rape)
+vars <- lapply(names(crimes)[-1], function(j) {
+  data.frame(state = crimes$state, variable = j, value = crimes[[j]])
+})
+crimes_long <- do.call("rbind", vars)
+
+states_map <- map_data("state")
+ggplot(crimes, aes(map_id = state)) +
+  geom_map(aes(fill = Murder), map = states_map) +
+  expand_limits(x = states_map$long, y = states_map$lat) + 
+  coord_map()
+```
+
+
+```{r}
+ggplot(crimes_long, aes(map_id = state)) +
+  geom_map(aes(fill = value), map = states_map) +
+  expand_limits(x = states_map$long, y = states_map$lat) +
+  facet_wrap( ~ variable)
+```
+
+
+
+### 蜂群图 {#sec:beeswarm}
 
 两个分布比较
 
@@ -140,8 +192,26 @@ curl -s "https://github.com/users/XiangyunHuang/contributions" | head -n 12
 
 ### 岭线图 {#subsec:ggridge}
 
+**ggridges** 包，[于淼](https://yufree.cn/) 对此图形的来龙去脉做了比较系统的阐述，详见统计之都主站文章[叠嶂图的前世今生](https://cosx.org/2018/04/ridgeline-story/)
 
-```{r}
+```{r lincoln-weather,fig.cap="2016年在内布拉斯加州林肯市的天气变化"}
+library(ggridges)
+ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = Month, fill = stat(x))) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01, gradient_lwd = 1.) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_discrete(expand = expansion(mult = c(0.01, 0.25))) +
+  scale_fill_viridis_c(name = "Temp. [F]", option = "C") +
+  labs(
+    title = 'Temperatures in Lincoln NE',
+    subtitle = 'Mean temperatures (Fahrenheit) by month for 2016'
+  ) +
+  theme_ridges(font_size = 13, grid = TRUE) + 
+  theme(axis.title.y = element_blank())
+```
+
+通过数据可视化的手段帮助肉眼检查两组数据的分布
+
+```{r sleep-ridges,fig.cap="两组数据的分布"}
 library(ggplot2)
 library(ggridges)
 
@@ -151,12 +221,63 @@ ggplot(sleep, aes(x = extra, y = group, fill = group)) +
 ```
 
 
-```{r}
+```{r diamonds-ridges,fig.cap="比较多组数据的分布"}
 ggplot(diamonds, aes(x = price, y = color, fill = color)) +
   geom_density_ridges() +
   theme_ridges()
 ```
 
+### 椭圆图 {#sec:ggplot2-ellipse}
+
+```{r}
+ggplot(faithful, aes(x = waiting, y = eruptions))+
+  geom_point() +
+  stat_ellipse()
+```
+
+```{r}
+ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
+  geom_point() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  stat_ellipse(type = "t")
+```
+
+
+```{r}
+ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
+  stat_ellipse(geom = "polygon")
+```
+### 包络图 {#sec:ggplot2-chull}
+
+```{r}
+StatChull <- ggproto("StatChull", Stat,
+  compute_group = function(data, scales) {
+    data[chull(data$x, data$y), , drop = FALSE]
+  },
+  required_aes = c("x", "y")
+)
+
+stat_chull <- function(mapping = NULL, data = NULL, geom = "polygon",
+                       position = "identity", na.rm = FALSE, show.legend = NA,
+                       inherit.aes = TRUE, ...) {
+  layer(
+    stat = StatChull, data = data, mapping = mapping, geom = geom,
+    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+```
+
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  stat_chull(fill = NA, colour = "black")
+
+ggplot(mpg, aes(displ, hwy, colour = drv)) + 
+  geom_point() + 
+  stat_chull(fill = NA)
+```
 
 ### 函数图 {#subsec:function}
 
@@ -342,7 +463,7 @@ p4 <- p1 + labs(
 
 ### 思源字体 {#subsec:showtext}
 
-丘怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体，支持 Base R 和 ggplot2 图形，图 \@ref(fig:showtext) 嵌入了 5 号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 @Qiu2015。
+邱怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体，支持 Base R 和 ggplot2 图形，图 \@ref(fig:showtext) 嵌入了 5 号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 @Qiu2015。
 
 ```{r font-install,eval=FALSE}
 # 安装 showtext 包
@@ -368,6 +489,29 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
     legend.text = element_text(family = "serif", size = 10.54),
     axis.text = element_text(family = "serif", size = 10.54)
     )
+```
+
+斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
+
+```{r fiji-earthquake, fig.cap="斐济地震带",fig.showtext=TRUE}
+library(maps)
+library(mapdata)
+FijiMap <- map_data("worldHires", region = "Fiji")
+ggplot(FijiMap, aes(x = long, y = lat)) +
+  geom_map(map = FijiMap, aes(map_id = region), size = .2) +
+  geom_point(data = quakes, aes(x = long, y = lat, colour = mag), pch = 16) +
+  xlim(160, 195) +
+  scale_colour_distiller(palette = "Spectral") +
+  scale_y_continuous(breaks = (-18:18) * 5) +
+  coord_map("ortho", orientation = c(-10, 180, 0)) +
+  labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
+  theme_minimal() +
+  theme(
+    title = element_text(family = "source-han-sans-cn"),
+    axis.title = element_text(family = "source-han-serif-cn"),
+    legend.title = element_text(family = "source-han-sans-cn"),
+    legend.position = c(1, 0), legend.justification = c(1, 0)
+  )
 ```
 
 
@@ -656,9 +800,8 @@ demo.pal <-
   }
 n <- if (.Device == "postscript") 64 else 16
 # Since for screen, larger n may give color allocation problem
-op <- par(mar = c(0, 0, 2, 0))
+par(mar = c(0, 0, 2, 0))
 demo.pal(n)
-par(op)
 ```
 
 
@@ -803,15 +946,15 @@ ls("package:ggplot2", pattern = "scale_fill_")
 
 ```r
 library(ColorPalette)
-op <- par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
 pal(generateMonochromaticColors("lightblue", 16), main = "generateMonochromaticColors")
 pal(complementColors("lightblue", 16), main = "complementColors")
 pal(tetradicColors("lightblue", 16), main = "tetradicColors")
 pal(triadicColors("lightblue", 16), main = "triadicColors")
-par(op)
+
 
 library(colorRamps)
-op <- par(mfrow = c(6, 1), mar = c(0, 0, 2, 0))
+par(mfrow = c(6, 1), mar = c(0, 0, 2, 0))
 n <- 16
 pal(matlab.like(n), main = "matlab.like")
 pal(matlab.like2(n), main = "matlab.like2")
@@ -819,18 +962,18 @@ pal(blue2green2red(n), main = "blue2green2red")
 pal(primary.colors(n), main = "primary.colors")
 pal(ygobb(n), main = "ygobb")
 pal(rgb.tables(n), main = "rgb.tables")
-par(op)
+
 
 library(viridisLite)
 n <- 16
-op <- par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
 pal(magma(n, alpha = 1, begin = 0, end = 1))
 pal(inferno(n, alpha = 1, begin = 0, end = 1))
 pal(plasma(n, alpha = 1, begin = 0, end = 1))
 pal(viridis(n, alpha = 1, begin = 0, end = 1))
-par(op)
 
-op <- par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+
+par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
 library(pals)
 pals::pal.bands(coolwarm, parula, ocean.haline, cubicl, kovesi.rainbow,
   ocean.phase, brewer.paired(12), stepped,
@@ -846,9 +989,9 @@ pals::pal.bands(brewer.accent(8), brewer.dark2(8), brewer.paired(12), brewer.pas
   ),
   main = "Brewer qualitative"
 )
-par(op)
 
-op <- par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+
+par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
 # Sequential
 pals::pal.bands(brewer.blues, brewer.bugn, brewer.bupu, brewer.gnbu, brewer.greens,
   brewer.greys, brewer.oranges, brewer.orrd, brewer.pubu, brewer.pubugn,
@@ -862,7 +1005,7 @@ pals::pal.bands(brewer.brbg, brewer.piyg, brewer.prgn, brewer.puor, brewer.rdbu,
   brewer.rdgy, brewer.rdylbu, brewer.rdylgn, brewer.spectral,
   main = "Brewer diverging"
 )
-par(op)
+
 
 colortools::pals()
 
@@ -871,11 +1014,11 @@ colortools::wheel(colortools::pals("fish")[1], bg = "white")
 yarrr::piratepal(palette = "all")
 
 library(dichromat)
-op <- par(mar = c(0, 0, 2, 0), mfrow = c(9, 2))
+par(mar = c(0, 0, 2, 0), mfrow = c(9, 2))
 for (i in seq(17)) {
   pal(colorschemes[[i]], main = names(colorschemes)[i])
 }
-par(op)
+
 
 library(colormap)
 color_map <- function(colorname, border = "light gray") {
@@ -888,9 +1031,8 @@ color_map <- function(colorname, border = "light gray") {
   rect(0:(n - 1) / n, 0, 1:n / n, 1, col = col, border = border)
   text(.5, .5, labels = colorname)
 }
-op <- par(mfrow = c(22, 2), mar = c(0, 0, 1, 0))
+par(mfrow = c(22, 2), mar = c(0, 0, 1, 0))
 invisible(lapply(unlist(colormaps), color_map))
-par(op)
 ```
 
 ### 颜色模式 {#subsec:color-schames}
