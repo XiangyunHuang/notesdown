@@ -45,3 +45,19 @@ RUN dnf -y upgrade \
    texlive-xetex \
    texlive-framed \
    texlive-titling
+
+
+RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
+ && ln -s /usr/lib64/R/library/littler/examples/install2.r /usr/bin/install2.r \
+ && ln -s /usr/lib64/R/library/littler/examples/installGithub.r /usr/bin/installGithub.r \
+ && ln -s /usr/lib64/R/library/littler/examples/testInstalled.r /usr/bin/testInstalled.r \
+ && mkdir -p /usr/local/lib/R/site-library \
+ && echo "options(repos = c(CRAN = 'https://mirrors.tuna.tsinghua.edu.cn/CRAN/'))" | tee -a /usr/lib64/R/etc/Rprofile.site \
+ && chmod a+r /usr/lib64/R/etc/Rprofile.site \
+ && install.r docopt
+
+# Python virtual env
+COPY requirements.txt ./
+RUN RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow \
+  && virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV \
+  && /bin/bash -c "source $RETICULATE_PYTHON_ENV/bin/activate; pip3 install -r requirements.txt; pip3 list --format=columns; deactivate"
