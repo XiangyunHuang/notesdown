@@ -63,7 +63,8 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "options(repos = c(CRAN = 'https://mirrors.tuna.tsinghua.edu.cn/CRAN/'))" | tee -a /usr/lib64/R/etc/Rprofile.site \
  && chmod a+r /usr/lib64/R/etc/Rprofile.site \
  && echo "LANG=en_US.UTF-8" >> /usr/lib64/R/etc/Renviron.site \
- && install.r docopt
+ && echo "export LC_ALL=en_US.UTF-8"  >> /etc/profile \
+ && install.r docopt odbc
 
 # Python virtual env
 # COPY requirements.txt ./
