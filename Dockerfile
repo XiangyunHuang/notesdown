@@ -14,6 +14,7 @@ RUN dnf -y upgrade \
   && dnf -y install pandoc \
    pandoc-citeproc \
    pandoc-pdf \
+   glibc-langpack-en \
    NLopt-devel \
    unixODBC-devel \
    sqlite-devel \
