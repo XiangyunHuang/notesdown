@@ -63,7 +63,6 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "options(repos = c(CRAN = 'https://mirrors.tuna.tsinghua.edu.cn/CRAN/'))" | tee -a /usr/lib64/R/etc/Rprofile.site \
  && chmod a+r /usr/lib64/R/etc/Rprofile.site \
  && echo "LANG=en_US.UTF-8" >> /usr/lib64/R/etc/Renviron.site \
- && echo "export LC_ALL=en_US.UTF-8"  >> /etc/profile \
  && install.r docopt odbc
 
 # Python virtual env
@@ -71,3 +70,6 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
 # RUN RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow \
 #   && virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV \
 #   && /bin/bash -c "source $RETICULATE_PYTHON_ENV/bin/activate; pip3 install -r requirements.txt; pip3 list --format=columns; deactivate"
+
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
