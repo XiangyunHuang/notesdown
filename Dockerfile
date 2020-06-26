@@ -18,5 +18,30 @@ RUN dnf -y upgrade \
    unixODBC-devel \
    sqlite-devel \
    R-devel \
+   R-littler \
+   R-littler-examples \
    octave-devel \
-   ghostscript
+   ghostscript \
+   inkscape \
+   optipng \
+   ImageMagick \
+   texinfo \
+   libcurl-devel \
+   openssl-devel \
+   libssh2-devel \
+   libgit2-devel \
+   libxml2-devel \
+   cairo-devel \
+   igraph-devel \
+   texlive-sourceserifpro \
+   texlive-sourcecodepro \
+   texlive-sourcesanspro \
+   texlive-pdfcrop \
+   texlive-dvisvgm \
+   texlive-dvips \
+   texlive-dvipng \
+   texlive-ctex \
+   texlive-fandol \
+   texlive-xetex \
+   texlive-framed \
+   texlive-titling
