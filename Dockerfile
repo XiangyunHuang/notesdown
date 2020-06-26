@@ -23,6 +23,7 @@ RUN dnf -y upgrade \
    R-littler-examples \
    octave-devel \
    ghostscript \
+   dejavu-fonts \
    inkscape \
    optipng \
    ImageMagick \
@@ -47,7 +48,6 @@ RUN dnf -y upgrade \
    texlive-xetex \
    texlive-framed \
    texlive-titling
-
 
 RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && ln -s /usr/lib64/R/library/littler/examples/install2.r /usr/bin/install2.r \
