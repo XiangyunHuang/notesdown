@@ -362,7 +362,7 @@ box()
 
 ## 致谢 {#sec:acknowledgments .unnumbered}
 
-特别感谢 XX，完整的致谢名单见表 \@ref(tab:acknowledgments)
+特别感谢 XX，还有很多人通过提交 PR 或 Issues 的方式参与了本书的创作过程，没有这一点一滴的持续改进，本书不会达到现在的样子，所以我将他们列在致谢名单中，详见表 \@ref(tab:acknowledgments)，人名按照提交量（commit 的个数）倒序排列。
 
 ```{r acknowledgments,echo=FALSE}
 library(gert)
@@ -370,6 +370,7 @@ library(magrittr)
 git_log(max = 100) %>%
   aggregate(data = ., . ~ author, FUN = length) %>%
   subset(!grepl("Xiangyun Huang", x = author), select = c("author", "commit")) %>%
+  .[order(-.$commit), ] %>% 
   transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>%
   knitr::kable(
     format = "pandoc", caption = "致谢名单",
