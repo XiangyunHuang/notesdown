@@ -367,11 +367,12 @@ box()
 ```{r acknowledgments,echo=FALSE}
 library(gert)
 library(magrittr)
+# 过滤、分组计数、排序、变换
 git_log(max = 1000) %>%
-  subset(!grepl("Xiangyun Huang", x = author)) %>% # 过滤
-  aggregate(data = ., formula = commit ~ author, FUN = length) %>% # 分组计数
-  .[order(-.$commit), ] %>% # 排序
-  transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>% # 变换
+  subset(!grepl("Xiangyun Huang", x = author)) %>%
+  aggregate(data = ., commit ~ author, FUN = length) %>%
+  .[order(-.$commit), ] %>% 
+  transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>%
   knitr::kable(
     format = "pandoc", caption = "致谢名单",
     col.names = c("贡献者", "提交量"), row.names = FALSE
