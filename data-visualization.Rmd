@@ -281,19 +281,25 @@ ggplot(mpg, aes(displ, hwy, colour = drv)) +
 
 ### 函数图 {#subsec:function}
 
-```{r,warning=FALSE}
-x <- sort(c(seq(-3, 4, length.out = 201), outer(0:-3, (-1:1)*1e-6, "+")))
-plot(x, gamma(x), ylim = c(-20,20), col = "red", type = "l", lwd = 2,
-     main = expression(Gamma(x)), xlab = expression(x), ylab = expression(y))
-abline(h = 0, v = -3:0, lty = 3, col = "midnightblue")
-```
-
 样条函数图
 
 ```{r}
+data.frame(x = -9:9) %>%
+  transform(y = sqrt(abs(x))) %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_point(color = "red", pch = 1, size = 2) +
+  stat_smooth(method = "gam", formula = y ~ s(x), n = 101, se = F, color = "pink") +
+  labs(x = expression(x), y = expression(sqrt(abs(x)))) +
+  theme_minimal()
+```
+
+spline 与 gam 的等价表示
+
+
+```{r}
 xx <- -9:9
-plot(xx, sqrt(abs(xx)),  col = "red", xlab = expression(x), ylab = expression(sqrt(abs(x))))
-lines(spline(xx, sqrt(abs(xx)), n=101), col = "pink")
+plot(xx, sqrt(abs(xx)), col = "red", xlab = expression(x), ylab = expression(sqrt(abs(x))))
+lines(spline(xx, sqrt(abs(xx)), n = 101, method = "fmm", ties = mean), col = "pink")
 ```
 
 

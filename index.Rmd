@@ -107,7 +107,7 @@ text(2, 0.35, "$\\frac{1}{\\sqrt{2\\pi}}$", cex = 2)
 
 
 
-下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
+下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。非常欣赏有人在收集关于统计学历史的材料，读者不妨去看看 <https://github.com/sctyner/history_of_statistics>
 
 
 1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 $B(n, p)$ 参数 $p$ 的置信带 [@Test_1934_binom]，图 \@ref(fig:confidence-belt) 提炼了文章的主要结果。
@@ -367,11 +367,11 @@ box()
 ```{r acknowledgments,echo=FALSE}
 library(gert)
 library(magrittr)
-git_log(max = 100) %>%
-  aggregate(data = ., . ~ author, FUN = length) %>%
-  subset(!grepl("Xiangyun Huang", x = author), select = c("author", "commit")) %>%
-  .[order(-.$commit), ] %>% 
-  transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>%
+git_log(max = 1000) %>%
+  subset(subset = !grepl("Xiangyun Huang", x = author)) %>% # 过滤
+  aggregate(data = ., formula = commit ~ author, FUN = length) %>% # 分组计数
+  .[order(-.$commit), ] %>% # 排序
+  transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>% # 变换
   knitr::kable(
     format = "pandoc", caption = "致谢名单",
     col.names = c("贡献者", "提交量"), row.names = FALSE

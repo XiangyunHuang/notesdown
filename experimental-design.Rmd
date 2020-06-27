@@ -1,5 +1,10 @@
 # 试验设计 {#chap:experimental-design}
 
+```{r}
+library(magrittr)
+library(ggplot2)
+```
+
 ## 验证孟德尔的豌豆实验结果 {#sec:npk}
 
 <!-- 试验设计：正交设计 -->
@@ -14,3 +19,62 @@ data("npk")
 <!-- 实验：验证性，已经有结果了，做实验验证某个定律 -->
 <!-- 试验：人为操作，但是不确定结果如何 -->
 
+Vikneswaran 提供了一份书籍 @Berger2018 的补充材料 --- [An R companion to "Experimental Design"](http://CRAN.R-project.org/doc/contrib/Vikneswaran-ED_companion.pdf)
+
+试验设计 Bill Venables 开发的 [conf.design](https://cran.r-project.org/package=conf.design)
+
+试验设计视图 <https://cran.r-project.org/view=ExperimentalDesign>
+
+贴合 R 语言的试验设计入门书 [@Lawson2014] 相应的 R 包 [daewr](https://cran.r-project.org/package=daewr) 囊括了该书的数据和代码
+
+
+## 学生睡眠质量 {#sec:sleep}
+
+<!-- 单因素两水平方差分析 -->
+
+```{r sleep-data}
+ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
+  geom_boxplot() +
+  geom_jitter() +
+  theme_minimal()
+```
+
+
+## 驱虫喷雾的效果 {#sec:insectsprays}
+
+<!-- 单因素多水平方差分析，多重比较 -->
+
+Effectiveness of Insect Sprays
+
+```{r insect-sprays}
+data("InsectSprays")
+ggplot(data = InsectSprays, aes(x = spray, y = count, color = spray)) +
+  geom_boxplot() +
+  geom_jitter() +
+  theme_minimal()
+```
+
+## 不同地区的草类植物吸收二氧化碳的情况 {#sec:CO2}
+
+<!-- 多因素多水平方差分析：绘图表示5个变量 -->
+
+通过观察不同地区的草类植物吸收二氧化碳的情况，研究植物的耐寒性
+
+```{r co2,fig.cap="草类植物吸收二氧化碳的量"}
+ggplot(data = CO2, aes(x = conc, y = uptake, color = Type, shape = Treatment)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~Plant, ncol = 3) +
+  theme_minimal() +
+  labs(x = "conc (mL/L)", y = "uptake (umol/m^2 sec)")
+```
+
+## 果园喷雾剂的效力 {#sec:OrchardSprays}
+
+<!-- 拉丁方设计 -->
+
+评估喷雾杀虫剂的在果园的效果
+
+```{r orchard-sprays}
+data("OrchardSprays")
+```
