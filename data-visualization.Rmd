@@ -371,9 +371,11 @@ abline(h = 0.5)
 
 ## 字体 {#sec:fonts}
 
+[firatheme](https://github.com/vankesteren/firatheme) 包提供基于 fira sans 字体的 ggplot2 主题，类似的字体主题包还有 [trekfont](https://github.com/leonawicz/trekfont) 、 [fontHind](https://github.com/bhaskarvk/fontHind)， [fontquiver](https://github.com/lionel-/fontquiver) 包与 fontBitstreamVera（Bitstream Vera 字体）、 fontLiberation（Liberation 字体）包和 [fontDejaVu](https://github.com/lionel-/fontDejaVu) （DejaVu 字体）包一道提供了一些可允许使用的字体文件，这样，我们可以不依赖系统制作可重复的图形。Thomas Lin Pedersen 开发的 [systemfonts](https://github.com/r-lib/systemfonts) 可直接使用系统自带的字体。
+
 ### 系统字体 {#subsec:system-fonts}
 
-以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) 字体， [DejaVu](https://github.com/dejavu-fonts) 字体
+以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) ， [DejaVu](https://github.com/dejavu-fonts) 、[liberation](https://github.com/liberationfonts/liberation-fonts) 等字体。可以安装自己喜欢的字体类型，比如：
 
 ```bash
 sudo dnf install -y \
@@ -466,6 +468,21 @@ p4 <- p1 + labs(
 (p1 + p2) / (p3 + p4)
 ```
 
+另外值得一提的是 [hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 包，除了定制了很多 ggplot2 主题，它还打包了很多的字体主题。比如 默认主题 `theme_ipsum()` 使用 Arial Narrow 字体，见图 \@ref(fig:hrbrthemes)。
+
+```{r hrbrthemes,fig.cap="调用 hrbrthemes 包设置字体主题"}
+library(hrbrthemes)
+ggplot(mtcars, aes(mpg, wt)) +
+  geom_point() +
+  labs(
+    x = "Fuel efficiency (mpg)", y = "Weight (tons)",
+    title = "Seminal ggplot2 scatterplot example",
+    subtitle = "A plot that is only useful for demonstration purposes",
+    caption = "Brought to you by the letter 'g'"
+  ) +
+  theme_ipsum()
+```
+
 
 ### 思源字体 {#subsec:showtext}
 
@@ -523,7 +540,10 @@ ggplot(FijiMap, aes(x = long, y = lat)) +
 
 ### 数学字体 {#subsec:fontcm}
 
-Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，
+Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，fontcm 包实现在 Base R 图形中嵌入数学字体 [^cmr-fonts]，图形中嵌入重音字符 [^accent-fonts]。下面先下载、安装、加载字体，
+
+[^cmr-fonts]: https://www.stat.auckland.ac.nz/~paul/R/CM/CMR.html
+[^accent-fonts]: https://www.stat.auckland.ac.nz/~paul/Reports/maori/maori.html
 
 ```{r}
 library(extrafont)
@@ -562,6 +582,42 @@ p2 <- p + annotate("text", x = 3, y = 3, parse = TRUE, label = eq, family = "CM 
 p1 + p2
 ```
 
+为实现图 \@ref(fig:fontcm) 的最终效果，需要启用一个有超级牛力的 [fig.process](https://yihui.org/knitr/options/#plots) 选项，主要是传递一个函数给它，对用 R 语言生成的图形再操作。
+
+```r
+# embed math fonts to pdf
+embed_math_fonts <- function(fig_path) {
+  if(knitr::is_latex_output()){
+    embedFonts(
+      file = fig_path, outfile = fig_path,
+      fontpaths = system.file("fonts", package = "fontcm")
+    )
+  }
+  return(fig_path)
+}
+```
+
+代码块选项中设置 `fig.process=embed_math_fonts` 可在绘图后，立即插入字体，此操作仅限于以 pdf 格式保存的图形设备，也适用于 Base R 绘制的图形，见图 \@ref(fig:embed-math-fonts)。
+
+```{r embed-math-fonts,fig.cap="嵌入数学字体", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')),fig.width=6,fig.height=4}
+par(mar = c(4.1, 4.1, 0.5, 0.5))
+x <- seq(-4, 4, len = 101)
+y <- cbind(sin(x), cos(x))
+matplot(x, y,
+  type = "l", xaxt = "n",
+  main = expression(paste(
+    plain(sin) * phi, "  and  ",
+    plain(cos) * phi
+  )),
+  ylab = expression("sin" * phi, "cos" * phi),
+  xlab = expression(paste("Phase Angle ", phi)),
+  col.main = "blue"
+)
+axis(1,
+  at = c(-pi, -pi / 2, 0, pi / 2, pi),
+  labels = expression(-pi, -pi / 2, 0, pi / 2, pi)
+)
+```
 
 ### TikZ 设备 {#subsec:tikz-device}
 
