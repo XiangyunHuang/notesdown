@@ -53,7 +53,7 @@ description: "线性模型理论及其应用，特别是各个模型的适用范
 remote_pkgs <- c(equatiomatic = "datalorax", cmdstanr = "stan-dev", hadley = "emo")
 
 lapply(c(
-  "bookdown", "desc", "remotes", "reticulate", "rootSolve"
+  "bookdown", "desc", "remotes", "reticulate", "rootSolve", "gert"
 ), function(pkg) {
   if (system.file(package = pkg) != "") {
     return()
@@ -358,10 +358,25 @@ box()
 
 ## 内容概要 {#sec:abstract .unnumbered}
 
+第 \@ref(chap:data-transportation) 章介绍数据导入导出 data.table 用于 csv 文件，而 openxlsx 用于 xlsx 文件，第 \@ref(chap:data-manipulation) 章介绍数据操作 Base R 和 data.table，第 \@ref(chap:data-visualization) 章介绍数据可视化 ggplot2
 
-## 致谢 {#sec:thanks .unnumbered}
+## 致谢 {#sec:acknowledgments .unnumbered}
 
-感谢
+特别感谢 XX，完整的致谢名单见表 \@ref(tab:acknowledgments)
+
+```{r acknowledgments,echo=FALSE}
+library(gert)
+library(magrittr)
+git_log(max = 100) %>%
+  aggregate(data = ., . ~ author, FUN = length) %>%
+  subset(!grepl("Xiangyun Huang", x = author), select = c("author", "commit")) %>%
+  transform(author = gsub(pattern = "<.*?>", replacement = "", x = author)) %>%
+  knitr::kable(
+    format = "pandoc", caption = "致谢名单",
+    col.names = c("贡献者", "提交量"), row.names = FALSE
+  )
+```
+
 
 ```{block2, type = 'flushright', html.tag = 'p'}
 黄湘云  
