@@ -74,10 +74,10 @@ qf(0.075, 5, 66, lower.tail = F)
 names(mod1)
 ```
 
-比如获取残差
+比如获取残差，考虑到篇幅，这里仅显示前 10 个
 
 ```{r}
-mod1$residuals
+head(mod1$residuals, 10)
 ```
 
 ```{r}
@@ -161,7 +161,15 @@ mod3 <- TukeyHSD(mod1, ordered = TRUE)
 mod3
 ```
 
-检查一下，看看哪些置信区间包含 0 ，从第一行来看， E 和 C 之间差别不显著，可看作同一组。在误差比率 $\alpha = 0.05$ 的情况下，如果你想手动计算 HSD 值
+<!-- TODO: 上下限是怎么计算的，调整的 P 值是怎么算的？ -->
+
+其中，`diff` 表示均值之差，`lwr` 和 `upr` 表示置信区间的上下限，$p_{adj}$ 是对应的。检查一下，看看哪些置信区间包含 0 ，包含 0 的表示不显著，从第三行来看， A 和 C 之间差别显著。之前计算过 A、C 均值，均值之差即
+
+```{r}
+(x1bar - x2bar)
+```
+
+在误差比率 $\alpha = 0.05$ 的情况下，如果你想手动计算 HSD 值
 
 ```{r}
 q_crit <- qtukey(p = 0.05, nmeans = length(mod1$xlevels[[1]]), df = mod1$df.residual, lower.tail = F)
@@ -170,11 +178,12 @@ hsd <- q_crit * s / sqrt(6)
 hsd
 ```
 
-将上述结果 mod3 用图画出来，见下图
+将模型结果 mod3 用图画出来，见下图
 
-```{r}
+```{r tukey-hsd,fig.cap="成对显著性水平",out.width="75%"}
 plot(mod3)
 ```
+关于多重比较请见 Frank Bretz, Torsten Hothorn, Peter Westfall 的书《Multiple Comparisons Using R》及配套 R 包 [multcomp](https://cran.r-project.org/package=multcomp)，该 R 包现由 Torsten Hothorn 维护，他还维护了一个由数据集构成的 R 包 [TH.data](https://cran.r-project.org/package=TH.data)，我们后续章节也会用到。
 
 ## 不同地区的草类植物吸收二氧化碳的情况 {#sec:co2}
 
