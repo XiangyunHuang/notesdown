@@ -183,7 +183,32 @@ hsd
 ```{r tukey-hsd,fig.cap="成对显著性水平",out.width="75%"}
 plot(mod3)
 ```
+
 关于多重比较请见 Frank Bretz, Torsten Hothorn, Peter Westfall 的书《Multiple Comparisons Using R》及配套 R 包 [multcomp](https://cran.r-project.org/package=multcomp)，该 R 包现由 Torsten Hothorn 维护，他还维护了一个由数据集构成的 R 包 [TH.data](https://cran.r-project.org/package=TH.data)，我们后续章节也会用到。
+
+## 重复数不等的多重比较 {#sec:multiple-comparison}
+
+<!-- 这个方法由谁提出来的呢？ [数理统计讲义](https://bookdown.org/hezhijian/book/) 和 [Advanced Statistical Computing](https://bookdown.org/rdpeng/advstatcomp/) -->
+
+Tukey 的检验方法要求各个组的重复数相等，而方差分析的重复数不等时，我们需要用如下方法
+
+$$
+\frac{(\bar{y}_{i\cdot} - \bar{y}_{j\cdot}) - (\mu_i - \mu_j)}{\sqrt{\frac{1}{m_i} + \frac{1}{m_j}} \hat{\sigma}} \sim t(f_e)
+$$
+
+$$
+c_{ij} = \sqrt{(r-1)F_{1-\alpha}(r-1, f_e)(\frac{1}{m_i} +\frac{1}{m_j})\hat{\sigma^2}}
+$$
+
+$\hat{\sigma^2} = S_e/ f_e$ 是 $\sigma^2$ 无偏估计。
+
+$$
+y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldots, m_i. \quad
+\sum_{i=1}^{r}m_{i}a_{i} = 0,
+$$
+其中，$\epsilon_{ij}$ 相互独立，服从 $\mathcal{N}(0, \sigma^2)$.
+
+$f_e = n - r, S_e = \sum_{i=1}^{r}\sum_{j=1}^{m_{i}}(y_{ij} - \bar{y}_{i\cdot})^2 = S_T - S_A$
 
 ## 不同地区的草类植物吸收二氧化碳的情况 {#sec:co2}
 
