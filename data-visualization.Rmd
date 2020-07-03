@@ -715,24 +715,27 @@ ggplot(aes(mpg, wt), data = mtcars) +
 
 余光创开发的 [emojifont](https://github.com/GuangchuangYu/emojifont) 包和 Hadley 开发的 [emo](https://github.com/hadley/emo) 包，下面给出一个示例 \@ref(fig:emoji-fonts)
 
-```{r emoji-fonts,fig.cap="表情字体"}
+```{r emoji-fonts,fig.cap="表情字体", out.width="75%"}
 # remotes::install_github("hadley/emo")
 library(ggplot2)
 library(magrittr)
 library(data.table)
-data.frame(category = c("pineapple", "apple", "watermelon"), value = c(5, 4, 3)) %>%
-  transform(category = sapply(category, emo::ji)) %>% 
+data.frame(
+  category = c("pineapple", "apple", "watermelon", "mango", "pear"),
+  value = c(5, 4, 3, 7, 2)
+) %>%
+  transform(category = sapply(category, emo::ji)) %>%
   ggplot(aes(x = category, y = value)) +
-  geom_text(aes(label = category), size = 12, vjust = 1) +
-  lims(y = c(0, 6))
+  geom_text(aes(label = category), size = 12, vjust = -0.5) +
+  theme_minimal()
 ```
 
+除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
 
 ```bash
 sudo dnf install -y google-noto-emoji-color-fonts \
   google-noto-emoji-fonts
 ```
-
 
 ## 配色 {#sec:colors}
 
