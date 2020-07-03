@@ -112,6 +112,52 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+reactable 制作表格
+
+```{r,eval=FALSE}
+library(shiny)
+library(reactable)
+
+ui <- fluidPage(
+  reactableOutput("table")
+)
+
+server <- function(input, output) {
+  output$table <- renderReactable({
+    reactable(iris,
+      filterable = TRUE, # 过滤
+      searchable = TRUE, # 搜索
+      showPageSizeOptions = TRUE, # 页面大小
+      pageSizeOptions = c(5, 10, 15), # 页面大小可选项
+      defaultPageSize = 10, # 默认显示10行
+      highlight = TRUE, # 高亮选择
+      striped = TRUE, # 隔行高亮
+      fullWidth = FALSE, # 默认不要全宽填充，适应数据框的宽度
+      defaultSorted = list(
+        Sepal.Length = "asc", # 由小到大排序
+        Petal.Length = "desc" # 由大到小
+      ),
+      columns = list(
+        Sepal.Width = colDef(style = function(value) { # Sepal.Width 添加颜色标记
+          if (value > 3.5) {
+            color <- "#008000"
+          } else if (value > 2) {
+            color <- "#e00000"
+          } else {
+            color <- "#777"
+          }
+          list(color = color, fontWeight = "bold")
+        })
+
+      )
+    )
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
 ## 合并操作 {#sec:merge-two-tables}
 
 ```{r}
