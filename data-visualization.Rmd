@@ -248,6 +248,7 @@ ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
 ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
   stat_ellipse(geom = "polygon")
 ```
+
 ### 包络图 {#sec:ggplot2-chull}
 
 ```{r}
@@ -280,93 +281,50 @@ ggplot(mpg, aes(displ, hwy, colour = drv)) +
   stat_chull(fill = NA)
 ```
 
-### 函数图 {#subsec:function}
+### 拟合图 {#subsec:function}
 
-样条函数图
+源起于统计之都论坛[帖子](https://d.cosx.org/d/420602)，轩哥给出了一个完美方案，我潜水学习了一下，下面把学习的成果分享出来。
 
-```{r}
+样条函数图 geom_smooth 支持哪些平滑手段，样条回归，常见样条有哪些，举一个常用的样条例子详加介绍，https://github.com/tidyverse/ggplot2/issues/1510
+
+```{r spline-fun,fig.cap="自定义样条函数",fig.width=4,fig.height=4,fig.show='hold',out.width='45%'}
+xx <- -9:9
+plot(xx, sqrt(abs(xx)), col = "red", xlab = expression(x), ylab = expression(sqrt(abs(x))))
+lines(spline(xx, sqrt(abs(xx)), n = 101, method = "fmm", ties = mean), col = "pink")
+
+myspline <- function(formula, data, ...) {
+  dat <- model.frame(formula, data)
+  res <- splinefun(dat[[2]], dat[[1]])
+  class(res) <- "myspline"
+  res
+}
+
+predict.myspline <- function(object, newdata, ...) {
+  object(newdata[[1]])
+}
+
 data.frame(x = -9:9) %>%
   transform(y = sqrt(abs(x))) %>%
   ggplot(aes(x = x, y = y)) +
   geom_point(color = "red", pch = 1, size = 2) +
-  stat_smooth(method = "gam", formula = y ~ s(x), n = 101, se = F, color = "pink") +
+  stat_smooth(method = myspline, formula = y~x, se = F, color = "pink") +
   labs(x = expression(x), y = expression(sqrt(abs(x)))) +
   theme_minimal()
 ```
 
-spline 与 gam 的等价表示
+下面以真实数据集 trees 为例，介绍 `geom_smooth()` 支持的拟合方法，比如 `"lm"` 线性回归和 `"nls"` 非线性回归
 
+```{r smooth-methods,fig.cap="平滑方法",fig.width=4,fig.height=4,fig.show='hold',out.width='45%'}
+ggplot(trees, aes(x = log(Girth), y = log(Volume))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE)
 
-```{r}
-xx <- -9:9
-plot(xx, sqrt(abs(xx)), col = "red", xlab = expression(x), ylab = expression(sqrt(abs(x))))
-lines(spline(xx, sqrt(abs(xx)), n = 101, method = "fmm", ties = mean), col = "pink")
-```
-
-
-```{r}
-# 稳健估计
-x <- sort(rnorm(100))
-cH <- 1.35
-plot(x, pmin(cH, pmax(-cH, x)), type = "b", main =  "Huber's function", col = "red")
-```
-
-
-```{r}
-cut01 <- function(x) pmax(pmin(x, 1), 0)
-curve(      x^2 - 1/4, -1.4, 1.5, col = 2, xlab = expression(x), ylab = "", main = expression(x^2 - frac(1,4)))
-curve(cut01(x^2 - 1/4), col = "blue", add = TRUE, n = 500)
-```
-
-平滑插值
-
-```{r}
-# example("smooth", package = "stats", lib.loc = .Library)
-presidents[is.na(presidents)] <- 0 # silly
-sm <- smooth(presidents)
-sm2 <- smooth(presidents, "3RSS")
-sm3 <- smooth(presidents, "3R")
-
-plot(presidents, main = "smooth(presidents0, *) :  3R and default 3RS3R")
-lines(sm3, col = 3, lwd = 1.5)
-lines(sm, col = 2, lwd = 1.25)
-```
-
-
-
-```{r,eval=FALSE,echo=FALSE}
-# 数据集很简单
-# 图的效果，我要 ISLR 统计学习应用与 R 的封面或者 Stanford 统计学习课程 logo 那样
-# Girth Height Volume
-# help(trees) 自带的例子
-pairs(trees, panel = panel.smooth, main = "trees data")
-plot(Volume ~ Girth, data = trees, log = "xy")
-coplot(log(Volume) ~ log(Girth) | Height,
-  data = trees,
-  panel = panel.smooth
-)
-# summary(fm1 <- lm(log(Volume) ~ log(Girth), data = trees))
-# summary(fm2 <- update(fm1, ~ . + log(Height), data = trees))
-# step(fm2)
-## i.e., Volume ~= c * Height * Girth^2  seems reasonable
-
-
-# 抽样 Tossing a coin
-
-set.seed(2018)
-N <- 10000 # 硬币抛掷次数 Tossing a coin 重复 N 次
-coin_seq <- sample(c(0, 1), N, replace = TRUE) #
-
-# 正面朝上的比例
-
-ratio <- cumsum(coin_seq) / seq(1:N)
-
-plot(ratio[1:10] ~ seq(10), xlab = "# of tosses", ylab = "proportion of heads")
-abline(h = 0.5)
-plot(ratio[1:100] ~ seq(100), xlab = "# of tosses", ylab = "proportion of heads")
-abline(h = 0.5)
-plot(ratio[1:1000] ~ seq(1000), xlab = "# of tosses", ylab = "proportion of heads")
-abline(h = 0.5)
+ggplot(trees, aes(x = Girth, y = Volume)) +
+  geom_point() +
+  geom_smooth(
+    method = "nls", formula = y ~ a * x^2 + b, se = F,
+    method.args = list(start = list(a = 5, b = -36))
+  )
 ```
 
 
