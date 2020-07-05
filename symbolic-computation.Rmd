@@ -25,3 +25,57 @@ integrate(x**2 + x + 1, x)
 factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
 ```
 
+[symengine](https://github.com/symengine/symengine.R) [SymEngine C++ 库](https://github.com/symengine/symengine)
+
+```{r}
+library(symengine)
+```
+
+简单多项式展开
+
+```{r}
+use_vars(x, y, z)
+expr <- (x + y + z)^2L - 42L
+expand(expr)
+```
+
+洛伦兹方程
+
+```{r}
+sigma <- 10
+rho <- 28
+beta <- 8 / 3
+```
+
+龙格-库塔数值计算方法求解
+
+```{r}
+# 方程形式
+lorenz_sys <- list(
+  dxdt(x) == sigma * (y - x),
+  dxdt(y) == (rho - z) * x - y,
+  dxdt(z) == -beta * z + x * y
+)
+```
+
+求解方程组需要额外安装 odeintr 包
+
+```{r}
+lorenz_sys <- ODESystem(lorenz_sys, method = "rk5_i")
+```
+
+代入初始值，开始迭代，获取数值解
+
+```{r}
+res <- predict(lorenz_sys,
+  init = c(x = 1, y = 1, z = 1),
+  duration = 100, step_size = 0.001, start = 0
+)
+head(res)
+```
+
+将数值解绘制图形
+
+```{r lorenz-attractor,fig.cap="洛伦兹吸引子",fig.width=4,fig.height=4,out.width="50%"}
+plot(res[, c(2, 4)], type = "l", col = "steelblue", main = "Lorenz Attractor")
+```
