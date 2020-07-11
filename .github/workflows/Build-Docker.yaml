@@ -21,8 +21,17 @@ jobs:
           repository: xiangyunhuang/masr
           tags: latest
 
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: xiangyunhuang/masr
+          tag_with_ref: true
+
       - name: Check docker container
         uses: docker://xiangyunhuang/masr
         with:
-          args: bash -c "locale; xetex --version; fc-list | sort; pandoc -v; Rscript -e 'sessionInfo(.packages(T)); extSoftVersion(); capabilities(); .libPaths(); version'; echo '\documentclass{article}\begin{document}hello\end{document}' > test.tex; pdflatex test.tex"
+          args: bash -c "locale; xetex --version; fc-list | sort; python3 -V; pandoc -v; Rscript -e 'sessionInfo(.packages(T)); extSoftVersion(); capabilities(); .libPaths(); version'; echo '\documentclass{article}\begin{document}hello\end{document}' > test.tex; pdflatex test.tex"
 
