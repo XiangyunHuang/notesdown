@@ -24,8 +24,8 @@ local({
       sep = .Platform$path.sep
     ))
   }
-
 })
+
 options(
   citation.bibtex.max = 999,
   bitmapType = "cairo",
