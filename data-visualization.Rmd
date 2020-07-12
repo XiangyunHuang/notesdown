@@ -324,6 +324,42 @@ ggplot(trees, aes(x = Girth, y = Volume)) +
   )
 ```
 
+### 地形图 {#sec:raster-map}
+
+区域之间以轮廓分割，轮廓之间以相同的颜色填充，Cleveland 把这个叫做 level plot， **lattice** 包中 `levelplot()` 函数正来源于此。
+
+[Auckland's Maunga Whau Volcano](https://en.wikipedia.org/wiki/Maungawhau) 是火山喷发后留下的碴堆，位于新西兰奥克兰伊甸山郊区。[Ross Ihaka](https://www.stat.auckland.ac.nz/~ihaka/) 收集了它的地形数据，命名为 volcano，打包在 R 软件环境中，见图 \@ref(fig:elevation-volcano)
+
+```{r elevation-volcano, fig.cap="image 图形",fig.height=5,fig.width=5.5}
+filled.contour(volcano,
+  color.palette = terrain.colors,
+  plot.title = title(
+    main = "The Topography of Maunga Whau",
+    xlab = "Meters North", ylab = "Meters West"
+  ),
+  plot.axes = {
+    axis(1, seq(100, 800, by = 100))
+    axis(2, seq(100, 600, by = 100))
+  },
+  key.title = title(main = "Height\n(meters)"),
+  key.axes = axis(4, seq(90, 190, by = 10))
+)
+```
+
+美国西南部犹他州锡安国家公园的高程珊格数据 elevation，该数据集由 [Jakub Nowosad](https://nowosad.github.io/) 收集于 [spDataLarge](https://github.com/Nowosad/spDataLarge) 包内，由于该 R 包收集的地理信息数据很多又很大，超出了 CRAN 对 R 包的大小限制，需要从作者制作的 drat 站点下载。
+
+```{r check-spDataLarge, eval=!require("spDataLarge")}
+install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/")
+```
+
+elevation 数据集通过雷达地形测绘 SRTM (Shuttle Radar Topography Mission) 获得，其分辨率为 90m $\times$ 90m，属于高精度地形网格数据，更多细节描述见 <http://srtm.csi.cgiar.org/>，图 \@ref(fig:elevation-zion) 将公园的地形清晰地展示出来了，读者不妨再借助维基百科词条 (<https://en.wikipedia.org/wiki/Zion_National_Park>) 从整体上了解该公园的情况，结合丰富的实景图可以获得更加直观的感受。
+
+```{r elevation-zion,fig.cap="锡安国家公园的高程珊格数据",fig.height=5,fig.width=5.5}
+library(sp)
+library(raster)
+library(spDataLarge)
+plot(elevation, asp = NA)
+```
 
 ## 字体 {#sec:fonts}
 
