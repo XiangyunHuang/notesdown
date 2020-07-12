@@ -12,17 +12,21 @@ library(patchwork)
 
 ## 元素 {#sec:elements}
 
+
+
 ### 标签 {#subsec:axis-label}
 
 
-```{r usa-quarterly-approval-ratings, fig.showtext=TRUE, fig.cap="美国总统支持率：自1945年第一季度至1974年第四季度"}
+图形的标签分为横纵轴标签、刻度标签、主标题、副标题等
+
+```{r approval-ratings, fig.showtext=TRUE, fig.cap="美国总统支持率：自1945年第一季度至1974年第四季度"}
 data.frame(
   dates = seq.Date(from = as.Date("1945-01-01"), to = as.Date("1974-12-31"), by = "quarter"),
   presidents = as.vector(presidents)
 ) %>%
   ggplot(aes(x = dates, y = presidents)) +
-  geom_line() +
-  geom_point(size = 1.5) +
+  geom_line(color = "slategray", na.rm = TRUE) +
+  geom_point(size = 1.5, color = "darkslategray", na.rm = TRUE) +
   scale_x_date(date_breaks = "4 year", date_labels = "%Y") +
   labs(
     title = "1945年至1974年美国总统每季度支持率",
@@ -33,24 +37,22 @@ data.frame(
 ```
 
 
+
+
 ### 注释 {#subsec:annotation}
 
+图中注释的作用在于高亮指出关键点，提请读者注意。文本注释可由 [**ggrepel**](https://github.com/slowkow/ggrepel) 包提供的标签图层 `geom_label_repel()` 添加，标签数据可独立于之前的数据层，标签所在的位置可以通过参数 `direction` 和 `nudge_y` 精调，图 \@ref(fig:text-annotation) 模拟了一组数据。
 
-[ggtext](https://github.com/wilkelab/ggtext) 包介绍网站 <https://wilkelab.org/ggtext/>
-
-```{r}
-library(ggrepel)
+```{r text-annotation,fig.cap="文本注释"}
 set.seed(2020)
-
+library(ggrepel)
 dat <- data.frame(
   x = seq(100),
   y = cumsum(rnorm(100))
 )
-
 anno_data <- dat %>%
   subset(x %% 25 == 10) %>%
   transform(text = "text")
-
 dat %>%
   ggplot(aes(x, y)) +
   geom_line() +
@@ -62,12 +64,17 @@ dat %>%
   theme_minimal()
 ```
 
-```{r}
+**ggrepel** 包的图层 `geom_text_repel()` 支持所有数据点的注释，并且自动调整文本的位置，防止重叠，增加辨识度，如图 \@ref(fig:mtcars-annotation)。当然，数据点如果过于密集也不适合全部注释，高亮其中的关键点即可。
+
+```{r mtcars-annotation,fig.cap="少量点的情况下可以全部注释，且可以解决注释重叠的问题"}
 mtcars$cyl <- as.factor(mtcars$cyl)
 ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = cyl)) +
   geom_point() +
-  geom_text_repel()
+  geom_text_repel() +
+  theme_minimal()
 ```
+
+Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
 
 ## 图形 {#sec:figures}
 
@@ -218,9 +225,6 @@ ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = Month, fill = stat(x
 通过数据可视化的手段帮助肉眼检查两组数据的分布
 
 ```{r sleep-ridges,fig.cap="两组数据的分布"}
-library(ggplot2)
-library(ggridges)
-
 ggplot(sleep, aes(x = extra, y = group, fill = group)) +
   geom_density_ridges() +
   theme_ridges()
