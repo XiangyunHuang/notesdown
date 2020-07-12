@@ -102,31 +102,23 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
 
 ### 地图 {#sec:ggplot2-map}
 
+USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 \@ref(fig:state-crimes)
 
-
-```{r}
+```{r state-crimes,fig.cap="1975年美国各州犯罪事件",fig.width=5,fig.height=4}
 library(maps)
 crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
-
-# Equivalent to crimes %>% tidyr::pivot_longer(Murder:Rape)
+# 等价于 crimes %>% tidyr::pivot_longer(Murder:Rape)
 vars <- lapply(names(crimes)[-1], function(j) {
   data.frame(state = crimes$state, variable = j, value = crimes[[j]])
 })
 crimes_long <- do.call("rbind", vars)
-
 states_map <- map_data("state")
 ggplot(crimes, aes(map_id = state)) +
   geom_map(aes(fill = Murder), map = states_map) +
-  expand_limits(x = states_map$long, y = states_map$lat) + 
-  coord_map()
-```
-
-
-```{r}
-ggplot(crimes_long, aes(map_id = state)) +
-  geom_map(aes(fill = value), map = states_map) +
   expand_limits(x = states_map$long, y = states_map$lat) +
-  facet_wrap( ~ variable)
+  scale_fill_binned(type = "viridis") +
+  coord_map() +
+  theme_minimal()
 ```
 
 
