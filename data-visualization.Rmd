@@ -153,9 +153,13 @@ beanplot(count ~ spray, data = InsectSprays, col = "lightgray", border = "grey",
 library(ggplot2)
 library(ggnormalviolin)
 
-library(data.table)
-iris <- as.data.table(iris)
-iris[, .(dist_mean = mean(Sepal.Length), dist_sd = sd(Sepal.Length)), by = .(Species)] %>%
+with(
+  aggregate(
+    data = iris, Sepal.Length ~ Species,
+    FUN = function(x) c(dist_mean = mean(x), dist_sd = sd(x))
+  ),
+  cbind.data.frame(Sepal.Length, Species)
+) %>%
   ggplot(aes(x = Species, mu = dist_mean, sigma = dist_sd, fill = Species)) +
   geom_normalviolin()
 ```
@@ -355,10 +359,8 @@ install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/")
 elevation 数据集通过雷达地形测绘 SRTM (Shuttle Radar Topography Mission) 获得，其分辨率为 90m $\times$ 90m，属于高精度地形网格数据，更多细节描述见 <http://srtm.csi.cgiar.org/>，图 \@ref(fig:elevation-zion) 将公园的地形清晰地展示出来了，读者不妨再借助维基百科词条 (<https://en.wikipedia.org/wiki/Zion_National_Park>) 从整体上了解该公园的情况，结合丰富的实景图可以获得更加直观的感受。
 
 ```{r elevation-zion,fig.cap="锡安国家公园的高程珊格数据",fig.height=5,fig.width=5.5}
-library(sp)
-library(raster)
-library(spDataLarge)
-plot(elevation, asp = NA)
+data("elevation", package = "spDataLarge")
+raster::plot(elevation, asp = NA)
 ```
 
 ## 字体 {#sec:fonts}
