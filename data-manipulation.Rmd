@@ -157,6 +157,57 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
+```{r,eval=FALSE}
+# 修改自 Code: https://gist.github.com/jthomasmock/f085dce3e70e42ca49b052bbe25de49f
+library(magrittr)
+library(reactable)
+library(htmltools)
+
+# barchart function from: https://glin.github.io/reactable/articles/building-twitter-followers.html
+bar_chart <- function(label, width = "100%", height = "14px", fill = "#00bfc4", background = NULL) {
+  bar <- div(style = list(background = fill, width = width, height = height))
+  chart <- div(style = list(flexGrow = 1, marginLeft = "6px", background = background), bar)
+  div(style = list(display = "flex", alignItems = "center"), label, chart)
+}
+
+data <- mtcars %>% 
+  subset(select = c("cyl", "mpg")) %>%
+  subset(subset = sample(x = c(TRUE, FALSE), size = 6, replace = T))
+
+
+reactable(
+  data,
+  defaultPageSize = 20,
+  columns = list(
+    cyl = colDef(align = "center"),
+    mpg = colDef(
+      name = "mpg",
+      defaultSortOrder = "desc",
+      minWidth = 250,
+      cell = function(value, index) {
+        width <- paste0(value * 100 / max(mtcars$mpg), "%")
+        value <- format(value, width = 9, justify = "right", nsmall = 1)
+        
+        # output the value of another column 
+        # that aligns with current value
+        cyl_val <- data$cyl[index]
+
+        # Color based on the row's cyl value
+        color_fill <- if (cyl_val == 4) {
+          "#3686d3" # blue
+        } else if (cyl_val == 6) {
+          "#88398a" # purple
+        } else {
+          "#fcab27" # orange
+        }
+        bar_chart(value, width = width, fill = color_fill, background = "#e1e1e1")
+      },
+      align = "left",
+      style = list(fontFamily = "monospace", whiteSpace = "pre")
+    )
+  )
+)
+```
 
 ## 合并操作 {#sec:merge-two-tables}
 
