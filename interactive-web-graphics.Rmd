@@ -1,0 +1,48 @@
+# 交互式网页图形 {#chap:interactive-web-graphics}
+
+[plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包，支持图片下载、背景图片[^1]、工具栏[^2]和注释[^3] 等一系列细节的自定义控制。
+
+[^1]: <https://plotly.com/r/logos/>
+[^2]: <https://plotly-r.com/control-modebar.html>
+[^3]: <https://plotly.com/r/reference/#layout-scene-annotations-items-annotation-font>
+
+```{r custom-details,fig.cap="自定义细节",eval=knitr::is_html_output()}
+library(plotly)
+plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1") %>%
+  add_boxplot() %>%
+  config(
+    toImageButtonOptions = list(
+      format = "svg", filename = paste("plot", Sys.Date(), sep = "_")
+    ),
+    displaylogo = FALSE, # 移除 Plotly 的 logo
+    locale = "zh-CN", # 汉化
+    modeBarButtonsToRemove = c(
+      "zoom2d", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d", "pan2d",
+      "hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"
+    ), # 去掉任意一个按钮
+    # displayModeBar = FALSE, # 去掉整个顶部工具栏
+    showLink = FALSE
+  ) %>%
+  layout(
+    images = list(
+      source = "https://images.plot.ly/language-icons/api-home/r-logo.png",
+      xref = "paper",
+      yref = "paper",
+      x = 0.5,
+      y = 0.5,
+      sizex = 0.2,
+      sizey = 0.2,
+      opacity = 0.5
+    ),
+    annotations = list(
+      text = "草稿", # 文本注释
+      font = list(size = 40, color = "red", family = "Times New Roman"), # 字号、颜色、字族
+      opacity = 0.2, # 字体透明度
+      xref = "paper",
+      yref = "paper",
+      x = 0.5,
+      y = 0.5,
+      showarrow = FALSE # 去掉箭头指示
+    )
+  )
+```
