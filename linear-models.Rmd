@@ -550,40 +550,6 @@ ggplot(data = Theoph, aes(x = Time, y = conc, color = Subject)) +
   )
 ```
 
-
-## 药物在人体中的代谢情况 {#sec:indometh}
-
-给 6 个人分别静脉注射了吲哚美辛，每隔一段时间抽血检查药物在血浆中的浓度，收集的数据见表 \@ref(tab:indometh-data)
-
-```{r indometh-data}
-reshape(Indometh, v.names = "conc", idvar = "Subject", 
-        timevar = "time", direction = "wide", sep = "") %>%
-  knitr::kable(.,
-    caption = "吲哚美辛在人体中的代谢情况",
-    row.names = FALSE, col.names = gsub("(conc)", "", names(.)),
-    align = "c"
-  )
-```
-
-如图 \@ref(fig:indometh-concentration) 所示，药物在人体中浓度变化情况
-
-```{r indometh-concentration,fig.cap="药物在人体中的代谢情况"}
-p <- ggplot(data = Indometh, aes(x = time, y = conc, color = Subject)) +
-  geom_point() +
-  geom_line() +
-  theme_minimal() +
-  labs(x = "time (hr)", y = "plasma concentrations of indometacin (mcg/ml)")
-p
-```
-
-```{r indometh-animate, fig.show='animate', interval=1/10, eval=knitr::is_latex_output(),cache=TRUE}
-library(gganimate)
-p + transition_reveal(time)
-```
-```{r, ref.label='indometh-animate', echo=FALSE, eval=knitr::is_html_output(),cache=TRUE}
-```
-
-
 ## 本章总结 {#sec:linear-model-summary}
 
 模型永远没完，总是需要自己去构造符合自己需求的模型及其实现，只有自己能够实现，才能在海洋中遨游
