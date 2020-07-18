@@ -1,6 +1,32 @@
 # 交互式网页图形 {#chap:interactive-web-graphics}
 
-[plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包，支持图片下载、背景图片[^1]、工具栏[^2]和注释[^3] 等一系列细节的自定义控制。
+[plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包，支持图片下载、背景图片[^1]、工具栏[^2]和注释[^3] 等一系列细节的自定义控制。下面结合 JavaScript 库 [plotly.js](https://github.com/plotly/plotly.js) 一起介绍，帮助文档 `?config` 没有太详细地介绍，所以我们看看 `config()` 函数中参数 `...` 和 JS 库 [plot_config.js](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js) 中的功能函数是怎么对应的。图 \@ref(fig:custom-details) 中图片下载按钮对应 `toImageButtonOptions` 参数， 看 [toImageButtonOptions](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js#L311) 源代码，可知 它接受任意数据类型，对应到 R 里面就是列表。 `watermark` 和 `displaylogo` 都是传递布尔值（TRUE/FALSE），具体根据 JS 代码中的 valType （参数值类型）决定，其它参数类似。另一个函数 [layout](https://plot.ly/r/reference/#Layout_and_layout_style_objects) 和函数 `config()` 是类似的，怎么传递参数值是根据 JS 代码来的。
+
+```js
+toImageButtonOptions: {
+    valType: 'any',
+    dflt: {},
+    description: [
+        'Statically override options for toImage modebar button',
+        'allowed keys are format, filename, width, height, scale',
+        'see ../components/modebar/buttons.js'
+    ].join(' ')
+},
+displaylogo: {
+    valType: 'boolean',
+    dflt: true,
+    description: [
+        'Determines whether or not the plotly logo is displayed',
+        'on the end of the mode bar.'
+    ].join(' ')
+},
+watermark: {
+    valType: 'boolean',
+    dflt: false,
+    description: 'watermark the images with the company\'s logo'
+},
+```
+
 
 [^1]: <https://plotly.com/r/logos/>
 [^2]: <https://plotly-r.com/control-modebar.html>
@@ -14,6 +40,7 @@ plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1") %
     toImageButtonOptions = list(
       format = "svg", filename = paste("plot", Sys.Date(), sep = "_")
     ),
+    watermark = F,
     displaylogo = FALSE, # 移除 Plotly 的 logo
     locale = "zh-CN", # 汉化
     modeBarButtonsToRemove = c(
