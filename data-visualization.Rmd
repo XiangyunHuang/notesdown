@@ -6,16 +6,12 @@ library(patchwork)
 `%>%` <- magrittr::`%>%`
 ```
 
-- Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
-- [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
-
+-   Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
+-   [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
 
 ## 元素 {#sec:elements}
 
-
-
 ### 标签 {#subsec:axis-label}
-
 
 图形的标签分为横纵轴标签、刻度标签、主标题、副标题等
 
@@ -35,9 +31,6 @@ data.frame(
   ) +
   theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn")
 ```
-
-
-
 
 ### 注释 {#subsec:annotation}
 
@@ -121,6 +114,59 @@ ggplot(crimes, aes(map_id = state)) +
   theme_minimal()
 ```
 
+先来看看中国及其周边，见图\@ref(fig:incorrect-map)，这个地图的缺陷就是中国南海及九段线没有标记，台湾和中国大陆不是一种颜色标记，这里的地图数据来自 R 包 **maps** 和 **mapdata**，像这样的地图就不宜在国内正式刊物上出现。
+
+```{r incorrect-map,fig.cap="中国及其周边",fig.width=5,fig.height=4}
+library(maps)
+library(mapdata)
+east_asia <- map_data("worldHires",
+  region = c(
+    "Japan", "Taiwan", "China",
+    "North Korea", "South Korea"
+  )
+)
+ggplot(east_asia, aes(x = long, y = lat, group = group, fill = region)) +
+  geom_polygon(colour = "black") +
+  scale_fill_brewer(palette = "Set2")
+```
+
+绘制真正的地图需要考虑投影坐标系，观察角度、分辨率、政策法规等一系列因素，它是一种复杂的图形，如图 \@ref(fig:draw-map) 所示。
+
+```{r draw-map,fig.cap="画地图的正确姿势",fig.width=4,fig.height=4,out.width="45%",fig.show='hold',fig.ncol=2,fig.subcap=c("墨卡托投影", "北极观察", "正交投影", "正交投影北极观察"),collapse=TRUE}
+worldmap <- map_data("world")
+
+# 默认 mercator 投影下的默认视角 c(90, 0, mean(range(x)))
+ggplot(worldmap, aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = region), show.legend = FALSE) +
+  coord_map(
+    xlim = c(-120, 40), ylim = c(30, 90)
+  )
+
+# 换观察角度
+ggplot(worldmap, aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = region), show.legend = FALSE) +
+  coord_map(
+    xlim = c(-120, 40), ylim = c(30, 90),
+    orientation = c(90, 0, 0)
+  )
+
+# 换投影坐标系
+ggplot(worldmap, aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = region), show.legend = FALSE) +
+  coord_map("ortho",
+    xlim = c(-120, 40), ylim = c(30, 90)
+  )
+
+# 二者皆换
+ggplot(worldmap, aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = region), show.legend = FALSE) +
+  coord_map("ortho",
+    xlim = c(-120, 40), ylim = c(30, 90),
+    orientation = c(90, 0, 0)
+  )
+```
+
+<!-- 世界地图引发的 <https://d.cosx.org/d/420808> -->
 
 ### 提琴图 {#sec:violin}
 
@@ -166,19 +212,27 @@ p2 <- ggplot(iris, aes(Species, Sepal.Length)) +
 p1 + p2
 ```
 
-
-
 ### 瓦片图 {#subsec:tile}
 
-```{r geom-tile,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.asp=.8}
-expand.grid( months = month.abb, years = 1949:1960) %>% 
-  transform(num = as.vector(AirPassengers)) %>% 
+```{r geom-tile,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.width=8,fig.height=4}
+p1 <- expand.grid(months = month.abb, years = 1949:1960) %>%
+  transform(num = as.vector(AirPassengers)) %>%
   ggplot(aes(x = years, y = months, fill = num)) +
   scale_fill_continuous(type = "viridis") +
   geom_tile(color = "white", size = 0.4) +
   scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1949, 1960, by = 1), labels = 1949:1960) +
   theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
   labs(x = "年", y = "月", fill = "人数")
+
+p2 <- expand.grid(months = month.abb, years = 1949:1960) %>%
+  transform(num = as.vector(AirPassengers)) %>%
+  ggplot(aes(x = years, y = months, color = num)) +
+  geom_point(pch = 15, size = 8) +
+  scale_color_distiller(palette = "Spectral") +
+  scale_x_continuous(expand = c(0.01, 0.01), breaks = seq(1949, 1960, by = 1), labels = 1949:1960) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn") +
+  labs(x = "年", y = "月", color = "人数")
+p1 + p2
 ```
 
 ### 日历图 {#subsec:calendar-heatmap}
@@ -214,7 +268,6 @@ ggplot(sleep, aes(x = extra, y = group, fill = group)) +
   theme_ridges()
 ```
 
-
 ```{r diamonds-ridges,fig.cap="比较多组数据的分布"}
 ggplot(diamonds, aes(x = price, y = color, fill = color)) +
   geom_density_ridges() +
@@ -235,7 +288,6 @@ ggplot(faithful, aes(waiting, eruptions, color = eruptions > 3)) +
   stat_ellipse(type = "norm", linetype = 2) +
   stat_ellipse(type = "t")
 ```
-
 
 ```{r}
 ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
@@ -262,7 +314,6 @@ stat_chull <- function(mapping = NULL, data = NULL, geom = "polygon",
   )
 }
 ```
-
 
 ```{r}
 ggplot(mpg, aes(displ, hwy)) + 
@@ -351,6 +402,154 @@ data("elevation", package = "spDataLarge")
 raster::plot(elevation, asp = NA)
 ```
 
+### 树状图 {#subsec:ggplot2-treemap}
+
+数据集 GNI2014 来自 [**treemap**](https://github.com/mtennekes/treemap) 包，是一个 data.frame 类型的数据对象，记录了 2014 年每个国家的人口总数 population 和国民人均收入 GNI，数据样例见下方：
+
+```{r}
+library(treemap)
+data(GNI2014, package = "treemap")
+subset(GNI2014, subset = grepl(x = country, pattern = 'China'))
+```
+
+数据呈现明显的层级结构，从大洲到国家记录人口数量和人均收入，矩阵树图以方块大小表示人口数量，以颜色深浅表示人均收入，见图\@ref(fig:treemap-grid)
+
+```{r treemap-grid,fig.cap="矩阵树图",fig.width=5,fig.height=5}
+treemap(GNI2014,
+  index = c("continent", "iso3"),
+  vSize = "population", 
+  vColor = "GNI",
+  type = "value",
+  format.legend = list(scientific = FALSE, big.mark = " ")
+)
+```
+
+[**treemapify**](https://github.com/wilkox/treemapify) 包基于 ggplot2 制作树状图，类似地，该 R 包内置了数据集 G20，记录了世界主要经济体 G20 (<https://en.wikipedia.org/wiki/G20>) 的经济和人口信息，国家 GDP （单位：百万美元）`gdp_mil_usd` 和人类发展指数 `hdi`。相比于 GNI2014，它还包含了两列标签信息：经济发展阶段和所处的半球。图@(fig:treemap-ggplot2)以南北半球 hemisphere 分面，以色彩填充区域 region，以 `gdp_mil_usd` 表示区域大小
+
+```{r treemap-ggplot2,fig.cap="世界主要经济体G20的人口和经济信息",fig.width=5,fig.height=5}
+library(treemapify)
+ggplot(G20, aes(area = gdp_mil_usd, fill = region, label = country, subgroup = region)) +
+  geom_treemap() +
+  geom_treemap_text(grow = T, reflow = T, colour = "black") +
+  facet_wrap(~hemisphere) +
+  scale_fill_brewer(palette = "Set1") +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "The G-20 major economies by hemisphere",
+    caption = "The area of each tile represents the country's GDP as a
+      proportion of all countries in that hemisphere",
+    fill = "Region"
+  )
+```
+
+### 主成分图 {#subsec:ggplot2-prcomp}
+
+借助 [**autoplotly**](https://github.com/terrytangyuan/autoplotly) 包 [@autoplotly] 可将函数 `stats::prcomp` 生成的结果转化为交互图形
+
+```{r pac-plot}
+pca <- prcomp(iris[c(1, 2, 3, 4)])
+plot(pca)
+```
+
+```{r pac-plotly,eval=knitr::is_html_output()}
+library(autoplotly)
+p <- autoplotly(pca,
+  data = iris, colour = "Species",
+  label = TRUE, label.size = 3, frame = TRUE
+)
+p +
+  ggtitle("Principal Components Analysis") +
+  labs(y = "Second Principal Components", x = "First Principal Components")
+
+p %>% plotly::layout(annotations = list(
+  text = "Example Text",
+  font = list(
+    family = "Courier New, monospace",
+    size = 18,
+    color = "black"),
+  x = 0,
+  y = 0,
+  showarrow = TRUE))
+```
+
+[**ggfortify**](https://github.com/sinhrks/ggfortify) [@Tang_2016_ggfortify] 包将主成分分析图转化为静态图形
+
+```{r pca-ggplot2,fig.cap="主成分分析",fig.width=4,fig.height=4}
+library(ggfortify)
+autoplot(pca, data = iris, colour = 'Species')
+```
+
+### 组合图 {#subsec:composite}
+
+[Tidy Tuesday Vacination](http://paulnice.datasorcery.tech/posts/tidy-tuesday-vacination/)
+
+[GGally](https://github.com/ggobi/ggally)、 [ggupset](https://github.com/const-ae/ggupset) 和 [ggpubr](https://github.com/kassambara/ggpubr) 高度定制了一些统计图形，以 ggupset 为例
+
+### 动态图 {#subsec:animation}
+
+数据集 Indometh 记录了药物在人体中的代谢情况，给 6 个人分别静脉注射了吲哚美辛，每隔一段时间抽血检查药物在血浆中的浓度，收集的数据见表 \@ref(tab:indometh-data)
+
+```{r indometh-data}
+reshape(Indometh, v.names = "conc", idvar = "Subject", 
+        timevar = "time", direction = "wide", sep = "") %>%
+  knitr::kable(.,
+    caption = "吲哚美辛在人体中的代谢情况",
+    row.names = FALSE, col.names = gsub("(conc)", "", names(.)),
+    align = "c"
+  )
+```
+
+如图 \@ref(fig:indometh-concentration) 所示，药物在人体中浓度变化情况
+
+```{r indometh-concentration,fig.cap="药物在人体中的代谢情况"}
+p <- ggplot(data = Indometh, aes(x = time, y = conc, color = Subject)) +
+  geom_point() +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "time (hr)", y = "plasma concentrations of indometacin (mcg/ml)")
+p
+```
+
+```{r indometh-animate, fig.show='animate', interval=1/10, eval=knitr::is_latex_output(),cache=TRUE}
+library(gganimate)
+p + transition_reveal(time)
+```
+
+```{r, ref.label='indometh-animate', echo=FALSE, eval=knitr::is_html_output(),cache=TRUE}
+```
+
+[mapmate](https://github.com/leonawicz/mapmate) 制作地图方面的三维可视化图形和 [gganimate 案例合集](https://github.com/ropenscilabs/learngganimate) 都是不错的入门材料。此外还有 rgl 可以制作真三维动态图形，支持缩放、拖拽、旋转等操作，magick 可以将一系列静态图形合成动态图形。
+
+动态图形制作的原理，简单来说，就是将一帧帧静态图形以较快的速度播放，人眼形成视觉残留，以为是连续的画面，相比于 animation， **gganimate** 借助 **tweenr** 包添加了过渡效果，动态图形显得非常自然。下面以 cup 函数[^1]为例
+
+[^1]: 函数来自余光创的博客 --- [3D 版邪恶的曲线](https://guangchuangyu.github.io/cn/2017/09/3d-breast/) ，此处借用 gganimate 将其动态化，前方高能，少儿不宜，R 还能这么不正经的玩。
+
+$$f(x;\theta,\phi) = \theta x\log(x)-\frac{1}{\phi}\mathit{e}^{-\phi^4(x-\frac{1}{\mathit{e}})^4}, \quad \theta \in (2,3), \phi \in (30,50), x \in (0,1)$$ 函数图像随着 $\theta$ 和 $\phi$ 的变化情况见图 \@ref(fig:cup-curve)。
+
+```{r cup-curve,fig.cap="添加过渡效果",fig.width=4,fig.height=4}
+library(tweenr)
+
+cup_curve <- function(n = 100, theta = 3, phi = 30, cup = "A") {
+  data.frame(x = seq(0.00001, 1, length.out = n), cup = cup) %>%
+    transform(y = theta * x * log(x, base = 10) - 1 / phi * exp(-(phi * x - phi / exp(1))^4))
+}
+
+mapply(
+  FUN = cup_curve, theta = c(A = 3, B = 2.8, C = 2.5, D = 2.2, E = 2),
+  phi = c(30, 33, 36, 40, 50), cup = c("E", "D", "C", "B", "A"),
+  MoreArgs = list(n = 50), SIMPLIFY = FALSE, USE.NAMES = TRUE
+) %>%
+  tween_states(
+    data = .,
+    tweenlength = 2, statelength = 1,
+    ease = rep("cubic-in-out", 4), nframes = 100
+  ) %>%
+  ggplot(data = ., aes(x, y, color = cup, frame = .frame)) +
+  geom_path() +
+  coord_flip() +
+  theme_void()
+```
+
 ## 字体 {#sec:fonts}
 
 [firatheme](https://github.com/vankesteren/firatheme) 包提供基于 fira sans 字体的 ggplot2 主题，类似的字体主题包还有 [trekfont](https://github.com/leonawicz/trekfont) 、 [fontHind](https://github.com/bhaskarvk/fontHind)， [fontquiver](https://github.com/lionel-/fontquiver) 包与 fontBitstreamVera（Bitstream Vera 字体）、 [fontLiberation](https://cran.r-project.org/package=fontLiberation)（Liberation 字体）包和 [fontDejaVu](https://github.com/lionel-/fontDejaVu) （DejaVu 字体）包一道提供了一些可允许使用的字体文件，这样，我们可以不依赖系统制作可重复的图形。Thomas Lin Pedersen 开发的 [systemfonts](https://github.com/r-lib/systemfonts) 可直接使用系统自带的字体。
@@ -359,7 +558,7 @@ raster::plot(elevation, asp = NA)
 
 以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) ， [DejaVu](https://github.com/dejavu-fonts) 、[liberation](https://github.com/liberationfonts/liberation-fonts) 等字体。可以安装自己喜欢的字体类型，比如：
 
-```bash
+``` {.bash}
 sudo dnf install -y \
   google-noto-mono-fonts \
   google-noto-sans-fonts \
@@ -373,24 +572,24 @@ sudo dnf install -y dejavu-fonts liberation-fonts
 
 liberation 系列的四款字体可以用来替换 Windows 系统上对应的四款字体，对应关系见表 \@ref(tab:fonts-centos-vs-win)
 
-Table: (\#tab:fonts-centos-vs-win) Windows 系统上四款字体的替代品
-
 |                 | CentOS 系统             | Windows 系统    |
-| :-------------- | :---------------------- | :-------------- |
+|:----------------|:------------------------|:----------------|
 | 衬线体/宋体     | liberation-serif-fonts  | Times New Roman |
 | 无衬线体/黑体   | liberation-sans-fonts   | Arial           |
 | Arial 的细瘦版  | liberation-narrow-fonts | Arial Narrow    |
 | 等宽体/微软雅黑 | liberation-mono-fonts   | Courier New     |
 
+: (\#tab:fonts-centos-vs-win) Windows 系统上四款字体的替代品
+
 此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 [awesome-fonts](https://github.com/brabadu/awesome-fonts) 列表是一个不错的开始，比如图标字体 [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)，
 
-```bash
+``` {.bash}
 sudo dnf install -y fontawesome-fonts
 ```
 
 再安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，下面这个示例推荐用 XeLaTeX 引擎编译。
 
-```tex
+``` {.tex}
 \documentclass[border=10pt]{standalone}
 \usepackage{fontawesome}
 \begin{document}
@@ -488,7 +687,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 
 ### 思源字体 {#subsec:showtext}
 
-邱怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体，支持 Base R 和 ggplot2 图形，图 \@ref(fig:showtext) 嵌入了 5 号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 @Qiu2015。
+邱怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体，支持 Base R 和 ggplot2 图形，图 \@ref(fig:showtext) 嵌入了 5 号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 [@Qiu2015]。
 
 ```{r font-install,eval=FALSE}
 # 安装 showtext 包
@@ -539,13 +738,13 @@ ggplot(FijiMap, aes(x = long, y = lat)) +
   )
 ```
 
-
 ### 数学字体 {#subsec:fontcm}
 
-Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，fontcm 包可以在 Base R 图形中嵌入数学字体 [^cmr-fonts]，图形中嵌入重音字符 [^accent-fonts]。下面先下载、安装、加载字体，
+Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，fontcm 包可以在 Base R 图形中嵌入数学字体 [^2]，图形中嵌入重音字符 [^3]。下面先下载、安装、加载字体，
 
-[^cmr-fonts]: https://www.stat.auckland.ac.nz/~paul/R/CM/CMR.html
-[^accent-fonts]: https://www.stat.auckland.ac.nz/~paul/Reports/maori/maori.html
+[^2]: <https://www.stat.auckland.ac.nz/~paul/R/CM/CMR.html>
+
+[^3]: <https://www.stat.auckland.ac.nz/~paul/Reports/maori/maori.html>
 
 ```{r}
 library(extrafont)
@@ -586,7 +785,7 @@ p1 + p2
 
 为实现图 \@ref(fig:fontcm) 的最终效果，需要启用一个有超级牛力的 [fig.process](https://yihui.org/knitr/options/#plots) 选项，主要是传递一个函数给它，对用 R 语言生成的图形再操作。
 
-```r
+``` {.r}
 # embed math fonts to pdf
 embed_math_fonts <- function(fig_path) {
   if(knitr::is_latex_output()){
@@ -684,12 +883,11 @@ dev.off()
 tinytex::latexmk(file = "tikz-regression.tex")
 ```
 
-
 ### 漫画字体 {#subsec:xkcd-comic}
 
 下载 XKCD 字体，并刷新系统字体缓存
 
-```bash
+``` {.bash}
 mkdir -p ~/.fonts
 curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
 fc-cache -fsv
@@ -697,7 +895,7 @@ fc-cache -fsv
 
 将 XKCD 字体导入到 R 环境，以便后续被 ggplot2 图形设备调用。
 
-```r
+``` {.r}
 R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 ```
 
@@ -729,7 +927,7 @@ data.frame(
 
 除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
 
-```bash
+``` {.bash}
 sudo dnf install -y google-noto-emoji-color-fonts \
   google-noto-emoji-fonts
 ```
@@ -742,18 +940,12 @@ sudo dnf install -y google-noto-emoji-color-fonts \
 
 早些时候我在统计之都论坛上发帖 -- R语言绘图用调色板大全 <https://d.cosx.org/d/419378-r>
 
-阐述色理 HCL RGB CMYK 
-Adobe RGB  sRGB   P3广色域  
-2K 4K 5K  视网膜屏  普清  高清 超高清 全高清 显示器 
-打印机  照相机 
+阐述色理 HCL RGB CMYK Adobe RGB sRGB P3广色域\
+2K 4K 5K 视网膜屏 普清 高清 超高清 全高清 显示器 打印机 照相机
 
 为什么需要这么多颜色模式
 
-知道颜色模式及其之间的转化
-颜色空间及其区别 HCL and HSV color spaces
-基于网页、人眼、打印机使用不同的颜色模式为何
-
-
+知道颜色模式及其之间的转化 颜色空间及其区别 HCL and HSV color spaces 基于网页、人眼、打印机使用不同的颜色模式为何
 
 ```{r old-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("terrain.colors 调色板", "heat.colors 调色板", "topo.colors 调色板", "cm.colors 调色板"), fig.cap="R 3.6.0 以前的调色板",fig.ncol = 2}
 filled.contour(volcano, nlevels = 10, color.palette = terrain.colors)
@@ -761,7 +953,6 @@ filled.contour(volcano, nlevels = 10, color.palette = heat.colors)
 filled.contour(volcano, nlevels = 10, color.palette = topo.colors)
 filled.contour(volcano, nlevels = 10, color.palette = cm.colors)
 ```
-
 
 ```{r new-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("Grays 调色板", "YlOrRd 调色板", "Purples 3 调色板", "Viridis 调色板"),fig.cap="R 3.6.0 以后的调色板",fig.ncol = 2}
 filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.colors(n, "Grays", rev = TRUE, ...))
@@ -773,7 +964,6 @@ filled.contour(volcano, nlevels = 10, color.palette = function(n, ...) hcl.color
 ::: {.rmdnote data-latex="{注意}"}
 `hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
 :::
-
 
 ### 调色板 {#subsec:color-palettes}
 
@@ -799,8 +989,6 @@ all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
 ```{r gray-colors, fig.cap="提取 10 种灰色做调色板"}
 barplot(1:8, col = gray.colors(8, start = .3, end = .9), main = "gray.colors function", border = NA)
 ```
-
-
 
 首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
 
@@ -838,7 +1026,6 @@ par(mar = c(0, 4, 0, 0))
 RColorBrewer::display.brewer.all()
 ```
 
-
 ```{r builtin-palettes,fig.height=5.5,fig.width=6,fig.cap="grDevices 调色板 "}
 # 代码来自 ?palettes
 demo.pal <-
@@ -867,8 +1054,6 @@ n <- if (.Device == "postscript") 64 else 16
 par(mar = c(0, 0, 2, 0))
 demo.pal(n)
 ```
-
-
 
 ```{r demo-colors, fig.width=8, fig.height=11, fig.cap="grDevices 调色板", out.width="100%"}
 par(mfrow = c(33, 1), mar = c(0, 0, .8, 0))
@@ -931,30 +1116,27 @@ pal(n = 16, rainbow_hcl(16, start = 270, end = 150), main = "cold")
 pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
 ```
 
-
 除之前提到的 grDevices 包
 
-- [colorspace](http://colorspace.r-forge.r-project.org/) 包 [@colorspace_2009_rainbow;@colorspace_2009_rgb;@colorspace_2019] 
+-   [colorspace](http://colorspace.r-forge.r-project.org/) 包 [@colorspace_2009_rainbow; @colorspace_2009_rgb; @colorspace_2019]
 
-- [RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <http://colorbrewer2.org/>
+-   [RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <http://colorbrewer2.org/>
 
-- [viridis](https://github.com/sjmgarnier/viridis) 包、
+-   [viridis](https://github.com/sjmgarnier/viridis) 包、
 
-- [dichromat](https://CRAN.R-project.org/package=dichromat) 包
+-   [dichromat](https://CRAN.R-project.org/package=dichromat) 包
 
-- [colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
+-   [colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
 
-- [pals](https://github.com/kwstat/pals) 包
+-   [pals](https://github.com/kwstat/pals) 包
 
-- [palr](https://github.com/AustralianAntarcticDivision/palr) 包
+-   [palr](https://github.com/AustralianAntarcticDivision/palr) 包
 
-- [paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。
+-   [paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。
 
-- [yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate’s Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
+-   [yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate's Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
 
 此外还有 [colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
-
-
 
 ```{r select-color,fig.cap="源起",fig.height=6,collapse=TRUE}
 par(mar = c(1, 2, 1, 0), mfrow = c(3, 2))
@@ -968,7 +1150,6 @@ barplot(x, col = colorspace::sequential_hcl(8), border = "white")
 barplot(x, col = colorspace::diverge_hcl(8, h = c(130, 43), c = 100, l = c(70, 90)), border = "white")
 ```
 
-
 与图 \@ref(fig:geom-tile) 对比，图\@ref(fig:palette-spectral) 的层次更加丰富，识别性更高
 
 ```{r palette-spectral,fig.cap="Spectral 调色板",fig.showtext=TRUE,fig.asp=.8}
@@ -981,8 +1162,6 @@ expand.grid( months = month.abb, years = 1949:1960) %>%
   theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
   labs(x = "年", y = "月", fill = "人数")
 ```
-
-
 
 再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
 
@@ -999,16 +1178,14 @@ p4 <- erupt + scale_fill_continuous(type = 'viridis')
 (p1 + p2) / (p3 + p4)
 ```
 
-RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging)  三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
+RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging) 三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
 
 ```{r,echo=TRUE}
 ls("package:ggplot2", pattern = "scale_col(ou|o)r_")
 ls("package:ggplot2", pattern = "scale_fill_")
 ```
 
-
-
-```r
+``` {.r}
 library(ColorPalette)
 par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
 pal(generateMonochromaticColors("lightblue", 16), main = "generateMonochromaticColors")
@@ -1101,67 +1278,61 @@ invisible(lapply(unlist(colormaps), color_map))
 
 ### 颜色模式 {#subsec:color-schames}
 
-
-#### RGB 
+#### RGB
 
 红(red)、绿(green)、蓝(blue)是三原色
 
-```r
+``` {.r}
 rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)
 ```
 
 函数参数说明：
 
-- __red, blue, green, alpha__ 取值范围[0,M]，M 是 *maxColorValue*
-- __names__ 字符向量，给这组颜色值取名
-- __maxColorValue__ 红，绿，蓝三色范围的最大值 
+-   **red, blue, green, alpha** 取值范围[0,M]，M 是 *maxColorValue*
+-   **names** 字符向量，给这组颜色值取名
+-   **maxColorValue** 红，绿，蓝三色范围的最大值
 
-The colour specification refers to the standard sRGB colorspace (IEC
-standard 61966).
+The colour specification refers to the standard sRGB colorspace (IEC standard 61966).
 
 rgb 产生一种颜色，如 `rgb(255, 0, 0, maxColorValue = 255)` 的颜色是 `"#FF0000"` ，这是一串16进制数，每两个一组，那么一组有 $16^2 = 256$ 种组合，整个一串有 $256^3 = 16777216$ 种组合，这就是RGB表达的所有颜色。
 
-
 #### HSL
 
-色相饱和度亮度 hue–saturation–luminance (HSL)
+色相饱和度亮度 hue--saturation--luminance (HSL)
 
-#### HSV 
+#### HSV
 
-Create a vector of colors from vectors specifying hue, saturation and value.	色相饱和度值
+Create a vector of colors from vectors specifying hue, saturation and value. 色相饱和度值
 
-```r	
+``` {.r}
 hsv(h = 1, s = 1, v = 1, alpha)
 ```
 
-This function creates a vector of colors corresponding to the given values in HSV space.
-rgb and rgb2hsv for RGB to HSV conversion;
-
+This function creates a vector of colors corresponding to the given values in HSV space. rgb and rgb2hsv for RGB to HSV conversion;
 
 hsv函数通过设置色调、饱和度和亮度获得颜色，三个值都是0-1的相对量
 
 RGB HSV HSL 都是不连续的颜色空间，缺点
 
-
-#### HCL 
+#### HCL
 
 基于感知的颜色空间替代RGB颜色空间
 
 通过指定色相(hue)，色度(chroma)和亮度(luminance/lightness)，创建一组（种）颜色
 
-```r			
+``` {.r}
 hcl(h = 0, c = 35, l = 85, alpha, fixup = TRUE)
 ```
 
 函数参数说明：
 
-- __h__ 颜色的色调，取值范围为[0,360]，0、120、240分别对应红色、绿色、蓝色
+-   **h** 颜色的色调，取值范围为[0,360]，0、120、240分别对应红色、绿色、蓝色
 
-- __c__ 颜色的色度，其上界取决于色调和亮度
+-   **c** 颜色的色度，其上界取决于色调和亮度
 
-- __l__ 颜色的亮度，取值范围[0,100]，给定色调和色度，只有一部分子集可用
+-   **l** 颜色的亮度，取值范围[0,100]，给定色调和色度，只有一部分子集可用
 
-- __alpha__ 透明度，取值范围[0,1]，0 和1分别表示透明和不透明
+-   **alpha** 透明度，取值范围[0,1]，0 和1分别表示透明和不透明
 
 This function corresponds to polar coordinates in the CIE-LUV color space
 
@@ -1171,18 +1342,13 @@ This function corresponds to polar coordinates in the CIE-LUV color space
 
 黑、白、灰，看似有三种颜色，其实只有一种颜色，黑和白只是灰色的两极，那么如何设置灰色梯度，使得人眼比较好区分它们呢？这样获得的调色板适用于什么样的绘图环境呢？
 
-
 #### CMYK
 
 印刷三原色：青 (cyan)、品红 (magenta)、黄 (yellow)
 
-- 颜色模式转化
+-   颜色模式转化
 
-`col2rgb()` 、`rgb2hsv()` 和 `rgb()` 函数
-`hex2RGB()` 函数 colorspace
-`col2hcl()` 函数 scales
-`col2HSV()`  colortools
-`col2hex()`
+`col2rgb()` 、`rgb2hsv()` 和 `rgb()` 函数 `hex2RGB()` 函数 colorspace `col2hcl()` 函数 scales `col2HSV()` colortools `col2hex()`
 
 ```{r color-exchange,echo=TRUE}
 col2rgb("lightblue") # color to  RGB
@@ -1196,12 +1362,11 @@ rgb(.678, .847, .902, maxColorValue = 1) # RGB to HEX
 rgb2hsv(173, 216, 230, maxColorValue = 255) # RGB to HSV
 ```
 
-
 ### LaTeX 配色 {#subsec:latex-xcolor}
 
-LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用方式有两种，其一，`\textcolor{green!40!yellow}`{.TeX} 表示 40\% 的绿色和 60\% 的黄色混合色彩，其二，`\textcolor[HTML]{34A853}`{.TeX} HEX 表示的色彩直接在 LaTeX 文档中使用的方式，类似地 `\textcolor[RGB]{52,168,83}`{.TeX} 也表示 Google 图标中的绿色。
+LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用方式有两种，其一，`\textcolor{green!40!yellow}`{.TeX} 表示 40% 的绿色和 60% 的黄色混合色彩，其二，`\textcolor[HTML]{34A853}`{.TeX} HEX 表示的色彩直接在 LaTeX 文档中使用的方式，类似地 `\textcolor[RGB]{52,168,83}`{.TeX} 也表示 Google 图标中的绿色。
 
-```tex
+``` {.tex}
 \documentclass[tikz,border=10pt]{standalone}
 \begin{document}
 \begin{tikzpicture}
@@ -1215,4 +1380,3 @@ LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用�
 ```{r}
 rgb(52, 168, 83, maxColorValue = 255)
 ```
-
