@@ -298,7 +298,21 @@ ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 
 ### 包络图 {#sec:ggplot2-chull}
 
+ggpubr 包提供了 `stat_chull()` 图层
+
+```{r stat-chull,fig.cap="包络图"}
+library(ggpubr)
+ggscatter(mpg, x = "displ", y = "hwy", color = "drv")+
+ stat_chull(aes(color = drv, fill = drv), alpha = 0.1, geom = "polygon")
+```
+
+其背后的原理如下
+
 ```{r}
+stat_chull
+```
+
+```{r,eval=FALSE}
 StatChull <- ggproto("StatChull", Stat,
   compute_group = function(data, scales) {
     data[chull(data$x, data$y), , drop = FALSE]
@@ -315,9 +329,7 @@ stat_chull <- function(mapping = NULL, data = NULL, geom = "polygon",
     params = list(na.rm = na.rm, ...)
   )
 }
-```
 
-```{r}
 ggplot(mpg, aes(displ, hwy)) + 
   geom_point() + 
   stat_chull(fill = NA, colour = "black")
@@ -326,6 +338,7 @@ ggplot(mpg, aes(displ, hwy, colour = drv)) +
   geom_point() + 
   stat_chull(fill = NA)
 ```
+
 
 ### 拟合图 {#subsec:function}
 
