@@ -74,3 +74,9 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
+
+WORKDIR /home/docker/
+
+EXPOSE 8181
+
+CMD ["Rscript", "-e", "sessionInfo()"]
