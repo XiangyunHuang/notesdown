@@ -483,11 +483,25 @@ autoplot(pca, data = iris, colour = 'Species')
 
 ### 组合图 {#subsec:composite}
 
-[Tidy Tuesday Vacination](http://paulnice.datasorcery.tech/posts/tidy-tuesday-vacination/)
+<!-- 也许可以加一个复杂的例子 [Tidy Tuesday Vacination](http://paulnice.datasorcery.tech/posts/tidy-tuesday-vacination/) -->
 
-[GGally](https://github.com/ggobi/ggally)、 [ggupset](https://github.com/const-ae/ggupset) 和 [ggpubr](https://github.com/kassambara/ggpubr) 高度定制了一些统计图形，以 ggupset 为例
+组合的意思是将不同种类的图形绘制在一个区域中，比如密度曲线和地毯图组合。
+[**GGally**](https://github.com/ggobi/ggally)、 [**ggupset**](https://github.com/const-ae/ggupset) 和 [**ggpubr**](https://github.com/kassambara/ggpubr) 高度定制了一些组合统计图形，以 ggpubr 为例，见图 \@ref(ggpubr-composite)
+
+```{r ggpubr-composite,fig.cap="组合图形",fig.width=6,fig.width=4}
+library(ggpubr)
+ggdensity(sleep,
+  x = "extra", add = "mean", rug = TRUE, color = "group",
+  fill = "group", palette = c("#00AFBB", "#E7B800")
+)
+```
+
+上面介绍的都是已经固化的组合方式，一般地，将多个图形组合到一个图中，可以有很多办法，比如 Claus Wilke 开发的 [**cowplot**](https://github.com/wilkelab/cowplot) ，在他的书里 [Fundamentals of Data Visualization](http://serialmentor.com/dataviz) 大量使用，后起之秀 [**patchwork**](https://github.com/thomasp85/patchwork) 则提供更加简洁的组合语法，非常受欢迎，更加底层的拼接方法可以去看 [一页多图](https://msg-book.netlify.app/tricks.html#sec:multipage) 和 R 内置的 grid 系统。
 
 ### 动态图 {#subsec:animation}
+
+[**av**](https://github.com/ropensci/av) 包基于 [FFmpeg](https://github.com/FFmpeg/FFmpeg) 将静态图片合成视频，而 [**gifski**](https://github.com/r-rust/gifski/) 包基于 [gifski](https://gif.ski/) 将静态图片合成 GIF 动画，[**animation**](https://github.com/yihui/animation) 包 [@Xie_2013_animation] 将 Base R 绘制的图形转化为动画或视频，[mapmate](https://github.com/leonawicz/mapmate) 制作地图相关的三维可视化图形，[**gganimate**](https://github.com/thomasp85/gganimate) 包支持将 ggplot2 生成的图形，**magick** 可以将一系列静态图形合成动态图形，借助 **gifski** 包转化为动态图片或视频。推荐读者从 [gganimate 案例合集](https://github.com/ropenscilabs/learngganimate) 开始制作动态图形。 [**rgl**](https://r-forge.r-project.org/projects/rgl/) 可以制作真三维动态图形，支持缩放、拖拽、旋转等操作， [**rayshader**](https://github.com/tylermorganwall/rayshader) 还支持转化 ggplot2 对象为 3D 图形。
+
 
 数据集 Indometh 记录了药物在人体中的代谢情况，给 6 个人分别静脉注射了吲哚美辛，每隔一段时间抽血检查药物在血浆中的浓度，收集的数据见表 \@ref(tab:indometh-data)
 
@@ -520,8 +534,6 @@ p + transition_reveal(time)
 ```{r, ref.label='indometh-animate', echo=FALSE, eval=knitr::is_html_output(),cache=TRUE}
 ```
 
-[mapmate](https://github.com/leonawicz/mapmate) 制作地图方面的三维可视化图形和 [gganimate 案例合集](https://github.com/ropenscilabs/learngganimate) 都是不错的入门材料。此外还有 rgl 可以制作真三维动态图形，支持缩放、拖拽、旋转等操作，magick 可以将一系列静态图形合成动态图形。
-
 动态图形制作的原理，简单来说，就是将一帧帧静态图形以较快的速度播放，人眼形成视觉残留，以为是连续的画面，相比于 animation， **gganimate** 借助 **tweenr** 包添加了过渡效果，动态图形显得非常自然。下面以 cup 函数[^1]为例
 
 [^1]: 函数来自余光创的博客 --- [3D 版邪恶的曲线](https://guangchuangyu.github.io/cn/2017/09/3d-breast/) ，此处借用 gganimate 将其动态化，前方高能，少儿不宜，R 还能这么不正经的玩。
@@ -530,12 +542,11 @@ $$f(x;\theta,\phi) = \theta x\log(x)-\frac{1}{\phi}\mathit{e}^{-\phi^4(x-\frac{1
 
 ```{r cup-curve,fig.cap="添加过渡效果",fig.width=4,fig.height=4}
 library(tweenr)
-
 cup_curve <- function(n = 100, theta = 3, phi = 30, cup = "A") {
   data.frame(x = seq(0.00001, 1, length.out = n), cup = cup) %>%
-    transform(y = theta * x * log(x, base = 10) - 1 / phi * exp(-(phi * x - phi / exp(1))^4))
+    transform(y = theta * x * log(x, base = 10) 
+              - 1 / phi * exp(-(phi * x - phi / exp(1))^4))
 }
-
 mapply(
   FUN = cup_curve, theta = c(A = 3, B = 2.8, C = 2.5, D = 2.2, E = 2),
   phi = c(30, 33, 36, 40, 50), cup = c("E", "D", "C", "B", "A"),
