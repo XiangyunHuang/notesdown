@@ -101,7 +101,7 @@ RUN dnf install -y python3-devel \
   texlive-beamer-verona \
   texlive-beamertheme-metropolis \
   texlive-beamertheme-cuerna \
- && xvfb install2.r --error \
+ && xvfb-run install2.r --error \
    reticulate tikzDevice tidyverse showtext plotly kableExtra hrbrthemes ggrepel ggridges ggpubr \
    agridat arules blastula beanplot extrafont fontcm formatR gganimate rootSolve RSQLite \
    ggbeeswarm ggfortify ggmosaic ggnormalviolin gifski glmnet magick pdftools quadprog treemap \
