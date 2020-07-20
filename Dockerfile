@@ -80,6 +80,51 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && install.r docopt odbc bookdown ggplot2 shiny reactable lme4 glmmTMB data.table rstan sf brms rstanarm patchwork
 
 # Python virtual env
+RUN dnf install -y python3-devel \
+  python3-matplotlib \
+  python3-numpy \
+  python3-scipy \
+  python3-sympy \
+  python3-scikit-learn \
+  python3-pandas \
+  cargo \
+  ImageMagick-c++-devel \
+  poppler-cpp-devel \
+  xorg-x11-server-Xvfb \
+  texlive-fira \
+  texlive-tufte-latex \
+  google-noto-emoji-fonts \
+  google-noto-emoji-color-fonts \
+  texlive-newtx \
+  texlive-fibeamer \
+  texlive-pgfornament-han \
+  texlive-beamer-verona \
+  texlive-beamertheme-metropolis \
+  texlive-beamertheme-cuerna \
+ && xvfb install2.r --error \
+   reticulate tikzDevice tidyverse showtext plotly kableExtra hrbrthemes ggrepel ggridges ggpubr \
+   agridat arules blastula beanplot extrafont fontcm formatR gganimate rootSolve RSQLite \
+   ggbeeswarm ggfortify ggmosaic ggnormalviolin gifski glmnet magick pdftools quadprog treemap \
+   treemapify vioplot xkcd webshot heatmaply Kendall maps mapdata mapproj mda prettydoc \
+   pspearman pwr quantmod raster rasterly rasterVis SuppDists formattable gam devtools \
+ && install2.r --repo https://nowosad.github.io/drat spDataLarge \
+ && installGithub.r datalorax/equatiomatic stan-dev/cmdstanr hadley/emo rstudio/rmarkdown
+
+RUN CMDSTAN=/opt/cmdstan/cmdstan-2.23.0 & CMDSTAN_VERSION=2.23.0\
+  && mkdir -p /opt/cmdstan \
+  && curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz \
+  && tar -xzf cmdstan-${CMDSTAN_VERSION}.tar.gz -C /opt/cmdstan/ \
+  && cd ${CMDSTAN} \
+  && make build
+
+RUN mkdir -p ~/.fonts \
+ && curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf \
+ && curl -fLo Adobe-Fonts.zip https://github.com/XiangyunHuang/fonts/releases/download/v0.1/Adobe-Fonts.zip \
+ && unzip Adobe-Fonts.zip -d ~/.fonts/adobe \
+ && fc-cache -fsv \
+ && R -e 'library(showtext);font_install(source_han_serif());font_install(source_han_sans());hrbrthemes::import_roboto_condensed()' \
+ && R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
+
 # COPY requirements.txt ./
 # RUN RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow \
 #   && virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV \
