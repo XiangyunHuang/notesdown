@@ -97,7 +97,7 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
 
 USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 \@ref(fig:state-crimes)
 
-```{r state-crimes,fig.cap="1975年美国各州犯罪事件",fig.width=6,fig.height=6}
+```{r state-crimes,fig.cap="1975年美国各州犯罪事件",fig.width=6,fig.height=4}
 library(maps)
 crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 # 等价于 crimes %>% tidyr::pivot_longer(Murder:Rape)
@@ -127,7 +127,8 @@ east_asia <- map_data("worldHires",
 )
 ggplot(east_asia, aes(x = long, y = lat, group = group, fill = region)) +
   geom_polygon(colour = "black") +
-  scale_fill_brewer(palette = "Set2")
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal()
 ```
 
 绘制真正的地图需要考虑投影坐标系，观察角度、分辨率、政策法规等一系列因素，它是一种复杂的图形，如图 \@ref(fig:draw-map) 所示。
@@ -300,7 +301,7 @@ ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 
 ggpubr 包提供了 `stat_chull()` 图层
 
-```{r stat-chull,fig.cap="包络图"}
+```{r stat-chull,fig.cap="包络图",fig.width=5,fig.height=4}
 library(ggpubr)
 ggscatter(mpg, x = "displ", y = "hwy", color = "drv")+
  stat_chull(aes(color = drv, fill = drv), alpha = 0.1, geom = "polygon")
@@ -566,7 +567,7 @@ cup_curve <- function(n = 100, theta = 3, phi = 30, cup = "A") {
               - 1 / phi * exp(-(phi * x - phi / exp(1))^4))
 }
 mapply(
-  FUN = cup_curve, theta = c(A = 3, B = 2.8, C = 2.5, D = 2.2, E = 2),
+  FUN = cup_curve, theta = c(E = 3, D = 2.8, C = 2.5, B = 2.2, A = 2),
   phi = c(30, 33, 36, 40, 50), cup = c("E", "D", "C", "B", "A"),
   MoreArgs = list(n = 50), SIMPLIFY = FALSE, USE.NAMES = TRUE
 ) %>%
