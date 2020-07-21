@@ -8,6 +8,9 @@ LABEL org.label-schema.license="GPL-3.0" \
       org.label-schema.vendor="Book Project" \
       maintainer="Xiangyun Huang <xiangyunfaith@outlook.com>"
 
+ARG CMDSTAN=/opt/cmdstan/cmdstan-2.23.0
+ARG CMDSTAN_VERSION=2.23.0
+
 # System dependencies required for R packages
 RUN dnf -y upgrade \
   && dnf -y install dnf-plugins-core \
@@ -112,8 +115,7 @@ RUN dnf install -y python3-devel \
  && install2.r --repo https://mc-stan.org/r-packages cmdstanr \
  && installGithub.r datalorax/equatiomatic hadley/emo rstudio/rmarkdown
 
-RUN CMDSTAN=/opt/cmdstan/cmdstan-2.23.0 & CMDSTAN_VERSION=2.23.0\
-  && mkdir -p /opt/cmdstan \
+RUN mkdir -p /opt/cmdstan \
   && curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz \
   && tar -xzf cmdstan-${CMDSTAN_VERSION}.tar.gz -C /opt/cmdstan/ \
   && cd ${CMDSTAN} \
