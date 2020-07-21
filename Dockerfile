@@ -90,6 +90,7 @@ RUN dnf install -y python3-devel \
   cargo \
   ImageMagick-c++-devel \
   poppler-cpp-devel \
+  libjpeg-turbo-devel \
   xorg-x11-server-Xvfb \
   texlive-fira \
   texlive-tufte-latex \
@@ -108,7 +109,8 @@ RUN dnf install -y python3-devel \
    treemapify vioplot xkcd webshot heatmaply Kendall maps mapdata mapproj mda prettydoc \
    pspearman pwr quantmod raster rasterly rasterVis SuppDists formattable gam devtools \
  && install2.r --repo https://nowosad.github.io/drat spDataLarge \
- && installGithub.r datalorax/equatiomatic stan-dev/cmdstanr hadley/emo rstudio/rmarkdown
+ && install2.r --repo https://mc-stan.org/r-packages cmdstanr \
+ && installGithub.r datalorax/equatiomatic hadley/emo rstudio/rmarkdown
 
 RUN CMDSTAN=/opt/cmdstan/cmdstan-2.23.0 & CMDSTAN_VERSION=2.23.0\
   && mkdir -p /opt/cmdstan \
