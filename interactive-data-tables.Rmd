@@ -2,18 +2,21 @@
 
 <!-- 本章不混合介绍 shiny -->
 
-Greg Lin [reactable](https://github.com/glin/reactable) 覆盖测试 99\%  [react-table](https://github.com/tannerlinsley/react-table) 属于 [react](https://github.com/facebook/react) 框架，超棒的 [react 模块合集](https://github.com/enaqx/awesome-react) 也许机智如你，可以引入更多优秀的 react 模块到 R 语言社区。谢益辉开发的 [DT](https://github.com/rstudio/DT) 包覆盖测试 31\% 是基于 [DataTables](https://datatables.net/) 的一个 [jQuery](https://jquery.com/) 框架，Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78\% 类似 ggplot2，完全基于 R 语言试图打造一个表格的语法，他们都是背靠开源组织和大公司。任坤开发的 [formattable](https://github.com/renkun-ken/formattable) 包覆盖测试 96\%，朱昊开发的 [kableExtra](https://github.com/haozhu233/kableExtra) 大大扩展了 **knitr** 包的 kable 函数的功能，没有覆盖测试，详细文档见  <https://haozhu233.github.io/kableExtra/awesome_table_in_html_cn.html>，他们属于单枪匹马。
+Greg Lin [reactable](https://github.com/glin/reactable) 覆盖测试 99\%  [react-table](https://github.com/tannerlinsley/react-table) 属于 [react](https://github.com/facebook/react) 框架，超棒的 [react 模块合集](https://github.com/enaqx/awesome-react) 也许机智如你，可以引入更多优秀的 react 模块到 R 语言社区。谢益辉开发的 [DT](https://github.com/rstudio/DT) 包覆盖测试 31\% 是基于 [DataTables](https://datatables.net/) 的一个 [jQuery](https://jquery.com/) 框架，Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78\% 类似 ggplot2，完全基于 R 语言试图打造一个表格的语法，他们都是背靠开源组织和大公司。任坤开发的 [formattable](https://github.com/renkun-ken/formattable) 包覆盖测试 96\%，朱昊开发的 [kableExtra](https://github.com/haozhu233/kableExtra) 大大扩展了 **knitr** 包的 kable 函数的功能，没有覆盖测试，详细文档见  <https://haozhu233.github.io/kableExtra/awesome_table_in_html_cn.html>，他们属于单枪匹马。其它制作表格的 R 包还有 [flextable](https://github.com/davidgohel/flextable) 等
 
-```{r,eval=FALSE}
+```{r}
 library(reactable) # 主要介绍
 library(gt) # 动态
 library(kableExtra) # 网页 和 LaTeX 支持
-# library(DT) # 动态 与 shiny 包冲突
-# library(formattable) # 简单提一下
+library(DT)
 ```
 
+::: {.rmdnote data-latex="{注意}"}
+加载 shiny 包后再加载 DT 包，函数 `dataTableOutput()` 和`renderDataTable()` 显示冲突，因为两个 R 包都有这两个函数。在创建 shiny 应用的过程中，如果我们需要呈现动态表格，就需要使用 DT 包的 `DT::dataTableOutput()` 和 `DT::renderDataTable()` 否则会报错，详见 <https://github.com/rstudio/shiny/issues/2653>。
+:::
 
 
+DT 可以嵌在网页或 shiny 应用中，kableExtra 支持 HTML 网页和 PDF 文档两种呈现方式
 
 ```{r, eval=FALSE}
 # ui.R 前端
@@ -43,3 +46,28 @@ shinyServer(function(input, output, session) {
   )
 })
 ```
+
+
+[DT](https://github.com/rstudio/DT) 基于 jQuery 的 JS 库 [DataTables](https://datatables.net/) 提供了一个 R 的封装，封装工具和许多其他基于 JS 库的 R 包一样，都依赖于 [htmlwidgets](https://github.com/ramnathv/htmlwidgets)
+
+```{r custom-dt-table,eval=knitr::is_html_output()}
+data.frame(name1 = c(
+  "<b>加粗</b>",
+  "<em>强调</em>"
+), name2 = c(
+  '<a href="http://rstudio.com">超链</a>', # 支持超链接
+  '<a href="#" onclick="alert(\'Hello\');">点击</a>'
+)) %>%
+  datatable(
+    data = .,
+    escape = F, # 设置 escape = F
+    colnames = c('<span style="color:red">第1列</span>', "<em>第2列</em>"),
+    caption = htmltools::tags$caption(
+      style = "caption-side: bottom; text-align: center;",
+      "表格 2: ", htmltools::em("表格标题")
+    ), # 在表格底部显示标题，默认在表格上方显示标题
+    options = list(pageLength = 5, dom = "tip")
+  )
+```
+
+
