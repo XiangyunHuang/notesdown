@@ -99,6 +99,9 @@ RUN dnf install -y python3-devel \
   texlive-tufte-latex \
   google-noto-emoji-fonts \
   google-noto-emoji-color-fonts \
+  texlive-awesomebox \
+  texlive-fontawesome5 \
+  texlive-fontawesome \
   texlive-newtx \
   texlive-fibeamer \
   texlive-pgfornament-han \
