@@ -1,0 +1,18 @@
+version: "3.6" # Docker Engine 18.02.0+
+services:
+   book:
+     image: xiangyunhuang/masr-book
+     container_name: masr
+     command:
+       - /bin/bash
+       - -c
+       - |
+         sh ./_build.sh
+         xvfb-run make pdf
+     environment:
+       - CI
+       - PWD
+       - MAKEFLAGS
+       - DISPLAY
+     volumes:
+       - ${PWD}:/home/docker/
