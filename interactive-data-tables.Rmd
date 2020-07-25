@@ -12,7 +12,7 @@ library(DT)
 ```
 
 ::: {.rmdnote data-latex="{注意}"}
-加载 shiny 包后再加载 DT 包，函数 `dataTableOutput()` 和`renderDataTable()` 显示冲突，因为两个 R 包都有这两个函数。在创建 shiny 应用的过程中，如果我们需要呈现动态表格，就需要使用 DT 包的 `DT::dataTableOutput()` 和 `DT::renderDataTable()` 否则会报错，详见 <https://github.com/rstudio/shiny/issues/2653>。
+加载 shiny 包后再加载 DT 包，函数 `dataTableOutput()` 和`renderDataTable()` 显示冲突，因为两个 R 包都有这两个函数。在创建 shiny 应用的过程中，如果我们需要呈现动态表格，就需要使用 DT 包的 `DT::dataTableOutput()` 和 `DT::renderDataTable()` 否则会报错，详见 <https://github.com/rstudio/shiny/issues/2653>，DT 包官方文档 <https://rstudio.github.io/DT/>。
 :::
 
 
@@ -53,20 +53,28 @@ shinyServer(function(input, output, session) {
 ```{r custom-dt-table,eval=knitr::is_html_output()}
 data.frame(name1 = c(
   "<b>加粗</b>",
-  "<em>强调</em>"
+  "<em>强调</em>",
+  "正常"
 ), name2 = c(
   '<a href="http://rstudio.com">超链</a>', # 支持超链接
-  '<a href="#" onclick="alert(\'Hello\');">点击</a>'
+  '<a href="#" onclick="alert(\'Hello\');">点击</a>',
+  '正常'
 )) %>%
   datatable(
     data = .,
     escape = F, # 设置 escape = F
     colnames = c('<span style="color:red">第1列</span>', "<em>第2列</em>"),
     caption = htmltools::tags$caption(
-      style = "caption-side: bottom; text-align: center;",
+      style = "caption-side: top; text-align: center;",
       "表格 2: ", htmltools::em("表格标题")
     ), # 在表格底部显示标题，默认在表格上方显示标题
-    options = list(pageLength = 5, dom = "tip")
+    filter = "top", # 过滤框
+    options = list(
+      language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
+      pageLength = 5, # 每页显示5行
+      dom = "tip",
+      autoWidth = TRUE # 自动页面宽度
+    )
   )
 ```
 
