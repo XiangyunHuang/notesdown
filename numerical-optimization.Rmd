@@ -67,7 +67,7 @@ $$
 
 上述二次规划问题的可行域如图所示
 
-```{r feasible-region,echo=TRUE,fig.cap="可行域"}
+```{r feasible-region,echo=TRUE,fig.cap="可行域",fig.width=4,fig.height=4}
 plot(0, 0,
   xlim = c(-2, 5.5), ylim = c(-1, 3.5), type = "n",
   xlab = "x", ylab = "y", main = "Feasible Region"
@@ -90,7 +90,7 @@ sol
 
 在可行域上画出等高线，表示目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
 
-```{r,echo=TRUE,fig.cap="无约束和有约束条件下的解",fig.asp=.8}
+```{r,echo=TRUE,fig.cap="无约束和有约束条件下的解",fig.width=4,fig.height=4}
 qp_sol <- sol$solution # 二次规划的解
 uc_sol <- sol$unconstrained.solution # 无约束情况下的解
 # 画图
@@ -140,7 +140,6 @@ color <- hcl.colors(nbcol)
 zfacet <- z[-1, -1] + z[-1, -m] + z[-m, -1] + z[-m, -m]
 facetcol <- cut(zfacet, nbcol)
 
-# cairo_pdf(file = "log-lik.pdf",width = 6,height = 5)
 par(mar = c(0.1, 2, 0.1, 0.1))
 persp(mu, sigma, z,
       xlab = "\n \u03bc", ylab = "\n \u03c3",
@@ -151,20 +150,12 @@ persp(mu, sigma, z,
       theta = 50, phi = 25,
       r = 60, d = 0.1, expand = .6,
       ltheta = 90, lphi = 180,
-      shade = 0.1, nticks = 5 # , box = TRUE,axes = TRUE
+      shade = 0.1, nticks = 5, 
+      box = TRUE, axes = TRUE
 )
-# 添加极大值点
-# 除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点
-# 再考虑正态混合模型的似然曲面
-# dev.off()
-# ```{r log-lik,fig.cap="对数似然函数曲面",fig.asp=1,out.width="70%",dev="png",dev.args=list(type="cairo", bg = "transparent"), dpi = 300}
-# 
-# ```
-# Sys.setenv(R_GSCMD = "C:/Program Files/gs/gs9.26/bin/gswin64c.exe")
-# embedFonts(file = 'log-lik.pdf',outfile = 'log-lik-emfont.pdf',
-#            fontpaths = system.file("fonts", package = "fontcm"))
 ```
 
+<!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
 [^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
 [^intro-ipoptr]: https://www.ucl.ac.uk/~uctpjyy/ipoptr.html
