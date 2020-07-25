@@ -5,11 +5,14 @@ library(reticulate)
 knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
 # 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
 if (identical(.Platform$OS.type, "windows")) {
-  # 在我的 Windows 机器上用的是 Miniconda3
+  # 在本地 Windows 系统上虚拟环境是用 miniconda3 创建的
   reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else if (grepl(pattern = "Fedora", x = osVersion)) {
+  reticulate::use_python(python = "/usr/bin/python3", required = TRUE)
 } else {
   reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
 }
+
 Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN") # 用于 tools::CRAN_package_db()
 library(nomnoml)
 ```
@@ -1242,6 +1245,9 @@ plt.show()
 
 
 ## CmdStan 概率编程 {#setup-cmdstan}
+
+
+[Windows 系统上安装 cmdstanr](https://www.maxmantei.com/blog/2020-05-16-installing-cmdstanr-on-windows/cmdstanr-windows/)
 
 ```{r,eval=FALSE}
 remotes::install_github('stan-dev/cmdstanr')

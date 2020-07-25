@@ -5,7 +5,7 @@
 >
 > --- 摘自 《庄子·杂篇·物》
 
-庄子谈学习，余深以为然，故试引之。
+庄子谈学习，余深以为然，故引之。
 
 > The fish trap exists because of the fish; once you've gotten the fish, you can forget the trap. The rabbit snare exists because of the rabbit; once you've gotten the rabbit, you can forget the snare. Words exist because of meaning; once you've gotten the meaning, you can forget the words. Where can I find a man who has forgotten words so I can have a word with him ? [^notes]
 >
@@ -199,6 +199,8 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 - 《Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny》 Paula Moraga <https://www.paulamoraga.com/book-geospatial/>
 - 《Spatial Data Science》 Edzer Pebesma and Roger Bivand <https://www.r-spatial.org/book>
 - 《All Models Are Wrong: Concepts of Statistical Learning》[Gaston Sanchez](https://www.gastonsanchez.com/) and Ethan Marzban <https://allmodelsarewrong.github.io/>
+- 《Statistical Inference via Data Science: A ModernDive into R and the Tidyverse》 Chester Ismay and Albert Y. Kim <https://moderndive.com/>
+- 《Statistical Learning From A Regression Perspective》 Richard A. Berk
 
 与机器学习相关：
 
@@ -331,6 +333,43 @@ ruler <- function(width = getOption("width")) {
 ```
 ```{r, comment=NA}
 ruler()
+```
+
+## 参与写作 {#sec:contribute}
+
+TOKEN 保存 GitHub Package [^github-package] 读写删的权限，创建新的 TOKEN，命名为 `GITHUB_PKG` <https://github.com/settings/tokens>
+
+[^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
+
+```bash
+# 登陆 GitHub Package
+cat ~/TOKEN.txt | docker login https://docker.pkg.github.com -u XiangyunHuang --password-stdin
+# 拉取镜像
+docker pull docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel
+# 容器内的信息
+docker run --rm -u root -v "/${PWD}://home/docker/" --name=masr-book docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash -c "locale; xetex --version; fc-list | sort; python3 -V; pandoc -v; odbcinst -j; Rscript -e 'sessionInfo(.packages(T)); extSoftVersion(); capabilities(); .libPaths(); version; odbc::odbcListDrivers()'; echo '\documentclass{article}\begin{document}hello\end{document}' > test.tex; xelatex test.tex; xelatex test.tex"
+```
+
+```bash
+docker-compose run book bash -c "sh ./_build.sh"
+```
+
+
+```bash
+# 从镜像创建并进入容器，退出容器后销毁容器
+docker run -it --rm docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash
+
+# 从镜像创建一个叫 masr-book 的容器，并进入该容器，退出容器后不销毁
+docker run -it --name=masr-book docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash
+
+# 启动容器 masr-book
+docker start masr-book
+
+# 进入已知的 masr-book 容器
+docker exec -it masr-book bash
+
+# 停止容器
+docker stop masr-book
 ```
 
 
