@@ -60,8 +60,9 @@ dat %>%
 **ggrepel** 包的图层 `geom_text_repel()` 支持所有数据点的注释，并且自动调整文本的位置，防止重叠，增加辨识度，如图 \@ref(fig:mtcars-annotation)。当然，数据点如果过于密集也不适合全部注释，高亮其中的关键点即可。
 
 ```{r mtcars-annotation,fig.cap="少量点的情况下可以全部注释，且可以解决注释重叠的问题"}
-mtcars$cyl <- as.factor(mtcars$cyl)
-ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = cyl)) +
+mtcars %>%
+  transform(cyl = as.factor(cyl)) %>%
+  ggplot(aes(wt, mpg, label = rownames(mtcars), color = cyl)) +
   geom_point() +
   geom_text_repel() +
   theme_minimal()
@@ -86,18 +87,14 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
   geom_text(aes(x = 1.2, label = Time),
     position = position_stack(vjust = 0.5), color = "black"
   ) +
-  theme_void(base_size = 14) +
-  labs(
-    x = "Time", y = "demand ratio",
-    title = "demand vs Time"
-  )
+  theme_void(base_size = 14)
 ```
 
 ### 地图 {#sec:ggplot2-map}
 
 USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 \@ref(fig:state-crimes)
 
-```{r state-crimes,fig.cap="1975年美国各州犯罪事件",fig.width=6,fig.height=4}
+```{r state-crimes,fig.cap="1975年美国各州犯罪事件",fig.width=8,fig.height=4}
 library(maps)
 crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 # 等价于 crimes %>% tidyr::pivot_longer(Murder:Rape)
@@ -116,7 +113,7 @@ ggplot(crimes, aes(map_id = state)) +
 
 先来看看中国及其周边，见图\@ref(fig:incorrect-map)，这个地图的缺陷就是中国南海及九段线没有标记，台湾和中国大陆不是一种颜色标记，这里的地图数据来自 R 包 **maps** 和 **mapdata**，像这样的地图就不宜在国内正式刊物上出现。
 
-```{r incorrect-map,fig.cap="中国及其周边",fig.width=6,fig.height=4}
+```{r incorrect-map,fig.cap="中国及其周边",fig.width=8,fig.height=4}
 library(maps)
 library(mapdata)
 east_asia <- map_data("worldHires",
@@ -196,7 +193,7 @@ beanplot::beanplot(count ~ spray, data = InsectSprays, col = "lightgray")
 
 [ggnormalviolin](https://github.com/wjschne/ggnormalviolin) 包在给定均值和标准差的情况下，绘制正态分布的概率密度曲线，如图 \@ref(fig:normal-violin) 所示。
 
-```{r normal-violin,fig.cap="正态分布的概率密度曲线"}
+```{r normal-violin,fig.cap="正态分布的概率密度曲线",fig.width=4,fig.height=4}
 library(ggnormalviolin)
 with(
   aggregate(
@@ -451,6 +448,30 @@ treemap(GNI2014,
   format.legend = list(scientific = FALSE, big.mark = " ")
 )
 ```
+
+::: {.rmdtip data-latex="{提示}"}
+
+数据集 GNI2014 的另一种呈现方式是将数据铺到地图上，可以借助 **highcharter** 包的 `hcmap()` 函数来实现`r if(knitr::is_html_output()) "，如图\@ref(fig:hc-treemap)所示"`。
+
+```{r hc-treemap,eval=knitr::is_html_output()}
+data(GNI2014, package = "treemap")
+library(highcharter)
+hcmap(
+  "custom/world-robinson-lowres",
+  data = GNI2014,
+  name = "Gross national income per capita",
+  value = "GNI",
+  borderWidth = 0,
+  nullColor = "#d3d3d3",
+  joinBy = c("iso-a3", "iso3")
+) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = hcl.colors(n = 10, palette = "inferno")),
+    type = "logarithmic"
+  )
+```
+
+:::
 
 [**treemapify**](https://github.com/wilkox/treemapify) 包基于 ggplot2 制作树状图，类似地，该 R 包内置了数据集 G20，记录了世界主要经济体 G20 (<https://en.wikipedia.org/wiki/G20>) 的经济和人口信息，国家 GDP （单位：百万美元）`gdp_mil_usd` 和人类发展指数 `hdi`。相比于 GNI2014，它还包含了两列标签信息：经济发展阶段和所处的半球。图@(fig:treemap-ggplot2)以南北半球 hemisphere 分面，以色彩填充区域 region，以 `gdp_mil_usd` 表示区域大小
 
