@@ -33,7 +33,12 @@ esoph <- as.data.table(esoph)
 server <- function(input, output, session) {
   output$output_table <- renderReactable({
     req(input$input_vars)
-    esoph[, .(ncases = sum(ncases), ncontrols = sum(ncontrols), rate = sum(ncases) / sum(ncases + ncontrols)), by = mget(input$input_vars)] %>%
+    esoph[, .(
+      ncases = sum(ncases), ncontrols = sum(ncontrols),
+      rate = sum(ncases) / sum(ncases + ncontrols)
+    ),
+    by = mget(input$input_vars)
+    ] %>%
       reactable(
         filterable = TRUE, # 过滤
         searchable = TRUE, # 搜索
