@@ -1,0 +1,211 @@
+# 交互式 shiny 应用 {#chap:interactive-shiny-app}
+
+Colin Fay, Sébastien Rochette, Vincent Guyader, Cervan Girard 的书 [Engineering Production-Grade Shiny Apps](https://engineering-shiny.org/) 和 Hadley Wickham 的书 [Mastering Shiny](https://jcheng5.github.io/shiny-book/)
+
+shiny 资源列表 <https://github.com/grabear/awesome-rshiny>
+shiny 扩展合集 <https://github.com/nanxstats/awesome-shiny-extensions>
+
+- [Shiny Server Professional Administrator's Guide](https://docs.rstudio.com/shiny-server/)
+- [Learn Shiny](https://shiny.rstudio.com/tutorial/)
+- [rstudio::conf 2018](https://github.com/simecek/RStudioConf2018Slides)
+
+[RinteRface 组织](https://rinterface.com/) 开发的系列 R 包速查小抄 [cheatsheets](https://github.com/RinteRface/cheatsheets)
+[shiny-server](https://github.com/rstudio/shiny-server) 支持 shiny 应用通过网络服务
+
+
+| R 包               | 描述                                                         |
+| :----------------- | :----------------------------------------------------------- |
+| **data.table**     | Extension of `data.frame` 数据操作                                    |
+| **DT**             | A Wrapper of the JavaScript Library DataTables 交互表格              |
+| **ggplot2**        | Create Elegant Data Visualisations Using the Grammar of Graphics 图形语法|
+| **plotly**         | Create Interactive Web Graphics via plotly.js 交互图形               |
+| **RMySQL**         | Database Interface and MySQL Driver for R 连接 MySQL                   |
+| **shiny**          | Web Application Framework for R 报表框架                             |
+| **shinyjs**        | Easily Improve the User Experience of Your Shiny Apps in Seconds 插入 JS 代码|
+| **shinythemes**    | Themes for Shiny 风格主题                                            |
+
+
+[shinyproxy](https://github.com/openanalytics/shinyproxy) 企业级部署 shiny 应用的开源解决方案
+[golem](https://github.com/ThinkR-open/golem) 构建企业级 shiny 应用的框架
+[ShinyStudio](https://github.com/dm3ll3n/ShinyStudio) 打造基于容器架构的协作开发环境的开源解决方案
+[shinytableau](https://github.com/rstudio/shinytableau) 仿 [Tableau](https://www.tableau.com/) 的 dashboard 框架
+
+[pins](https://github.com/rstudio/pins) 组织内资源分享
+[renv](https://github.com/rstudio/renv) 创建可重复的项目环境
+
+[dashboardthemes](https://github.com/nik01010/dashboardthemes) 主题
+[shinymanager](https://github.com/datastorm-open/shinymanager) 单个 shiny 应用的权限管理
+[shinyWidgets](https://github.com/dreamRs/shinyWidgets) 提供自定义 widget 
+[esquisse](https://github.com/dreamRs/esquisse) 交互式探索数据，基于 ggplot2 和 dplyr
+[miniUI](https://github.com/rstudio/miniUI) 专为小屏幕设计 
+[leaflet](https://github.com/rstudio/leaflet) 地图嵌入 Shiny 应用
+[dygraphs](https://github.com/rstudio/dygraphs) 时间序列塞进去
+[shiny](https://rstudio.github.io/shiny) 
+[radiant](https://github.com/radiant-rstats/radiant) 探索性分析解决方案
+
+[ggplot2](https://github.com/tidyverse/ggplot2) 和 [plotly](https://github.com/ropensci/plotly)
+[firebase](https://github.com/JohnCoene/firebase) 访问权限 <https://firebase.john-coene.com/>
+
+[shinyFeedback](https://github.com/merlinoa/shinyFeedback)  shiny 输入的用户反馈
+[shinyMobile](https://github.com/RinteRface/shinyMobile) 在 IOS 和安卓手机上访问 shiny 应用，大大加强 miniUI 的功能 
+
+
+<!-- shiny 生态 一个完整的工业级的稳定应用 安全性、稳定性、高效性、维护性-->
+
+```{r}
+library(shiny)
+```
+
+[1920s 汽车数据分析和建模](https://xiangyun.shinyapps.io/masr-cars/)
+
+## 基础知识 {#sec:foundations}
+
+
+## 基础组件 {#sec:elements}
+
+
+### 表格 {#subsec:shiny-tables}
+
+[reactable](https://github.com/glin/reactable) 基于 JS 库 [React Table](https://github.com/tannerlinsley/react-table) 提供交互式表格渲染，和 shiny 无缝集成，是替代 DT 的不二选择，在 app.R 用 reactable 包的 `reactableOutput()` 和 `renderReactable()` 函数替代 shiny 里面的 `dataTableOutput()` 和 `renderDataTable()`。 再也不用忍受 DT 和 shiny 的函数冲突了。覆盖测试达到 99%
+
+```{r}
+library(shiny)
+library(data.table)
+```
+
+
+[gt](https://github.com/rstudio/gt) 高度自定义 gt 表格样式， shiny 集成
+[data.table](https://github.com/Rdatatable/data.table) 分组聚合
+[formattable](https://github.com/renkun-ken/formattable)
+
+
+```{r,eval=FALSE}
+library(shiny)
+library(reactable)
+
+ui <- fluidPage(
+  reactableOutput("table")
+)
+
+server <- function(input, output) {
+  output$table <- renderReactable({
+    reactable(iris,
+      filterable = TRUE, # 过滤
+      searchable = TRUE, # 搜索
+      showPageSizeOptions = TRUE, # 页面大小
+      pageSizeOptions = c(5, 10, 15), # 页面大小可选项
+      defaultPageSize = 10, # 默认显示10行
+      highlight = TRUE, # 高亮选择
+      striped = TRUE, # 隔行高亮
+      fullWidth = FALSE, # 默认不要全宽填充，适应数据框的宽度
+      defaultSorted = list(
+        Sepal.Length = "asc", # 由小到大排序
+        Petal.Length = "desc" # 由大到小
+      ),
+      columns = list(
+        Sepal.Width = colDef(style = function(value) { # Sepal.Width 添加颜色标记
+          if (value > 3.5) {
+            color <- "#008000"
+          } else if (value > 2) {
+            color <- "#e00000"
+          } else {
+            color <- "#777"
+          }
+          list(color = color, fontWeight = "bold") # 字体加粗
+        })
+
+      )
+    )
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+
+
+
+## 高级主题 {#sec:advanced-topics}
+
+异步编程，并发访问
+
+[Styling Shiny apps with Sass and Bootstrap 4](https://resources.rstudio.com/rstudio-conf-2020/styling-shiny-apps-with-sass-and-bootstrap-4-joe-cheng)
+
+[sass](https://github.com/rstudio/sass) 网站风格定义，公司品牌
+
+## 部署应用 {#sec:shiny-deployment}
+
+
+百万访问量
+
+We’re hitting R a million times a day so we made a talk about it - Heather Nolis & Dr. Jacqueline Nolis
+https://resources.rstudio.com/rstudio-conf-2020/we-re-hitting-r-a-million-times-a-day-so-we-made-a-talk-about-it-heather-nolis-dr-jacqueline-nolis
+
+
+## 最佳实践 {#sec:shiny-principles}
+
+RStudio CTO Joe Cheng 介绍 shiny 原理、实践和工具 [shiny in production](https://resources.rstudio.com/rstudio-conf-2019/shiny-in-production-principles-practices-and-tools-joe-cheng)
+
+## 培训材料 {#sec:shiny-resources}
+
+RStudio 官网出品的 shiny 学习材料 https://resources.rstudio.com/shiny-2
+
+实时 https://github.com/rstudio/flexdashboard/tree/master/inst/examples/crandash
+
+
+## 仪表盘 {#sec:shiny-dashboard}
+
+dashboard 翻译过来叫仪表盘，就是驾驶仓的那个玩意，形象地表达作为掌舵者应该关注的对象。R 包 shiny 出现后，仪表盘的制作显得非常容易，也很快形成了一个生态，比如 [shinydashboard](https://rstudio.github.io/shinydashboard)、 [flexdashboard](https://github.com/rstudio/flexdashboard) 等，此外 [bs4Dash](https://github.com/RinteRface/bs4Dash) 基于 Bootstrap 4 的仪表盘，目前 shiny 和 rmarkdown 都在向 Bootstrap 4 升级，这是未来的方向。 [shinydashboardPlus](https://github.com/RinteRface/shinydashboardPlus) 主要目的在于扩展 shinydashboard 包
+
+
+```{r,eval=FALSE}
+library(shiny)
+library(shinydashboard)
+library(shinydashboardPlus)
+
+shinyApp(
+  ui = dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody(
+      box(
+        solidHeader = FALSE,
+        title = "Status summary",
+        background = NULL,
+        width = 4,
+        status = "danger",
+        footer = fluidRow(
+          column(
+            width = 6,
+            descriptionBlock(
+              number = "17%",
+              numberColor = "green",
+              numberIcon = "fa fa-caret-up",
+              header = "$35,210.43",
+              text = "TOTAL REVENUE",
+              rightBorder = TRUE,
+              marginBottom = FALSE
+            )
+          ),
+          column(
+            width = 6,
+            descriptionBlock(
+              number = "18%",
+              numberColor = "red",
+              numberIcon = "fa fa-caret-down",
+              header = "1200",
+              text = "GOAL COMPLETION",
+              rightBorder = FALSE,
+              marginBottom = FALSE
+            )
+          )
+        )
+      )
+    ),
+    title = "Description Blocks"
+  ),
+  server = function(input, output) { }
+)
+```
