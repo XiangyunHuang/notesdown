@@ -177,8 +177,7 @@ BiocManager::install("ComplexHeatmap")
 ```
 
 
-
-### 提琴图 {#sec:violin}
+### 提琴图 {#subsec:violin}
 
 2004 年 Daniel Adler 开发 [vioplot](https://github.com/TomKellyGenetics/vioplot) 包实现提琴图的绘制，它可能是最早实现此功能的 R 包，随后10余年没有更新却一直坚挺在 CRAN 上，非常难得，好在 Thomas Kelly 已经接手维护。另一款绘制提琴图的 R 包是 Peter Kampstra 开发的 [beanplot](https://cran.r-project.org/package=beanplot) [@beanplot_2008_jss]，也存在很多年了，不过随着时间的变迁，比较现代的方式是 **ggplot2** 带来的 `geom_violin()` 扔掉了很多依赖，也是各种图形的汇集地，可以看作是最佳实践。提琴图比起箱线图优势在于呈现更多的分布信息，其次在于更加美观，但是就目前来说箱线图的受众比提琴图要多很多，毕竟前者是包含更多统计信息，如图\@ref(fig:boxplot-violin) 所示。
 
@@ -1429,7 +1428,7 @@ rgb(.678, .847, .902, maxColorValue = 1) # RGB to HEX
 rgb2hsv(173, 216, 230, maxColorValue = 255) # RGB to HSV
 ```
 
-### LaTeX 配色 {#subsec:latex-xcolor}
+### LaTeX 配色 {#subsec:latex-colors}
 
 LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用方式有两种，其一，`\textcolor{green!40!yellow}`{.TeX} 表示 40% 的绿色和 60% 的黄色混合色彩，其二，`\textcolor[HTML]{34A853}`{.TeX} HEX 表示的色彩直接在 LaTeX 文档中使用的方式，类似地 `\textcolor[RGB]{52,168,83}`{.TeX} 也表示 Google 图标中的绿色。
 
@@ -1446,4 +1445,28 @@ LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用�
 
 ```{r}
 rgb(52, 168, 83, maxColorValue = 255)
+```
+
+
+### ggplot2 配色 {#subsec:ggplot2-colors}
+
+
+
+```{r colorize-boxplot,fig.cap="几种不同的箱线图",fig.width=4,fig.height=4,out.width="45%",fig.show='hold',fig.ncol=2,fig.subcap=c("简单箱线图", "ggplot2 绘制的箱线图", "ggplot2 调用默认调色板", "ggplot2 调用 Google 调色板"),collapse=TRUE}
+boxplot(weight ~ group,
+  data = PlantGrowth, col = "lightgray",
+  notch = FALSE, varwidth = TRUE
+)
+# 类似 boxplot
+ggplot(data = PlantGrowth, aes(x = group, y = weight)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE, fill = "lightgray")
+
+# 默认调色板
+ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE)
+
+# Google 调色板
+ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE) +
+  scale_fill_manual(values = c("#4285f4", "#34A853", "#FBBC05", "#EA4335"))
 ```
