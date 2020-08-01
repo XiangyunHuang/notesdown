@@ -102,7 +102,7 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars \
  && echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars \
  && echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars \
- && install.r docopt odbc bookdown ggplot2 shiny reactable lme4 glmmTMB data.table rstan sf brms rstanarm patchwork highcharter
+ && install.r docopt remotes vroom odbc bookdown ggplot2 shiny reactable lme4 glmmTMB data.table rstan sf brms rstanarm patchwork highcharter
 
 # Python virtual env
 RUN dnf install -y python3-devel \
