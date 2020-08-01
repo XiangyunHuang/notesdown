@@ -8,8 +8,8 @@ LABEL org.label-schema.license="GPL-3.0" \
       org.label-schema.vendor="Book Project" \
       maintainer="Xiangyun Huang <xiangyunfaith@outlook.com>"
 
-ARG CMDSTAN=/opt/cmdstan/cmdstan-2.23.0
-ARG CMDSTAN_VERSION=2.23.0
+ARG CMDSTAN=/opt/cmdstan/cmdstan-2.24.0
+ARG CMDSTAN_VERSION=2.24.0
 
 # System dependencies required for R packages
 RUN dnf -y upgrade \
@@ -26,6 +26,8 @@ RUN dnf -y upgrade \
    R-littler-examples \
    octave-devel \
    ghostscript \
+   google-noto-emoji-fonts \
+   google-noto-emoji-color-fonts \
    dejavu-serif-fonts \
    dejavu-sans-fonts \
    dejavu-sans-mono-fonts \
@@ -37,6 +39,11 @@ RUN dnf -y upgrade \
    optipng \
    ImageMagick \
    texinfo \
+   cargo \
+   ImageMagick-c++-devel \
+   poppler-cpp-devel \
+   libjpeg-turbo-devel \
+   xorg-x11-server-Xvfb \
    libcurl-devel \
    openssl-devel \
    libssh2-devel \
@@ -64,7 +71,19 @@ RUN dnf -y upgrade \
    texlive-fandol \
    texlive-xetex \
    texlive-framed \
-   texlive-titling
+   texlive-titling \
+   texlive-fira \
+   texlive-tufte-latex \
+   texlive-awesomebox \
+   texlive-fontawesome5 \
+   texlive-fontawesome \
+   texlive-newtx \
+   texlive-tcolorbox \
+   texlive-fibeamer \
+   texlive-pgfornament-han \
+   texlive-beamer-verona \
+   texlive-beamertheme-metropolis \
+   texlive-beamertheme-cuerna
 
 RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && ln -s /usr/lib64/R/library/littler/examples/install2.r /usr/bin/install2.r \
@@ -80,7 +99,7 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars \
  && echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars \
  && echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars \
- && install.r docopt odbc bookdown ggplot2 shiny reactable lme4 glmmTMB data.table rstan sf brms rstanarm patchwork
+ && install.r docopt odbc bookdown ggplot2 shiny reactable lme4 glmmTMB data.table rstan sf brms rstanarm patchwork highcharter
 
 # Python virtual env
 RUN dnf install -y python3-devel \
@@ -90,33 +109,62 @@ RUN dnf install -y python3-devel \
   python3-sympy \
   python3-scikit-learn \
   python3-pandas \
-  cargo \
-  ImageMagick-c++-devel \
-  poppler-cpp-devel \
-  libjpeg-turbo-devel \
-  xorg-x11-server-Xvfb \
-  texlive-fira \
-  texlive-tufte-latex \
-  google-noto-emoji-fonts \
-  google-noto-emoji-color-fonts \
-  texlive-awesomebox \
-  texlive-fontawesome5 \
-  texlive-fontawesome \
-  texlive-newtx \
-  texlive-fibeamer \
-  texlive-pgfornament-han \
-  texlive-beamer-verona \
-  texlive-beamertheme-metropolis \
-  texlive-beamertheme-cuerna \
  && xvfb-run install2.r --error \
-   reticulate tikzDevice tidyverse showtext plotly kableExtra hrbrthemes ggrepel ggridges ggpubr \
-   agridat arules blastula beanplot extrafont fontcm formatR gganimate rootSolve RSQLite \
-   ggbeeswarm ggfortify ggmosaic ggnormalviolin gifski glmnet magick pdftools quadprog treemap \
-   treemapify vioplot xkcd webshot heatmaply Kendall maps mapdata mapproj mda prettydoc \
-   pspearman pwr quantmod raster rasterly rasterVis SuppDists formattable gam devtools \
+   reticulate \
+   tikzDevice \
+   tidyverse \
+   showtext \
+   plotly \
+   kableExtra \
+   hrbrthemes \
+   ggrepel \
+   ggridges \
+   ggpubr \
+   agridat \
+   arules \
+   blastula \
+   beanplot \
+   extrafont \
+   fontcm \
+   formatR \
+   gganimate \
+   rootSolve \
+   RSQLite \
+   ggbeeswarm \
+   ggfortify \
+   ggmosaic \
+   ggnormalviolin \
+   gifski \
+   glmnet \
+   magick \
+   pdftools \
+   quadprog \
+   treemap \
+   treemapify \
+   vioplot \
+   xkcd \
+   webshot \
+   heatmaply \
+   Kendall \
+   maps \
+   mapdata \
+   mapproj \
+   mda \
+   prettydoc \
+   pspearman \
+   pwr \
+   quantmod \
+   raster \
+   rasterly \
+   rasterVis \
+   SuppDists \
+   formattable \
+   gam \
+   devtools \
  && install2.r --repo https://nowosad.github.io/drat spDataLarge \
  && install2.r --repo https://mc-stan.org/r-packages cmdstanr \
- && installGithub.r datalorax/equatiomatic hadley/emo rstudio/rmarkdown
+ && installGithub.r datalorax/equatiomatic hadley/emo \
+ && R -e 'webshot::install_phantomjs()'
 
 RUN mkdir -p /opt/cmdstan \
   && curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz \
