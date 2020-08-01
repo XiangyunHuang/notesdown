@@ -40,6 +40,7 @@ RUN dnf -y upgrade \
    ImageMagick \
    texinfo \
    cargo \
+   bzip2 \
    ImageMagick-c++-devel \
    poppler-cpp-devel \
    libjpeg-turbo-devel \
@@ -129,7 +130,6 @@ RUN dnf install -y python3-devel \
    formatR \
    gganimate \
    rootSolve \
-   RSQLite \
    ggbeeswarm \
    ggfortify \
    ggmosaic \
