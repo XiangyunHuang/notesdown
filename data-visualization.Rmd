@@ -248,9 +248,21 @@ p1 + p2
 
 ### 日历图 {#subsec:calendar-heatmap}
 
-```{bash}
-curl -s "https://github.com/users/XiangyunHuang/contributions" | head -n 12
+airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气温（华氏度）、风速（米/小时）、紫外线强度、臭氧含量四个指标，图 \@ref(fig:calendar-airquality) 展示了每日的气温变化。
+
+```{r calendar-airquality,fig.cap="1973年纽约5月至9月的气温变化",fig.width=8,fig.height=4}
+airquality %>%
+  transform(Year = 1973) %>%
+  transform(Date = seq.Date(from = as.Date("1973-05-01"), to = as.Date("1973-09-30"), by = "day")) %>%
+  transform(Week = as.integer(format(Date, "%W"))  ) %>%
+  transform(Weekdays = factor(weekdays(Date, abbreviate = T), levels = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"))) %>%
+  ggplot(aes(x = Week, y = Weekdays, fill = Temp)) +
+  scale_fill_binned(name = "Temp (F)", type = "viridis", limits = c(0, max(airquality$Temp))) +
+  geom_tile(color = "white", size = 0.4) +
+  facet_wrap("Year", ncol = 1) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(1, 52, length = 12), labels = month.abb)
 ```
+
 
 ### 岭线图 {#subsec:ggridge}
 
