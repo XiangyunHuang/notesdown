@@ -52,6 +52,11 @@ RUN dnf -y upgrade \
    libxml2-devel \
    glpk-devel \
    gmp-devel \
+   community-mysql \
+   community-mysql-common \
+   community-mysql-server \
+   community-mysql-devel \
+   mysql-connector-odbc \
    sqlite-devel \
    gdal-devel \
    proj-devel \
@@ -158,9 +163,6 @@ RUN dnf install -y python3-devel \
    rasterly \
    rasterVis \
    SuppDists \
-   formattable \
-   gam \
-   devtools \
  && install2.r --repo https://nowosad.github.io/drat spDataLarge \
  && install2.r --repo https://mc-stan.org/r-packages cmdstanr \
  && installGithub.r datalorax/equatiomatic hadley/emo \
