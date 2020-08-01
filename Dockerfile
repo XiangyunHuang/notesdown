@@ -52,11 +52,10 @@ RUN dnf -y upgrade \
    libxml2-devel \
    glpk-devel \
    gmp-devel \
-   community-mysql \
-   community-mysql-common \
-   community-mysql-server \
-   community-mysql-devel \
-   mysql-connector-odbc \
+   mariadb \
+   mariadb-devel \
+   mariadb-connector-odbc \
+   unixODBC-devel \
    sqlite-devel \
    gdal-devel \
    proj-devel \
