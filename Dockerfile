@@ -19,8 +19,6 @@ RUN dnf -y upgrade \
    pandoc-pdf \
    glibc-langpack-en \
    NLopt-devel \
-   unixODBC-devel \
-   sqlite-devel \
    R-devel \
    R-littler \
    R-littler-examples \
