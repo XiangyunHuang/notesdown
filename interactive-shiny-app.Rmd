@@ -122,10 +122,52 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
+下面介绍 DT 
 
+```{r, eval=FALSE}
+library(magrittr)
+# ui.R 前端
+library(shiny)
+shinyUI(fluidPage(
+  # 应用的标题名称
+  titlePanel("鸢尾花数据集"),
+  # 边栏
+  fluidRow(
+    column(
+      12,
+      DT::dataTableOutput("table")
+    )
+  )
+))
 
+# server.R 服务端
+library(shiny)
+shinyServer(function(input, output, session) {
+  output$table <- iris %>%
+    `colnames<-`(., gsub("\\.", "_", tolower(colnames(.)))) %>%
+    DT::renderDataTable(.,
+      options = list(
+        pageLength = 5, # 每页显示5行
+        initComplete = I("function(settings, json) {alert('Done.');}")
+      ), server = F
+    )
+})
+```
 
+::: {.rmdnote data-latex="{注意}"}
+加载 shiny 包后再加载 DT 包，函数 `dataTableOutput()` 和`renderDataTable()` 显示冲突，因为两个 R 包都有这两个函数。在创建 shiny 应用的过程中，如果我们需要呈现动态表格，就需要使用 DT 包的 `DT::dataTableOutput()` 和 `DT::renderDataTable()` 否则会报错，详见 <https://github.com/rstudio/shiny/issues/2653>，DT 包官方文档 <https://rstudio.github.io/DT/>。
+:::
 
+::: {.rmdtip data-latex="{提示}"}
+在 server.R 里我们对数据集 iris 做了重命列名的操作，如果不使用管道操作，通常是下面这样操作。
+
+```{r,eval=FALSE}
+colnames(iris) <- gsub("\\.", "_", tolower(colnames(iris)))
+```
+
+换成管道操作，函数 `colnames()` 要换成 `colnames<-`，这其实类似于 `1 + 2` 换成 `+`(1, 2)，保持函数在左边，参数值在右边的一致性。
+
+:::
 
 ## 高级主题 {#sec:advanced-topics}
 
