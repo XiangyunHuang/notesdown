@@ -5,33 +5,7 @@
 
 ## 数据库与 R 语言 {#sec:database}
 
-[SQLite](https://www.sqlite.org/) 数据库
-
-```bash
-sudo dnf install sqlite sqlite-devel
-```
-
-
-驱动配置文件 odbcinst.ini
-
-```
-[SQLite Driver]
-Driver          = /usr/local/lib/libsqlite3odbc.dylib
-```
-
-连接配置文件 odbc.ini
-
-```
-[SQLite]
-Driver          = SQLite Driver
-Database        = /tmp/testing
-```
-
-
-
-仅介绍 RSQLite 和  odbc 两个 R 包，其余数据库与 R 连接和使用的方式类似，详见文章 --- [从 R 连接 MySQL](https://cosx.org/2020/06/connect-mysql-from-r/)
-
-MySQL 为例介绍 odbc 的连接和使用，特别是事务操作
+MySQL 为例介绍 odbc 的连接和使用，详见 [从 R 连接 MySQL](https://cosx.org/2020/06/connect-mysql-from-r/)
 
 ```{sql,eval=F}
 -- !preview conn=DBI::dbConnect(odbc::odbc(),  driver = "MariaDB", database = "demo", uid = "root", pwd = "cloud", host = "localhost", port = 3306)
@@ -43,36 +17,20 @@ LIMIT 10
 我的系统已经安装了多款数据库的 ODBC 驱动
 
 ```bash
-dnf install -y unixODBC unixODBC-devel mariadb-connector-odbc postgresql-odbc
+dnf install -y unixODBC unixODBC-devel mariadb mariadb-server mariadb-devel mariadb-connector-odbc
 ```
 
 ```r
 odbc::odbcListDrivers()
 ```
 ```
-         name   attribute                       value
-1  PostgreSQL Description         ODBC for PostgreSQL
-2  PostgreSQL      Driver       /usr/lib/psqlodbcw.so
-3  PostgreSQL       Setup    /usr/lib/libodbcpsqlS.so
-4  PostgreSQL    Driver64     /usr/lib64/psqlodbcw.so
-5  PostgreSQL     Setup64  /usr/lib64/libodbcpsqlS.so
-6  PostgreSQL   FileUsage                           1
-7       MySQL Description              ODBC for MySQL
-8       MySQL      Driver      /usr/lib/libmyodbc5.so
-9       MySQL       Setup      /usr/lib/libodbcmyS.so
-10      MySQL    Driver64    /usr/lib64/libmyodbc5.so
-11      MySQL     Setup64    /usr/lib64/libodbcmyS.so
-12      MySQL   FileUsage                           1
-13    FreeTDS Description Free Sybase & MS SQL Driver
-14    FreeTDS      Driver      /usr/lib/libtdsodbc.so
-15    FreeTDS       Setup         /usr/lib/libtdsS.so
-16    FreeTDS    Driver64    /usr/lib64/libtdsodbc.so
-17    FreeTDS     Setup64       /usr/lib64/libtdsS.so
-18    FreeTDS        Port                        1433
-19    MariaDB Description            ODBC for MariaDB
-20    MariaDB      Driver       /usr/lib/libmaodbc.so
-21    MariaDB    Driver64     /usr/lib64/libmaodbc.so
-22    MariaDB   FileUsage                           1
+# Driver from the mariadb-connector-odbc package
+# Setup from the unixODBC package
+[MariaDB]
+Description     = ODBC for MariaDB
+Driver          = /usr/lib/libmaodbc.so
+Driver64        = /usr/lib64/libmaodbc.so
+FileUsage       = 1
 ```
 
 
