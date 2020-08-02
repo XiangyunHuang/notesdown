@@ -1,54 +1,29 @@
 # 交互式数据表格 {#chap:interactive-data-tables}
 
-<!-- 本章不混合介绍 shiny -->
+Greg Lin 开发的 [reactable](https://github.com/glin/reactable) 包覆盖测试达到惊人的 99\%，它基于 JavaScript 库 [react-table](https://github.com/tannerlinsley/react-table)， 是 [react](https://github.com/facebook/react) 框架的衍生品，Nick Raienko 整理了一份超棒的 [react 模块合集](https://github.com/enaqx/awesome-react) 也许机智如你，可以引入更多优秀的 react 模块到 R 语言社区。
 
-Greg Lin [reactable](https://github.com/glin/reactable) 覆盖测试 99\%  [react-table](https://github.com/tannerlinsley/react-table) 属于 [react](https://github.com/facebook/react) 框架，超棒的 [react 模块合集](https://github.com/enaqx/awesome-react) 也许机智如你，可以引入更多优秀的 react 模块到 R 语言社区。谢益辉开发的 [DT](https://github.com/rstudio/DT) 包覆盖测试 31\% 是基于 [DataTables](https://datatables.net/) 的一个 [jQuery](https://jquery.com/) 框架，Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78\% 类似 ggplot2，完全基于 R 语言试图打造一个表格的语法，他们都是背靠开源组织和大公司。任坤开发的 [formattable](https://github.com/renkun-ken/formattable) 包覆盖测试 96\%，朱昊开发的 [kableExtra](https://github.com/haozhu233/kableExtra) 大大扩展了 **knitr** 包的 kable 函数的功能，没有覆盖测试，详细文档见  <https://haozhu233.github.io/kableExtra/awesome_table_in_html_cn.html>，他们属于单枪匹马。其它制作表格的 R 包还有 [flextable](https://github.com/davidgohel/flextable) 等
+谢益辉开发的 [DT](https://github.com/rstudio/DT) 包覆盖测试 31\%， 它基于 [DataTables](https://datatables.net/) 库，是 [jQuery](https://jquery.com/) 框架的衍生品。益辉评价 reactable 在多个方面优于 DT，比如行分组和聚合，嵌入 HTML widgets，甚至说要是 **reactable** 存在于 **DT** 之前，他就不会新开发 DT 这个 R 包了，不过这是后话了[^dt-vs-reactable]。
+
+Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78\%，试图类似 **ggplot2** 的设计哲学，试图打造制作表格的语法，相比于 **reactable** 和 **DT**， 它不依赖于 JavaScript 库，更加轻量，一般来讲持续维护更新重 JS 库依赖的 R 包比较累人，JS 库可能会不断重构，进而变动 API。
+
+朱昊开发的 [kableExtra](https://github.com/haozhu233/kableExtra) 大大扩展了 **knitr** 包的 `kable()` 函数的功能，虽没有覆盖测试，但中英文文档特别详细，见官网 <https://haozhu233.github.io/kableExtra/>。
+
+目前，Greg Lin、 谢益辉和 Richard Iannone 都是 RStudio 公司雇员，由于他们背靠开源组织和大公司，他们开发的这些 R 包的生命力都比较强。 **gt** 和 **kableExtra** 由于摆脱了 JavaScript 库的依赖，网页形式的表格可以嵌入到邮件内容中，这是一个不太引人注意的优势。**kableExtra** 还支持高度自定义的 LaTeX 输出，详见案例 <https://github.com/XiangyunHuang/bookdown-kableExtra>，**gt** 包据说未来也会支持，拭目以待吧，也许在成书之日能看到！
+
+此外，还有任坤开发的 [**formattable**](https://github.com/renkun-ken/formattable) 和 David Gohel 开发的 [**flextable**](https://github.com/davidgohel/flextable) 包等。
+
+
+[^dt-vs-reactable]: <https://bookdown.org/yihui/rmarkdown-cookbook/table-other.html>
+
+## DT 和 reactable {#sec:dt-reactable}
+
+[DT](https://github.com/rstudio/DT) 基于 jQuery 的 JS 库 [DataTables](https://datatables.net/) 提供了一个 R 的封装，封装工具和许多其他基于 JS 库的 R 包一样，比如即将介绍的 **reactable** 包，都依赖于 [htmlwidgets](https://github.com/ramnathv/htmlwidgets)。
+
 
 ```{r}
-library(reactable) # 主要介绍
-library(gt) # 动态
-library(kableExtra) # 网页 和 LaTeX 支持
 library(DT)
 ```
 
-::: {.rmdnote data-latex="{注意}"}
-加载 shiny 包后再加载 DT 包，函数 `dataTableOutput()` 和`renderDataTable()` 显示冲突，因为两个 R 包都有这两个函数。在创建 shiny 应用的过程中，如果我们需要呈现动态表格，就需要使用 DT 包的 `DT::dataTableOutput()` 和 `DT::renderDataTable()` 否则会报错，详见 <https://github.com/rstudio/shiny/issues/2653>，DT 包官方文档 <https://rstudio.github.io/DT/>。
-:::
-
-
-DT 可以嵌在网页或 shiny 应用中，kableExtra 支持 HTML 网页和 PDF 文档两种呈现方式
-
-```{r, eval=FALSE}
-# ui.R 前端
-library(shiny)
-shinyUI(fluidPage(
-  # 应用的标题名称
-  titlePanel("Old Faithful Geyser Data"),
-  # 边栏
-  fluidRow(
-    column(
-      12,
-      DT::dataTableOutput("table")
-    )
-  )
-))
-
-# server.R 服务端
-library(shiny)
-shinyServer(function(input, output, session) {
-  iris_df <- iris
-  colnames(iris_df) <- gsub("\\.", "_", tolower(colnames(iris_df)))
-  output$table <- DT::renderDataTable(iris_df,
-    options = list(
-      pageLength = 5,
-      initComplete = I("function(settings, json) {alert('Done.');}")
-    ), server = F
-  )
-})
-```
-
-
-[DT](https://github.com/rstudio/DT) 基于 jQuery 的 JS 库 [DataTables](https://datatables.net/) 提供了一个 R 的封装，封装工具和许多其他基于 JS 库的 R 包一样，都依赖于 [htmlwidgets](https://github.com/ramnathv/htmlwidgets)
 
 ```{r custom-dt-table,eval=knitr::is_html_output()}
 data.frame(name1 = c(
@@ -79,3 +54,35 @@ data.frame(name1 = c(
 ```
 
 
+
+下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
+
+```{r}
+library(reactable) 
+```
+
+下面这个例子来自 React.js 官网 <https://reactjs.org/>
+
+```js
+class HelloMessage extends React.Component {
+  render() {
+    return (
+      <div>
+        Hello {this.props.name}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <HelloMessage name="Taylor" />,
+  document.getElementById('hello-example')
+);
+```
+
+## gt 和 kableExtra {#sec:gt-kableExtra}
+
+```{r}
+library(gt)
+library(kableExtra)
+```
