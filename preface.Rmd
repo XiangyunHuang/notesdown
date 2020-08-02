@@ -335,45 +335,59 @@ ruler <- function(width = getOption("width")) {
 ruler()
 ```
 
-## 参与写作 {#sec:contribute}
+## 复现环境 {#sec:contribute}
 
-[^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
+> 构建容器
 
-从 <https://github.com/settings/tokens> 新建拥有 GitHub Package [^github-package] 读写删的权限的 TOKEN（俗称访问令牌或密钥），命名为 `GITHUB_PKG` 
+本书借助 Github Action 从 Dockerfile 构建容器镜像，然后将镜像文件推送到 Github Package。完成这些操作首先需要从 <https://github.com/settings/tokens> 新建拥有 GitHub Package [^github-package] 读写删的权限的 TOKEN（俗称访问令牌或密钥），命名为 `GITHUB_PKG`，并将此令牌保存到本地 TOKEN.txt 文件中，以备后用。
+
+镜像内默认暴露 8181 端口供外部连接使用，进入容器后，默认工作路径是 `/home/docker/`。创建好镜像后，要先登陆 GitHub Package 然后才有权限将镜像拉取下来
 
 ```bash
 # 登陆 GitHub Package
 cat ~/TOKEN.txt | docker login https://docker.pkg.github.com -u XiangyunHuang --password-stdin
 # 拉取镜像
 docker pull docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel
-# 容器内的信息
-docker run --rm -u root -v "/${PWD}://home/docker/" --name=masr-book docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash -c "locale; fc-list | sort"
 ```
 
+读者可以先查看下容器内的信息
+
 ```bash
-docker-compose run book bash -c "sh ./_build.sh"
+docker run --rm -u root -v "/${PWD}://home/docker/" \
+  docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel \
+  bash -c "locale; fc-list | sort"
 ```
 
+> 运行容器
+
+下面从镜像创建一个叫 masr-book 的容器，并让它在后台运行，允许以真正的 root 账户权限交互式执行命令，停止容器后，自动销毁容器。 此处，不再介绍 Docker 容器的使用，用容器打包本书所有软件环境仅供读者完整复现本书之用，感兴趣的读者可以去参考书籍[Docker 从入门到实践](https://vuepress.mirror.docker-practice.com/)。
 
 ```bash
-# 从镜像创建并进入容器，退出容器后销毁容器
-docker run -it --rm docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash
+docker run -itd --rm --name=masr-book --privileged=true \
+  docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel /sbin/init
+```
 
-# 从镜像创建一个叫 masr-book 的容器，并进入该容器，退出容器后不销毁
-docker run -it --name=masr-book docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel bash
+接着登陆进入 masr-book 容器，
 
-# 启动容器 masr-book
-docker start masr-book
-
-# 进入已知的 masr-book 容器
+```bash
 docker exec -it masr-book bash
+```
 
-# 停止容器
+一番骚操作后，用户退出容器，然后停止容器。
+
+```bash
 docker stop masr-book
 ```
 
+> 使用 RStudio Server
 
+启动容器后，接着获取容器 masr-book 的 IP 地址，然后依据端口号 8181 从网页进入 RStudio Sever，比如 <http://172.17.0.2:8181>
 
+```bash
+docker inspect --format='{{.NetworkSettings.IPAddress}}' masr-book
+```
+
+[^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
 
 ## 作者简介 {#sec:about-author}
 
