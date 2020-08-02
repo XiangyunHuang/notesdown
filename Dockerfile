@@ -107,25 +107,6 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars \
  && install.r docopt remotes rmarkdown
 
-# Setup RStudio Server
-RUN curl -fLo rstudio-server.rpm https://download2.rstudio.org/server/centos8/x86_64/rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm \
-  ## GPG 安全认证
-  && gpg --keyserver keys.gnupg.net --recv-keys 3F32EE77E331692F \
-  && gpg --export --armor 3F32EE77E331692F > rstudio-signing.key \
-  && rpm --import rstudio-signing.key  \
-  && rpm -K rstudio-server.rpm \
-  ## 安装 RStudio Server
-  ## https://rstudio.com/products/rstudio/download-server/redhat-centos/
-  && dnf -y localinstall rstudio-server.rpm \
-  && rm rstudio-server.rpm \
-  ## 配置防火墙
-  && firewall-cmd --zone=public --add-port=8181/tcp --permanent \
-  && firewall-cmd --reload \
-  ## 配置 R
-  && echo "www-port=8181" >> /etc/rstudio/rserver.conf \
-  && echo "r-cran-repos=https://mirrors.tuna.tsinghua.edu.cn/CRAN/" >> /etc/rstudio/rsession.conf
-
-
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
