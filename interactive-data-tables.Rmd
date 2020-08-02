@@ -54,7 +54,6 @@ data.frame(name1 = c(
 ```
 
 
-
 下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
 
 ```{r}
@@ -82,7 +81,41 @@ ReactDOM.render(
 
 ## gt 和 kableExtra {#sec:gt-kableExtra}
 
+如表 \@ref(tab:kable-styles) 所示，我们可以自定义表格样式，比如配色，例子修改自 kableExtra 帮助文档 <https://haozhu233.github.io/kableExtra/bookdown/cross-format-tables-in-bookdown.html>，同时支持 HTML 和 LaTeX 输出， 但是 LaTeX 输出需要在文档类选项中增加 table 选项，即 `classoption: "table"`，这样就可以提供 `\rowcolor` 等 LaTeX 命令。
+
+
+```{r kable-styles}
+library(kableExtra)
+
+iris[1:10, ] %>%
+  transform(
+    Sepal.Length =
+      cell_spec(Sepal.Length,
+        bold = T,
+        color = spec_color(Sepal.Length, end = 0.9),
+        font_size = spec_font_size(Sepal.Length)
+      )
+  ) %>%
+  transform(Species = cell_spec(
+    Species,
+    color = "white", bold = T,
+    background = spec_color(1:10,
+      end = 0.9,
+      option = "A", direction = -1
+    )
+  )) %>%
+  kable(
+    escape = F, align = "c", booktabs = T,
+    caption = "自定义表格样式"
+  ) %>%
+  kable_styling(c("striped", "condensed"),
+    latex_options = "striped",
+    full_width = F
+  )
+```
+
+
 ```{r}
 library(gt)
-library(kableExtra)
 ```
+
