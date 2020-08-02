@@ -187,6 +187,9 @@ RUN mkdir -p ~/.fonts \
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
+# Set default timezone
+ENV TZ UTC
+
 WORKDIR /home/docker/
 
 EXPOSE 8181
