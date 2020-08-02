@@ -51,6 +51,7 @@ RUN dnf -y upgrade \
    glpk-devel \
    gmp-devel \
    mariadb \
+   mariadb-server \
    mariadb-devel \
    mariadb-connector-odbc \
    unixODBC-devel \
@@ -62,6 +63,7 @@ RUN dnf -y upgrade \
    cairo-devel \
    v8-devel \
    igraph-devel \
+   firewalld \
    python3-virtualenv \
    texlive-sourceserifpro \
    texlive-sourcecodepro \
