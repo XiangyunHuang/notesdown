@@ -10,7 +10,7 @@ Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78
 
 目前，Greg Lin、 谢益辉和 Richard Iannone 都是 RStudio 公司雇员，由于他们背靠开源组织和大公司，他们开发的这些 R 包的生命力都比较强。 **gt** 和 **kableExtra** 由于摆脱了 JavaScript 库的依赖，网页形式的表格可以嵌入到邮件内容中，这是一个不太引人注意的优势。**kableExtra** 还支持高度自定义的 LaTeX 输出，详见案例 <https://github.com/XiangyunHuang/bookdown-kableExtra>，**gt** 包据说未来也会支持，拭目以待吧，也许在成书之日能看到！
 
-此外，还有任坤开发的 [**formattable**](https://github.com/renkun-ken/formattable) 和 David Gohel 开发的 [**flextable**](https://github.com/davidgohel/flextable) 包等。
+此外，还有任坤开发的 [**formattable**](https://github.com/renkun-ken/formattable) 和 David Gohel 开发的 [**flextable**](https://github.com/davidgohel/flextable) 包等，一份综合介绍见博文 [How to Make Beautiful Tables in R](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/)。
 
 
 [^dt-vs-reactable]: <https://bookdown.org/yihui/rmarkdown-cookbook/table-other.html>
@@ -62,6 +62,7 @@ library(reactable)
 
 下面这个例子来自 React.js 官网 <https://reactjs.org/>
 
+````md
 ```js
 class HelloMessage extends React.Component {
   render() {
@@ -78,6 +79,10 @@ ReactDOM.render(
   document.getElementById('hello-example')
 );
 ```
+````
+
+更多细节定制见 Thomas Mock 的博文 [reactable - An Interactive Tables Guide](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/)  
+
 
 ## gt 和 kableExtra {#sec:gt-kableExtra}
 
@@ -114,8 +119,50 @@ iris[1:10, ] %>%
   )
 ```
 
+一个非常基本的 gt 制作的表格
 
-```{r}
+```{r gt-basic}
 library(gt)
+iris %>% 
+  head() %>% 
+  gt()
 ```
 
+然后添加表格的标题和副标题，套上 `md()` 函数后，标题和副标题支持 Markdown 语法，告别 HTML 的制表方式吧！其它表格元素，如脚注支持和表格的列指标关联
+
+```{r gt-title}
+library(data.table)
+
+iris %>%
+  as.data.table %>% 
+  .[, head(.SD, 2), by = .(Species)] %>% 
+  gt() %>%
+  tab_header(
+    title = md("**鸢尾花**数据集"),
+    subtitle = "R 内置数据集"
+  ) %>%
+  data_color(
+    columns = vars(Sepal.Length),
+    colors = scales::col_numeric(palette = terrain.colors(5, rev = T), domain = NULL)
+  ) %>%
+  data_color(
+    columns = vars(Species),
+    colors = scales::col_factor(palette = hcl.colors(3), domain = NULL)
+  ) %>%
+  tab_footnote(
+    footnote = md("据说数据集最早收集自 Fisher's or Anderson's"),
+    locations = cells_column_labels(columns = vars(Sepal.Length))
+  ) %>%
+  tab_footnote(
+    footnote = "鸢尾花的类别",
+    locations = cells_column_labels(
+      columns = vars(Species)
+    )
+  )
+```
+
+更多细节的设置见 Thomas Mock 的博文[gt - a (G)rammar of (T)ables](https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/)
+
+::: {.rmdnote data-latex="{注意}"}
+当前 gt 包对 LaTeX 的支持比较弱，上述表格在 HTML 网页环境中可以看到的效果并不能一一对应到 LaTeX 输出中。
+:::
