@@ -32,6 +32,10 @@ data.frame(
   theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn")
 ```
 
+<!-- 每个点给出总统的人名，部分给出图片
+数据来源 help(presidents) The Gallup Organisation. McNeil, D. R. (1977) Interactive Data Analysis. New York: Wiley.
+-->
+ 
 ### 注释 {#subsec:annotation}
 
 图中注释的作用在于高亮指出关键点，提请读者注意。文本注释可由 [**ggrepel**](https://github.com/slowkow/ggrepel) 包提供的标签图层 `geom_label_repel()` 添加，标签数据可独立于之前的数据层，标签所在的位置可以通过参数 `direction` 和 `nudge_y` 精调，图 \@ref(fig:text-annotation) 模拟了一组数据。
@@ -252,16 +256,26 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 
 ```{r calendar-airquality,fig.cap="1973年5月至9月纽约的气温变化",fig.width=8,fig.height=4}
 airquality %>%
-  transform(Year = 1973) %>%
-  transform(Date = seq.Date(from = as.Date("1973-05-01"), to = as.Date("1973-09-30"), by = "day")) %>%
-  transform(Week = as.integer(format(Date, "%W"))  ) %>%
-  transform(Weekdays = factor(weekdays(Date, abbreviate = T), 
-                              levels = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"))) %>%
+  transform(Date = seq.Date(
+    from = as.Date("1973-05-01"),
+    to = as.Date("1973-09-30"), by = "day"
+  )) %>%
+  transform(
+    Week = as.integer(format(Date, "%W")),
+    Year = as.integer(format(Date, "%Y")),
+    Weekdays = factor(weekdays(Date, abbreviate = T),
+      levels = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+    )
+  ) %>%
   ggplot(aes(x = Week, y = Weekdays, fill = Temp)) +
-  scale_fill_binned(name = "Temp (F)", type = "viridis", limits = c(0, max(airquality$Temp))) +
+  scale_fill_distiller(name = "Temp (F)", palette = "Spectral") +
   geom_tile(color = "white", size = 0.4) +
   facet_wrap("Year", ncol = 1) +
-  scale_x_continuous(expand = c(0, 0), breaks = seq(1, 52, length = 12), labels = month.abb)
+  scale_x_continuous(
+    expand = c(0, 0),
+    breaks = seq(1, 52, length = 12),
+    labels = month.abb
+  )
 ```
 
 ::: {.rmdnote data-latex="{注意}"}
@@ -555,7 +569,7 @@ autoplot(pca, data = iris, colour = 'Species')
 <!-- 也许可以加一个复杂的例子 [Tidy Tuesday Vacination](http://paulnice.datasorcery.tech/posts/tidy-tuesday-vacination/) -->
 
 组合的意思是将不同种类的图形绘制在一个区域中，比如密度曲线和地毯图[^rug-plot]组合。
-[**GGally**](https://github.com/ggobi/ggally)、 [**ggupset**](https://github.com/const-ae/ggupset) 和 [**ggpubr**](https://github.com/kassambara/ggpubr) 高度定制了一些组合统计图形，以 ggpubr 为例，见图 \@ref(fig:ggpubr-composite)。
+[**GGally**](https://github.com/ggobi/ggally)、 [**ggupset**](https://github.com/const-ae/ggupset)、 [ggcharts](https://github.com/thomas-neitmann/ggcharts) 和 [**ggpubr**](https://github.com/kassambara/ggpubr) 高度定制了一些组合统计图形，以 ggpubr 为例，见图 \@ref(fig:ggpubr-composite)。
 
 ```{r ggpubr-composite,fig.cap="组合图形",fig.width=6,fig.height=4}
 library(ggpubr)
