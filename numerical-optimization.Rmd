@@ -4,6 +4,75 @@
 凸优化 [Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR)
 [Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 和 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog)
 
+
+## 线性规划 {#sec:Linear-Program}
+
+
+:::::: {.columns}
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad -6x_1 -5x_2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+    x_1+4x_2 \leq 16\\
+    6x_1+4x_2 \leq 28\\
+    2x_1-5x_2 \leq 6\\
+    0 \leq x \leq 10
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+:::
+
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+
+\begin{equation*}
+\begin{array}{l}
+\min_x \quad
+  \begin{bmatrix}
+  -6  \\
+  -5
+  \end{bmatrix}
+  ^{T} x \\
+s.t.\left\{ 
+ \begin{array}{l}
+  \begin{bmatrix}
+  1 & 4  \\
+  6 & 4  \\
+  2 & -5 
+  \end{bmatrix}
+  x \leq
+  \begin{bmatrix}
+   16 \\
+   28 \\
+   6
+  \end{bmatrix}\\
+  0 \leq x \leq 10
+ \end{array} \right.
+\end{array} 
+\end{equation*}
+
+::::::
+
+```{r}
+library(lpSolve)
+f.obj <- c(-6, -5)
+f.con <- matrix(c(1, 4, 6, 4, 2, -5), nrow = 3, byrow = TRUE)
+f.dir <- c("<=", "<=", "<=")
+f.rhs <- c(16, 28, 6)
+res <- lp("min", f.obj, f.con, f.dir, f.rhs)
+res$objval
+res$solution
+```
+
 ## 一元非线性优化 {#One-Dimensional-Optimization}
 
 复合函数求极值
