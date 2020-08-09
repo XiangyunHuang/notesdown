@@ -105,7 +105,32 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars \
  && echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars \
  && echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars \
- && install.r docopt remotes rmarkdown
+ && install.r docopt remotes
+
+RUN dnf copr enable iucar/cran \
+  && dnf install -y R-CoprManager \
+   R-CRAN-car \
+   R-CRAN-ggplot2 \
+   R-CRAN-rmarkdown \
+   R-CRAN-bookdown \
+   R-CRAN-sf \
+   R-CRAN-nloptr \
+   R-CRAN-odbc \
+   R-CRAN-kableExtra \
+   R-CRAN-highcharter \
+   R-CRAN-arrow \
+   R-CRAN-agridat \
+   R-CRAN-arules \
+   R-CRAN-bayesplot \
+   R-CRAN-DiagrammeR \
+   R-CRAN-gganimate \
+   R-CRAN-rstanarm
+   R-CRAN-brms \
+   R-CRAN-plotly \
+   R-CRAN-prophet \
+   R-CRAN-quadprog \
+   R-CRAN-ggpubr
+
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
