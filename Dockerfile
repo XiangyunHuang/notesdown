@@ -124,7 +124,7 @@ RUN dnf copr enable iucar/cran \
    R-CRAN-bayesplot \
    R-CRAN-DiagrammeR \
    R-CRAN-gganimate \
-   R-CRAN-rstanarm
+   R-CRAN-rstanarm \
    R-CRAN-brms \
    R-CRAN-plotly \
    R-CRAN-prophet \
