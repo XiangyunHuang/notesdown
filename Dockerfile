@@ -100,16 +100,17 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && chmod a+r /usr/lib64/R/etc/Rprofile.site \
  && echo "LANG=en_US.UTF-8" >> /usr/lib64/R/etc/Renviron.site \
  && echo "CXXFLAGS += -Wno-ignored-attributes" >> /usr/lib64/R/etc/Makeconf \
- && Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}' \
- && mkdir -p ~/.R \
- && echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars \
- && echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars \
- && echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars \
- && install.r docopt remotes
+ && Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 
-RUN dnf copr enable iucar/cran \
+
+RUN dnf copr -y enable iucar/cran \
   && dnf install -y R-CoprManager \
+   R-CRAN-remotes \
+   R-CRAN-docopt \
    R-CRAN-car \
+   R-CRAN-V8 \
+   R-CRAN-pdftools \
+   R-CRAN-magick \
    R-CRAN-ggplot2 \
    R-CRAN-rmarkdown \
    R-CRAN-bookdown \
@@ -124,6 +125,10 @@ RUN dnf copr enable iucar/cran \
    R-CRAN-bayesplot \
    R-CRAN-DiagrammeR \
    R-CRAN-gganimate \
+   R-CRAN-ggridges \
+   R-CRAN-xgboost \
+   R-CRAN-lme4 \
+   R-CRAN-glmnet \
    R-CRAN-rstanarm \
    R-CRAN-brms \
    R-CRAN-plotly \
