@@ -60,7 +60,7 @@ options(
   lifecycle_verbosity = "quiet",
   hrbrthemes.loadfonts = TRUE,
   tinytex.engine = 'xelatex',
-  tinytex.tlmgr.path = '/opt/TinyTeX/bin/x86_64-linux',
+  tinytex.tlmgr.path = '~/bin',
   tikzDefaultEngine = "xetex",
   tikzDocumentDeclaration = "\\documentclass[UTF8,fontset=adobe]{ctexart}\n",
   tikzXelatexPackages = c(
