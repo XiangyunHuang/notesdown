@@ -2,9 +2,12 @@ on:
   push:
     branches:
       - devel
+    paths-ignore:
+      - 'examples/**'
   pull_request:
     branches:
       - devel
+
 
 name: Render-Book
 
@@ -25,6 +28,7 @@ jobs:
       CMDSTAN_VERSION: "2.24.0"
       CMDSTAN: "/opt/cmdstan/cmdstan-2.24.0"
       CTAN_URL: https://mirrors.rit.edu/CTAN
+      PATH: "$HOME/bin:$PATH"
 
     steps:
       - name: Checkout repo
@@ -41,7 +45,6 @@ jobs:
       - name: Install TinyTeX
         run: |
           Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt(); tinytex::tinytex_root()'
-          export PATH=$HOME/bin:$PATH
           curl -fsSL https://www.preining.info/rsa.asc | tlmgr key add -
           tlmgr update --self --all --no-auto-install --repository=${{ env.CTAN_URL }}/systems/texlive/tlnet/
           Rscript -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
@@ -57,11 +60,8 @@ jobs:
       - name: Install ghostscript and Others
         run: |
           sudo apt-get install -y cargo ffmpeg graphviz optipng jags virtualenv xvfb python3-virtualenv python3-tk libglpk-dev libgit2-dev
-          sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev libgmp-dev libmpfr-dev libmpc-dev
-          # Ubuntu Xenial (16.04) and Bionic (18.04) only
-          sudo add-apt-repository ppa:cran/v8
-          sudo apt-get update
-          sudo apt-get install libnode-dev
+          sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev
+          sudo apt-get install -y libnode-dev libgmp-dev libmpfr-dev libmpc-dev
 
       - name: Install Python ENV
         run: |
@@ -112,7 +112,6 @@ jobs:
 
       - name: Install R packages
         run: |
-          export PATH=$HOME/bin:$PATH
           R -e 'install.packages("remotes")'
           # xvfb-run --auto-servernum R -e 'update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])'
           xvfb-run --auto-servernum R -e 'remotes::install_deps(dependencies = TRUE)'
@@ -123,7 +122,6 @@ jobs:
         run: |
           R -e 'sessionInfo(sort(.packages(T)))'
           # check TinyTeX
-          export PATH=$HOME/bin:$PATH
           R -e 'tinytex:::is_tinytex()'
 
 
@@ -135,18 +133,15 @@ jobs:
 
       - name: Build Book
         run: |
-          export PATH=$HOME/bin:$PATH
           R -e 'webshot::is_phantomjs_installed()'
           if make gitbook; then make pdf; fi
 
       - name: Build Examples
         run: |
-          export PATH=$HOME/bin:$PATH
           make pdf2
 
       - name: Build Examples Bookdown
         run: |
-          export PATH=$HOME/bin:$PATH
           cd examples/awesome-bookdown
           R -e "bookdown::render_book('index.Rmd','all')"
 
