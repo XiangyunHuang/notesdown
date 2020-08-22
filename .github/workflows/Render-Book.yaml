@@ -7,7 +7,9 @@ on:
   pull_request:
     branches:
       - devel
-
+  schedule:
+    # 每周一晚上11点跑任务
+    - cron:  '0 23 * * 1'
 
 name: Render-Book
 
@@ -40,6 +42,17 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
+      - name: Install Pandoc
+        uses: r-lib/actions/setup-pandoc@v1
+        with:
+          pandoc-version: '2.10.1'
+
+      - name: Install ghostscript and Others
+        run: |
+          sudo apt-get install -y cargo ffmpeg graphviz optipng jags virtualenv xvfb python3-virtualenv python3-tk libglpk-dev libgit2-dev fontconfig
+          sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev
+          sudo apt-get install -y libnode-dev libgmp-dev libmpfr-dev libmpc-dev
+
       - name: Install TinyTeX
         run: |
           Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt(); tinytex::tinytex_root()'
@@ -48,17 +61,6 @@ jobs:
           sudo apt-get install -y fonts-dejavu fonts-liberation fonts-noto-color-emoji
           fc-list | grep 'dejavu' | sort
           fc-list | grep 'liberation' | sort
-
-      - name: Install Pandoc
-        uses: r-lib/actions/setup-pandoc@v1
-        with:
-          pandoc-version: '2.10.1'
-
-      - name: Install ghostscript and Others
-        run: |
-          sudo apt-get install -y cargo ffmpeg graphviz optipng jags virtualenv xvfb python3-virtualenv python3-tk libglpk-dev libgit2-dev
-          sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev
-          sudo apt-get install -y libnode-dev libgmp-dev libmpfr-dev libmpc-dev
 
       - name: Install Python ENV
         run: |
