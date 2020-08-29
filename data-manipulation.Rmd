@@ -8,6 +8,11 @@ library(magrittr)
 - Big Data in Economics: Data cleaning and wrangling <https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html>
 - DataCamp’s data.table cheatsheet <https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf>
 - [Base R](https://github.com/wch/r-source) + [data.table](https://github.com/Rdatatable/data.table) + [openxlsx](https://github.com/ycphs/openxlsx) + [fst](https://github.com/fstpackage/fst) / [arrow](https://github.com/apache/arrow/tree/master/r) / [feather](https://github.com/wesm/feather/tree/master/R) +  (dplyr)
+- [poorman](https://github.com/nathaneastwood/poorman) 提供最常用的数据操作，但是不依赖 dplyr
+
+
+
+
 
 
 ## 子集过滤 {#sec:subset}
@@ -311,4 +316,96 @@ iris %>%
 [Toby Dylan Hocking](https://tdhock.github.io/) 在 useR! 2020 大会上分享的幻灯片 <https://github.com/tdhock/r-devel-emails>
 
 
+## 高频数据操作 {#sec:faq-operations}
 
+以数据集 dat 为例介绍常用的数据操作
+
+```{r}
+set.seed(2020)
+dat = data.frame(num_a = rep(seq(4), each = 4), num_b = rep(seq(4), times = 4), 
+                 group_a = sample(x = letters[1:3], size = 16, replace = T), 
+                 group_b = sample(x = LETTERS[1:3], size = 16, replace = T))
+dat = as.data.table(dat)
+dat
+```
+
+
+### 循环合并 {#subsec:reduce-merge}
+
+- 问题来源 [Faster version of Reduce(merge, list(DT1,DT2,DT3,...)) called mergelist (a la rbindlist)](https://github.com/Rdatatable/data.table/issues/599)
+
+```{r}
+
+
+```
+
+### 分组计数 {#subsec:count-by-group}
+
+
+```{r}
+dat[, .(length(num_a)) , by = .(group_a)] # dat[, .N , by = .(group_a)]
+dat[, .(length(num_a)) , by = .(group_b)]
+
+dat[, .(length(num_a)), by = .(group_a, group_b)]
+```
+
+
+### 分组抽样 {#subsec:sample-by-group}
+
+以 `group_a` 为组别， a、 b、 c 分别有 6、 8、 2 条记录
+
+```{r}
+# 无放回的抽样
+dt_sample_1 <- dat[, .SD[sample(x = .N, size = 2, replace = FALSE)], by = group_a]
+# 有放回的随机抽样
+dt_sample_2 <- dat[, .SD[sample(x = .N, size = 3, replace = TRUE)], by = group_a]
+```
+
+可能存在该组样本不平衡，有的组的样本量不足你想要的样本量。每个组无放回地抽取 4 个样本，如果该组样本量不足 4，则全部抽取全部样本量。
+
+```{r}
+dat[, .SD[sample(x = .N, size = min(4, .N))], by = group_a]
+```
+
+还可以按照指定的比例抽取样本量 [^sample-by-group]
+
+[^sample-by-group]: https://stackoverflow.com/questions/18258690/take-randomly-sample-based-on-groups
+
+### 分组排序 {#subsec:order-by-group}
+
+data.table 包的分组排序问题 <https://d.cosx.org/d/421650-datatable/3>
+
+```{r}
+dat[with(dat, order(-ave(num_a, group_a, FUN = max), -num_a)), ]
+# num_a 降序排列，然后对 group_a 升序排列
+dat[with(dat, order(-num_a, group_a)), ]
+# 简写
+dat[order(-num_a, group_a)]
+```
+
+`setorder()` 函数直接修改原始数据记录的排序
+
+```{r,eval=FALSE}
+setorder(dat, -num_a, group_a)
+```
+
+参考多个列分组排序 [^sort-by-group]
+
+[^sort-by-group]: <https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns>
+
+
+::: {.rmdtip data-latex="{提示}"}
+
+如果数据集 dat 包含缺失值，考虑去掉缺失值
+
+```{r}
+dat[, .(length(!is.na(num_a))) , by = .(group_a)]
+```
+
+如果数据集 dat 包含重复值，考虑去掉重复值
+
+```{r}
+dat[, .(length(unique(num_a))) , by = .(group_a)]
+```
+
+:::
