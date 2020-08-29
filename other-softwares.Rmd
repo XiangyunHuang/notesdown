@@ -1328,6 +1328,23 @@ VBoxManage controlvm "CentOS 8.2" savestate # 保存当前虚拟机的运行状�
 
 ## Docker 虚拟环境 {#virtual-env}
 
+docker 创建云实例 rstudio [DigitalOcean](https://cerebralmastication.com/2019/07/10/starting-a-digital-ocean-instance-from-docker-machine/)，docker 支持的驱动类型 <https://docs.docker.com/machine/drivers/>。Rocker 项目组提供的 shiny 容器 <https://github.com/rocker-org/shiny> 和构建过程 <https://hub.docker.com/r/rocker/shiny/dockerfile>
+
+主机 80 端口映射给 shiny 容器 3838 端口
+
+
+```bash
+docker run --user shiny -d -p 80:3838 \
+    -v /srv/shinyapps/:/srv/shiny-server/ \
+    -v /srv/shinylog/:/var/log/shiny-server/ \
+    rocker/shiny
+```
+
+shiny 服务器默认支持从 80 端口访问 <http://localhost:80>，shiny 应用放在目录 `/srv/shinyapps/appdir`，访问 Shiny 应用的位置 <http://localhost/appdir/>，使用 boot2docker 则访问 <http://192.168.59.103:80/appdir/>
+
+<!-- 自己基于容器搭建一个 shiny 服务器 -->
+
+
 Docker 相比虚拟机占用资源少，拉起来就可以用，虚拟机还需要各种环境配置，很多与R有关的项目现在都提供Docker镜像，大大方便了开发人员和数据分析师。当然 docker 的环境隔离性，对主机系统侵入小，即使挂了，再拉起来也就是了，安全性和可靠性高。
 
 基于 The Rocker Project^[<https://www.rocker-project.org/>] 快速构建数据分析环境，[Rocker项目](https://github.com/rocker-org/rocker) 站在 [Debian](https://www.debian.org/) 和 [R](https://www.r-project.org/) 的肩膀上，在 [Docker](https://www.docker.com/)内配置众多数据分析和开发的工具，免去用户手动配置的复杂性。此事非有心者不能为之 ，因为需费时费力找寻依赖库，编译 R 包，还要尽可能地给 Docker 镜像减负，以便部署。如果想抢先试水的赶快去 Rocker 项目主页。
