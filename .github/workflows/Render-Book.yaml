@@ -58,9 +58,7 @@ jobs:
           Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt(); tinytex::tinytex_root()'
           export PATH=$HOME/bin:$PATH
           Rscript -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
-          sudo apt-get install -y fonts-dejavu fonts-liberation fonts-noto-color-emoji
-          fc-list | grep 'dejavu' | sort
-          fc-list | grep 'liberation' | sort
+
 
       - name: Install Python ENV
         run: |
@@ -86,14 +84,7 @@ jobs:
           echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars
           echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
 
-      - name: Configure Fonts
-        run: |
-          mkdir -p ~/.fonts/fira
-          curl -fLo Adobe-Fonts.zip https://github.com/XiangyunHuang/fonts/releases/download/v0.1/Adobe-Fonts.zip
-          unzip Adobe-Fonts.zip -d ~/.fonts/adobe
-          curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
-          cp -r ~/.TinyTeX/texmf-dist/fonts/opentype/public/fira  ~/.fonts/
-          fc-cache -fsv
+
 
       - name: Cache R packages
         uses: actions/cache@v2
@@ -122,17 +113,27 @@ jobs:
           R -e 'sessionInfo(sort(.packages(T)))'
           # check TinyTeX
           R -e 'tinytex:::is_tinytex()'
+          # check phantomjs
+          R -e 'webshot::is_phantomjs_installed()'
 
-
-      - name: Install Extra Fonts
+      - name: Install Fonts
         run: |
+          sudo apt-get install -y fonts-urw-base35 fonts-dejavu fonts-liberation fonts-noto-color-emoji
+          fc-list | grep 'dejavu' | sort
+          fc-list | grep 'liberation' | sort
+          fc-list | sort
+          mkdir -p ~/.fonts/fira
+          curl -fLo Adobe-Fonts.zip https://github.com/XiangyunHuang/fonts/releases/download/v0.1/Adobe-Fonts.zip
+          unzip Adobe-Fonts.zip -d ~/.fonts/adobe
+          curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
+          cp -r ~/.TinyTeX/texmf-dist/fonts/opentype/public/fira  ~/.fonts/
+          fc-cache -fsv
           R -e 'library(showtext);font_install(source_han_serif());font_install(source_han_sans());hrbrthemes::import_roboto_condensed()'
           # XKCD
           R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 
       - name: Build Book
         run: |
-          R -e 'webshot::is_phantomjs_installed()'
           export PATH=$HOME/bin:$PATH
           if make gitbook; then make pdf; fi
 
@@ -147,11 +148,11 @@ jobs:
           cd examples/awesome-bookdown
           R -e "bookdown::render_book('index.Rmd','all')"
 
-      - name: Encryption PDF Book
-        env:
-          PWD_BOOK: ${{ secrets.PWD_BOOK }}
-        run: |
-          R -e 'if(file.exists("_book/masr.pdf")) qpdf::pdf_compress(input = "_book/masr.pdf", output = "_book/masr_pwd.pdf", password = Sys.getenv("PWD_BOOK"))'
+      # - name: Encryption PDF Book
+      #   env:
+      #     PWD_BOOK: ${{ secrets.PWD_BOOK }}
+      #   run: |
+      #     R -e 'if(file.exists("_book/masr.pdf")) qpdf::pdf_compress(input = "_book/masr.pdf", output = "_book/masr_pwd.pdf", password = Sys.getenv("PWD_BOOK"))'
 
       - uses: actions/upload-artifact@v2
         if: success()
