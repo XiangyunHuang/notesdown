@@ -60,6 +60,7 @@ options(
   lifecycle_verbosity = "quiet",
   hrbrthemes.loadfonts = TRUE,
   tinytex.engine = 'xelatex',
+  rgdal_show_exportToProj4_warnings = 'none',
   tikzDefaultEngine = "xetex",
   tikzDocumentDeclaration = "\\documentclass[UTF8,fontset=adobe]{ctexart}\n",
   tikzXelatexPackages = c(

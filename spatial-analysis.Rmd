@@ -17,7 +17,7 @@ library(highcharter)
 
 冈比亚地形
 
-```{r gambia-altitude,fig.cap="冈比亚地形海拔数据",fig.width=8,fig.height=4,message=FALSE}
+```{r gambia-altitude,fig.cap="冈比亚地形海拔数据",fig.width=8,fig.height=4,message=FALSE,warning=FALSE,cache=TRUE}
 sp_path <- "data/" # 存储临时地形文件
 if (!dir.exists(sp_path)) dir.create(sp_path, recursive = TRUE)
 # Gambia 海拔数据
@@ -79,5 +79,52 @@ hchart(gambia_agg, "bubble", hcaes(x = x, y = y, fill = pos, size = pos),
   hc_tooltip(
     pointFormat = "({point.x:.2f}, {point.y:.2f}) <br/> Size: {point.z:.2f}"
   )
+```
+
+
+```{r hc-gambia,eval=knitr::is_html_output()}
+# gm_data <- download_map_data("https://code.highcharts.com/mapdata/countries/gm/gm-all.js")
+# get_data_from_map(gm_data)
+
+hcmap("countries/gm/gm-all.js") %>%
+  hc_title(text = "Gambia")
+```
+
+```{r hc-usa-arrest,eval=knitr::is_html_output()}
+data("USArrests", package = "datasets")
+data("usgeojson") # 加载地图数据 地图数据的结构
+
+USArrests <- transform(USArrests, state = rownames(USArrests))
+
+highchart() %>%
+  hc_title(text = "Violent Crime Rates by US State") %>%
+  hc_subtitle(text = "Source: USArrests data") %>%
+  hc_add_series_map(usgeojson, USArrests,
+    name = "Murder arrests (per 100,000)",
+    value = "Murder", joinBy = c("woename", "state"),
+    dataLabels = list(
+      enabled = TRUE,
+      format = "{point.properties.postalcode}"
+    )
+  ) %>%
+  hc_colorAxis(stops = color_stops()) %>%
+  hc_legend(valueDecimals = 0, valueSuffix = "%") %>%
+  hc_mapNavigation(enabled = TRUE)
+```
+
+highcharter 包含三个数据集分别是： worldgeojson 世界地图（国家级）、 usgeojson 美国地图（州级）、  uscountygeojson 美国地图（城镇级）。其它地图数据见 <https://code.highcharts.com/mapdata/>。
+
+
+```{r hc-china-map,eval=knitr::is_html_output()}
+# 添加地图数据
+hcmap(map = "countries/cn/custom/cn-all-sar-taiwan.js") %>%
+  hc_title(text = "中国地图")
+```
+
+
+## 运行环境 {#sec:spatial-modeling-sessioninfo}
+
+```{r}
+sessionInfo()
 ```
 
