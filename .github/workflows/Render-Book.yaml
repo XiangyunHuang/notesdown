@@ -51,7 +51,7 @@ jobs:
         run: |
           sudo apt-get install -y cargo ffmpeg graphviz optipng jags virtualenv xvfb python3-virtualenv python3-tk libglpk-dev libgit2-dev fontconfig
           sudo apt-get install -y libpoppler-cpp-dev libmagick++-dev libglu1-mesa-dev libnlopt-dev libudunits2-dev libgdal-dev libproj-dev
-          sudo apt-get install -y libnode-dev libgmp-dev libmpfr-dev libmpc-dev
+          sudo apt-get install -y libnode-dev libgmp-dev libmpfr-dev libmpc-dev tcl-dev tk-dev libxpm-dev libxaw7-dev
 
       - name: Install TinyTeX
         run: |
@@ -106,7 +106,8 @@ jobs:
           xvfb-run --auto-servernum R -e 'remotes::install_deps(dependencies = TRUE)'
           R -e "install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
           R -e "BiocManager::install(c('graph', 'Rgraphviz'))"
-          xvfb-run --auto-servernum R -e 'install.packages(c("cmdstanr", "INLA", "spatialreg"), repos = c("https://mc-stan.org/r-packages/", "https://inla.r-inla-download.org/R/stable", getOption("repos")), dependencies = T)'
+          xvfb-run --auto-servernum R -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))'
+          xvfb-run --auto-servernum R -e 'install.packages(c("spatialreg", "INLA"), repos = c("https://inla.r-inla-download.org/R/stable", getOption("repos")), dependencies = T)'
 
       - name: Check R packages
         run: |
