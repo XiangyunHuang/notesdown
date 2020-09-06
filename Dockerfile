@@ -8,9 +8,8 @@ LABEL org.label-schema.license="GPL-3.0" \
       org.label-schema.vendor="Book Project" \
       maintainer="Xiangyun Huang <xiangyunfaith@outlook.com>"
 
-ARG CMDSTAN=/opt/cmdstan/cmdstan-2.24.0
-ARG CMDSTAN_VERSION=2.24.0
-ARG RSTUDIO_VERSION=1.3.1056
+ARG CMDSTAN=/opt/cmdstan/cmdstan-2.24.1
+ARG CMDSTAN_VERSION=2.24.1
 
 # System dependencies required for R packages
 RUN dnf -y upgrade \
@@ -85,11 +84,9 @@ RUN dnf -y upgrade \
    texlive-fontawesome \
    texlive-newtx \
    texlive-tcolorbox \
-   texlive-fibeamer \
    texlive-pgfornament-han \
    texlive-beamer-verona \
-   texlive-beamertheme-metropolis \
-   texlive-beamertheme-cuerna
+   texlive-beamertheme-metropolis
 
 RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && ln -s /usr/lib64/R/library/littler/examples/install2.r /usr/bin/install2.r \
