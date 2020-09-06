@@ -2,7 +2,7 @@ library(shiny)
 library(data.table)
 library(magrittr)
 library(reactable)
-
+# 汉化
 options(reactable.language = reactableLang(
   pageSizeOptions = "\u663e\u793a {rows}",
   pageInfo = "{rowStart} \u81f3 {rowEnd} \u9879\u7ed3\u679c,\u5171 {rows} \u9879",
@@ -30,6 +30,7 @@ ui <- fluidPage(
 
 esoph <- as.data.table(esoph)
 
+# 分组求和
 server <- function(input, output, session) {
   output$output_table <- renderReactable({
     req(input$input_vars)
@@ -50,7 +51,12 @@ server <- function(input, output, session) {
         bordered = TRUE,
         fullWidth = FALSE, # 默认不要全宽填充，适应数据框的宽度
         columns = list(
-          rate = colDef(format = colFormat(percent = TRUE, digits = 2)), # 指标 rate 以保留两位小数的百分比方式展示
+          rate = colDef(format = colFormat(percent = TRUE, digits = 2),
+            footer = JS("function(colInfo) {
+                var values = colInfo.data.map(function(row) { return row[colInfo.column.id] })
+                var total = values.reduce(function(a, b) { return a + b }, 0)
+                return total.toFixed(0)
+              }")), # 指标 rate 以保留两位小数的百分比方式展示
           agegp = colDef(footer = "总计"),
           ncases = colDef(
             footer = JS("function(colInfo) {

@@ -45,6 +45,31 @@ library(shiny)
 
 ## 基础组件 {#sec:shiny-elements}
 
+### 书签 {#subsec:bookmark}
+
+链接可以指向页面状态
+
+```{r,eval=FALSE}
+library(shiny)
+
+ui <- function(request) {
+  fluidPage(
+    plotOutput("plot"),
+    sliderInput("n", "Number of observations", 1, nrow(faithful), 100),
+    bookmarkButton()
+  )
+}
+
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    hist(faithful$eruptions[seq_len(input$n)], breaks = 40)
+  })
+}
+
+enableBookmarking(store = "url")
+shinyApp(ui, server)
+```
+
 
 ### 表格 {#subsec:shiny-tables}
 
@@ -58,6 +83,50 @@ library(data.table)
 
 [gt](https://github.com/rstudio/gt) 高度自定义 gt 表格样式，支持 shiny 集成， [data.table](https://github.com/Rdatatable/data.table) 提供高效的数据操作，[formattable](https://github.com/renkun-ken/formattable) 支持自定义格子。
 
+kableExtra 包
+
+```{r,eval=FALSE}
+library(shiny)
+library(data.table)
+library(magrittr)
+library(kableExtra)
+
+ui <- fluidPage(
+  title = "mtcars datasets",
+  titlePanel("mtcars 数据集"),
+
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("mpg", "mpg 范围",
+        min = 11, max = 33, value = 15
+      )
+    ),
+
+    mainPanel(
+      tableOutput("mtcars_kable")
+    )
+  )
+)
+
+## 设置列序 https://stackoverflow.com/questions/19619666/change-column-position-of-data-table
+server <- function(input, output) {
+  output$mtcars_kable <- function() {
+    # 转化数据类型
+    mtcars_dt <- as.data.table(mtcars)
+    # 添加新的列
+    mtcars_dt[, car := rownames(mtcars)][mpg <= input$mpg] %>%
+    setcolorder(., c("car", setdiff(names(.), "car"))) %>%
+      knitr::kable("html") %>%
+      kable_styling("striped", full_width = F) %>%
+      add_header_above(c(" ", "Group 1" = 5, "Group 2" = 6))
+  }
+}
+
+# 执行程序
+shinyApp(ui = ui, server = server)
+```
+
+reactable 包
 
 ```{r,eval=FALSE}
 library(shiny)
@@ -222,6 +291,48 @@ datatable(dat,
 
 异步编程，并发访问
 
+```{r,eval=FALSE}
+## shiny 异步编程
+## 解决问题，多人同时访问 Shiny 应用的情况下，必须等另一个人完成访问的情况下才能继续访问
+
+library(shiny)
+library(future)
+library(promises)
+
+plan(multiprocess)
+
+ui <- fluidPage(
+  h2("测试异步下载"),
+  tags$ol(
+    tags$li("Verify that plot appears below"),
+    tags$li("Verify that pressing Download results in 5 second delay, then rock.csv being downloaded"),
+    tags$li("Check 'Throw on download?' checkbox and verify that pressing Download results in 5 second delay, then error, as well as stack traces in console")
+  ),
+  hr(),
+  checkboxInput("throw", "Throw on download?"),
+  downloadButton("download", "下载 (等待5秒)"),
+  plotOutput("plot")
+)
+
+server <- function(input, output, session) {
+  output$download <- downloadHandler("rock.csv", function(file) {
+    future({Sys.sleep(5)}) %...>%
+      {
+        if (input$throw) {
+          stop("boom")
+        } else {
+          write.csv(rock, file)
+        }
+      }
+  })
+
+  output$plot <- renderPlot({
+    plot(cars)
+  })
+}
+
+shinyApp(ui, server)
+```
 
 
 ## 部署应用 {#sec:shiny-deployment}
@@ -235,5 +346,218 @@ datatable(dat,
 
 ## 仪表盘 {#sec:shiny-dashboard}
 
-dashboard 翻译过来叫仪表盘，就是驾驶仓的那个玩意，形象地表达作为掌舵者应该关注的对象。R 包 shiny 出现后，仪表盘的制作显得非常容易，也很快形成了一个生态，比如 [shinydashboard](https://rstudio.github.io/shinydashboard)、 [flexdashboard](https://github.com/rstudio/flexdashboard) 等，此外 [bs4Dash](https://github.com/RinteRface/bs4Dash) 基于 Bootstrap 4 的仪表盘，目前 shiny 和 rmarkdown 都在向 Bootstrap 4 升级，这是未来的方向。 [shinydashboardPlus](https://github.com/RinteRface/shinydashboardPlus) 主要目的在于扩展 shinydashboard 包
+dashboard 翻译过来叫仪表盘，就是驾驶仓的那个玩意，形象地表达作为掌舵者应该关注的对象。R 包 shiny 出现后，仪表盘的制作显得非常容易，也很快形成了一个生态，比如 [shinydashboard](https://rstudio.github.io/shinydashboard)、 [flexdashboard](https://github.com/rstudio/flexdashboard) 等，此外 [bs4Dash](https://github.com/RinteRface/bs4Dash) 基于 Bootstrap 4 的仪表盘，目前 shiny 和 rmarkdown 都在向 Bootstrap 4 升级，这是未来的方向。 [shinydashboardPlus](https://github.com/RinteRface/shinydashboardPlus) 主要目的在于扩展 **shinydashboard** 包
+
+shinydashboard 包
+
+```{r,eval=FALSE}
+## app.R ##
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(
+    dashboardHeader(title = "Basic dashboard"),
+    ## Sidebar content
+    dashboardSidebar(
+        sidebarMenu(
+            menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+            menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+        )
+    ),
+    ## Body content
+    dashboardBody(
+        tabItems(
+            # First tab content
+            tabItem(tabName = "dashboard",
+                    fluidRow(
+                        box(plotOutput("plot1", height = 250)),
+
+                        box(
+                            title = "Controls",
+                            sliderInput("slider", "Number of observations:", 1, 100, 50)
+                        )
+                    )
+            ),
+
+            # Second tab content
+            tabItem(tabName = "widgets",
+                    h2("Widgets tab content")
+            )
+        )
+    )
+)
+
+server <- function(input, output) {
+    set.seed(122)
+    histdata <- rnorm(500)
+
+    output$plot1 <- renderPlot({
+        data <- histdata[seq_len(input$slider)]
+        hist(data)
+    })
+}
+
+shinyApp(ui, server)
+```
+
+
+shinydashboardPlus 包
+
+
+```{r,eval=FALSE}
+library(shiny)
+library(shinydashboard)
+library(shinydashboardPlus)
+
+shinyApp(
+  ui = dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody(
+      box(
+        solidHeader = FALSE,
+        title = "Status summary",
+        background = NULL,
+        width = 4,
+        status = "danger",
+        footer = fluidRow(
+          column(
+            width = 6,
+            descriptionBlock(
+              number = "17%",
+              numberColor = "green",
+              numberIcon = "fa fa-caret-up",
+              header = "$35,210.43",
+              text = "TOTAL REVENUE",
+              rightBorder = TRUE,
+              marginBottom = FALSE
+            )
+          ),
+          column(
+            width = 6,
+            descriptionBlock(
+              number = "18%",
+              numberColor = "red",
+              numberIcon = "fa fa-caret-down",
+              header = "1200",
+              text = "GOAL COMPLETION",
+              rightBorder = FALSE,
+              marginBottom = FALSE
+            )
+          )
+        )
+      )
+    ),
+    title = "Description Blocks"
+  ),
+  server = function(input, output) { }
+)
+```
+
+
+shinymaterial 包
+
+
+```{r,eval=FALSE}
+library(shiny)
+library(shinymaterial)
+
+# https://ericrayanderson.github.io/shinymaterial/
+# https://github.com/ericrayanderson/shinymaterial
+
+# Wrap shinymaterial apps in material_page
+ui <- material_page(
+  title = "用户画像",
+  nav_bar_fixed = TRUE,
+  # 每个 sidebar 内容
+  material_side_nav(
+    fixed = TRUE,
+    # Place side-nav tabs within side-nav
+    material_side_nav_tabs(
+      side_nav_tabs = c(
+        "数据汇总" = "tab_1",
+        "趋势信息" = "tab_2"
+      ),
+      icons = c("cast", "insert_chart")
+    )
+  ),
+  # 每个 tab 页面的内容
+  material_side_nav_tab_content(
+    side_nav_tab_id = "tab_1",
+    tags$h2("第一个tab页")
+  ),
+  material_side_nav_tab_content(
+    side_nav_tab_id = "tab_2",
+    tags$h2("第二个tab页")
+  )
+)
+
+server <- function(input, output) {
+
+}
+shinyApp(ui = ui, server = server)
+```
+
+miniUI 包
+
+```{r,eval=FALSE}
+library(shiny)
+library(miniUI)
+library(leaflet)
+library(ggplot2)
+
+ui <- miniPage(
+  gadgetTitleBar("Shiny gadget example"),
+  miniTabstripPanel(
+    miniTabPanel("Parameters", icon = icon("sliders"),
+                 miniContentPanel(
+                   sliderInput("year", "Year", 1978, 2010, c(2000, 2010), sep = "")
+                 )
+    ),
+    miniTabPanel("Visualize", icon = icon("area-chart"),
+                 miniContentPanel(
+                   plotOutput("cars", height = "100%")
+                 )
+    ),
+    miniTabPanel("Map", icon = icon("map-o"),
+                 miniContentPanel(padding = 0,
+                                  leafletOutput("map", height = "100%")
+                 ),
+                 miniButtonBlock(
+                   actionButton("resetMap", "Reset")
+                 )
+    ),
+    miniTabPanel("Data", icon = icon("table"),
+                 miniContentPanel(
+                   DT::dataTableOutput("table")
+                 )
+    ),
+    selected = "Map"
+  )
+)
+
+server <- function(input, output, session) {
+  output$cars <- renderPlot({
+    require(ggplot2)
+    ggplot(cars, aes(speed, dist)) + geom_point()
+  })
+
+  output$map <- renderLeaflet({
+    force(input$resetMap)
+
+    leaflet(quakes, height = "100%") %>% addTiles() %>%
+      addMarkers(lng = ~long, lat = ~lat)
+  })
+
+  output$table <- DT::renderDataTable({
+    diamonds
+  })
+
+  observeEvent(input$done, {
+    stopApp(TRUE)
+  })
+}
+
+shinyApp(ui, server)
+```
 
