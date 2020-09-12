@@ -13,14 +13,6 @@ on:
 
 name: Render-Book
 
-env:
-  RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
-  LANG: "en_US.UTF-8"
-  TZ: "Asia/Shanghai"
-  CMDSTAN_VERSION: "2.24.1"
-  CMDSTAN: "/opt/cmdstan/cmdstan-2.24.1"
-  PATH: "$HOME/bin:$PATH"
-
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -30,6 +22,13 @@ jobs:
       matrix:
         config:
           - {os: ubuntu-20.04, r: '4.0.2'}
+
+    env:
+      RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
+      LANG: "en_US.UTF-8"
+      TZ: "Asia/Shanghai"
+      CMDSTAN_VERSION: "2.24.1"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.24.1"
 
     steps:
       - name: Checkout repo
@@ -57,7 +56,9 @@ jobs:
       - name: Install TinyTeX
         run: |
           Rscript -e 'install.packages("tinytex"); tinytex:::install_prebuilt(); tinytex::tinytex_root()'
+          export PATH=$HOME/bin:$PATH
           Rscript -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
+
 
       - name: Install Python ENV
         run: |
@@ -134,7 +135,9 @@ jobs:
 
       - name: Build Book
         run: |
-          if make gitbook; then make pdf; fi
+          export PATH=$HOME/bin:$PATH
+          make gitbook
+          # if make gitbook; then make pdf; fi
 
       - uses: actions/upload-artifact@v2
         if: success()
