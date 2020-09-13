@@ -1,6 +1,10 @@
 # 动态文档 {#chap:dynamic-documents}
 
-文档元素：图 UML、表 gt 、引用 citr、输出格式
+```{r}
+library(magrittr)
+```
+
+文档元素：图 UML、表 gt、输出格式
 
 - Reproducible Research Data and Project Management in R <https://annakrystalli.me/rrresearchACCE20/>
 - RMarkdown for Scientists <https://rmd4sci.njtierney.com/>
@@ -43,7 +47,6 @@ rpivotTable(
 - 简化 Markdown 写作 [remedy](https://github.com/ThinkR-open/remedy) 
 - 源代码截图 [carbonate](https://github.com/yonicd/carbonate)
 - 整理 Markdown 表格 [beautifyR](https://github.com/mwip/beautifyR)
-- 引用参考文献 [citr](https://github.com/crsh/citr)
 - 格式化 R 代码块 [styler](https://github.com/r-lib/styler)
 - 准备可重复的例子，方便在论坛/Github上发问 [reprex](https://github.com/tidyverse/reprex)
 - 快速获取 Github 等社交网络活动记录 [butteRfly](https://github.com/jonocarroll/butteRfly)
@@ -52,8 +55,10 @@ rpivotTable(
 - RStudio 插件集合 [addinslist](https://github.com/daattali/addinslist)
 - 高亮支持 R 帮助文档 [rdoc](https://github.com/mdequeljoe/rdoc)
 - 正则表达式 [regexplain](https://github.com/gadenbuie/regexplain)
-- 快速复制粘贴 data.frame/tibble <https://github.com/MilesMcBain/datapasta>
-- R Markdown 中写 shiny <https://github.com/gadenbuie/shinyComponents>
+- 快速复制粘贴 data.frame/tibble [datapasta](https://github.com/MilesMcBain/datapasta)
+- R Markdown 中写 shiny [shinyComponents](https://github.com/gadenbuie/shinyComponents)
+- RMarkdown 里很长的文本自动断行，但不产生空行 [WrapRmd](https://github.com/tjmahr/WrapRmd)
+
 
 ## R Markdown 文档 {#sec:rmarkdown}
 
@@ -220,6 +225,33 @@ output:
        - sfdefault
 ---
 ```
+
+
+### 引用文献 {#subsec:cite-doi}
+
+[^doi]: <https://zh.wikipedia.org/wiki/DOI>
+
+[knitcitations](https://github.com/cboettig/knitcitations) 包可以根据文献数字对象标识符（英文 Digital Object Identifier，简称 DOI）生成引用，以文章《A Probabilistic Grammar of Graphics》[@Pu_2020_Grammar] 为例，其 DOI 为 `10.1145/3313831.3376466`，总之， DOI 就像是文章的身份证，是一一对应的关系[^doi]。
+
+```{r,eval=FALSE}
+library(knitcitations)
+citep(x ='10.1145/3313831.3376466')
+```
+```
+[1] "(Pu and Kay, 2020)"
+```
+
+在表格的格子中引用参考文献
+
+```{r, results='asis'}
+data.frame(
+  author = c("Yihui Xie", "Yihui Xie", "Hadley Wickham"),
+  citation = c("[@xie2019]", "[@xie2015]", "[@Hadley_2019_tidyverse]")
+) %>%
+  knitr::kable(., format = "pandoc")
+```
+
+[citr](https://github.com/crsh/citr) 包提供了快速查找参考文献的 RStudio 插件，不用去原始文献库 `*.bib` 搜索查找，也会自动生成引用，非常方便，极大地提高了工作效率。 **citr** 还支持集成 [Zotero](https://www.zotero.org/) 文献管理软件，可以直接从 Zotero 中导入参考文献数据库。[rbbt](https://github.com/paleolimbot/rbbt) 包也提供了类似的功能，只要系统安装 Zotero 软件及其插件 [Better Bibtex for Zotero connector](https://retorque.re/zotero-better-bibtex/)。
 
 ## HTML 文档 {#sec:html-document}
 
