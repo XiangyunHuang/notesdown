@@ -180,7 +180,45 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("ComplexHeatmap")
 ```
 
+
+
+### 密度图 {#sec:density}
+
 [heatmaps in ggplot2](https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/) 二维密度图
+
+
+```{r density-2d,fig.cap="二维密度图",fig.width=9,fig.height=3,fig.show='hold'}
+p1 <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
+  xlim(1, 6) +
+  ylim(40, 100)
+
+p2 <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  stat_density2d(aes(fill = stat(level)), geom = "polygon") +
+  xlim(1, 6) +
+  ylim(40, 100)
+
+p3 <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  stat_density2d(aes(fill = stat(level)), geom = "polygon") +
+  scale_fill_viridis_c(option = "viridis") +
+  xlim(1, 6) +
+  ylim(40, 100)
+p1 + p2 + p3
+```
+
+
+```{r,eval=knitr::is_html_output(),fig.cap="二维直方图/密度图/轮廓图"}
+plot_ly(data = faithful, x = ~eruptions, y = ~waiting, type = "histogram2dcontour") %>% 
+    config(
+    toImageButtonOptions = list(
+      format = "svg", filename = paste("plot", Sys.Date(), sep = "_")
+    ),
+    watermark = F,
+    displaylogo = FALSE, # 移除 Plotly 的 logo
+    locale = "zh-CN", # 汉化
+    displayModeBar = FALSE # 去掉整个顶部工具栏
+  )
+```
 
 ### 提琴图 {#subsec:violin}
 
