@@ -100,6 +100,20 @@ Using recursion for adaptive integration
 demo(recursion)
 ```
 
+斐波那契数列
+
+```{r}
+# 递归 Recall
+fibonacci <- function(n) {
+  if (n <= 2) {
+    if (n >= 0) 1 else 0
+  } else {
+    Recall(n - 1) + Recall(n - 2)
+  }
+}
+fibonacci(10) # 55
+```
+
 ## 异常 {#sec:catching-and-handling-errors}
 
 异常捕获和处理
@@ -115,6 +129,52 @@ demo(error.catching)
 ```r
 demo(is.things)
 ```
+
+## 泛型 {#sec:generic}
+
+> I'd like to prefix all these solutions with 'Here's how to do it, but don't actually do it you crazy fool'. It's on a par with redefining pi, or redefining '+'. And then redefining '<-'. These techniques have their proper place, and that would be in the currently non-existent obfuscated R contest. No, the R-ish (iRish?) way is to index vectors from 1. That's what the R gods intended!
+> 
+>   --- Barry Rowlingson [^BR-help-2004]
+
+[^BR-help-2004]: <https://stat.ethz.ch/pipermail/r-help/2004-March/048688.html>
+
+
+::: {.rmdinfo data-latex=""}
+如果要让下标从 0 开始的话，我们需要在现有的向量类型 vector 上定义新的向量类型 vector0，在其上并且实现索引运算 `[` 和赋值修改元素的运算 `[<-`
+
+```{r vector-index-zero}
+# https://stat.ethz.ch/pipermail/r-help/2004-March/048682.html
+as.vector0 <- function(x) structure(x, class = "vector0") # 创建一种新的数据结构 vector0
+as.vector.vector0 <- function(x) unclass(x)
+"[.vector0" <- function(x, i) as.vector0(as.vector.vector0(x)[i + 1]) # 索引操作
+"[<-.vector0" <- function(x, i, value) { # 赋值操作
+  x <- as.vector.vector0(x)
+  x[i + 1] <- value
+  as.vector0(x)
+}
+print.vector0 <- function(x) print(as.vector.vector0(x)) # 实现 print 方法
+```
+
+举个例子看看
+
+```{r test-index-zero}
+1:10 # 是一个内置的现有向量类型 vector
+x <- as.vector0(1:10) # 转化为新建的 vector0 类型
+x[0:4] <- 100 * x[0:4] # 对 x 的元素替换修改
+x
+```
+:::
+
+
+第三方 R 包大大扩展了 Base R 函数 `plot()` 的功能，比如 **mgcv** ，**nlme** 包和 **lattice** 包等，表 \@ref(tab:generic-functions) 列出当前环境下， `plot()` 绘图方法。
+
+```{r generic-functions,echo=FALSE}
+library(lattice)
+library(nlme)
+library(mgcv)
+knitr::kable(matrix(methods("plot"), ncol = 3), caption = "泛型函数")
+```
+
 
 
 ## 除虫 {#sec:code-debug}

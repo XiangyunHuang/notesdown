@@ -3,15 +3,24 @@
 > 主要参考 Derek S. Young [@Regression_2017_Young] 和 Michael H. Kutner 等 [@Kutner_2005_Applied]
 功能比较全面的 R 包或者框架的介绍，如 rstan 最有效的 R 包（计算结果最好） 最快实现的 R 包（计算速度最快、开发效率高）Paul-Christian Bürkner 的报告包含 LM,GLM,MLM,NLM <https://github.com/InsuranceDataScience/StanWorkshop2018>
 
+An Introduction to Inductive Statistical Inference: from Parameter Estimation to Decision-Making <https://arxiv.org/abs/1808.10173v2> 固定效应/随机效应广义线性模型：多水平各种模型回归，模型结构和 Stan 代码
+
 JAGS 的 R 接口有苏毓松开发的 R2jags 包 [@R-R2jags]
 
 线性模型的内容主要分为四大块，分别是线性回归模型、方差分析模型、协方差分析模型和线性混合效应模型。国外 David Pollard 的线性模型 [课程内容](http://www.stat.yale.edu/~pollard/Courses/312.fall2016/)
+
+```{r}
+library(cmdstanr)
+# library(rethinking)
+# set_ulam_cmdstan(TRUE)
+```
+
+[rstan](https://github.com/stan-dev/rstan) [brms](https://github.com/paul-buerkner/brms)  [shinybrms](https://github.com/fweber144/shinybrms)
 
 加载 rstan，如果你的电脑配置有多核处理器，内存也充足，那么可以考虑使用并行方式去估计你的模型参数
 
 ```{r stan-setup,message=FALSE,warning=FALSE}
 library(rstan)
-# 将编译后的模型写入磁盘，避免重新编译，在 Github Action 异构集群上应每次重新编译，否则容易触发错误 caught illegal operation
 # rstan_options(auto_write = TRUE)
 # 如果CPU和内存足够，设置成与马尔科夫链一样多
 # options(mc.cores = max(c(floor(parallel::detectCores() / 2), 1L)))

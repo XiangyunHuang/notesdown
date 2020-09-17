@@ -1,63 +1,16 @@
-# R 指南 {#rlang-guide}
+# R 指南 {#chap:rlang-guide}
 
 
 ```{r,include=FALSE}
 library(magrittr)
-library(lattice)
-library(nlme)
-library(mgcv)
 ```
 
 R 语言 [@Ross_1996_R] 是一个统计计算和绘图的环境，以下各个节不介绍具体 R 包函数用法和参数设置，重点在历史发展趋势脉络，详细介绍去见《现代统计图形》的相应章节。R 语言的目标在于统计计算和绘图，设计优势在数据结构、图形语法、动态文档和交互图形
 
-## 编程指南 {#sec:rlang-guide}
-
-R 与其它语言的异同，降低编程门槛
-
-> I'd like to prefix all these solutions with 'Here's how to do it, but don't actually do it you crazy fool'. It's on a par with redefining pi, or redefining '+'. And then redefining '<-'. These techniques have their proper place, and that would be in the currently non-existent obfuscated R contest. No, the R-ish (iRish?) way is to index vectors from 1. That's what the R gods intended!
-> 
->   --- Barry Rowlingson [^BR-help-2004]
-
-[^BR-help-2004]: <https://stat.ethz.ch/pipermail/r-help/2004-March/048688.html>
-
-### 泛型函数 {#subsec:generic-functions}
-
-::: {.rmdinfo data-latex=""}
-如果要让下标从 0 开始的话，我们需要在现有的向量类型 vector 上定义新的向量类型 vector0，在其上并且实现索引运算 `[` 和赋值修改元素的运算 `[<-`
-
-```{r vector-index-zero}
-# https://stat.ethz.ch/pipermail/r-help/2004-March/048682.html
-as.vector0 <- function(x) structure(x, class = "vector0") # 创建一种新的数据结构 vector0
-as.vector.vector0 <- function(x) unclass(x)
-"[.vector0" <- function(x, i) as.vector0(as.vector.vector0(x)[i + 1]) # 索引操作
-"[<-.vector0" <- function(x, i, value) { # 赋值操作
-  x <- as.vector.vector0(x)
-  x[i + 1] <- value
-  as.vector0(x)
-}
-print.vector0 <- function(x) print(as.vector.vector0(x)) # 实现 print 方法
-```
-
-举个例子看看
-
-```{r test-index-zero}
-1:10 # 是一个内置的现有向量类型 vector
-x <- as.vector0(1:10) # 转化为新建的 vector0 类型
-x[0:4] <- 100 * x[0:4] # 对 x 的元素替换修改
-x
-```
-:::
+<!-- 介绍 R 与其它语言的异同，降低编程门槛 -->
 
 
-第三方 R 包大大扩展了 Base R 函数 `plot()` 的功能，比如 nlme 包和 lattice 包等。
-
-```{r generic-function,echo=FALSE}
-knitr::kable(matrix(methods("plot"), ncol = 3), "pandoc", caption = "泛型函数")
-```
-
-
-
-### 函数源码 {#subsec:function-source}
+## 函数源码 {#subsec:function-source}
 
 
 [funflow](https://github.com/moodymudskipper/funflow) 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码
@@ -104,203 +57,13 @@ getAnywhere("predict.poly")$where
 names(formals(read.table))
 ```
 
-### apply 函数族 {#sec:apply-family}
 
-| 函数 |  输入 |  输出 |
-|:------ |:------------------ |:------------------ |
-| apply  |  矩阵、数据框      | 向量               |
-| lapply |  向量、列表        | 列表               |
-| sapply |  向量、列表        | 向量、矩阵         |
-| mapply |  多个向量          | 列表               |
-| tapply |  数据框、数组      | 向量               |
-| vapply |  列表              | 矩阵               |
-| eapply |   列表             | 列表               |
-| rapply |  嵌套列表          | 嵌套列表           |
-
-除此之外，还有 `dendrapply()` 专门处理层次聚类或分类回归树型结构， 而函数 `kernapply()` 用于时间序列的平滑处理
-
-```{r spectrum-sunspot-year, fig.cap="太阳黑子的频谱"}
-# Reproduce example 10.4.3 from Brockwell and Davis (1991) [@Brockwell_1991_Time]
-spectrum(sunspot.year, kernel = kernel("daniell", c(11,7,3)), log = "no")
-```
-
-<!-- https://design.tidyverse.org/cs-mapply-pmap.html -->
-
-将函数应用到多个向量，返回一个列表，生成四组服从正态分布 $\mathcal{N}(\mu_i,\sigma_i)$ 的随机数，它们的均值和方差依次是 $\mu_i = \sigma_i = 1 \ldots 4$
-
-```{r}
-means <- 1:4
-sds <- 1:4
-set.seed(2020)
-samples <- mapply(rnorm, mean = means, sd = sds, MoreArgs = list(n = 50), SIMPLIFY = FALSE)
-samples
-```
-
-我们借用图\@ref(fig:mapply-lapply)来看一下 mapply 的效果，多组随机数生成非常有助于快速模拟。
-
-```{r mapply-lapply, fig.cap=" lapply 函数"}
-par(mfrow = c(2, 2), mar = c(2, 2, 2, 2))
-invisible(lapply(samples, function(x) {
-  plot(x, pch = 16, col = "grey")
-  abline(h = mean(x), lwd = 2, col = "darkorange")
-}))
-```
-
-分别计算每个样本的平均值
-
-```{r}
-sapply(samples, mean)
-```
-
-分别计算每个样本的1，2，3 分位点
-
-```{r}
-lapply(samples, quantile, probs = 1:3/4)
-```
-
-仅用 `sapply()` 函数替换上面的 `lapply()`，我们可以得到一个矩阵，值得注意的是函数 `quantile()` 和 `fivenum()` 算出来的结果有一些差异
-
-```{r}
-sapply(samples, quantile, probs = 1:3/4)
-vapply(samples, fivenum, c(Min. = 0, "1st Qu." = 0, Median = 0, "3rd Qu." = 0, Max. = 0))
-```
-
-vapply 和 sapply 类似，但是预先指定返回值类型，这样可以更加安全，有时也更快。
-
-以数据集 presidents 为例，它是一个 ts 对象类型的时间序列数据，记录了 1945 年至 1974 年每个季度美国总统的支持率，这组数据中存在缺失值，以 NA 表示。支持率的变化趋势见图 \@ref(fig:usa-presidents)。
-
-```{r usa-presidents,fig.cap="1945-1974美国总统的支持率"}
-plot(presidents)
-```
-
-计算这 30 年每个季度的平均支持率
-
-```{r}
-tapply(presidents, cycle(presidents), mean, na.rm = TRUE)
-```
-
-`cycle()` 函数计算序列中每个观察值在周期中的位置，presidents 的周期为 `r frequency(presidents)`，根据位置划分组，然后分组求平均，也可以化作如下计算步骤，虽然看起来复杂，但是数据操作的过程很清晰，不再看起来像是一个黑箱。
-
-```{r}
-# Base R
-cbind(expand.grid(quarter = c("Qtr1", "Qtr2", "Qtr3", "Qtr4"), year = 1945:1974), rate = as.vector(presidents)) %>%
-  reshape(., v.names = "rate", idvar = "year", timevar = "quarter", direction = "wide", sep = "") %>%
-  `colnames<-`(., gsub(pattern = "(rate)", x = colnames(.), replacement =  "")) %>% 
-  `[`(., -1) %>% 
-  apply(., 2, mean, na.rm = TRUE)
-```
-
-tapply 函数来做分组求和
-
-```{r}
-# 一个变量分组求和
-tapply(warpbreaks$breaks, warpbreaks[, 3, drop = FALSE], sum)
-# 两个变量分组计数
-with(warpbreaks, table(wool, tension))
-# 两个变量分组求和
-aggregate(breaks ~ wool + tension, data = warpbreaks,  sum) %>% 
-  reshape(., v.names = "breaks", idvar = "wool", timevar = "tension", direction = "wide", sep = "") %>% 
-  `colnames<-`(., gsub(pattern = "(breaks)", x = colnames(.), replacement =  ""))
-```
-
-### 命名约定 {#subsec:naming-conventions}
+## 命名约定 {#sec:naming-conventions}
 
 R 语言当前的命名状态  <https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf> 和 <https://essentials.togaware.com/StyleO.pdf>
 
-## 案例学习 {#sec:case-study}
 
-### 格式化输出 {#subsec:format-output}
-
-```{r}
-formatC(round(runif(1, 1e8, 1e9)), digits = 10, big.mark = ",")
-```
-
-```{r}
-# Sys.setlocale(locale = "C") # 如果是 Windows 系统，必须先设置，否则转化结果是 NA
-as.Date(paste("1990-January", 1, sep = "-"), format = "%Y-%B-%d")
-```
-
-获取当日零点
-
-```{r}
-format(as.POSIXlt(Sys.Date()), "%Y-%m-%d %H:%M:%S")
-```
-
-
-Table: (\#tab:table-of-date) 日期表格
-
-| Code | Meaning                       | Code | Meaning                                       |
-| ---- | :---------------------------- | ---- | :-------------------------------------------- |
-| `%a` | Abbreviated weekday           | `%A` | Full weekday                                  |
-| `%b` | Abbreviated month             | `%B` | Full month                                    |
-| `%c` | Locale-specific date and time | `%d` | Decimal date                                  |
-| `%H` | Decimal hours (24 hour)       | `%I` | Decimal hours (12 hour)                       |
-| `%j` | Decimal day of the year       | `%m` | Decimal month                                 |
-| `%M` | Decimal minute                | `%p` | Locale-specific AM/PM                         |
-| `%S` | Decimal second                | `%U` | Decimal week of the year (starting on Sunday) |
-| `%w` | Decimal Weekday (0=Sunday)    | `%W` | Decimal week of the year (starting on Monday) |
-| `%x` | Locale-specific Date          | `%X` | Locale-specific Time                          |
-| `%y` | 2-digit year                  | `%Y` | 4-digit year                                  |
-| `%z` | Offset from GMT               | `%Z` | Time zone (character)                         |
-
-
-
-### 斐波那契数列 {#subsec:fibonacci}
-
-```{r}
-# 递归 Recall
-fibonacci <- function(n) {
-  if (n <= 2) {
-    if (n >= 0) 1 else 0
-  } else {
-    Recall(n - 1) + Recall(n - 2)
-  }
-}
-fibonacci(10) # 55
-```
-
-### 字符串加密 {#subsec:sha-string}
-
-字符串编码加密， **openssl** 包提供了 sha1 函数 [^encode]
-
-```{r}
-library(openssl)
-encode_mobile <- function(phone_number) paste("*", paste(toupper(sha1(sha1(charToRaw(paste(phone_number, "$1$mobile$", sep = ""))))), collapse = ""), sep = "")
-# 随意模拟两个手机号
-mobile_vec <- c("18601013453", "13811674545")
-sapply(mobile_vec, encode_mobile)
-```
-
-[^encode]: 参考刘思喆的两篇博文： [利用 R 函数生成差异化密码](http://bjt.name/2019/09/28/secure-hash.html) 和 [在 R 中各种码的转换](http://bjt.name/2019/10/21/url-handle.html)
-
-
-## 如何发问 {#sec:help-me}
-
-> The phrase "does not work" is not very helpful, it can mean quite a few things including:
-> 
-* Your computer exploded.
-* No explosion, but smoke is pouring out the back and microsoft's "NoSmoke" utility is not compatible with your power supply.
-* The computer stopped working.
-* The computer sits around on the couch all day eating chips and watching talk shows.
-* The computer has started picketing your house shouting catchy slogans and demanding better working conditions and an increase in memory.
-* Everything went dark and you cannot check the cables on the back of the computer because the lights are off due to the power outage.
-* R crashed, but the other programs are still working.
-* R gave an error message and stopped processing your code after running for a while.
-* R gave an error message without running any of your code (and is waiting for your next command).
-* R is still running your code and the time has exceeded your patience so you think it has hung.
-* R completed and returned a result, but also gave warnings.
-* R completed your command, but gave an incorrect answer.
-* R completed your command but the answer is different from what you expect (but is correct according to the documentation).
-> 
-> There are probably others. Running your code I think the answer is the last one.
->
->   -- Greg Snow [^GS-help-2012]
-
-[^GS-help-2012]: 来自 R 社区论坛收集的智语 `fortunes::fortune(324)`。
-
-
-
-## 编译环境 {#all-pkgs}
+## 编译环境 {#sec:session-rlang}
 
 ```{r}
 sessionInfo()

@@ -41,3 +41,16 @@ str_replace(shopping_list, pattern = "\\\\d", replace = "aa")
 ```
 
 
+## 字符串加密 {#sec:encode-string}
+
+字符串编码加密， **openssl** 包提供了 sha1 函数 [^encode]
+
+```{r}
+library(openssl)
+encode_mobile <- function(phone_number) paste("*", paste(toupper(sha1(sha1(charToRaw(paste(phone_number, "$1$mobile$", sep = ""))))), collapse = ""), sep = "")
+# 随意模拟两个手机号
+mobile_vec <- c("18601013453", "13811674545")
+sapply(mobile_vec, encode_mobile)
+```
+
+[^encode]: 参考刘思喆的两篇博文： [利用 R 函数生成差异化密码](http://bjt.name/2019/09/28/secure-hash.html) 和 [在 R 中各种码的转换](http://bjt.name/2019/10/21/url-handle.html)
