@@ -1,70 +1,44 @@
 # 梯度提升机 {#chap:gradient-boosting-machine}
 
-> [梯度提升相关的论文合集](https://github.com/benedekrozemberczki/awesome-gradient-boosting-papers) Jerome H. Friedman 的论文 [Greedy function approximation: A gradient boosting machine](https://projecteuclid.org/euclid.aos/1013203451)
-
+<!-- 
+[梯度提升相关的论文合集](https://github.com/benedekrozemberczki/awesome-gradient-boosting-papers) 
 基于树的梯度提升算法，在分类和回归任务上的表现，介绍基本算法内容后，比较实现方式和效率，寻求最佳工程实战
+GBM 算法各种实现的性能比较 <https://github.com/szilard/GBM-perf>，二分类问题的开源实现比较 <https://github.com/szilard/benchm-ml>
 
-gbm h2o caret xgboost catboost lightgbm [compboost](https://github.com/schalkdaniel/compboost)
+useR!2018 Erin LeDell [Machine Learning Tutorial](https://koalaverse.github.io/machine-learning-in-R/)
+ -->
+ 
 
-基于模型的提升方法与 R 语言<https://github.com/boost-R>
-
-二分类问题的开源实现比较 <https://github.com/szilard/benchm-ml>
-
-GBM 算法各种实现的性能比较 <https://github.com/szilard/GBM-perf>
-
-[useR! 2018 Machine Learning Tutorial](https://koalaverse.github.io/machine-learning-in-R/)
+关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 [@Friedman2001]， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 	Brandon Greenwell 在维护。[gbm](https://github.com/gbm-developers/gbm) 实现了 Freund and Schapire's AdaBoost 算法和 Friedman 的梯度提升机。[h2o](https://github.com/h2oai/h2o-3/tree/master/h2o-r) 是基于 Java 平台的机器学习平台，学习材料 [h2o-tutorials](https://github.com/h2oai/h2o-tutorials)。基于决策树的分类和回归方法 [caret](https://github.com/topepo/caret/) 和基于模型的提升方法 <https://github.com/boost-R> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。[xgboost](https://github.com/dmlc/xgboost/tree/master/R-package) 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <https://xgboost.apachecn.org/cn/latest/>，也提供多种语言接口。类似的还有 [compboost](https://github.com/schalkdaniel/compboost)，其它比较小众的提升库还有 [xLearn](https://github.com/aksnzhy/xlearn)。
 
 
-## gbm
-
-[gbm](https://github.com/gbm-developers/gbm) 已经退休了，目前由 [gbm3](https://github.com/gbm-developers/gbm3) 继任
-
-## h2o
-
-参考学习和培训材料 [h2o-tutorials](https://github.com/h2oai/h2o-tutorials)
-
-## caret
-## xgboost
-
-开发仓库 <https://github.com/dmlc/xgboost>
-XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. It implements machine learning algorithms under the Gradient Boosting framework. XGBoost provides a parallel tree boosting (also known as GBDT, GBM) that solve many data science problems in a fast and accurate way. The same code runs on major distributed environment (Hadoop, SGE, MPI) and can solve problems beyond billions of examples.
-
-使用文档 <http://xgboost.readthedocs.io/en/latest/>
-R 包 <https://github.com/dmlc/xgboost/tree/master/R-package>
-中文文档 <http://xgboost.apachecn.org/cn/latest/>
 
 
-## catboost
+## CatBoost
 
-[catboost](https://github.com/catboost/catboost)
+[catboost](https://github.com/catboost/catboost) 开源的基于决策树的梯度提升库，支持分类特征，提供 R 和 Python 接口，详见官网 <https://catboost.ai>
 
-```r
+```{r,eval=FALSE}
+# Ubuntu install libc6-dev first
 remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
 ```
 
-CatBoost is an open-source gradient boosting on decision trees library with categorical features support out of the box for Python, R https://catboost.ai
+::: {.rmdnote data-latex="{注意}"}
+catboost 的 R 接口仅支持 64 位的 R 版本
+:::
 
-
-```r
-# windows 
-devtools::install_url('https://github.com/catboost/catboost/releases/download/v0.6.1.1/catboost-R-Windows-0.6.1.1.tgz', args = c("--no-multiarch"))
-# Ubuntu install libc6-dev first
-devtools::install_github('catboost/catboost', subdir = 'catboost/R-package')
-```
-
-
-[xLearn](https://github.com/aksnzhy/xlearn)
 
 
 ## LightGBM
 
 
-[LightGBM](https://github.com/Microsoft/LightGBM/tree/master/R-package) A fast, distributed, high performance gradient boosting (GBDT, GBRT, GBM or MART) framework based on decision tree algorithms, used for ranking, classification and many other machine learning tasks.
+[LightGBM](https://github.com/Microsoft/LightGBM/tree/master/R-package) 提供了 R 包，微软的工具主要支持 Windows 平台和 VS 编译工具。顺便一提，[LightLDA](https://github.com/Microsoft/lightlda) 大规模主题模型
 
-提供了 R 包，微软的工具主要支持 Windows 平台和 VS 编译工具。顺便一提，[LightLDA](https://github.com/Microsoft/lightlda) Scalable, fast, and lightweight system for large-scale topic modeling 大规模主题模型
-
-```bash
-git clone --recursive https://github.com/Microsoft/LightGBM
-cd LightGBM
-Rscript build_r.R
+```{r, eval=!require('lightgbm')}
+install.packages('lightgbm')
 ```
+
+```{r, eval=require('lightgbm')}
+library(lightgbm)
+```
+
