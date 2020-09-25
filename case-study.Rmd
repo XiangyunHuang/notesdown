@@ -178,13 +178,14 @@ kruskal.test(weight ~ group, data = PlantGrowth)
 检验结果显示它们的均值是有显著差异的！
 
 
-```{r gls-plant-growth}
+```{r gls-plant-growth,cache=FALSE}
+# 固定效应模型
 fit_gls <- nlme::gls(weight ~ 1,
   weights = nlme::varIdent(form = ~ 1 | group),
   data = PlantGrowth, method = "REML"
 )
 summary(fit_gls)
-# 这二者之间的区别是什么
+# 随机效应模型
 fit_lme <- nlme::lme(weight ~ 1, random = ~ 1 | group, data = PlantGrowth)
 summary(fit_lme)
 ```
@@ -234,6 +235,8 @@ summary(fit_lme_pql)
 <!-- 就以 brms 包为例谈谈先验、参数设置，默认的先验有可能太宽泛了，导致不是很合理 <https://discourse.mc-stan.org/t/11584> -->
 
 ```{r lme-plant-growth-brms,eval=FALSE}
+# 贝叶斯模型
+fit_brm <- brms::brm(weight ~ group, data = PlantGrowth)
 # 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/
 library(Rcpp)
 fit_lme_brm <- brms::brm(weight ~ 1 + (1 | group),
