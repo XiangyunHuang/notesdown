@@ -14,22 +14,50 @@
 
 
 ```{r}
-ll <- list(a = 1, b = 2, c= list(d = c(1,2,3), e = "hello"))
-
-base::print.simple.list(ll)
+x <- list(a = 1, b = 2, c = list(d = c(1, 2, 3), e = "hello"))
+print(x)
+base::print.simple.list(x)
 ```
 
 ## 日期 {#sec:date}
 
-`cut.Date()` 是一个泛型函数
+上个季度最后一天
 
 ```{r}
-# 上个季度最后一天
 # https://d.cosx.org/d/421162/16
-as.Date(cut(as.Date(c("2001-02-01", "2001-05-02")), "quarter")) - 1
+as.Date(cut(as.Date(c("2020-02-01", "2020-05-02")), "quarter")) - 1
 ```
 
-S3 方法
+本季度第一天
+
+```{r}
+as.Date(cut(as.Date(c("2020-02-01", "2020-05-02")), "quarter"))
+```
+
+类似地，本月第一天和上月最后一天
+
+```{r}
+# 本月第一天
+as.Date(cut(as.Date(c("2020-02-01", "2020-05-02")), "month"))
+# 上月最后一天
+as.Date(cut(as.Date(c("2020-02-01", "2020-05-02")), "month")) - 1
+```
+
+**timeDate** 提供了很多日期计算函数，比如季初、季末、月初、月末等
+
+```{r,eval=FALSE}
+library(timeDate) 
+# 季初
+as.Date(format(timeFirstDayInQuarter(charvec = c("2020-02-01", "2020-05-02")), format = "%Y-%m-%d")) 
+# 季末
+as.Date(format(timeLastDayInQuarter(charvec = c("2020-02-01", "2020-05-02")), format = "%Y-%m-%d"))
+# 月初
+as.Date(format(timeFirstDayInMonth(charvec = c("2020-02-01", "2020-05-02")), format = "%Y-%m-%d")) 
+# 月末
+as.Date(format(timeLastDayInMonth(charvec = c("2020-02-01", "2020-05-02")), format = "%Y-%m-%d")) 
+```
+
+`cut.Date()` 是一个泛型函数，查看它的所有 S3 方法
 
 ```{r}
 methods(cut)
