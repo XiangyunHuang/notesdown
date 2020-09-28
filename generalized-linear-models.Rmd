@@ -1,49 +1,11 @@
 # 广义线性模型 {#chap:generalized-linear-models}
 
-主要参考 David W. Hosmer 和 Stanley Lemeshow [@David_2000_Logistic]
-
-主要参考 Peter McCullagh 和 John Nelder [@McCullagh_1989_Generalized] Annette J. Dobson 和 Adrian G. Barnett [@Dobson_2018_Generalized]
-逻辑回归模型主要参考 Applied Logistic Regression [@David_2000_Logistic] 和 Discrete Choice Methods with Simulation [@Train_2009_mlogit]
-
-- 大数据集`biglm::bigglm` [speedglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/speedglm/index.html) [bigReg](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/bigReg/index.html)
-- `fastglm::fastglm` 加快 `glm` 收敛效果比 `glm` 和 `glm2` 好
-- `glm2::glm2` 补充 `glm`
-- 有序输出的回归 [lcpm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/lcpm/index.html) [oglmx](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/oglmx/index.html)
-- 多项逻辑回归 gmnl [mlogit](https://CRAN.R-project.org/package=mlogit) [@Train_2009_mlogit]和  mnlogit [@mnlogit_2016_JSS]
-- 计数数据回归 pscl
-- 条件GLM [cglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/cglm/index.html)
-- 多重 GLM [MGLM](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/MGLM/index.html) 多个响应变量
-- 有限内存的 GLM [biglmm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/biglmm/index.html)
-- 借助混合模型的稳健的 GLM [robmixglm](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/robmixglm/index.html) 
-- 聚类数据的 GLM [ClusterBootstrap](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/ClusterBootstrap/index.html) [glmmML](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmmML/index.html)
-- [glmnet](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmnet/index.html) [glmpath](https://mirrors.tuna.tsinghua.edu.cn/CRAN/web/packages/glmpath/index.html)
-- 贝叶斯变量选择方法 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>
-- spikeslab: Prediction and variable selection using spike and slab regression [@spikeslab_2005_Ishwaran] 
-- BoomSpikeSlab  MCMC for Spike and Slab Regression 
-- 17 种分类算法应用于信用评分，等级，参考 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
-- [Cyclops](https://github.com/OHDSI/Cyclops) 采用 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间
-
-> 每个模型都给出 rstan/rstanarm 中的实现方式
-
-将线性回归模型，方差分析模型，协方差分析模型统一地看待
-
-Generalized Least Squares 广义最小二乘
-
-GLM General Linear Models 一般线性模型 `lm` 
-
-- 允许线性模型方差非齐性、相关`nlme::gls` 
-- 也包括线性混合效应模型
-
-参考文献 An Introduction to Generalized Linear Models [@Dobson_2018_Generalized] 和 Generalized Linear Models [@McCullagh_1989_Generalized]
-
-- [plsRglm](https://github.com/fbertran/plsRglm) 偏最小二乘回归方法用于广义线性模型
-- [glmnet](http://www.jstatsoft.org/v33/i01/) Lasso and Elastic-Net Regularized Generalized Linear Models
-
- 
 ```{r,include=FALSE}
 library(magrittr)
 library(ggplot2)
-library(patchwork) # patchwork 和 MASS 包冲突
+# library(patchwork) # patchwork 和 MASS 包冲突
+library(cowplot) 
+library(MASS)
 ```
 
 > It's not meant for sampling weights. It's meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the wrong answer if you just use the `weights =` argument.
@@ -51,6 +13,41 @@ library(patchwork) # patchwork 和 MASS 包冲突
 >   --- Thomas Lumley [^TL-help-2012]
 
 [^TL-help-2012]: <https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html>
+
+
+<!-- 每个模型都给出 rstan/rstanarm 中的实现方式，或者另起一章在贝叶斯模型中 -->
+
+
+简单线性模型（Linear Models，简称 LM），`stats::lm()` 函数可以拟合线性模型，而一般线性模型（General Linear Models，简称 GLM）允许线性模型方差非齐性、存在相关关系，甚至可以扩展到线性混合效应模型，将线性回归模型，方差分析模型，协方差分析模型统一地看待，一般要采用广义最小二乘（Generalized Least Squares，简称 GLS）拟合， `nlme::gls()` 函数实现广义最小二乘拟合线性模型，类似地，`nlme::gnls()` 函数实现广义最小二乘拟合非线性模型。
+
+参考文献 An Introduction to Generalized Linear Models [@Dobson_2018_Generalized] 和 Generalized Linear Models [@McCullagh_1989_Generalized]
+
+主要参考 David W. Hosmer 和 Stanley Lemeshow [@David_2000_Logistic]
+
+主要参考 Peter McCullagh 和 John Nelder [@McCullagh_1989_Generalized] Annette J. Dobson 和 Adrian G. Barnett [@Dobson_2018_Generalized]
+逻辑回归模型主要参考 Applied Logistic Regression [@David_2000_Logistic] 和 Discrete Choice Methods with Simulation [@Train_2009_mlogit]
+
+- 大数据集`biglm::bigglm` [speedglm](https://cran.r-project.org/package=speedglm) [bigReg](https://CRAN.R-project.org/package=bigReg)
+- `fastglm::fastglm` 加快 `glm` 收敛效果比 `glm` 和 `glm2` 好
+- `glm2::glm2` 补充 `glm`
+- 有序输出的回归 [lcpm](https://CRAN.R-project.org/package=lcpm) [oglmx](https://CRAN.R-project.org/package=oglmx)
+- 多项逻辑回归 gmnl [mlogit](https://CRAN.R-project.org/package=mlogit) [@Train_2009_mlogit]和  mnlogit [@mnlogit_2016_JSS]
+- 计数数据回归 pscl
+- 条件 GLM [cglm](https://CRAN.R-project.org/package=cglm)
+- 多重 GLM [MGLM](https://CRAN.R-project.org/package=MGLM) 多个响应变量
+- 有限内存的 GLM [biglmm](https://CRAN.R-project.org/package=biglmm)
+- 融合混合分布的稳健 GLM [robmixglm](https://CRAN.R-project.org/package=robmixglm) 
+- 聚类数据的 GLM [ClusterBootstrap](https://CRAN.R-project.org/package=ClusterBootstrap) [glmmML](https://CRAN.R-project.org/package=glmmML)
+- 广义线性模型 [glmnet](https://CRAN.R-project.org/package=glmnet) <https://glmnet.stanford.edu/>
+- [glmpath](https://CRAN.R-project.org/package=glmpath)
+- 贝叶斯变量选择方法 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>
+- spikeslab: Prediction and variable selection using spike and slab regression [@spikeslab_2005_Ishwaran] 
+- BoomSpikeSlab: MCMC for Spike and Slab Regression 
+- 17 种分类算法应用于信用评分，等级，参考 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
+- [Cyclops](https://github.com/OHDSI/Cyclops) 采用 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间
+- [plsRglm](https://github.com/fbertran/plsRglm) 偏最小二乘回归方法用于广义线性模型
+
+ 
 
 ## 介绍 {#glm:introduction}
 
@@ -127,9 +124,7 @@ head(esoph)
 str(esoph)
 ```
 
-```{r}
-library(ggplot2)
-library(patchwork)
+```{r esoph-data,fig.cap="吸烟喝酒和食道癌的关系"}
 p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / ncontrols, color = agegp)) +
   geom_boxplot(show.legend = FALSE) +
   geom_jitter(show.legend = FALSE) +
@@ -145,7 +140,9 @@ p3 <- ggplot(data = esoph, aes(x = tobgp, y = ncases / ncontrols, color = tobgp)
   geom_jitter(show.legend = FALSE) +
   theme_minimal()
 
-p1 / (p2 + p3)
+bottom_row <- plot_grid(p2, p3, labels = c('B', 'C'), label_size = 12)
+
+plot_grid(p1, bottom_row, labels = c('A', ''), label_size = 12, ncol = 1)
 ```
 
 
@@ -452,7 +449,6 @@ plot(y ~ trt, data = beall.webworms, xlab = "Types of Worms", ylab = "Worm Count
 ```
 
 ```{r}
-library(ggplot2)
 ggplot(beall.webworms, aes(trt, y)) +
   geom_boxplot(colour = "red") +
   geom_jitter() +
