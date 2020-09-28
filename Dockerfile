@@ -126,6 +126,7 @@ RUN dnf copr -y enable iucar/cran \
    R-CRAN-gganimate \
    R-CRAN-ggridges \
    R-CRAN-xgboost \
+   R-CRAN-lightgbm \
    R-CRAN-lme4 \
    R-CRAN-glmnet \
    R-CRAN-rstanarm \
