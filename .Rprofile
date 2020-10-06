@@ -57,6 +57,7 @@ options(
   memory.profiling = TRUE,
   reprex.styler = TRUE,
   bookdown.clean_book = TRUE,
+  bookdown.render.file_scope = FALSE,
   lifecycle_verbosity = "quiet",
   hrbrthemes.loadfonts = TRUE,
   tinytex.engine = 'xelatex',

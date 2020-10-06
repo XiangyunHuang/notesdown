@@ -130,7 +130,7 @@ jobs:
           curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
           cp -r ~/.TinyTeX/texmf-dist/fonts/opentype/public/fira  ~/.fonts/
           fc-cache -fsv
-          R -e 'library(showtext);font_install(source_han_serif(), quiet = TRUE);font_install(source_han_sans(), quiet = TRUE);hrbrthemes::import_roboto_condensed()'
+          R -e 'library(showtext);font_install(source_han_serif(), quiet = TRUE);font_install(source_han_sans(), quiet = TRUE);hrbrthemes::import_roboto_condensed();font_add_google("Roboto Condensed", "Roboto Condensed")'
           # XKCD
           R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 
@@ -146,16 +146,19 @@ jobs:
           name: Upload Book
           path: _book
 
-      - name: Install npm
-        uses: actions/setup-node@v1
-
       - name: Deploy to Netlify
-        # NETLIFY_AUTH_TOKEN added in the repo's secrets
+        if: contains(env.isExtPR, 'false')
+        id: netlify-deploy
+        uses: nwtgck/actions-netlify@v1.1
+        with:
+          publish-dir: './_book'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message:
+            'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'
+          enable-pull-request-comment: false
+          enable-commit-comment: false
         env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          export COMMIT_MSG=$(git log -1 --format='%h %<(50,trunc)%s')
-          export DEPLOY_MSG=${COMMIT_MSG//[\'\"\`]/}
-          npm install netlify-cli -g
-          netlify deploy --prod --dir _book --message "$DEPLOY_MSG" --timeout 100
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
