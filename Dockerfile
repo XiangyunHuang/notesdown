@@ -102,39 +102,39 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 
 
-RUN dnf copr -y enable iucar/cran \
-  && dnf install -y R-CoprManager \
-   R-CRAN-remotes \
-   R-CRAN-docopt \
-   R-CRAN-car \
-   R-CRAN-V8 \
-   R-CRAN-pdftools \
-   R-CRAN-magick \
-   R-CRAN-ggplot2 \
-   R-CRAN-rmarkdown \
-   R-CRAN-bookdown \
-   R-CRAN-sf \
-   R-CRAN-nloptr \
-   R-CRAN-odbc \
-   R-CRAN-kableExtra \
-   R-CRAN-highcharter \
-   R-CRAN-arrow \
-   R-CRAN-agridat \
-   R-CRAN-arules \
-   R-CRAN-bayesplot \
-   R-CRAN-DiagrammeR \
-   R-CRAN-gganimate \
-   R-CRAN-ggridges \
-   R-CRAN-xgboost \
-   R-CRAN-lightgbm \
-   R-CRAN-lme4 \
-   R-CRAN-glmnet \
-   R-CRAN-rstanarm \
-   R-CRAN-brms \
-   R-CRAN-plotly \
-   R-CRAN-prophet \
-   R-CRAN-quadprog \
-   R-CRAN-ggpubr
+# RUN dnf copr -y enable iucar/cran \
+#  && dnf install -y R-CoprManager \
+#   R-CRAN-remotes \
+#   R-CRAN-docopt \
+#   R-CRAN-car \
+#   R-CRAN-V8 \
+#   R-CRAN-pdftools \
+#   R-CRAN-magick \
+#   R-CRAN-ggplot2 \
+#   R-CRAN-rmarkdown \
+#   R-CRAN-bookdown \
+#   R-CRAN-sf \
+#   R-CRAN-nloptr \
+#   R-CRAN-odbc \
+#   R-CRAN-kableExtra \
+#   R-CRAN-highcharter \
+#   R-CRAN-arrow \
+#   R-CRAN-agridat \
+#   R-CRAN-arules \
+#   R-CRAN-bayesplot \
+#   R-CRAN-DiagrammeR \
+#   R-CRAN-gganimate \
+#   R-CRAN-ggridges \
+#   R-CRAN-xgboost \
+#   R-CRAN-lightgbm \
+#   R-CRAN-lme4 \
+#   R-CRAN-glmnet \
+#   R-CRAN-rstanarm \
+#   R-CRAN-brms \
+#   R-CRAN-plotly \
+#   R-CRAN-prophet \
+#   R-CRAN-quadprog \
+#   R-CRAN-ggpubr
 
 
 ENV LANG=en_US.UTF-8 \
