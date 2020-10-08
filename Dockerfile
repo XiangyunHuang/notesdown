@@ -101,6 +101,10 @@ RUN ln -s /usr/lib64/R/library/littler/examples/install.r /usr/bin/install.r \
  && echo "CXXFLAGS += -Wno-ignored-attributes" >> /usr/lib64/R/etc/Makeconf \
  && Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 
+RUN dnf -y install R-odbc \
+   R-bookdown \
+   R-ggplot2
+
 
 # RUN dnf copr -y enable iucar/cran \
 #  && dnf install -y R-CoprManager \
