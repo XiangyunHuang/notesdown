@@ -70,9 +70,19 @@ jobs:
         cd ${CMDSTAN}
         make build
 
+    - name: Configure R
+      run: |
+        mkdir -p /usr/local/lib/R/site-library
+        echo "options(repos = c(CRAN = 'https://cran.r-project.org/'))" | tee -a /usr/lib64/R/etc/Rprofile.site
+        chmod a+r /usr/lib64/R/etc/Rprofile.site
+        echo "LANG=en_US.UTF-8" >> /usr/lib64/R/etc/Renviron.site
+        echo "export LC_ALL=en_US.UTF-8"  >> /etc/profile
+        echo "export LANG=en_US.UTF-8"  >> /etc/profile
+        echo "CXXFLAGS += -Wno-ignored-attributes" >> /usr/lib64/R/etc/Makeconf
+        Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
+
     - name: Install R packages
       run: |
-        echo "options(repos = c(CRAN = 'https://cran.r-project.org/'))" | tee -a /usr/lib64/R/etc/Rprofile.site
         R -e "if(!require('remotes')) install.packages('remotes')"
         xvfb-run --auto-servernum R -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
         xvfb-run --auto-servernum R -e "remotes::install_deps(dependencies = TRUE)"
