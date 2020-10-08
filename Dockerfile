@@ -23,7 +23,6 @@ RUN dnf -y upgrade \
    R-littler \
    R-littler-examples \
    rstudio-server \
-   octave-devel \
    ghostscript \
    google-noto-emoji-fonts \
    google-noto-emoji-color-fonts \
@@ -34,7 +33,6 @@ RUN dnf -y upgrade \
    liberation-serif-fonts \
    liberation-sans-fonts \
    liberation-mono-fonts \
-   inkscape \
    optipng \
    ImageMagick \
    texinfo \
