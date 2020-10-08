@@ -1,0 +1,27 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  build:
+    if: ${{ !contains(github.event.head_commit.message, '[ci skip]') }}
+    runs-on: ubuntu-latest
+    name: ${{ matrix.config.distro }}:${{ matrix.config.version }}
+    container:
+      image: ${{ matrix.config.distro }}:${{ matrix.config.version }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {distro: 'fedora', version: '33'}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        dnf install -y pandoc pandoc-citeproc pandoc-pdf glibc-langpack-en NLopt-devel ghostscript optipng ImageMagick texinfo
+        dnf install -y google-noto-emoji-fonts google-noto-emoji-color-fonts dejavu-serif-fonts
+        dnf install -y dejavu-sans-fonts dejavu-sans-mono-fonts liberation-narrow-fonts
+        dnf install -y liberation-serif-fonts liberation-sans-fonts liberation-mono-fonts
+        dnf install -y R-devel R-littler R-littler-examples R-odbc R-bookdown R-ggplot2
