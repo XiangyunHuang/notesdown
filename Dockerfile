@@ -22,6 +22,7 @@ RUN dnf -y upgrade \
    R-devel \
    R-littler \
    R-littler-examples \
+   rstudio-server \
    octave-devel \
    ghostscript \
    google-noto-emoji-fonts \
