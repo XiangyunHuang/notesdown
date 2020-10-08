@@ -15,6 +15,13 @@ jobs:
         config:
         - {distro: 'fedora', version: '33'}
 
+    env:
+      RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
+      LANG: "en_US.UTF-8"
+      TZ: "Asia/Shanghai"
+      CMDSTAN_VERSION: "2.24.1"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.24.1"
+
     steps:
     - uses: actions/checkout@v2
 
@@ -40,3 +47,35 @@ jobs:
         Rscript -e "bookdown:::bookdown_skeleton(path = 'bookdown-demo')"
         cd bookdown-demo
         Rscript -e "bookdown::render_book(input = 'index.Rmd', output_format = 'all', output_dir = '_book', new_session = TRUE)"
+
+    - name: Check rstudio-server
+      run: |
+        dnf search rstudio-server
+
+    - name: Install Python ENV
+      run: |
+        virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
+        source $RETICULATE_PYTHON_ENV/bin/activate
+        python -V
+        pip install -r requirements.txt
+        pip list --format=columns
+        deactivate
+
+    - name: Build CmdStan
+      run: |
+        mkdir -p /opt/cmdstan
+        curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz
+        tar -xzf cmdstan-${CMDSTAN_VERSION}.tar.gz -C /opt/cmdstan/
+        cd ${CMDSTAN}
+        make build
+
+    - name: Install R packages
+      run: |
+        R -e "if(!require('remotes')) install.packages('remotes')"
+        xvfb-run --auto-servernum R -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
+        xvfb-run --auto-servernum R -e "remotes::install_deps(dependencies = TRUE)"
+        R -e "if(!require('spDataLarge')) install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
+        R -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
+        R -e "if(!require('cmdstanr')) install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
+        xvfb-run --auto-servernum R -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
+        R -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
