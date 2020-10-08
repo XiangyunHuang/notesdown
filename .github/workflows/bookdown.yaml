@@ -48,11 +48,6 @@ jobs:
         cd bookdown-demo
         Rscript -e "bookdown::render_book(input = 'index.Rmd', output_format = 'all', output_dir = '_book', new_session = TRUE)"
 
-    - name: Check rstudio-server
-      run: |
-        dnf search rstudio-server
-        dnf info rstudio-server
-
     # - name: Install Python ENV
     #   run: |
     #     virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
@@ -81,13 +76,24 @@ jobs:
         echo "CXXFLAGS += -Wno-ignored-attributes" >> /usr/lib64/R/etc/Makeconf
         Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 
+    - name: Configure R CXXFLAGS/CXX14FLAGS
+      run: |
+        mkdir -p ~/.R
+        echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars
+        echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars
+        echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
+
+    - name: Check R packages
+      run: |
+        Rscript -e 'sessionInfo(sort(.packages(T)));.libPaths()'
+
     - name: Install R packages
       run: |
-        R -e "if(!require('remotes')) install.packages('remotes')"
-        xvfb-run --auto-servernum R -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
-        xvfb-run --auto-servernum R -e "remotes::install_deps(dependencies = TRUE)"
-        R -e "if(!require('spDataLarge')) install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
-        R -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
-        R -e "if(!require('cmdstanr')) install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
-        xvfb-run --auto-servernum R -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
-        R -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
+        Rscript -e "if(!require('remotes')) install.packages('remotes')"
+        xvfb-run --auto-servernum Rscript -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
+        xvfb-run --auto-servernum Rscript -e "remotes::install_deps(dependencies = TRUE)"
+        Rscript -e "if(!require('spDataLarge')) install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
+        Rscript -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
+        Rscript -e "if(!require('cmdstanr')) install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
+        xvfb-run --auto-servernum Rscript -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
+        Rscript -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
