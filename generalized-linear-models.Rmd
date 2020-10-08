@@ -17,39 +17,21 @@ library(MASS)
 
 <!-- 每个模型都给出 rstan/rstanarm 中的实现方式，或者另起一章在贝叶斯模型中 -->
 
+一般广义线性模型理论参考文献 An Introduction to Generalized Linear Models [@Dobson_2018_Generalized] 和 Generalized Linear Models [@McCullagh_1989_Generalized]，逻辑回归模型主要参考 Applied Logistic Regression [@David_2000_Logistic] 和 Discrete Choice Methods with Simulation [@Train_2009_mlogit]。
 
-简单线性模型（Linear Models，简称 LM），`stats::lm()` 函数可以拟合线性模型，而一般线性模型（General Linear Models，简称 GLM）允许线性模型方差非齐性、存在相关关系，甚至可以扩展到线性混合效应模型，将线性回归模型，方差分析模型，协方差分析模型统一地看待，一般要采用广义最小二乘（Generalized Least Squares，简称 GLS）拟合， `nlme::gls()` 函数实现广义最小二乘拟合线性模型，类似地，`nlme::gnls()` 函数实现广义最小二乘拟合非线性模型。
 
-参考文献 An Introduction to Generalized Linear Models [@Dobson_2018_Generalized] 和 Generalized Linear Models [@McCullagh_1989_Generalized]
+简单线性模型（Linear Models，简称 LM），`stats::lm()` 函数可以拟合线性模型，而一般线性模型（General Linear Models，简称 GLM）允许线性模型方差非齐性、存在相关关系，甚至可以扩展到线性混合效应模型，将线性回归模型，方差分析模型，协方差分析模型统一地看待，一般要采用广义最小二乘（Generalized Least Squares，简称 GLS）拟合， `nlme::gls()` 函数实现广义最小二乘拟合线性模型，类似地，`nlme::gnls()` 函数实现广义最小二乘拟合非线性模型。`glm2::glm2()` 补充 `glm()`，提供更加稳定的拟合方法，适应于 `glm()` 不收敛的情况，而 `fastglm::fastglm()` 主要是加快 `glm()` 求解效率，收敛效果也比 `glm()` 和 `glm2()` 好。
 
-主要参考 David W. Hosmer 和 Stanley Lemeshow [@David_2000_Logistic]
 
-主要参考 Peter McCullagh 和 John Nelder [@McCullagh_1989_Generalized] Annette J. Dobson 和 Adrian G. Barnett [@Dobson_2018_Generalized]
-逻辑回归模型主要参考 Applied Logistic Regression [@David_2000_Logistic] 和 Discrete Choice Methods with Simulation [@Train_2009_mlogit]
+[glmnet](https://CRAN.R-project.org/package=glmnet) 包是处理广义线性模型的事实标准。 其官网见 <https://glmnet.stanford.edu/>，而 [glmnetUtils](https://github.com/hongooi73/glmnetUtils) 补充公式接口，适用于弹性网络回归，交叉验证筛选 $\alpha$ 参数等。 [glmpath](https://CRAN.R-project.org/package=glmpath) 包实现 path-following 算法用于带 L1 正则项的广义线性模型和 Cox 比例风险模型。 **BoomSpikeSlab** 包实现 MCMC 算法用于 Spike 和 Slab 回归，而 **spikeslab** 包进一步实现预测和变量选择 [@spikeslab_2005_Ishwaran]。[Cyclops](https://github.com/OHDSI/Cyclops) 包实现 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间。[plsRglm](https://github.com/fbertran/plsRglm) 包实现偏最小二乘回归方法用于广义线性模型。**biglm**、[speedglm](https://cran.r-project.org/package=speedglm) 和 [bigReg](https://CRAN.R-project.org/package=bigReg) 用于处理大数据集的回归，求解限制内存的 GLM [biglmm](https://CRAN.R-project.org/package=biglmm)。[cglm](https://CRAN.R-project.org/package=cglm) 估计带聚类数据的条件 GLM 的回归系数和发散参数。[MGLM](https://CRAN.R-project.org/package=MGLM) 拟合多个响应变量的广义线性回归模型（多重 GLM ）。[robmixglm](https://CRAN.R-project.org/package=robmixglm) 响应变量扩展到混合分布的情形，实现稳健 GLM 回归估计。[ClusterBootstrap](https://CRAN.R-project.org/package=ClusterBootstrap) 实现自主法估计带聚类数据的 GLM。[lcpm](https://CRAN.R-project.org/package=lcpm) 和 [oglmx](https://CRAN.R-project.org/package=oglmx) 处理有序输出的回归。
+[gmnl](https://cran.r-project.org/package=gmnl)、 [mlogit](https://CRAN.R-project.org/package=mlogit) [@Train_2009_mlogit] 和 **mnlogit** [@mnlogit_2016_JSS] 处理多项逻辑回归。[pscl](https://github.com/atahk/pscl) 包（Political Science Computational Laboratory）可以处理贝叶斯 IRT 模型，zero-inflated 零膨胀模型，广义线性模型的拟合优度度量。
 
-- 大数据集`biglm::bigglm` [speedglm](https://cran.r-project.org/package=speedglm) [bigReg](https://CRAN.R-project.org/package=bigReg)
-- `fastglm::fastglm` 加快 `glm` 收敛效果比 `glm` 和 `glm2` 好
-- `glm2::glm2` 补充 `glm`
-- 有序输出的回归 [lcpm](https://CRAN.R-project.org/package=lcpm) [oglmx](https://CRAN.R-project.org/package=oglmx)
-- 多项逻辑回归 gmnl [mlogit](https://CRAN.R-project.org/package=mlogit) [@Train_2009_mlogit]和  mnlogit [@mnlogit_2016_JSS]
-- 计数数据回归 pscl
-- 条件 GLM [cglm](https://CRAN.R-project.org/package=cglm)
-- 多重 GLM [MGLM](https://CRAN.R-project.org/package=MGLM) 多个响应变量
-- 有限内存的 GLM [biglmm](https://CRAN.R-project.org/package=biglmm)
-- 融合混合分布的稳健 GLM [robmixglm](https://CRAN.R-project.org/package=robmixglm) 
-- 聚类数据的 GLM [ClusterBootstrap](https://CRAN.R-project.org/package=ClusterBootstrap) [glmmML](https://CRAN.R-project.org/package=glmmML)
-- 广义线性模型 [glmnet](https://CRAN.R-project.org/package=glmnet) <https://glmnet.stanford.edu/>
-- [glmpath](https://CRAN.R-project.org/package=glmpath)
-- 贝叶斯变量选择方法 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>
-- spikeslab: Prediction and variable selection using spike and slab regression [@spikeslab_2005_Ishwaran] 
-- BoomSpikeSlab: MCMC for Spike and Slab Regression 
-- 17 种分类算法应用于信用评分，等级，参考 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
-- [Cyclops](https://github.com/OHDSI/Cyclops) 采用 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间
-- [plsRglm](https://github.com/fbertran/plsRglm) 偏最小二乘回归方法用于广义线性模型
 
- 
+<!--
+贝叶斯变量选择方法的综述 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>，17 种分类算法应用于信用评分 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
+-->
 
-## 介绍 {#glm:introduction}
+## 介绍 {#sec:glm-introduction}
 
 模型结构，模型种类，参数估计办法，相当于综述
 
@@ -315,7 +297,7 @@ p
 
 响应变量是离散类别，且存在强弱，等级，大小之分
 
-调用函数 `MASS::polr` 
+调用函数 `MASS::polr()` 
 
 数据集 housing 哥本哈根住房状况调查中的次数分布表，`Sat` 住户对目前居住环境的满意程度，是一个有序的因子变量，`Infl` 住户对物业管理的感知影响程度，`Type` 租赁住宿类型，如塔楼、中庭、公寓、露台，`Cont` 联系居民可与其他居民联系(低、高)，`Freq` 每个类中的居民人数，调查的人数
 
@@ -412,13 +394,11 @@ summary(MASS::glmmPQL(y ~ pred,
 ))
 ```
 
-## 对数线性模型 {#Generalized-Log-Linear-Model}
+## 对数线性模型 {#sec:generalized-log-linear-model}
 
-gllm: Generalised log-Linear Model
+当响应变量 $Y$ 服从对数正态分布的时候，广义线性模型具化为对数线性模型，**gllm** 包 [@gllm]
 
-Routines for log-linear models of incomplete contingency tables, including some latent class models, via EM and Fisher scoring approaches. Allows bootstrapping. See Espeland and Hui (1987) <doi:10.2307/2531553> for general approach.
-
-## 泊松回归模型 {#Generalized-Possion-Linear-Model}
+## 泊松回归模型 {#sec:generalized-possion-linear-model}
 
 加载数据
 
