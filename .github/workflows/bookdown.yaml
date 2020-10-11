@@ -76,16 +76,6 @@ jobs:
         echo "CXXFLAGS += -Wno-ignored-attributes" >> /usr/lib64/R/etc/Makeconf
         Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 
-    - name: Configure R CXXFLAGS/CXX14FLAGS
-      run: |
-        mkdir -p ~/.R
-        echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars
-        echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars
-        echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
-
-    - name: Check R packages
-      run: |
-        Rscript -e 'sessionInfo(sort(.packages(T)));.libPaths()'
 
     - name: Install R Packages
       run: |
@@ -96,14 +86,17 @@ jobs:
         dnf install -y R-CRAN-gganimate R-CRAN-ggridges R-CRAN-xgboost R-CRAN-lme4 R-CRAN-glmnet
         dnf install -y R-CRAN-plotly R-CRAN-prophet R-CRAN-quadprog R-CRAN-ggpubr
 
+    - name: Check R packages
+      run: |
+        Rscript -e 'sessionInfo(sort(.packages(T)));.libPaths()'
 
     - name: Install R Extra Packages
       run: |
         Rscript -e "if(!require('remotes')) install.packages('remotes')"
-        xvfb-run --auto-servernum Rscript -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
-        xvfb-run --auto-servernum Rscript -e "remotes::install_deps(dependencies = TRUE)"
+        # xvfb-run --auto-servernum Rscript -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
+        # xvfb-run --auto-servernum Rscript -e "remotes::install_deps(dependencies = TRUE)"
         Rscript -e "if(!require('spDataLarge')) install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
-        Rscript -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
+        # Rscript -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
         Rscript -e "if(!require('cmdstanr')) install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
-        xvfb-run --auto-servernum Rscript -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
-        Rscript -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
+        # xvfb-run --auto-servernum Rscript -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
+        # Rscript -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
