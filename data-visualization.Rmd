@@ -180,6 +180,34 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("ComplexHeatmap")
 ```
 
+### 条形图 {#subsec:bar-plot}
+
+```{r barplot,fig.cap="条形图的四种常见形态"}
+# 漫谈条形图 https://cosx.org/2017/10/discussion-about-bar-graph
+set.seed(2020)
+dat <- data.frame(
+  age = rep(1:30, 2),
+  gender = rep(c("man", "woman"), each = 30),
+  num = sample(x = 1:100, size = 60, replace = T)
+)
+# 重叠
+p1 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
+  geom_col(position = "identity", alpha = 0.5)
+# 堆积
+p2 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
+  geom_col(position = "stack")
+# 双柱
+p3 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
+  geom_col(position = "dodge")
+# 百分比
+p4 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(y = "%")
+(p1 + p2) / (p3 + p4)
+```
+
+
 ### 函数图 {#subsec:function-parameter}
 
 蝴蝶图的参数方程如下
