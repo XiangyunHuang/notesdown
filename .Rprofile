@@ -1,6 +1,5 @@
 if (file.exists('~/.Rprofile')) sys.source('~/.Rprofile', envir = environment())
 
-
 options(
   citation.bibtex.max = 999,
   bitmapType = "cairo",
@@ -10,7 +9,7 @@ options(
   stringsAsFactors = FALSE,
   knitr.graphics.auto_pdf = TRUE,
   rgl.printRglwidget = TRUE,
-  rgl.useNULL = TRUE, # used in vbox
+  rgl.useNULL = TRUE, # used in virtual box
   yaml.eval.expr = TRUE, # used by yaml.load
   width = 69,
   sciopen = 999,

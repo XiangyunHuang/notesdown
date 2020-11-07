@@ -7,14 +7,10 @@ library(htmlwidgets)
 library(reticulate)
 library(Rcpp)
 knitr::opts_chunk$set(python.reticulate = TRUE)
-
-if (identical(.Platform$OS.type, "windows")) {
-  # 在本地 Windows 系统上虚拟环境是用 miniconda3 创建的
-  reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-} else if (grepl(pattern = "Fedora", x = osVersion)) {
-  reticulate::use_python(python = "/usr/bin/python3", required = TRUE)
-} else {
+if(!is.na(Sys.getenv('CI', NA))) {
   reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  reticulate::use_miniconda(condaenv = "tensorflow", required = TRUE)
 }
 ```
 
