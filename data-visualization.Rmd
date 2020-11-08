@@ -11,8 +11,47 @@ clean_plotly <- function(p = ggplot2::last_plot(), ...) {
 }
 ```
 
-- Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
-- [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
+David Robinson 给出为何使用 ggplot2 [^why-ggplot2] 当然也有 Jeff Leek 指出在某些重要场合不适合 ggplot2 [^why-not-ggplot2] 并且给出强有力的 [证据](http://motioninsocial.com/tufte/)，其实不管怎么样，适合自己的才是好的。也不枉费 Garrick Aden-Buie 花费 160 页幻灯片逐步分解介绍 [优雅的ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2)，[Malcolm Barrett](https://malco.io/) 也介绍了 [ggplot2 基础用法](https://malco.io/slides/hs_ggplot2)，还有 Selva Prabhakaran 精心总结给出了 50 个 ggplot2 数据可视化的 [例子](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) 以及 Victor Perrier 为小白用 ggplot2 操碎了心地开发 RStudio 插件 [esquisse](https://github.com/dreamRs/esquisse) 包，Claus O. Wilke 教你一步步创建出版级的图形 <https://github.com/clauswilke/practical_ggplot2>。
+
+ggplot2 是十分方便的统计作图工具，相比 Base R，为了一张出版级的图形，不需要去调整每个参数，实现快速出图。集成了很多其它统计计算的 R 包，支持丰富的统计分析和计算功能，如回归、平滑等，实现了作图和模型的无缝连接。比如图\@ref(fig:awesome-ggplot2)，使用 loess 局部多项式平滑得到数据的趋势，不仅仅是散点图，代码量也非常少。
+
+```{r awesome-ggplot2,fig.cap="简洁美观"}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = TRUE, method = "loess") +
+  labs(
+    title = "Fuel efficiency generally decreases with engine size",
+    subtitle = "Two seaters (sports cars) are an exception because of their light weight",
+    caption = "Data from fueleconomy.gov"
+  )
+```
+
+故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
+
+1. Pablo Barberá 的 [Data Visualization with R and ggplot2](https://github.com/pablobarbera/Rdataviz)
+2. Kieran Healy 的新书 [Data Visualization: A Practical Introduction](https://kieranhealy.org/publications/dataviz/)
+3. Matt Leonawicz 的新作 [mapmate](https://github.com/leonawicz/mapmate), 可以去其主页欣赏系列作品^[<https://leonawicz.github.io/>] 
+1. [tidytuesday 可视化挑战官方项目](https://github.com/rfordatascience/tidytuesday) 还有 [tidytuesday](https://github.com/abichat/tidytuesday)
+1. [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot) 可视化统计检验、模型的结果
+1. [ggpubr](https://github.com/kassambara/ggpubr) 制作出版级统计图形
+1. Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
+1. [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
+
+
+[^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
+[^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
+
+如 Berton Gunter 所说，数据可视化只是一种手段，根据数据实际情况作展示才是重要的，并不是要追求酷炫。
+
+> 3-D bar plots are an abomination. Just because Excel can do them doesn't mean you should. (Dismount pulpit).
+>
+>   --- Berton Gunter [^BG-help-2007]
+      
+
+[^BG-help-2007]: <https://stat.ethz.ch/pipermail/r-help/2007-October/142420.html>
+
+**grid** 是 **lattice** 和 **ggplot2** 的基础，**gganimate** 是 ggplot2 一个扩展，它将静态图形视为帧，调用第三方工具合成 GIF 动图或 MP4 视频等，要想深入了解 ggplot2，可以去看 [Hadley Wickham](http://hadley.nz), [Danielle Navarro](https://djnavarro.net), and [Thomas Lin Pedersen](https://www.data-imaginist.com) 合著的《ggplot2: elegant graphics for data analysis》第三版 <https://ggplot2-book.org/>。
+
 
 ## 元素 {#sec:elements}
 
@@ -750,7 +789,7 @@ mapply(
 
 以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) ， [DejaVu](https://github.com/dejavu-fonts) 、[liberation](https://github.com/liberationfonts/liberation-fonts) 等字体。可以安装自己喜欢的字体类型，比如：
 
-``` {.bash}
+```bash
 sudo dnf install -y \
   google-noto-mono-fonts \
   google-noto-sans-fonts \
@@ -775,13 +814,13 @@ liberation 系列的四款字体可以用来替换 Windows 系统上对应的四
 
 此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 [awesome-fonts](https://github.com/brabadu/awesome-fonts) 列表是一个不错的开始，比如图标字体 [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)，
 
-``` {.bash}
+```bash
 sudo dnf install -y fontawesome-fonts
 ```
 
 再安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，下面这个示例推荐用 XeLaTeX 引擎编译。
 
-``` {.tex}
+```tex
 \documentclass[border=10pt]{standalone}
 \usepackage{fontawesome}
 \begin{document}
@@ -1120,7 +1159,7 @@ data.frame(
 
 除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
 
-```{bash}
+```bash
 sudo dnf install -y google-noto-emoji-color-fonts \
   google-noto-emoji-fonts
 # MacOS
