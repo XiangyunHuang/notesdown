@@ -117,10 +117,6 @@ jobs:
       - name: Check R packages
         run: |
           R -e 'sessionInfo(sort(.packages(T)))'
-          # check TinyTeX
-          R -e 'tinytex:::is_tinytex()'
-          # check phantomjs
-          R -e 'webshot::is_phantomjs_installed()'
 
       - name: Install Fonts
         run: |
@@ -140,9 +136,7 @@ jobs:
 
       - name: Build Book
         run: |
-          export PATH=$HOME/bin:$PATH
-          make gitbook
-          # if make gitbook; then make pdf; fi
+          if make gitbook; then make pdf; fi
 
       - uses: actions/upload-artifact@v2
         if: success()
