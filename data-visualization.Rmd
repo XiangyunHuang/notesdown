@@ -140,6 +140,35 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
   theme_void(base_size = 14)
 ```
 
+`plot_ly(type = "pie", ... )` 和添加图层 `add_pie()` 的效果是一样的
+
+```{r diamond-pie,fig.cap="饼图",eval=knitr::is_html_output()}
+library(plotly, warn.conflicts = FALSE)
+library(data.table)
+diamonds <- as.data.table(diamonds)
+dat <- diamonds[, .(cnt = .N), by = .(cut)]
+
+p1 <- plot_ly(dat,
+  labels = ~cut, values = ~cnt,
+  showlegend = FALSE, type = "pie"
+) %>%
+  layout(title = "简单饼图") %>%
+  config(displayModeBar = FALSE)
+
+p2 <- plot_ly(dat,
+  labels = ~cut, values = ~cnt,
+  textposition = "inside",
+  textinfo = "label+percent", showlegend = FALSE
+) %>%
+  add_pie(hole = 0.6) %>%
+  layout(title = "钻石纯净度等级分布") %>%
+  config(displayModeBar = FALSE)
+
+htmltools::tagList(p1, p2)
+```
+
+设置参数 hole 可以绘制环形饼图，比如 hole = 0.6 
+
 ### 地图 {#sec:ggplot2-map}
 
 USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 \@ref(fig:state-crimes)
@@ -305,7 +334,7 @@ plot_ly(dat,
   text = ~ paste0(
     cnt, "颗 <br>",
     "占比：", scales::percent(pct, accuracy = 0.1), "<br>"
-  ),
+  ), 
   hoverinfo = "text"
 ) %>%
   layout(barmode = "stack", barnorm = "percent") %>%
