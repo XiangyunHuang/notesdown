@@ -118,6 +118,8 @@ mtcars %>%
 
 Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
 
+
+
 ## 图形 {#sec:figures}
 
 ### 饼图 {#sec:ggplot2-pie}
@@ -226,7 +228,7 @@ BiocManager::install("ComplexHeatmap")
 
 ### 条形图 {#subsec:bar-plot}
 
-```{r barplot,fig.cap="条形图的四种常见形态"}
+```{r barplot-1,fig.cap="条形图的四种常见形态"}
 # 漫谈条形图 https://cosx.org/2017/10/discussion-about-bar-graph
 set.seed(2020)
 dat <- data.frame(
@@ -249,6 +251,65 @@ p4 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
   scale_y_continuous(labels = scales::percent_format()) +
   labs(y = "%")
 (p1 + p2) / (p3 + p4)
+```
+
+以数据集 diamonds 为例，按照纯净度 clarity 和切工 cut 分组统计钻石的数量，再按切工分组统计不同纯净度的钻石数量占比，如表 \@ref(tab:diamonds) 所示
+
+```{r diamonds}
+library(data.table)
+diamonds <- as.data.table(diamonds)
+dat <- diamonds[, .(cnt = .N), by = .(cut, clarity)] %>% 
+  .[, pct := cnt / sum(cnt), by = .(cut)] %>% 
+  .[, pct_pp := paste0(cnt, "(", scales::percent(pct, accuracy = 0.01), ")") ]
+
+dcast(dat, formula = clarity ~ cut, value.var = c("pct_pp")) %>% 
+  knitr::kable(align = "crrrrr")
+```
+
+分别以堆积条形图和百分比堆积条形图展示，添加注释到条形图上，见 \@ref(fig:barplot-2)
+
+```{r barplot-2,fig.cap="添加注释到条形图",fig.height=8,fig.width=4}
+p1 = ggplot(data = dat, aes(x = cut, y = cnt, fill = clarity)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = cnt), position = position_dodge(1), vjust = -0.5) +
+  geom_text(aes(label = scales::percent(pct, accuracy = 0.1)),
+    position = position_dodge(1), vjust = 1, hjust = 0.5
+  ) +
+  scale_fill_brewer(palette = "Spectral") +
+  labs(fill = "clarity", y = "", x = "cut") +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+p2 = ggplot(data = dat, aes(y = cut, x = cnt, fill = clarity)) +
+  geom_col(position = "fill") +
+  geom_text(aes(label = cnt), position = position_fill(1), vjust = -0.5) +
+  geom_text(aes(label = scales::percent(pct, accuracy = 0.1)),
+    position = position_fill(1), vjust = 1, hjust = 0.5
+  ) +
+  scale_fill_brewer(palette = "Spectral") +
+  scale_x_continuous(labels = scales::percent) +
+  labs(fill = "clarity", y = "", x = "cut") +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+p1 / p2
+```
+
+借助 plotly 制作相应的动态百分比堆积条形图
+
+```{r barplot-3,eval=knitr::is_html_output(),fig.cap="百分比堆积条形图"}
+library(plotly, warn.conflicts = FALSE)
+plot_ly(dat,
+  y = ~cut, color = ~clarity, x = ~cnt,
+  colors = "Spectral", type = "bar",
+  text = ~ paste0(
+    cnt, "颗 <br>",
+    "占比：", scales::percent(pct, accuracy = 0.1), "<br>"
+  ),
+  hoverinfo = "text"
+) %>%
+  layout(barmode = "stack", barnorm = "percent") %>%
+  config(displayModeBar = FALSE)
 ```
 
 
