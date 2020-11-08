@@ -290,7 +290,7 @@ diamonds <- as.data.table(diamonds)
 dat <- diamonds[, .(cnt = .N), by = .(cut, clarity)] %>% 
   .[, pct := cnt / sum(cnt), by = .(cut)] %>% 
   .[, pct_pp := paste0(cnt, " (", scales::percent(pct, accuracy = 0.01), ")") ]
-
+# 分组计数 with(diamonds, table(clarity, cut))
 dcast(dat, formula = clarity ~ cut, value.var = "pct_pp") %>% 
   knitr::kable(align = "crrrrr", caption = "数值和比例组合呈现")
 ```
@@ -327,7 +327,13 @@ p1 / p2
 借助 plotly 制作相应的动态百分比堆积条形图
 
 ```{r barplot-3,eval=knitr::is_html_output(),fig.cap="百分比堆积条形图", warning=FALSE}
+library(ggplot2)
 library(plotly, warn.conflicts = FALSE)
+
+ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+  geom_bar(position = "dodge2") +
+  scale_fill_brewer(palette = "Spectral")
+
 plot_ly(dat,
   y = ~cut, color = ~clarity, x = ~cnt,
   colors = "Spectral", type = "bar",
@@ -339,7 +345,38 @@ plot_ly(dat,
 ) %>%
   layout(barmode = "stack", barnorm = "percent") %>%
   config(displayModeBar = FALSE)
+
+# `type = "histogram"` 以 cut 和 clarity 分组计数
+plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  config(displayModeBar = FALSE)
+
+# 堆积图
+plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  layout(
+    barmode = "stack", yaxis = list(title = "cnt"),
+    legend = list(title = list(text = "clarity"))
+  ) %>%
+  config(displayModeBar = FALSE)
+
+# 百分比堆积图
+plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  layout(
+    barmode = "stack", barnorm = "percent",
+    yaxis = list(title = "percent"),
+    legend = list(title = list(text = "clarity"))
+  ) %>%
+  config(displayModeBar = FALSE)
 ```
+
 
 
 ### 函数图 {#subsec:function-parameter}
