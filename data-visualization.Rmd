@@ -282,17 +282,17 @@ p4 <- ggplot(data = dat, aes(x = age, y = num, fill = gender)) +
 (p1 + p2) / (p3 + p4)
 ```
 
-以数据集 diamonds 为例，按照纯净度 clarity 和切工 cut 分组统计钻石的数量，再按切工分组统计不同纯净度的钻石数量占比，如表 \@ref(tab:diamonds) 所示
+以数据集 diamonds 为例，按照纯净度 clarity 和切工 cut 分组统计钻石的数量，再按切工分组统计不同纯净度的钻石数量占比，如表 \@ref(tab:diamonds-table) 所示
 
-```{r diamonds}
+```{r diamonds-table}
 library(data.table)
 diamonds <- as.data.table(diamonds)
 dat <- diamonds[, .(cnt = .N), by = .(cut, clarity)] %>% 
   .[, pct := cnt / sum(cnt), by = .(cut)] %>% 
-  .[, pct_pp := paste0(cnt, "(", scales::percent(pct, accuracy = 0.01), ")") ]
+  .[, pct_pp := paste0(cnt, " (", scales::percent(pct, accuracy = 0.01), ")") ]
 
-dcast(dat, formula = clarity ~ cut, value.var = c("pct_pp")) %>% 
-  knitr::kable(align = "crrrrr")
+dcast(dat, formula = clarity ~ cut, value.var = "pct_pp") %>% 
+  knitr::kable(align = "crrrrr", caption = "数值和比例组合呈现")
 ```
 
 分别以堆积条形图和百分比堆积条形图展示，添加注释到条形图上，见 \@ref(fig:barplot-2)
