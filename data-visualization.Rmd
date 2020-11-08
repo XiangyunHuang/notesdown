@@ -268,7 +268,7 @@ dcast(dat, formula = clarity ~ cut, value.var = c("pct_pp")) %>%
 
 分别以堆积条形图和百分比堆积条形图展示，添加注释到条形图上，见 \@ref(fig:barplot-2)
 
-```{r barplot-2,fig.cap="添加注释到条形图",fig.height=8,fig.width=4}
+```{r barplot-2,fig.cap="添加注释到条形图",fig.height=8,fig.width=8}
 p1 = ggplot(data = dat, aes(x = cut, y = cnt, fill = clarity)) +
   geom_col(position = "dodge") +
   geom_text(aes(label = cnt), position = position_dodge(1), vjust = -0.5) +
@@ -297,7 +297,7 @@ p1 / p2
 
 借助 plotly 制作相应的动态百分比堆积条形图
 
-```{r barplot-3,eval=knitr::is_html_output(),fig.cap="百分比堆积条形图"}
+```{r barplot-3,eval=knitr::is_html_output(),fig.cap="百分比堆积条形图", warning=FALSE}
 library(plotly, warn.conflicts = FALSE)
 plot_ly(dat,
   y = ~cut, color = ~clarity, x = ~cnt,
@@ -481,16 +481,16 @@ ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = Month, fill = stat(x
 
 通过数据可视化的手段帮助肉眼检查两组数据的分布
 
-```{r sleep-ridges,fig.cap="两组数据的分布"}
-ggplot(sleep, aes(x = extra, y = group, fill = group)) +
+```{r sleep-diamonds,fig.cap="比较数据的分布",fig.width=6,fig.height=8}
+p1 <- ggplot(sleep, aes(x = extra, y = group, fill = group)) +
   geom_density_ridges() +
   theme_ridges()
-```
 
-```{r diamonds-ridges,fig.cap="比较多组数据的分布"}
-ggplot(diamonds, aes(x = price, y = color, fill = color)) +
+p2 <- ggplot(diamonds, aes(x = price, y = color, fill = color)) +
   geom_density_ridges() +
   theme_ridges()
+
+p1 / p2
 ```
 
 ### 椭圆图 {#sec:ggplot2-ellipse}
