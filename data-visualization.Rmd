@@ -328,13 +328,12 @@ p1 / p2
 
 ```{r barplot-3,eval=knitr::is_html_output(),fig.cap="百分比堆积条形图", warning=FALSE}
 library(ggplot2)
-library(plotly, warn.conflicts = FALSE)
 
 ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
   geom_bar(position = "dodge2") +
   scale_fill_brewer(palette = "Spectral")
 
-plot_ly(dat,
+plotly::plot_ly(dat,
   y = ~cut, color = ~clarity, x = ~cnt,
   colors = "Spectral", type = "bar",
   text = ~ paste0(
@@ -343,38 +342,38 @@ plot_ly(dat,
   ), 
   hoverinfo = "text"
 ) %>%
-  layout(barmode = "stack", barnorm = "percent") %>%
-  config(displayModeBar = FALSE)
+  plotly::layout(barmode = "stack", barnorm = "percent") %>%
+  plotly::config(displayModeBar = FALSE)
 
 # `type = "histogram"` 以 cut 和 clarity 分组计数
-plot_ly(diamonds,
+plotly::plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Spectral", type = "histogram"
 ) %>%
-  config(displayModeBar = FALSE)
+  plotly::config(displayModeBar = FALSE)
 
 # 堆积图
-plot_ly(diamonds,
+plotly::plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Spectral", type = "histogram"
 ) %>%
-  layout(
+  plotly::layout(
     barmode = "stack", yaxis = list(title = "cnt"),
     legend = list(title = list(text = "clarity"))
   ) %>%
-  config(displayModeBar = FALSE)
+  plotly::config(displayModeBar = FALSE)
 
 # 百分比堆积图
-plot_ly(diamonds,
+plotly::plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Spectral", type = "histogram"
 ) %>%
-  layout(
+  plotly::layout(
     barmode = "stack", barnorm = "percent",
     yaxis = list(title = "percent"),
     legend = list(title = list(text = "clarity"))
   ) %>%
-  config(displayModeBar = FALSE)
+  plotly::config(displayModeBar = FALSE)
 ```
 
 
@@ -409,8 +408,8 @@ ggplot(faithful, aes(x = eruptions, y = waiting)) +
 ::: {.rmdtip data-latex="{提示}"}
 `MASS::kde2d()` 实现二维核密度估计，**ggplot2** 包提供了两种等价的绘图方式
 
-- `stat_density_2d()` 和 `..` 
-- `stat_density2d()` 和 `stat()`
+1. `stat_density_2d()` 和 `..` 
+1. `stat_density2d()` 和 `stat()`
 :::
 
 ```{r,eval=knitr::is_html_output(),fig.cap="二维直方图/密度图/轮廓图"}
@@ -765,6 +764,40 @@ ggplot(G20, aes(area = gdp_mil_usd, fill = region, label = country, subgroup = r
     fill = "Region"
   )
 ```
+
+
+### 瀑布图 {#subsec:ggplot2-waterfall}
+
+瀑布图 waterfall 与上月相比，谁增谁减，用瀑布图分别表示占比和绝对数值。[瀑布图 waterfall](https://vita.had.co.nz/papers/ggplot2-wires.pdf)
+
+```{r waterfall,fig.cap="瀑布图"}
+balance <- data.frame(
+  event = c(
+    "Starting\nCash", "Sales", "Refunds",
+    "Payouts", "Court\nLosses", "Court\nWins", "Contracts", "End\nCash"
+  ),
+  change = c(2000, 3400, -1100, -100, -6600, 3800, 1400, -2800)
+)
+
+balance$balance <- cumsum(c(0, balance$change[-nrow(balance)])) # 累计值
+balance$time <- 1:nrow(balance)
+balance$flow <- factor(sign(balance$change)) # 变化为正还是为负
+
+ggplot(balance) +
+  geom_hline(yintercept = 0, colour = "white", size = 2) +
+  geom_rect(aes(
+    xmin = time - 0.45, xmax = time + 0.45,
+    ymin = balance, ymax = balance + change, fill = flow
+  )) +
+  geom_text(aes(x = time, y = pmin(balance, balance + change) - 50, 
+                label = scales::dollar(change)), 
+            hjust = 0.5, vjust = 1, size = 3) +
+  scale_x_continuous(name = "", breaks = balance$time, labels = balance$event) +
+  scale_y_continuous(name = "Balance", labels = scales::dollar) +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_minimal()
+```
+
 
 ### 龙卷风图 {#subsec:ggplot2-tornado}
 
