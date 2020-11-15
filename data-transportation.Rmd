@@ -2,11 +2,6 @@
 
 美团使用的大数据工具有很多，最常用的 Hive、Spark、Kylin、Impala、Presto 等，详见 <https://tech.meituan.com/2018/08/02/mt-r-practice.html>。下面主要介绍如何在 R 中连接 MySQL、Presto 和 Spark。
 
-[Presto](https://github.com/prestodb/presto) 的 R 接口 <https://github.com/prestodb/RPresto> 和文档 <https://prestodb.io/docs/current/index.html>，
-
-朱俊晖收集的 Spark 资源列表 <https://github.com/harryprince/awesome-sparklyr>，推荐使用 sparklyr <https://github.com/sparklyr/sparklyr> 连接 Spark
-
-Spark 与 R 语言 <https://docs.microsoft.com/en-us/azure/databricks/spark/latest/sparkr/>
 
 Spark 性能优化，参考三篇博文
 
@@ -14,24 +9,58 @@ Spark 性能优化，参考三篇博文
 - [Spark性能优化指南——基础篇](https://tech.meituan.com/2016/04/29/spark-tuning-basic.html)
 - [Spark性能优化指南——高级篇](https://tech.meituan.com/2016/05/12/spark-tuning-pro.html)
 
-## Spark {#sec:spark}
+其他材料
+
+- 朱俊晖收集的 Spark 资源列表 <https://github.com/harryprince/awesome-sparklyr>，推荐使用 sparklyr <https://github.com/sparklyr/sparklyr> 连接 Spark
+- Spark 与 R 语言 <https://docs.microsoft.com/en-us/azure/databricks/spark/latest/sparkr/>
+- Mastering Spark with R <https://therinspark.com/>
+
+## Spark 与 R 语言 {#sec:spark-with-r}
 
 ### sparklyr {#subsec:sparklyr}
 
-Mastering Spark with R <https://therinspark.com/>
+
+::: {.rmdwarn data-latex="{警告}"}
+Spark 依赖特定版本的 Java、Hadoop，三者之间的版本应该要相融。
+:::
+
+在 MacOS 上配置 Java 环境，注意 Spark 仅支持 Java 8 至 11，所以安装指定版本的 Java 开发环境
+
+```bash
+# 安装 openjdk 11
+brew install openjdk@11
+# 全局设置 JDK 11
+sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+
+# Java 11 JDK 添加到 .zshrc 
+export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+```
+
+配置 R 环境，让 R 能够识别 Java 环境，再安装 rJava
+
+```bash
+# 配置
+sudo R CMD javareconf
+# 安装 rJava
+Rscript -e 'install.packages("rJava", type="soure")'
+```
+
+最后安装 **sparklyr**
 
 ```{r,eval=!require('sparklyr')}
 install.packages('sparklyr')
 ```
 
-借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装
+借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装，或者手动下载 Spark 软件环境，此环境自带 R 和 Python 接口，建议选择就近镜像站点下载，比如在北京选择清华站点
+<https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>。
 
 ```{r,eval=FALSE}
 library(sparklyr)
 spark_install(version = '3.0', hadoop_version = '2.7')
 ```
 
-先设置 SPARK_HOME 环境变量，连接本地单机版 Spark
+先设置 `SPARK_HOME` 环境变量，再连接本地单机版 Spark
 
 ```{r}
 # 连接 Spark 
@@ -45,6 +74,7 @@ diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
 
 ```{r,eval=FALSE}
 library(dplyr)
+# 列出数据源下所有的表 tbls
 src_tbls(sc)
 
 diamonds_tbl <- diamonds_tbl %>%
@@ -61,46 +91,29 @@ diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GR
 diamonds_preview
 ```
 
+将结果数据用 ggplot2 呈现出来
 
 ```{r}
 library(ggplot2)
 ggplot(diamonds_preview, aes(cut, cnt)) +
-  geom_col()
+  geom_col() +
+  theme_minimal()
 ```
-最后关闭 Spark 连接
+
+最后，使用完记得关闭 Spark 连接
 
 ```{r}
 spark_disconnect(sc)
 ```
 
 
-
 ### SparkR {#subsec:sparkr}
 
-SparkR 包 <https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr>
+::: {.rmdnote data-latex="{注意}"}
+考虑到和第\@ref(subsec:sparklyr)节的重合性，以及 sparklyr 的优势，本节代码都不会执行，仅作为补充信息予以描述。完整的介绍见 [SparkR 包](https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr)
+:::
 
-MacOS 配置 Java 环境
-
-```bash
-# 安装 openjdk 11
-brew install openjdk@11
-# 全局设置 JDK 11
-sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-
-# Java 11 JDK
-export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
-export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-
-# 配置
-sudo R CMD javareconf
-# 安装 rJava
-Rscript -e 'install.packages("rJava", type="soure")'
-
-# 下载 Spark 软件环境，此环境自带 R 和 Python 接口
-# https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
-```
-
-```{r}
+```r
 if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
   Sys.setenv(SPARK_HOME = "/opt/spark/spark-3.0.1-bin-hadoop2.7")
 }
@@ -122,26 +135,26 @@ sparkR.session(master = "local[*]", sparkConfig = list(spark.driver.memory = "2g
 
 将 data.frame 转化为 SparkDataFrame
 
-```{r}
+```r
 faithful_sdf <- as.DataFrame(faithful)
 ```
 
 SparkDataFrame
 
-```{r}
+```r
 head(faithful_sdf)
 ```
 
 查看结构
 
-```{r}
+```r
 str(faithful_sdf)
 ```
 
 
 ## 数据库与 R 语言 {#sec:database-with-r}
 
-Presto 数据库
+[Presto](https://github.com/prestodb/presto) 的 R 接口 <https://github.com/prestodb/RPresto> 和文档 <https://prestodb.io/docs/current/index.html>，Presto 数据库
 
 ```{r,eval=FALSE}
 install.packages('RPresto')
