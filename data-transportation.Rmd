@@ -2,9 +2,11 @@
 
 美团使用的大数据工具有很多，最常用的 Hive、Spark、Kylin、Impala、Presto 等，详见 <https://tech.meituan.com/2018/08/02/mt-r-practice.html>。下面主要介绍如何在 R 中连接 MySQL、Presto 和 Spark。
 
-Presto 的 R 接口 <https://github.com/prestodb/RPresto>，
+[Presto](https://github.com/prestodb/presto) 的 R 接口 <https://github.com/prestodb/RPresto> 和文档 <https://prestodb.io/docs/current/index.html>，
 
 朱俊晖收集的 Spark 资源列表 <https://github.com/harryprince/awesome-sparklyr>，推荐使用 sparklyr <https://github.com/sparklyr/sparklyr> 连接 Spark
+
+Spark 与 R 语言 <https://docs.microsoft.com/en-us/azure/databricks/spark/latest/sparkr/>
 
 Spark 性能优化，参考三篇博文
 
@@ -12,22 +14,144 @@ Spark 性能优化，参考三篇博文
 - [Spark性能优化指南——基础篇](https://tech.meituan.com/2016/04/29/spark-tuning-basic.html)
 - [Spark性能优化指南——高级篇](https://tech.meituan.com/2016/05/12/spark-tuning-pro.html)
 
+## Spark {#sec:spark}
+
+### sparklyr {#subsec:sparklyr}
+
 Mastering Spark with R <https://therinspark.com/>
 
-```{r,eval=FALSE}
+```{r,eval=!require('sparklyr')}
 install.packages('sparklyr')
-library(sparklyr)
-spark_install(version = '3.0') # 连同 hadoop 2.7 一起安装
-
-install.packages('RPresto')
 ```
 
+借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装
+
+```{r,eval=FALSE}
+library(sparklyr)
+spark_install(version = '3.0', hadoop_version = '2.7')
+```
+
+先设置 SPARK_HOME 环境变量，连接本地单机版 Spark
+
+```{r}
+# 连接 Spark 
+library(sparklyr)
+sc <- spark_connect(master = "local", spark_home = Sys.getenv("SPARK_HOME"))
+# diamonds 数据集导入 Spark
+diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
+```
+
+做数据的聚合统计，有两种方式。一种是用 dplyr 式的编程
+
+```{r,eval=FALSE}
+library(dplyr)
+src_tbls(sc)
+
+diamonds_tbl <- diamonds_tbl %>%
+  group_by(cut) %>%
+  summarise(cnt = n()) %>%
+  collect
+```
+
+另一种是使用 SQL
+
+```{r}
+library(DBI)
+diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
+diamonds_preview
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(diamonds_preview, aes(cut, cnt)) +
+  geom_col()
+```
+最后关闭 Spark 连接
+
+```{r}
+spark_disconnect(sc)
+```
+
+
+
+### SparkR {#subsec:sparkr}
+
+SparkR 包 <https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr>
+
+MacOS 配置 Java 环境
+
+```bash
+# 安装 openjdk 11
+brew install openjdk@11
+# 全局设置 JDK 11
+sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+
+# Java 11 JDK
+export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+
+# 配置
+sudo R CMD javareconf
+# 安装 rJava
+Rscript -e 'install.packages("rJava", type="soure")'
+
+# 下载 Spark 软件环境，此环境自带 R 和 Python 接口
+# https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
+```
+
+```{r}
+if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
+  Sys.setenv(SPARK_HOME = "/opt/spark/spark-3.0.1-bin-hadoop2.7")
+}
+library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
+sparkR.session(master = "local[*]", sparkConfig = list(spark.driver.memory = "2g"))
+```
+
+`sparkConfig` 有哪些参数可以传递
+
+| Property Name                   | Property group         | `spark-submit` equivalent |
+| :------------------------------ | :--------------------- | :------------------------ |
+| `spark.master`                  | Application Properties | `--master`                |
+| `spark.kerberos.keytab`         | Application Properties | `--keytab`                |
+| `spark.kerberos.principal`      | Application Properties | `--principal`             |
+| `spark.driver.memory`           | Application Properties | `--driver-memory`         |
+| `spark.driver.extraClassPath`   | Runtime Environment    | `--driver-class-path`     |
+| `spark.driver.extraJavaOptions` | Runtime Environment    | `--driver-java-options`   |
+| `spark.driver.extraLibraryPath` | Runtime Environment    | `--driver-library-path`   |
+
+将 data.frame 转化为 SparkDataFrame
+
+```{r}
+faithful_sdf <- as.DataFrame(faithful)
+```
+
+SparkDataFrame
+
+```{r}
+head(faithful_sdf)
+```
+
+查看结构
+
+```{r}
+str(faithful_sdf)
+```
+
+
 ## 数据库与 R 语言 {#sec:database-with-r}
+
+Presto 数据库
+
+```{r,eval=FALSE}
+install.packages('RPresto')
+```
 
 MySQL 为例介绍 odbc 的连接和使用，详见 [从 R 连接 MySQL](https://cosx.org/2020/06/connect-mysql-from-r/)
 
 ```{sql,eval=F}
--- !preview conn=DBI::dbConnect(odbc::odbc(),  driver = "MariaDB", database = "demo", uid = "root", pwd = "cloud", host = "localhost", port = 3306)
+-- !preview conn=DBI::dbConnect(odbc::odbc(),  driver = "MariaDB", database = "demo", 
+--                              uid = "root", pwd = "cloud", host = "localhost", port = 3306)
 
 SELECT * FROM mtcars
 LIMIT 10
@@ -54,11 +178,10 @@ FileUsage       = 1
 
 
 
-## 批量读取 csv 文件 {#sec:batch-xlsx-import}
+## 批量读取 csv 文件 {#sec:batch-import-csv}
 
-iris 拆分成 csv xlsx 文件，分别用 fread/openxlsx 批量读取、导出
 
-按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示
+iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示
 
 ```{r,eval=FALSE}
 # 批量分组导出
@@ -66,11 +189,13 @@ library(data.table)
 as.data.table(iris)[, fwrite(.SD, paste0("data/user_", unique(Species), ".csv")), by = Species, .SDcols = colnames(iris)]
 ```
 
+读取文件夹 `data/` 所有 csv 数据文件
 
 ```{r,eval=FALSE}
 library(data.table)
-
 merged_df <- do.call('rbind', lapply(list.files(pattern = "*.csv", path = "data/"), fread ) )
+# 或者
+merged_df <- rbindlist(lapply(list.files(pattern = "*.csv", path = "data/"), fread ))
 ```
 
 
@@ -116,7 +241,7 @@ mtcars %>%
   print(., n = nrow(.)/4)
 ```
 
-## 批量导出 xlsx 文件 {#sec:batch-xlsx-export}
+## 批量导出 xlsx 文件 {#sec:batch-export-xlsx}
 
 
 将 R 环境中的数据集导出为 xlsx 表格
