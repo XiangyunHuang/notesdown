@@ -25,14 +25,15 @@ jobs:
     strategy:
       matrix:
         config:
-          - {os: ubuntu-20.04, r: '4.0.2'}
+          - {os: ubuntu-20.04, r: '4.0.3'}
 
     env:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.24.1"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.24.1"
+      CMDSTAN_VERSION: "2.25.0"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.25.0"
+      SPARK_HOME: "/opt/spark/spark-3.0.1-bin-hadoop2.7"
 
     steps:
       - name: Checkout repo
@@ -49,7 +50,7 @@ jobs:
       - name: Install Pandoc
         uses: r-lib/actions/setup-pandoc@v1
         with:
-          pandoc-version: '2.10.1'
+          pandoc-version: '2.11.1'
 
       - name: Install ghostscript and Others
         run: |
@@ -63,6 +64,11 @@ jobs:
           export PATH=$HOME/bin:$PATH
           Rscript -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
 
+      - name: Install Spark ENV
+        run: |
+          mkdir -p /opt/spark/
+          curl -fLo spark-3.0.1-bin-hadoop2.7.tgz https://archive.apache.org/dist/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
+          tar -xzf spark-3.0.1-bin-hadoop2.7.tgz -C /opt/spark/
 
       - name: Install Python ENV
         run: |
@@ -117,10 +123,6 @@ jobs:
       - name: Check R packages
         run: |
           R -e 'sessionInfo(sort(.packages(T)))'
-          # check TinyTeX
-          R -e 'tinytex:::is_tinytex()'
-          # check phantomjs
-          R -e 'webshot::is_phantomjs_installed()'
 
       - name: Install Fonts
         run: |
@@ -156,7 +158,7 @@ jobs:
         uses: nwtgck/actions-netlify@v1.1
         with:
           publish-dir: './_book'
-          production-branch: master
+          production-branch: devel
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message:
             'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'

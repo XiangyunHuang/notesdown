@@ -1,31 +1,5 @@
 if (file.exists('~/.Rprofile')) sys.source('~/.Rprofile', envir = environment())
 
-local({
-  pandoc_path <- Sys.getenv("RSTUDIO_PANDOC", NA)
-  if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
-    Sys.setenv(PATH = paste(
-      Sys.getenv("PATH"), pandoc_path,
-      sep = if (.Platform$OS.type == "unix") ":" else ";"
-    ))
-  }
-  # add local PhantomJS Path
-  if (Sys.getenv("CI") == "" && grepl("macOS", utils::sessionInfo()$running)) {
-    Sys.setenv(PATH = paste(
-      normalizePath("~/Library/phantomjs-2.1.1-macosx/bin"),
-      Sys.getenv("PATH"),
-      sep = .Platform$path.sep
-    ))
-  }
-
-  if (Sys.getenv("CI") == "" && grepl("CentOS", utils::sessionInfo()$running)) {
-    Sys.setenv(PATH = paste(
-      normalizePath("/opt/phantomjs/phantomjs-2.1.1-linux-x86_64/bin"),
-      Sys.getenv("PATH"),
-      sep = .Platform$path.sep
-    ))
-  }
-})
-
 options(
   citation.bibtex.max = 999,
   bitmapType = "cairo",
@@ -35,7 +9,7 @@ options(
   stringsAsFactors = FALSE,
   knitr.graphics.auto_pdf = TRUE,
   rgl.printRglwidget = TRUE,
-  rgl.useNULL = TRUE, # used in vbox
+  rgl.useNULL = TRUE, # used in virtual box
   yaml.eval.expr = TRUE, # used by yaml.load
   width = 69,
   sciopen = 999,

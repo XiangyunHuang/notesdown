@@ -4,15 +4,12 @@
 library(reticulate)
 knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
 # 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
-if (identical(.Platform$OS.type, "windows")) {
-  # 在本地 Windows 系统上虚拟环境是用 miniconda3 创建的
-  reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-} else if (grepl(pattern = "Fedora", x = osVersion)) {
-  reticulate::use_python(python = "/usr/bin/python3", required = TRUE)
-} else {
+if(!is.na(Sys.getenv('CI', NA))) {
   reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  reticulate::use_miniconda(condaenv = "tensorflow", required = TRUE)
 }
-
+# reticulate::py_discover_config()
 Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN") # 用于 tools::CRAN_package_db()
 library(nomnoml)
 ```
@@ -1133,7 +1130,7 @@ print (hf, "peaks-more.svg", "-color"," -dsvg");
    pip install numpy
    ```
    
-::: rmdinfo
+
 一般来讲，系统自带的 pip 版本较低，可以考虑升级 pip 版本。
 
 ```bash
@@ -1151,7 +1148,18 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 ```bash
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow
 ```
-:::
+
+conda 创建 Python 3.8 虚拟环境，并命名为 tensorflow
+
+```bash
+conda create -n tensorflow python=3.8
+```
+
+激活 tensorflow 环境
+
+```bash
+conda activate tensorflow
+```
 
 ## Python 基础绘图 {#sec:plot-python}
 
@@ -1245,6 +1253,29 @@ plt.title(r'Rastrigin Function in Two Dimensions')
 plt.show()
 ```
 
+## Python 基础操作 {#sec:basic-python}
+
+
+
+```{python,eval=F}
+import sys
+# 模块存放路径
+print(sys.path)
+# 已安装的模块
+sys.modules.keys()
+```
+
+
+```{python,eval=F}
+dict_keys(['sys', 'builtins', '_frozen_importlib', '_imp', '_warnings', '_frozen_importlib_external', '_io', 'marshal', 'posix', '_thread', '_weakref', 'time', 'zipimport', '_codecs', 'codecs', 'encodings.aliases', 'encodings.cp437', 'encodings', 'encodings.utf_8', '_signal', '__main__', 'encodings.latin_1', '_abc', 'abc', 'io', '_stat', 'stat', '_collections_abc', 'genericpath', 'posixpath', 'os.path', 'os', '_sitebuiltins', 'site', 'readline', 'atexit', 'rlcompleter'])
+```
+
+```bash
+pip3 install virtualenv
+virtualenv -p python3 <desired-path>
+source <desired-path>/bin/activate
+source /opt/virtualenv/tensorflow/bin/activate
+```
 
 ## CmdStan 概率编程 {#setup-cmdstan}
 
@@ -1253,9 +1284,11 @@ plt.show()
 
 ```{r,eval=FALSE}
 remotes::install_github('stan-dev/cmdstanr')
+# 或者
+install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 ```
 
-Stan 的命令行接口功能最全全新，使用 cmdstanr 包可以滚动更新 CmdStan，相比于 rstan/rstanarm 包，cmdstanr 包的一个巨大优势是和 Stan 软件的更新分离。由此带来的好处，后续可以在文中见到
+Stan 的命令行接口功能最全全新，使用 **cmdstanr** 包可以滚动更新 CmdStan，相比于 **rstan** 包，**cmdstanr** 包的一个巨大优势是和 Stan 软件的更新分离。由此带来的好处，后续可以在文中见到
 
 ```{r stan-binom, results = ifelse(knitr::is_latex_output(), 'hide', 'hold'),cache=FALSE}
 library(cmdstanr)
@@ -1282,16 +1315,20 @@ fit$cmdstan_summary()
 fit$summary()
 ```
 
+调用 draws 方法 `fit$draws()`，获得一个由 **posterior** 构造的 `draws_array` 对象，
+
 ```{r}
-# this is a draws_array object from the posterior package
 draws_array <- fit$draws()
 str(draws_array)
 ```
 
-```{r}
-# can be passed directly to bayesplot to plot posterior distribution
+采样结果可以直接传递给 **bayesplot** 包，绘制参数的后验分布。
+
+```{r theta-dist,fig.cap="(ref:theta-dist-cap)"}
 mcmc_hist(fit$draws("theta"))
 ```
+
+(ref:theta-dist-cap) 参数 $\theta$ 的后验分布 
 
 ## VBox 虚拟机 {#sec:virtual-vbox}
 

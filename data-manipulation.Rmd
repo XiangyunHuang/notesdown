@@ -394,7 +394,7 @@ class(iris)
 ```
 
 
-## data.table 与 ggplot2 {#sec:datatable-ggplot2}
+用 magrittr 提供的管道符号连接 data.table 的数据操作与 ggplot2 的数据可视化
 
 ```{r datatable-ggplot2}
 library(ggplot2)
@@ -406,6 +406,24 @@ iris %>%
   # .[, grepl("Sepal", colnames(.)), with = FALSE] %>%
   ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + # 绘图
   geom_point()
+```
+
+## `CASE WHEN` 和 `fcase` {#sec:case-when}
+
+`CASE WHEN` 是 SQL 中的条件判断语句，**data.table** 中的函数 `fcase()` 可与之等价。值得注意的是，`fcase()` 需要 **data.table** 版本 1.13.0 及以上。
+
+
+```{r}
+dat <- data.table(
+  weights = c(56.8, 57.2, 46.3, 38.5),
+  gender = c("1", "0", "", "0")
+)
+# 1 表示男，0表示女，空表示未知
+transform(dat, gender_cn = fcase(
+  gender == "1", "男",
+  gender == "0", "女",
+  gender == "", "未知"
+))
 ```
 
 
