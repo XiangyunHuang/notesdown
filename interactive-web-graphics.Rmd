@@ -279,7 +279,7 @@ Highcharts.chart('container', {
 });
 ```
 
-对应到 R 包 highcharter 中，绘图代码如下：
+对应到 R 包 **highcharter** 中，绘图代码如下：
 
 ```{r hc-area,eval=knitr::is_html_output(),fig.cap="1940年至2017年美国和俄罗斯核武器数量变化"}
 library(highcharter)
@@ -338,7 +338,25 @@ library(highcharter)
 methods(hchart)
 ```
 
-更多 API 细节描述见 <https://jkunst.com/highcharter/articles/modules.html>。此外，highcharter 提供 `highchartOutput()` 和 `renderHighchart()` 函数支持在 shiny 中使用 highcharts 图形。
+更多 API 细节描述见 <https://jkunst.com/highcharter/articles/modules.html>。 桑基图描述能量的流动 [^sankey]
+
+```{r,eval=knitr::is_html_output(),fig.cap="桑基图"}
+library(jsonlite)
+# 转化为 JSON 格式的字符串
+dat <- toJSON(data.frame(
+  from = c("AT", "DE", "CH", "DE"),
+  to = c("DE", "CH", "DE", "FI"),
+  weight = c(10, 5, 15, 5)
+))
+
+highchart() %>%
+  hc_chart(type = "sankey") %>%
+  hc_add_series(data = dat)
+```
+
+[^sankey]: <https://antv-2018.alipay.com/zh-cn/vis/chart/sankey.html>
+
+此外，highcharter 提供 `highchartOutput()` 和 `renderHighchart()` 函数支持在 shiny 中使用 highcharts 图形。
 
 ```{r,eval=FALSE}
 library(shiny)
@@ -371,6 +389,22 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 ```
 :::
 
+[networkD3](https://github.com/christophergandrud/networkD3) 非常适合绘制网络图
+
+```{r}
+library(networkD3)
+data(MisLinks, MisNodes) # 加载数据
+head(MisLinks) # 边
+head(MisNodes) # 节点
+```
+
+构造网络图
+
+```{r,eval=knitr::is_html_output()}
+forceNetwork(Links = MisLinks, Nodes = MisNodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.4)
+```
 
 <!--
 ## echarts4r
