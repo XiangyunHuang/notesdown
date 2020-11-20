@@ -143,26 +143,25 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
 `plot_ly(type = "pie", ... )` 和添加图层 `add_pie()` 的效果是一样的
 
 ```{r diamond-pie,fig.cap="饼图",eval=knitr::is_html_output()}
-library(plotly, warn.conflicts = FALSE)
 library(data.table)
 diamonds <- as.data.table(diamonds)
 dat <- diamonds[, .(cnt = .N), by = .(cut)]
 
-p1 <- plot_ly(dat,
+p1 <- plotly::plot_ly(dat,
   labels = ~cut, values = ~cnt,
   showlegend = FALSE, type = "pie"
 ) %>%
-  layout(title = "简单饼图") %>%
-  config(displayModeBar = FALSE)
+  plotly::layout(title = "简单饼图") %>%
+  plotly::config(displayModeBar = FALSE)
 
-p2 <- plot_ly(dat,
+p2 <- plotly::plot_ly(dat,
   labels = ~cut, values = ~cnt,
   textposition = "inside",
   textinfo = "label+percent", showlegend = FALSE
 ) %>%
-  add_pie(hole = 0.6) %>%
-  layout(title = "钻石纯净度等级分布") %>%
-  config(displayModeBar = FALSE)
+  plotly::add_pie(hole = 0.6) %>%
+  plotly::layout(title = "钻石纯净度等级分布") %>%
+  plotly::config(displayModeBar = FALSE)
 
 htmltools::tagList(p1, p2)
 ```
