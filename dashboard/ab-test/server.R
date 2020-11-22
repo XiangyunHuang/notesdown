@@ -1,7 +1,8 @@
 
 library(shiny)
-library(scales)
+# library(scales)
 library(pwr)
+library(magrittr)
 
 #
 # library(data.table)
@@ -18,18 +19,26 @@ library(pwr)
 # tools::package_dependencies('echarts4r', recursive = T)
 
 ## 字体颜色
-color_font <- function(text, col) {
-  as.character(span(text, style = sprintf("color:%s", col)))
+# color_font <- function(text, col) {
+#   as.character(span(text, style = sprintf("color:%s", col)))
+# }
+
+# 文字上色
+colorize <- function(x, color) {
+  as.character(span(x, style = sprintf("color:%s", color)))
 }
+
+# 小数转化为百分数
+percent <- function(x) paste0(100 * round(x, 4), "%")
 
 shinyServer(function(input, output) {
   # 计算样本量
   output$sample_size <- renderText({
     # browser()
     r <- power.prop.test(
-      p1 = input$raw_rate / 100,
-      p2 = input$opt_rate / 100,
-      sig.level = 1 - input$sig / 100,
+      p1 = input$ctr_old / 100,
+      p2 = input$ctr_new / 100,
+      sig.level = 1 - input$sig_level / 100,
       power = input$power / 100,
       alternative = "one.sided", strict = T
     )
@@ -39,26 +48,25 @@ shinyServer(function(input, output) {
   # 计算功效
   output$result <- renderPrint({
     power.prop.test(
-      p1 = input$raw_rate / 100,
-      p2 = input$opt_rate / 100,
-      sig.level = 1 - input$sig / 100,
+      p1 = input$ctr_old / 100,
+      p2 = input$ctr_new / 100,
+      sig.level = 1 - input$sig_level / 100,
       power = input$power / 100,
-      alternative = c("one.sided"), strict = T
+      alternative = "one.sided", strict = T
     )
   })
   # A/B 实验数据
   ab_data <- reactive({
-    om <- matrix(c(input$total_A, input$pos_A, input$total_B, input$pos_B), nrow = 2, byrow = TRUE)
-    rownames(om) <- c("对照组", "测试组")
-    colnames(om) <- c("总量", "转化量")
-    om <- as.data.frame(om)
-    om <- transform(om, 转化率 = 转化量 / 总量)
-    om
+    data.frame(`总样本量` = c(input$total_A, input$total_B),
+               `转化量` = c(input$pos_A, input$pos_B),
+               row.names = c("对照组", "测试组")) %>%
+      transform(`转化率` = `转化量` / `总样本量`)
   })
 
   # 卡方检验
   chisq_test <- reactive({
-    m <- matrix(c(input$total_A - input$pos_A, input$pos_A, input$total_B - input$pos_B, input$pos_B),
+    m <- matrix(c(input$total_A - input$pos_A, input$pos_A,
+                  input$total_B - input$pos_B, input$pos_B),
                 nrow = 2, byrow = TRUE)
     sig_p <- chisq.test(m, correct = TRUE)
     sig_p
@@ -68,6 +76,7 @@ shinyServer(function(input, output) {
   power_test <- reactive({
     om <- ab_data()
     chisq <- chisq_test()
+    # 功效检验
     power <- pwr.2p2n.test(
       h = ES.h(
         om$转化率[1],
@@ -82,12 +91,11 @@ shinyServer(function(input, output) {
     power
   })
 
-
+  # 输出统计表格
   output$ab_table <- renderTable(
     {
-      om <- ab_data()
-      om <- transform(om, 转化率 = percent(转化率))
-      om
+      ab_data() %>%
+        transform(`转化率` = percent(x = `转化率`))
     },
     rownames = TRUE
   )
@@ -98,11 +106,7 @@ shinyServer(function(input, output) {
     p <- round(sig_p$p.value, 4)
     om <- ab_data()
 
-    if (om$转化率[2] >= om$转化率[1]) {
-      change <- "提升"
-    } else {
-      change <- "下降"
-    }
+    change <- ifelse(om$转化率[2] >= om$转化率[1], "提升", "下降")
 
     power <- power_test()
 
@@ -110,7 +114,7 @@ shinyServer(function(input, output) {
       power$power <- 1 # 样本量过大的时候，功效=NA，赋值为1
     }
     if (power$power > 0.8) {
-      power_tag <- HTML(sprintf("可信度 %s , 可信度较高", color_font(percent(power$power), "red"), change))
+      power_tag <- HTML(sprintf("可信度 %s, 可信度较高", colorize(percent(power$power), "red"), change))
 
     } else {
       r <- power.prop.test(
@@ -123,28 +127,23 @@ shinyServer(function(input, output) {
       )
       min_sample_size <- round(r$n)
       power_tag <- HTML(sprintf(
-        "可信度 %s ， 可信度不高，建议增加样本量:
-                                 每组最低样本量 %s
-                                 ", color_font(percent(power$power), "red"),
-        color_font(min_sample_size, "red")
+        "可信度 %s ，可信度不高，建议增加样本量: 每组最低样本量 %s", colorize(percent(power$power), "red"),
+        colorize(min_sample_size, "red")
       ))
     }
 
     if (p >= 0.05) {
-      text <- sprintf("但是 p = %s >=0.05，从统计角度来说，%s效果不显著。
-                           ", color_font(p, "red"), change)
+      text <- sprintf("但是 p = %s >= 0.05，从统计角度来说，%s效果不显著。", colorize(p, "red"), change)
     } else {
-      text <- sprintf("
-                            p = %s <0.05，从统计角度来说，%s效果显著。
-                           ", color_font(p, "red"), change)
+      text <- sprintf("p = %s < 0.05，从统计角度来说，%s效果显著。", colorize(p, "red"), change)
     }
 
     tagList(
       HTML(sprintf(
-        "测试组转化率 %s,相比对照组%s : %s",
-        color_font(percent(om$转化率[2]), "red"),
+        "测试组转化率 %s，相比对照组%s : %s",
+        colorize(percent(om$转化率[2]), "red"),
         change,
-        color_font(percent(abs(om$转化率[2] - om$转化率[1]) / om$转化率[1]), "red")
+        colorize(percent(abs(om$转化率[2] - om$转化率[1]) / om$转化率[1]), "red")
       )),
       br(),
       HTML(text),

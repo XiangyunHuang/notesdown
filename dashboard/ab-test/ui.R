@@ -10,9 +10,11 @@ shinyUI(fluidPage(
       br(),
       sidebarLayout(
         sidebarPanel = sidebarPanel(
-          numericInput("raw_rate", "原始转化率(%)", 2, min = 0, max = 100),
-          numericInput("opt_rate", "优化后转化率(%)", 2.5, min = 0, max = 100),
-          sliderInput("sig", "显著性", 95, min = 0, max = 100, post = "%"),
+          numericInput("ctr_old", "历史转化率(%)", 2, min = 0, max = 100),
+          numericInput("ctr_new", "当前转化率(%)", 2.5, min = 0, max = 100),
+
+          sliderInput("sig_level", "显著性", 95, min = 0, max = 100, post = "%"),
+
           p("0% ~ 90%：没有显著差异"),
           p("90% ~ 95%：显著差异存疑问"),
           p("95% ~ 100%：有显著差异"),
