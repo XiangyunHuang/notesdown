@@ -8,8 +8,8 @@ LABEL org.label-schema.license="GPL-3.0" \
       org.label-schema.vendor="Book Project" \
       maintainer="Xiangyun Huang <xiangyunfaith@outlook.com>"
 
-ARG CMDSTAN=/opt/cmdstan/cmdstan-2.24.1
-ARG CMDSTAN_VERSION=2.24.1
+ARG CMDSTAN=/opt/cmdstan/cmdstan-2.25.0
+ARG CMDSTAN_VERSION=2.25.0
 
 # System dependencies required for R packages
 RUN dnf -y upgrade \
