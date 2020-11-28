@@ -30,13 +30,12 @@ Spark 依赖特定版本的 Java、Hadoop，三者之间的版本应该要相融
 brew install openjdk@11
 # 全局设置 JDK 11
 sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-
 # Java 11 JDK 添加到 .zshrc 
 export CPPFLAGS="-I/usr/local/opt/openjdk@11/include"
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 ```
 
-配置 R 环境，让 R 能够识别 Java 环境，再安装 rJava
+配置 R 环境，让 R 能够识别 Java 环境，再安装 **rJava** 包
 
 ```bash
 # 配置
@@ -45,21 +44,15 @@ sudo R CMD javareconf
 Rscript -e 'install.packages("rJava", type="soure")'
 ```
 
-最后安装 **sparklyr**
+最后安装 **sparklyr** 包，以及 Spark 环境，可以借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装。
 
 ```{r,eval=!require('sparklyr')}
 install.packages('sparklyr')
+sparklyr::spark_install(version = '3.0', hadoop_version = '2.7')
 ```
 
-借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装，或者手动下载 Spark 软件环境，此环境自带 R 和 Python 接口，建议选择就近镜像站点下载，比如在北京选择清华站点
-<https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>。
-
-```{r,eval=FALSE}
-library(sparklyr)
-spark_install(version = '3.0', hadoop_version = '2.7')
-```
-
-先设置 `SPARK_HOME` 环境变量，再连接本地单机版 Spark
+也可以先手动下载 Spark 软件环境，建议选择就近镜像站点下载，比如在北京选择清华站点
+<https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>，此环境自带 R 和 Python 接口。为了供 sparklyr 调用，先设置 `SPARK_HOME` 环境变量指向 Spark 安装位置，再连接单机版 Spark。
 
 ```{r}
 # 连接 Spark 
@@ -69,7 +62,7 @@ sc <- spark_connect(master = "local", spark_home = Sys.getenv("SPARK_HOME"))
 diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
 ```
 
-做数据的聚合统计，有两种方式。一种是用 dplyr 式的编程
+做数据的聚合统计，有两种方式。一种是使用用 R 包 dplyr 提供的数据操作语法，下面以按 cut 分组统计钻石的数量为例，说明 dplyr 提供的数据操作方式。
 
 ```{r,eval=FALSE}
 library(dplyr)
@@ -82,7 +75,7 @@ diamonds_tbl <- diamonds_tbl %>%
   collect
 ```
 
-另一种是使用 SQL
+另一种是使用结构化查询语言 SQL，这自不必说，大多数情况下，使用和一般的 SQL 没什么两样。
 
 ```{r}
 library(DBI)
