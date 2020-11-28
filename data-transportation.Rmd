@@ -101,18 +101,19 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
-```{r, out.lines = 8}
-diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)")
+```{r}
+diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
 diamonds_sample
 ```
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
 
 窗口函数 <https://www.cnblogs.com/ZackSun/p/9713435.html>
 
-```{r, out.lines = 8}
+```{r}
 diamonds_rank <- dbGetQuery(sc, "
   SELECT cut, price, RANK() OVER (PARTITION BY cut ORDER BY price) AS rank 
   FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)
+  LIMIT 6
 ")
 diamonds_rank
 ```
@@ -125,9 +126,11 @@ LATERAL VIEW 把一列拆成多行
 创建数据集
 
 ```{r}
-# 创建表
-dbGetQuery(sc, "CREATE TABLE person (id INT, name STRING, age INT, class INT, address STRING)")
-# 插入数据
+# 先删除存在的表 person
+dbGetQuery(sc, "DROP TABLE IF EXISTS person")
+# 创建表 person
+dbGetQuery(sc, "CREATE TABLE IF NOT EXISTS person (id INT, name STRING, age INT, class INT, address STRING)")
+# 插入数据到表 person
 dbGetQuery(sc, "
 INSERT INTO person VALUES
     (100, 'John', 30, 1, 'Street 1'),
@@ -147,11 +150,12 @@ dbGetQuery(sc,"SELECT * FROM person")
 
 LATERAL VIEW 展开
 
-```{r, out.lines = 8}
+```{r}
 dbGetQuery(sc,"
 SELECT * FROM person
     LATERAL VIEW EXPLODE(ARRAY(30, 60)) tabelName AS c_age
-    LATERAL VIEW EXPLODE(ARRAY(40, 80)) AS d_age;
+    LATERAL VIEW EXPLODE(ARRAY(40, 80)) AS d_age
+LIMIT 6
 ")
 ```
 
