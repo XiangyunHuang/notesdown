@@ -421,7 +421,30 @@ ggplot(faithful, aes(x = eruptions, y = waiting)) +
 ```{r,eval=knitr::is_html_output(),fig.cap="二维直方图/密度图/轮廓图"}
 plotly::plot_ly(data = faithful, x = ~eruptions, y = ~waiting, type = "histogram2dcontour") %>%
   plotly::config(displayModeBar = FALSE)
+
+# plot_ly(faithful, x = ~waiting, y = ~eruptions) %>% 
+#   add_histogram2d() %>% 
+#   add_histogram2dcontour()
 ```
+
+延伸一下，热力图 
+
+```{r, eval=knitr::is_html_output()}
+library(KernSmooth)
+den <- bkde2D(x = faithful, bandwidth = c(0.7, 7))
+# 热力图
+p1 <- plotly::plot_ly(x = den$x1, y = den$x2, z = den$fhat) %>%
+  plotly::config(displayModeBar = FALSE) %>%
+  plotly::add_heatmap()
+
+# 等高线图
+p2 <- plotly::plot_ly(x = den$x1, y = den$x2, z = den$fhat) %>%
+  plotly::config(displayModeBar = FALSE) %>%
+  plotly::add_contour()
+
+htmltools::tagList(p1, p2)
+```
+
 
 ### 提琴图 {#subsec:violin}
 
