@@ -24,7 +24,7 @@ knitr::knit_hooks$set(output = local({
   hook_output = knitr::knit_hooks$get('output')
   function(x, options) {
     if (!is.null(n <- options$out.lines)) { # out.lines
-      x = knitr:::split_lines(x)
+      x = xfun::split_lines(x)
       if (length(x) > n) {
         # truncate the output
         x = c(head(x, n), '....\n')
