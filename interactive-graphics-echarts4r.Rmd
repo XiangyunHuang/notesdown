@@ -1,0 +1,41 @@
+# Echarts 4 For R {#chap:echarts4r}
+
+相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 Echarts。地图
+
+```{r}
+library(echarts4r)
+quakes %>% 
+  e_charts(long) %>% 
+  e_geo(
+    roam = TRUE,
+    boundingCoords = list(
+      c(185, - 10),
+      c(165, -40)
+    )
+  ) %>% 
+  e_scatter(
+    lat, mag, 
+    coord_system = "geo"
+  ) %>% 
+  e_visual_map(mag, scale = e_scale)
+```
+
+日历图
+
+```{r}
+airquality %>%
+  transform(date = seq.Date(
+    from = as.Date("1973-05-01"),
+    to = as.Date("1973-09-30"), by = "day"
+  )) %>%
+  e_charts(date) %>% 
+  e_calendar(range = "1973") %>% 
+  e_heatmap(Temp, coord_system = "calendar") %>% 
+  e_visual_map(max = max(airquality$Temp)) %>% 
+  e_title("Calendar", "Heatmap")
+```
+
+```{r}
+library(shiny)
+```
+
