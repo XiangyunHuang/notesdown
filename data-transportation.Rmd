@@ -19,7 +19,6 @@ Spark 性能优化，参考三篇博文
 
 ### sparklyr {#subsec:sparklyr}
 
-
 ::: {.rmdwarn data-latex="{警告}"}
 Spark 依赖特定版本的 Java、Hadoop，三者之间的版本应该要相融。
 :::
@@ -102,13 +101,15 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
-```{r}
+```{r, out.lines = 8}
 diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)")
 diamonds_sample
 ```
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
 
-```{r}
+窗口函数 <https://www.cnblogs.com/ZackSun/p/9713435.html>
+
+```{r, out.lines = 8}
 diamonds_rank <- dbGetQuery(sc, "
   SELECT cut, price, RANK() OVER (PARTITION BY cut ORDER BY price) AS rank 
   FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)
@@ -142,9 +143,11 @@ INSERT INTO person VALUES
 dbGetQuery(sc,"SELECT * FROM person")
 ```
 
+行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>
+
 LATERAL VIEW 展开
 
-```{r}
+```{r, out.lines = 8}
 dbGetQuery(sc,"
 SELECT * FROM person
     LATERAL VIEW EXPLODE(ARRAY(30, 60)) tabelName AS c_age
