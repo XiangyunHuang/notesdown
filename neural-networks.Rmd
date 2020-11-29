@@ -1,9 +1,21 @@
 # 神经网络 {#chap:neural-networks}
 
+```{r setup, include=FALSE}
+library(reticulate)
+knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
+# 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
+if(!is.na(Sys.getenv('CI', NA))) {
+  reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+} else {
+  # 指定 Python 环境
+  tensorflow::use_condaenv("r-reticulate", method = "conda")
+}
+# reticulate::py_discover_config()
+```
+
 > A big computer, a complex algorithm and a long time does not equal science.
 >
->   --- Robert Gentleman
-      SSC 2003, Halifax (June 2003)
+>   --- Robert Gentleman, SSC 2003, Halifax (June 2003)
 
 
 R 实现的部分，没有 tensorflow 等框架
@@ -15,3 +27,27 @@ Brian Ripley 开发的 nnet 包以单层前馈神经网络用于多项对数线�
 ```{r}
 library(nnet)
 ```
+
+## tensorflow {#sec:tensorflow}
+
+::: {.rmdinfo data-latex="{信息}"}
+本地使用 miniconda3 创建了一个叫 tensorflow 的虚拟环境，且已经把 tensorflow 框架安装好
+:::
+
+安装 tensorflow
+
+```bash
+conda activate r-reticulate
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow
+```
+
+```{r}
+library(tensorflow)
+```
+
+测试 tensorflow 安装环境
+
+```{r}
+tf$constant("Hello Tensorflow")
+```
+
