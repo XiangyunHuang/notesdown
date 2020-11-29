@@ -1,6 +1,8 @@
-# Echarts 4 For R {#chap:echarts4r}
+# 交互式图形 echarts4r {#chap:echarts4r}
 
-相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 Echarts。地图
+相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 Echarts。
+
+## 地图 {#sec:echarts4r-map}
 
 ```{r}
 library(echarts4r)
@@ -20,7 +22,36 @@ quakes %>%
   e_visual_map(mag, scale = e_scale)
 ```
 
-日历图
+**leaflet** 包制作地图
+
+```{r}
+library(leaflet)
+data(quakes)
+# Pop 提示
+quakes$popup_text = lapply(paste("编号:", '<strong>', quakes$stations, '</strong>', "<br>",
+                         "震深:", quakes$depth, "<br>", 
+                         "震级:", quakes$mag), htmltools::HTML)
+# 构造调色板
+pal <- colorBin("Spectral", bins = pretty(quakes$mag), reverse = TRUE)
+leaflet(quakes) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(lng = ~long, lat = ~lat, color = ~pal(mag), label = ~ popup_text) %>%
+  addLegend("bottomright",
+            pal = pal, values = ~mag,
+            title = "地震震级"
+  ) %>%
+  addScaleBar(position = c("bottomleft"))
+```
+
+将上面的绘图部分保存为独立的 HTML 网页文件
+
+```{r,eval=FALSE}
+library(htmlwidgets)
+# p 就是绘图部分的数据对象
+saveWidget(p, "fiji-map.html", selfcontained = T)
+```
+
+## 日历图 {#sec:echarts4r-calendar}
 
 ```{r}
 airquality %>%
