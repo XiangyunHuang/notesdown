@@ -22,7 +22,7 @@ quakes %>%
   e_visual_map(mag, scale = e_scale)
 ```
 
-**leaflet** 包制作地图，斐济是太平洋上的一个岛国，处于板块交界处，经常发生地震，如图 \@ref(fig:leaflet-map-fiji) 所示，展示 1964 年来 1000 次震级大于 4 级的地震活动。
+**leaflet** 包制作地图，斐济是太平洋上的一个岛国，处于板块交界处，经常发生地震，如图 \@ref(fig:fiji-map) 所示，展示 1964 年来 1000 次震级大于 4 级的地震活动。
 
 ```{r,eval=FALSE}
 library(leaflet)
@@ -45,7 +45,7 @@ p <- leaflet(quakes) %>%
   addScaleBar(position = c("bottomleft"))
 p
 ```
-```{r leaflet-map-fiji,echo=FALSE,fig.cap="斐济地震带",out.width="75%"}
+```{r fiji-map,echo=FALSE,fig.cap="斐济地震带",out.width="75%"}
 knitr::include_graphics(path = "screenshots/leaflet-fiji.png")
 ```
 
@@ -55,6 +55,23 @@ knitr::include_graphics(path = "screenshots/leaflet-fiji.png")
 library(htmlwidgets)
 # p 就是绘图部分的数据对象
 saveWidget(p, "fiji-map.html", selfcontained = T)
+```
+
+
+```{r,eval=FALSE}
+library(leaflet)
+library(leaflet.extras)
+library(magrittr)
+
+quakes %>%
+  leaflet() %>%
+  addTiles() %>%
+  addProviderTiles(providers$OpenStreetMap.DE) %>%
+  addHeatmap(lng = ~long, lat = ~lat, intensity = ~mag, 
+             max = 100, radius = 20, blur = 10)
+```
+```{r fiji-heatmap,echo=FALSE,fig.cap="斐济地震带热力图",out.width="75%"}
+knitr::include_graphics(path = "screenshots/leaflet-heatmap.png")
 ```
 
 ## 日历图 {#sec:echarts4r-calendar}
