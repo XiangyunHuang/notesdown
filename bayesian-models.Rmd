@@ -3,8 +3,7 @@
 > 主要参考 Derek S. Young [@Regression_2017_Young] 和 Michael H. Kutner 等 [@Kutner_2005_Applied]
 功能比较全面的 R 包或者框架的介绍，如 rstan 最有效的 R 包（计算结果最好） 最快实现的 R 包（计算速度最快、开发效率高）Paul-Christian Bürkner 的报告包含 LM,GLM,MLM,NLM <https://github.com/InsuranceDataScience/StanWorkshop2018>
 
-<!-- [shinybrms](https://github.com/fweber144/shinybrms) 贝叶斯模型求解器，基于 shiny，Stan 写模型，模型库，编译好供大家调用，用 shiny 包装好，
-brms/rstan 的后端为 cmdstanr，代码版本管理，模型库管理，软件环境管理 -->
+<!-- [shinybrms](https://github.com/fweber144/shinybrms) 贝叶斯模型求解器，基于 shiny，Stan 写模型，模型库，编译好供大家调用，用 shiny 包装好，brms/rstan 的后端为 cmdstanr，代码版本管理，模型库管理，软件环境管理 -->
 
 An Introduction to Inductive Statistical Inference: from Parameter Estimation to Decision-Making <https://arxiv.org/abs/1808.10173v2> 固定效应/随机效应广义线性模型：多水平各种模型回归，模型结构和 Stan 代码
 
@@ -12,22 +11,15 @@ JAGS 的 R 接口有苏毓松开发的 R2jags 包 [@R-R2jags]
 
 线性模型的内容主要分为四大块，分别是线性回归模型、方差分析模型、协方差分析模型和线性混合效应模型。国外 David Pollard 的线性模型 [课程内容](http://www.stat.yale.edu/~pollard/Courses/312.fall2016/)
 
-```{r}
-library(cmdstanr)
-# library(rethinking)
-# set_ulam_cmdstan(TRUE)
-```
-
-[rstan](https://github.com/stan-dev/rstan) [brms](https://github.com/paul-buerkner/brms)  [shinybrms](https://github.com/fweber144/shinybrms)
+[rstan](https://github.com/stan-dev/rstan) [brms](https://github.com/paul-buerkner/brms)  [shinybrms](https://github.com/fweber144/shinybrms) [rethinking](https://github.com/rmcelreath/rethinking)
 
 加载 rstan，如果你的电脑配置有多核处理器，内存也充足，那么可以考虑使用并行方式去估计你的模型参数
 
 ```{r stan-setup,message=FALSE,warning=FALSE}
 library(rstan)
-# rstan_options(auto_write = TRUE)
+rstan_options(auto_write = TRUE)
 # 如果CPU和内存足够，设置成与马尔科夫链一样多
-# options(mc.cores = max(c(floor(parallel::detectCores() / 2), 1L)))
-options(mc.cores = 1L)
+options(mc.cores = max(c(floor(parallel::detectCores() / 2), 1L)))
 
 custom_colors <- c(
   "#4285f4", # GoogleBlue
@@ -45,65 +37,6 @@ rstan_gg_options(
 )
 ```
 
-## 高斯过程 {#Gaussian-Process}
-
-模拟高斯过程例子来自 Stan 参考手册 [@Stan_2018_Bayesian]
-
-```{stan output.var="normal_gp",eval=FALSE}
-data {
-  int<lower=1> N;
-  real x[N];
-}
-transformed data {
-  matrix[N, N] K;
-  vector[N] mu = rep_vector(0, N);
-  for (i in 1:(N - 1)) {
-    K[i, i] = 1 + 0.1;
-    for (j in (i + 1):N) {
-      K[i, j] = exp(-0.5 * square(x[i] - x[j]));
-      K[j, i] = K[i, j];
-    }
-  }
-  K[N, N] = 1 + 0.1;
-}
-parameters {
-  vector[N] y;
-}
-model {
-  y ~ multi_normal(mu, K);
-}
-```
-```{r,eval=FALSE}
-library(cmdstanr)
-mod <- cmdstan_model(file = "code/normal_gp.stan")
-```
-
-stan 库内置了核函数为二次幂指数的实现，因此可以直接调用 `cov_exp_quad` 函数计算协方差矩阵
-
-```{stan output.var="compat_gp",eval=FALSE}
-data {
-  int<lower=1> N;
-  real x[N];
-}
-transformed data {
-  matrix[N, N] K = cov_exp_quad(x, 1.0, 1.0);
-  vector[N] mu = rep_vector(0, N);
-  for (n in 1:N)
-    K[n, n] = K[n, n] + 0.1;
-}
-parameters {
-  vector[N] y;
-}
-model {
-  y ~ multi_normal(mu, K);
-}
-```
-```{r,eval=FALSE}
-library(cmdstanr)
-mod <- cmdstan_model(file = "code/compat_gp.stan")
-```
-
-以 MASS 的 topo 数据集引出高斯过程回归模型问题复杂性
 
 
 ## 正态分布 {#sec:bayesian-normal-distribution}
@@ -229,7 +162,7 @@ abline(v = sd, lwd = 2, col = "#EA4335")
 
 Multilevel Models 多水平模型、Hierarchical Models 层次模型
 
-### 美国八校教育考试数据集 {#sec:eight-schools}
+### schools 数据 {#sec:eight-schools}
 
 ```{stan output.var="eight_schools",cache=TRUE}
 // Stan 编写的模型
@@ -465,7 +398,7 @@ source('data/8schools.rdump')
 
 分层线性模型之生长曲线模型 [@Gelfand_1990_JASA]
 
-### Rats 数据贝叶斯分层建模 {}
+### rats 数据 {#subsec:rats}
 
 ```{r}
 # 数据准备
@@ -578,8 +511,67 @@ plot(rats_fit, pars = "alpha")
 plot(rats_fit, pars = "beta")
 ```
 
+## 高斯过程 {#sec:gaussian-process}
 
-## 贝叶斯广义线性模型  {#bayesian-data-analysis}
+模拟高斯过程例子来自 Stan 参考手册 [@Stan_2018_Bayesian]
+
+```{stan output.var="normal_gp",eval=FALSE}
+data {
+  int<lower=1> N;
+  real x[N];
+}
+transformed data {
+  matrix[N, N] K;
+  vector[N] mu = rep_vector(0, N);
+  for (i in 1:(N - 1)) {
+    K[i, i] = 1 + 0.1;
+    for (j in (i + 1):N) {
+      K[i, j] = exp(-0.5 * square(x[i] - x[j]));
+      K[j, i] = K[i, j];
+    }
+  }
+  K[N, N] = 1 + 0.1;
+}
+parameters {
+  vector[N] y;
+}
+model {
+  y ~ multi_normal(mu, K);
+}
+```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/normal_gp.stan")
+```
+
+stan 库内置了核函数为二次幂指数的实现，因此可以直接调用 `cov_exp_quad` 函数计算协方差矩阵
+
+```{stan output.var="compat_gp",eval=FALSE}
+data {
+  int<lower=1> N;
+  real x[N];
+}
+transformed data {
+  matrix[N, N] K = cov_exp_quad(x, 1.0, 1.0);
+  vector[N] mu = rep_vector(0, N);
+  for (n in 1:N)
+    K[n, n] = K[n, n] + 0.1;
+}
+parameters {
+  vector[N] y;
+}
+model {
+  y ~ multi_normal(mu, K);
+}
+```
+```{r,eval=FALSE}
+library(cmdstanr)
+mod <- cmdstan_model(file = "code/compat_gp.stan")
+```
+
+以 MASS 的 topo 数据集引出高斯过程回归模型问题复杂性
+
+## 贝叶斯广义线性模型  {#sec:bayesian-data-analysis}
 
 统计之都已对 mcmc 包的帮助文档做了翻译 <https://cosx.org/2012/07/mcmc-case-study/>
 
