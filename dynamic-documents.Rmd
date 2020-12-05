@@ -10,10 +10,9 @@ library(magrittr)
 - Higher, further, faster with Marvelous R Markdown <https://bit.ly/marvelRMD>
 - RMarkdown for Scientists <https://rmd4sci.njtierney.com/>
 - Getting Used to R, RStudio, and R Markdown <https://rbasics.netlify.app/>
-- [Getting started with Zotero, Better BibTeX, and RMarkdown](https://fishandwhistle.net/post/2020/getting-started-zotero-better-bibtex-rmarkdown/)
 - 制作简历 https://github.com/nstrayer/datadrivencv
 - R Markdown 指南手册 <https://www.dataquest.io/blog/r-markdown-guide-cheatsheet/>
-- Using SQL in RStudio <https://irene.rbind.io/post/using-sql-in-rstudio/>
+
 - Theme ggplot2, lattice, and base graphics based on a few simple settings. <https://github.com/rstudio/thematic/>
 - Statistical Inference via Data Science: A ModernDive into R and the tidyverse <https://moderndive.com/>
 - 参数化报告 <https://github.com/jenniferthompson/ParamRmdExample> 和 <https://elastic-lovelace-155848.netlify.app/gallery/themes/flatly.html>
@@ -24,35 +23,19 @@ library(magrittr)
 - icon: Making RMarkdown Awesome <https://github.com/ropenscilabs/icon>
 - Reversible Reproducible Documents <https://github.com/noamross/redoc>
 - Word counts and readability statistics in R markdown documents <https://github.com/benmarwick/wordcountaddin>
-- sending an email from R with blastula to groups of students <https://thecoatlessprofessor.com/programming/r/sending-an-email-from-r-with-blastula-to-groups-of-students/>
+
 - 基于 thematic 和 bootstraplib 包美化 Rmd 文档 <https://www.tillac-data.com/2020-fast-rmd-theming-with-thematic-and-bootstraplib/>
-- [nomnoml](https://github.com/rstudio/nomnoml) 流程图、思维导图
+
 - The fragile and perilous art of flipbooking With flipbookr and xaringan <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
-- flextable <https://github.com/davidgohel/flextable> 表格
-- knitr 的 kable <https://bookdown.org/yihui/rmarkdown-cookbook/tables.html>
-- pivottabler <https://github.com/cbailiss/pivottabler> 在更新，内容似乎更好
-- [rpivotTable](https://github.com/smartinsightsfromdata/rpivotTable) 不更新了
+
 - 制作 note/tips 等自定义块 <https://desiree.rbind.io/post/2019/making-tip-boxes-with-bookdown-and-rmarkdown/>
 - rmd 文档中添加下载按钮 <https://github.com/fmmattioni/downloadthis>
 
-
-```{r,eval=FALSE}
-data(HairEyeColor)
-library(rpivotTable)
-rpivotTable(
-  data = HairEyeColor, rows = "Hair", cols = "Eye", vals = "Freq",
-  aggregatorName = "Sum", rendererName = "Table", width = "100%", height = "400px"
-)
-```
-
-
-- RStudio 插件集合 [addinslist](https://github.com/daattali/addinslist)
-
 提高写作效率的 10 大 R 包或 RStudio 插件
 
-- 简化 Markdown 写作 [remedy](https://github.com/ThinkR-open/remedy) 
+- RStudio 插件集合 [addinslist](https://github.com/daattali/addinslist)
+- 
 - 源代码截图 [carbonate](https://github.com/yonicd/carbonate)
-- 整理 Markdown 表格 [beautifyR](https://github.com/mwip/beautifyR)
 - 格式化 R 代码块 [styler](https://github.com/r-lib/styler)
 - 准备可重复的例子，方便在论坛/Github上发问 [reprex](https://github.com/tidyverse/reprex)
 - 快速获取 Github 等社交网络活动记录 [butteRfly](https://github.com/jonocarroll/butteRfly)
@@ -60,7 +43,7 @@ rpivotTable(
 - 写可重复性研究报告 [rrtools](https://github.com/benmarwick/rrtools)
 - 高亮支持 R 帮助文档 [rdoc](https://github.com/mdequeljoe/rdoc)
 - 正则表达式 [regexplain](https://github.com/gadenbuie/regexplain)
-- 快速复制粘贴 data.frame/tibble [datapasta](https://github.com/MilesMcBain/datapasta)
+
 - R Markdown 中写 shiny [shinyComponents](https://github.com/gadenbuie/shinyComponents)
 - RMarkdown 里很长的文本自动断行，但不产生空行 [WrapRmd](https://github.com/tjmahr/WrapRmd)
 
@@ -98,14 +81,52 @@ nomnoml::nomnoml("
 ```
 
 
-```{r,fig.width=8,fig.height=2}
-nomnoml::nomnoml(" 
-#stroke: orange
-#.box: fill=#8f8 dashed visual=note
-
-[动态文档]-[交互图形]
-[交互图形]-[<box>动态图形]")
+```{r rmarkdown-concept-map,fig.cap="R Markdown 概念图",echo=FALSE}
+knitr::include_graphics(path = paste0("diagrams/rmarkdown", ifelse(knitr::is_latex_output(), ".png", ".svg")
+))
 ```
+
+### 控制选项 {#subsec:sql-engine}
+
+[Using SQL in RStudio](https://irene.rbind.io/post/using-sql-in-rstudio/)
+
+```{r}
+library(DBI)
+conn = DBI::dbConnect(RSQLite::SQLite(), dbname = system.file("db", "datasets.sqlite", package = "RSQLite"))
+```
+
+Base R 内置的数据集都整合进 RSQLite 的样例数据库里了，
+
+```{r}
+dbListTables(conn)
+```
+
+随意选择 5 行数据记录，将结果保存到变量 iris_preview
+
+```{sql connection=conn, output.var="iris_preview"}
+SELECT * FROM iris LIMIT 5;
+```
+
+查看变量 iris_preview 的内容
+
+```{r}
+iris_preview
+```
+
+结束后关闭连接
+
+```{r}
+dbDisconnect(conn = conn)
+```
+
+
+### 表格 {#subsec:rmarkdown-table}
+
+**knitr** 的 `kable()` 函数提供了制作表格的基本功能 <https://bookdown.org/yihui/rmarkdown-cookbook/tables.html>，[flextable](https://github.com/davidgohel/flextable) 支持更加细粒度的表格定制功能。[beautifyR](https://github.com/mwip/beautifyR) 整理 Markdown 表格非常方便，[datapasta](https://github.com/MilesMcBain/datapasta) 快速复制粘贴 data.frame 和 tibble 类型的数据表格。[rpivotTable](https://github.com/smartinsightsfromdata/rpivotTable) 不更新了，[pivottabler](https://github.com/cbailiss/pivottabler) 在更新，内容似乎更好。[remedy](https://github.com/ThinkR-open/remedy) 提供了更加通用的 Markdown 写作功能，简化创作的技术难度。
+
+### 流程图 {#subsec:rmarkdown-uml}
+
+[nomnoml](https://github.com/rstudio/nomnoml) 流程图、思维导图
 
 ```{r,fig.width=8,fig.height=2}
 nomnoml::nomnoml(" 
@@ -115,6 +136,7 @@ nomnoml::nomnoml("
 [Rmd 书籍原稿]-[GitHub Action 集成测试]
 [Netlfiy 持续部署]-[Git 书稿管理]")
 ```
+
 
 ## PDF 文档 {#sec:pdf-document}
 
@@ -243,6 +265,8 @@ output:
 
 ### 引用文献 {#subsec:cite-doi}
 
+[Getting started with Zotero, Better BibTeX, and RMarkdown](https://fishandwhistle.net/post/2020/getting-started-zotero-better-bibtex-rmarkdown/)
+
 [^doi]: <https://zh.wikipedia.org/wiki/DOI>
 
 [knitcitations](https://github.com/cboettig/knitcitations) 包可以根据文献数字对象标识符（英文 Digital Object Identifier，简称 DOI）生成引用，以文章《A Probabilistic Grammar of Graphics》[@Pu_2020_Grammar] 为例，其 DOI 为 `10.1145/3313831.3376466`，总之， DOI 就像是文章的身份证，是一一对应的关系[^doi]。
@@ -334,7 +358,9 @@ R Markdown 文档支持带编号的 Word 文档格式输出要求 Pandoc 版本 
 
 ## 发送邮件 {#sec:send-emails}
 
-[emayili](https://github.com/datawookie/emayili) 是非常轻量的实现邮件发送的 R 包，其它功能类似的 R 包有 [blastula](https://github.com/rich-iannone/blastula) [mailR](https://github.com/rpremraj/mailR)。Rahul Premraj 基于 rJava 开发的 [mailR](https://github.com/rpremraj/mailR) 虽然还未在 CRAN 上正式发布，但是已得到很多人的关注，也被广泛的使用，目前作者已经不维护了，继续使用有一定风险。 RStudio 公司 Richard Iannone 新开发的 [blastula](https://github.com/rich-iannone/blastula) 扔掉了 Java 的重依赖，更加轻量化、现代化。 [curl](https://github.com/jeroen/curl) 包提供的函数 `send_mail()` 本质上是在利用 [curl](https://curl.haxx.se/) 软件发送邮件，举个例子，邮件内容如下：
+[^blastula-group-emails]: <https://thecoatlessprofessor.com/programming/r/sending-an-email-from-r-with-blastula-to-groups-of-students/>
+
+[emayili](https://github.com/datawookie/emayili) 是非常轻量的实现邮件发送的 R 包，其它功能类似的 R 包有 [blastula](https://github.com/rich-iannone/blastula) [mailR](https://github.com/rpremraj/mailR)。Rahul Premraj 基于 rJava 开发的 [mailR](https://github.com/rpremraj/mailR) 虽然还未在 CRAN 上正式发布，但是已得到很多人的关注，也被广泛的使用，目前作者已经不维护了，继续使用有一定风险。 RStudio 公司 Richard Iannone 新开发的 [blastula](https://github.com/rich-iannone/blastula) 扔掉了 Java 的重依赖，更加轻量化、现代化，支持发送群组邮件[^blastula-group-emails]。 [curl](https://github.com/jeroen/curl) 包提供的函数 `send_mail()` 本质上是在利用 [curl](https://curl.haxx.se/) 软件发送邮件，举个例子，邮件内容如下：
 
 ```
 From: "黄湘云" <公司邮箱地址>
