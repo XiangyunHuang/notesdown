@@ -1,9 +1,9 @@
 ---
-title: "数据分析模板"
+title: "可重复性数据分析报告模板"
 date: "`r format(Sys.Date(), '%Y年%m月%d日')`"
 author:
-  - 黄湘云^[xx 部门, xxx@mail.com]
-  - Jane Doe^[Institution Two, jane@example.org]
+  - 张三^[Institution One, zhangsan@example.org]
+  - 李四^[Institution Two, lisi@example.org]
 output:
   bookdown::html_document2: 
     number_sections: yes
@@ -16,10 +16,19 @@ bibliography:
  - packages.bib
 link-citations: yes
 colorlinks: yes
+abstract-title: 摘要
+abstract: |
+  摘要内容
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+  # 仅能用于 rmarkdown::html_document 输出
+  class.output = "bg-success",
+  class.message = "bg-info text-info",
+  class.warning = "bg-warning text-warning",
+  class.error = "bg-danger text-danger"
+                      )
 ```
 ```{css, echo=FALSE}
 .QUESTION {
@@ -28,10 +37,11 @@ knitr::opts_chunk$set(echo = TRUE)
 }
 .QUESTION > :first-child:before {
   font-weight: bold;
-  content: "Question: ";
+  content: "问题：";
 }
 ```
 
+# 准备 {#chap:setup}
 
 # 介绍 {#chap:intro-rmarkdown}
 
@@ -50,9 +60,9 @@ summary(cars)
 也可以这样插入表情符号 `r emo::ji("face")`。插入自定义的块
 
 ::: {.QUESTION} 
-What is the point of this?
+R Markdown 生态是谁在维护？
 
-Another paragraph.
+谢益辉。
 :::
 
 插入一段包含 chunck option 的代码块
@@ -71,22 +81,26 @@ summary(dataf)
 
 * [Purple] blue red 
 
-## Purple {#Purple}
-
-Purple blue red.
 
 
-```{r top-caption, fig.topcaption=TRUE,fig.cap="标题在图的上方"}
-plot(pressure)
+# R Markdown {#chap:rmarkdown}
+
+## 表格 {#sec:table}
+
+```{r}
+data(HairEyeColor)
+library(rpivotTable)
+rpivotTable(
+  data = HairEyeColor, rows = "Hair", cols = "Eye", vals = "Freq", # locale = "zh",
+  aggregatorName = "Sum", rendererName = "Table", width = "100%", height = "400px"
+)
 ```
 
-## 插图 {#sec:figure}
+## Chunk 选项 {#sec:chunk-option}
 
-[^sleep-data]: “Student” 收集的睡眠数据
+[chunk options](https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html) 是执行 R 代码块的控制选项
 
-我们可以在 R Markdown 文档中插入图片，如图 \@ref(fig:sleep) 所示，数据集 sleep 记录了两种药物对病人睡眠时间的影响[^sleep-data]
-
-```{r sleep, echo=FALSE,fig.cap="药物对睡眠时长的影响"}
+```{r top-caption, fig.topcaption=TRUE,fig.cap="标题在图的上方"}
 library(ggplot2)
 ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
   geom_boxplot() +
@@ -94,7 +108,33 @@ ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
   theme_minimal(base_size = 16)
 ```
 
+# 图形 {#chap:graphics}
+
+## 静态图形 {#sec:static-graphics}
+
+[^sleep-data]: “Student” 收集的睡眠数据
+
+我们可以在 R Markdown 文档中插入图片，如图 \@ref(fig:sleep) 所示，数据集 sleep 记录了两种药物对病人睡眠时间的影响[^sleep-data]
+
+```{r sleep, echo=FALSE,fig.cap="药物对睡眠时长的影响", ref.label="top-caption"}
+
+```
+
 在代码块控制选项里设置参数 `echo = FALSE` 可以隐藏生成图\@ref(fig:sleep)的代码。
+
+
+## 动态图形 {#sec:animate-graphics}
+
+
+## 交互图形 {#sec:interactive-graphics}
+
+
+# 运行信息 {#session}
+
+```{r}
+xfun::session_info(packages = c('rmarkdown', 'bookdown', 'ggplot2', 'emo'))
+```
+
 
 # 参考文献 {#chap:refer .unnumbered}
 
