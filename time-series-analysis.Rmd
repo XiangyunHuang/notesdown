@@ -306,6 +306,52 @@ highchart() %>%
   hc_add_series(data = nottem,  name = "nottem")
 ```
 
+## 港股走势 {#sec:hk-stock}
+
+美团、阿里巴巴在香港上市
+
+```{r hk-stock-data,cache=TRUE}
+# 美团
+meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
+# 阿里
+ali <- quantmod::getSymbols("9988.HK", auto.assign = FALSE, src = "yahoo")
+# 京东
+sw <- quantmod::getSymbols("9618.HK", auto.assign = FALSE, src = "yahoo")
+# 腾讯
+tx <- quantmod::getSymbols("0700.HK", auto.assign = FALSE, src = "yahoo")
+```
+```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="港股走势"}
+highchart(type = "stock") %>% 
+  hc_add_series(meituan, type = "ohlc") %>% 
+  hc_add_series(ali, type = "ohlc") %>% 
+  hc_add_series(sw, type = "ohlc") %>% 
+  hc_add_series(tx, type = "ohlc")
+```
+
+## 美股走势 {#sec:us-stock}
+
+拼多多、京东、阿里巴巴、51Talk 在美股上市
+
+```{r us-stock-data,cache=TRUE}
+# 拼多多
+pdd <- quantmod::getSymbols("PDD", auto.assign = FALSE, src = "yahoo")
+# 京东
+jd <- quantmod::getSymbols("JD", auto.assign = FALSE, src = "yahoo")
+# 阿里巴巴
+baba <- quantmod::getSymbols("BABA", auto.assign = FALSE, src = "yahoo")
+# 51Talk
+coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2016-06-30')
+```
+```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="美股走势"}
+highchart(type = "stock") %>% 
+  hc_add_series(pdd, type = "ohlc") %>% 
+  hc_add_series(jd, type = "ohlc") %>% 
+  hc_add_series(baba, type = "ohlc") %>% 
+  hc_add_series(coe, type = "ohlc")
+```
+
+
+
 
 ## 51Talk 股价走势 {#sec:coe-stock}
 
@@ -313,7 +359,7 @@ Joshua M. Ulrich 开发维护的 [quantmod](https://github.com/joshuaulrich/quan
 
 51talk 于 2016年6月10日在美国纽交所上市，股票代码 COE， 2020年1月22日，武汉封城，受新冠肺炎病毒影响，政府停课不停学的号召，线下教育纷纷转线上，线上教育的春天来临，股价开始回升到发行价的水平，在公司将资源转变为能力后，预期公司股价继续翻倍，回到理性的水平。
 
-```{r coe-data,cache=TRUE}
+```{r coe-data,cache=TRUE,eval=FALSE}
 coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2016-06-30')
 ```
 
@@ -338,15 +384,9 @@ autoplot(coe)
 
 **ggfortify** 包提供的 `autoplot()` 函数可以根据数据对象的不同绘制不同的图形
 
-## 美团股价走势 {#sec:meituan-stock}
 
-```{r meituan-data,cache=TRUE}
-meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
-```
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="美团公司的股价走势"}
-highchart(type = "stock") %>% 
-   hc_add_series(meituan, type = "ohlc")
-```
+
+
 
 ## 蛋壳股价走势 {#sec:danke-stock}
 
