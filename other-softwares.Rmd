@@ -537,6 +537,30 @@ convert -quality 100 -density 300x300 filename.pdf filename.png
 convert -geometry 1000x3000 example.eps example.png
 ```
 
+多页的 PDF 文件转化为多张 PNG 图片
+
+```bash
+convert -quality 100 -density 300x300  input.pdf output.png
+```
+
+以白色背景替换透明背景
+
+```bash
+#!/bin/bash
+
+for i in $(seq 0 17)
+do   
+  echo convert input-$i.png -background white -alpha remove -flatten -alpha off output-$i.png
+done 
+```
+
+将系列图片合成为 GIF 动图
+
+```bash
+convert -delay 60 input.png output.gif  
+```
+
+
 
 ## OptiPNG 图片优化 {#sec:optipng}
 
@@ -728,6 +752,31 @@ nomnoml::nomnoml("
 
 
 [Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/rstudio/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
+
+nomnoml 调 webshot 包对网页截图生成 PNG 格式的图片，其中 webshot 调 phantomjs 软件。
+nomnoml 制作 R Markdown 生态图，导出为 PNG 格式
+
+```{r,eval=FALSE}
+nomnoml::nomnoml(" 
+#stroke: #34A853
+#fill: white
+#fillArrows: false
+#direction: down
+
+[knitr]    -> [动态文档|rmarkdown]
+[Pandoc]   -> [动态文档|rmarkdown]
+[Markdown] -> [动态文档|rmarkdown]
+[动态文档] -> [书籍笔记|bookdown]
+[动态文档] -> [静态网站|blogdown]
+[动态文档] -> [幻灯片|xaringan]
+[幻灯片]   -> [PowerPoint|officedown]
+[书籍笔记] -> [毕业论文|thesisdown]
+[静态网站] -> [个人简历|pagedown]
+[动态文档] -> [数据面板|flexdashboard]
+[数据面板] --> [交互图形|plotly]
+", png = 'rmarkdown-ecology.png')
+```
+
 
 ## Graphviz 流程图 {#sec:graphviz}
 
