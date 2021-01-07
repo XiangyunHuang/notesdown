@@ -211,6 +211,32 @@ knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3
 
 简单图形 scatter，分布图几类，其中 scatter、heatmap、scatterpolar 支持 WebGL 绘图引擎
 
+```{r plotly-bubble,fig.cap="气泡图",eval=knitr::is_html_output()}
+# 气泡图
+dat <- diamonds[, .(carat = mean(carat), price = sum(price), cnt = .N), by = .(cut)]
+
+plot_ly(
+  data = dat,
+  x = ~carat, y = ~price, color = ~cut, size = ~cnt,
+  type = "scatter", mode = "markers",
+  marker = list(
+    symbol = "circle", sizemode = "diameter",
+    line = list(width = 2, color = "#FFFFFF"), opacity = 0.4
+  ),
+  text = ~ paste(
+    sep = " ", "重量：", round(carat, 2), "克拉",
+    "<br>价格:", round(price / 10^6, 2), "百万"
+  )
+) %>%
+  add_annotations(
+    x = ~carat, y = ~price, text = ~cnt,
+    showarrow = F, font = list(family = "sans")
+  ) %>%
+  layout(
+    xaxis = list(hoverformat = ".2f"),
+    yaxis = list(hoverformat = ".0f")
+  )
+```
 ```{r,eval=FALSE}
 # Line Plots
 plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter", mode = "lines")
