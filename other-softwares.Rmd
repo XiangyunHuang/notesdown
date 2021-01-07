@@ -306,15 +306,15 @@ git add -A
 
 提交所有变化，`git add --all` 的缩写
 
-- 往远程的空的 Github 仓库添加本地文件
-
 ```bash
 git init
-git remote add origin https://github.com/XiangyunHuang/notesdown.git
+git remote add origin https://github.com/XiangyunHuang/masr.git
 git add -A
-git commit -m "balabala"
+git commit -m "添加提交说明"
 git push -u origin master
 ```
+
+往远程的空的 Github 仓库添加本地文件
 
 ### 合并上流 {#git-upstream}
 
@@ -396,7 +396,7 @@ git push origin master:cos-art
 位于 [Github](https://github.com/liuhui998/gitbook) [Git Community Book 中译本](http://gitbook.liuhui998.com/)
 
 
-### 创建站点 {#git-gh-pages}
+### 创建 Github Pages 站点 {#git-github-pages}
 
 基于 GitHub Pages 创建站点用于存放图片和数据
 
@@ -419,6 +419,157 @@ git push --set-upstream origin gh-pages
 这样仓库 uploads 只包含 gh-pages 分支，数据地址即为以日期为分割线
 
 <https://xiangyunhuang.github.io/uploads/data/eqList2018_05_18.xls>
+
+
+### 博客主题 {#blog-hugo-theme}
+
+初始化博客网站
+
+```bash
+git subtree add --squash --prefix=themes/hugo-lithium \
+  git@github.com:yihui/hugo-lithium.git master
+```
+
+在 Github 创建新的空仓库，本地创建空的目录 xiangyun
+
+```bash
+cd xiangyun
+git init
+git remote add origin https://github.com/XiangyunHuang/xiangyun.git
+
+git add .gitignore
+git commit -m 'upload' 
+git push --set-upstream origin master
+```
+
+`git subtree` 将另外一个仓库收缩为当前仓库的一个目录，且只产生一条提交记录
+
+```bash
+# 子库分支
+git subtree add --squash --prefix=themes/hugo-xmag \
+  -m "add hugo-xmag" git@github.com:yihui/hugo-xmag.git master 
+# 或者子库分支
+git subtree add --squash --prefix=themes/hugo-xmag \
+  -m "add hugo-xmag" https://github.com/yihui/hugo-xmag.git master 
+```
+
+
+### 修改远程仓库的位置 {#transform-repo}
+
+有时候我们将自己的仓库转移给别人/组织，或者我们将远程仓库的名字改变了，这时候需要修改远程仓库的位置。比如最近我将博客仓库从 <https://github.com/XiangyunHuang/xiangyun> 转移到 <https://github.com/rbind/xiangyun>
+
+> 转移前
+
+```bash
+git remote -v
+```
+```
+origin  https://github.com/XiangyunHuang/xiangyun.git (fetch)
+origin  https://github.com/XiangyunHuang/xiangyun.git (push)
+```
+
+转移命令
+
+```bash
+git remote set-url origin https://github.com/rbind/xiangyun.git
+```
+
+> 转移后
+
+```bash
+git remote -v
+```
+```
+origin  https://github.com/rbind/xiangyun.git (fetch)
+origin  https://github.com/rbind/xiangyun.git (push)
+```
+
+### 统计代码仓库的提交量 {#count-commits}
+
+
+比如统计之都的主站仓库，提交量最大的20个人
+
+```bash
+git shortlog -sn | head -n 20
+```
+```
+  153	Dawei Lang
+  106	Yihui Xie
+  89	Beilei Bian
+  46	王佳
+  42	雷博文
+  39	Ryan Feng Lin
+  35	Xiangyun Huang
+  32	fanchao
+  32	闫晗
+  30	Lin Feng
+  28	Jiaao Yu
+  25	fyears
+  24	Yixuan Qiu
+  24	Miao YU
+  22	Yuxuan Li
+  22	qinwf
+  20	Alice敏
+  19	yanshi
+  18	Shuyi.Yang
+  13	黄湘云
+```
+
+
+### 账户共存 {#multi-accounts}
+
+> 本节介绍如何使 Gitlab/Github 账户共存在一台机器上
+
+如何生成 SSH 密钥见 Github 文档 ---  [使用 SSH 连接到 GitHub](https://help.github.com/cn/github/authenticating-to-github/connecting-to-github-with-ssh)。有了密钥之后只需在目录 `~/.ssh` 下创建一个配置文件 config
+
+生成 SSH Key
+
+```bash
+ssh-keygen -t rsa -f ~/.ssh/id_rsa_github -C "name1@xxx1.com"
+ssh-keygen -t rsa -f ~/.ssh/id_rsa_gitlab -C "name2@xxx2.com"
+```
+
+将 GitHub/GitLab 公钥分别上传至服务器，然后创建配置文件
+
+```bash
+touch ~/.ssh/config
+```
+
+配置文件内容如下
+
+```
+#
+# Github
+#
+Host github.com // 个人的代码仓库服务器地址
+HostName github.com
+User XiangyunHuang
+IdentityFile ~/.ssh/id_rsa_github
+
+#
+# company
+#
+Host xx.xx.xx.xx //
+IdentityFile ~/.ssh/id_rsa_gitlab
+```
+
+配置成功，你会看到
+
+```bash
+ssh -T git@xx.xx.xx.xx
+```
+```
+Welcome to GitLab, xiangyunhuang!
+```
+
+和
+
+```bash
+ssh -T git@github.com
+```
+```
+Hi XiangyunHuang! You've successfully authenticated, but GitHub does not provide shell access.
+```
 
 ### 回车换行 {#git-crlf}
 
@@ -482,6 +633,15 @@ git push --set-upstream LalZzy patch-2
 
 > 整理自统计之都论坛的讨论 https://d.cosx.org/d/420363
 
+
+1. GitHub/Git 小抄英文版 <https://www.runoob.com/manual/github-git-cheat-sheet.pdf>
+1. GitHub/Git 小抄中文版 <https://github.github.com/training-kit/downloads/zh_CN/github-git-cheat-sheet/>
+1. Github 秘籍 <https://github.com/tiimgreen/github-cheat-sheet/blob/master/README.zh-cn.md>
+1. Git 简明指南 <https://rogerdudler.github.io/git-guide/index.zh.html>
+1. Git 奇技淫巧 <https://github.com/521xueweihan/git-tips>
+1. Git 官方书籍 <https://git-scm.com/book/zh/v2>
+1. Git 时代的 VIM 不完全使用教程 <http://beiyuu.com/git-vim-tutorial>
+1. 最佳搭档：利用 SSH 及其配置文件节省你的生命 <https://liam.page/2017/09/12/rescue-your-life-with-SSH-config-file/> 
 
 
 ## Pandoc 文档处理 {#sec:pandoc}
