@@ -67,8 +67,10 @@ nomnoml::nomnoml("
 ```
 
 
-```{r rmarkdown-concept-map,fig.cap="R Markdown 概念图",echo=FALSE}
-knitr::include_graphics(path = paste0("diagrams/rmarkdown", ifelse(knitr::is_latex_output(), ".png", ".svg")
+```{r rmarkdown-concept-map,fig.cap="R Markdown 概念图",echo=FALSE,out.width="75%"}
+knitr::include_graphics(path = paste0(
+  "diagrams/rmarkdown",
+  ifelse(knitr::is_latex_output(), ".png", ".svg")
 ))
 ```
 
@@ -122,8 +124,8 @@ nomnoml::nomnoml("
 #.box: fill=#8f8 dashed visual=note
 #direction: down
 
-[Sweave-test-1.Rnw]  -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]
-[Sweave-test-1.Rnw]  -> utils::Stangle() [Sweave-test-1.R]
+[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]
+[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]
 [Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]
 [Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]
 ")
@@ -181,8 +183,11 @@ classoption: "`r knitr::inline_expr('params$classoption')`"
 
 如果想要双栏的排版风格，编译时传递 documentclass 参数值，覆盖掉默认的参数值即可
 
-```r
-rmarkdown::render(input = "examples/pdf-document.Rmd", params = list(classoption = c("twocolumn")))
+```{r,eval=FALSE}
+rmarkdown::render(
+  input = "examples/pdf-document.Rmd",
+  params = list(classoption = c("twocolumn"))
+)
 ```
 
 
@@ -193,9 +198,7 @@ beamer 幻灯片也是一种 PDF 文档 [PDF 文档案例](https://github.com/Xi
 
 Dirk Eddelbuettel 将几个大学的 beamer 幻灯片转化成 R Markdown 模板，收录在 [binb](https://github.com/eddelbuettel/binb) 包里，方便调用。伊利诺伊大学的 [James J Balamuta](https://thecoatlessprofessor.com/) 在 R Markdown 基础上专门为自己学校开发了一套的幻灯片模版，全部打包在 [uiucthemes](https://github.com/illinois-r/uiucthemes) 包里。
 
-[komaletter](https://github.com/rnuske/komaletter) Markdown 写信件
-
-安装主题
+[komaletter](https://github.com/rnuske/komaletter) 用 Markdown 写信件
 
 此汉风主题由 [林莲枝](https://github.com/liantze/pgfornament-han/) 开发，LaTeX 宏包已发布在 [CTAN](https://www.ctan.org/pkg/pgfornament-han) 上，使用此幻灯片主题需要将相关的 LaTeX 宏包一块安装。
 
@@ -209,8 +212,10 @@ tlmgr install pgfornament pgfornament-han needspace xpatch
 
 ### 文档模版 {#subsec:document-template}
 
-修改字体
+字体设置
 
+:::::: {.columns}
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
 ```yaml
 ---
 output: 
@@ -224,28 +229,17 @@ output:
        - scaled=0.9
 ---
 ```
-
-书籍
-
+:::
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
 ```yaml
 ---
-documentclass: scrbook
-title: Digital space simulation with the DSP 56004
-subtitle: Short but sweet?
-author: "Tommy"
-date: "`r Sys.Date()`"
-header-includes:
-- \titlehead{XX University}
-- \subject{Dissertation}
-- \publishers{Adviser Prof. John XX}
-- \dedication{To my friend}
 output: 
   pdf_document: 
-    number_sections: yes
-    toc: yes
-    template: null
-    latex_engine: xelatex
-    citation_package: natbib
     extra_dependencies:
       sourcecodepro:
        - scale=0.85
@@ -255,6 +249,8 @@ output:
        - sfdefault
 ---
 ```
+:::
+::::::
 
 
 ### 引用文献 {#subsec:cite-doi}
