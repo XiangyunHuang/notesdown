@@ -52,7 +52,10 @@ watermark: {
 
 ```{r custom-details,fig.cap="自定义细节",eval=knitr::is_html_output()}
 library(plotly, warn.conflicts = FALSE)
-plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1", type = "box") %>%
+plot_ly(diamonds,
+  x = ~clarity, y = ~price,
+  color = ~clarity, colors = "Set1", type = "box"
+) %>%
   config(
     toImageButtonOptions = list(
       format = "svg", filename = paste("plot", Sys.Date(), sep = "_")
@@ -60,11 +63,11 @@ plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1", t
     watermark = F,
     displaylogo = FALSE, # 移除 Plotly 的 logo
     locale = "zh-CN", # 汉化
-    modeBarButtonsToRemove = c(
-      "zoom2d", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d", "pan2d",
-      "hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"
-    ), # 去掉任意一个按钮
-    # displayModeBar = FALSE, # 去掉整个顶部工具栏
+    # modeBarButtonsToRemove = c(
+    #   "zoom2d", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d", "pan2d",
+    #   "hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"
+    # ), # 去掉任意一个按钮
+    displayModeBar = FALSE, # 去掉整个顶部工具栏
     showLink = FALSE
   ) %>%
   layout(
@@ -80,7 +83,11 @@ plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1", t
     ),
     annotations = list(
       text = "watermark", # 文本注释
-      font = list(size = 40, color = "red", family = "Times New Roman"), # 字号、颜色、字族
+      font = list(
+        size = 40, # 字号
+        color = "red", # 颜色
+        family = "Times New Roman" # 字族
+      ),
       opacity = 0.2, # 字体透明度
       xref = "paper",
       yref = "paper",
@@ -202,7 +209,7 @@ htmltools::tagList(p21, p22, p23, p24)
 
 plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
 
-```{r add-layer}
+```{r add-layer,echo=FALSE}
 library(plotly, warn.conflicts = FALSE)
 knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3), caption = "图层")
 ```
@@ -213,7 +220,11 @@ knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3
 
 ```{r plotly-bubble,fig.cap="气泡图",eval=knitr::is_html_output()}
 # 气泡图
-dat <- diamonds[, .(carat = mean(carat), price = sum(price), cnt = .N), by = .(cut)]
+dat <- diamonds[, .(
+  carat = mean(carat),
+  price = sum(price), 
+  cnt = .N
+), by = .(cut)]
 
 plot_ly(
   data = dat,
@@ -295,20 +306,38 @@ plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity) %>%
   add_boxplot()
 
 # 使用 colors 参数设置调色板
-plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1") %>%
+plot_ly(diamonds,
+  x = ~clarity, y = ~price,
+  color = ~clarity, colors = "Set1"
+) %>%
   add_boxplot()
 
 # 或者使用 qplot 式绘图风格
-plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity, colors = "Set1", type = "box")
+plot_ly(diamonds,
+  x = ~clarity, y = ~price,
+  color = ~clarity, colors = "Set1", type = "box"
+)
 
 
 # 分组箱线图 https://github.com/ropensci/plotly/issues/994
-plot_ly(diamonds, x = ~cut, y = ~price, color = ~clarity, type = "box") %>%
+plot_ly(diamonds,
+  x = ~cut, y = ~price,
+  color = ~clarity, type = "box"
+) %>%
   layout(boxmode = "group")
 
 # 修改图例的标题，R 的嵌套 list 对象对应于 JS 的 JSON 数据对象
-plot_ly(diamonds, x = ~cut, y = ~price, color = ~clarity, colors = "Set1", type = "box") %>%
-  layout(boxmode = "group", legend = list(bgcolor = "white", title = list(text = "clarity")))
+plot_ly(diamonds,
+  x = ~cut, y = ~price,
+  color = ~clarity, colors = "Set1", type = "box"
+) %>%
+  layout(
+    boxmode = "group",
+    legend = list(
+      bgcolor = "white",
+      title = list(text = "clarity")
+    )
+  )
 
 # 提琴图 
 plot_ly(diamonds, x = ~cut, y = ~price) %>%
@@ -336,7 +365,7 @@ plot_mapbox(
   data = quakes,
   lon = ~long, lat = ~lat,
   color = ~mag, size = 2,
-  type = "scattermapbox", mode = 'markers', 
+  type = "scattermapbox", mode = "markers",
   marker = list(opacity = 0.5)
 ) %>%
   layout(title = "Fiji Earthquake", mapbox = list(
@@ -346,17 +375,23 @@ plot_mapbox(
       lon = ~ median(long)
     )
   )) %>%
-  config(mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN"), displayModeBar = FALSE)
+  config(
+    mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN"),
+    displayModeBar = FALSE
+  )
 ```
 
 [rasterly](https://github.com/plotly/rasterly) 百万量级的散点图
 
-```{r,eval=FALSE}
+```{r,echo=FALSE,eval=FALSE}
 full_urls <- sprintf("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data%d.csv", 1:3)
 dest_files <- paste("~/Desktop/uber", basename(full_urls), sep = "/")
 # 下载数据
 download.file(url = full_urls, destfile = dest_files)
+```
 
+
+```{r,eval=FALSE}
 library(data.table)
 library(rasterly)
 # 读取数据
@@ -415,7 +450,13 @@ Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可�
 library(highcharter)
 highchart() %>%
   hc_xAxis(type = "category") %>%
-  hc_add_series_list(x = data_to_boxplot(iris, Sepal.Length, Species, name = "iris"))
+  hc_add_series_list(x = data_to_boxplot(
+    data = iris,
+    variable = Sepal.Length,
+    group_var = Species,
+    add_outliers = TRUE,
+    name = "iris"
+  ))
 ```
 
 除了箱线图 boxplot 还有折线图、条形图、密度图等一系列常用图形，共计 50 余种，详见表\@ref(tab:hc-charts)，各类图形示例见 <https://www.highcharts.com/demo>。
@@ -567,7 +608,10 @@ unit_format <- JS("function(){
 
 highchart() %>%
   hc_xAxis(type = "datetime") %>%
-  hc_yAxis(title = list(text = "Nuclear weapon states"), labels = list(formatter = unit_format)) %>%
+  hc_yAxis(
+    title = list(text = "Nuclear weapon states"),
+    labels = list(formatter = unit_format)
+  ) %>%
   hc_title(text = "US and USSR nuclear stockpiles") %>%
   hc_subtitle(text = paste(
     'Sources: <a href="https://thebulletin.org/2006/july/global-nuclear-stockpiles-1945-2006">',
@@ -575,8 +619,11 @@ highchart() %>%
     "armscontrol.org</a>"
   )) %>%
   hc_add_series(data = russia, type = "area", name = "USSR/Russia") %>%
-  hc_add_series(data = usa, type = "area", name = "USA") %>% 
-  hc_exporting(enabled = TRUE, filename = paste(Sys.Date(), "nuclear", sep = "-"))
+  hc_add_series(data = usa, type = "area", name = "USA") %>%
+  hc_exporting(
+    enabled = TRUE,
+    filename = paste(Sys.Date(), "nuclear", sep = "-")
+  )
 ```
 
 可以看出来，JS API 文档里 `chart -> plotOptions` 对应于 R 包 API 的 `hc_plotOptions()` 函数，`hchart()` 函数对应于 <https://api.highcharts.com/highcharts/series> ，为了绘图方便起见，作者还直接支持 R 中一些数据对象，比如数据框 data.frame 和时间序列 ts 等，完整的支持列表见：
@@ -648,16 +695,13 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 list.files(system.file("examples/", package = "r2d3"))
 ```
 
-```{r}
+```{r barchart-r2d3,fig.cap="D3 图形",fig.width=4,fig.height=3, out.width="45%",fig.show='hold',fig.ncol=2, fig.subcap=c("barchart.js 库","baranims.js 库"),eval=knitr::is_html_output()}
 library(r2d3)
 r2d3(
   data = c(0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
   script = system.file("examples/barchart.js", package = "r2d3")
 )
-```
 
-
-```{r}
 r2d3(
   data = c(0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
   script = system.file("examples/baranims.js", package = "r2d3")
