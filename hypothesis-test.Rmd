@@ -6,31 +6,21 @@ library(magrittr)
 library(ggplot2)
 ```
 
-> The Earth is Round ($p < .05$)
+> The Earth is Round ($p < 0.05$)
 > 
 > --- Jacob Cohen [@Cohen_1994_Earth]
 
-[MKpower](https://cran.r-project.org/package=MKpower) 包提供
 
-- Welch 和 Hsu（许宝騄） 的 t 检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是 蒙特卡罗模拟
-- Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，计算方法为蒙特卡罗模拟
+R. A. Fisher 将抽样分布、参数估计和假设检验列为统计推断的三个中心内容，可见假设检验的重要地位
 
-Jacob Cohen 实际谈的是更加深刻的问题。开篇介绍为什么需要假设检验，做检验和不做检验有什么区别？ 
+呈现常见检验的公式，将手写代码和 R 内置函数计算结果进行比较，每一组原假设和备择假设要说明对应的 R 函数和及其参数设置，尽量理论和代码并重，最后结合实际的数据予以解释说明。
 
-呈现常见检验的公式，将手写代码和 R 内置函数计算结果进行比较，每一组原假设和备择假设要说明对应的 R 函数和及其参数设置 
+Jacob Cohen 实际谈的是更加深刻的问题。开篇介绍为什么需要假设检验，做检验和不做检验有什么区别？ 杨灿老师在[讨论帖](https://d.cosx.org/d/420930/11)提出检验的作用和实际应用问题
 
-有了均值和方差，为什么还要位置参数和尺度参数？
+有了均值和方差，为什么还要位置参数和尺度参数？为了更一般地描述问题，扩展范围。
 
-在本章完成一半的时候，可以在本章开头添加一幅思维导图，提纲挈领 
 
-R. A. Fisher 将抽样分布、参数估计和假设检验列为统计推断的三个中心内容
-
-Jacob Cohen 的著作 Statistical Power Analysis for the Behavioral Sciences
-https://www.utstat.toronto.edu/~brunner/oldclass/378f16/readings/CohenPower.pdf
-
-见讨论帖 <https://d.cosx.org/d/420930/11> 杨灿老师提出检验的作用和实际应用问题
-
-谢益辉谈检验问题 [统计分布的检验](https://yihui.org/cn/2009/02/test-statistical-distributions/)
+[统计分布的检验](https://yihui.org/cn/2009/02/test-statistical-distributions/)
 
 [从心理学和可视化的角度谈 Cohen's d](https://rpsychologist.com/d3/cohend/)
 
@@ -44,87 +34,11 @@ https://www.utstat.toronto.edu/~brunner/oldclass/378f16/readings/CohenPower.pdf
 
 [一分钟学会 A/B 测试](https://blog.ephorie.de/learning-data-science-a-b-testing-in-under-one-minute)
 
-[rstatix](https://github.com/kassambara/rstatix) 包提供了一个简明的管道友好的框架，和 tidyverse 的设计哲学保持一致，支持常见的统计检验，如T检验，Wilcoxon 检验，方差分析，Kruskal-Wallis 检验，相关性分析，并将结果整理成干净的数据框形式，以方便可视化。
-
-贝叶斯 A/B 测试 https://github.com/FrankPortman/bayesAB
-shiny 应用 https://github.com/Vidogreg/bayes-ab-testing
-
-1. 基本概念
-  - 假设：如何设置假设
-  - 检验：检验的原理是什么
-  - 拒绝域：如何确定拒绝域
-  - 检验统计量：如何构造
-  - 势函数：用来干什么
-  - 检验的功效：用来干什么
-  - 检验的水平：用来干什么
-
-1. 一般理论
-  - wilks 检验 似然比检验 极限分布是卡方分布
-  - Rao 检验 极限分布是卡方分布
-  - Wald 检验，极限分布是正态分布
-
-1. 均值检验
-  - 参数检验
-    - 正态总体均值的检验
-      - 方差已知 u 检验
-      - 方差未知 t 检验
-    - 二项总体比例的检验
-      - 两样本 `binom.test()`  
-      - 多样本 `prop.test()`
-    - 泊松总体比率的检验：`poisson.test()`
-  - 非参数检验
-
-1. 方差检验
-  - 参数检验：注意同一栏目下各种检验的区别和联系
-    - `var.test()` 两样本
-    - `bartlett.test()` 多样本
-  - 非参数检验
-    - `mood.test()` 两样本
-    - `fligner.test()` 多样本
-    - `ansari.test()` 两样本
-    - `mood.test()` 两样本
-
-1. 分布检验
-  - `ks.test()` 同分布检验
-  - `shapiro.test()` 正态分布检验
-
-1. 配对样本的检验
-  - 配对比例检验 `pairwise.prop.test()`
-  - 配对 t 检验 `pairwise.t.test()`
-  - 配对 Wilcoxon 检验 `pairwise.wilcox.test()`
-  - 配对样本相关性检验 `cor.test()`
-
-1. 名人检验
-  - Mauchly 球形检验 `mauchly.test()`
-
-1. 图检验： 
-  - 箱线图 boxplot 检查数据中的异常值 
-  - QQ 图 qqplot 检查数据的正态性 
-  - 自相关图 acf 检查数据的自相关性
-
-1. 其它检验
-  - 游程检验
-  - 平稳性检验 
-  - 单位根检验
-    - 振幅（波动）
-    - 频率（疏密）
-
-1. 常见检验的功效
-  - t 检验
-  - 比例检验
-  - 多样本均值检验：方差分析的功效
-
-1. 拟合优度检验和列联表独立性检验（分类、计数数据）
 
 
-做个关于方差分析的 Shiny 应用，并把它嵌入书籍中也不错哦！比如 Danilo Pecorino 制作的 [DIY_ANOVA](https://github.com/DaniloPecorino/DIY_ANOVA) <https://testing-apps.shinyapps.io/diy_anova/>，数据集就以 PlantGrowth 为例展示，把方差分析和 PlantGrowth 数据分析整合在 shiny 中。
 
-```{r,eval=FALSE,include=FALSE}
-data("PlantGrowth", package = "datasets")
-if(!dir.exists("data-raw/")) dir.create("data-raw/", recursive = TRUE)
-write.table(PlantGrowth, file = "data-raw/PlantGrowth.csv", 
-            row.names = FALSE, quote = FALSE, sep = ",")
-```
+
+[rstatix](https://github.com/kassambara/rstatix) 包提供了一个简明的管道友好的框架，和 tidyverse 的设计哲学保持一致，支持常见的统计检验，如 T 检验，Wilcoxon 检验，方差分析，Kruskal-Wallis 检验，相关性分析，并将结果整理成干净的数据框形式，以方便可视化。
 
 
 ## Ansari-Bradley 检验 `ansari.test` {#sec:ansari-test}
@@ -250,10 +164,6 @@ usage(kruskal.test)
 usage("kruskal.test.default")
 usage("kruskal.test.formula")
 ```
-
-
-
-
 
 
 ## 同分布检验 `ks.test` {#sec:ks-test}
@@ -704,7 +614,7 @@ usage(shapiro.test)
 
 EP 检验对多种备择假设有较高的效率，利用样本的特征函数和正态分布的特征函数的差的模的平方产生的一个加权积分得到 EP 检验统计量 [@EP_1983_normality]
 
-::: rmdinfo
+::: {.rmdtip data-latex="{提示}"}
 样本量 $n \geq 200$ EP 检验统计量 $T_{EP}$ 非常接近 $n = \infty$ 时 $T_{EP}$ 的分位数。
 :::
 
@@ -795,7 +705,7 @@ qt(1 - 0.05, df = 100 + 80 - 2)
 1 - pt(t0, df = 100 + 80 - 2, lower.tail = TRUE)
 ```
 
-利用 R 内置的 `t.test` 函数计算
+利用 R 内置的 `t.test()` 函数计算
 
 ```{r}
 t.test(x = x1, y = y1, alternative = "greater", var.equal = TRUE)
@@ -813,7 +723,7 @@ fit <- lm(value ~ 1 + I(group == "y1"), data = dat)
 summary(fit)
 ```
 
-::: rmdnote
+::: {.rmdnote data-latex="{注意}"}
 lm 回归和 t 检验的差别，回归系数第二行， t 统计量为 -6.682，P 值为 2.92e-10，前者是因为截距项，后者是因为双边检验（模型系数显著性检验是和0比较），所以有2倍的关系。直观解释详见 [翻译：常见统计检验的本质都是线性模型（或：如何教统计学）](https://cosx.org/2019/09/common-tests-as-linear-models/)
 :::
 
@@ -828,9 +738,7 @@ lm 回归和 t 检验的差别，回归系数第二行， t 统计量为 -6.682�
 #### 方差 $\sigma^2_1 / \sigma^2_2$ 未知
 
 
-
 英国统计学家 William Sealy Gosset (1876-1937) 于 1908 年在杂志 《Biometrics》 上以笔名 Student 发表论文《The probable error of a mean》[@Students_1908_Gosset]，论文中展示了独立同正态分布的样本 $x_1, \ldots, x_n \stackrel{i.i.d}{\sim} \mathcal{N}(\mu,\sigma^2)$ 的样本方差 $s^2$ 和样本标准差 $s$ 的抽样分布，根据均值和标准差不相关的性质导出 t 分布，宣告 t 分布的诞生，因其在小样本领域的突出贡献，W. S. Gosset 进入世纪名人录 [@Statisticians_2001_Heyde]
-
 
 $$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2(n-1)$$
 
@@ -839,25 +747,23 @@ $$\frac{\bar{x} - \mu}{s/\sqrt{n}} \sim t(n-1)$$
 $$E(s^2) = \sigma^2, \quad Var(s^2) = \frac{2\sigma^4}{n-1}$$
 
 1. 两样本的样本量很大，总体方差未知，检验两样本均值的显著性检验，极限分布是正态，$u$ 检验
-1. 两个样本的样本量不是很大，总体方差也未知，检验两样本均值的显著性检验，即著名的 Behrens-Fisher 问题， Welsh 在 1938 年提出近似服从自由度为 l 的 t 分布。
+1. 两个样本的样本量不是很大，总体方差也未知，检验两样本均值的显著性检验，即著名的 Behrens-Fisher 问题，Welsh 在 1938 年提出近似服从自由度为 $\ell$ 的 t 分布。
 
 Egon Pearson 接过他父亲 Karl Pearson 的职位，担任伦敦大学学院的高尔顿统计教授
 
 许宝騄在 Jerzy Neyman 和 Egon Pearson 主编的杂志《Statistical Research Memoirs》发表第一篇关于 Behrens-Fisher 问题的论文
 
-这里提及许宝騄（Pao-Lu Hsu）的贡献[@Student_1938_HSU]，
+这里提及许宝騄（Pao-Lu Hsu）的贡献 [@Student_1938_HSU]，
 
-陈家鼎和郑忠国一起整理了许宝騄的生平事迹和学术成就，见《许宝騄先生的生平和学术成就》 <http://www.math.pku.edu.cn/misc/probstat/doc.pdf>。
+陈家鼎和郑忠国一起整理了许宝騄的生平事迹和学术成就，见[《许宝騄先生的生平和学术成就》](https://www.math.pku.edu.cn/misc/probstat/doc.pdf)。
 
 1998 年关于 Behrens-Fisher 问题的综述 [@Behrens_1998_Kim]
 
-钟开涞（Kai-Lai Chung）将许宝騄的论文集整理出版[@Collected_1983_HSU]
+钟开涞（Kai-Lai Chung）将许宝騄的论文集整理出版 [@Collected_1983_HSU]
 
 
 
-
-
-Performs one and two sample t-tests on vectors of data.
+`t.test()` 提供单样本和两样本的检验
 
 ```{r,collapse=TRUE,comment=NA}
 usage(t.test)
@@ -894,8 +800,8 @@ sleep2 <- reshape(sleep,
 # t.test(Pair(extra.1, extra.2) ~ 1, data = sleep2)
 ```
 
-::: rmdinfo
-使用 `t.test` 和 `wilcox.test` 的公式接口要求 R 版本 4.0.0 及以上
+::: {.rmdnote data-latex="{注意}"}
+函数 `t.test()` 和 `wilcox.test()` 的公式接口要求 R 版本在 4.0.0 及以上
 :::
 
 ## 方差比检验 `var.test` {#sec:var-test}
@@ -1032,6 +938,15 @@ trap.rule <- function(x, y) sum(diff(x) * (y[-1] + y[-length(y)])) / 2
 ## 功效分析 {#sec:power-analysis}
 
 > 比较功效的作用是啥？计算试验设计需要的最小样本量
+
+Jacob Cohen 的著作《Statistical Power Analysis for the Behavioral Sciences》第二版 [@Cohen1988]
+
+
+[MKpower](https://cran.r-project.org/package=MKpower) 包提供
+
+- Welch 和 Hsu（许宝騄） 的 t 检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是 蒙特卡罗模拟
+- Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，计算方法为蒙特卡罗模拟
+
 
 ### 方差分析检验的功效 `power.anova.test` {#subsec:power-anova-test}
 
