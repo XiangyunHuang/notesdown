@@ -65,10 +65,6 @@ jobs:
           # install full prebuilt version
           TINYTEX_INSTALLER: TinyTeX
 
-      - name: Install LaTeX packages
-        run: |
-          Rscript -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
-
       - name: Install Spark ENV
         run: |
           mkdir -p /opt/spark/
@@ -113,6 +109,11 @@ jobs:
           path: _bookdown_files
           key: bookdown-2-${{ hashFiles('**/*Rmd') }}
           restore-keys: bookdown-2
+
+      - name: Install LaTeX packages
+        run: |
+          R -e "if(!require('tinytex')) install.packages('tinytex')"
+          R -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
 
       - name: Install R packages
         run: |
