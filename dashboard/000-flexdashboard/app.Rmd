@@ -11,10 +11,10 @@ output:
 
 ```{r setup, include=FALSE}
 library(ggplot2)
-library(plotly)
 library(flexdashboard)
 library(patchwork)
 library(data.table)
+library(magrittr)
 diamonds <- as.data.table(diamonds)
 dat <- diamonds[, .(cnt = .N), by = .(cut, clarity)] %>% 
   .[, pct := cnt / sum(cnt), by = .(cut)] %>% 
@@ -49,9 +49,9 @@ ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
 Row
 -----------------------------------------------------------------------
 
-### 静态条形图
+### 条形图
 
-```{r,fig.height=8,fig.width=16}
+```{r,fig.height=6,fig.width=16}
 p1 = ggplot(data = dat, aes(x = cut, y = cnt, fill = clarity)) +
   geom_col(position = "dodge") +
   geom_text(aes(label = cnt), position = position_dodge(1), vjust = -0.5) +
@@ -61,7 +61,7 @@ p1 = ggplot(data = dat, aes(x = cut, y = cnt, fill = clarity)) +
   scale_fill_brewer(palette = "Spectral") +
   labs(fill = "clarity", y = "", x = "cut") +
   theme_minimal() + 
-  theme(legend.position = "top")
+  theme(legend.position = "right")
 
 p2 = ggplot(data = dat, aes(y = cut, x = cnt, fill = clarity)) +
   geom_col(position = "fill") +
@@ -73,7 +73,7 @@ p2 = ggplot(data = dat, aes(y = cut, x = cnt, fill = clarity)) +
   scale_x_continuous(labels = scales::percent) +
   labs(fill = "clarity", y = "", x = "cut") +
   theme_minimal() + 
-  theme(legend.position = "top")
+  theme(legend.position = "right")
 
 p1 + p2
 ```
@@ -89,8 +89,6 @@ Row
 ### 百分比堆积条形图
 
 ```{r}
-library(ggplot2)
-
 ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
   geom_bar(position = "dodge2") +
   scale_fill_brewer(palette = "Spectral")
@@ -116,6 +114,10 @@ plotly::plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Spectral", type = "histogram"
 ) %>%
+  plotly::layout(
+    yaxis = list(title = "cnt"),
+    legend = list(title = list(text = "clarity"))
+  ) %>%
   plotly::config(displayModeBar = FALSE)
 ```
 
