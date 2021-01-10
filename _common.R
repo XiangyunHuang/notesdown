@@ -1,4 +1,8 @@
 knitr::opts_chunk$set(width = 69, dpi = 300, message = FALSE, fig.align='center')
+knitr::opts_template$set(
+  fig.large = list(fig.width = 7, fig.height = 5),
+  fig.small = list(fig.width = 3.5, fig.height = 3.5)
+)
 
 # convert pdf to png
 to_png <- function(fig_path) {
