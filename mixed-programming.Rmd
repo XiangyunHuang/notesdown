@@ -14,6 +14,64 @@ if(!is.na(Sys.getenv('CI', NA))) {
 }
 ```
 
+R 语言 [@Ross_1996_R] 是一个统计计算和绘图的环境，以下各个节不介绍具体 R 包函数用法和参数设置，重点在历史发展趋势脉络，详细介绍去见[《现代统计图形》](https://bookdown.org/xiangyun/msg)的相应章节。R 语言的目标在于统计计算和绘图，设计优势在数据结构、图形语法、动态文档和交互图形
+
+<!-- 介绍 R 与其它语言的异同，降低编程门槛 -->
+
+
+## 函数源码 {#sec:function-source}
+
+
+[funflow](https://github.com/moodymudskipper/funflow) 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码
+
+```{r,eval=FALSE}
+remotes::install_github('moodymudskipper/funflow')
+funflow::view_flow('median.default')
+```
+
+```{r}
+methods(predict)
+```
+
+stats 包里找不到这个函数
+
+```{r}
+ls("package:stats", all.names = TRUE, pattern = "predict.poly")
+```
+
+
+```{r,error=TRUE}
+predict.poly
+```
+
+可见函数 `predict.poly()` 默认没有导出
+
+```{r}
+stats:::predict.poly
+```
+
+或者
+
+```{r}
+getAnywhere(predict.poly)
+```
+
+```{r}
+getAnywhere("predict.poly")$where
+```
+
+函数参数个数
+
+```{r}
+names(formals(read.table))
+```
+
+
+## 命名约定 {#sec:naming-conventions}
+
+R 语言当前的命名状态  <https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf> 和 <https://essentials.togaware.com/StyleO.pdf>
+
+
 R 与不同的编程语言如何交互
 
 ## R 与 JavaScripts {#sec:r-javascripts}
