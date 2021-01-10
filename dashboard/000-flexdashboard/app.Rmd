@@ -1,0 +1,155 @@
+---
+title: "柱（条）形图"
+author: "黄湘云"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(plotly)
+library(flexdashboard)
+library(patchwork)
+library(data.table)
+diamonds <- as.data.table(diamonds)
+dat <- diamonds[, .(cnt = .N), by = .(cut, clarity)] %>% 
+  .[, pct := cnt / sum(cnt), by = .(cut)] %>% 
+  .[, pct_pp := paste0(cnt, " (", scales::percent(pct, accuracy = 0.01), ")") ]
+```
+
+静态图
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### 分组计数
+
+```{r}
+# 分组计数 with(diamonds, table(clarity, cut))
+dcast(dat, formula = clarity ~ cut, value.var = "pct_pp") %>% 
+  knitr::kable(align = "crrrrr", caption = "数值和比例组合呈现")
+```
+
+
+### 复合条形图
+
+```{r}
+ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+  geom_bar(position = "dodge2") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_minimal()
+```
+
+
+Row
+-----------------------------------------------------------------------
+
+### 静态条形图
+
+```{r,fig.height=8,fig.width=16}
+p1 = ggplot(data = dat, aes(x = cut, y = cnt, fill = clarity)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = cnt), position = position_dodge(1), vjust = -0.5) +
+  geom_text(aes(label = scales::percent(pct, accuracy = 0.1)),
+    position = position_dodge(1), vjust = 1, hjust = 0.5
+  ) +
+  scale_fill_brewer(palette = "Spectral") +
+  labs(fill = "clarity", y = "", x = "cut") +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+p2 = ggplot(data = dat, aes(y = cut, x = cnt, fill = clarity)) +
+  geom_col(position = "fill") +
+  geom_text(aes(label = cnt), position = position_fill(1), vjust = -0.5) +
+  geom_text(aes(label = scales::percent(pct, accuracy = 0.1)),
+    position = position_fill(1), vjust = 1, hjust = 0.5
+  ) +
+  scale_fill_brewer(palette = "Spectral") +
+  scale_x_continuous(labels = scales::percent) +
+  labs(fill = "clarity", y = "", x = "cut") +
+  theme_minimal() + 
+  theme(legend.position = "top")
+
+p1 + p2
+```
+
+
+
+动态图
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### 百分比堆积条形图
+
+```{r}
+library(ggplot2)
+
+ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+  geom_bar(position = "dodge2") +
+  scale_fill_brewer(palette = "Spectral")
+
+plotly::plot_ly(dat,
+  y = ~cut, color = ~clarity, x = ~cnt,
+  colors = "Spectral", type = "bar",
+  text = ~ paste0(
+    cnt, "颗 <br>",
+    "占比：", scales::percent(pct, accuracy = 0.1), "<br>"
+  ), 
+  hoverinfo = "text"
+) %>%
+  plotly::layout(barmode = "stack", barnorm = "percent") %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+### 复合条形图
+
+```{r}
+# `type = "histogram"` 以 cut 和 clarity 分组计数
+plotly::plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+Row
+-----------------------------------------------------------------------
+
+### 堆积柱形图
+
+```{r}
+# 堆积图
+plotly::plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  plotly::layout(
+    barmode = "stack", 
+    yaxis = list(title = "cnt"),
+    legend = list(title = list(text = "clarity"))
+  ) %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+### 百分比堆积柱形图
+
+```{r}
+# 百分比堆积图
+plotly::plot_ly(diamonds,
+  x = ~cut, color = ~clarity,
+  colors = "Spectral", type = "histogram"
+) %>%
+  plotly::layout(
+    barmode = "stack", barnorm = "percent",
+    yaxis = list(title = "percent"),
+    legend = list(title = list(text = "clarity"))
+  ) %>%
+  plotly::config(displayModeBar = FALSE)
+```
