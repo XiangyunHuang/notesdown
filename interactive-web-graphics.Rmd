@@ -248,10 +248,26 @@ plot_ly(
     yaxis = list(hoverformat = ".0f")
   )
 ```
-```{r,eval=FALSE}
+```{r spline,fig.cap="平滑曲线图",eval=knitr::is_html_output()}
 # Line Plots
-plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter", mode = "lines")
+plot_ly(
+  x = c(1, 2.2, 3), y = c(5.3, 6, 7), type = "scatter",
+  mode = "markers+lines", line = list(shape = "spline"), color = I("red")
+) %>%
+  add_annotations(
+    x = 2, y = 6, size = I(100),
+    text = TeX("x_i \\sim N(\\mu, \\sigma)")
+  ) %>% 
+  layout(
+    xaxis = list(showgrid = F, title = TeX("\\mu")),
+    yaxis = list(showgrid = F, title = TeX("\\alpha"))
+  ) %>% 
+  config(displayModeBar = FALSE, mathjax = 'cdn')
+```
 
+其他基础图形
+
+```{r,eval=FALSE}
 # Scatter Plots
 plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter", mode = "markers")
 
@@ -262,7 +278,10 @@ plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "bar")
 plot_ly(
   x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter",
   mode = "markers",
-  marker = list(size = c(1, 5, 10), color = c("red", "blue", "green"))
+  marker = list(
+    size = c(1, 5, 10),
+    color = c("red", "blue", "green")
+  )
 )
 
 # Heatmaps
@@ -383,57 +402,8 @@ plot_mapbox(
 
 [rasterly](https://github.com/plotly/rasterly) 百万量级的散点图
 
-```{r,echo=FALSE,eval=FALSE}
-full_urls <- sprintf("https://raw.githubusercontent.com/plotly/datasets/master/uber-rides-data%d.csv", 1:3)
-dest_files <- paste("~/Desktop/uber", basename(full_urls), sep = "/")
-# 下载数据
-download.file(url = full_urls, destfile = dest_files)
-```
-
-
-```{r,eval=FALSE}
-library(data.table)
+```{r rasterly-quakes, fig.cap="散点图", eval=knitr::is_html_output()}
 library(rasterly)
-# 读取数据
-ridesDf <- rbindlist(lapply(dest_files, fread, stringsAsFactors = FALSE))
-# 绘图
-ridesDf %>%
-  rasterly(mapping = aes(x = Lat, y = Lon)) %>%
-  rasterly_points()
-```
-```{r rides,echo=FALSE,fig.cap="轨迹数据"}
-knitr::include_graphics(path = "screenshots/rasterly-rides.png")
-```
-
-```{r,eval=FALSE}
-library(plotly, warn.conflicts = FALSE)
-
-plot_ly(ridesDf, x = ~Lat, y = ~Lon) %>%
-  add_rasterly_heatmap()
-
-time <- lubridate::ymd_hms(ridesDf$`Date/Time`)
-ridesDf <- ridesDf[, "Date/Time" := NULL][, list(Lat,
-  Lon,
-  hour = lubridate::hour(time),
-  month = lubridate::month(time),
-  day = lubridate::day(time)
-)]
-```
-
-
-```{r,eval=FALSE}
-p <- plot_ly(data = ridesDf) %>%
-  add_rasterly_image(
-    x = ~Lat, y = ~Lon, color = ~hour,
-    # even `color_map` is deprecated,
-    # it is still a good way to specify the color mapping
-    color_map = hourColors_map,
-    plot_width = 400, plot_height = 400
-  )
-p
-```
-
-```{r,eval=FALSE}
 plot_ly(quakes, x = ~long, y = ~lat) %>%
   add_rasterly_heatmap()
 
@@ -441,6 +411,21 @@ quakes %>%
   rasterly(mapping = aes(x = long, y = lat)) %>%
   rasterly_points()
 ```
+
+```{r rasterly-uber,eval=FALSE}
+library(plotly)
+# 读取数据
+# uber 轨迹数据来自 https://github.com/plotly/rasterly
+ridesDf <- readRDS(file = 'data/uber.rds')
+
+ridesDf %>%
+  rasterly(mapping = aes(x = Lat, y = Lon)) %>%
+  rasterly_points()
+```
+```{r uber-rides,echo=FALSE,fig.cap="轨迹数据"}
+knitr::include_graphics(path = "screenshots/rasterly-rides.png")
+```
+
 
 ## highcharter {#sec:highcharter}
 
