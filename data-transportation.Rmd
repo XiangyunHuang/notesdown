@@ -83,6 +83,28 @@ diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GR
 diamonds_preview
 ```
 
+:::::: {.columns}
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+```{r}
+# SQL 中的 AVG 和 R 中的 mean 函数是类似的
+diamonds_price <- dbGetQuery(sc, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
+diamonds_price
+```
+:::
+::: {.column width="5%" data-latex="{0.05\textwidth}"}
+\ 
+<!-- an empty Div (with a white space), serving as
+a column separator -->
+:::
+::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+```{r}
+library(data.table)
+diamonds <- as.data.table(ggplot2::diamonds)
+diamonds[,.(mean_price = mean(price)), by = .(cut)]
+```
+:::
+::::::
+
 将结果数据用 ggplot2 呈现出来
 
 ```{r}
