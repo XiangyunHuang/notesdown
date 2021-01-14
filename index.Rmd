@@ -77,6 +77,38 @@ lapply(c(
 Book in early development. Planned release in 202X. 
 :::
 
+```{r normal-dist,fig.cap="统计学的世界",eval=knitr::is_html_output(), echo=knitr::is_html_output()}
+x = seq(from = -3, to = 3, length.out = 101)
+y = dnorm(x, mean = 0, sd = 1)
+library(magrittr)
+hline <- function(y = 0, color = "red") {
+  list(
+    type = "line", 
+    x0 = 0, 
+    x1 = 1, 
+    xref = "paper",
+    y0 = y, 
+    y1 = y, 
+    line = list(color = color, dash = 'dash')
+  )
+}
+
+plotly::plot_ly(
+  x = x, y = y, type = "scatter",
+  mode = "markers+lines", line = list(shape = "spline"), color = I("red")
+) %>%
+  plotly::add_annotations(
+    x = 1, y = 1/sqrt(2*pi), font = list(size = 100), showarrow = F,
+    text = plotly::TeX("\\frac{1}{\\sqrt{2\\pi}}")
+  ) %>% 
+  plotly::layout(
+    xaxis = list(showgrid = F, title = plotly::TeX("x")),
+    yaxis = list(showgrid = F, title = plotly::TeX("f(x)")),
+    shapes = list(hline(y = 1/sqrt(2*pi)))
+  ) %>% 
+  plotly::config(displayModeBar = FALSE, mathjax = 'cdn')
+```
+
 
 ## 本书风格 {#sec:style .unnumbered}
 
