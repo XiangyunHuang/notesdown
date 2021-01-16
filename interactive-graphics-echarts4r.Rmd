@@ -74,6 +74,52 @@ quakes %>%
 knitr::include_graphics(path = "screenshots/leaflet-heatmap.png")
 ```
 
+
+```{r,eval=FALSE,echo=TRUE}
+# 地图默认放大倍数
+zoom         <- 4
+# 地图可以放大的倍数区间
+minZoom      <- 1
+maxZoom      <- 18
+
+library(leaflet)
+library(leafletCN)
+library(maptools)
+library(leaflet.extras)
+
+# 热力图 heatmap
+leaflet(res, options = leafletOptions(minZoom = minZoom, maxZoom = maxZoom)) %>%
+  amap() %>%
+  #setView(lng = mean(data$long), lat = mean(data$lat), zoom = zoom) %>%
+  setView(lng = 109, lat = 38, zoom = 4) %>%
+  addHeatmap(lng = ~long2, lat = ~lat2, intensity = ~uv, max = max(res$uv),
+             blur = blur, minOpacity = minOpacity, radius = radius)
+
+
+quakes$popup_text <- lapply(paste(
+  "编号:", "<strong>", quakes$stations, "</strong>", "<br>",
+  "震深:", quakes$depth, "<br>",
+  "震级:", quakes$mag
+), htmltools::HTML)
+# 构造调色板
+pal <- colorBin("Spectral", bins = pretty(quakes$mag), reverse = TRUE)
+
+leaflet(quakes) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(lng = ~long, lat = ~lat, color = ~ pal(mag), label = ~popup_text) %>%
+  setView(178, -20, 5) %>%
+  addHeatmap(
+    lng = ~long, lat = ~lat, intensity = ~mag,
+    blur = 20, max = 0.05, radius = 15
+  ) %>%
+  addLegend("bottomright",
+            pal = pal, values = ~mag,
+            title = "地震震级"
+  ) %>%
+  addScaleBar(position = c("bottomleft"))
+```
+
+
 ## 日历图 {#sec:echarts4r-calendar}
 
 ```{r,eval=knitr::is_html_output()}
