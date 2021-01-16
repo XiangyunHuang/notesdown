@@ -444,6 +444,49 @@ plot_ly(data = dat,
 ```
 
 
+
+
+### 拟合图 {#subsec:plotly-fitted}
+
+```{r plotly-fitted,fig.cap="拟合曲线", eval=knitr::is_html_output()}
+plot_ly(economics,
+  type = "scatter",
+  x = ~date,
+  y = ~uempmed,
+  name = "unemployment",
+  mode = "markers+lines",
+  marker = list(
+    color = "red"
+  ),
+  line = list(
+    color = "red",
+    dash = "dashed"
+  )
+) %>%
+  add_trace(
+    x = ~date,
+    y = ~fitted(loess(uempmed ~ as.numeric(date))),
+    mode = "markers+lines",
+    marker = list(
+      color = "orange"
+    ),
+    line = list(
+      color = "orange"
+    )
+  ) %>%
+  layout(
+    title = "失业时间",
+    xaxis = list(
+      title = "日期",
+      showgrid = F
+    ),
+    yaxis = list(
+      title = "失业时间（周）"
+    )
+  )
+```
+
+
 ### 轨迹图 {#subsec:plotly-rasterly}
 
 [rasterly](https://github.com/plotly/rasterly) 百万量级的散点图
@@ -472,6 +515,28 @@ ridesDf %>%
 knitr::include_graphics(path = "screenshots/rasterly-rides.png")
 ```
 
+
+### 三维图 {#subsec:plotly-3d}
+
+
+```{r plotly-3d,fig.cap="三维图形", eval=knitr::is_html_output()}
+plot_ly(z = ~volcano) %>%
+  add_surface()
+
+plot_ly(x = c(0, 0, 1), y = c(0, 1, 0), z = c(0, 0, 0)) %>%
+  add_mesh()
+
+# https://plot.ly/r/reference/#scatter3d
+transform(mtcars, am = ifelse(am == 0, "Automatic", "Manual")) %>%
+  plot_ly(x = ~wt, y = ~hp, z = ~qsec, 
+          color = ~am, colors = c("#BF382A", "#0C4B8E")) %>%
+  add_markers() %>%
+  layout(scene = list(
+    xaxis = list(title = "Weight"),
+    yaxis = list(title = "Gross horsepower"),
+    zaxis = list(title = "1/4 mile time")
+  ))
+```
 
 ## highcharter {#sec:highcharter}
 
