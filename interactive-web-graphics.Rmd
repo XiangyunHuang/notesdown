@@ -136,6 +136,112 @@ p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
 orca(p, "plot.svg")
 ```
 
+### 散点图 {#subsec:plotly-scatter}
+
+
+Table: (\#tab:predict-functions) 散点图类型
+
+| 类型             | 名称              |
+| :--------------- | :---------------- |
+| `scattercarpet`  | 地毯图            |
+| `scatterternary` | 三元图            |
+| `scatter3d`      | 三维散点图        |
+| `scattergeo`     | 地图散点图        |
+| `scattermapbox`  | 地图散点图 Mapbox |
+| `scatter`        | 散点图            |
+| `scattergl`      | 散点图 GL         |
+| `scatterpolar`   | 极坐标散点图      |
+| `scatterpolargl` | 极坐标散点图 GL   |
+
+
+```{r,eval=knitr::is_html_output()}
+# scattercarpet 地毯图
+plot_ly(
+  type = "carpet",
+  a = c(4, 4, 4, 4.5, 4.5, 4.5, 5, 5, 5, 6, 6, 6),
+  b = c(1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3),
+  y = c(2, 3.5, 4, 3, 4.5, 5, 5.5, 6.5, 7.5, 8, 8.5, 10),
+  aaxis = list(
+    tickprefix = "a = ",
+    ticksuffix = "m",
+    smoothing = 1,
+    minorgridcount = 9
+  ),
+  baxis = list(
+    tickprefix = "b = ",
+    ticksuffix = "Pa",
+    smoothing = 1,
+    minorgridcount = 9
+  )
+) %>% add_trace(
+  type = "scattercarpet",
+  a = c(4, 4.5, 5, 6),
+  b = c(2.5, 2.5, 2.5, 2.5),
+  line = list(
+    shape = "spline",
+    smoothing = 1,
+    color = "blue"
+  ),
+  marker = list(color = "blue")
+)
+```
+
+
+```{r,eval=knitr::is_html_output()}
+# 三元图 Ternary
+journalist <- c(75, 70, 75, 5, 10, 10, 20, 10, 15, 10, 20)
+developer <- c(25, 10, 20, 60, 80, 90, 70, 20, 5, 10, 10)
+designer <- c(0, 20, 5, 35, 10, 0, 10, 70, 80, 80, 70)
+label <- c(
+  "point 1", "point 2", "point 3", "point 4", "point 5", "point 6",
+  "point 7", "point 8", "point 9", "point 10", "point 11"
+)
+
+df <- data.frame(journalist, developer, designer, label)
+
+# axis layout
+axis <- function(title) {
+  list(
+    title = title,
+    titlefont = list(
+      size = 15
+    ),
+    tickfont = list(
+      size = 15
+    ),
+    tickcolor = "rgba(0,0,0,0)",
+    ticklen = 5
+  )
+}
+
+df %>%
+  plot_ly() %>%
+  add_trace(
+    type = "scatterternary",
+    mode = "markers",
+    a = ~journalist,
+    b = ~developer,
+    c = ~designer,
+    text = ~label,
+    marker = list(
+      symbol = 100,
+      color = "#DB7365",
+      size = 14,
+      line = list(width = 2)
+    )
+  ) %>%
+  layout(
+    # title = "Simple Ternary Plot with Markers",
+    ternary = list(
+      sum = 100,
+      aaxis = axis("Journalist"),
+      baxis = axis("Developer"),
+      caxis = axis("Designer")
+    )
+  )
+```
+
+
 ### 条形图 {#subsec:plotly-barplot}
 
 日常使用最多的图形无外乎散点图、柱形图（分组、堆积、百分比堆积等）
