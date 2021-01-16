@@ -136,7 +136,7 @@ p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
 orca(p, "plot.svg")
 ```
 
-### 常用 {#subsec:common}
+### 条形图 {#subsec:plotly-barplot}
 
 日常使用最多的图形无外乎散点图、柱形图（分组、堆积、百分比堆积等）
 
@@ -176,6 +176,9 @@ p14 <- plot_ly(diamonds,
 htmltools::tagList(p11, p12, p13, p14)
 ```
 
+
+### 折线图 {#subsec:plotly-lineplot}
+
 其它常见的图形还要折线图、直方图、箱线图和提琴图
 
 ```{r other-plotly,fig.cap="其它常见图形",eval=knitr::is_html_output()}
@@ -184,142 +187,33 @@ p21 <- plot_ly(Orange,
   x = ~age, y = ~circumference, color = ~Tree,
   type = "scatter", mode = "markers+lines"
 )
+```
 
+### 直方图 {#subsec:plotly-histogram}
+
+```{r other-plotly,fig.cap="其它常见图形",eval=knitr::is_html_output()}
 # 分组直方图
 p22 <- plot_ly(iris,
   x = ~Sepal.Length,
   color = ~Species, type = "histogram"
 )
+```
 
+### 箱线图 {#subsec:plotly-boxplot}
+
+```{r other-plotly,fig.cap="其它常见图形",eval=knitr::is_html_output()}
 # 箱线图
 p23 <- plot_ly(diamonds,
   x = ~clarity, y = ~price,
   color = ~clarity, type = "box"
 )
 
-# 提琴图
-p24 <- plot_ly(diamonds,
-  x = ~cut, y = ~price, split = ~cut, type = "violin",
-  box = list(visible = T),
-  meanline = list(visible = T)
-)
-
-htmltools::tagList(p21, p22, p23, p24)
-```
-
-plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
-
-```{r add-layer,echo=FALSE}
-library(plotly, warn.conflicts = FALSE)
-knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3), caption = "图层")
-```
-
-### 图库 {#subsec:plots}
-
-简单图形 scatter，分布图几类，其中 scatter、heatmap、scatterpolar 支持 WebGL 绘图引擎
-
-```{r plotly-bubble,fig.cap="气泡图",eval=knitr::is_html_output()}
-# 气泡图
-dat <- diamonds[, .(
-  carat = mean(carat),
-  price = sum(price), 
-  cnt = .N
-), by = .(cut)]
-
-plot_ly(
-  data = dat,
-  x = ~carat, y = ~price, color = ~cut, size = ~cnt,
-  type = "scatter", mode = "markers",
-  marker = list(
-    symbol = "circle", sizemode = "diameter",
-    line = list(width = 2, color = "#FFFFFF"), opacity = 0.4
-  ),
-  text = ~ paste(
-    sep = " ", "重量：", round(carat, 2), "克拉",
-    "<br>价格:", round(price / 10^6, 2), "百万"
-  )
-) %>%
-  add_annotations(
-    x = ~carat, y = ~price, text = ~cnt,
-    showarrow = F, font = list(family = "sans")
-  ) %>%
-  layout(
-    xaxis = list(hoverformat = ".2f"),
-    yaxis = list(hoverformat = ".0f")
-  )
-```
-```{r spline,fig.cap="平滑曲线图",eval=knitr::is_html_output()}
-# Line Plots
-plot_ly(
-  x = c(1, 2.2, 3), y = c(5.3, 6, 7), type = "scatter",
-  mode = "markers+lines", line = list(shape = "spline"), color = I("red")
-) %>%
-  add_annotations(
-    x = 2, y = 6, size = I(100),
-    text = TeX("x_i \\sim N(\\mu, \\sigma)")
-  ) %>% 
-  layout(
-    xaxis = list(showgrid = F, title = TeX("\\mu")),
-    yaxis = list(showgrid = F, title = TeX("\\alpha"))
-  ) %>% 
-  config(displayModeBar = FALSE, mathjax = 'cdn')
-```
-
-其他基础图形
-
-```{r,eval=FALSE}
-# Scatter Plots
-plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter", mode = "markers")
-
-# Bar Charts
-plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "bar")
-
-# Bubble Charts https://plotly.com/r/bubble-charts/
-plot_ly(
-  x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter",
-  mode = "markers",
-  marker = list(
-    size = c(1, 5, 10),
-    color = c("red", "blue", "green")
-  )
-)
-
-# Heatmaps
-plot_ly(z = volcano, type = 'heatmap')
-
-# Area Plots
-plot_ly(x = c(1, 2, 3), y = c(5, 6, 7), type = "scatter",
-        mode = "lines", fill = 'tozeroy')
-
-# Bubble Map
-plot_ly(
-  lon = c(-73.5, 151.2), lat = c(45.5, -33.8), 
-  type = "scattergeo", mode = "markers", 
-  marker = list(color = c("red", "blue"), size = c(30, 50))
-)
-
-# Choropleth Map
-plot_ly(
-  type = "choropleth",
-  locations = c("AZ", "CA", "VT"),
-  locationmode = "USA-states",
-  colorscale = "Viridis", z = c(10, 20, 40)
-) %>%
-  layout(geo = list(scope = "usa"))
-
-# 对应到中国地图
-
-# Scatter Map
-plot_ly(
-  lon = c(42, 39), lat = c(12, 22), 
-  text = c('Rome', 'Greece'), 
-  type = "scattergeo", mode = "markers"
-)
-
 # 箱线图
 plot_ly(diamonds, x = ~cut, y = ~price) %>%
   add_boxplot()
+```
 
+```{r,eval=FALSE}
 # 不同的类别使用不同的颜色上色
 plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity) %>%
   add_boxplot()
@@ -336,7 +230,6 @@ plot_ly(diamonds,
   x = ~clarity, y = ~price,
   color = ~clarity, colors = "Set1", type = "box"
 )
-
 
 # 分组箱线图 https://github.com/ropensci/plotly/issues/994
 plot_ly(diamonds,
@@ -373,8 +266,106 @@ plot_ly(diamonds,
   )
 ```
 
+### 提琴图 {#subsec:plotly-violin}
 
-### 地图 {#subsec:map}
+```{r other-plotly,fig.cap="其它常见图形",eval=knitr::is_html_output()}
+# 提琴图
+p24 <- plot_ly(diamonds,
+  x = ~cut, y = ~price, split = ~cut, type = "violin",
+  box = list(visible = T),
+  meanline = list(visible = T)
+)
+
+htmltools::tagList(p21, p22, p23, p24)
+```
+
+plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
+
+```{r add-layer,echo=FALSE}
+library(plotly, warn.conflicts = FALSE)
+knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3), caption = "图层")
+```
+
+### 气泡图 {#subsec:plotly-bubble}
+
+简单图形 scatter，分布图几类，其中 scatter、heatmap、scatterpolar 支持 WebGL 绘图引擎
+
+```{r plotly-bubble,fig.cap="气泡图",eval=knitr::is_html_output()}
+# https://plotly.com/r/bubble-charts/
+dat <- diamonds[, .(
+  carat = mean(carat),
+  price = sum(price), 
+  cnt = .N
+), by = .(cut)]
+
+plot_ly(
+  data = dat,
+  x = ~carat, y = ~price, color = ~cut, size = ~cnt,
+  type = "scatter", mode = "markers",
+  marker = list(
+    symbol = "circle", sizemode = "diameter",
+    line = list(width = 2, color = "#FFFFFF"), opacity = 0.4
+  ),
+  text = ~ paste(
+    sep = " ", "重量：", round(carat, 2), "克拉",
+    "<br>价格:", round(price / 10^6, 2), "百万"
+  )
+) %>%
+  add_annotations(
+    x = ~carat, y = ~price, text = ~cnt,
+    showarrow = F, font = list(family = "sans")
+  ) %>%
+  layout(
+    xaxis = list(hoverformat = ".2f"),
+    yaxis = list(hoverformat = ".0f")
+  )
+```
+
+### 曲线图 {#subsec:plotly-spline}
+
+```{r spline,fig.cap="平滑曲线图",eval=knitr::is_html_output()}
+# Line Plots
+plot_ly(
+  x = c(1, 2.2, 3), y = c(5.3, 6, 7), type = "scatter",
+  mode = "markers+lines", line = list(shape = "spline"), color = I("red")
+) %>%
+  add_annotations(
+    x = 2, y = 6, size = I(100),
+    text = TeX("x_i \\sim N(\\mu, \\sigma)")
+  ) %>% 
+  layout(
+    xaxis = list(showgrid = F, title = TeX("\\mu")),
+    yaxis = list(showgrid = F, title = TeX("\\alpha"))
+  ) %>% 
+  config(displayModeBar = FALSE, mathjax = 'cdn')
+```
+
+
+### 堆积图 {#subsec:plotly-tozeroy}
+
+```{r,eval=knitr::is_html_output()}
+plot_ly(
+  data = PlantGrowth, y = ~weight,
+  color = ~group,
+  type = "scatter", line = list(shape = "spline"),
+  mode = "lines", fill = "tozeroy"
+)
+```
+
+
+### 热力图 {#subsec:plotly-heatmap}
+
+其他基础图形
+
+```{r,eval=knitr::is_html_output()}
+# Heatmaps
+plot_ly(z = volcano, type = 'heatmap')
+```
+
+
+
+
+### 地图 {#subsec:plotly-map}
 
 `plot_mapbox()` 使用 Mapbox 提供的地图服务，因此，需要注册一个账户，获取 MAPBOX_TOKEN
 
@@ -399,6 +390,62 @@ plot_mapbox(
     displayModeBar = FALSE
   )
 ```
+
+```{r bubble-map,eval=knitr::is_html_output(),fig.cap="斐济地震带分布",echo=TRUE}
+plot_ly(
+  data = quakes,
+  lon = ~long, lat = ~lat,
+  type = "scattergeo", mode = "markers",
+  text = ~ paste0(
+    "站点：", stations, "<br>",
+    "震级：", mag
+  ),
+  marker = list(
+    color = ~mag,
+    size = 10, opacity = 0.8,
+    line = list(color = "white", width = 1)
+  )
+) %>%
+  layout(geo = list(
+    showland = TRUE,
+    landcolor = toRGB("gray95"),
+    subunitcolor = toRGB("gray85"),
+    countrycolor = toRGB("gray85"),
+    countrywidth = 0.5,
+    subunitwidth = 0.5,
+    lonaxis = list(
+      showgrid = TRUE,
+      gridwidth = 0.5,
+      range = c(160, 190),
+      dtick = 5
+    ),
+    lataxis = list(
+      showgrid = TRUE,
+      gridwidth = 0.5,
+      range = c(-40, -10),
+      dtick = 5
+    )
+  )) %>%
+  config(
+    displayModeBar = FALSE
+  )
+```
+
+
+```{r choropleth-map,eval=knitr::is_html_output(),fig.cap="美国各州收入"}
+dat = data.frame(state.x77, stats = rownames(state.x77), stats_abbr = state.abb)
+plot_ly(data = dat,
+  type = "choropleth",
+  locations = ~stats_abbr,
+  locationmode = "USA-states",
+  colorscale = "Viridis",
+  z = ~Income
+) %>%
+  layout(geo = list(scope = "usa"))
+```
+
+
+### 轨迹图 {#subsec:plotly-rasterly}
 
 [rasterly](https://github.com/plotly/rasterly) 百万量级的散点图
 
