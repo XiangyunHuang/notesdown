@@ -104,40 +104,7 @@ RUN dnf -y install R-odbc \
    R-bookdown \
    R-ggplot2
 
-
-# RUN dnf copr -y enable iucar/cran \
-#  && dnf install -y R-CoprManager \
-#   R-CRAN-remotes \
-#   R-CRAN-docopt \
-#   R-CRAN-car \
-#   R-CRAN-V8 \
-#   R-CRAN-pdftools \
-#   R-CRAN-magick \
-#   R-CRAN-ggplot2 \
-#   R-CRAN-rmarkdown \
-#   R-CRAN-bookdown \
-#   R-CRAN-sf \
-#   R-CRAN-nloptr \
-#   R-CRAN-odbc \
-#   R-CRAN-kableExtra \
-#   R-CRAN-highcharter \
-#   R-CRAN-arrow \
-#   R-CRAN-agridat \
-#   R-CRAN-arules \
-#   R-CRAN-bayesplot \
-#   R-CRAN-DiagrammeR \
-#   R-CRAN-gganimate \
-#   R-CRAN-ggridges \
-#   R-CRAN-xgboost \
-#   R-CRAN-lightgbm \
-#   R-CRAN-lme4 \
-#   R-CRAN-glmnet \
-#   R-CRAN-rstanarm \
-#   R-CRAN-brms \
-#   R-CRAN-plotly \
-#   R-CRAN-prophet \
-#   R-CRAN-quadprog \
-#   R-CRAN-ggpubr
+RUN dnf -y install rstudio-server
 
 
 ENV LANG=en_US.UTF-8 \
@@ -148,6 +115,6 @@ ENV TZ UTC
 
 WORKDIR /home/docker/
 
-EXPOSE 8181
+EXPOSE 8787
 
 CMD ["Rscript", "-e", "sessionInfo()"]
