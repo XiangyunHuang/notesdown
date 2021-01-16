@@ -19,8 +19,8 @@ jobs:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.24.1"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.24.1"
+      CMDSTAN_VERSION: "2.25.0"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.25.0"
 
     steps:
     - uses: actions/checkout@v2
@@ -48,14 +48,14 @@ jobs:
         cd bookdown-demo
         Rscript -e "bookdown::render_book(input = 'index.Rmd', output_format = 'all', output_dir = '_book', new_session = TRUE)"
 
-    # - name: Install Python ENV
-    #   run: |
-    #     virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
-    #     source $RETICULATE_PYTHON_ENV/bin/activate
-    #     python -V
-    #     pip install -r requirements.txt
-    #     pip list --format=columns
-    #     deactivate
+    - name: Install Python ENV
+      run: |
+        virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
+        source $RETICULATE_PYTHON_ENV/bin/activate
+        python -V
+        pip install -r requirements.txt
+        pip list --format=columns
+        deactivate
 
     - name: Build CmdStan
       run: |
