@@ -293,6 +293,65 @@ p21 <- plot_ly(Orange,
 )
 ```
 
+
+### 双轴图 {#subsec:multiple-y-axes}
+
+[双轴图](https://plotly.com/r/multiple-axes/)
+
+模拟一组数据
+
+```{r}
+set.seed(2020)
+dat <- data.frame(
+  dt = seq(from = as.Date("2020-01-01"), to = as.Date("2020-01-31"), by = "day"),
+  search_qv = sample(100000:1000000, size = 31, replace = T)
+) %>%
+  transform(valid_click_qv = sapply(search_qv, rbinom, n = 1, prob = 0.5)) %>%
+  transform(qv_ctr = 100*valid_click_qv / search_qv)
+```
+
+例子
+
+```{r multiple-axes,fig.cap="双轴图",eval=knitr::is_html_output()}
+# visible = "legendonly" 表示此条曲线隐藏，只在图例里显示，有时候很多条线，默认只是展示几条而已
+# hoverinfo = "text" 表示 tooltips 使用指定的 text 
+plot_ly(data = dat) %>%
+  add_lines(
+    x = ~dt, y = ~search_qv, name = "搜索 QV",
+    text = ~ paste("搜索 QV：", format(search_qv, big.mark = ",")), hoverinfo = "text",
+    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+  ) %>%
+  add_lines(
+    x = ~dt, y = ~valid_click_qv, name = "有效点击 QV", visible = "legendonly",
+    text = ~ paste("有效点击 QV：", format(valid_click_qv, big.mark = ",")), hoverinfo = "text",
+    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+  ) %>%
+  add_lines(
+    x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", 
+    text = ~ paste("点击率：", round(qv_ctr, 2), "%"), hoverinfo = "text",
+    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+  ) %>%
+  layout(
+    title = "",
+    yaxis2 = list(
+      tickfont = list(color = "black"),
+      overlaying = "y",
+      side = "right",
+      title = "点击率（%）"
+    ),
+    xaxis = list(title = "日期", showgrid = F, showline = F),
+    yaxis = list(title = "搜索 QV / 有效点击 QV", showgrid = F, showline = F),
+    yaxis2 = list(title = "", showgrid = F, showline = F, zeroline = F, visible = F),
+    margin = list(r = 20, autoexpand = T),
+    legend = list(
+      x = 1.1, y = 1, orientation = "v",
+      title = list(text = "<b> 指标 </b>")
+    ), bargap = 0.2
+  ) %>%
+  config(displayModeBar = F)
+```
+
+
 ### 直方图 {#subsec:plotly-histogram}
 
 ```{r plotly-histogram,fig.cap="其它常见图形",eval=knitr::is_html_output()}
