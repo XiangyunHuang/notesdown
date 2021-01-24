@@ -704,6 +704,129 @@ transform(mtcars, am = ifelse(am == 0, "Automatic", "Manual")) %>%
   ))
 ```
 
+### 甘特图 {#subsec:plotly-gantt-charts}
+
+项目管理必备，如图所示，本项目拆分成7个任务，一共使用3种项目资源
+
+<!-- 转向管理必须学会做项目管理，从全局、全流程的角度思考问题 -->
+
+```{r gantt-charts,fig.cap="甘特图", eval=knitr::is_html_output()}
+# https://github.com/daattali/timevis
+# https://ox-it.github.io/OxfordIDN_htmlwidgets/timeseries/timelines/
+# https://plotly.com/r/gantt/
+# 项目拆解为一系列任务，每个任务的开始时间，持续时间和资源类型
+df <- data.frame(
+  task = paste("Task", 1:8),
+  start = as.Date(c(
+    "2016-01-01", "2016-02-20", "2016-01-01",
+    "2016-04-10", "2016-06-09", "2016-04-10",
+    "2016-09-07", "2016-11-26"
+  )),
+  duration = c(50, 25, 100, 60, 30, 150, 80, 10),
+  resource = c("A", "B", "C", "C", "C", "A", "B", "B")
+) %>%
+  transform(end = start + duration) %>%
+  transform(y = 1:nrow(.))
+
+plot_ly(data = df) %>%
+  add_segments(
+    x = ~start, xend = ~end,
+    y = ~y, yend = ~y,
+    color = ~resource,
+    mode = "lines",
+    colors = "Set2",
+    line = list(width = 20),
+    showlegend = F,
+    hoverinfo = "text",
+    text = ~ paste(
+      " 任务: ", task, "<br>",
+      "启动时间: ", start, "<br>",
+      "周期: ", duration, "天<br>",
+      "资源: ", resource
+    )
+  ) %>%
+  layout(p,
+    xaxis = list(
+      showgrid = F,
+      title = list(text = "")
+    ),
+    yaxis = list(
+      showgrid = F,
+      title = list(text = ""),
+      tickmode = "array",
+      tickvals = 1:nrow(df),
+      ticktext = unique(df$task),
+      domain = c(0, 0.9)
+    ),
+    annotations = list(
+      list(
+        xref = "paper", yref = "paper",
+        x = 0.80, y = 0.1,
+        text = paste0(
+          "项目周期: ", sum(df$duration), " 天<br>",
+          "资源类型: ", length(unique(df$desource)), " 个<br>"
+        ),
+        font = list(size = 12),
+        ax = 0, ay = 0,
+        align = "left"
+      ),
+      list(
+        xref = "paper", yref = "paper",
+        x = 0.1, y = 1,
+        xanchor = "left",
+        text = "项目资源管理",
+        font = list(size = 20),
+        ax = 0, ay = 0,
+        align = "left",
+        showarrow = FALSE
+      )
+    )
+  ) %>%
+  config(
+    displayModeBar = FALSE
+  )
+```
+
+
+
+
+### 调色板 {#subsec:plotly-color-palette}
+
+```{r,eval=knitr::is_html_output(),warning=FALSE}
+plot_ly(iris,
+  x = ~Petal.Length, y = ~Petal.Width,
+  mode = "markers", type = "scatter",
+  color = ~ Sepal.Length > 6, colors = c("#132B43", "#56B1F7")
+)
+plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
+        mode = "markers", type = "scatter")
+
+plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
+        mode = "markers", type = "scatter", colors = "Set2")
+
+plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
+        mode = "markers", type = "scatter", colors = "Set1")
+```
+
+构造 20 个类别 超出 Set1 调色板的范围，会触发警告说 Set1 没有那么多色块，但还是返回足够多的色块，也可以使用 `viridis`、`plasma`、`magma` 或 `inferno` 调色板
+
+```{r plotly-colorpalette,fig.cap="调色板",eval=knitr::is_html_output(),warning=FALSE}
+dat <- data.frame(
+  dt = rep(seq(
+    from = as.Date("2021-01-01"),
+    to = as.Date("2021-01-31"), by = "day"
+  ), each = 20),
+  bu = rep(LETTERS[1:20], 31),
+  qv = rbinom(n = 20 * 31, size = 10000, prob = runif(20 * 31))
+)
+# viridis
+plot_ly(dat,
+  x = ~dt, y = ~qv, color = ~bu,
+  mode = "markers", type = "scatter", colors = "viridis"
+)
+```
+
+
 ## highcharter {#sec:highcharter}
 
 Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可视化案例，另一个关键的参考资料是 [highcharts API 文档](https://api.highcharts.com/highcharts/)，文档主要分两部分全局选项 `Highcharts.setOptions` 和绘图函数 `Highcharts.chart`。下面以 `data_to_boxplot()` 为例解析 R 中的数据结构是如何和 highcharts 的 JSON 以及绘图函数对应的。
