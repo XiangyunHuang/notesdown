@@ -108,7 +108,7 @@ RUN dnf -y install pamtester \
       initscripts \
       selinux-policy \
       selinux-policy-targeted \
-      rstudio-server
+      rstudio-server \
   && rstudio-server verify-installation \
   && systemctl enable rstudio-server.service \
   && rstudio-server start
