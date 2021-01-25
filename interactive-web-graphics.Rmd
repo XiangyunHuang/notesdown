@@ -829,6 +829,62 @@ plot_ly(data = dat) %>%
 `reorder()` 对 complaint 按照降序还是升序由 FUN 函数的单调性决定，单调增对应升序，单调减对应降序
 :::
 
+### 漏斗图 {#subsec:plotly-funnel}
+
+```{r funnel, eval=knitr::is_html_output(), fig.cap="漏斗图"}
+dat <- data.frame(
+  category = c("访问", "下载", "潜客", "报价", "下单"),
+  value = c(39, 27.4, 20.6, 11, 2)
+)
+plot_ly(data = dat) %>%
+  add_trace(
+    type = "funnel",
+    y = ~category,
+    x = ~value
+  ) %>%
+  layout(yaxis = list(
+    categoryarray = ~category,
+    title = ""
+  )) %>%
+  config(
+    displayModeBar = FALSE
+  )
+```
+
+### 瀑布图 {#subsec:plotly-waterfall}
+
+盈亏图
+
+```{r waterfall,fig.cap="瀑布图", eval=knitr::is_html_output()}
+dat <- data.frame(
+  x = c("Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"),
+  measure = c("relative", "relative", "total", "relative", "relative", "total"),
+  text = c("+60", "+80", "", "-40", "-20", "Total"),
+  y = c(60, 80, 0, -40, -20, 0)
+) %>%
+  transform(x = factor(.$x, levels = .$x))
+
+plot_ly(dat,
+  name = "20",
+  type = "waterfall",
+  measure = ~measure,
+  x = ~x,
+  textposition = "outside",
+  y = ~y,
+  text = ~text,
+  connector = list(line = list(color = "rgb(63, 63, 63)"))
+) %>%
+  layout(
+    title = "Profit and loss statement 2018",
+    xaxis = list(title = ""),
+    yaxis = list(title = ""),
+    autosize = TRUE,
+    showlegend = TRUE
+  )
+```
+
+
+
 ### 调色板 {#subsec:plotly-color-palette}
 
 ```{r,eval=knitr::is_html_output(),warning=FALSE}
