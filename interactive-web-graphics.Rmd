@@ -785,8 +785,49 @@ plot_ly(data = df) %>%
   )
 ```
 
+### 帕雷托图 {#subsec:plotly-pareto-charts}
 
+[帕雷托图](https://en.wikipedia.org/wiki/Pareto_chart) 20/80 法则
 
+```{r pareto-charts,fig.cap="帕雷托图", eval=knitr::is_html_output()}
+# 数据来自 https://github.com/plotly/datasets 
+dat <- data.frame(
+  complaint = c(
+     "Small portions", "Overpriced",
+    "Wait time", "Food is tasteless", "No atmosphere", "Not clean",
+    "Too noisy", "Food is too salty", "Unfriendly staff", "Food not fresh"
+  ),
+  count = c( 621L, 789L, 109L, 65L, 45L, 30L, 27L, 15L, 12L, 9L)
+)
+
+dat <- dat[order(-dat$count), ] %>%
+  transform(cumulative = round(100 * cumsum(count) / sum(count), digits = 2))
+
+# complaint 按 count 降序排列
+dat$complaint <- reorder(x = dat$complaint, X = dat$count, FUN = function(x) 1/(1 + x))
+
+plot_ly(data = dat) %>%
+  add_bars(x = ~complaint, y = ~count, showlegend = F, color = I("#4285f4")) %>%
+  add_lines(x = ~complaint, y = ~cumulative, yaxis = "y2", showlegend = F) %>%
+  layout(
+    yaxis2 = list(
+      tickfont = list(color = "black"),
+      overlaying = "y",
+      side = "right",
+      title = "累积百分比（%）",
+      showgrid = F
+    ),
+    xaxis = list(title = "投诉类型", showgrid = F, showline = F),
+    yaxis = list(title = "数量", showgrid = F, showline = F)
+  ) %>%
+  config(
+    displayModeBar = FALSE
+  )
+```
+
+::: {.rmdtip data-latex="{提示}"}
+`reorder()` 对 complaint 按照降序还是升序由 FUN 函数的单调性决定，单调增对应升序，单调减对应降序
+:::
 
 ### 调色板 {#subsec:plotly-color-palette}
 
