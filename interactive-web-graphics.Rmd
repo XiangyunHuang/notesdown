@@ -318,12 +318,14 @@ dat <- data.frame(
 plot_ly(data = dat) %>%
   add_lines(
     x = ~dt, y = ~search_qv, name = "搜索 QV",
-    text = ~ paste("搜索 QV：", format(search_qv, big.mark = ",")), hoverinfo = "text",
+    text = ~ paste("搜索 QV：", format(search_qv, big.mark = ",")), 
+    hoverinfo = "text",
     line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
   ) %>%
   add_lines(
     x = ~dt, y = ~valid_click_qv, name = "有效点击 QV", visible = "legendonly",
-    text = ~ paste("有效点击 QV：", format(valid_click_qv, big.mark = ",")), hoverinfo = "text",
+    text = ~ paste("有效点击 QV：", format(valid_click_qv, big.mark = ",")), 
+    hoverinfo = "text",
     line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
   ) %>%
   add_lines(
@@ -338,15 +340,15 @@ plot_ly(data = dat) %>%
       overlaying = "y",
       side = "right",
       title = "点击率（%）",
-      showgrid = F
+      showgrid = F, automargin = TRUE
     ),
     xaxis = list(title = "日期", showgrid = F, showline = F),
     yaxis = list(title = "搜索 QV / 有效点击 QV", showgrid = F, showline = F),
     margin = list(r = 20, autoexpand = T),
     legend = list(
-      x = 1.1, y = 1, orientation = "v",
+      x = 0, y = 1, orientation = "h",
       title = list(text = "<b> 指标 </b>")
-    ), bargap = 0.2
+    )
   ) %>%
   config(displayModeBar = F)
 ```
@@ -762,7 +764,7 @@ plot_ly(data = df) %>%
         x = 0.80, y = 0.1,
         text = paste0(
           "项目周期: ", sum(df$duration), " 天<br>",
-          "资源类型: ", length(unique(df$desource)), " 个<br>"
+          "资源类型: ", length(unique(df$resource)), " 个<br>"
         ),
         font = list(size = 12),
         ax = 0, ay = 0,
@@ -793,7 +795,7 @@ plot_ly(data = df) %>%
 # 数据来自 https://github.com/plotly/datasets 
 dat <- data.frame(
   complaint = c(
-     "Small portions", "Overpriced",
+    "Small portions", "Overpriced",
     "Wait time", "Food is tasteless", "No atmosphere", "Not clean",
     "Too noisy", "Food is too salty", "Unfriendly staff", "Food not fresh"
   ),
@@ -857,8 +859,14 @@ plot_ly(data = dat) %>%
 
 ```{r waterfall,fig.cap="瀑布图", eval=knitr::is_html_output()}
 dat <- data.frame(
-  x = c("Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"),
-  measure = c("relative", "relative", "total", "relative", "relative", "total"),
+  x = c(
+    "Sales", "Consulting", "Net revenue",
+    "Purchases", "Other expenses", "Profit before tax"
+  ),
+  measure = c(
+    "relative", "relative", "total",
+    "relative", "relative", "total"
+  ),
   text = c("+60", "+80", "", "-40", "-20", "Total"),
   y = c(60, 80, 0, -40, -20, 0)
 ) %>%
