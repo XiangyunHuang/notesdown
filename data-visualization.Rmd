@@ -122,6 +122,11 @@ mtcars %>%
 
 Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
 
+### 主题 {#subsec:theme}
+
+[ggcharts](https://github.com/thomas-neitmann/ggcharts) [bbplot](https://github.com/bbc/bbplot)
+
+
 
 
 ## 图形 {#sec:figures}
@@ -879,6 +884,42 @@ ggplot(blockbusters, aes(year, box_office, fill = genre)) +
   geom_stream()
 ```
 
+### 时间线 {#subsec:vistime}
+
+```{r vis-timeline,fig.cap="数据科学的时间轴",fig.width=8,fig.height=4}
+# 交互动态图 https://github.com/shosaco/vistime
+# 刘思喆 2018 数据科学的时间轴 https://bjt.name/2018/11/18/timeline.html
+x <- read.table(
+  textConnection("
+The Future of Data Analysis,1962
+Relational Database,1970
+Data science(Peter Naur),1974
+Two-Way Communication,1975
+Exploratory Data Analysis,1977
+Business Intelligence,1989
+The First Database Report,1992
+The World Wide Web Explodes,1995
+Data Mining and Knowledge Discovery,1997
+S(ACM Software System Award),1998
+Statistical Modeling: The Two Cultures,2001
+Hadoop,2006
+Data scientist,2008
+NOSQL,2009
+Deep Learning,2015
+"),
+  sep = ","
+)
+names(x) <- c("Event", "EventDate")
+x$EventDate <- as.Date(paste(x$EventDate, "/01/01", sep = ""))
+
+library(timelineS)
+timelineS(x,
+  labels = paste(x[[1]], format(x[[2]], "%Y")),
+  line.color = "blue", label.angle = 15
+)
+```
+
+
 ### 三元图 {#subsec:ggplot2-ternary}
 
 [Ternary](https://github.com/ms609/Ternary/) 使用基础图形库，而 [ggtern](https://bitbucket.org/nicholasehamilton/ggtern) 使用 ggplot2 绘制
@@ -900,6 +941,44 @@ ggtern(Fragments, aes(
   theme_bw() +
   theme_legend_position("tr")
 ```
+
+### 四象限图 {#subsec:eisenhower-method}
+
+
+```{r eisenhower,fig.cap="四象限图"}
+dat <- data.frame(
+  perc = c(54, 18, 5, 15),
+  wall_policy = c("oppose", "favor", "oppose", "favor"),
+  dreamer_policy = c("favor", "favor", "oppose", "oppose"),
+  stringsAsFactors = FALSE
+) %>%
+  transform(
+    xmin = ifelse(wall_policy == "oppose", -sqrt(perc), 0),
+    xmax = ifelse(wall_policy == "favor", sqrt(perc), 0),
+    ymin = ifelse(dreamer_policy == "oppose", -sqrt(perc), 0),
+    ymax = ifelse(dreamer_policy == "favor", sqrt(perc), 0)
+  )
+
+ggplot(data = dat) +
+  geom_rect(aes(
+    xmin = xmin, xmax = xmax,
+    ymin = ymin, ymax = ymax
+  ), fill = "grey") +
+  geom_text(aes(
+    x = xmin + 0.5 * sqrt(perc),
+    y = ymin + 0.5 * sqrt(perc),
+    label = perc
+  ),
+  color = "white", size = 10
+  ) +
+  coord_equal() +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  theme_minimal() +
+  labs(x = "", y = "", title = "")
+```
+
+
 
 ### 龙卷风图 {#subsec:ggplot2-tornado}
 
