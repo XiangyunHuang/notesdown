@@ -2,6 +2,7 @@
 library(shiny)
 library(ggplot2)
 library(magrittr)
+# library(DT) # 与 shiny 提供的 dataTableOutput, renderDataTable 冲突，故而从命名空间导入
 library(plotly)
 
 set.seed(2020)
@@ -12,6 +13,14 @@ dat <- data.frame(dt = seq(from = as.Date("2020-01-01"), to = Sys.Date(), by = "
   transform(click_uv = sapply(search_uv, rbinom, n = 1, prob = 0.4)) %>%
   transform(qv_ctr = click_qv / search_qv) %>%
   transform(uv_ctr = click_uv / search_uv)
+
+options(DT.options = list(
+  language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"),
+  paging = T,
+  dom = "Bfrtip",
+  buttons = c("copy", "excel", "print"), # 复制、导出和打印
+  autoWidth = TRUE # 自动页面宽度
+))
 
 ui <- fluidPage(
   titlePanel("产品设计"),
@@ -78,6 +87,20 @@ server <- function(input, output) {
                        "QV_CTR：", round(100 * qv_ctr, 2), "%"),
         hoverinfo = "text"
       ) %>%
+      # add_bars(
+      #   x = ~dt, y = ~search_uv, name = "搜索 UV", visible = "legendonly",
+      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+      #   hoverinfo = "text"
+      # ) %>%
+      # add_bars(
+      #   x = ~dt, y = ~click_uv, name = "点击 UV", visible = "legendonly",
+      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+      #   hoverinfo = "text"
+      # ) %>%
       add_lines(
         x = ~dt, y = ~100 *qv_ctr, name = "QV_CTR（%）", yaxis = "y2",
         text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
@@ -86,6 +109,14 @@ server <- function(input, output) {
         hoverinfo = "text",
         line = list(shape = "spline", width = 1.5, dash = "line")
       ) %>%
+      # add_lines(
+      #   x = ~dt, y = ~100 *uv_ctr, name = "UV_CTR（%）", yaxis = "y2",
+      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+      #   hoverinfo = "text",
+      #   line = list(shape = "spline", width = 1.5, dash = "line")
+      # ) %>%
       layout(
         title = "",
         yaxis2 = list(
@@ -110,7 +141,8 @@ server <- function(input, output) {
       tmp_data <- get_data()
       # 最近的日期显示在前面
       tmp_data <- tmp_data[order(tmp_data$dt, decreasing = TRUE), ]
-      DT::datatable(tmp_data, rownames = FALSE, colnames = c("日期", input$idx)) %>%
+      DT::datatable(tmp_data, rownames = FALSE, colnames = c("日期", input$idx),
+                    extensions = c("Buttons")) %>%
         DT::formatPercentage(grepl("*_ctr$", colnames(tmp_data)), 2)
     },
     server = TRUE
