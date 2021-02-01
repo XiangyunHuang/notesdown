@@ -310,39 +310,37 @@ dat <- data.frame(
   search_qv = sample(100000:1000000, size = 31, replace = T)
 ) %>%
   transform(valid_click_qv = sapply(search_qv, rbinom, n = 1, prob = 0.5)) %>%
-  transform(qv_ctr = 100*valid_click_qv / search_qv)
+  transform(qv_ctr = 100 * valid_click_qv / search_qv)
 ```
 
-例子
+`hoverinfo = "text"` 表示 tooltips 使用指定的 text 映射，而 `visible = "legendonly"` 表示图层默认隐藏不展示，只在图例里显示，有时候很多条线，默认只是展示几条而已。举例如下
 
 ```{r multiple-axes,fig.cap="双轴图",eval=knitr::is_html_output()}
-# visible = "legendonly" 表示此条曲线隐藏，只在图例里显示，有时候很多条线，默认只是展示几条而已
-# hoverinfo = "text" 表示 tooltips 使用指定的 text 
 plot_ly(data = dat) %>%
   add_bars(
-    x = ~dt, y = ~search_qv, color = I("#FFC300"), name = "搜索 QV",
+    x = ~dt, y = ~search_qv, color = I("#4285f4"), name = "搜索 QV",
     text = ~ paste0(
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
       "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      "点击率：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
+      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01, scale = 1), "<br>"
     ),
     hoverinfo = "text"
   ) %>%
   add_bars(
-    x = ~dt, y = ~valid_click_qv, color = I("#4B5CC4"), name = "点击 QV",
+    x = ~dt, y = ~valid_click_qv, color = I("#FBBC05"), name = "点击 QV",
     text = ~ paste0(
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
       "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      "点击率：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
+      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01, scale = 1), "<br>"
     ), visible = "legendonly",
     hoverinfo = "text"
   ) %>%
   add_lines(
-    x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", 
-    text = ~ paste("点击率：", round(qv_ctr, 2), "%"), hoverinfo = "text",
-    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+    x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", color = I("#34A853"),
+    text = ~ paste("QV_CTR：", round(qv_ctr, 2), "%"), hoverinfo = "text",
+    line = list(shape = "spline", color = "Set1", width = 3, dash = "line")
   ) %>%
   layout(
     title = "",
@@ -350,15 +348,16 @@ plot_ly(data = dat) %>%
       tickfont = list(color = "black"),
       overlaying = "y",
       side = "right",
-      title = "点击率（%）",
+      title = "QV_CTR（%）",
+      ticksuffix = "%",
       showgrid = F, automargin = TRUE
     ),
     xaxis = list(title = "日期", showgrid = F, showline = F),
-    yaxis = list(title = "搜索 QV / 有效点击 QV", showgrid = F, showline = F),
+    yaxis = list(title = " ", showgrid = F, showline = F),
     margin = list(r = 20, autoexpand = T),
     legend = list(
       x = 0, y = 1, orientation = "h",
-      title = list(text = "<b> 指标 </b>")
+      title = list(text = " ")
     )
   ) %>%
   config(displayModeBar = F)
@@ -632,7 +631,7 @@ plot_ly(economics,
   type = "scatter",
   x = ~date,
   y = ~uempmed,
-  name = "unemployment",
+  name = "observed unemployment",
   mode = "markers+lines",
   marker = list(
     color = "red"
@@ -645,6 +644,7 @@ plot_ly(economics,
   add_trace(
     x = ~date,
     y = ~fitted(loess(uempmed ~ as.numeric(date))),
+    name = "fitted unemployment",
     mode = "markers+lines",
     marker = list(
       color = "orange"
@@ -661,6 +661,10 @@ plot_ly(economics,
     ),
     yaxis = list(
       title = "失业时间（周）"
+    ),
+    legend = list(
+      x = 0, y = 1, orientation = "v",
+      title = list(text = "")
     )
   )
 ```
@@ -943,7 +947,7 @@ plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6,
 
 构造 20 个类别 超出 Set1 调色板的范围，会触发警告说 Set1 没有那么多色块，但还是返回足够多的色块，也可以使用 `viridis`、`plasma`、`magma` 或 `inferno` 调色板
 
-```{r plotly-colorpalette,fig.cap="调色板",eval=knitr::is_html_output(),warning=FALSE}
+```{r plotly-colorpalette,fig.cap="调色板",eval=knitr::is_html_output()}
 dat <- data.frame(
   dt = rep(seq(
     from = as.Date("2021-01-01"),
@@ -1201,6 +1205,12 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 
 ```
 :::
+
+## dygraphs {#sec:dygraphs}
+
+[dygraphs](https://github.com/rstudio/dygraphs)
+
+
 
 
 ## r2d3 {#sec:r2d3}
