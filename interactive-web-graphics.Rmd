@@ -319,17 +319,25 @@ dat <- data.frame(
 # visible = "legendonly" 表示此条曲线隐藏，只在图例里显示，有时候很多条线，默认只是展示几条而已
 # hoverinfo = "text" 表示 tooltips 使用指定的 text 
 plot_ly(data = dat) %>%
-  add_lines(
-    x = ~dt, y = ~search_qv, name = "搜索 QV",
-    text = ~ paste("搜索 QV：", format(search_qv, big.mark = ",")), 
-    hoverinfo = "text",
-    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+  add_bars(
+    x = ~dt, y = ~search_qv, color = I("#FFC300"), name = "搜索 QV",
+    text = ~ paste0(
+      "日期：", dt, "<br>",
+      "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
+      "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+      "点击率：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
+    ),
+    hoverinfo = "text"
   ) %>%
-  add_lines(
-    x = ~dt, y = ~valid_click_qv, name = "有效点击 QV", visible = "legendonly",
-    text = ~ paste("有效点击 QV：", format(valid_click_qv, big.mark = ",")), 
-    hoverinfo = "text",
-    line = list(shape = "spline", color = "Set1", width = 1.5, dash = "line")
+  add_bars(
+    x = ~dt, y = ~valid_click_qv, color = I("#4B5CC4"), name = "点击 QV",
+    text = ~ paste0(
+      "日期：", dt, "<br>",
+      "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
+      "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+      "点击率：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
+    ), visible = "legendonly",
+    hoverinfo = "text"
   ) %>%
   add_lines(
     x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", 
