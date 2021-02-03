@@ -713,21 +713,11 @@ convert -geometry 1000x3000 example.eps example.png
 convert -quality 100 -density 300x300  input.pdf output.png
 ```
 
-以白色背景替换透明背景
+将多页 PDF 文件合成为 GIF 动图
 
 ```bash
-#!/bin/bash
-
-for i in $(seq 0 17)
-do   
-  echo convert input-$i.png -background white -alpha remove -flatten -alpha off output-$i.png
-done 
-```
-
-将系列图片合成为 GIF 动图
-
-```bash
-convert -delay 60 input.png output.gif  
+convert -delay 60 -density 300x300 -background white -alpha remove \
+  -dispose previous pdf-mobile.pdf -layers coalesce pdf-mobile.gif
 ```
 
 
