@@ -308,7 +308,7 @@ dat <- data.frame(
   search_qv = sample(100000:1000000, size = 31, replace = T)
 ) %>%
   transform(valid_click_qv = sapply(search_qv, rbinom, n = 1, prob = 0.5)) %>%
-  transform(qv_ctr = 100 * valid_click_qv / search_qv)
+  transform(qv_ctr = valid_click_qv / search_qv)
 ```
 
 `hoverinfo = "text"` 表示 tooltips 使用指定的 text 映射，而 `visible = "legendonly"` 表示图层默认隐藏不展示，只在图例里显示，有时候很多条线，默认只是展示几条而已。举例如下
@@ -321,7 +321,7 @@ plot_ly(data = dat) %>%
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
       "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01, scale = 1), "<br>"
+      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
     ),
     hoverinfo = "text"
   ) %>%
@@ -331,13 +331,14 @@ plot_ly(data = dat) %>%
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
       "搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01, scale = 1), "<br>"
+      "QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"
     ), visible = "legendonly",
     hoverinfo = "text"
   ) %>%
   add_lines(
     x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", color = I("#34A853"),
-    text = ~ paste("QV_CTR：", round(qv_ctr, 2), "%"), hoverinfo = "text",
+    text = ~ paste("QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"), 
+    hoverinfo = "text",
     line = list(shape = "spline", color = "Set1", width = 3, dash = "line")
   ) %>%
   layout(
@@ -347,7 +348,8 @@ plot_ly(data = dat) %>%
       overlaying = "y",
       side = "right",
       title = "QV_CTR（%）",
-      ticksuffix = "%",
+      # ticksuffix = "%", # 设置坐标轴单位
+      tickformat = '.1%', # 设置坐标轴刻度
       showgrid = F, automargin = TRUE
     ),
     xaxis = list(title = "日期", showgrid = F, showline = F),
