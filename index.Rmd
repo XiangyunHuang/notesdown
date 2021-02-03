@@ -79,9 +79,9 @@ Book in early development. Planned release in 202X.
 :::
 
 ```{r normal-dist,fig.cap="统计学的世界",eval=knitr::is_html_output(), echo=FALSE}
-x = seq(from = -3, to = 9, length.out = 301)
-y = dnorm(x, mean = 1, sd = 1)
-yy = dnorm(x, mean = 2, sd = 2)
+x = seq(from = 4, to = 20, length.out = 300)
+y = dnorm(x, mean = 10, sd = 1)
+yy = dnorm(x, mean = 12, sd = 2)
 library(magrittr)
 hline <- function(y = 0, color = "red") {
   list(
@@ -108,28 +108,51 @@ vline <- function(x = 0, color = "red") {
 }
 
 plotly::plot_ly(
-  x = x, y = y, type = "scatter",
-  fill = "tozeroy",
+  x = x, y = y,
+  type = "scatter", mode = "lines",
+  fill = "tozeroy", fillcolor = "rgba(92, 184, 92, 0.2)",
   text = ~ paste0(
     "x：", x, "<br>",
-    "f(x)：", round(y, 3), "<br>"
+    "y：", round(y, 3), "<br>"
   ),
   hoverinfo = "text",
-  fillcolor = "rgba(92, 184, 92, 0.2)",
-  mode = "lines", name = plotly::TeX("\\mathcal{N}(1,1)"),
+  name = plotly::TeX("\\mathcal{N}(10,1^2)"),
   line = list(shape = "spline", color = "#5CB85C")
 ) %>%
   plotly::add_trace(
-    x = x, y = yy, type = "scatter",
-    fill = "tozeroy",
+    x = x, y = yy,
+    type = "scatter", mode = "lines",
+    fill = "tozeroy", fillcolor = "rgba(91, 192, 222, 0.2)",
     text = ~ paste0(
       "x：", x, "<br>",
-      "f(x)：", round(yy, 3), "<br>"
+      "y：", round(yy, 3), "<br>"
     ),
     hoverinfo = "text",
-    fillcolor = "rgba(91, 192, 222, 0.2)",
-    mode = "lines", name = plotly::TeX("\\mathcal{N}(2, 2^2)"),
+    name = plotly::TeX("\\mathcal{N}(12, 2^2)"),
     line = list(shape = "spline", color = "#5BC0DE")
+  ) %>%
+  plotly::add_annotations(
+    x = 10.75,
+    y = 0.3,
+    xref = "x", yref = "y",
+    axref = "x", ayref = "y",
+    showarrow = T,
+    ax = 10,
+    ay = 0.3
+  ) %>%
+  plotly::add_annotations(
+    x = 11.25,
+    y = 0.3,
+    xref = "x", yref = "y",
+    axref = "x", ayref = "y",
+    showarrow = T,
+    ax = 12,
+    ay = 0.3
+  ) %>%
+  plotly::add_annotations(
+    x = 11, y = 0.3, 
+    showarrow = F, font = list(size = 24),
+    text = plotly::TeX("d")
   ) %>%
   # plotly::add_annotations(
   #   x = 4, y = 1 / sqrt(2 * pi), font = list(size = 100), showarrow = F,
@@ -140,14 +163,15 @@ plotly::plot_ly(
   #   text = plotly::TeX("\\frac{1}{2\\sqrt{2\\pi}}")
   # ) %>%
   plotly::layout(
-    # shapes = list(
-    #   hline(y = 1 / sqrt(2 * pi), color = "#F27B0C"),
-    #   hline(y = 1 / (2 * sqrt(2 * pi)), color = "#F27B0C"),
-    #   vline(x = 1),
-    #   vline(x = 2)
-    # ),
+    shapes = list(
+      # hline(y = 1 / sqrt(2 * pi), color = "#F27B0C"),
+      # hline(y = 1 / (2 * sqrt(2 * pi)), color = "#F27B0C"),
+      vline(x = 10, color = "#F27B0C"),
+      vline(x = 12, color = "#F27B0C")
+    ),
     xaxis = list(showgrid = F, title = plotly::TeX("x")),
-    yaxis = list(showgrid = F, title = plotly::TeX("f(x)"))
+    yaxis = list(showgrid = F, title = plotly::TeX("f(x)")),
+    legend = list(x = 0.8, y = 1, orientation = "v")
   ) %>%
   plotly::config(displayModeBar = FALSE, mathjax = "cdn")
 ```
