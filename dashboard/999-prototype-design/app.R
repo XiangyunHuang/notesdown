@@ -23,7 +23,7 @@ options(DT.options = list(
 ))
 
 ui <- fluidPage(
-  titlePanel("产品设计"),
+  titlePanel("产品原型设计"),
   column(
     width = 6,
     dateRangeInput("date_range", "日期范围",
@@ -31,13 +31,6 @@ ui <- fluidPage(
       end = Sys.Date(),
       min = "2020-01-01",
       max = Sys.Date()
-    )
-  ),
-  column(
-    width = 6,
-    selectInput("idx", "指标范围",
-      selected = c("搜索 QV", "点击 QV", "QV_CTR"), multiple = TRUE,
-      choices = c("搜索 QV", "点击 QV", "QV_CTR", "搜索 UV", "点击 UV", "UV_CTR"), selectize = TRUE
     )
   ),
   column(
@@ -51,18 +44,9 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  # 输入指标
-  datasetInput <- reactive({
-    if (is.null(input$idx)) {
-      c("搜索 QV" = "search_qv", "点击 QV" = "click_qv", "QV_CTR" = "qv_ctr")
-    } else {
-      c("搜索 QV" = "search_qv", "点击 QV" = "click_qv", "QV_CTR" = "qv_ctr",
-        "搜索 UV" = "search_uv", "点击 UV" = "click_uv", "UV_CTR" = "uv_ctr" )[input$idx]
-    }
-  })
 
   get_data <- reactive({
-    data <- subset(dat, subset = dt >= input$date_range[1] & dt <= input$date_range[2], select = c("dt", datasetInput()))
+    data <- subset(dat, subset = dt >= input$date_range[1] & dt <= input$date_range[2])
     data
   })
 
@@ -87,36 +71,36 @@ server <- function(input, output) {
                        "QV_CTR：", round(100 * qv_ctr, 2), "%"),
         hoverinfo = "text"
       ) %>%
-      # add_bars(
-      #   x = ~dt, y = ~search_uv, name = "搜索 UV", visible = "legendonly",
-      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
-      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
-      #   hoverinfo = "text"
-      # ) %>%
-      # add_bars(
-      #   x = ~dt, y = ~click_uv, name = "点击 UV", visible = "legendonly",
-      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
-      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
-      #   hoverinfo = "text"
-      # ) %>%
+      add_bars(
+        x = ~dt, y = ~search_uv, name = "搜索 UV", visible = "legendonly",
+        text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+                       "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+                       "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+        hoverinfo = "text"
+      ) %>%
+      add_bars(
+        x = ~dt, y = ~click_uv, name = "点击 UV", visible = "legendonly",
+        text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+                       "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+                       "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+        hoverinfo = "text"
+      ) %>%
       add_lines(
         x = ~dt, y = ~100 *qv_ctr, name = "QV_CTR（%）", yaxis = "y2",
         text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
                        "点击 QV：", format(click_qv, big.mark = ","), "<br>",
                        "QV_CTR：", round(100 * qv_ctr, 2), "%"),
         hoverinfo = "text",
-        line = list(shape = "spline", width = 1.5, dash = "line")
+        line = list(shape = "spline", width = 3, dash = "line")
       ) %>%
-      # add_lines(
-      #   x = ~dt, y = ~100 *uv_ctr, name = "UV_CTR（%）", yaxis = "y2",
-      #   text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
-      #                  "点击 QV：", format(click_qv, big.mark = ","), "<br>",
-      #                  "QV_CTR：", round(100 * qv_ctr, 2), "%"),
-      #   hoverinfo = "text",
-      #   line = list(shape = "spline", width = 1.5, dash = "line")
-      # ) %>%
+      add_lines(
+        x = ~dt, y = ~100 *uv_ctr, name = "UV_CTR（%）", yaxis = "y2",
+        text = ~ paste("搜索 QV：", format(search_qv, big.mark = ","), "<br>",
+                       "点击 QV：", format(click_qv, big.mark = ","), "<br>",
+                       "QV_CTR：", round(100 * qv_ctr, 2), "%"),
+        hoverinfo = "text", visible = "legendonly",
+        line = list(shape = "spline",  width = 3, dash = "line")
+      ) %>%
       layout(
         title = "",
         yaxis2 = list(
@@ -130,7 +114,7 @@ server <- function(input, output) {
         yaxis = list(title = "", showgrid = F, showline = F),
         margin = list(r = 20, autoexpand = T),
         legend = list(
-          x = 0, y = 1, orientation = "h"
+          x = 0, y = 1.1, orientation = "h"
         )
       ) %>%
       config(displayModeBar = F)
@@ -141,7 +125,8 @@ server <- function(input, output) {
       tmp_data <- get_data()
       # 最近的日期显示在前面
       tmp_data <- tmp_data[order(tmp_data$dt, decreasing = TRUE), ]
-      DT::datatable(tmp_data, rownames = FALSE, colnames = c("日期", input$idx),
+      DT::datatable(tmp_data, rownames = FALSE,
+                    colnames = c("日期", "搜索 QV", "搜索 UV", "点击 QV", "点击 UV", "QV_CTR", "UV_CTR"),
                     extensions = c("Buttons")) %>%
         DT::formatPercentage(grepl("*_ctr$", colnames(tmp_data)), 2)
     },
