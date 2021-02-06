@@ -4,6 +4,7 @@
 
 [cmdstanr](https://github.com/stan-dev/cmdstanr) 相比于 rstan 将会更加轻量，更快地将 CmdStan 的新功能融入进来，方便用户滚动升级，相比于 **rstan** 包，**cmdstanr** 包的一个巨大优势是和 Stan 软件的更新分离。做贝叶斯计算的软件框架还包括 JAGS 和 WinBUGS，苏毓松开发的 R2jags 包 [@R-R2jags] 是 JAGS 的 R 接口。
 
+[TMB](https://github.com/kaskr/adcomp)
 
 - 书籍：
 [Richard McElreath](https://xcelab.net/rm/) 为《Statistical Rethinking》写的 [rethinking](https://github.com/rmcelreath/rethinking) 包，参考 Derek S. Young [@Regression_2017_Young] 和 Michael H. Kutner 等 [@Kutner_2005_Applied]
@@ -285,5 +286,62 @@ mcmc_dens(eight_schools_fit$draws(c("mu")))
 
 
 分层线性模型之生长曲线模型 [@Gelfand_1990_JASA]
+
+### rats 数据 {#subsec:rats}
+
+贝叶斯分层图
+
+```{r}
+# 数据准备
+# modified code from https://github.com/stan-dev/example-models/tree/master/bugs_examples/vol1/rats
+N <- 30
+T <- 5
+y <- structure(c(
+  151, 145, 147, 155, 135, 159, 141, 159, 177, 134,
+  160, 143, 154, 171, 163, 160, 142, 156, 157, 152, 154, 139, 146,
+  157, 132, 160, 169, 157, 137, 153, 199, 199, 214, 200, 188, 210,
+  189, 201, 236, 182, 208, 188, 200, 221, 216, 207, 187, 203, 212,
+  203, 205, 190, 191, 211, 185, 207, 216, 205, 180, 200, 246, 249,
+  263, 237, 230, 252, 231, 248, 285, 220, 261, 220, 244, 270, 242,
+  248, 234, 243, 259, 246, 253, 225, 229, 250, 237, 257, 261, 248,
+  219, 244, 283, 293, 312, 272, 280, 298, 275, 297, 350, 260, 313,
+  273, 289, 326, 281, 288, 280, 283, 307, 286, 298, 267, 272, 285,
+  286, 303, 295, 289, 258, 286, 320, 354, 328, 297, 323, 331, 305,
+  338, 376, 296, 352, 314, 325, 358, 312, 324, 316, 317, 336, 321,
+  334, 302, 302, 323, 331, 345, 333, 316, 291, 324
+), .Dim = c(30, 5))
+x <- c(8.0, 15.0, 22.0, 29.0, 36.0)
+xbar <- 22.0
+
+
+# 模型参数设置
+chains <- 4
+iter <- 1000
+
+init <- rep(list(list(
+  alpha = rep(250, 30), beta = rep(6, 30),
+  alpha_c = 150, beta_c = 10,
+  tausq_c = 1, tausq_alpha = 1,
+  tausq_beta = 1
+)), chains)
+```
+
+
+```{r}
+mod <- cmdstan_model(file = "code/rats.stan")
+
+rats_fit <- mod$sample(
+  data = list(N = N, T = T, y = y, x = x, xbar = xbar),
+  init = init,
+  iter_warmup = 1000, # 每条链预处理迭代次数
+  iter_sampling = 2000, # 每条链总迭代次数
+  chains = chains, # 马尔科夫链的数目
+  parallel_chains = 1, # 指定 CPU 核心数，可以给每条链分配一个
+  show_messages = FALSE, # 不显示迭代的中间过程
+  refresh = 0, # 不显示采样的进度
+  seed = 20190425 # 设置随机数种子，不要使用 set.seed() 函数
+)
+```
+
 
 
