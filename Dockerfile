@@ -104,14 +104,14 @@ RUN dnf -y install R-odbc \
    R-bookdown \
    R-ggplot2
 
-RUN dnf -y install pamtester \
-      initscripts \
-      selinux-policy \
-      selinux-policy-targeted \
-      rstudio-server \
-  && rstudio-server verify-installation \
-  && systemctl enable rstudio-server.service \
-  && rstudio-server start
+#RUN dnf -y install pamtester \
+#      initscripts \
+#      selinux-policy \
+#      selinux-policy-targeted \
+#      rstudio-server \
+#  && rstudio-server verify-installation \
+#  && systemctl enable rstudio-server.service \
+#  && rstudio-server start
 
 
 ENV LANG=en_US.UTF-8 \
