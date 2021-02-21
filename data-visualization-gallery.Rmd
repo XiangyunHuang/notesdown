@@ -885,6 +885,29 @@ ggplot(dat, aes(x = variable, y = value, fill = Level)) +
 
 [Tornado diagram](https://en.wikipedia.org/wiki/Tornado_diagram) 主要用于敏感性分析，比较不同变量的重要性程度。条形图 `geom_bar()` 图层的变体，模型权重可视化的手段，仅限于广义线性模型。
 
+## 聚类图 {#sec:ggplot2-hclust}
+
+ggdendro 的 `dendro_data()` 函数支持 `tree` 、`hclust` 、`dendrogram` 和 `rpart` 结果的整理，进而绘图
+
+
+```{r}
+library(ggdendro)
+hc <- hclust(dist(USArrests), "ave")
+hcdata <- dendro_data(hc, type = "rectangle")
+ggplot() +
+  geom_segment(data = segment(hcdata), 
+               aes(x = x, y = y, xend = xend, yend = yend)
+  ) +
+  geom_text(data = label(hcdata), 
+            aes(x = x, y = y, label = label, hjust = 0), 
+            size = 3
+  ) +
+  coord_flip() +
+  scale_y_reverse(expand = c(0.2, 0)) +
+  theme_minimal()
+```
+
+
 ## 主成分图 {#sec:ggplot2-prcomp}
 
 借助 [**autoplotly**](https://github.com/terrytangyuan/autoplotly) 包 [@autoplotly] 可将函数 `stats::prcomp` 生成的结果转化为交互图形
