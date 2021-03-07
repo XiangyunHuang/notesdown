@@ -1,9 +1,9 @@
-// Stan 编写的模型
-// saved as 8schools.stan
+// 模型编码
+// saved as eight_schools.stan
 data {
-  int<lower=0> J;         // number of schools
+  int<lower=0> J;         // number of schools 
   real y[J];              // estimated treatment effects
-  real<lower=0> sigma[J]; // standard error of effect estimates
+  real<lower=0> sigma[J]; // standard error of effect estimates 
 }
 parameters {
   real mu;                // population treatment effect

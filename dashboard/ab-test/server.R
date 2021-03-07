@@ -45,7 +45,7 @@ shinyServer(function(input, output) {
     # print(r)
     as.character(round(r$n))
   })
-  # 计算功效
+  # 计算比例检验的功效
   output$result <- renderPrint({
     power.prop.test(
       p1 = input$ctr_old / 100,
@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
     sig_p
   })
 
-  # 功效检验
+  # 卡方检验的功效
   power_test <- reactive({
     om <- ab_data()
     chisq <- chisq_test()
