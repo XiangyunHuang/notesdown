@@ -401,7 +401,7 @@ library(blastula)
 # 运行一次就可以了
 create_smtp_creds_key(
   id = "outlook", 
-  user = "xx@outlook.com", # 邮件地址
+  user = "xxx@outlook.com", # 邮件地址
   provider = "outlook"
 )
 ```
@@ -412,15 +412,18 @@ create_smtp_creds_key(
 library(blastula)
 
 attachment <- "data/mail.txt" # 如果没有附件，引号内留空即可。
-body <- "examples/email-blastula.Rmd" # 这个Rmd文件渲染后就是邮件的正文
+# 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用
+body <- "examples/html-document.Rmd" 
 
 email <- render_email(body) %>%
   add_attachment(file = attachment)
 
 # 发送邮件
 smtp_send(
-  from = c("黄湘云" = "xx@outlook.com"), # 发件人
-  to = c("黄湘云" = "xx@gmail.com"), # 收件人
+  from = c("张三" = "xxx@outlook.com"), # 发件人
+  to = c("李四" = "xxx@foxmail.com",
+         "王五" = "xxx@gmail.com"), # 收件人
+  cc = c("赵六" = "xxx@outlook.com"), # 抄送人
   subject = "这是一封测试邮件",
   email = email,
   credentials = creds_key(id = "outlook")
