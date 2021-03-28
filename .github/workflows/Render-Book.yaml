@@ -34,9 +34,11 @@ jobs:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.26.0"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.26.0"
-      SPARK_HOME: "/opt/spark/spark-3.0.1-bin-hadoop2.7"
+      CMDSTAN_VERSION: "2.26.1"
+      CMDSTAN: "/opt/cmdstan/cmdstan-${CMDSTAN_VERSION}"
+      SPARK_VERSION: "3.1.1"
+      HADOOP_VERSION: "3.2"
+      SPARK_HOME: "/opt/spark/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}"
 
     steps:
       - name: Checkout repo
@@ -70,8 +72,8 @@ jobs:
       - name: Install Spark ENV
         run: |
           mkdir -p /opt/spark/
-          curl -fLo spark-3.0.1-bin-hadoop2.7.tgz https://archive.apache.org/dist/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz
-          tar -xzf spark-3.0.1-bin-hadoop2.7.tgz -C /opt/spark/
+          curl -fLo spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
+          tar -xzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /opt/spark/
 
       - name: Install Python ENV
         run: |
@@ -146,7 +148,7 @@ jobs:
           fc-cache -fsv
           R -e 'library(showtext);font_install(source_han_serif(), quiet = TRUE);font_install(source_han_sans(), quiet = TRUE);hrbrthemes::import_roboto_condensed();font_add_google("Roboto Condensed", "Roboto Condensed")'
           # XKCD
-          R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
+          R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", paths = '~/.fonts/', prompt = FALSE)'
 
       - name: Build Book
         run: |
