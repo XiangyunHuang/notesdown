@@ -134,6 +134,49 @@ hcmap(map = "countries/cn/custom/cn-all-sar-taiwan.js") %>%
 ```
 
 
+```{r,eval=FALSE}
+library(mapdeck)
+# 多边形
+mapdeck() %>%
+  add_polygon(
+    data = spatialwidget::widget_melbourne, 
+    fill_colour = "SA2_NAME",
+    palette = "spectral"
+  )
+
+mapdeck( location = c(145, -37.8), zoom = 10) %>%
+  add_geojson(
+    data = mapdeck::geojson
+  )
+```
+
+[googleway](https://github.com/SymbolixAU/googleway)、[ggmap](https://github.com/dkahle/ggmap)、[RgoogleMaps](https://github.com/markusloecher/rgooglemaps)
+
+```{r,eval=FALSE}
+library(RgoogleMaps)
+lat <- c(40.702147, 40.718217, 40.711614)
+lon <- c(-74.012318, -74.015794, -73.998284)
+center <- c(mean(lat), mean(lon))
+zoom <- min(MaxZoom(range(lat), range(lon)))
+bb <- qbbox(lat, lon)
+par(pty = "s")
+# OSM
+myMap <- GetMap(center, zoom = 15)
+PlotOnStaticMap(myMap,
+  lat = lat, lon = lon, pch = 20,
+  col = c("red", "blue", "green"), cex = 2
+)
+```
+
+
+```{r,eval=FALSE}
+library(ggmap)
+
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>%
+  ggmap()
+```
+
 ## 运行环境 {#sec:spatial-analysis-session}
 
 ```{r}
