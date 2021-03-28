@@ -14,6 +14,7 @@ CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效
 试验设计 [@Design_2004_Mao] 可以视为一种组织形式，包括各类检验， 
 R 语言实战 [@Action_2015_Robert] 作者 Robert I. Kabacoff 创建了网站 [Quick-R](https://www.statmethods.net/)，实战这本书第 10 章功效分析主要基于 [pwr](https://github.com/heliosdrm/pwr) 包来介绍，Jacob Cohen 的著作《Statistical Power Analysis for the Behavioral Sciences》第二版 [@Cohen1988]
 
+<https://powerandsamplesize.com/> 功效和样本量计算器
 
 ```{r}
 library(pwr)
@@ -170,6 +171,34 @@ with(
 ::: {.rmdnote data-latex="{注意}"}
 R 3.5.0 以后，函数 `aggregate` 的参数 `drop` 默认设置为 `TRUE` 表示扔掉未用来分组的变量，聚合返回的是一个矩阵类型的数据对象。
 :::
+
+[**ggsignif**](https://github.com/const-ae/ggsignif) 添加显著性注释
+
+```{r,eval=FALSE}
+library(ggplot2)
+library(ggsignif)
+
+ggplot(data = PlantGrowth, aes(x = group, y = weight)) +
+  geom_boxplot() +
+  geom_signif(comparisons = list(c("ctrl", "trt1"), c("trt1", "trt2")), 
+              map_signif_level = function(p) sprintf("p = %.2g", p), 
+              textsize = 6, test = "t.test") +
+  theme_minimal()
+```
+
+
+无条件 $2 \times 2$ 列联表
+
+
+fisher.test https://en.wikipedia.org/wiki/Fisher's_exact_test
+
+[Exact](https://cran.r-project.org/package=Exact)
+https://en.wikipedia.org/wiki/Barnard's_test
+exact.test
+power.exact.test
+
+[exact2x2](https://cran.r-project.org/package=exact2x2)
+
 
 
 ## 运行环境 {#sec:power-session}

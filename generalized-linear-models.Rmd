@@ -351,41 +351,33 @@ fit_glm_epil <- glm(y ~ lbase * trt + lage + V4,
   family = poisson,
   data = epil
 )
-summary(fit_glm_epil, cor = FALSE)
+summary(fit_glm_epil)
 
-epil2 <- epil[epil$period == 1, ]
-epil2["period"] <- rep(0, 59)
-epil2["y"] <- epil2["base"]
-epil["time"] <- 1
-epil2["time"] <- 4
-epil2 <- rbind(epil, epil2)
-epil2$pred <- unclass(epil2$trt) * (epil2$period > 0)
-epil2$subject <- factor(epil2$subject)
-
-epil3 <- aggregate(
-  epil2, list(epil2$subject, epil2$period > 0),
-  function(x) if (is.numeric(x)) sum(x) else x[1]
-)
-epil3$pred <- factor(epil3$pred,
-  labels = c("base", "placebo", "drug")
-)
-contrasts(epil3$pred) <- structure(MASS::contr.sdif(3),
-  dimnames = list(NULL, c("placebo-base", "drug-placebo"))
-)
-
-summary(glm(y ~ pred + factor(subject) + offset(log(time)),
-  family = poisson, data = epil3
-), cor = FALSE)
-
-summary(MASS::glmmPQL(y ~ lbase * trt + lage + V4,
+fit_glmm_epil<- MASS::glmmPQL(y ~ lbase * trt + lage + V4,
   random = ~ 1 | subject,
   family = poisson, data = epil
-))
+)
+summary(fit_glmm_epil)
 
-summary(MASS::glmmPQL(y ~ pred,
-  random = ~ 1 | subject,
-  family = poisson, data = epil3
-))
+fit_glmm_lme4 <- lme4::glmer(y ~ lbase * trt + lage + V4 + (1 | subject),
+  family = poisson, data = epil
+)
+summary(fit_glmm_lme4)
+
+
+fit_glmm_glmmtmb <- glmmTMB::glmmTMB(y ~ lbase * trt + lage + V4 + (1 | subject),
+  data = epil, family = poisson, REML = TRUE
+) # REML 估计
+summary(fit_glmm_glmmtmb)
+
+
+# https://github.com/drizopoulos/GLMMadaptive
+fit_glmm_glmmadaptive <- GLMMadaptive::mixed_model(
+  fixed = y ~ lbase * trt + lage + V4,
+  random = ~ 1 | subject, data = epil,
+  family = poisson()
+)
+summary(fit_glmm_glmmadaptive)
 ```
 
 ## 对数线性模型 {#sec:generalized-log-linear-model}

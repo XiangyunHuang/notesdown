@@ -161,6 +161,19 @@ iris[Species == "setosa" & Sepal.Length > 5.5, mget(grep("Sepal", colnames(iris)
 iris[Species == 'setosa' & Sepal.Length > 5.5, .SD, .SDcols = patterns('Sepal')]
 ```
 
+with 还可以这样用，直接修改、添加一列
+
+```{r,eval=FALSE}
+df <- expand.grid(x = 1:10, y = 1:10)
+df$z <- with(df, x^2 + y^2)
+df <- subset(df, z < 100)
+df <- df[sample(nrow(df)), ]
+head(df)
+
+library(ggplot2)
+ggplot(df, aes(x, y, z = z)) +
+  geom_contour()
+```
 
 
 ## 分组聚合 {#sec:aggregate}
