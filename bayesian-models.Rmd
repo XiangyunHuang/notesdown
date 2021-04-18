@@ -83,6 +83,7 @@ model {
   y ~ normal(mu, sigma);
 }
 ```
+
 ```{r}
 library(cmdstanr)
 mod <- cmdstan_model(stan_file = "code/normal_dist.stan", compile = TRUE)
@@ -153,8 +154,6 @@ mcmc_hist(normal_fit$draws(c("mu", "sigma")))
 
 (ref:mu-dist-cap) 参数 $\mu, \sigma$ 的迭代轨迹图和后验分布图
 
-
-
 ## 高斯过程 {#sec:gaussian-process}
 
 模拟高斯过程例子来自 Stan 参考手册 [@Stan_2018_Bayesian]
@@ -183,6 +182,7 @@ model {
   y ~ multi_normal(mu, K);
 }
 ```
+
 ```{r,eval=FALSE}
 mod <- cmdstan_model(stan_file = "code/normal_gp.stan")
 ```
@@ -207,12 +207,12 @@ model {
   y ~ multi_normal(mu, K);
 }
 ```
+
 ```{r,eval=FALSE}
 mod <- cmdstan_model(stan_file = "code/compat_gp.stan")
 ```
 
 以 MASS 的 topo 数据集引出高斯过程回归模型问题复杂性
-
 
 ## 分层正态模型 {#sec:hierarchical-normal-models}
 
@@ -241,6 +241,7 @@ model {
   target += normal_lpdf(y | theta, sigma); // log-likelihood
 }
 ```
+
 ```{r}
 # 模型编译
 mod <- cmdstan_model(stan_file = "code/eight_schools.stan")
@@ -293,7 +294,6 @@ str(eight_schools_fit)
 mcmc_dens(eight_schools_fit$draws(c("mu")))
 ```
 
-
 分层线性模型之生长曲线模型 [@Gelfand_1990_JASA]
 
 ### rats 数据 {#subsec:rats}
@@ -335,7 +335,6 @@ init <- rep(list(list(
 )), chains)
 ```
 
-
 ```{r}
 mod <- cmdstan_model(stan_file = "code/rats.stan")
 
@@ -356,8 +355,7 @@ rats_fit <- mod$sample(
 
 高斯过程
 
-### mcycle 数据 {#subsec:mcycle} 
-
+### mcycle 数据 {#subsec:mcycle}
 
 ```{r}
 library(MASS)
@@ -372,4 +370,3 @@ ggplot(data = mcycle, aes(x = times, y= accel)) +
   labs(x = "Times (ms)", y = "Acceleration (g)") +
   theme_minimal()
 ```
-

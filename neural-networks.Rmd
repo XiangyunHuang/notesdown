@@ -52,3 +52,117 @@ tf$constant("Hello Tensorflow")
 ```
 
 <https://github.com/henry090/fastai>
+
+
+::: sidebar
+如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱
+:::
+
+如果同时安装了 R 包 mxnet，可以直接将 R 环境中矩阵类型的数据对象转化为 R 中的 MXNDArray 对象
+
+```{r}
+(m <- matrix(data = 1:12, nrow = 3, ncol = 4, byrow = TRUE))
+class(m)
+library(mxnet)
+(mm <- mxnet::mx.nd.array(m)) # 转成 R 中的 MXNDArray
+class(mm)
+```
+
+借助 mxnet 包，亦可以直接创建 MXNDArray 类型的数据对象
+
+```{r}
+# R 中的 MXNDArray
+(y <- mxnet::mx.rnorm(shape = 10L, mean = 0L, sd = 1L))
+class(y)
+```
+
+multiply 是子模块 mxnet.ndarray 下的一个函数，Python 中的两个 mx.nd.array 数据对象做矩阵乘法
+
+```{r}
+3 * y
+```
+
+```{r}
+sessionInfo()
+```
+
+
+::: sidebar
+如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱
+:::
+
+mxnet 的 R 接口比 Python 接口弱很多，所以本文使用 reticulate 包，将 mxnet 模块导入到 R 环境中来介绍。mxnet 框架包含很多子模块，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开 [^mxnet-ndarray]。
+
+[^mxnet-ndarray]: mxnet 的 Python 接口 <https://mxnet.apache.org/api/python/docs/api/ndarray/ndarray.html>，此篇介绍源起 [在 R 中使用 gluon](https://d.cosx.org/d/419785-r-gluon)
+
+```{r}
+# 导入 mxnet 中的 ndarray
+nd <- reticulate::import("mxnet.ndarray", convert = FALSE)
+class(nd)
+```
+
+zeros 是子模块 mxnet.ndarray 下的一个函数
+
+```{r}
+x <- nd$zeros(c(3L, 4L)) # 得到 python 中的 mx.nd.array
+x
+```
+
+将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象具 mx.nd.array 有 `asnumpy()` 方法
+
+```{r}
+(m <- x$asnumpy()) # 得到 R 中的 matrix
+class(m)
+m = matrix(data = 1:12, nrow = 3, ncol = 4, byrow = TRUE)
+class(m)
+```
+
+
+## 安装配置 {#setup-mxnet}
+
+[^mxnet-centos]: 当前系统是红帽系的 Fedora 29，安装过程参照 CentOS <https://mxnet.apache.org/get_started/centos_setup.html>
+
+下载 mxnet 源码 [^mxnet-centos]
+
+```bash
+git clone --depth=1 --branch=master https://github.com/apache/incubator-mxnet.git
+cd incubator-mxnet
+git submodule update --init 
+```
+
+安装系统依赖
+
+```bash
+sudo dnf install -y openblas-devel lapack-devel atlas-devel opencv-devel jemalloc-devel \
+  ccache llvm doxygen graphviz clang libomp-devel fftw-devel
+```
+
+编译 mxnet 动态库
+
+```bash
+mkdir build; cd build; cmake -DUSE_CUDA=OFF ..; make -j $(nproc); cd ..
+```
+
+安装 R 包依赖
+
+```r
+remotes::install_deps('~/incubator-mxnet/R-package')
+```
+
+编译并安装 R 包
+
+```bash
+make -f R-package/Makefile rpkg
+```
+
+
+## 运行环境 {#mxnet-session-info}
+
+```{r}
+sessionInfo()
+```
+
+
+mxnet 提供了 R 语言
+[安装指导](https://mxnet.apache.org/get_started/ubuntu_setup.html#install-the-mxnet-package-for-r) 和 [R参考手册](https://mxnet.apache.org/api/r/docs/api/R-package/build/mxnet-r-reference-manual.pdf)
+
