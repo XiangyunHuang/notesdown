@@ -1,14 +1,13 @@
 on:
   push:
     branches:
-      - master
       - devel
 
 name: Build-Docker
 
 jobs:
   build:
-    if: ${{ !contains(github.event.head_commit.message, '[ci skip]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-20.04
     name: ${{ matrix.config.distro }}-${{ matrix.config.version }}
     container:
@@ -24,8 +23,8 @@ jobs:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.25.0"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.25.0"
+      CMDSTAN_VERSION: "2.26.1"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.26.1"
 
     steps:
     - uses: actions/checkout@v2
