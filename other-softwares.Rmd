@@ -1137,132 +1137,6 @@ TikZ 绘制知识清单，书籍章节结构等 <https://www.latexstudio.net/ind
 
 更多例子参考 <https://github.com/FriendlyUser/LatexDiagrams>
 
-TikZ 绘制 Excel 风格的 Smart 图
-
-```{cat, engine.opts=list(file = 'tikz-template.tex', lang = 'tex'), echo=FALSE}
-\documentclass[fontset=adobe,zihao=false]{ctexart}
-\include{preview}
-\usepackage[xetex,active,tightpage]{preview}
-\usepackage{amsmath}
-\usepackage{tikz}
-\usetikzlibrary{matrix}
-
-\usepackage{smartdiagram} % 提供 Excel Smart Diagram
-\usepackage{metalogo} % 提供 LaTeX Logo
-\usepackage{pgfplots} % 提供三维图形
-\pgfplotsset{width=7cm,compat=1.17}
-
-\begin{document}
-\begin{preview}
-%% TIKZ_CODE %%
-\end{preview}
-\end{document}
-```
-```{r smart-diagram, engine = "tikz", echo=FALSE, fig.cap = "Excel Smart Diagram", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
-\smartdiagram[descriptive diagram]{
-  {Style,{Define shapes, colors, shading,
-          and line styles for nodes and arrows}},
-  {Position, {Place nodes using a matrix,
-              relative or absolute positioning}},
-  {Relation, Insert edges or arrows
-             between selected nodes},
-  {Label, Add labels on edges or arrows}}
-```
-
-
-TikZ 绘制 Venn 图
-
-```{r art-stat, engine = "tikz", echo=FALSE, fig.cap = "现代统计是一门跨学科交叉应用的艺术", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), out.width="55%", engine.opts = list(template = "tikz-template.tex")}
-\begin{tikzpicture}
-  \begin{scope}[blend group = soft light]
-    \fill[red!30!white]   ( 90:1.2) circle (2);
-    \fill[green!30!white] (210:1.2) circle (2);
-    \fill[blue!30!white]  (330:1.2) circle (2);
-  \end{scope}
-  \node at ( 90:2)    {数学分析};
-  \node at ( 210:2)   {高等代数};
-  \node at ( 330:2)   {解析几何};
-  \node [font=\Large] {现代统计};
-\end{tikzpicture}
-```
-
-TikZ 绘制气泡图
-
-```{r latex-eco, engine = "tikz", echo=FALSE, fig.cap = "LaTeX 家族", out.width="50%", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
-\smartdiagram[bubble diagram]{\TeX\ engines,
-  \TeX\ (dvi), pdf\TeX, \XeTeX, \LuaTeX, Con\TeX t}
-```
-
-TikZ 绘制树形项目结构图
-
-```{r project-tree, engine = "tikz", fig.cap = "树形项目结构图", cache=TRUE, echo=FALSE, fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'png', out.width="85%", engine.opts = list(template = "tikz-template.tex")}
-\usetikzlibrary{trees}
-% Set node styles
-\tikzstyle{DirBox} = [draw=black, rectangle, minimum width=5em, very thick, font=\small]
-\tikzstyle{every node} = [draw=gray, thin, anchor=west, font=\small]
-
-% Begin tikz picture
-\begin{tikzpicture}[%
-  grow via three points={one child at (0.5,-0.7) and
-  two children at (0.5,-0.7) and (0.5,-1.4)},
-  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
-  % Root Directory
-  \node (root) at (5, 10) [DirBox]{Root};
-  % Project Directory
-  \node (project) at (4.5, 8.5) [DirBox]{example-project}
-        child {node {{\small{paper.Rmd}}}}
-        child {node {{\small{slideshow.Rmd}}}}
-        child {node {{\small{website.Rmd}}}}
-        child {node {{\small{main.bib}}}}
-            ;
-  % Data Directory
-  \node (data) at (0, 4.5) [DirBox]{data}
-      child {node {{\small{main-data.csv}}}}
-      child {node {{\small{Makefile}}}}
-      child {node {{\small{merge-data.R}}}}
-      child {node {{\small{gather-1.R}}}}
-      child {node {{\small{gather-2.R}}}}
-      child {node {{\small{main-data-variable-descriptions.md}}}}
-      child {node {{\small{README.Rmd}}}}
-        ;
-  % Analysis subdirectores/files
-  \node (analysis) at (1.5, 7) [DirBox]{analysis}
-      child {node {{\small{analysis-1.R}}}}
-      child {node {{\small{analysis-2.R}}}}
-        ;
-  % README and .Rproj files
-  \node (readme) at (9, 7) {README.md};
-  \node (rproj) at (10, 6) {example-project.Rproj};
-  % Connect boxes that are not explicit children
-  \draw (root) -- (project);
-  \draw (project) -| (analysis);
-  \draw (project) -| (data);
-  \draw (project) -| (readme);
-  \draw (project) -| (rproj);
-\end{tikzpicture}
-```
-
-TikZ 绘制三维图
-
-```{r plot3d-tikz, engine = "tikz", echo=FALSE,out.width="55%", fig.cap = "TikZ 绘制的 Octave 图标", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
-\begin{tikzpicture}
-\begin{axis}[
-    hide axis,
-    colormap/viridis,
-]
-\addplot3[
-    mesh,
-    samples=50,
-    domain=-8:8,
-]
-{sin(deg(sqrt(x^2+y^2)))/sqrt(x^2+y^2)};
-% \addlegendentry{$\frac{\sin(r)}{r}$}
-\end{axis}
-\end{tikzpicture}
-```
-```{r clean-tikz-template,include=FALSE}
-if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
-```
 
 ## Octave 科学计算 {#sec:octave}
 
@@ -1584,6 +1458,188 @@ px.scatter(px.data.iris(), x = "sepal_width", y = "sepal_length", color = "speci
 ```
 
 
+- LaTeX 专家黄晨成写的译文 [Matplotlib 教程](https://liam.page/2014/09/11/matplotlib-tutorial-zh-cn/)
+- [周沫凡](https://morvanzhou.github.io/) 制作的莫烦 Python 系列视频教程之 [Matplotlib 数据可视化神器](https://morvanzhou.github.io/tutorials/data-manipulation/plt/)
+- 陈治兵维护的在线 [Matplotlib 中文文档](https://www.matplotlib.org.cn/)
+- Sebastian Raschka 和 Vahid Mirjalili 合著的 [Python Machine Learning (3rd Edition)](https://github.com/rasbt/python-machine-learning-book-3rd-edition) [@Raschka2019]
+
+编译书籍使用的 Python 3 模块有
+
+```{bash,results='asis'}
+pip3 list --format=columns
+```
+
+
+```bash
+# 安装 Python 虚拟环境管理器 virtualenv
+sudo dnf install -y python3-pip python3-virtualenv
+# 创建虚拟环境
+virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
+# 激活虚拟环境
+source $RETICULATE_PYTHON_ENV/bin/activate
+# 将虚拟环境位置写入配置文件
+echo "export RETICULATE_PYTHON_ENV=$HOME/.virtualenvs/r-tensorflow" >> ~/.bashrc
+source ~/.bashrc
+# 安装 numpy matplotlib 等模块
+pip install -r requirements.txt
+# 导出模块版本信息
+pip freeze >> requirements.txt
+```
+
+
+```{python}
+import os
+os.listdir('.git')
+```
+
+多个代码块共享同一个 Python 进程
+
+```{python}
+os.path
+```
+
+matplotlib 绘图
+
+```{python matplotlib-demo, eval=FALSE}
+import matplotlib.pyplot as plt
+plt.switch_backend('agg')
+plt.plot([0, 2, 1, 4])
+plt.show()
+```
+
+支持交叉引用[^cross-ref]，如图 \@ref(fig:matplotlib) 所示
+
+```{python matplotlib, ref.label = 'matplotlib-demo', fig.cap = "matplotlib 示例", eval = TRUE, echo = FALSE}
+```
+
+有了 reticulate 包，我们可以把任意想要导入到 R 环境中的 Python 模块导进来，实现 R 与 Python 的数据交换和函数调用 [^gluon]
+
+```{r}
+os <- reticulate::import("os") # 导入 Python 模块
+x <- os$listdir(".git") # 调用 os.listdir() 函数
+x # 得到 python 中的向量 vector 或数组 array
+```
+
+
+[^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 `r format(Sys.Date(), format = "%Y年%m月%d日")` 使用 reticulate 版本 `r packageVersion('reticulate')`，本文没有对之前的版本进行测试。
+
+
+
+```python
+# https://docs.bokeh.org/en/latest/docs/user_guide/quickstart.html#userguide-quickstart
+from bokeh.plotting import figure, output_file, show
+# 准备一些数据
+x = [1, 2, 3, 4, 5]
+y = [6, 7, 2, 4, 5]
+# 将动态图形以静态 HTML 文件的方式保存
+output_file("lines.html")
+# 创建一个简单的图形，设置标题、x,y 轴标签
+p = figure(title="simple line example", x_axis_label='x', y_axis_label='y')
+# 添加一条折线，设置图例，线宽
+p.line(x, y, legend_label="Temp.", line_width=2)
+# 显示结果
+show(p)
+```
+
+将静态图形嵌入到 R Markdown 中
+
+```r
+htmltools::includeHTML("lines.html")
+```
+
+R 和 Python 之间的交互，Python 负责数据处理和建模， R 负责绘图，有些复杂的机器学习模型及其相关数据操作需要在 Python 中完成，数据集清理至数据框的形式后导入到 R 中，画各种静态或者动态图，这时候需要加载 reticulate 包，只是设置 `python.reticulate = TRUE` 还不够
+
+::: sidebar
+R Markdown 文档 [@xie2018] 中的 Python 代码块是由 knitr 包 [@xie2015] 负责调度处理的，展示 Matplotlib 绘图的结果使用了 reticulate 包 [@reticulate] 提供的 Python 引擎而不是 knitr 自带的。
+
+在 `knitr::opts_chunk` 中设置 `python.reticulate = TRUE` 意味着所有的 Python 代码块共享一个 Python Session，而 `python.reticulate = FALSE` 意味着使用 knitr 提供的 Python 引擎，所有的 Python 代码块独立运行。
+:::
+
+pandas 读取数据，整理后由 reticulate 包传递给 R 环境中的 data.frame 对象，加载 ggplot2 绘图
+
+```{r save-iris,echo=FALSE,eval=!file.exists('iris.csv')}
+write.csv(iris, file = "iris.csv", row.names = F)
+```
+```{python}
+import pandas as pd
+iris = pd.read_csv('iris.csv')
+```
+```{r rm-iris,eval=file.exists('iris.csv'),include=FALSE}
+file.remove("iris.csv")
+```
+```{r plot-iris,fig.cap="从 R 调用 Python 数据对象",fig.asp=.4}
+library(reticulate)
+library(ggplot2)
+theme_set(theme_minimal())
+library(patchwork)
+p1 <- ggplot(py$iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(color = Species)) +
+  labs(title = "Call iris from Python")
+p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(color = Species)) +
+  labs(title = "Call iris from R")
+p1 + p2
+```
+
+<!--pandas 抛出的警告 sys:1: FutureWarning: RangeIndex._start is deprecated and will be removed in a future version. Use RangeIndex.start instead -->
+
+以 NumPy 为例
+
+```{python}
+import numpy as np
+a = np.arange(15).reshape(3, 5)
+a
+a.shape
+a.ndim
+a.dtype.name
+a.itemsize
+a.size
+type(a)
+b = np.array([6, 7, 8])
+b
+type(b)
+a.transpose() @ b
+```
+
+Python 里面的点号$\cdot$对应于R里面的 `$`
+
+```{r}
+library(reticulate)
+np <- import("numpy", convert=FALSE) # 导入 Python 模块
+a <- np$arange(0, 15)$reshape(3L, 5L)
+a
+a$shape
+a$ndim
+a$dtype$name
+a$itemsize
+a$size
+a$ctypes
+a$dtype # data type 数据类型
+a$astype
+builtins <- import_builtins() # Python 内建的函数，不需要导入第三方模块
+builtins$type(a)
+```
+
+基本线性代数运算
+
+```{r}
+a$transpose() # 转置
+a$trace() # 迹
+np$eye(2L) # 单位矩阵
+a$diagonal() # 对角
+# 两个矩阵的乘法
+b <- np$array(c(6, 7, 8, 9, 10))$reshape(5L, 1L)
+b
+b$shape
+np$multiply(b$transpose(), a) # b 乘以 a
+```
+
+Python 对象转化为 R 对象
+
+```{r}
+py_to_r(b)
+```
 
 ## VBox 虚拟机 {#sec:virtual-vbox}
 

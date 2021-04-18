@@ -38,12 +38,10 @@ options(
   tinytex.engine = 'xelatex',
   rgdal_show_exportToProj4_warnings = 'none',
   tikzDefaultEngine = "xetex",
-  tikzDocumentDeclaration = "\\documentclass[UTF8,fontset=adobe]{ctexart}\n",
+  tikzDocumentDeclaration = "\\documentclass[tikz]{standalone}\n",
   tikzXelatexPackages = c(
-    "\\usepackage[colorlinks,breaklinks]{hyperref}",
-    "\\usepackage{color,times,tikz}",
-    "\\usepackage[active,tightpage,xetex]{preview}",
-    "\\PreviewEnvironment{pgfpicture}",
-    "\\usepackage{amsmath,amsfonts,mathrsfs,amssymb}"
+    "\\usepackage[fontset=adobe]{ctex}",
+    "\\usepackage[default,semibold]{sourcesanspro}",
+    "\\usepackage{amsfonts,mathrsfs,amssymb}\n"
   )
 )

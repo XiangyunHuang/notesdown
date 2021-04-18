@@ -153,27 +153,7 @@ library(Rcpp)
 
 **tikzDevice** 包将 LaTeX 公式和绘图系统 [TikZ](https://en.wikipedia.org/wiki/PGF/TikZ) 引入 R 语言生态，贡献在于提供更加漂亮的公式输出，对图形进行后期布局排版加工，达到设计师出品的质量水平。图 \@ref(fig:tex-system) 展示了复杂的 TeX 生态系统， R 语言只是取其精华，使用 TikZ 绘制。
 
-```{cat, engine.opts=list(file = 'tikz-template.tex', lang = 'tex'), echo=FALSE}
-\documentclass[fontset=adobe,zihao=false]{ctexart}
-\include{preview}
-\usepackage[xetex,active,tightpage]{preview}
-\usepackage{amsmath}
-\usepackage{tikz}
-\usetikzlibrary{matrix}
-
-\usepackage{smartdiagram} % 提供 Excel Smart Diagram
-\usepackage{metalogo} % 提供 LaTeX Logo
-\usepackage{pgfplots} % 提供三维图形
-\pgfplotsset{width=7cm,compat=1.17}
-
-\begin{document}
-\begin{preview}
-%% TIKZ_CODE %%
-\end{preview}
-\end{document}
-```
-```{r tex-system, engine = "tikz", fig.cap = "TeX 系统", cache=TRUE, fig.ext=ifelse(knitr::is_latex_output(), 'pdf', 'png'), engine.opts = list(template = "tikz-template.tex")}
-\usetikzlibrary{mindmap}
+```{r tex-system, engine="tikz", fig.cap="TeX 系统", cache=TRUE, engine.opts=list(extra.preamble=c("\\usepackage[default]{sourcesanspro}","\\usetikzlibrary{mindmap}"))}
 \begin{tikzpicture}
   \path [
     mindmap,
@@ -215,9 +195,6 @@ library(Rcpp)
         child { node {\TeX studio} }
         child { node {\TeX maker} }};
 \end{tikzpicture}
-```
-```{r,include=FALSE}
-if(file.exists('tikz-template.tex')) file.remove('tikz-template.tex')
 ```
 
 
