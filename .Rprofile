@@ -1,4 +1,4 @@
-if (file.exists('~/.Rprofile')) sys.source('~/.Rprofile', envir = environment())
+if (file.exists("~/.Rprofile")) sys.source("~/.Rprofile", envir = environment())
 
 options(
   citation.bibtex.max = 999,
@@ -19,7 +19,7 @@ options(
   rsconnect.force.update.apps = TRUE,
   str = utils::strOptions(strict.width = "cut"),
   knitr.table.format = "pandoc",
-  knitr.kable.NA = '', # 隐藏缺失值
+  knitr.kable.NA = "", # 隐藏缺失值
   datatable.quiet = TRUE,
   datatable.print.class = TRUE,
   datatable.print.keys = TRUE,
@@ -35,8 +35,8 @@ options(
   bookdown.render.file_scope = TRUE,
   lifecycle_verbosity = "quiet",
   hrbrthemes.loadfonts = TRUE,
-  tinytex.engine = 'xelatex',
-  rgdal_show_exportToProj4_warnings = 'none',
+  tinytex.engine = "xelatex",
+  rgdal_show_exportToProj4_warnings = "none",
   tikzDefaultEngine = "xetex",
   tikzDocumentDeclaration = "\\documentclass[tikz]{standalone}\n",
   tikzXelatexPackages = c(

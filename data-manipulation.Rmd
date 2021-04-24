@@ -9,7 +9,6 @@ library(magrittr)
 更多参考材料见[A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/)，
 [Big Data in Economics: Data cleaning and wrangling](https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html) 和 [DataCamp’s data.table cheatsheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
 
-
 ```{r tidyverse-vs-base-r,fig.cap="Tidyverse 和 Base R 的关系",echo=FALSE,out.width="75%"}
 knitr::include_graphics(path = paste0("diagrams/tidyverse-vs-base-r",
   ifelse(knitr::is_latex_output(), ".pdf", ".svg")
@@ -115,17 +114,12 @@ aggregate(breaks ~ wool + tension, data = warpbreaks,  sum) %>%
   `colnames<-`(., gsub(pattern = "(breaks)", x = colnames(.), replacement =  ""))
 ```
 
-
-
-
-
 ## 子集过滤 {#sec:subset}
 
 ```{r}
 iris[iris$Species == 'setosa' & iris$Sepal.Length > 5.5, grepl('Sepal', colnames(iris))]
 subset(iris, subset = Species == 'setosa' & Sepal.Length > 5.5, select = grepl('Sepal', colnames(iris)))
 ```
-
 
 ## with 选项 {#sec:option-with}
 
@@ -137,7 +131,6 @@ subset(iris, subset = Species == 'setosa' & Sepal.Length > 5.5, select = grepl('
 library(data.table)
 iris <- as.data.table(iris)
 ```
-
 
 ```{r}
 iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris))]
@@ -175,7 +168,6 @@ ggplot(df, aes(x, y, z = z)) +
   geom_contour()
 ```
 
-
 ## 分组聚合 {#sec:aggregate}
 
 ```{r}
@@ -185,7 +177,6 @@ args("aggregate.ts")
 
 # getAnywhere(aggregate.formula)
 ```
-
 
 ```{r}
 library(data.table)
@@ -199,7 +190,7 @@ dt[, .(x_sum = sum(x), y_sum = sum(y)), by = .(z, w)]
 dt[, .(x_sum = sum(x), y_sum = sum(y)), by = mget(c("z", "w"))]
 ```
 
-shiny 前端传递字符串向量，借助 `mget()` 函数根据选择的变量分组统计计算，只有一个变量可以使用 `get()` 传递变量给 data.table 
+shiny 前端传递字符串向量，借助 `mget()` 函数根据选择的变量分组统计计算，只有一个变量可以使用 `get()` 传递变量给 data.table
 
 ```{r multi-columns,eval=FALSE}
 library(shiny)
@@ -353,13 +344,11 @@ merge(dat1, dat2)
 
 ## 长宽转换 {#sec:reshape}
 
-
 ```{r}
 args("reshape")
 ```
 
-
-PlantGrowth 数据集的重塑操作也可以使用内置的函数 `reshape()` 实现 
+PlantGrowth 数据集的重塑操作也可以使用内置的函数 `reshape()` 实现
 
 ```{r data-frame-PlantGrowth}
 PlantGrowth$id <- rep(1:10, 3)
@@ -394,9 +383,7 @@ dcast(PlantGrowth_DT, id ~ group, value.var = "weight")
 dcast(PlantGrowth_DT, group ~ id, value.var = "weight")
 ```
 
-
 ## 对符合条件的列操作 {#sec:filter-columns}
-
 
 ```{r}
 # 数值型变量的列的位置
@@ -407,11 +394,9 @@ which(sapply(iris, is.numeric))
 iris[,sapply(iris, is.numeric), with = F][Sepal.Length > 7.5]
 ```
 
-
 ```{r}
 class(iris)
 ```
-
 
 用 magrittr 提供的管道符号连接 data.table 的数据操作与 ggplot2 的数据可视化
 
@@ -431,7 +416,6 @@ iris %>%
 
 `CASE WHEN` 是 SQL 中的条件判断语句，**data.table** 中的函数 `fcase()` 可与之等价。值得注意的是，`fcase()` 需要 **data.table** 版本 1.13.0 及以上。
 
-
 ```{r}
 dat <- data.table(
   weights = c(56.8, 57.2, 46.3, 38.5),
@@ -445,11 +429,9 @@ transform(dat, gender_cn = fcase(
 ))
 ```
 
-
 ## 数据操作实战 {#sec:datatable-in-action}
 
 [Toby Dylan Hocking](https://tdhock.github.io/) 在 useR! 2020 大会上分享的幻灯片 <https://github.com/tdhock/r-devel-emails>
-
 
 ## 高频数据操作 {#sec:faq-operations}
 
@@ -464,7 +446,6 @@ dat = as.data.table(dat)
 dat
 ```
 
-
 ### 循环合并 {#subsec:reduce-merge}
 
 - 问题来源 [Faster version of Reduce(merge, list(DT1,DT2,DT3,...)) called mergelist (a la rbindlist)](https://github.com/Rdatatable/data.table/issues/599)
@@ -476,14 +457,12 @@ dat
 
 ### 分组计数 {#subsec:count-by-group}
 
-
 ```{r}
 dat[, .(length(num_a)) , by = .(group_a)] # dat[, .N , by = .(group_a)]
 dat[, .(length(num_a)) , by = .(group_b)]
 
 dat[, .(length(num_a)), by = .(group_a, group_b)]
 ```
-
 
 ### 分组抽样 {#subsec:sample-by-group}
 
@@ -527,7 +506,6 @@ setorder(dat, -num_a, group_a)
 参考多个列分组排序 [^sort-by-group]
 
 [^sort-by-group]: <https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns>
-
 
 ::: {.rmdtip data-latex="{提示}"}
 

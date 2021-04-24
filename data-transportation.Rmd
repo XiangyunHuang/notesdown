@@ -5,7 +5,6 @@
 [sparklyr.flint](https://github.com/r-spark/sparklyr.flint) 支持 Spark 的时间序列库 [flint](https://github.com/twosigma/flint)，[sparkxgb](https://github.com/rstudio/sparkxgb) 为 Spark 上的 XGBoost 提供 R 接口，[sparkwarc](https://github.com/r-spark/sparkwarc) 支持加载 Web ARChive 文件到 Spark 里
 [sparkavro](https://github.com/chezou/sparkavro) 支持从 Apache Avro (<https://avro.apache.org/>) 读取文件到 Spark 里，[sparkbq](https://github.com/miraisolutions/sparkbq) 是一个 sparkly 扩展包，集成 Google BigQuery 服务，[geospark](https://github.com/harryprince/geospark) 提供 GeoSpark 库的 R 接口，并且以 sf 的数据操作方式，[rsparkling](https://github.com/h2oai/sparkling-water/tree/master/r) H2O Sparkling Water 机器学习库的 R 接口。
 
-
 Spark 性能优化，参考三篇博文
 
 - [Spark在美团的实践](https://tech.meituan.com/2016/03/31/spark-in-meituan.html)
@@ -89,23 +88,27 @@ diamonds_preview
 
 :::::: {.columns}
 ::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+
 ```{r}
 # SQL 中的 AVG 和 R 中的 mean 函数是类似的
 diamonds_price <- dbGetQuery(sc, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
 diamonds_price
 ```
+
 :::
 ::: {.column width="5%" data-latex="{0.05\textwidth}"}
-\ 
+\
 <!-- an empty Div (with a white space), serving as
 a column separator -->
 :::
 ::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
+
 ```{r}
 library(data.table)
 diamonds <- as.data.table(diamonds)
 diamonds[,.(mean_price = mean(price)), by = .(cut)]
 ```
+
 :::
 ::::::
 
@@ -124,6 +127,7 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
 diamonds_sample
 ```
+
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
 
 窗口函数 <https://www.cnblogs.com/ZackSun/p/9713435.html>
@@ -197,7 +201,6 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 spark_disconnect(sc)
 ```
 
-
 ### SparkR {#subsec:sparkr}
 
 ::: {.rmdnote data-latex="{注意}"}
@@ -242,7 +245,6 @@ head(faithful_sdf)
 str(faithful_sdf)
 ```
 
-
 ## 数据库与 R 语言 {#sec:database-with-r}
 
 [Presto](https://github.com/prestodb/presto) 的 R 接口 <https://github.com/prestodb/RPresto> 和文档 <https://prestodb.io/docs/current/index.html>，Presto 数据库
@@ -270,6 +272,7 @@ dnf install -y unixODBC unixODBC-devel mariadb mariadb-server mariadb-devel mari
 ```r
 odbc::odbcListDrivers()
 ```
+
 ```
 # Driver from the mariadb-connector-odbc package
 # Setup from the unixODBC package
@@ -280,10 +283,7 @@ Driver64        = /usr/lib64/libmaodbc.so
 FileUsage       = 1
 ```
 
-
-
 ## 批量读取 csv 文件 {#sec:batch-import-csv}
-
 
 iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示
 
@@ -301,7 +301,6 @@ merged_df <- do.call('rbind', lapply(list.files(pattern = "*.csv", path = "data/
 # 或者
 merged_df <- rbindlist(lapply(list.files(pattern = "*.csv", path = "data/"), fread ))
 ```
-
 
 ```{r,eval=FALSE}
 xdf$date <- as.Date(xdf$date)
@@ -328,7 +327,6 @@ xdf %>%
   ungroup()
 ```
 
-
 ```{r}
 library(tibble)
 library(magrittr)
@@ -339,14 +337,12 @@ mtcars %>%
   print(n = 16, width = 69)
 ```
 
-
 ```{r}
 mtcars %>% 
   print(., n = nrow(.)/4)
 ```
 
 ## 批量导出 xlsx 文件 {#sec:batch-export-xlsx}
-
 
 将 R 环境中的数据集导出为 xlsx 表格
 
@@ -363,7 +359,6 @@ writeData(wb, sheet = "iris", x = iris, colNames = TRUE)
 saveWorkbook(wb, file = "iris.xlsx", overwrite = TRUE)
 ```
 
-
 ```{r,eval=FALSE}
 library(openxlsx)
 xlsxFile <- system.file("extdata", "readTest.xlsx", package = "openxlsx")
@@ -372,4 +367,3 @@ dat = read.xlsx(xlsxFile = xlsxFile)
 # 导出
 write.xlsx(dat, xlsxfile)
 ```
-

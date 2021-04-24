@@ -11,22 +11,15 @@ Six Years of Shiny in Research - Collaborative Development of Web Tools in R [@R
 
 [^scale-shiny]: <https://resources.rstudio.com/rstudio-conf-2020/we-re-hitting-r-a-million-times-a-day-so-we-made-a-talk-about-it-heather-nolis-dr-jacqueline-nolis>
 
-
 ```{r shiny-org,fig.cap="开发 Shiny 应用扩展的组织",echo=FALSE,out.width="75%"}
 knitr::include_graphics(path = "diagrams/shiny-org.png")
 ```
 
 以 RStudio 为核心，开发 Shiny 应用扩展的社区组织有 [RStudio](https://github.com/rstudio)、[Appsilon](https://github.com/Appsilon)、[RinteRface](https://github.com/RinteRface)、[ThinkR-open](https://github.com/ThinkR-open)、[dreamRs](https://github.com/dreamRs) 和[datastorm-open](https://github.com/datastorm-open)
 
-
-
-
 ## 开发流程 {#sec:dev-workflow}
 
 报表开发从数据仓库的 DWD 层开始，可能一些业务原因，我们需要从 ODS 层甚至从点击流的日志数据开始，经过数据清洗、提取、聚合成为支撑BI报表最底层的基础表，存储在 Hive 中，然后对这一系列的基础表根据BI展示的需要进行第二层聚合形成中间表，这两层数据根据业务情况做增量更新或者全量更新，并将中间表同步到 MySQL 仓库中，全量更新的情况，往往更新数据比较大，建议用 sqoop 做数据的同步。创建第二层的中间表稍有些灵活性，原则是在中间表之上对应的数据操作和可视化是容易实现且效率较高的，否则应该构造第三层的中间表，绝不能将大规模的数据集直接导入 R 中进行分析和可视化，拖慢前端展示的速度，占用过多的服务器资源。
-
-
-
 
 ## 开发工具 {#sec:dev-tools}
 
@@ -42,15 +35,11 @@ knitr::include_graphics(path = "diagrams/shiny-org.png")
 - [shiny-server](https://github.com/rstudio/shiny-server) 以网络服务的方式支持 shiny 应用，是企业级 shiny 应用的核心， [shinyproxy](https://github.com/openanalytics/shinyproxy) 提供企业级部署 shiny 应用的开源解决方案，[ShinyStudio](https://github.com/clevr-dev/ShinyStudio) 打造基于容器架构的协作开发环境的开源解决方案，[golem](https://github.com/ThinkR-open/golem) 构建企业级 shiny 应用的框架，[RinteRface](https://github.com/RinteRface) 开发的系列 R 包也试图打造一套完整的解决方案，并配有速查小抄 [cheatsheets](https://github.com/RinteRface/cheatsheets)
 - [radiant](https://github.com/radiant-rstats/radiant) 探索性分析解决方案
 
-
 ```{r}
 library(shiny)
 ```
 
-
-
 ## 基础知识 {#sec:foundations}
-
 
 [1920s 汽车数据分析和建模](https://xiangyun.shinyapps.io/masr-cars/)
 
@@ -81,7 +70,6 @@ enableBookmarking(store = "url")
 shinyApp(ui, server)
 ```
 
-
 ### 表格 {#subsec:shiny-tables}
 
 [reactable](https://github.com/glin/reactable) 基于 JS 库 [React Table](https://github.com/tannerlinsley/react-table) 提供交互式表格渲染，和 shiny 无缝集成，是替代 DT 的不二选择，在 app.R 用 reactable 包的 `reactableOutput()` 和 `renderReactable()` 函数替代 shiny 里面的 `dataTableOutput()` 和 `renderDataTable()`。 再也不用忍受 DT 和 shiny 的函数冲突了，且其覆盖测试达到 99\%。
@@ -90,7 +78,6 @@ shinyApp(ui, server)
 library(shiny)
 library(data.table)
 ```
-
 
 [gt](https://github.com/rstudio/gt) 高度自定义 gt 表格样式，支持 shiny 集成， [data.table](https://github.com/Rdatatable/data.table) 提供高效的数据操作，[formattable](https://github.com/renkun-ken/formattable) 支持自定义格子。
 
@@ -228,7 +215,6 @@ colnames(iris) <- gsub("\\.", "_", tolower(colnames(iris)))
 换成管道操作，函数 `colnames()` 要换成 `colnames<-`，这其实类似于 `1 + 2` 换成 `+`(1, 2)，保持函数在左边，参数值在右边的一致性。
 :::
 
-
 设置页面默认显示的行数和列的宽度
 
 ```{r,eval=FALSE}
@@ -345,19 +331,11 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-
-
-
 ## 部署应用 {#sec:shiny-deployment}
-
-
-
 
 ## 最佳实践 {#sec:shiny-principles}
 
-
 [提升 shiny 仪表盘访问性能的4个建议](https://blog.rstudio.com/2020/07/21/4-tips-to-make-your-shiny-dashboard-faster/)
-
 
 ## 仪表盘 {#sec:shiny-dashboard}
 
@@ -415,9 +393,7 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-
 shinydashboardPlus 包
-
 
 ```{r,eval=FALSE}
 library(shiny)
