@@ -152,95 +152,6 @@ Table: (\#tab:plotly-scatter-functions) 散点图类型
 | `scatterpolargl` | 极坐标散点图 GL   |
 
 
-```{r plotly-carpet,eval=knitr::is_html_output(),warning=FALSE,fig.cap="scattercarpet 地毯图"}
-plot_ly() %>%
-  add_trace(
-    type = "carpet",
-    a = c(4, 4, 4, 4.5, 4.5, 4.5, 5, 5, 5, 6, 6, 6),
-    b = c(1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3),
-    y = c(2, 3.5, 4, 3, 4.5, 5, 5.5, 6.5, 7.5, 8, 8.5, 10),
-    aaxis = list(
-      tickprefix = "a = ",
-      ticksuffix = "m",
-      smoothing = 1,
-      minorgridcount = 9
-    ),
-    baxis = list(
-      tickprefix = "b = ",
-      ticksuffix = "Pa",
-      smoothing = 1,
-      minorgridcount = 9
-    )
-  ) %>%
-  add_trace(
-    type = "scattercarpet",
-    a = c(4, 4.5, 5, 6),
-    b = c(2.5, 2.5, 2.5, 2.5),
-    line = list(
-      shape = "spline",
-      smoothing = 1,
-      color = "blue"
-    ),
-    mode = "markers+lines",
-    marker = list(color = "blue"),
-    showlegend = F
-  )
-```
-
-
-```{r plotly-ternary,eval=knitr::is_html_output(),fig.cap="三元图 Ternary"}
-df <- data.frame(
-  journalist = c(75, 70, 75, 5, 10, 10, 20, 10, 15, 10, 20),
-  developer = c(25, 10, 20, 60, 80, 90, 70, 20, 5, 10, 10),
-  designer = c(0, 20, 5, 35, 10, 0, 10, 70, 80, 80, 70),
-  label = c(
-    "point 1", "point 2", "point 3", "point 4", "point 5", "point 6",
-    "point 7", "point 8", "point 9", "point 10", "point 11"
-  )
-)
-
-# axis layout
-axis <- function(title) {
-  list(
-    title = title,
-    titlefont = list(
-      size = 15
-    ),
-    tickfont = list(
-      size = 15
-    ),
-    tickcolor = "rgba(0,0,0,0)",
-    ticklen = 5
-  )
-}
-
-plot_ly(data = df) %>%
-  add_trace(
-    type = "scatterternary",
-    mode = "markers",
-    a = ~journalist,
-    b = ~developer,
-    c = ~designer,
-    text = ~label,
-    marker = list(
-      symbol = 100,
-      color = "#DB7365",
-      size = 14,
-      line = list(width = 2)
-    )
-  ) %>%
-  layout(
-    # title = "Simple Ternary Plot with Markers",
-    ternary = list(
-      sum = 100,
-      aaxis = axis(title = "Journalist"),
-      baxis = axis(title = "Developer"),
-      caxis = axis(title = "Designer")
-    )
-  )
-```
-
-
 ## 条形图 {#sec:plotly-barplot}
 
 日常使用最多的图形无外乎散点图、柱形图（分组、堆积、百分比堆积等）
@@ -487,7 +398,8 @@ plot_ly(
   text = ~ paste(
     sep = " ", "重量：", round(carat, 2), "克拉",
     "<br>价格:", round(price / 10^6, 2), "百万"
-  )
+  ),
+  hoverinfo = 'text'
 ) %>%
   add_annotations(
     x = ~carat, y = ~price, text = ~cnt,
