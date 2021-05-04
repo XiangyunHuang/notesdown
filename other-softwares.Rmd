@@ -1454,7 +1454,35 @@ source /opt/virtualenv/tensorflow/bin/activate
 
 ```{python python-plotly,fig.cap="Python 版的 plotly",eval=knitr::is_html_output()}
 import plotly.express as px
-px.scatter(px.data.iris(), x = "sepal_width", y = "sepal_length", color = "species")
+px.scatter(px.data.iris(), x = "sepal_width", y = "sepal_length", 
+    color = "species", template = "simple_white", 
+    title = "Edgar Anderson's Iris Data",
+    color_discrete_sequence = px.colors.qualitative.Set2
+  )
+```
+
+绘图函数 <https://plotly.com/python-api-reference/plotly.express.html>
+数据集 <https://plotly.com/python-api-reference/generated/plotly.express.data.html>
+
+seaborn [@Waskom2021]
+
+```{r}
+# plotly.io.templates
+plotly_themes <- c(
+  "ggplot2", "seaborn", "simple_white", "plotly",
+  "plotly_white", "plotly_dark", "presentation", 
+  "xgridoff", "ygridoff", "gridon", "none"
+)
+```
+
+         
+```python
+# 调色板
+import plotly.express as px
+fig = px.colors.qualitative.swatches()
+fig.show()
+# 显示颜色值
+print(px.colors.qualitative.Plotly)
 ```
 
 
@@ -1502,9 +1530,10 @@ matplotlib 绘图
 
 ```{python matplotlib-demo, eval=FALSE}
 import matplotlib.pyplot as plt
+import seaborn as sns
 plt.switch_backend('agg')
-plt.plot([0, 2, 1, 4])
-plt.show()
+iris = sns.load_dataset("iris")
+sns.scatterplot(data = iris, x = "sepal_width", y = "sepal_length", hue = "species")
 ```
 
 支持交叉引用[^cross-ref]，如图 \@ref(fig:matplotlib) 所示
