@@ -1124,9 +1124,44 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 
 ## dygraphs {#sec:dygraphs}
 
-[dygraphs](https://github.com/rstudio/dygraphs)
+[dygraphs](https://github.com/rstudio/dygraphs) 专门用来绘制交互式时间序列图形，下面以美团股价为例，展示时间窗口筛选、坐标轴名称、刻度标签、注释、事件标注、缩放等功能
 
 
+```{r ts-vis, echo=TRUE, eval=knitr::is_html_output(), cache=is.na(Sys.getenv('CI', NA))}
+meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
+library(magrittr)
+library(dygraphs)
+# 缩放
+dyUnzoom <- function(dygraph) {
+  dyPlugin(
+    dygraph = dygraph,
+    name = "Unzoom",
+    path = system.file("plugins/unzoom.js", package = "dygraphs")
+  )
+}
+
+# 年月
+getYearMonth <- '
+  function(d) {
+    var monthNames = ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12"];
+    date = new Date(d);
+    return date.getFullYear() + "-" + monthNames[date.getMonth()]; 
+  }'
+
+dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") %>%
+  dyRangeSelector(dateWindow = c(format(Sys.Date(), "%Y-01-01"), as.character(Sys.Date()))) %>%
+  dyAxis(name = "x", axisLabelFormatter = getYearMonth) %>%
+  dyAxis("y", valueRange = c(0, 500), label = "美团股价") %>%
+  dyEvent("2020-01-23", "武汉封城", labelLoc = "bottom") %>%
+  dyShading(from = "2020-01-23", to = "2020-04-08", color = "#FFE6E6") %>%
+  dyAnnotation("2020-01-23", text = "武汉封城", tooltip = "武汉封城", width = 60) %>%
+  dyAnnotation("2020-04-08", text = "武汉解封", tooltip = "武汉解封", width = 60) %>%
+  dyHighlight(highlightSeriesOpts = list(strokeWidth = 2)) %>%
+  dySeries(label = "调整股价") %>%
+  dyLegend(show = "follow", hideOnMouseOut = FALSE) %>%
+  dyOptions(fillGraph = TRUE, drawGrid = FALSE, gridLineColor = "lightblue") %>%
+  dyUnzoom()
+```
 
 
 ## r2d3 {#sec:r2d3}
