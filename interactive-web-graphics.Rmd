@@ -2,6 +2,21 @@
 
 ```{r,include=FALSE}
 library(ggplot2)
+library(plotly, warn.conflicts = FALSE)
+# plot_ly <- plotly::plot_ly
+# add_trace <- plotly::add_trace
+# 
+# add_bars <- plotly::add_bars
+# add_lines <- plotly::add_lines
+# add_boxplot <- plotly::add_boxplot
+# add_annotations <- plotly::add_annotations
+# 
+# config <- plotly::config
+# layout <- plotly::layout
+# style  <- plotly::style
+# 
+# orca <- plotly::orca
+# ggplotly <- plotly::ggplotly
 ```
 
 [echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
@@ -446,7 +461,7 @@ plot_ly(
 
 其他基础图形
 
-```{r,eval=knitr::is_html_output()}
+```{r plotly-heatmap,eval=knitr::is_html_output()}
 # Heatmaps
 plot_ly(z = volcano, type = 'heatmap')
 ```
@@ -778,21 +793,29 @@ pres <- data.frame(
   fontcolor = c("black", "white", "black")
 )
 
-vistime(pres, col.event = "Position", col.group = "Name")
+vistime(pres, col.event = "Position", col.group = "Name") %>%
+  config(
+    displayModeBar = FALSE
+  )
 ```
 
 ## 漏斗图 {#sec:plotly-funnel}
 
-```{r funnel, eval=knitr::is_html_output(), fig.cap="漏斗图"}
+```{r funnel-01, eval=knitr::is_html_output(), fig.cap="漏斗图"}
 dat <- data.frame(
   category = c("访问", "下载", "潜客", "报价", "下单"),
   value = c(39, 27.4, 20.6, 11, 2)
-)
+) %>% 
+  transform(percent = value / cumsum(value))
 plot_ly(data = dat) %>%
   add_trace(
     type = "funnel",
     y = ~category,
-    x = ~value
+    x = ~value,
+    color = ~category,
+    text = ~ paste0(value, "<br>", sprintf("%.2f%%", 100*percent)) ,
+    hoverinfo = "text",
+    showlegend = FALSE
   ) %>%
   layout(yaxis = list(
     categoryarray = ~category,
@@ -802,6 +825,24 @@ plot_ly(data = dat) %>%
     displayModeBar = FALSE
   )
 ```
+
+
+```{r funnel-02, eval=knitr::is_html_output(), fig.cap="漏斗图"}
+plotly::plot_ly(data = dat) %>%
+  plotly::add_trace(
+    type = "funnel",
+    y = ~category,
+    x = ~value,
+    marker = list(color = RColorBrewer::brewer.pal(n = 5, name = "Set2")),
+    textposition = "auto",
+    textinfo = "value+percent previous",
+    hoverinfo = "none"
+  ) %>%
+  plotly::layout(yaxis = list(categoryarray = ~category, title = "")) %>%
+  plotly::config(displayModeBar = FALSE)
+```
+
+
 
 ## 瀑布图 {#sec:plotly-waterfall}
 
@@ -880,7 +921,7 @@ plot_ly(dat,
 ```
 
 
-## highcharter {#sec:highcharter}
+## 面积图 {#sec:highcharter}
 
 Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可视化案例，另一个关键的参考资料是 [highcharts API 文档](https://api.highcharts.com/highcharts/)，文档主要分两部分全局选项 `Highcharts.setOptions` 和绘图函数 `Highcharts.chart`。下面以 `data_to_boxplot()` 为例解析 R 中的数据结构是如何和 highcharts 的 JSON 以及绘图函数对应的。
 
@@ -1122,7 +1163,7 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 ```
 :::
 
-## dygraphs {#sec:dygraphs}
+## 时序图 {#sec:dygraphs}
 
 [dygraphs](https://github.com/rstudio/dygraphs) 专门用来绘制交互式时间序列图形，下面以美团股价为例，展示时间窗口筛选、坐标轴名称、刻度标签、注释、事件标注、缩放等功能
 
@@ -1164,7 +1205,7 @@ dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") %>%
 ```
 
 
-## r2d3 {#sec:r2d3}
+## 其他 JS 库 {#sec:r2d3}
 
 更加具体的使用介绍，一个复杂的案例，如何从简单配置过来，以条形图为例， D3 是一个相当强大且成熟的库，提供的案例功能要覆盖 plotly
 
@@ -1174,13 +1215,16 @@ dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") %>%
 list.files(system.file("examples/", package = "r2d3"))
 ```
 
-```{r barchart-r2d3,fig.cap="D3 图形",fig.width=4,fig.height=3, out.width="45%",fig.show='hold',fig.ncol=2, fig.subcap=c("barchart.js 库","baranims.js 库"),eval=knitr::is_html_output()}
+```{r barchart-r2d3-01,fig.cap="D3 图形",,eval=knitr::is_html_output()}
 library(r2d3)
 r2d3(
   data = c(0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
   script = system.file("examples/barchart.js", package = "r2d3")
 )
+```
 
+
+```{r barchart-r2d3-02,fig.cap="D3 图形",eval=knitr::is_html_output()}
 r2d3(
   data = c(0.3, 0.6, 0.8, 0.95, 0.40, 0.20),
   script = system.file("examples/baranims.js", package = "r2d3")
