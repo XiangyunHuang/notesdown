@@ -114,25 +114,28 @@ jobs:
           key: bookdown-3-${{ hashFiles('**/*Rmd') }}
           restore-keys: bookdown-3
 
+      - name: Install R packages
+        run: |
+          if(!require('renv')) install.packages('renv')
+          renv::restore()
+        shell: Rscript {0}
+
       - name: Install LaTeX packages
         run: |
-          R -e "if(!require('tinytex')) install.packages('tinytex')"
-          R -e 'tinytex::tlmgr_install(readLines("texlive.txt"))'
+          if(!require('tinytex')) install.packages('tinytex')
+          tinytex::tlmgr_install(readLines("texlive.txt"))
+        shell: Rscript {0}
 
       - name: Install R packages
         run: |
-          R -e "if(!require('remotes')) install.packages(c('remotes'))"
-          xvfb-run --auto-servernum R -e "update.packages(ask = F, checkBuilt = T, lib.loc = .libPaths()[1])"
-          xvfb-run --auto-servernum R -e "remotes::install_deps(dependencies = TRUE)"
-          R -e "if(!require('spDataLarge')) install.packages('spDataLarge', repos = 'https://nowosad.github.io/drat')"
-          R -e "if(!require('Rgraphviz')) BiocManager::install('Rgraphviz')"
-          R -e "if(!require('cmdstanr')) install.packages('cmdstanr', repos = c('https://mc-stan.org/r-packages/', getOption('repos')))"
-          xvfb-run --auto-servernum R -e "if(!require('INLA')) install.packages('INLA', repos = c('https://inla.r-inla-download.org/R/stable', getOption('repos')), dependencies = T)"
-          R -e "if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')"
+          if(!require('remotes')) install.packages(c('remotes'))
+          if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
+        shell: Rscript {0}
 
       - name: Check R packages
         run: |
-          R -e 'sessionInfo(sort(.packages(T)))'
+          sessionInfo(sort(.packages(T)))
+        shell: Rscript {0}
 
       - name: Install Fonts
         run: |
