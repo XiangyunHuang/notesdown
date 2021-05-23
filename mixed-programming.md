@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55f2a9c4f1c8>
+## <bytecode: 0x55f98ac4c288>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55f2a9c4f1c8>
+## <bytecode: 0x55f98ac4c288>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f3fe4de4e80>]
+## [<matplotlib.lines.Line2D object at 0x7fe72aacce80>]
 plt.show()
 ```
 
@@ -190,8 +190,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.0.3/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c4980200d4482.c -o c4980200d4482.o
-## gcc -shared -L/opt/R/4.0.3/lib/R/lib -L/usr/local/lib -o c4980200d4482.so c4980200d4482.o -L/opt/R/4.0.3/lib/R/lib -lR
+## gcc -I"/opt/R/4.0.3/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c48fc5a978069.c -o c48fc5a978069.o
+## gcc -shared -L/opt/R/4.0.3/lib/R/lib -L/usr/local/lib -o c48fc5a978069.so c48fc5a978069.o -L/opt/R/4.0.3/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
