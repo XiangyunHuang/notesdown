@@ -1,0 +1,1326 @@
+# 数据可视化 {#chap:data-visualization}
+
+
+```r
+library(ggplot2)
+library(patchwork)
+`%>%` <- magrittr::`%>%`
+
+clean_plotly <- function(p = ggplot2::last_plot(), ...) {
+  plotly::ggplotly(p, ...) %>% 
+    plotly::config(displayModeBar = FALSE)
+}
+```
+
+David Robinson 给出为何使用 ggplot2 [^why-ggplot2] 当然也有 Jeff Leek 指出在某些重要场合不适合 ggplot2 [^why-not-ggplot2] 并且给出强有力的 [证据](http://motioninsocial.com/tufte/)，其实不管怎么样，适合自己的才是好的。也不枉费 Garrick Aden-Buie 花费 160 页幻灯片逐步分解介绍 [优雅的ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2)，[Malcolm Barrett](https://malco.io/) 也介绍了 [ggplot2 基础用法](https://malco.io/slides/hs_ggplot2)，还有 Selva Prabhakaran 精心总结给出了 50 个 ggplot2 数据可视化的 [例子](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) 以及 Victor Perrier 为小白用 ggplot2 操碎了心地开发 RStudio 插件 [esquisse](https://github.com/dreamRs/esquisse) 包，Claus O. Wilke 教你一步步创建出版级的图形 <https://github.com/clauswilke/practical_ggplot2>。
+
+ggplot2 是十分方便的统计作图工具，相比 Base R，为了一张出版级的图形，不需要去调整每个参数，实现快速出图。集成了很多其它统计计算的 R 包，支持丰富的统计分析和计算功能，如回归、平滑等，实现了作图和模型的无缝连接。比如图\@ref(fig:awesome-ggplot2)，使用 loess 局部多项式平滑得到数据的趋势，不仅仅是散点图，代码量也非常少。
+
+
+```r
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = TRUE, method = "loess") +
+  labs(
+    title = "Fuel efficiency generally decreases with engine size",
+    subtitle = "Two seaters (sports cars) are an exception because of their light weight",
+    caption = "Data from fueleconomy.gov"
+  )
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/awesome-ggplot2-1.png" alt="简洁美观" width="672" />
+<p class="caption">(\#fig:awesome-ggplot2)简洁美观</p>
+</div>
+
+故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
+
+1. Pablo Barberá 的 [Data Visualization with R and ggplot2](https://github.com/pablobarbera/Rdataviz)
+2. Kieran Healy 的新书 [Data Visualization: A Practical Introduction](https://kieranhealy.org/publications/dataviz/)
+3. Matt Leonawicz 的新作 [mapmate](https://github.com/leonawicz/mapmate), 可以去其主页欣赏系列作品^[<https://leonawicz.github.io/>]
+4. [tidytuesday 可视化挑战官方项目](https://github.com/rfordatascience/tidytuesday) 还有 [tidytuesday](https://github.com/abichat/tidytuesday)
+5. [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot) 可视化统计检验、模型的结果
+6. [ggpubr](https://github.com/kassambara/ggpubr) 制作出版级统计图形
+7. Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
+8. [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
+9. [ggh4x](https://github.com/teunbrand/ggh4x) 提供 ggplot2 的额外定制功能
+
+[^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
+[^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
+
+如 Berton Gunter 所说，数据可视化只是一种手段，根据数据实际情况作展示才是重要的，并不是要追求酷炫。
+
+> 3-D bar plots are an abomination. Just because Excel can do them doesn't mean you should. (Dismount pulpit).
+>
+> --- Berton Gunter [^BG-help-2007]
+
+[^BG-help-2007]: <https://stat.ethz.ch/pipermail/r-help/2007-October/142420.html>
+
+**grid** 是 **lattice** 和 **ggplot2** 的基础，**gganimate** 是 ggplot2 一个扩展，它将静态图形视为帧，调用第三方工具合成 GIF 动图或 MP4 视频等，要想深入了解 ggplot2，可以去看 [Hadley Wickham](http://hadley.nz), [Danielle Navarro](https://djnavarro.net), and [Thomas Lin Pedersen](https://www.data-imaginist.com) 合著的《ggplot2: elegant graphics for data analysis》第三版 <https://ggplot2-book.org/>。
+
+## 元素 {#sec:elements}
+
+### 标签 {#subsec:axis-label}
+
+图形的标签分为横纵轴标签、刻度标签、主标题、副标题等
+
+
+```r
+data.frame(
+  dates = seq.Date(
+    from = as.Date("1945-01-01"),
+    to = as.Date("1974-12-31"), 
+    by = "quarter"
+  ),
+  presidents = as.vector(presidents)
+) %>%
+  ggplot(aes(x = dates, y = presidents)) +
+  geom_line(color = "slategray", na.rm = TRUE) +
+  geom_point(size = 1.5, color = "darkslategray", na.rm = TRUE) +
+  scale_x_date(date_breaks = "4 year", date_labels = "%Y") +
+  labs(
+    title = "1945年至1974年美国总统每季度支持率",
+    y = "支持率 (%)",
+    caption = "数据源: R 包 datasets"
+  ) +
+  theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/approval-ratings-1.png" alt="美国总统支持率：自1945年第一季度至1974年第四季度" width="672" />
+<p class="caption">(\#fig:approval-ratings)美国总统支持率：自1945年第一季度至1974年第四季度</p>
+</div>
+
+<!-- 每个点给出总统的人名，部分给出图片
+数据来源 help(presidents) The Gallup Organisation. McNeil, D. R. (1977) Interactive Data Analysis. New York: Wiley.
+-->
+
+### 注释 {#subsec:annotation}
+
+图中注释的作用在于高亮指出关键点，提请读者注意。文本注释可由 [**ggrepel**](https://github.com/slowkow/ggrepel) 包提供的标签图层 `geom_label_repel()` 添加，标签数据可独立于之前的数据层，标签所在的位置可以通过参数 `direction` 和 `nudge_y` 精调，图 \@ref(fig:text-annotation) 模拟了一组数据。
+
+
+```r
+set.seed(2020)
+library(ggrepel)
+dat <- data.frame(
+  x = seq(100),
+  y = cumsum(rnorm(100))
+)
+anno_data <- dat %>%
+  subset(x %% 25 == 10) %>%
+  transform(text = "text")
+dat %>%
+  ggplot(aes(x, y)) +
+  geom_line() +
+  geom_label_repel(aes(label = text),
+    data = anno_data,
+    direction = "y",
+    nudge_y = c(-5, 5, 5, 5)
+  ) +
+  theme_minimal()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/text-annotation-1.png" alt="文本注释" width="672" />
+<p class="caption">(\#fig:text-annotation)文本注释</p>
+</div>
+
+**ggrepel** 包的图层 `geom_text_repel()` 支持所有数据点的注释，并且自动调整文本的位置，防止重叠，增加辨识度，如图 \@ref(fig:mtcars-annotation)。当然，数据点如果过于密集也不适合全部注释，高亮其中的关键点即可。
+
+
+```r
+mtcars %>%
+  transform(cyl = as.factor(cyl)) %>%
+  ggplot(aes(wt, mpg, label = rownames(mtcars), color = cyl)) +
+  geom_point() +
+  geom_text_repel(max.overlaps = 12) +
+  theme_minimal()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/mtcars-annotation-1.png" alt="少量点的情况下可以全部注释，且可以解决注释重叠的问题" width="672" />
+<p class="caption">(\#fig:mtcars-annotation)少量点的情况下可以全部注释，且可以解决注释重叠的问题</p>
+</div>
+
+Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
+
+### 主题 {#subsec:theme}
+
+[ggcharts](https://github.com/thomas-neitmann/ggcharts) 和 [bbplot](https://github.com/bbc/bbplot)
+[prettyB](https://github.com/jumpingrivers/prettyB) 美化 Base R 图形
+
+## 字体 {#sec:fonts}
+
+[firatheme](https://github.com/vankesteren/firatheme) 包提供基于 fira sans 字体的 ggplot2 主题，类似的字体主题包还有 [trekfont](https://github.com/leonawicz/trekfont) 、 [fontHind](https://github.com/bhaskarvk/fontHind)， [fontquiver](https://github.com/lionel-/fontquiver) 包与 fontBitstreamVera（Bitstream Vera 字体）、 [fontLiberation](https://cran.r-project.org/package=fontLiberation)（Liberation 字体）包和 [fontDejaVu](https://github.com/lionel-/fontDejaVu) （DejaVu 字体）包一道提供了一些可允许使用的字体文件，这样，我们可以不依赖系统制作可重复的图形。Thomas Lin Pedersen 开发的 [systemfonts](https://github.com/r-lib/systemfonts) 可直接使用系统自带的字体。
+
+### 系统字体 {#subsec:system-fonts}
+
+以 CentOS 系统为例，软件仓库中包含 [Noto](https://github.com/googlefonts/noto-fonts) ， [DejaVu](https://github.com/dejavu-fonts) 、[liberation](https://github.com/liberationfonts/liberation-fonts) 等字体。可以安装自己喜欢的字体类型，比如：
+
+```bash
+sudo dnf install -y \
+  google-noto-mono-fonts \
+  google-noto-sans-fonts \
+  google-noto-serif-fonts \
+  dejavu-sans-mono-fonts \
+  dejavu-sans-fonts \
+  dejavu-serif-fonts
+# 或者
+sudo dnf install -y dejavu-fonts liberation-fonts
+```
+
+liberation 系列的四款字体可以用来替换 Windows 系统上对应的四款字体，对应关系见表 \@ref(tab:fonts-centos-vs-win)
+
+|                 | CentOS 系统             | Windows 系统    |
+|:----------------|:------------------------|:----------------|
+| 衬线体/宋体     | liberation-serif-fonts  | Times New Roman |
+| 无衬线体/黑体   | liberation-sans-fonts   | Arial           |
+| Arial 的细瘦版  | liberation-narrow-fonts | Arial Narrow    |
+| 等宽体/微软雅黑 | liberation-mono-fonts   | Courier New     |
+
+: (\#tab:fonts-centos-vs-win) Windows 系统上四款字体的替代品
+
+此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 [awesome-fonts](https://github.com/brabadu/awesome-fonts) 列表是一个不错的开始，比如图标字体 [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)，
+
+```bash
+sudo dnf install -y fontawesome-fonts
+```
+
+再安装宏包 [fontawesome](https://ctan.org/pkg/fontawesome) 后，即可在 LaTeX 文档中使用，下面这个示例推荐用 XeLaTeX 引擎编译。
+
+```tex
+\documentclass[border=10pt]{standalone}
+\usepackage{fontawesome}
+\begin{document}
+Hello, \faGithub
+\end{document}
+```
+
+而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "DejaVu Sans"` 来调用系统无衬线 DejaVu 字体，效果见图 \@ref(fig:system-dejavu-fonts)。
+
+
+```r
+plot(data = pressure, pressure ~ temperature, 
+     xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
+     col.lab = "red", col.axis = "blue",
+     font.lab = 3, font.axis = 2, family = "DejaVu Sans")
+title(main = "Vapor Pressure of Mercury as a Function of Temperature", 
+      family = "DejaVu Serif", font.main = 3)
+title(sub = "Data Source: Weast, R. C", 
+      family = "DejaVu Sans Mono", font.sub = 1)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/system-dejavu-fonts-1.png" alt="调用系统字体绘图" width="75%" />
+<p class="caption">(\#fig:system-dejavu-fonts)调用系统字体绘图</p>
+</div>
+
+在 ggplot2 绘图中的调用方式是类似的，如图 \@ref(fig:font-in-ggplot)。
+
+
+```r
+p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_point() +
+  ggtitle(label = "默认字体设置")
+
+p2 <- p1 + theme(
+  axis.title = element_text(family = "sans"),
+  axis.text = element_text(family = "serif")
+) +
+  ggtitle(label = "英文字体设置")
+
+p3 <- p1 + labs(x = "温度", y = "压力") +
+  theme(
+    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.text = element_text(family = "serif")
+  ) +
+  ggtitle(label = "中文字体设置")
+
+p4 <- p1 + labs(
+  x = "温度", y = "压力", title = "散点图",
+  subtitle = "Vapor Pressure of Mercury as a Function of Temperature",
+  caption = paste("Data on the relation 
+                  between temperature in degrees Celsius and",
+    "vapor pressure of mercury in millimeters (of mercury).",
+    sep = "\n"
+  )
+) +
+  theme(
+    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.text.x = element_text(family = "serif"),
+    axis.text.y = element_text(family = "sans"),
+    title = element_text(family = "source-han-serif-cn"),
+    plot.subtitle = element_text(family = "sans", size = rel(0.7)),
+    plot.caption = element_text(family = "sans", size = rel(0.6))
+  ) +
+  ggtitle(label = "任意字体设置")
+
+(p1 + p2) / (p3 + p4)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/font-in-ggplot-1.png" alt="在 ggplot2 绘图系统中设置中英文字体" width="672" />
+<p class="caption">(\#fig:font-in-ggplot)在 ggplot2 绘图系统中设置中英文字体</p>
+</div>
+
+另外值得一提的是 [hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 包，除了定制了很多 ggplot2 主题，它还打包了很多的字体主题。比如默认主题 `theme_ipsum()` 使用 Arial Narrow 字体，如果没有该字体就自动寻找系统中的替代品，如图 \@ref(fig:hrbrthemes) 实际使用的是 Nimbus Sans Narrow 字体，因为在 GitHub Action 中，我实际使用的测试环境是 Ubuntu 20.04，该系统自带 Nimbus Sans Narrow 字体，Arial Narrow 毕竟是 Windows 上的闭源字体。
+
+
+```r
+# 导入字体
+hrbrthemes::import_roboto_condensed()
+# showtextdb::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
+```
+
+
+```r
+library(hrbrthemes)
+ggplot(mtcars, aes(mpg, wt)) +
+  geom_point() +
+  labs(
+    x = "Fuel efficiency (mpg)", y = "Weight (tons)",
+    title = "Seminal ggplot2 scatterplot example",
+    subtitle = "A plot that is only useful for demonstration purposes",
+    caption = "Brought to you by the letter 'g'"
+  ) +
+  theme_ipsum()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/hrbrthemes-1.png" alt="调用 hrbrthemes 包设置字体主题" width="75%" />
+<p class="caption">(\#fig:hrbrthemes)调用 hrbrthemes 包设置字体主题</p>
+</div>
+
+如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:liberation-sans-narrow) 使用了 Liberation Sans Narrow ( MacOS 上没有 Liberation Sans Narrow 字体，用 Liberation Sans 替代了) 字体替换 `theme_ipsum()` 中的 Arial Narrow 字体。
+
+
+```r
+ggplot(mtcars, aes(mpg, wt)) +
+  geom_point() +
+  labs(
+    x = "Fuel efficiency (mpg)", y = "Weight (tons)",
+    title = "Seminal ggplot2 scatterplot example",
+    subtitle = "A plot that is only useful for demonstration purposes",
+    caption = "Brought to you by the letter 'g'"
+  ) +
+  theme_ipsum(base_family = "Liberation Sans")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/liberation-sans-narrow-1.png" alt="用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow" width="75%" />
+<p class="caption">(\#fig:liberation-sans-narrow)用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow</p>
+</div>
+
+::: {.rmdtip data-latex="{提示}"}
+**hrbrthemes** 包提供了一个全局字体加载选项 `hrbrthemes.loadfonts` ，如果设置为 TRUE，即 `options(hrbrthemes.loadfonts = TRUE)` 会先调用函数 `extrafont::loadfonts()` 预加载系统字体，就不用一次次手动加载字体了。后续在第 \@ref(subsec:fontcm) 节还会提及 extrafont 包的其它功能。
+:::
+
+### 思源字体 {#subsec:showtext}
+
+邱怡轩开发的 [showtext](https://github.com/yixuan/showtext) 包支持丰富的外部字体，支持 Base R 和 ggplot2 图形，图 \@ref(fig:showtext) 嵌入了 5 号思源宋体，图例和坐标轴文本使用 serif 字体，更多详细的使用文档见 [@Qiu2015]。
+
+
+```r
+# 安装 showtext 包
+install.packages('showtext')
+# 思源宋体
+showtextdb::font_install(showtextdb::source_han_serif())
+# 思源黑体
+showtextdb::font_install(showtextdb::source_han_sans())
+```
+
+
+```r
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  scale_colour_brewer(palette = "Set1") +
+  labs(
+    title = "鸢尾花数据的散点图",
+    x = "萼片长度", y = "萼片宽度", colour = "鸢尾花类别",
+    caption = "鸢尾花数据集最早见于 Edgar Anderson (1935) "
+  ) +
+  theme(
+    title = element_text(family = "source-han-sans-cn"),
+    axis.title = element_text(family = "source-han-serif-cn"),
+    legend.title = element_text(family = "source-han-serif-cn")
+  )
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/showtext-1.png" alt="showtext 包处理图里的中文" width="75%" />
+<p class="caption">(\#fig:showtext)showtext 包处理图里的中文</p>
+</div>
+
+斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
+
+
+```r
+library(maps)
+library(mapdata)
+FijiMap <- map_data("worldHires", region = "Fiji")
+ggplot(FijiMap, aes(x = long, y = lat)) +
+  geom_map(map = FijiMap, aes(map_id = region), size = .2) +
+  geom_point(data = quakes, aes(x = long, y = lat, colour = mag)) +
+  xlim(160, 195) +
+  scale_colour_distiller(palette = "Spectral") +
+  scale_y_continuous(breaks = (-18:18) * 5) +
+  coord_map("ortho", orientation = c(-10, 180, 0)) +
+  labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
+  theme_minimal() +
+  theme(
+    title = element_text(family = "source-han-sans-cn"),
+    axis.title = element_text(family = "source-han-serif-cn"),
+    legend.title = element_text(family = "source-han-sans-cn"),
+    legend.position = c(1, 0), legend.justification = c(1, 0)
+  )
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/fiji-earthquake-1.png" alt="斐济地震带" width="75%" />
+<p class="caption">(\#fig:fiji-earthquake)斐济地震带</p>
+</div>
+
+### 数学字体 {#subsec:fontcm}
+
+Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm](https://github.com/wch/fontcm) 包 [@fontcm]，**fontcm** 包可以在 Base R 图形中嵌入数学字体 [^font-cmr]，图形中嵌入重音字符 [^font-maori]。 下面先下载、安装、加载字体，
+
+[^font-cmr]: <https://www.stat.auckland.ac.nz/~paul/R/CM/CMR.html>
+
+[^font-maori]: <https://www.stat.auckland.ac.nz/~paul/Reports/maori/maori.html>
+
+
+```r
+library(extrafont)
+font_addpackage(pkg = "fontcm")
+```
+
+查看可被 `pdf()` 图形设备使用的字体列表
+
+
+```r
+# 可用的字体
+fonts()
+```
+
+```
+##  [1] "Roboto Condensed"       "xkcd"                   "CM Roman"              
+##  [4] "CM Roman Asian"         "CM Roman CE"            "CM Roman Cyrillic"     
+##  [7] "CM Roman Greek"         "CM Sans"                "CM Sans Asian"         
+## [10] "CM Sans CE"             "CM Sans Cyrillic"       "CM Sans Greek"         
+## [13] "CM Symbol"              "CM Typewriter"          "CM Typewriter Asian"   
+## [16] "CM Typewriter CE"       "CM Typewriter Cyrillic" "CM Typewriter Greek"
+```
+
+fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
+
+
+```r
+library(fontcm)
+library(ggplot2)
+library(extrafont)
+library(patchwork)
+p <- ggplot(data = data.frame(x = c(1, 5), y = c(1, 5)), aes(x = x, y = y)) +
+  geom_point() +
+  labs(x = "Made with CM fonts", y = "Made with CM fonts", 
+       title = "Made with CM fonts")
+# 公式
+eq <- "italic(sum(frac(1, n*'!'), n==0, infinity) ==
+       lim(bgroup('(', 1 + frac(1, n), ')')^n, n %->% infinity))"
+# 默认字体
+p1 <- p + annotate("text",
+  x = 3, y = 3,
+  parse = TRUE, label = eq
+)
+# 使用 CM Roman 字体
+p2 <- p + annotate("text",
+  x = 3, y = 3,
+  parse = TRUE, label = eq, family = "CM Roman"
+) +
+  theme(
+    text = element_text(size = 16, family = "CM Roman"),
+    axis.title.x = element_text(face = "italic"),
+    axis.title.y = element_text(face = "bold")
+  )
+p1 + p2
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/fontcm-1.svg" alt="fontcm 处理数学公式" width="768" />
+<p class="caption">(\#fig:fontcm)fontcm 处理数学公式</p>
+</div>
+
+为实现图 \@ref(fig:fontcm) 的最终效果，需要启用一个有超级牛力的 [fig.process](https://yihui.org/knitr/options/#plots) 选项，主要是传递一个函数给它，对用 R 语言生成的图形再操作。
+
+```r
+# embed math fonts to pdf
+embed_math_fonts <- function(fig_path) {
+  if(knitr::is_latex_output()){
+    embedFonts(
+      file = fig_path, outfile = fig_path,
+      fontpaths = system.file("fonts", package = "fontcm")
+    )
+  }
+  return(fig_path)
+}
+```
+
+代码块选项中设置 `fig.process=embed_math_fonts` 可在绘图后，立即插入字体，此操作仅限于以 pdf 格式保存的图形设备，也适用于 Base R 绘制的图形，见图 \@ref(fig:embed-math-fonts)。
+
+
+```r
+par(mar = c(4.1, 4.1, 1.5, 0.5), family = "CM Roman")
+x <- seq(-4, 4, len = 101)
+y <- cbind(sin(x), cos(x))
+matplot(x, y,
+  type = "l", xaxt = "n",
+  main = expression(paste(
+    plain(sin) * phi, "  and  ",
+    plain(cos) * phi
+  )),
+  ylab = expression("sin" * phi, "cos" * phi),
+  xlab = expression(paste("Phase Angle ", phi)),
+  col.main = "blue"
+)
+axis(1,
+  at = c(-pi, -pi / 2, 0, pi / 2, pi),
+  labels = expression(-pi, -pi / 2, 0, pi / 2, pi)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/embed-math-fonts-1.svg" alt="嵌入数学字体" width="336" />
+<p class="caption">(\#fig:embed-math-fonts)嵌入数学字体</p>
+</div>
+
+### TikZ 设备 {#subsec:tikz-device}
+
+与 \@ref(subsec:fontcm) 小节不同，Ralf Stubner 维护的 [**tikzDevice**](https://github.com/daqana/tikzDevice) 包提供了另一种嵌入数学字体的方式，其提供的 `tikzDevice::tikz()` 绘图设备将图形对象转化为 TikZ 代码，调用 LaTeX 引擎编译成 PDF 文档。安装后，先测试一下 LaTeX 编译环境是否正常。
+
+
+```r
+tikzDevice::tikzTest()
+```
+
+```
+## 
+## Active compiler:
+## 	/home/runner/.TinyTeX/bin/x86_64-linux/xelatex
+## 	XeTeX 3.141592653-2.6-0.999993 (TeX Live 2021)
+## 	kpathsea version 6.3.3
+```
+
+```
+## [1] 7.90259
+```
+
+确认没有问题后，下面图 \@ref(fig:tikz-regression) 的坐标轴标签，标题，图例等位置都支持数学公式，使用 **tikzDevice** 打造出版级的效果图。更多功能的介绍见 <https://www.daqana.org/tikzDevice/>。
+
+
+```r
+x <- rnorm(10)
+y <- x + rnorm(5, sd = 0.25)
+model <- lm(y ~ x)
+rsq <- summary(model)$r.squared
+rsq <- signif(rsq, 4)
+plot(x, y,
+  main = "Hello \\LaTeX!", xlab = "$x$", ylab = "$y$",
+  sub = "$\\mathcal{N}(x;\\mu,\\Sigma)$"
+)
+abline(model, col = "red")
+mtext(paste("Linear model: $R^{2}=", rsq, "$"), line = 0.5)
+legend("bottomright",
+  legend = paste0(
+    "$y = ",
+    round(coef(model)[2], 3),
+    "x +",
+    round(coef(model)[1], 3),
+    "$"
+  ),
+  bty = "n"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/tikz-regression-1.png" alt="线性回归模型" width="75%" />
+<p class="caption">(\#fig:tikz-regression)线性回归模型</p>
+</div>
+
+推荐的全局 LaTeX 环境配置如下：
+
+
+```r
+options(
+  tinytex.engine = "xelatex",
+  tikzDefaultEngine = "xetex",
+  tikzDocumentDeclaration = "\\documentclass[tikz]{standalone}\n",
+  tikzXelatexPackages = c(
+    "\\usepackage[fontset=adobe]{ctex}",
+    "\\usepackage[default,semibold]{sourcesanspro}",
+    "\\usepackage{amsfonts,mathrsfs,amssymb}\n"
+  )
+)
+```
+
+设置默认的 LaTeX 编译引擎为 XeLaTeX，相比于 PDFLaTeX，它对中文的兼容性更好，支持多平台下的中文环境，中文字体这里采用了 Adobe 的字体，默认加载了 mathrsfs 宏包支持 `\mathcal`、`\mathscr` 等命令，此外， LaTeX 发行版采用谢益辉自定义的 [TinyTeX](https://yihui.org/tinytex/)。绘制独立的 PDF 图形的过程如下：
+
+
+```r
+library(tikzDevice)
+tf <- file.path(getwd(), "tikz-regression.tex")
+tikz(tf, width = 6, height = 5.5, pointsize = 30, standAlone = TRUE)
+# 绘图代码
+dev.off()
+# 编译成 PDF 图形
+tinytex::latexmk(file = "tikz-regression.tex")
+```
+
+### 漫画字体 {#subsec:xkcd-comic}
+
+下载 XKCD 字体，并刷新系统字体缓存
+
+```bash
+mkdir -p ~/.fonts
+curl -fLo ~/.fonts/xkcd.ttf http://simonsoftware.se/other/xkcd.ttf
+fc-cache -fsv
+```
+
+将 XKCD 字体导入到 R 环境，以便后续被 ggplot2 图形设备调用。
+
+```r
+R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
+```
+
+图 \@ref(fig:xkcd-graph) 是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
+
+
+```r
+library(extrafont)
+library(xkcd)
+ggplot(aes(mpg, wt), data = mtcars) +
+  geom_point() +
+  theme_xkcd()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/xkcd-graph-1.svg" alt="漫画风格的字体方案" width="75%" />
+<p class="caption">(\#fig:xkcd-graph)漫画风格的字体方案</p>
+</div>
+
+### 表情字体 {#subsec:emoji-fonts}
+
+余光创开发的 [emojifont](https://github.com/GuangchuangYu/emojifont) 包和 Hadley 开发的 [emo](https://github.com/hadley/emo) 包，下面给出一个示例 \@ref(fig:emoji-fonts)
+
+
+```r
+# remotes::install_github("hadley/emo")
+data.frame(
+  category = c("pineapple", "apple", "watermelon", "mango", "pear"),
+  value = c(5, 4, 3, 7, 2)
+) %>%
+  transform(category = sapply(category, emo::ji)) %>%
+  ggplot(aes(x = category, y = value)) +
+  geom_text(aes(label = category), size = 12, vjust = -0.5) +
+  theme_minimal()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/emoji-fonts-1.png" alt="表情字体" width="75%" />
+<p class="caption">(\#fig:emoji-fonts)表情字体</p>
+</div>
+
+除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
+
+```bash
+sudo dnf install -y google-noto-emoji-color-fonts \
+  google-noto-emoji-fonts
+# MacOS
+brew cask install font-noto-color-emoji font-noto-emoji
+```
+
+## 配色 {#sec:colors}
+
+配色真的是一门学问，有的人功力非常深厚，仅用黑白灰就可以创造出一个世界，如中国的水墨画，科波拉执导的《教父》，沃卓斯基姐妹执导的《黑客帝国》等。黑西装、白衬衫和黑领带是《黑客帝国》的经典元素，《教父》开场的黑西装、黑领结和白衬衫，尤其胸前的红玫瑰更是点睛之笔。导演将黑白灰和光影混合形成了层次丰富立体的画面，打造了一场视觉盛宴，无论是呈现在纸上还是银幕上都可以给人留下深刻的印象。正所谓食色性也，花花世界，岂能都是法印眼中的白骨！再说《红楼梦》里，芍药丛中，桃花树下，滴翠亭边，栊翠庵里，处处都是湘云、黛玉、宝钗、妙玉留下的四季诗歌。
+
+为什么需要这么多颜色模式呢？主要取决于颜色输出的通道，比如印刷机，照相机，自然界，网页，人眼等，显示器因屏幕和分辨率的不同呈现的色彩数量是不一样的。读者大概都听说过 RGB、CMYK、AdobeRGB、sRGB、P3 广色域等名词，我想这主要归功于各大电子设备厂商的宣传。普清、高清、超高清、全高清、2K、4K、5K、视网膜屏，而 HSV、HCL 估计听说的人就少很多了。本节的目的是简单阐述背后的色彩原理，颜色模式及其之间的转化，在应对天花乱坠的销售时少交一些智商税，同时，告诉读者如何在 R 环境中使用色彩。早些时候我在统计之都论坛上发帖 -- R语言绘图用调色板大全 <https://d.cosx.org/d/419378>，如果读者希望拿来即用，不妨去看看。
+
+
+```r
+filled.contour(volcano, nlevels = 10, color.palette = terrain.colors)
+filled.contour(volcano, nlevels = 10, color.palette = heat.colors)
+filled.contour(volcano, nlevels = 10, color.palette = topo.colors)
+filled.contour(volcano, nlevels = 10, color.palette = cm.colors)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/old-color-palette-1.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-2.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-3.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-4.png" alt="R 3.6.0 以前的调色板" width="45%" />
+<p class="caption">(\#fig:old-color-palette)R 3.6.0 以前的调色板</p>
+</div>
+
+
+```r
+filled.contour(volcano, nlevels = 10, 
+               color.palette = function(n, ...) hcl.colors(n, "Grays", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, 
+               color.palette = function(n, ...) hcl.colors(n, "YlOrRd", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, 
+               color.palette = function(n, ...) hcl.colors(n, "purples", rev = TRUE, ...))
+filled.contour(volcano, nlevels = 10, 
+               color.palette = function(n, ...) hcl.colors(n, "viridis", rev = FALSE, ...))
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/new-color-palette-1.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-2.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-3.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-4.png" alt="R 3.6.0 以后的调色板" width="45%" />
+<p class="caption">(\#fig:new-color-palette)R 3.6.0 以后的调色板</p>
+</div>
+
+::: {.rmdnote data-latex="{注意}"}
+`hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
+:::
+
+<!--
+R Colors in CSS for R Markdown HTML Documents
+https://www.garrickadenbuie.com/blog/r-colors-css/
+
+https://www.garrickadenbuie.com/blog/ 及其系列博客
+-->
+
+### 调色板 {#subsec:color-palettes}
+
+R 预置的灰色有224种，挑出其中的调色板
+
+
+```r
+grep("^gr(a|e)y", grep("gr(a|e)y", colors(), value = TRUE), 
+     value = TRUE, invert = TRUE)
+```
+
+```
+##  [1] "darkgray"       "darkgrey"       "darkslategray"  "darkslategray1"
+##  [5] "darkslategray2" "darkslategray3" "darkslategray4" "darkslategrey" 
+##  [9] "dimgray"        "dimgrey"        "lightgray"      "lightgrey"     
+## [13] "lightslategray" "lightslategrey" "slategray"      "slategray1"    
+## [17] "slategray2"     "slategray3"     "slategray4"     "slategrey"
+```
+
+
+```r
+gray_colors <- paste0(rep(c("slategray", "darkslategray"), each = 4), seq(4))
+barplot(1:8, col = gray_colors, border = NA)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/gray-palettes-1.png" alt="灰度调色板" width="672" />
+<p class="caption">(\#fig:gray-palettes)灰度调色板</p>
+</div>
+
+gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式的差别，且看
+
+
+```r
+all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
+```
+
+```
+## [1] TRUE
+```
+
+`gray100` 代表白色，`gray0` 代表黑色，提取灰色调色板，去掉首尾部分是必要的
+
+
+```r
+barplot(1:8, col = gray.colors(8, start = .3, end = .9), 
+        main = "gray.colors function", border = NA)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/gray-colors-1.png" alt="提取 10 种灰色做调色板" width="672" />
+<p class="caption">(\#fig:gray-colors)提取 10 种灰色做调色板</p>
+</div>
+
+首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
+
+
+```r
+# Colors from https://github.com/johannesbjork/LaCroixColoR
+colors_vec <- c("#FF3200", "#E9A17C", "#E9E4A6", 
+                "#1BB6AF", "#0076BB", "#172869")
+# 代码来自 ?colorspace::rainbow_hcl
+pal <- function(n = 20, colors = colors, border = "light gray", ...) {
+  colorname <- (grDevices::colorRampPalette(colors))(n)
+  plot(0, 0,
+    type = "n", xlim = c(0, 1), ylim = c(0, 1),
+    axes = FALSE, ...
+  )
+  rect(0:(n - 1) / n, 0, 1:n / n, 1, col = colorname, border = border)
+}
+par(mar = rep(0, 4))
+pal(n = 20, colors = colors_vec, xlab = "Colors from Peach to Pear", ylab = "")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/peach-pear-palette-1.png" alt="桃色至梨色的渐变" width="768" />
+<p class="caption">(\#fig:peach-pear-palette)桃色至梨色的渐变</p>
+</div>
+
+`colorRampPalette()` 自制调色板
+
+
+```r
+create_palette <- function(n = 1000, colors = c("blue", "orangeRed")) {
+  color_palette <- colorRampPalette(colors)(n)
+  barplot(rep(1, times = n), col = color_palette, 
+          border = color_palette, axes = FALSE)
+}
+par(mfrow = c(3, 1), mar = c(0.1, 0.1, 0.5, 0.1), xaxs = "i", yaxs = "i")
+create_palette(n = 1000, colors = c("blue", "orangeRed"))
+create_palette(n = 1000, colors = c("darkgreen", "yellow", "orangered"))
+create_palette(n = 1000, colors = c("blue", "white", "orangered"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/custom-palettes-1.png" alt="colorRampPalette 自制调色板" width="768" />
+<p class="caption">(\#fig:custom-palettes)colorRampPalette 自制调色板</p>
+</div>
+
+
+```r
+par(mar = c(0, 4, 0, 0))
+RColorBrewer::display.brewer.all()
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/rcolorbrewer-palette-1.png" alt="RColorBrewer 调色板" width="672" />
+<p class="caption">(\#fig:rcolorbrewer-palette)RColorBrewer 调色板</p>
+</div>
+
+
+```r
+# 代码来自 ?palettes
+demo.pal <-
+  function(n, border = if (n < 32) "light gray" else NA,
+           main = paste("color palettes: alpha = 1,  n=", n),
+           ch.col = c(
+             "rainbow(n, start=.7, end=.1)", "heat.colors(n)",
+             "terrain.colors(n)", "topo.colors(n)",
+             "cm.colors(n)", "gray.colors(n, start = 0.3, end = 0.9)"
+           )) {
+    nt <- length(ch.col)
+    i <- 1:n
+    j <- n / nt
+    d <- j / 6
+    dy <- 2 * d
+    plot(i, i + d, type = "n", axes = FALSE, ylab = "", xlab = "", main = main)
+    for (k in 1:nt) {
+      rect(i - .5, (k - 1) * j + dy, i + .4, k * j,
+        col = eval(parse(text = ch.col[k])), border = border
+      )
+      text(2 * j, k * j + dy / 4, ch.col[k])
+    }
+  }
+n <- if (.Device == "postscript") 64 else 16
+# Since for screen, larger n may give color allocation problem
+par(mar = c(0, 0, 2, 0))
+demo.pal(n)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/builtin-palettes-1.png" alt="grDevices 调色板 " width="576" />
+<p class="caption">(\#fig:builtin-palettes)grDevices 调色板 </p>
+</div>
+
+
+```r
+par(mfrow = c(33, 1), mar = c(0, 0, .8, 0))
+for (i in seq(32)) {
+  pal(n = length((1 + 20 * (i - 1)):(20 * i)), colors()[(1 + 20 * (i - 1)):(20 * i)], main = paste(1 + 20 * (i - 1), "to", 20 * i))
+}
+pal(n = 17, colors()[641:657], main = "641 to 657")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/demo-colors-1.png" alt="grDevices 调色板" width="100%" />
+<p class="caption">(\#fig:demo-colors)grDevices 调色板</p>
+</div>
+
+
+```r
+library(colorspace)
+## a few useful diverging HCL palettes
+par(mar = c(0,0,2,0), mfrow = c(16, 2))
+
+pal(n = 16, diverge_hcl(16), main = "diverging HCL palettes")
+pal(n = 16, diverge_hcl(16, h = c(246, 40), c = 96, l = c(65, 90)))
+pal(n = 16, diverge_hcl(16, h = c(130, 43), c = 100, l = c(70, 90)))
+pal(n = 16, diverge_hcl(16, h = c(180, 70), c = 70, l = c(90, 95)))
+
+pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
+pal(n = 16, diverge_hcl(16, h = c(128, 330), c = 98, l = c(65, 90)))
+pal(n = 16, diverge_hcl(16, h = c(255, 330), l = c(40, 90)))
+pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90), power = 1))
+
+## sequential palettes
+pal(n = 16, sequential_hcl(16), main= "sequential palettes")
+pal(n = 16, heat_hcl(16, h = c(0, -100), l = c(75, 40), c = c(40, 80), power = 1))
+pal(n = 16, terrain_hcl(16, c = c(65, 0), l = c(45, 95), power = c(1/3, 1.5)))
+pal(n = 16, heat_hcl(16, c = c(80, 30), l = c(30, 90), power = c(1/5, 1.5)))
+
+## compare base and colorspace palettes
+## (in color and desaturated)
+## diverging red-blue colors
+pal(n = 16, diverge_hsv(16), main = "diverging red-blue colors")
+pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90)))
+pal(n = 16, desaturate(diverge_hsv(16)))
+pal(n = 16, desaturate(diverge_hcl(16, c = 100, l = c(50, 90))))
+
+## diverging cyan-magenta colors
+pal(n = 16, cm.colors(16), main = "diverging cyan-magenta colors")
+pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
+pal(n = 16, desaturate(cm.colors(16)))
+pal(n = 16, desaturate(diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95))))
+
+## heat colors
+pal(n = 16, heat.colors(16), main = "heat colors")
+pal(n = 16, heat_hcl(16))
+pal(n = 16, desaturate(heat.colors(16)))
+pal(n = 16, desaturate(heat_hcl(16)))
+
+## terrain colors
+pal(n = 16, terrain.colors(16), main = "terrain colors")
+pal(n = 16, terrain_hcl(16))
+pal(n = 16, desaturate(terrain.colors(16)))
+pal(n = 16, desaturate(terrain_hcl(16)))
+
+pal(n = 16, rainbow_hcl(16, start = 30, end = 300), main = "dynamic")
+pal(n = 16, rainbow_hcl(16, start = 60, end = 240), main = "harmonic")
+pal(n = 16, rainbow_hcl(16, start = 270, end = 150), main = "cold")
+pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/colorspace-palette-1.png" alt="colorspace 调色板" width="768" />
+<p class="caption">(\#fig:colorspace-palette)colorspace 调色板</p>
+</div>
+
+除之前提到的 **grDevices** 包， [**colorspace**](https://colorspace.r-forge.r-project.org/) (<https://hclwizard.org/>) 包 [@colorspace_2009_rainbow; @colorspace_2009_rgb; @colorspace_2019]，[RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <https://colorbrewer2.org/>，[viridis](https://github.com/sjmgarnier/viridis) 包、[colourvalues](https://github.com/SymbolixAU/colourvalues)、[wesanderson](https://github.com/karthik/wesanderson)、[dichromat](https://CRAN.R-project.org/package=dichromat) 包、[pals](https://github.com/kwstat/pals) 包，[palr](https://github.com/AustralianAntarcticDivision/palr) 包，[colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
+
+[colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
+[paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。
+[yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate's Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
+
+
+::: {.rmdnote data-latex="{注意}"}
+RColorBrewer 调色板数量必须至少 3 个，这是上游 colorbrewer 的 [问题](https://github.com/axismaps/colorbrewer/issues/23)，具体体现在调用
+`RColorBrewer::brewer.pal(n = 2, name = "Set2")` 时会有警告。 plotly 调用
+
+```
+[1] "#66C2A5" "#FC8D62" "#8DA0CB"
+Warning message:
+In RColorBrewer::brewer.pal(n = 2, name = "Set2") :
+  minimal value for n is 3, returning requested palette with 3 different levels
+```
+:::
+
+
+```r
+par(mar = c(1, 2, 1, 0), mfrow = c(3, 2))
+set.seed(1234)
+x <- sample(seq(8), 8, replace = FALSE)
+barplot(x, col = palette(), border = "white")
+barplot(x, col = heat.colors(8), border = "white")
+barplot(x, col = gray.colors(8), border = "white")
+barplot(x, col = "lightblue", border = "white")
+barplot(x, col = colorspace::sequential_hcl(8), border = "white")
+barplot(x, col = colorspace::diverge_hcl(8,
+  h = c(130, 43),
+  c = 100, l = c(70, 90)
+), border = "white")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/select-color-1.png" alt="源起" width="672" />
+<p class="caption">(\#fig:select-color)源起</p>
+</div>
+
+与图 \@ref(fig:geom-tile) 对比，图\@ref(fig:palette-spectral) 的层次更加丰富，识别性更高
+
+
+```r
+expand.grid(months = month.abb, years = 1949:1960) %>%
+  transform(num = as.vector(AirPassengers)) %>%
+  ggplot(aes(x = years, y = months, fill = num)) +
+  scale_fill_distiller(palette = "Spectral") +
+  geom_tile(color = "white", size = 0.4) +
+  scale_x_continuous(
+    expand = c(0.01, 0.01),
+    breaks = seq(1949, 1960, by = 1),
+    labels = 1949:1960
+  ) +
+  theme_minimal(
+    base_size = 10.54,
+    base_family = "source-han-serif-cn"
+  ) +
+  labs(x = "年", y = "月", fill = "人数")
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/palette-spectral-1.png" alt="Spectral 调色板" width="672" />
+<p class="caption">(\#fig:palette-spectral)Spectral 调色板</p>
+</div>
+
+再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
+
+
+```r
+erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_raster() +
+  scale_x_continuous(NULL, expand = c(0, 0)) +
+  scale_y_continuous(NULL, expand = c(0, 0)) +
+  theme(legend.position = "none")
+p1 <- erupt + scale_fill_gradientn(colours = gray.colors(7))
+p2 <- erupt + scale_fill_distiller(palette = "Spectral")
+p3 <- erupt + scale_fill_gradientn(colours = terrain.colors(7))
+p4 <- erupt + scale_fill_continuous(type = 'viridis')
+(p1 + p2) / (p3 + p4)
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/faithfuld-1.png" alt="美国黄石国家公园的老忠实泉" width="672" />
+<p class="caption">(\#fig:faithfuld)美国黄石国家公园的老忠实泉</p>
+</div>
+
+RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging) 三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
+
+
+```r
+ls("package:ggplot2", pattern = "scale_col(ou|o)r_")
+```
+
+```
+##  [1] "scale_color_binned"      "scale_color_brewer"     
+##  [3] "scale_color_continuous"  "scale_color_date"       
+##  [5] "scale_color_datetime"    "scale_color_discrete"   
+##  [7] "scale_color_distiller"   "scale_color_fermenter"  
+##  [9] "scale_color_gradient"    "scale_color_gradient2"  
+## [11] "scale_color_gradientn"   "scale_color_grey"       
+## [13] "scale_color_hue"         "scale_color_identity"   
+## [15] "scale_color_manual"      "scale_color_ordinal"    
+## [17] "scale_color_steps"       "scale_color_steps2"     
+## [19] "scale_color_stepsn"      "scale_color_viridis_c"  
+## [21] "scale_color_viridis_d"   "scale_colour_binned"    
+## [23] "scale_colour_brewer"     "scale_colour_continuous"
+## [25] "scale_colour_date"       "scale_colour_datetime"  
+## [27] "scale_colour_discrete"   "scale_colour_distiller" 
+## [29] "scale_colour_fermenter"  "scale_colour_gradient"  
+## [31] "scale_colour_gradient2"  "scale_colour_gradientn" 
+## [33] "scale_colour_grey"       "scale_colour_hue"       
+## [35] "scale_colour_identity"   "scale_colour_manual"    
+## [37] "scale_colour_ordinal"    "scale_colour_steps"     
+## [39] "scale_colour_steps2"     "scale_colour_stepsn"    
+## [41] "scale_colour_viridis_b"  "scale_colour_viridis_c" 
+## [43] "scale_colour_viridis_d"
+```
+
+```r
+ls("package:ggplot2", pattern = "scale_fill_")
+```
+
+```
+##  [1] "scale_fill_binned"     "scale_fill_brewer"     "scale_fill_continuous"
+##  [4] "scale_fill_date"       "scale_fill_datetime"   "scale_fill_discrete"  
+##  [7] "scale_fill_distiller"  "scale_fill_fermenter"  "scale_fill_gradient"  
+## [10] "scale_fill_gradient2"  "scale_fill_gradientn"  "scale_fill_grey"      
+## [13] "scale_fill_hue"        "scale_fill_identity"   "scale_fill_manual"    
+## [16] "scale_fill_ordinal"    "scale_fill_steps"      "scale_fill_steps2"    
+## [19] "scale_fill_stepsn"     "scale_fill_viridis_b"  "scale_fill_viridis_c" 
+## [22] "scale_fill_viridis_d"
+```
+
+
+```r
+library(ColorPalette)
+par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+pal(generateMonochromaticColors("lightblue", 16), 
+    main = "generateMonochromaticColors")
+pal(complementColors("lightblue", 16), main = "complementColors")
+pal(tetradicColors("lightblue", 16), main = "tetradicColors")
+pal(triadicColors("lightblue", 16), main = "triadicColors")
+
+
+library(colorRamps)
+par(mfrow = c(6, 1), mar = c(0, 0, 2, 0))
+n <- 16
+pal(matlab.like(n), main = "matlab.like")
+pal(matlab.like2(n), main = "matlab.like2")
+pal(blue2green2red(n), main = "blue2green2red")
+pal(primary.colors(n), main = "primary.colors")
+pal(ygobb(n), main = "ygobb")
+pal(rgb.tables(n), main = "rgb.tables")
+
+
+library(viridisLite)
+n <- 16
+par(mfrow = c(4, 1), mar = c(0, 0, 2, 0))
+pal(magma(n, alpha = 1, begin = 0, end = 1))
+pal(inferno(n, alpha = 1, begin = 0, end = 1))
+pal(plasma(n, alpha = 1, begin = 0, end = 1))
+pal(viridis(n, alpha = 1, begin = 0, end = 1))
+
+
+par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+library(pals)
+pals::pal.bands(
+  coolwarm, parula, ocean.haline, 
+  cubicl, kovesi.rainbow,
+  ocean.phase, brewer.paired(12), stepped,
+  main = "Colormap suggestions"
+)
+
+# Qualtitative
+pals::pal.bands(
+  brewer.accent(8), brewer.dark2(8), 
+  brewer.paired(12), brewer.pastel1(9),
+  brewer.pastel2(8), brewer.set1(9), 
+  brewer.set2(8), brewer.set3(10),
+  labels = c(
+    "brewer.accent", "brewer.dark2", 
+    "brewer.paired", "brewer.pastel1",
+    "brewer.pastel2", "brewer.set1", 
+    "brewer.set2", "brewer.set3"
+  ),
+  main = "Brewer qualitative"
+)
+
+par(mfrow = c(2, 1), mar = c(0, 3, 2, 0))
+# Sequential
+pals::pal.bands(
+  brewer.blues, brewer.bugn, 
+  brewer.bupu, brewer.gnbu, brewer.greens,
+  brewer.greys, brewer.oranges, 
+  brewer.orrd, brewer.pubu, brewer.pubugn,
+  brewer.purd, brewer.purples, 
+  brewer.rdpu, brewer.reds, brewer.ylgn,
+  brewer.ylgnbu, brewer.ylorbr, brewer.ylorrd,
+  main = "Brewer sequential"
+)
+
+# Diverging
+pals::pal.bands(
+  brewer.brbg, brewer.piyg, 
+  brewer.prgn, brewer.puor, brewer.rdbu,
+  brewer.rdgy, brewer.rdylbu, 
+  brewer.rdylgn, brewer.spectral,
+  main = "Brewer diverging"
+)
+
+
+colortools::pals()
+colortools::wheel(colortools::pals("fish")[1], bg = "white")
+yarrr::piratepal(palette = "all")
+
+library(dichromat)
+par(mar = c(0, 0, 2, 0), mfrow = c(9, 2))
+for (i in seq(17)) {
+  pal(colorschemes[[i]], main = names(colorschemes)[i])
+}
+
+library(colormap)
+color_map <- function(colorname, border = "light gray") {
+  col <- colormap_pal(colormap = colorname)(25)
+  n <- length(col)
+  plot(0, 0,
+    type = "n", xlim = c(0, 1), ylim = c(0, 1),
+    axes = FALSE, xlab = "", ylab = ""
+  )
+  rect(0:(n - 1) / n, 0, 1:n / n, 1, col = col, border = border)
+  text(.5, .5, labels = colorname)
+}
+par(mfrow = c(22, 2), mar = c(0, 0, 1, 0))
+invisible(lapply(unlist(colormaps), color_map))
+```
+
+### 颜色模式 {#subsec:color-schames}
+
+#### RGB
+
+红(red)、绿(green)、蓝(blue)是三原色
+
+
+```r
+rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)
+```
+
+函数参数说明：
+
+- `red, blue, green, alpha` 取值范围$[0,M]$，$M$ 是 *maxColorValue*
+- `names` 字符向量，给这组颜色值取名
+- `maxColorValue` 红，绿，蓝三色范围的最大值
+
+The colour specification refers to the standard sRGB colorspace (IEC standard 61966).
+
+rgb 产生一种颜色，如 `rgb(255, 0, 0, maxColorValue = 255)` 的颜色是 `"#FF0000"` ，这是一串16进制数，每两个一组，那么一组有 $16^2 = 256$ 种组合，整个一串有 $256^3 = 16777216$ 种组合，这就是RGB表达的所有颜色。
+
+#### HSL
+
+色相饱和度亮度 hue--saturation--luminance (HSL)
+
+#### HSV
+
+Create a vector of colors from vectors specifying hue, saturation and value. 色相饱和度值
+
+``` {.r}
+hsv(h = 1, s = 1, v = 1, alpha)
+```
+
+This function creates a vector of colors corresponding to the given values in HSV space. rgb and rgb2hsv for RGB to HSV conversion;
+
+hsv函数通过设置色调、饱和度和亮度获得颜色，三个值都是0-1的相对量
+
+RGB HSV HSL 都是不连续的颜色空间，缺点
+
+#### HCL
+
+基于感知的颜色空间替代RGB颜色空间
+
+通过指定色相(hue)，色度(chroma)和亮度(luminance/lightness)，创建一组（种）颜色
+
+
+```r
+hcl(h = 0, c = 35, l = 85, alpha, fixup = TRUE)
+```
+
+函数参数说明：
+
+- **h** 颜色的色调，取值范围为[0,360]，0、120、240分别对应红色、绿色、蓝色
+
+- **c** 颜色的色度，其上界取决于色调和亮度
+
+- **l** 颜色的亮度，取值范围[0,100]，给定色调和色度，只有一部分子集可用
+
+- **alpha** 透明度，取值范围[0,1]，0 和1分别表示透明和不透明
+
+This function corresponds to polar coordinates in the CIE-LUV color space
+
+选色为什么这么难
+
+色相与阴影相比是无关紧要的，色相对于标记和分类很有用，但表示（精细的）空间数据或形状的效果较差。颜色是改善图形的好工具，但糟糕的配色方案 (color schemes) 可能会导致比灰度调色板更差的效果。[@colorspace_2009_rainbow]
+
+黑、白、灰，看似有三种颜色，其实只有一种颜色，黑和白只是灰色的两极，那么如何设置灰色梯度，使得人眼比较好区分它们呢？这样获得的调色板适用于什么样的绘图环境呢？
+
+#### CMYK
+
+印刷三原色：青 (cyan)、品红 (magenta)、黄 (yellow)
+
+- 颜色模式转化
+
+`col2rgb()` 、`rgb2hsv()` 和 `rgb()` 函数 `hex2RGB()` 函数 colorspace `col2hcl()` 函数 scales `col2HSV()` colortools `col2hex()`
+
+
+```r
+col2rgb("lightblue") # color to  RGB
+```
+
+```
+##       [,1]
+## red    173
+## green  216
+## blue   230
+```
+
+```r
+scales::col2hcl("lightblue") # color to HCL
+```
+
+```
+## [1] "#ADD8E6"
+```
+
+```r
+# palr::col2hex("lightblue") # color to HEX
+# colortools::col2HSV("lightblue") # color to HSV
+
+rgb(173, 216, 230, maxColorValue = 255) # RGB to HEX
+```
+
+```
+## [1] "#ADD8E6"
+```
+
+```r
+colorspace::hex2RGB("#ADD8E6") # HEX to RGB
+```
+
+```
+##              R         G         B
+## [1,] 0.6784314 0.8470588 0.9019608
+```
+
+```r
+rgb(.678, .847, .902, maxColorValue = 1) # RGB to HEX
+```
+
+```
+## [1] "#ADD8E6"
+```
+
+```r
+rgb2hsv(173, 216, 230, maxColorValue = 255) # RGB to HSV
+```
+
+```
+##        [,1]
+## h 0.5409357
+## s 0.2478261
+## v 0.9019608
+```
+
+### LaTeX 配色 {#subsec:latex-colors}
+
+LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用方式有两种，其一，`\textcolor{green!40!yellow}`{.TeX} 表示 40% 的绿色和 60% 的黄色混合色彩，其二，`\textcolor[HTML]{34A853}`{.TeX} HEX 表示的色彩直接在 LaTeX 文档中使用的方式，类似地 `\textcolor[RGB]{52,168,83}`{.TeX} 也表示 Google 图标中的绿色。
+
+```tex
+\documentclass[tikz,border=10pt]{standalone}
+\begin{document}
+\begin{tikzpicture}
+\draw (0,0) rectangle (2,1) node [midway] {\textcolor[RGB]{52,168,83}{Hello} \textcolor[HTML]{34A853}{\TeX}};
+\end{tikzpicture}
+\end{document}
+```
+
+对应于 R 中的调用方式为：
+
+
+```r
+rgb(52, 168, 83, maxColorValue = 255)
+```
+
+```
+## [1] "#34A853"
+```
+
+### ggplot2 配色 {#subsec:ggplot2-colors}
+
+
+```r
+boxplot(weight ~ group,
+  data = PlantGrowth, col = "lightgray",
+  notch = FALSE, varwidth = TRUE
+)
+# 类似 boxplot
+ggplot(data = PlantGrowth, aes(x = group, y = weight)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE, fill = "lightgray")
+
+# 默认调色板
+ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE)
+
+# Google 调色板
+ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
+  geom_boxplot(notch = FALSE, varwidth = TRUE) +
+  scale_fill_manual(values = c("#4285f4", "#34A853", "#FBBC05", "#EA4335"))
+```
+
+<div class="figure" style="text-align: center">
+<img src="data-visualization_files/figure-html/colorize-boxplot-1.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-2.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-3.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-4.png" alt="几种不同的箱线图" width="45%" />
+<p class="caption">(\#fig:colorize-boxplot)几种不同的箱线图</p>
+</div>
