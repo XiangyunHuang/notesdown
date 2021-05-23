@@ -1593,7 +1593,7 @@ print(px.colors.qualitative.Plotly)
 - LaTeX 专家黄晨成写的译文 [Matplotlib 教程](https://liam.page/2014/09/11/matplotlib-tutorial-zh-cn/)
 - [周沫凡](https://morvanzhou.github.io/) 制作的莫烦 Python 系列视频教程之 [Matplotlib 数据可视化神器](https://morvanzhou.github.io/tutorials/data-manipulation/plt/)
 - 陈治兵维护的在线 [Matplotlib 中文文档](https://www.matplotlib.org.cn/)
-- Sebastian Raschka 和 Vahid Mirjalili 合著的 [Python Machine Learning (3rd Edition)](https://github.com/rasbt/python-machine-learning-book-3rd-edition) [@Raschka2019]
+- Sebastian Raschka 和 Vahid Mirjalili 合著的 [Python Machine Learning (3rd Edition)](https://github.com/rasbt/python-machine-learning-book-3rd-edition) [@Raschka_2017_Python]
 
 编译书籍使用的 Python 3 模块有
 
