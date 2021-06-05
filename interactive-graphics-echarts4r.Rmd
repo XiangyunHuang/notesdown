@@ -135,7 +135,45 @@ airquality %>%
   e_title("Calendar", "Heatmap")
 ```
 
+## 动画 {#sec:echarts4r-animation}
+
+
+```{r,eval=knitr::is_html_output()}
+library(purrr)
+library(echarts4r)
+
+data("gapminder", package = "gapminder")
+
+titles <- map(unique(gapminder$year), function(x) {
+  list(
+    text = "Gapminder",
+    subtext = x,
+    left = "center"
+  )
+})
+
+# 添加一列颜色，各大洲和颜色的对应关系可自定义，调整 levels 或 labels 里面的顺序即可，也可不指定 levels ，调用其它调色板
+gapminder <- gapminder %>%
+  transform(color = factor(continent,
+    levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
+    labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
+  ))
+
+gapminder %>%
+  group_by(year) %>%
+  e_charts(x = gdpPercap, timeline = TRUE) %>%
+  e_scatter(serie = lifeExp, size = pop, bind = country, symbol_size = 5) %>%
+  e_add("itemStyle", color) %>%
+  e_y_axis(min = 20, max = 85) %>%
+  e_x_axis(type = "log", min = 100, max = 100000) %>%
+  e_timeline_serie(title = titles) %>%
+  e_tooltip() %>%
+  e_theme("default")
+```
+
+
+## Shiny 集成 {#sec:shiny}
+
 ```{r}
 library(shiny)
 ```
-

@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - {os: ubuntu-20.04, r: '4.0.3'}
+          - {os: ubuntu-20.04, r: '4.1.0'}
 
     env:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
@@ -104,15 +104,15 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: r-${{ hashFiles('DESCRIPTION') }}
-          restore-keys: r-
+          key: r-${{ matrix.config.os }}-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
+          restore-keys: r-${{ matrix.config.os }}-${{ matrix.config.r }}-
 
       - name: Cache bookdown results
         uses: actions/cache@v2
         with:
           path: _bookdown_files
-          key: bookdown-3-${{ hashFiles('**/*Rmd') }}
-          restore-keys: bookdown-3
+          key: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-${{ hashFiles('**/*Rmd') }}
+          restore-keys: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-
 
       - name: Install R packages
         run: |
@@ -130,6 +130,9 @@ jobs:
         run: |
           if(!require('remotes')) install.packages(c('remotes'))
           if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
+          if(!require('spDataLarge')) install.packages("spDataLarge", repos = "https://nowosad.github.io/drat")
+          if(!require('INLA')) install.packages("INLA", repos = "https://inla.r-inla-download.org/R/stable")
+
         shell: Rscript {0}
 
       - name: Check R packages
