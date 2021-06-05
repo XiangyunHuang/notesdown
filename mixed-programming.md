@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55fb915b2a78>
+## <bytecode: 0x562b578a9cf8>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55fb915b2a78>
+## <bytecode: 0x562b578a9cf8>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7fca0dc37c10>]
+## [<matplotlib.lines.Line2D object at 0x7f74a0efceb0>]
 plt.show()
 ```
 
@@ -190,8 +190,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c523534ddf64.c -o c523534ddf64.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c523534ddf64.so c523534ddf64.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c4ed85f18ea7d.c -o c4ed85f18ea7d.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c4ed85f18ea7d.so c4ed85f18ea7d.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -334,13 +334,12 @@ sessionInfo()
 ## [5] magrittr_2.0.1   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] bslib_0.2.5.1     compiler_4.1.0    later_1.2.0       jquerylib_0.1.4  
-##  [5] highr_0.9         pdftools_3.0.1    tools_4.1.0       digest_0.6.27    
-##  [9] jsonlite_1.7.2    evaluate_0.14     lifecycle_1.0.0   lattice_0.20-44  
-## [13] png_0.1-7         rlang_0.4.11      Matrix_1.3-4      magick_2.7.2     
-## [17] yaml_2.2.1        xfun_0.23         fastmap_1.1.0     stringr_1.4.0    
-## [21] knitr_1.33        askpass_1.1       sass_0.4.0        grid_4.1.0       
-## [25] qpdf_1.1          R6_2.5.0          rmarkdown_2.8     bookdown_0.22    
-## [29] promises_1.2.0.1  ellipsis_0.3.2    htmltools_0.5.1.1 mime_0.10        
-## [33] xtable_1.8-4      httpuv_1.6.1      tinytex_0.32      stringi_1.6.2
+##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
+##  [5] rlang_0.4.11      fastmap_1.1.0     highr_0.9         stringr_1.4.0    
+##  [9] tools_4.1.0       grid_4.1.0        xfun_0.23         png_0.1-7        
+## [13] jquerylib_0.1.4   htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1       
+## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4     
+## [21] later_1.2.0       sass_0.4.0        promises_1.2.0.1  evaluate_0.14    
+## [25] mime_0.10         rmarkdown_2.8     stringi_1.6.2     compiler_4.1.0   
+## [29] bslib_0.2.5.1     jsonlite_1.7.2    httpuv_1.6.1
 ```
