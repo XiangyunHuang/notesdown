@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-05-23" />
+<meta name="date" content="2021-06-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,6 +138,7 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
+<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -432,6 +433,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="12.1" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>12.1</b> 地图</a></li>
 <li class="chapter" data-level="12.2" data-path="sec-echarts4r-calendar.html"><a href="sec-echarts4r-calendar.html"><i class="fa fa-check"></i><b>12.2</b> 日历图</a></li>
+<li class="chapter" data-level="12.3" data-path="sec-echarts4r-animation.html"><a href="sec-echarts4r-animation.html"><i class="fa fa-check"></i><b>12.3</b> 动画</a></li>
+<li class="chapter" data-level="12.4" data-path="sec-shiny.html"><a href="sec-shiny.html"><i class="fa fa-check"></i><b>12.4</b> Shiny 集成</a></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="chap-interactive-data-tables.html"><a href="chap-interactive-data-tables.html"><i class="fa fa-check"></i><b>13</b> 交互式数据表格</a>
 <ul>
@@ -634,8 +637,7 @@ div.csl-indent {
 <li class="chapter" data-level="28.15" data-path="sec-hk-stock.html"><a href="sec-hk-stock.html"><i class="fa fa-check"></i><b>28.15</b> 港股走势</a></li>
 <li class="chapter" data-level="28.16" data-path="sec-us-stock.html"><a href="sec-us-stock.html"><i class="fa fa-check"></i><b>28.16</b> 美股走势</a></li>
 <li class="chapter" data-level="28.17" data-path="sec-coe-stock.html"><a href="sec-coe-stock.html"><i class="fa fa-check"></i><b>28.17</b> 51Talk 股价走势</a></li>
-<li class="chapter" data-level="28.18" data-path="sec-danke-stock.html"><a href="sec-danke-stock.html"><i class="fa fa-check"></i><b>28.18</b> 蛋壳股价走势</a></li>
-<li class="chapter" data-level="28.19" data-path="sec-tsa-sessioninfo.html"><a href="sec-tsa-sessioninfo.html"><i class="fa fa-check"></i><b>28.19</b> 运行环境</a></li>
+<li class="chapter" data-level="28.18" data-path="sec-tsa-sessioninfo.html"><a href="sec-tsa-sessioninfo.html"><i class="fa fa-check"></i><b>28.18</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="29" data-path="chap-spatial-analysis.html"><a href="chap-spatial-analysis.html"><i class="fa fa-check"></i><b>29</b> 空间分析</a>
 <ul>
@@ -847,9 +849,9 @@ div.csl-indent {
 <div id="sec:generalized-possion-linear-model" class="section level2" number="24.10">
 <h2><span class="header-section-number">24.10</span> 泊松回归模型</h2>
 <p>加载数据</p>
-<div class="sourceCode" id="cb829"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb829-1"><a href="sec-generalized-possion-linear-model.html#cb829-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(beall.webworms, <span class="at">package =</span> <span class="st">&quot;agridat&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="sec-generalized-possion-linear-model.html#cb833-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(beall.webworms, <span class="at">package =</span> <span class="st">&quot;agridat&quot;</span>)</span></code></pre></div>
 <p>查看数据</p>
-<div class="sourceCode" id="cb830"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb830-1"><a href="sec-generalized-possion-linear-model.html#cb830-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(beall.webworms)</span></code></pre></div>
+<div class="sourceCode" id="cb834"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb834-1"><a href="sec-generalized-possion-linear-model.html#cb834-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(beall.webworms)</span></code></pre></div>
 <pre><code>##   row col y block trt spray lead
 ## 1   1   1 1    B1  T1     N    N
 ## 2   2   1 0    B1  T1     N    N
@@ -858,21 +860,21 @@ div.csl-indent {
 ## 5   5   1 6    B1  T1     N    N
 ## 6   6   1 0    B2  T1     N    N</code></pre>
 <p>描述响应变量的分布</p>
-<div class="sourceCode" id="cb832"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb832-1"><a href="sec-generalized-possion-linear-model.html#cb832-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(beall.webworms<span class="sc">$</span>y, <span class="at">main =</span> <span class="st">&quot;Histogram of Worm Count&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Number of Worms&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb836"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb836-1"><a href="sec-generalized-possion-linear-model.html#cb836-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(beall.webworms<span class="sc">$</span>y, <span class="at">main =</span> <span class="st">&quot;Histogram of Worm Count&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Number of Worms&quot;</span>)</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="sec-generalized-possion-linear-model.html#cb833-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms)</span></code></pre></div>
+<div class="sourceCode" id="cb837"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb837-1"><a href="sec-generalized-possion-linear-model.html#cb837-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms)</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>抖动图</p>
-<div class="sourceCode" id="cb834"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb834-1"><a href="sec-generalized-possion-linear-model.html#cb834-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">xlab =</span> <span class="st">&quot;Types of Worms&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Worm Count&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb838"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb838-1"><a href="sec-generalized-possion-linear-model.html#cb838-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">xlab =</span> <span class="st">&quot;Types of Worms&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Worm Count&quot;</span>)</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb835"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb835-1"><a href="sec-generalized-possion-linear-model.html#cb835-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(beall.webworms, <span class="fu">aes</span>(trt, y)) <span class="sc">+</span></span>
-<span id="cb835-2"><a href="sec-generalized-possion-linear-model.html#cb835-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb835-3"><a href="sec-generalized-possion-linear-model.html#cb835-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
-<span id="cb835-4"><a href="sec-generalized-possion-linear-model.html#cb835-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Types of Worms&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Worm Count&quot;</span>) <span class="sc">+</span></span>
-<span id="cb835-5"><a href="sec-generalized-possion-linear-model.html#cb835-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb839"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb839-1"><a href="sec-generalized-possion-linear-model.html#cb839-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(beall.webworms, <span class="fu">aes</span>(trt, y)) <span class="sc">+</span></span>
+<span id="cb839-2"><a href="sec-generalized-possion-linear-model.html#cb839-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb839-3"><a href="sec-generalized-possion-linear-model.html#cb839-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
+<span id="cb839-4"><a href="sec-generalized-possion-linear-model.html#cb839-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Types of Worms&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Worm Count&quot;</span>) <span class="sc">+</span></span>
+<span id="cb839-5"><a href="sec-generalized-possion-linear-model.html#cb839-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb836"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb836-1"><a href="sec-generalized-possion-linear-model.html#cb836-1" aria-hidden="true" tabindex="-1"></a>pois.mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>)</span>
-<span id="cb836-2"><a href="sec-generalized-possion-linear-model.html#cb836-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pois.mod)</span></code></pre></div>
+<div class="sourceCode" id="cb840"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb840-1"><a href="sec-generalized-possion-linear-model.html#cb840-1" aria-hidden="true" tabindex="-1"></a>pois.mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>)</span>
+<span id="cb840-2"><a href="sec-generalized-possion-linear-model.html#cb840-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pois.mod)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = y ~ trt, family = &quot;poisson&quot;, data = beall.webworms)
@@ -900,30 +902,30 @@ div.csl-indent {
 <p>模型系数 T2 的解释，这里 GLM 使用了对数联系函数(log link function) ，因此 -1.02 是对数变换后的值，T2的系数实际是 0.3605949 ，实际意义是相对于T1，T2 类型的蠕虫数量是 T1 的 0.3605949 倍</p>
 <p>The first valuable information is related to the residuals of the model, which should be symmetrical as for any normal linear model. From this output we can see that minimum and maximum, as well as the first and third quartiles, are similar, so this assumption is confirmed. Then we can see that the variable trt (i.e. treatment factor) is highly significant for the model, with very low p-values. The statistical test in this case is not a t-test, as in the output of the function lm, but a Wald Test (<a href="http://www.blackwellpublishing.com/specialarticles/jcn_10_774.pdf">Wald Test</a>). This test computes the probability that the coefficient is 0, if the p is significant it means the chances the coefficient is zero are very low so the variable should be included in the model since it has an effect on y.</p>
 <p>Another important information is the deviance, particularly the residual deviance. As a general rule, this value should be lower or in line than the residuals degrees of freedom for the model to be good. In this case the fact that the residual deviance is high (even though not dramatically) may suggests the explanatory power of the model is low. We will see below how to obtain p-value for the significance of the model.</p>
-<div class="sourceCode" id="cb838"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb838-1"><a href="sec-generalized-possion-linear-model.html#cb838-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb838-2"><a href="sec-generalized-possion-linear-model.html#cb838-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pois.mod)</span></code></pre></div>
+<div class="sourceCode" id="cb842"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb842-1"><a href="sec-generalized-possion-linear-model.html#cb842-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb842-2"><a href="sec-generalized-possion-linear-model.html#cb842-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pois.mod)</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb839"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb839-1"><a href="sec-generalized-possion-linear-model.html#cb839-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(pois.mod, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">trt =</span> <span class="fu">c</span>(<span class="st">&quot;T1&quot;</span>, <span class="st">&quot;T2&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="sec-generalized-possion-linear-model.html#cb843-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(pois.mod, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">trt =</span> <span class="fu">c</span>(<span class="st">&quot;T1&quot;</span>, <span class="st">&quot;T2&quot;</span>)))</span></code></pre></div>
 <pre><code>##          1          2 
 ##  0.3364722 -0.6839588</code></pre>
 <p>模型的P值</p>
-<div class="sourceCode" id="cb841"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb841-1"><a href="sec-generalized-possion-linear-model.html#cb841-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="fu">deviance</span>(pois.mod), <span class="fu">df.residual</span>(pois.mod))</span></code></pre></div>
+<div class="sourceCode" id="cb845"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb845-1"><a href="sec-generalized-possion-linear-model.html#cb845-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="fu">deviance</span>(pois.mod), <span class="fu">df.residual</span>(pois.mod))</span></code></pre></div>
 <pre><code>## [1] 1.709743e-14</code></pre>
 <p>模型选择</p>
-<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="sec-generalized-possion-linear-model.html#cb843-1" aria-hidden="true" tabindex="-1"></a>pois.mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> block <span class="sc">+</span> spray <span class="sc">*</span> lead, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb847"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb847-1"><a href="sec-generalized-possion-linear-model.html#cb847-1" aria-hidden="true" tabindex="-1"></a>pois.mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> block <span class="sc">+</span> spray <span class="sc">*</span> lead, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
 <p>两模型的 AIC 比较</p>
-<div class="sourceCode" id="cb844"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb844-1"><a href="sec-generalized-possion-linear-model.html#cb844-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(pois.mod, pois.mod2)</span></code></pre></div>
+<div class="sourceCode" id="cb848"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb848-1"><a href="sec-generalized-possion-linear-model.html#cb848-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(pois.mod, pois.mod2)</span></code></pre></div>
 <pre><code>##           df      AIC
 ## pois.mod   4 3125.478
 ## pois.mod2 16 3027.438</code></pre>
 <p>假设响应变量 Y 服从泊松分布，意味着随机变量 Y 的期望和方差相等</p>
-<div class="sourceCode" id="cb846"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb846-1"><a href="sec-generalized-possion-linear-model.html#cb846-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(beall.webworms<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="sec-generalized-possion-linear-model.html#cb850-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(beall.webworms<span class="sc">$</span>y)</span></code></pre></div>
 <pre><code>## [1] 0.7923077</code></pre>
-<div class="sourceCode" id="cb848"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb848-1"><a href="sec-generalized-possion-linear-model.html#cb848-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(beall.webworms<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="sec-generalized-possion-linear-model.html#cb852-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(beall.webworms<span class="sc">$</span>y)</span></code></pre></div>
 <pre><code>## [1] 1.290164</code></pre>
 <p>实际上方差比均值大，这种情况称之为过度发散 (overdispersed)，分布应该修正为拟（似然）泊松分布</p>
-<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="sec-generalized-possion-linear-model.html#cb850-1" aria-hidden="true" tabindex="-1"></a>pois.mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="fu">c</span>(<span class="st">&quot;quasipoisson&quot;</span>))</span>
-<span id="cb850-2"><a href="sec-generalized-possion-linear-model.html#cb850-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pois.mod3)</span></code></pre></div>
+<div class="sourceCode" id="cb854"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb854-1"><a href="sec-generalized-possion-linear-model.html#cb854-1" aria-hidden="true" tabindex="-1"></a>pois.mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms, <span class="at">family =</span> <span class="fu">c</span>(<span class="st">&quot;quasipoisson&quot;</span>))</span>
+<span id="cb854-2"><a href="sec-generalized-possion-linear-model.html#cb854-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pois.mod3)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = y ~ trt, family = c(&quot;quasipoisson&quot;), data = beall.webworms)
@@ -950,10 +952,10 @@ div.csl-indent {
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>计算得知发散参数(dispersion parameter) 是 1.35472，可见数据Y并不是发散得离谱，泊松分布可能仍然是对这个数据的合理假设</p>
 <p>AER 包是书籍 Applied Econometrics with R 的配套材料 <span class="citation">(<a href="#ref-AER_2008_Kleiber" role="doc-biblioref">Kleiber and Zeileis 2008</a>)</span>，可用于直接检验发散参数是否大于1</p>
-<div class="sourceCode" id="cb852"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb852-1"><a href="sec-generalized-possion-linear-model.html#cb852-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AER::dispersiontest(pois.mod, alternative=&quot;greater&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb856"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb856-1"><a href="sec-generalized-possion-linear-model.html#cb856-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AER::dispersiontest(pois.mod, alternative=&quot;greater&quot;)</span></span></code></pre></div>
 <p>如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 <span class="citation">(<a href="#ref-MASS_2002_Venables" role="doc-biblioref">Venables and Ripley 2002</a>)</span> 提供的 <code>glm.nb</code>函数</p>
-<div class="sourceCode" id="cb853"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb853-1"><a href="sec-generalized-possion-linear-model.html#cb853-1" aria-hidden="true" tabindex="-1"></a>NB.mod1 <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms)</span>
-<span id="cb853-2"><a href="sec-generalized-possion-linear-model.html#cb853-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NB.mod1)</span></code></pre></div>
+<div class="sourceCode" id="cb857"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb857-1"><a href="sec-generalized-possion-linear-model.html#cb857-1" aria-hidden="true" tabindex="-1"></a>NB.mod1 <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glm.nb</span>(y <span class="sc">~</span> trt, <span class="at">data =</span> beall.webworms)</span>
+<span id="cb857-2"><a href="sec-generalized-possion-linear-model.html#cb857-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NB.mod1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## MASS::glm.nb(formula = y ~ trt, data = beall.webworms, init.theta = 2.004130573, 
@@ -986,7 +988,7 @@ div.csl-indent {
 ## 
 ##  2 x log-likelihood:  -3042.969</code></pre>
 <p>两个模型的方差分析</p>
-<div class="sourceCode" id="cb855"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb855-1"><a href="sec-generalized-possion-linear-model.html#cb855-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(pois.mod, pois.mod2, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb859"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb859-1"><a href="sec-generalized-possion-linear-model.html#cb859-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(pois.mod, pois.mod2, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model 1: y ~ trt

@@ -166,13 +166,13 @@ diamonds_sample
 ```
 
 ```
-##   carat       cut color clarity depth table price    x    y    z
-## 1  0.70   Premium     E     VS2  59.3    60  2818 5.78 5.73 3.41
-## 2  0.89      Good     H     SI2  63.3    59  3002 6.04 6.09 3.84
-## 3  0.75     Ideal     H     SI1  61.9    56  3011 5.81 5.85 3.61
-## 4  0.71     Ideal     E     VS1  62.3    56  3346 5.69 5.74 3.56
-## 5  0.30 Very Good     I     VS2  60.7    56   407 4.32 4.34 2.63
-## 6  0.35     Ideal     I     VS1  61.7    54   571 4.54 4.57 2.81
+##   carat     cut color clarity depth table price    x    y    z
+## 1  0.24 Premium     E    VVS1  60.7    58   553 4.01 4.03 2.44
+## 2  0.30    Good     H     SI1  63.7    57   554 4.28 4.26 2.72
+## 3  0.81   Ideal     I     SI1  61.3    56  3097 6.23 6.27 3.83
+## 4  0.71   Ideal     H      IF  61.2    56  3146 5.74 5.79 3.53
+## 5  0.80   Ideal     H     VS1  62.6    55  3296 5.90 5.93 3.70
+## 6  0.39   Ideal     J     SI1  61.0    56   568 4.71 4.73 2.88
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -191,12 +191,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Fair  1760    1
-## 2 Fair  2273    2
-## 3 Fair  4307    3
-## 4 Good   622    1
-## 5 Good  1266    2
-## 6 Good  4191    3
+## 1 Fair  1114    1
+## 2 Good   734    1
+## 3 Good  1806    2
+## 4 Good  3895    3
+## 5 Good  6841    4
+## 6 Good  7143    5
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -271,7 +271,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-05-23
+## 1     2021-06-05
 ```
 
 ```r
@@ -281,7 +281,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-05-22
+## 1                  2021-06-04
 ```
 
 ```r
@@ -291,7 +291,7 @@ dbGetQuery(sc, "select last_day(current_date)")
 
 ```
 ##   last_day(current_date())
-## 1               2021-05-31
+## 1               2021-06-30
 ```
 
 ```r
@@ -301,7 +301,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         1
+## 1                         7
 ```
 
 最后，使用完记得关闭 Spark 连接

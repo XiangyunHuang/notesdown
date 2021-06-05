@@ -55,8 +55,8 @@ data.frame(name1 = c(
 ```
 
 ```{=html}
-<div id="htmlwidget-f640be607e5518d9b7e3" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f640be607e5518d9b7e3">{"x":{"filter":"top","filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","caption":"<caption style=\"caption-side: top; text-align: center;\">\n  表格 2: \n  <em>表格标题<\/em>\n<\/caption>","data":[["1","2","3"],["<b>加粗<\/b>","<em>强调<\/em>","正常"],["<a href=\"http://rstudio.com\">超链<\/a>","<a href=\"#\" onclick=\"alert('Hello');\">点击<\/a>","正常"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th><span style=\"color:red\">第1列<\/span><\/th>\n      <th><em>第2列<\/em><\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"},"pageLength":5,"dom":"tip","autoWidth":true,"order":[],"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6e0a67b01181e171dc2e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6e0a67b01181e171dc2e">{"x":{"filter":"top","filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","caption":"<caption style=\"caption-side: top; text-align: center;\">\n  表格 2: \n  <em>表格标题<\/em>\n<\/caption>","data":[["1","2","3"],["<b>加粗<\/b>","<em>强调<\/em>","正常"],["<a href=\"http://rstudio.com\">超链<\/a>","<a href=\"#\" onclick=\"alert('Hello');\">点击<\/a>","正常"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th><span style=\"color:red\">第1列<\/span><\/th>\n      <th><em>第2列<\/em><\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"},"pageLength":5,"dom":"tip","autoWidth":true,"order":[],"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
 下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
@@ -269,7 +269,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.0.3 (2020-10-10)
+## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -295,10 +295,10 @@ sessionInfo()
 ##  [1] rstudioapi_0.13   xml2_1.3.2        knitr_1.33        magrittr_2.0.1   
 ##  [5] munsell_0.5.0     rvest_1.0.0       viridisLite_0.4.0 colorspace_2.0-1 
 ##  [9] R6_2.5.0          rlang_0.4.11      httr_1.4.2        stringr_1.4.0    
-## [13] tools_4.0.3       webshot_0.5.2     xfun_0.23         jquerylib_0.1.4  
+## [13] tools_4.1.0       webshot_0.5.2     xfun_0.23         jquerylib_0.1.4  
 ## [17] systemfonts_1.0.2 htmltools_0.5.1.1 crosstalk_1.1.1   yaml_2.2.1       
 ## [21] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     sass_0.4.0       
 ## [25] htmlwidgets_1.5.3 glue_1.4.2        evaluate_0.14     rmarkdown_2.8    
-## [29] stringi_1.6.2     compiler_4.0.3    bslib_0.2.5       scales_1.1.1     
+## [29] stringi_1.6.2     compiler_4.1.0    bslib_0.2.5.1     scales_1.1.1     
 ## [33] svglite_2.0.0     jsonlite_1.7.2
 ```

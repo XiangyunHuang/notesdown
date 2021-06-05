@@ -13,13 +13,15 @@
 
 [modelsummary](https://github.com/vincentarelbundock/modelsummary) 整理模型输出，提供丰富的格式输出，如 PDF, Text/Markdown, LaTeX, MS Word, RTF, JPG, and PNG.
 
+[DrWhy](https://github.com/ModelOriented/DrWhy)
+
 [R for Data Science Online Learning Community](https://github.com/rfordatascience) 在线学习社区以 [tidytuesday](https://github.com/rfordatascience/tidytuesday) 闻名遐迩。
 
 <div class="figure" style="text-align: center">
 
 ```{=html}
-<div id="htmlwidget-36deea0c3b754e6e93ea" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-36deea0c3b754e6e93ea">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-fb3bcafce8ee2f4d12d3" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb3bcafce8ee2f4d12d3">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 <p class="caption">(\#fig:workflow)模型</p>
@@ -157,7 +159,7 @@ t.test(weight ~ group, data = PlantGrowth, subset = group %in% c("ctrl", "trt1")
 ## 
 ## data:  weight by group
 ## t = 1.1913, df = 16.524, p-value = 0.2504
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group ctrl and group trt1 is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.2875162  1.0295162
 ## sample estimates:
@@ -176,7 +178,7 @@ t.test(weight ~ group, data = PlantGrowth, subset = group %in% c("ctrl", "trt2")
 ## 
 ## data:  weight by group
 ## t = -2.134, df = 16.786, p-value = 0.0479
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group ctrl and group trt2 is not equal to 0
 ## 95 percent confidence interval:
 ##  -0.98287213 -0.00512787
 ## sample estimates:

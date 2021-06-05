@@ -5,6 +5,17 @@
 
 RStudio 首席技术官 CTO  Joe Cheng 在 2019年 RStudio 大会上介绍  [企业级 shiny 应用 原理、实践和工具](https://resources.rstudio.com/rstudio-conf-2019/shiny-in-production-principles-practices-and-tools-joe-cheng) 可以作为 shiny 从新技术到生产力的蜕变节点。支持高并发的异步编程，比如 Heather Nolis 和 Dr. Jacqueline Nolis 的报告介绍了日百万访问量下的 shiny 应用如何搭建[^scale-shiny]。 Colin Fay, Sébastien Rochette, Vincent Guyader, Cervan Girard 的书 [Engineering Production-Grade Shiny Apps](https://engineering-shiny.org/) 和 Hadley Wickham 的书 [Mastering Shiny](https://mastering-shiny.org/) 的问世宣告 shiny 的成熟稳定，以及生态的形成，在此之前 shiny 一直不被看好。shiny 生态意味着一个完整的工业级的应用圈，满足安全性、稳定性、高效性、维护性、扩展性的要求。
 
+
+<div class="figure" style="text-align: center">
+
+```{=html}
+<div id="htmlwidget-d165c601f4cfccf86531" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d165c601f4cfccf86531">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: dashed visual=ellipse\n#direction: down\n\n[<box>HTML]       -> [网页三剑客]\n[<box>JavaScript] -> [网页三剑客]\n[<box>CSS]        -> [<table>网页三剑客|bslib|htmltools||sass|jquerylib||thematic|htmlwidgets]\n\n[设计布局|flexdashboard|bs4Dash] -> [<actor>开发应用|R Shiny]\n[设计交互|shinyFeedback|shinyWidgets] -> [<actor>开发应用|R Shiny]\n\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n\n[开发应用] <- [<table>处理数据|Base R|SQL||data.table|dplyr||tidyr|purrr]\n[开发应用] <- [<table>制作图形|ggplot2|plotly||echarts4r|leaflet||dygraphs|apexcharter||highcharter|visNetwork]\n[开发应用] <- [<table>制作表格|DT|gt||reactable|formattable||kableExtra|sparkline]\n\n","svg":false},"evals":[],"jsHooks":[]}</script>
+```
+
+<p class="caption">(\#fig:shiny-ecosystem)Shiny 生态系统</p>
+</div>
+
 iSEE is winner of the Most Technically Impressive award of the 2019 Shiny Contest. 源码地址 <https://github.com/iSEE/isee-shiny-contest>
 
 Six Years of Shiny in Research - Collaborative Development of Web Tools in R [@RJ-2021-004]
@@ -588,7 +599,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.0.3 (2020-10-10)
+## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -613,11 +624,11 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.6        knitr_1.33        magrittr_2.0.1    xtable_1.8-4     
 ##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0    
-##  [9] highr_0.9         tools_4.0.3       xfun_0.23         jquerylib_0.1.4  
-## [13] ellipsis_0.3.2    htmltools_0.5.1.1 yaml_2.2.1        digest_0.6.27    
-## [17] lifecycle_1.0.0   bookdown_0.22     later_1.2.0       sass_0.4.0       
-## [21] promises_1.2.0.1  evaluate_0.14     mime_0.10         rmarkdown_2.8    
-## [25] stringi_1.6.2     compiler_4.0.3    bslib_0.2.5       jsonlite_1.7.2   
-## [29] httpuv_1.6.1
+##  [9] highr_0.9         tools_4.1.0       nomnoml_0.2.3     xfun_0.23        
+## [13] jquerylib_0.1.4   ellipsis_0.3.2    htmltools_0.5.1.1 yaml_2.2.1       
+## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     later_1.2.0      
+## [21] promises_1.2.0.1  sass_0.4.0        htmlwidgets_1.5.3 mime_0.10        
+## [25] evaluate_0.14     rmarkdown_2.8     stringi_1.6.2     compiler_4.1.0   
+## [29] bslib_0.2.5.1     jsonlite_1.7.2    httpuv_1.6.1
 ```
 

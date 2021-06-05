@@ -141,8 +141,20 @@ p3 <- ggplot(data = esoph, aes(x = tobgp, y = ncases / ncontrols, color = tobgp)
   theme_minimal()
 
 bottom_row <- plot_grid(p2, p3, labels = c('B', 'C'), label_size = 12)
+```
 
+```
+## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
+
+## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
+```
+
+```r
 plot_grid(p1, bottom_row, labels = c('A', ''), label_size = 12, ncol = 1)
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
 ```
 
 <div class="figure" style="text-align: center">
@@ -484,7 +496,7 @@ t.test(lwt ~ ui, data = birthwt, var.equal = TRUE)
 ## 
 ## data:  lwt by ui
 ## t = 2.1138, df = 187, p-value = 0.03586
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 ## 95 percent confidence interval:
 ##   0.8753389 25.3544748
 ## sample estimates:
@@ -502,7 +514,7 @@ t.test(lwt ~ ui, data = birthwt)
 ## 
 ## data:  lwt by ui
 ## t = 2.2547, df = 39.163, p-value = 0.02982
-## alternative hypothesis: true difference in means is not equal to 0
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 ## 95 percent confidence interval:
 ##   1.351128 24.878685
 ## sample estimates:
