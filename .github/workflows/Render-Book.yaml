@@ -132,7 +132,7 @@ jobs:
           if(!require('remotes')) install.packages(c('remotes'))
           remotes::install_deps('.')
           if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
-          if(!require('spDataLarge')) install.packages("spDataLarge", repos = "https://nowosad.github.io/drat")
+          if(!require('spDataLarge')) install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/", type = "source")
           if(!require('INLA')) install.packages("INLA", repos = "https://inla.r-inla-download.org/R/stable")
 
         shell: Rscript {0}
@@ -166,50 +166,50 @@ jobs:
           font_import(pattern="[X/x]kcd.ttf", paths = "~/.fonts/", prompt = FALSE)
         shell: Rscript {0}
 
-      # - name: Build Book
-      #   run: |
-      #     make gitbook
-      #     # if make gitbook; then make pdf; fi
-      #   env:
-      #     MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
-      #
-      # - name: Deploy book to bookdown.org
-      #   if: github.event_name == 'push'
-      #   env:
-      #     CONNECT_API_KEY: ${{ secrets.RSC_BOOKDOWN_TOKEN }}
-      #     CONTENT_ID: 3726 # 本地部署一次拿到站点 ID
-      #   run: |
-      #     Rscript '_deploy-book.R'
-      #
-      # - name: Deploy to Github Pages
-      #   if: ${{ github.ref == 'refs/heads/devel' }}
-      #   uses: JamesIves/github-pages-deploy-action@3.7.1
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     BRANCH: gh-pages
-      #     FOLDER: _book
-      #     CLEAN: true
-      #
-      # - name: Upload book folder for debug
-      #   if: failure()
-      #   uses: actions/upload-artifact@main
-      #   with:
-      #     name: Upload Book
-      #     path: _book
-      #
-      # - name: Deploy to Netlify
-      #   if: contains(env.isExtPR, 'false')
-      #   id: netlify-deploy
-      #   uses: nwtgck/actions-netlify@v1.1
-      #   with:
-      #     publish-dir: './_book'
-      #     production-branch: devel
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     deploy-message:
-      #       'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'
-      #     enable-pull-request-comment: true
-      #     enable-commit-comment: true
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      #   timeout-minutes: 10
+      - name: Build Book
+        run: |
+          make gitbook
+          # if make gitbook; then make pdf; fi
+        env:
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+
+      - name: Deploy book to bookdown.org
+        if: github.event_name == 'push'
+        env:
+          CONNECT_API_KEY: ${{ secrets.RSC_BOOKDOWN_TOKEN }}
+          CONTENT_ID: 3726 # 本地部署一次拿到站点 ID
+        run: |
+          Rscript '_deploy-book.R'
+
+      - name: Deploy to Github Pages
+        if: ${{ github.ref == 'refs/heads/devel' }}
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: _book
+          CLEAN: true
+
+      - name: Upload book folder for debug
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: Upload Book
+          path: _book
+
+      - name: Deploy to Netlify
+        if: contains(env.isExtPR, 'false')
+        id: netlify-deploy
+        uses: nwtgck/actions-netlify@v1.1
+        with:
+          publish-dir: './_book'
+          production-branch: devel
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message:
+            'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 10
