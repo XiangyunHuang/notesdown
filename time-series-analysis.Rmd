@@ -316,7 +316,7 @@ highchart() %>%
 
 美团、阿里巴巴在香港上市
 
-```{r hk-stock-data,cache=is.na(Sys.getenv('CI', NA))}
+```{r hk-stock-data,cache=is.na(Sys.getenv('CI', NA)),eval=!is.na(Sys.getenv('CI', NA))}
 # 美团
 meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
 # 阿里
@@ -326,7 +326,7 @@ sw <- quantmod::getSymbols("9618.HK", auto.assign = FALSE, src = "yahoo")
 # 腾讯
 tx <- quantmod::getSymbols("0700.HK", auto.assign = FALSE, src = "yahoo")
 ```
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="港股走势"}
+```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)), fig.cap="港股走势"}
 highchart(type = "stock") %>% 
   hc_add_series(meituan, type = "ohlc", name = '美团') %>% 
   hc_add_series(ali, type = "ohlc", name = '阿里巴巴') %>% 
@@ -338,7 +338,7 @@ highchart(type = "stock") %>%
 
 拼多多、京东、阿里巴巴、51Talk 在美股上市
 
-```{r us-stock-data,cache=is.na(Sys.getenv('CI', NA))}
+```{r us-stock-data,cache=is.na(Sys.getenv('CI', NA)),eval=!is.na(Sys.getenv('CI', NA))}
 # 拼多多
 pdd <- quantmod::getSymbols("PDD", auto.assign = FALSE, src = "yahoo")
 # 京东
@@ -348,7 +348,7 @@ baba <- quantmod::getSymbols("BABA", auto.assign = FALSE, src = "yahoo")
 # 51Talk
 coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2016-06-30')
 ```
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="美股走势"}
+```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)), fig.cap="美股走势"}
 highchart(type = "stock") %>% 
   hc_add_series(pdd, type = "ohlc", name = '拼多多') %>% 
   hc_add_series(jd, type = "ohlc", name = '京东') %>% 
@@ -371,11 +371,11 @@ coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2
 
 读者可以从雅虎财经获取数据源 <https://finance.yahoo.com/>
 
-```{r,eval=knitr::is_html_output(),fig.cap="疫情期间51Talk公司的股价走势",echo=knitr::is_html_output()}
+```{r,eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)),fig.cap="疫情期间51Talk公司的股价走势",echo=knitr::is_html_output()}
 highchart(type = "stock") %>% 
    hc_add_series(coe, type = "ohlc")
 ```
-```{r,eval=knitr::is_latex_output(),fig.cap="疫情期间51Talk公司的股价走势",echo=knitr::is_latex_output()}
+```{r,eval=knitr::is_latex_output() & !is.na(Sys.getenv('CI', NA)),fig.cap="疫情期间51Talk公司的股价走势",echo=knitr::is_latex_output()}
 plot(coe[, "COE.Close"],
   subset = "2016-06-30/2020-06-30",
   col = "Orange", main = "COE Stock Close Price"
@@ -384,33 +384,11 @@ plot(coe[, "COE.Close"],
 
 COE 股价变化趋势见图 \@ref(fig:coe-price)，包含开盘价 Open、最低价 Low、最高价 High、闭市价 Close 和调整价 Adjust 和交易额 Volume
 
-```{r coe-price,fig.cap="CEO 股价变化趋势",fig.asp=1,out.width="85%"}
+```{r coe-price,eval=!is.na(Sys.getenv('CI', NA)),fig.cap="CEO 股价变化趋势",fig.asp=1,out.width="85%"}
 autoplot(coe)
 ```
 
 **ggfortify** 包提供的 `autoplot()` 函数可以根据数据对象的不同绘制不同的图形
-
-
-
-
-
-## 蛋壳股价走势 {#sec:danke-stock}
-
-2020年01月17日，蛋壳公寓在纽交所上市，可如今 `r format(Sys.Date(), format = "%Y年%m月%d日")` 的股价
-
-
-```{r danke-data,cache=TRUE}
-danke <- quantmod::getSymbols("DNK", auto.assign = FALSE, src = "yahoo")
-tail(danke)
-```
-
-上市以来的股价走势情况
-
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output(), fig.cap="蛋壳公司的股价走势"}
-highchart(type = "stock") %>% 
-   hc_add_series(danke)
-```
-
 
 ## 运行环境 {#sec:tsa-sessioninfo}
 
