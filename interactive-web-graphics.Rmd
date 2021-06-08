@@ -860,37 +860,50 @@ plotly::plot_ly(data = dat) %>%
 盈亏图
 
 ```{r waterfall,fig.cap="瀑布图", eval=knitr::is_html_output()}
+library(plotly)
+library(dplyr)
+
 dat <- data.frame(
   x = c(
-    "Sales", "Consulting", "Net revenue",
-    "Purchases", "Other expenses", "Profit before tax"
+    "销售", "咨询", "净收入",
+    "购买", "其他费用", "税前利润"
   ),
+  y = c(60, 80, 10, -40, -20, 0),
   measure = c(
-    "relative", "relative", "total",
+    "relative", "relative", "relative",
     "relative", "relative", "total"
-  ),
-  text = c("+60", "+80", "", "-40", "-20", "Total"),
-  y = c(60, 80, 0, -40, -20, 0)
-) %>%
-  transform(x = factor(.$x, levels = .$x))
-
-plot_ly(dat,
-  name = "20",
-  type = "waterfall",
-  measure = ~measure,
-  x = ~x,
-  textposition = "outside",
-  y = ~y,
-  text = ~text,
-  connector = list(line = list(color = "rgb(63, 63, 63)"))
-) %>%
-  layout(
-    title = "Profit and loss statement 2018",
-    xaxis = list(title = ""),
-    yaxis = list(title = ""),
-    autosize = TRUE,
-    showlegend = TRUE
   )
+) %>%
+  mutate(text = case_when(
+    y > 0 ~ paste0("+", y),
+    y == 0 ~ "",
+    y < 0 ~ as.character(y)
+  )) %>%
+  mutate(x = factor(x, levels = c(
+    "销售", "咨询", "净收入",
+    "购买", "其他费用", "税前利润"
+  )))
+
+n_rows <- nrow(dat)
+dat[nrow(dat), "text"] <- "累计"
+
+# measure 取值为 'relative'/'total'/'absolute'
+plotly::plot_ly(dat,
+  x = ~x, y = ~y, measure = ~measure, type = "waterfall",
+  text = ~text, textposition = "outside", 
+  name = "收支", hoverinfo = "final",
+  connector = list(line = list(color = "gray")),
+  increasing = list(marker = list(color = "#66C2A5")),
+  decreasing = list(marker = list(color = "#FC8D62")),
+  totals = list(marker = list(color = "#8DA0CB"))
+) %>%
+  plotly::layout(
+    title = "2018 年收支状态",
+    xaxis = list(title = "业务"),
+    yaxis = list(title = "金额"),
+    showlegend = FALSE
+  ) %>%
+  plotly::config(displayModeBar = FALSE)
 ```
 
 
