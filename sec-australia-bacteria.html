@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,13 +857,13 @@ div.csl-indent {
 <div id="sec:australia-bacteria" class="section level2" number="24.5">
 <h2><span class="header-section-number">24.5</span> 细菌数据集</h2>
 <p>流感嗜血杆菌的细菌与中耳炎患儿</p>
-<div class="sourceCode" id="cb790"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb790-1"><a href="sec-australia-bacteria.html#cb790-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bacteria, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb791"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb791-1"><a href="sec-australia-bacteria.html#cb791-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 惩罚拟似然</span></span>
-<span id="cb791-2"><a href="sec-australia-bacteria.html#cb791-2" aria-hidden="true" tabindex="-1"></a>fit_glmmpql <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(y <span class="sc">~</span> trt <span class="sc">+</span> <span class="fu">I</span>(week <span class="sc">&gt;</span> <span class="dv">2</span>),</span>
-<span id="cb791-3"><a href="sec-australia-bacteria.html#cb791-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> ID, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb791-4"><a href="sec-australia-bacteria.html#cb791-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial, <span class="at">data =</span> bacteria</span>
-<span id="cb791-5"><a href="sec-australia-bacteria.html#cb791-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb791-6"><a href="sec-australia-bacteria.html#cb791-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmmpql)</span></code></pre></div>
+<div class="sourceCode" id="cb795"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb795-1"><a href="sec-australia-bacteria.html#cb795-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bacteria, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="sec-australia-bacteria.html#cb796-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 惩罚拟似然</span></span>
+<span id="cb796-2"><a href="sec-australia-bacteria.html#cb796-2" aria-hidden="true" tabindex="-1"></a>fit_glmmpql <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(y <span class="sc">~</span> trt <span class="sc">+</span> <span class="fu">I</span>(week <span class="sc">&gt;</span> <span class="dv">2</span>),</span>
+<span id="cb796-3"><a href="sec-australia-bacteria.html#cb796-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> ID, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb796-4"><a href="sec-australia-bacteria.html#cb796-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial, <span class="at">data =</span> bacteria</span>
+<span id="cb796-5"><a href="sec-australia-bacteria.html#cb796-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb796-6"><a href="sec-australia-bacteria.html#cb796-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmmpql)</span></code></pre></div>
 <pre><code>## Linear mixed-effects model fit by maximum likelihood
 ##   Data: bacteria 
 ##   AIC BIC logLik
@@ -896,11 +895,11 @@ div.csl-indent {
 ## 
 ## Number of Observations: 220
 ## Number of Groups: 50</code></pre>
-<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="sec-australia-bacteria.html#cb793-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 拉普拉斯近似</span></span>
-<span id="cb793-2"><a href="sec-australia-bacteria.html#cb793-2" aria-hidden="true" tabindex="-1"></a>fit_glmer <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer</span>(y <span class="sc">~</span> trt <span class="sc">+</span> <span class="fu">I</span>(week <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> ID),</span>
-<span id="cb793-3"><a href="sec-australia-bacteria.html#cb793-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial, <span class="at">data =</span> bacteria</span>
-<span id="cb793-4"><a href="sec-australia-bacteria.html#cb793-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb793-5"><a href="sec-australia-bacteria.html#cb793-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmer)</span></code></pre></div>
+<div class="sourceCode" id="cb798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb798-1"><a href="sec-australia-bacteria.html#cb798-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 拉普拉斯近似</span></span>
+<span id="cb798-2"><a href="sec-australia-bacteria.html#cb798-2" aria-hidden="true" tabindex="-1"></a>fit_glmer <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer</span>(y <span class="sc">~</span> trt <span class="sc">+</span> <span class="fu">I</span>(week <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> ID),</span>
+<span id="cb798-3"><a href="sec-australia-bacteria.html#cb798-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial, <span class="at">data =</span> bacteria</span>
+<span id="cb798-4"><a href="sec-australia-bacteria.html#cb798-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb798-5"><a href="sec-australia-bacteria.html#cb798-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmer)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
 ##   Approximation) [glmerMod]
 ##  Family: binomial  ( logit )

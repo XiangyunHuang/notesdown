@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -876,85 +875,85 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 \]</span></p>
 <p>其中 <span class="math inline">\(x = (x_1,x_2,\dots,x_m)^\top, \forall i, -\infty \le a_i \le b_i \le \infty\)</span>， <span class="math inline">\(\Sigma\)</span> 是 <span class="math inline">\(m \times m\)</span> 对称非负定的矩阵</p>
 <p>多元 <span class="math inline">\(t\)</span> 分布分位数计算</p>
-<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="sec-exponential-family.html#cb465-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
-<span id="cb465-2"><a href="sec-exponential-family.html#cb465-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">24</span>, <span class="dv">20</span>, <span class="dv">33</span>, <span class="dv">32</span>)</span>
-<span id="cb465-3"><a href="sec-exponential-family.html#cb465-3" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> n)</span>
-<span id="cb465-4"><a href="sec-exponential-family.html#cb465-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="dv">130</span></span>
-<span id="cb465-5"><a href="sec-exponential-family.html#cb465-5" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb465-6"><a href="sec-exponential-family.html#cb465-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
-<span id="cb465-7"><a href="sec-exponential-family.html#cb465-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb465-8"><a href="sec-exponential-family.html#cb465-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span></span>
-<span id="cb465-9"><a href="sec-exponential-family.html#cb465-9" aria-hidden="true" tabindex="-1"></a>), <span class="at">ncol =</span> <span class="dv">5</span>)</span>
-<span id="cb465-10"><a href="sec-exponential-family.html#cb465-10" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> C <span class="sc">%*%</span> V <span class="sc">%*%</span> <span class="fu">t</span>(C) <span class="do">## covariance matrix</span></span>
-<span id="cb465-11"><a href="sec-exponential-family.html#cb465-11" aria-hidden="true" tabindex="-1"></a>dv <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cv)))</span>
-<span id="cb465-12"><a href="sec-exponential-family.html#cb465-12" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> cv <span class="sc">*</span> (<span class="fu">t</span>(dv) <span class="sc">%*%</span> dv) <span class="do">## correlation matrix</span></span>
-<span id="cb465-13"><a href="sec-exponential-family.html#cb465-13" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span>
-<span id="cb465-14"><a href="sec-exponential-family.html#cb465-14" aria-hidden="true" tabindex="-1"></a>Tn <span class="ot">&lt;-</span> <span class="fu">qmvt</span>(<span class="fl">0.95</span>,</span>
-<span id="cb465-15"><a href="sec-exponential-family.html#cb465-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> df, <span class="at">delta =</span> delta, <span class="at">corr =</span> cr,</span>
-<span id="cb465-16"><a href="sec-exponential-family.html#cb465-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">abseps =</span> <span class="fl">0.0001</span>, <span class="at">maxpts =</span> <span class="dv">100000</span>, <span class="at">tail =</span> <span class="st">&quot;both&quot;</span></span>
-<span id="cb465-17"><a href="sec-exponential-family.html#cb465-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb465-18"><a href="sec-exponential-family.html#cb465-18" aria-hidden="true" tabindex="-1"></a>Tn</span></code></pre></div>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="sec-exponential-family.html#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
+<span id="cb470-2"><a href="sec-exponential-family.html#cb470-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">24</span>, <span class="dv">20</span>, <span class="dv">33</span>, <span class="dv">32</span>)</span>
+<span id="cb470-3"><a href="sec-exponential-family.html#cb470-3" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span> <span class="sc">/</span> n)</span>
+<span id="cb470-4"><a href="sec-exponential-family.html#cb470-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="dv">130</span></span>
+<span id="cb470-5"><a href="sec-exponential-family.html#cb470-5" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb470-6"><a href="sec-exponential-family.html#cb470-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb470-7"><a href="sec-exponential-family.html#cb470-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb470-8"><a href="sec-exponential-family.html#cb470-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb470-9"><a href="sec-exponential-family.html#cb470-9" aria-hidden="true" tabindex="-1"></a>), <span class="at">ncol =</span> <span class="dv">5</span>)</span>
+<span id="cb470-10"><a href="sec-exponential-family.html#cb470-10" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> C <span class="sc">%*%</span> V <span class="sc">%*%</span> <span class="fu">t</span>(C) <span class="do">## covariance matrix</span></span>
+<span id="cb470-11"><a href="sec-exponential-family.html#cb470-11" aria-hidden="true" tabindex="-1"></a>dv <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cv)))</span>
+<span id="cb470-12"><a href="sec-exponential-family.html#cb470-12" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> cv <span class="sc">*</span> (<span class="fu">t</span>(dv) <span class="sc">%*%</span> dv) <span class="do">## correlation matrix</span></span>
+<span id="cb470-13"><a href="sec-exponential-family.html#cb470-13" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb470-14"><a href="sec-exponential-family.html#cb470-14" aria-hidden="true" tabindex="-1"></a>Tn <span class="ot">&lt;-</span> <span class="fu">qmvt</span>(<span class="fl">0.95</span>,</span>
+<span id="cb470-15"><a href="sec-exponential-family.html#cb470-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> df, <span class="at">delta =</span> delta, <span class="at">corr =</span> cr,</span>
+<span id="cb470-16"><a href="sec-exponential-family.html#cb470-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">abseps =</span> <span class="fl">0.0001</span>, <span class="at">maxpts =</span> <span class="dv">100000</span>, <span class="at">tail =</span> <span class="st">&quot;both&quot;</span></span>
+<span id="cb470-17"><a href="sec-exponential-family.html#cb470-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb470-18"><a href="sec-exponential-family.html#cb470-18" aria-hidden="true" tabindex="-1"></a>Tn</span></code></pre></div>
 <pre><code>## $quantile
-## [1] 2.561124
+## [1] 2.560993
 ## 
 ## $f.quantile
-## [1] 2.189664e-07
+## [1] 2.030757e-07
 ## 
 ## attr(,&quot;message&quot;)
 ## [1] &quot;Normal Completion&quot;</code></pre>
 <p>计算多元正态分布的概率，这个例子来自 <a href="https://stackoverflow.com/questions/36704081" class="uri">https://stackoverflow.com/questions/36704081</a></p>
-<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="sec-exponential-family.html#cb467-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模拟一个协方差矩阵</span></span>
-<span id="cb467-2"><a href="sec-exponential-family.html#cb467-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/sigma.csv&quot;</span>, <span class="at">header =</span> F, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>))</span>
-<span id="cb467-3"><a href="sec-exponential-family.html#cb467-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(sigma) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(sigma)</span>
-<span id="cb467-4"><a href="sec-exponential-family.html#cb467-4" aria-hidden="true" tabindex="-1"></a><span class="co"># matrixcalc::is.symmetric.matrix(sigma) # 判断 sigma 是否为对称的矩阵</span></span>
-<span id="cb467-5"><a href="sec-exponential-family.html#cb467-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matrixcalc::is.positive.definite(sigma) # 判断 sigma 是否为正定的矩阵</span></span>
-<span id="cb467-6"><a href="sec-exponential-family.html#cb467-6" aria-hidden="true" tabindex="-1"></a><span class="co"># isTRUE(all.equal(sigma, t(sigma)))</span></span>
-<span id="cb467-7"><a href="sec-exponential-family.html#cb467-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sigma)</span>
-<span id="cb467-8"><a href="sec-exponential-family.html#cb467-8" aria-hidden="true" tabindex="-1"></a>Fn <span class="ot">&lt;-</span> <span class="fu">pmvnorm</span>(</span>
-<span id="cb467-9"><a href="sec-exponential-family.html#cb467-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="cn">Inf</span>, m), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">0</span>, m),</span>
-<span id="cb467-10"><a href="sec-exponential-family.html#cb467-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">rep</span>(<span class="dv">0</span>, m), <span class="at">sigma =</span> sigma</span>
-<span id="cb467-11"><a href="sec-exponential-family.html#cb467-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb467-12"><a href="sec-exponential-family.html#cb467-12" aria-hidden="true" tabindex="-1"></a>Fn</span></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="sec-exponential-family.html#cb472-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模拟一个协方差矩阵</span></span>
+<span id="cb472-2"><a href="sec-exponential-family.html#cb472-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;data/sigma.csv&quot;</span>, <span class="at">header =</span> F, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>))</span>
+<span id="cb472-3"><a href="sec-exponential-family.html#cb472-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(sigma) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(sigma)</span>
+<span id="cb472-4"><a href="sec-exponential-family.html#cb472-4" aria-hidden="true" tabindex="-1"></a><span class="co"># matrixcalc::is.symmetric.matrix(sigma) # 判断 sigma 是否为对称的矩阵</span></span>
+<span id="cb472-5"><a href="sec-exponential-family.html#cb472-5" aria-hidden="true" tabindex="-1"></a><span class="co"># matrixcalc::is.positive.definite(sigma) # 判断 sigma 是否为正定的矩阵</span></span>
+<span id="cb472-6"><a href="sec-exponential-family.html#cb472-6" aria-hidden="true" tabindex="-1"></a><span class="co"># isTRUE(all.equal(sigma, t(sigma)))</span></span>
+<span id="cb472-7"><a href="sec-exponential-family.html#cb472-7" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sigma)</span>
+<span id="cb472-8"><a href="sec-exponential-family.html#cb472-8" aria-hidden="true" tabindex="-1"></a>Fn <span class="ot">&lt;-</span> <span class="fu">pmvnorm</span>(</span>
+<span id="cb472-9"><a href="sec-exponential-family.html#cb472-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="cn">Inf</span>, m), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">0</span>, m),</span>
+<span id="cb472-10"><a href="sec-exponential-family.html#cb472-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">rep</span>(<span class="dv">0</span>, m), <span class="at">sigma =</span> sigma</span>
+<span id="cb472-11"><a href="sec-exponential-family.html#cb472-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb472-12"><a href="sec-exponential-family.html#cb472-12" aria-hidden="true" tabindex="-1"></a>Fn</span></code></pre></div>
 <p><code>mvrnorm()</code> 函数来自 <strong>MASS</strong> 包，模拟多元正态分布的样本</p>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="sec-exponential-family.html#cb468-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb468-2"><a href="sec-exponential-family.html#cb468-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2018</span>)</span>
-<span id="cb468-3"><a href="sec-exponential-family.html#cb468-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span> <span class="co"># 样本量</span></span>
-<span id="cb468-4"><a href="sec-exponential-family.html#cb468-4" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="at">Sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.8</span>, <span class="dv">1</span>), <span class="dv">2</span>))</span>
-<span id="cb468-5"><a href="sec-exponential-family.html#cb468-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X,</span>
-<span id="cb468-6"><a href="sec-exponential-family.html#cb468-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">panel.first =</span> <span class="fu">grid</span>(), <span class="at">cex =</span> <span class="dv">1</span>,</span>
-<span id="cb468-7"><a href="sec-exponential-family.html#cb468-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">densCols</span>(X, <span class="at">colramp =</span> hcl.colors),</span>
-<span id="cb468-8"><a href="sec-exponential-family.html#cb468-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(X[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(X[<span class="dv">2</span>])</span>
-<span id="cb468-9"><a href="sec-exponential-family.html#cb468-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="sec-exponential-family.html#cb473-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb473-2"><a href="sec-exponential-family.html#cb473-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2018</span>)</span>
+<span id="cb473-3"><a href="sec-exponential-family.html#cb473-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span> <span class="co"># 样本量</span></span>
+<span id="cb473-4"><a href="sec-exponential-family.html#cb473-4" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="at">Sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.8</span>, <span class="dv">1</span>), <span class="dv">2</span>))</span>
+<span id="cb473-5"><a href="sec-exponential-family.html#cb473-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X,</span>
+<span id="cb473-6"><a href="sec-exponential-family.html#cb473-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">panel.first =</span> <span class="fu">grid</span>(), <span class="at">cex =</span> <span class="dv">1</span>,</span>
+<span id="cb473-7"><a href="sec-exponential-family.html#cb473-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">densCols</span>(X, <span class="at">colramp =</span> hcl.colors),</span>
+<span id="cb473-8"><a href="sec-exponential-family.html#cb473-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(X[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(X[<span class="dv">2</span>])</span>
+<span id="cb473-9"><a href="sec-exponential-family.html#cb473-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:two-normal-dist"></span>
 <img src="sampling-distributions_files/figure-html/two-normal-dist-1.png" alt="二维正态分布" width="85%" />
 <p class="caption">
 图 18.1: 二维正态分布
 </p>
 </div>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="sec-exponential-family.html#cb469-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">kde2d</span>(X[, <span class="dv">1</span>], X[, <span class="dv">2</span>], <span class="at">n =</span> <span class="dv">25</span>)</span>
-<span id="cb469-2"><a href="sec-exponential-family.html#cb469-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(f1, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>), <span class="at">xlab =</span> <span class="fu">expression</span>(X[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(X[<span class="dv">2</span>]))</span>
-<span id="cb469-3"><a href="sec-exponential-family.html#cb469-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(f1, <span class="at">add =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="sec-exponential-family.html#cb474-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">kde2d</span>(X[, <span class="dv">1</span>], X[, <span class="dv">2</span>], <span class="at">n =</span> <span class="dv">25</span>)</span>
+<span id="cb474-2"><a href="sec-exponential-family.html#cb474-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(f1, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>), <span class="at">xlab =</span> <span class="fu">expression</span>(X[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(X[<span class="dv">2</span>]))</span>
+<span id="cb474-3"><a href="sec-exponential-family.html#cb474-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(f1, <span class="at">add =</span> T)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:two-normal-contour"></span>
 <img src="sampling-distributions_files/figure-html/two-normal-contour-1.png" alt="二维正态分布" width="85%" />
 <p class="caption">
 图 18.2: 二维正态分布
 </p>
 </div>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="sec-exponential-family.html#cb470-1" aria-hidden="true" tabindex="-1"></a>nrz <span class="ot">&lt;-</span> <span class="fu">nrow</span>(f1<span class="sc">$</span>z)</span>
-<span id="cb470-2"><a href="sec-exponential-family.html#cb470-2" aria-hidden="true" tabindex="-1"></a>ncz <span class="ot">&lt;-</span> <span class="fu">ncol</span>(f1<span class="sc">$</span>z)</span>
-<span id="cb470-3"><a href="sec-exponential-family.html#cb470-3" aria-hidden="true" tabindex="-1"></a>nbcol <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb470-4"><a href="sec-exponential-family.html#cb470-4" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>)</span>
-<span id="cb470-5"><a href="sec-exponential-family.html#cb470-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the z-value at the facet centres</span></span>
-<span id="cb470-6"><a href="sec-exponential-family.html#cb470-6" aria-hidden="true" tabindex="-1"></a>zfacet <span class="ot">&lt;-</span> f1<span class="sc">$</span>z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>ncz] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span>nrz, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span>nrz, <span class="sc">-</span>ncz]</span>
-<span id="cb470-7"><a href="sec-exponential-family.html#cb470-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode facet z-values into color indices</span></span>
-<span id="cb470-8"><a href="sec-exponential-family.html#cb470-8" aria-hidden="true" tabindex="-1"></a>facetcol <span class="ot">&lt;-</span> <span class="fu">cut</span>(zfacet, nbcol)</span>
-<span id="cb470-9"><a href="sec-exponential-family.html#cb470-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb470-10"><a href="sec-exponential-family.html#cb470-10" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(f1,</span>
-<span id="cb470-11"><a href="sec-exponential-family.html#cb470-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;X[1]&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;X[2]&quot;</span>, <span class="at">zlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> Z&quot;</span>,</span>
-<span id="cb470-12"><a href="sec-exponential-family.html#cb470-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="dv">30</span>, <span class="at">phi =</span> <span class="dv">20</span>, <span class="at">col =</span> color[facetcol],</span>
-<span id="cb470-13"><a href="sec-exponential-family.html#cb470-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="dv">50</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> <span class="fl">0.5</span>, <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
-<span id="cb470-14"><a href="sec-exponential-family.html#cb470-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">ticktype =</span> <span class="st">&quot;detailed&quot;</span>, <span class="at">nticks =</span> <span class="dv">5</span>, <span class="at">box =</span> <span class="cn">TRUE</span></span>
-<span id="cb470-15"><a href="sec-exponential-family.html#cb470-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="sec-exponential-family.html#cb475-1" aria-hidden="true" tabindex="-1"></a>nrz <span class="ot">&lt;-</span> <span class="fu">nrow</span>(f1<span class="sc">$</span>z)</span>
+<span id="cb475-2"><a href="sec-exponential-family.html#cb475-2" aria-hidden="true" tabindex="-1"></a>ncz <span class="ot">&lt;-</span> <span class="fu">ncol</span>(f1<span class="sc">$</span>z)</span>
+<span id="cb475-3"><a href="sec-exponential-family.html#cb475-3" aria-hidden="true" tabindex="-1"></a>nbcol <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb475-4"><a href="sec-exponential-family.html#cb475-4" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(<span class="dv">100</span>)</span>
+<span id="cb475-5"><a href="sec-exponential-family.html#cb475-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the z-value at the facet centres</span></span>
+<span id="cb475-6"><a href="sec-exponential-family.html#cb475-6" aria-hidden="true" tabindex="-1"></a>zfacet <span class="ot">&lt;-</span> f1<span class="sc">$</span>z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>ncz] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span>nrz, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> f1<span class="sc">$</span>z[<span class="sc">-</span>nrz, <span class="sc">-</span>ncz]</span>
+<span id="cb475-7"><a href="sec-exponential-family.html#cb475-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode facet z-values into color indices</span></span>
+<span id="cb475-8"><a href="sec-exponential-family.html#cb475-8" aria-hidden="true" tabindex="-1"></a>facetcol <span class="ot">&lt;-</span> <span class="fu">cut</span>(zfacet, nbcol)</span>
+<span id="cb475-9"><a href="sec-exponential-family.html#cb475-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb475-10"><a href="sec-exponential-family.html#cb475-10" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(f1,</span>
+<span id="cb475-11"><a href="sec-exponential-family.html#cb475-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;X[1]&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;X[2]&quot;</span>, <span class="at">zlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> Z&quot;</span>,</span>
+<span id="cb475-12"><a href="sec-exponential-family.html#cb475-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="dv">30</span>, <span class="at">phi =</span> <span class="dv">20</span>, <span class="at">col =</span> color[facetcol],</span>
+<span id="cb475-13"><a href="sec-exponential-family.html#cb475-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="dv">50</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> <span class="fl">0.5</span>, <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
+<span id="cb475-14"><a href="sec-exponential-family.html#cb475-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">ticktype =</span> <span class="st">&quot;detailed&quot;</span>, <span class="at">nticks =</span> <span class="dv">5</span>, <span class="at">box =</span> <span class="cn">TRUE</span></span>
+<span id="cb475-15"><a href="sec-exponential-family.html#cb475-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:two-normal-persp"></span>
 <img src="sampling-distributions_files/figure-html/two-normal-persp-1.png" alt="二维正态分布" width="85%" />
 <p class="caption">

@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -861,89 +860,89 @@ div.csl-indent {
 <p><span class="math display">\[Y \sim \mathcal{N}(\mu,\sigma^2)\]</span>
 已知 <span class="math inline">\(y_1,y_2,\ldots,y_n\)</span> 是来自正态总体 <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> 的一个样本，我们需要估计这个正态分布模型的参数 <span class="math inline">\(\mu\)</span> 和 <span class="math inline">\(\sigma^2\)</span>。</p>
 <p>最大似然估计，简单推导过程，计算代码；再讲 stan 的计算步骤</p>
-<div class="sourceCode" id="cb976"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb976-1"><a href="sec-bayesian-normal-distribution.html#cb976-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
-<span id="cb976-2"><a href="sec-bayesian-normal-distribution.html#cb976-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/normal_dist.stan&quot;</span>, <span class="at">compile =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb981"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb981-1"><a href="sec-bayesian-normal-distribution.html#cb981-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb981-2"><a href="sec-bayesian-normal-distribution.html#cb981-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/normal_dist.stan&quot;</span>, <span class="at">compile =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>打包观测数据，初始化待估参数值，指定链条数，其中 <code>dataList</code> 必须与 stan 代码中数据块声明保持一致（如变量名称，长度），每条链使用不同的初始值，选择合适的初始值可以有效地提高收敛的速度。</p>
-<div class="sourceCode" id="cb977"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb977-1"><a href="sec-bayesian-normal-distribution.html#cb977-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据准备</span></span>
-<span id="cb977-2"><a href="sec-bayesian-normal-distribution.html#cb977-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20190427</span>)</span>
-<span id="cb977-3"><a href="sec-bayesian-normal-distribution.html#cb977-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置参数</span></span>
-<span id="cb977-4"><a href="sec-bayesian-normal-distribution.html#cb977-4" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb977-5"><a href="sec-bayesian-normal-distribution.html#cb977-5" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb977-6"><a href="sec-bayesian-normal-distribution.html#cb977-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 样本量</span></span>
-<span id="cb977-7"><a href="sec-bayesian-normal-distribution.html#cb977-7" aria-hidden="true" tabindex="-1"></a>nobs <span class="ot">&lt;-</span> <span class="dv">500</span></span>
-<span id="cb977-8"><a href="sec-bayesian-normal-distribution.html#cb977-8" aria-hidden="true" tabindex="-1"></a>nchains <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb977-9"><a href="sec-bayesian-normal-distribution.html#cb977-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成随机数</span></span>
-<span id="cb977-10"><a href="sec-bayesian-normal-distribution.html#cb977-10" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> nobs, <span class="at">mean =</span> mu, <span class="at">sd =</span> sd)</span>
-<span id="cb977-11"><a href="sec-bayesian-normal-distribution.html#cb977-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 给每条链设置不同的参数初始值</span></span>
-<span id="cb977-12"><a href="sec-bayesian-normal-distribution.html#cb977-12" aria-hidden="true" tabindex="-1"></a>inits_data <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>nchains, <span class="cf">function</span>(i) {</span>
-<span id="cb977-13"><a href="sec-bayesian-normal-distribution.html#cb977-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb977-14"><a href="sec-bayesian-normal-distribution.html#cb977-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
-<span id="cb977-15"><a href="sec-bayesian-normal-distribution.html#cb977-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigma =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">10</span>)</span>
-<span id="cb977-16"><a href="sec-bayesian-normal-distribution.html#cb977-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb977-17"><a href="sec-bayesian-normal-distribution.html#cb977-17" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div class="sourceCode" id="cb982"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb982-1"><a href="sec-bayesian-normal-distribution.html#cb982-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据准备</span></span>
+<span id="cb982-2"><a href="sec-bayesian-normal-distribution.html#cb982-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20190427</span>)</span>
+<span id="cb982-3"><a href="sec-bayesian-normal-distribution.html#cb982-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置参数</span></span>
+<span id="cb982-4"><a href="sec-bayesian-normal-distribution.html#cb982-4" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb982-5"><a href="sec-bayesian-normal-distribution.html#cb982-5" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb982-6"><a href="sec-bayesian-normal-distribution.html#cb982-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 样本量</span></span>
+<span id="cb982-7"><a href="sec-bayesian-normal-distribution.html#cb982-7" aria-hidden="true" tabindex="-1"></a>nobs <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb982-8"><a href="sec-bayesian-normal-distribution.html#cb982-8" aria-hidden="true" tabindex="-1"></a>nchains <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb982-9"><a href="sec-bayesian-normal-distribution.html#cb982-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成随机数</span></span>
+<span id="cb982-10"><a href="sec-bayesian-normal-distribution.html#cb982-10" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> nobs, <span class="at">mean =</span> mu, <span class="at">sd =</span> sd)</span>
+<span id="cb982-11"><a href="sec-bayesian-normal-distribution.html#cb982-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 给每条链设置不同的参数初始值</span></span>
+<span id="cb982-12"><a href="sec-bayesian-normal-distribution.html#cb982-12" aria-hidden="true" tabindex="-1"></a>inits_data <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>nchains, <span class="cf">function</span>(i) {</span>
+<span id="cb982-13"><a href="sec-bayesian-normal-distribution.html#cb982-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb982-14"><a href="sec-bayesian-normal-distribution.html#cb982-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="fu">min</span>(y), <span class="fu">max</span>(y)),</span>
+<span id="cb982-15"><a href="sec-bayesian-normal-distribution.html#cb982-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigma =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb982-16"><a href="sec-bayesian-normal-distribution.html#cb982-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb982-17"><a href="sec-bayesian-normal-distribution.html#cb982-17" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
 <p>将参数初值代入模型，抽样，获取参数的后验分布</p>
-<div class="sourceCode" id="cb978"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb978-1"><a href="sec-bayesian-normal-distribution.html#cb978-1" aria-hidden="true" tabindex="-1"></a>normal_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb978-2"><a href="sec-bayesian-normal-distribution.html#cb978-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
-<span id="cb978-3"><a href="sec-bayesian-normal-distribution.html#cb978-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> nobs,</span>
-<span id="cb978-4"><a href="sec-bayesian-normal-distribution.html#cb978-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> y</span>
-<span id="cb978-5"><a href="sec-bayesian-normal-distribution.html#cb978-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb978-6"><a href="sec-bayesian-normal-distribution.html#cb978-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> inits_data,</span>
-<span id="cb978-7"><a href="sec-bayesian-normal-distribution.html#cb978-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
-<span id="cb978-8"><a href="sec-bayesian-normal-distribution.html#cb978-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
-<span id="cb978-9"><a href="sec-bayesian-normal-distribution.html#cb978-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> nchains, <span class="co"># 马尔科夫链的数目</span></span>
-<span id="cb978-10"><a href="sec-bayesian-normal-distribution.html#cb978-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
-<span id="cb978-11"><a href="sec-bayesian-normal-distribution.html#cb978-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
-<span id="cb978-12"><a href="sec-bayesian-normal-distribution.html#cb978-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
-<span id="cb978-13"><a href="sec-bayesian-normal-distribution.html#cb978-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
-<span id="cb978-14"><a href="sec-bayesian-normal-distribution.html#cb978-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb983"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb983-1"><a href="sec-bayesian-normal-distribution.html#cb983-1" aria-hidden="true" tabindex="-1"></a>normal_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb983-2"><a href="sec-bayesian-normal-distribution.html#cb983-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(</span>
+<span id="cb983-3"><a href="sec-bayesian-normal-distribution.html#cb983-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">N =</span> nobs,</span>
+<span id="cb983-4"><a href="sec-bayesian-normal-distribution.html#cb983-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> y</span>
+<span id="cb983-5"><a href="sec-bayesian-normal-distribution.html#cb983-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb983-6"><a href="sec-bayesian-normal-distribution.html#cb983-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> inits_data,</span>
+<span id="cb983-7"><a href="sec-bayesian-normal-distribution.html#cb983-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
+<span id="cb983-8"><a href="sec-bayesian-normal-distribution.html#cb983-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
+<span id="cb983-9"><a href="sec-bayesian-normal-distribution.html#cb983-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> nchains, <span class="co"># 马尔科夫链的数目</span></span>
+<span id="cb983-10"><a href="sec-bayesian-normal-distribution.html#cb983-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
+<span id="cb983-11"><a href="sec-bayesian-normal-distribution.html#cb983-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
+<span id="cb983-12"><a href="sec-bayesian-normal-distribution.html#cb983-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
+<span id="cb983-13"><a href="sec-bayesian-normal-distribution.html#cb983-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
+<span id="cb983-14"><a href="sec-bayesian-normal-distribution.html#cb983-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.1 seconds.
 ## Chain 2 finished in 0.1 seconds.
-## Chain 3 finished in 0.1 seconds.
+## Chain 3 finished in 0.0 seconds.
 ## Chain 4 finished in 0.1 seconds.
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
 ## Total execution time: 0.6 seconds.</code></pre>
 <p>检查收敛性，Rhat 决定收敛性，所有待估参数的Rhat必须小于1.1，同时有效样本数量 n_eff 除以抽样总数 N 必须小于0.001，否则收敛性是值得怀疑的。拟合结果及解释如下：</p>
-<div class="sourceCode" id="cb980"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb980-1"><a href="sec-bayesian-normal-distribution.html#cb980-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型参数估计结果</span></span>
-<span id="cb980-2"><a href="sec-bayesian-normal-distribution.html#cb980-2" aria-hidden="true" tabindex="-1"></a>normal_fit<span class="sc">$</span><span class="fu">cmdstan_summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb985"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb985-1"><a href="sec-bayesian-normal-distribution.html#cb985-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型参数估计结果</span></span>
+<span id="cb985-2"><a href="sec-bayesian-normal-distribution.html#cb985-2" aria-hidden="true" tabindex="-1"></a>normal_fit<span class="sc">$</span><span class="fu">cmdstan_summary</span>()</span></code></pre></div>
 <pre><code>## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.014, 0.013, 0.013, 0.012) seconds, 0.052 seconds total
-## Sampling took (0.051, 0.040, 0.040, 0.039) seconds, 0.17 seconds total
+## Warmup took (0.014, 0.013, 0.013, 0.013) seconds, 0.053 seconds total
+## Sampling took (0.048, 0.043, 0.037, 0.040) seconds, 0.17 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    21125      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.2e+03  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    21377      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.3e+03  1.0e+00
 ## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
-## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.2e+02  1.1e+00
+## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
 ## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.4e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
-## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.9e+04  1.0e+00
+## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    33717     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    40499     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    34119     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    40981     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
 ## and R_hat is the potential scale reduction factor on split chains (at 
 ## convergence, R_hat=1).</code></pre>
 <p>调用 draws 方法 <code>normal_fit$draws()</code>，获得一个由 <strong>posterior</strong> 构造的 <code>draws_array</code> 对象，</p>
-<div class="sourceCode" id="cb982"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb982-1"><a href="sec-bayesian-normal-distribution.html#cb982-1" aria-hidden="true" tabindex="-1"></a>draws_array <span class="ot">&lt;-</span> normal_fit<span class="sc">$</span><span class="fu">draws</span>()</span>
-<span id="cb982-2"><a href="sec-bayesian-normal-distribution.html#cb982-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(draws_array)</span></code></pre></div>
+<div class="sourceCode" id="cb987"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb987-1"><a href="sec-bayesian-normal-distribution.html#cb987-1" aria-hidden="true" tabindex="-1"></a>draws_array <span class="ot">&lt;-</span> normal_fit<span class="sc">$</span><span class="fu">draws</span>()</span>
+<span id="cb987-2"><a href="sec-bayesian-normal-distribution.html#cb987-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(draws_array)</span></code></pre></div>
 <pre><code>##  &#39;draws_array&#39; num [1:2000, 1:4, 1:3] -601 -601 -602 -601 -601 ...
 ##  - attr(*, &quot;dimnames&quot;)=List of 3
 ##   ..$ iteration: chr [1:2000] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##   ..$ chain    : chr [1:4] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;
 ##   ..$ variable : chr [1:3] &quot;lp__&quot; &quot;mu&quot; &quot;sigma&quot;</code></pre>
 <p>采样结果可以直接传递给 <strong>bayesplot</strong> 包，绘制参数的后验分布和马尔科夫链蒙特卡罗采样的轨迹图（trace plot）。</p>
-<div class="sourceCode" id="cb984"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb984-1"><a href="sec-bayesian-normal-distribution.html#cb984-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb984-2"><a href="sec-bayesian-normal-distribution.html#cb984-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(normal_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>)))</span>
-<span id="cb984-3"><a href="sec-bayesian-normal-distribution.html#cb984-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_hist</span>(normal_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb989"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb989-1"><a href="sec-bayesian-normal-distribution.html#cb989-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb989-2"><a href="sec-bayesian-normal-distribution.html#cb989-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_trace</span>(normal_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>)))</span>
+<span id="cb989-3"><a href="sec-bayesian-normal-distribution.html#cb989-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_hist</span>(normal_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>)))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:mu-sigma-dist"></span>
 <img src="bayesian-models_files/figure-html/mu-sigma-dist-1.png" alt="参数 \(\mu, \sigma\) 的迭代轨迹图和后验分布图" width="768" /><img src="bayesian-models_files/figure-html/mu-sigma-dist-2.png" alt="参数 \(\mu, \sigma\) 的迭代轨迹图和后验分布图" width="768" />
 <p class="caption">

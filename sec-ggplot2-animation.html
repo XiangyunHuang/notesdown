@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -859,13 +858,13 @@ div.csl-indent {
 <h2><span class="header-section-number">8.27</span> 动态图</h2>
 <p><a href="https://github.com/ropensci/av"><strong>av</strong></a> 包基于 <a href="https://github.com/FFmpeg/FFmpeg">FFmpeg</a> 将静态图片合成视频，而 <a href="https://github.com/r-rust/gifski/"><strong>gifski</strong></a> 包基于 <a href="https://gif.ski/">gifski</a> 将静态图片合成 GIF 动画，<a href="https://github.com/yihui/animation"><strong>animation</strong></a> 包 <span class="citation">(<a href="#ref-Xie_2013_animation" role="doc-biblioref">Xie 2013</a>)</span> 将 Base R 绘制的图形转化为动画或视频，<a href="https://github.com/leonawicz/mapmate">mapmate</a> 制作地图相关的三维可视化图形，<a href="https://github.com/thomasp85/gganimate"><strong>gganimate</strong></a> 包支持将 ggplot2 生成的图形，<strong>magick</strong> 可以将一系列静态图形合成动态图形，借助 <strong>gifski</strong> 包转化为动态图片或视频。推荐读者从 <a href="https://github.com/ropenscilabs/learngganimate">gganimate 案例合集</a> 开始制作动态图形。 <a href="https://r-forge.r-project.org/projects/rgl/"><strong>rgl</strong></a> 可以制作真三维动态图形，支持缩放、拖拽、旋转等操作， <a href="https://github.com/tylermorganwall/rayshader"><strong>rayshader</strong></a> 还支持转化 ggplot2 对象为 3D 图形。</p>
 <p>数据集 Indometh 记录了药物在人体中的代谢情况，给 6 个人分别静脉注射了吲哚美辛，每隔一段时间抽血检查药物在血浆中的浓度，收集的数据见表 <a href="sec-ggplot2-animation.html#tab:indometh-data">8.2</a></p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="sec-ggplot2-animation.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(Indometh, <span class="at">v.names =</span> <span class="st">&quot;conc&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Subject&quot;</span>, </span>
-<span id="cb327-2"><a href="sec-ggplot2-animation.html#cb327-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">timevar =</span> <span class="st">&quot;time&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb327-3"><a href="sec-ggplot2-animation.html#cb327-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb327-4"><a href="sec-ggplot2-animation.html#cb327-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;吲哚美辛在人体中的代谢情况&quot;</span>,</span>
-<span id="cb327-5"><a href="sec-ggplot2-animation.html#cb327-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(conc)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
-<span id="cb327-6"><a href="sec-ggplot2-animation.html#cb327-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
-<span id="cb327-7"><a href="sec-ggplot2-animation.html#cb327-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="sec-ggplot2-animation.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(Indometh, <span class="at">v.names =</span> <span class="st">&quot;conc&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Subject&quot;</span>, </span>
+<span id="cb331-2"><a href="sec-ggplot2-animation.html#cb331-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">timevar =</span> <span class="st">&quot;time&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb331-3"><a href="sec-ggplot2-animation.html#cb331-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb331-4"><a href="sec-ggplot2-animation.html#cb331-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;吲哚美辛在人体中的代谢情况&quot;</span>,</span>
+<span id="cb331-5"><a href="sec-ggplot2-animation.html#cb331-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(conc)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
+<span id="cb331-6"><a href="sec-ggplot2-animation.html#cb331-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
+<span id="cb331-7"><a href="sec-ggplot2-animation.html#cb331-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:indometh-data">表 8.2: </span>吲哚美辛在人体中的代谢情况</caption>
 <thead>
@@ -972,26 +971,26 @@ div.csl-indent {
 </tbody>
 </table>
 <p>如图 <a href="sec-ggplot2-animation.html#fig:indometh-concentration">8.34</a> 所示，药物在人体中浓度变化情况</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="sec-ggplot2-animation.html#cb328-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb328-2"><a href="sec-ggplot2-animation.html#cb328-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Indometh,</span>
-<span id="cb328-3"><a href="sec-ggplot2-animation.html#cb328-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> conc, <span class="at">color =</span> Subject)</span>
-<span id="cb328-4"><a href="sec-ggplot2-animation.html#cb328-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb328-5"><a href="sec-ggplot2-animation.html#cb328-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb328-6"><a href="sec-ggplot2-animation.html#cb328-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb328-7"><a href="sec-ggplot2-animation.html#cb328-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb328-8"><a href="sec-ggplot2-animation.html#cb328-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb328-9"><a href="sec-ggplot2-animation.html#cb328-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;time (hr)&quot;</span>,</span>
-<span id="cb328-10"><a href="sec-ggplot2-animation.html#cb328-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;plasma concentrations of indometacin (mcg/ml)&quot;</span></span>
-<span id="cb328-11"><a href="sec-ggplot2-animation.html#cb328-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb328-12"><a href="sec-ggplot2-animation.html#cb328-12" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="sec-ggplot2-animation.html#cb332-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb332-2"><a href="sec-ggplot2-animation.html#cb332-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Indometh,</span>
+<span id="cb332-3"><a href="sec-ggplot2-animation.html#cb332-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> conc, <span class="at">color =</span> Subject)</span>
+<span id="cb332-4"><a href="sec-ggplot2-animation.html#cb332-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb332-5"><a href="sec-ggplot2-animation.html#cb332-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb332-6"><a href="sec-ggplot2-animation.html#cb332-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb332-7"><a href="sec-ggplot2-animation.html#cb332-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb332-8"><a href="sec-ggplot2-animation.html#cb332-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb332-9"><a href="sec-ggplot2-animation.html#cb332-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;time (hr)&quot;</span>,</span>
+<span id="cb332-10"><a href="sec-ggplot2-animation.html#cb332-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;plasma concentrations of indometacin (mcg/ml)&quot;</span></span>
+<span id="cb332-11"><a href="sec-ggplot2-animation.html#cb332-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb332-12"><a href="sec-ggplot2-animation.html#cb332-12" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:indometh-concentration"></span>
 <img src="data-visualization-gallery_files/figure-html/indometh-concentration-1.png" alt="药物在人体中的代谢情况" width="672" />
 <p class="caption">
 图 8.34: 药物在人体中的代谢情况
 </p>
 </div>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="sec-ggplot2-animation.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
-<span id="cb329-2"><a href="sec-ggplot2-animation.html#cb329-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(time)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="sec-ggplot2-animation.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb333-2"><a href="sec-ggplot2-animation.html#cb333-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(time)</span></code></pre></div>
 <p><img src="data-visualization-gallery_files/figure-html/unnamed-chunk-13-1.gif" style="display: block; margin: auto;" /></p>
 <div class="rmdtip">
 <p>书籍目标输出格式是 PDF，则在代码块选项设置里必须指定参数 <code>fig.show='animate'</code> 否则插入的只是图片而不是动画，
@@ -999,26 +998,26 @@ div.csl-indent {
 </div>
 <p>动态图形制作的原理，简单来说，就是将一帧帧静态图形以较快的速度播放，人眼形成视觉残留，以为是连续的画面，相比于 animation， <strong>gganimate</strong> 借助 <strong>tweenr</strong> 包添加了过渡效果，动态图形显得非常自然。下面以 cup 函数<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a>为例</p>
 <p><span class="math display">\[f(x;\theta,\phi) = \theta x\log(x)-\frac{1}{\phi}\mathit{e}^{-\phi^4(x-\frac{1}{\mathit{e}})^4}, \quad \theta \in (2,3), \phi \in (30,50), x \in (0,1)\]</span> 函数图像随着 <span class="math inline">\(\theta\)</span> 和 <span class="math inline">\(\phi\)</span> 的变化情况见图 <a href="sec-ggplot2-animation.html#fig:cup-curve">8.35</a>。</p>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="sec-ggplot2-animation.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tweenr)</span>
-<span id="cb330-2"><a href="sec-ggplot2-animation.html#cb330-2" aria-hidden="true" tabindex="-1"></a>cup_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">theta =</span> <span class="dv">3</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">cup =</span> <span class="st">&quot;A&quot;</span>) {</span>
-<span id="cb330-3"><a href="sec-ggplot2-animation.html#cb330-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fl">0.00001</span>, <span class="dv">1</span>, <span class="at">length.out =</span> n), <span class="at">cup =</span> cup) <span class="sc">%&gt;%</span></span>
-<span id="cb330-4"><a href="sec-ggplot2-animation.html#cb330-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transform</span>(<span class="at">y =</span> theta <span class="sc">*</span> x <span class="sc">*</span> <span class="fu">log</span>(x, <span class="at">base =</span> <span class="dv">10</span>) </span>
-<span id="cb330-5"><a href="sec-ggplot2-animation.html#cb330-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> phi <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(phi <span class="sc">*</span> x <span class="sc">-</span> phi <span class="sc">/</span> <span class="fu">exp</span>(<span class="dv">1</span>))<span class="sc">^</span><span class="dv">4</span>))</span>
-<span id="cb330-6"><a href="sec-ggplot2-animation.html#cb330-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb330-7"><a href="sec-ggplot2-animation.html#cb330-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(</span>
-<span id="cb330-8"><a href="sec-ggplot2-animation.html#cb330-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> cup_curve, <span class="at">theta =</span> <span class="fu">c</span>(<span class="at">E =</span> <span class="dv">3</span>, <span class="at">D =</span> <span class="fl">2.8</span>, <span class="at">C =</span> <span class="fl">2.5</span>, <span class="at">B =</span> <span class="fl">2.2</span>, <span class="at">A =</span> <span class="dv">2</span>),</span>
-<span id="cb330-9"><a href="sec-ggplot2-animation.html#cb330-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">33</span>, <span class="dv">36</span>, <span class="dv">40</span>, <span class="dv">50</span>), <span class="at">cup =</span> <span class="fu">c</span>(<span class="st">&quot;E&quot;</span>, <span class="st">&quot;D&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;A&quot;</span>),</span>
-<span id="cb330-10"><a href="sec-ggplot2-animation.html#cb330-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">MoreArgs =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">50</span>), <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>, <span class="at">USE.NAMES =</span> <span class="cn">TRUE</span></span>
-<span id="cb330-11"><a href="sec-ggplot2-animation.html#cb330-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb330-12"><a href="sec-ggplot2-animation.html#cb330-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tween_states</span>(</span>
-<span id="cb330-13"><a href="sec-ggplot2-animation.html#cb330-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> .,</span>
-<span id="cb330-14"><a href="sec-ggplot2-animation.html#cb330-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">tweenlength =</span> <span class="dv">2</span>, <span class="at">statelength =</span> <span class="dv">1</span>,</span>
-<span id="cb330-15"><a href="sec-ggplot2-animation.html#cb330-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ease =</span> <span class="fu">rep</span>(<span class="st">&quot;cubic-in-out&quot;</span>, <span class="dv">4</span>), <span class="at">nframes =</span> <span class="dv">100</span></span>
-<span id="cb330-16"><a href="sec-ggplot2-animation.html#cb330-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb330-17"><a href="sec-ggplot2-animation.html#cb330-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> ., <span class="fu">aes</span>(x, y, <span class="at">color =</span> cup, <span class="at">frame =</span> .frame)) <span class="sc">+</span></span>
-<span id="cb330-18"><a href="sec-ggplot2-animation.html#cb330-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>() <span class="sc">+</span></span>
-<span id="cb330-19"><a href="sec-ggplot2-animation.html#cb330-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb330-20"><a href="sec-ggplot2-animation.html#cb330-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="sec-ggplot2-animation.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tweenr)</span>
+<span id="cb334-2"><a href="sec-ggplot2-animation.html#cb334-2" aria-hidden="true" tabindex="-1"></a>cup_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">theta =</span> <span class="dv">3</span>, <span class="at">phi =</span> <span class="dv">30</span>, <span class="at">cup =</span> <span class="st">&quot;A&quot;</span>) {</span>
+<span id="cb334-3"><a href="sec-ggplot2-animation.html#cb334-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fl">0.00001</span>, <span class="dv">1</span>, <span class="at">length.out =</span> n), <span class="at">cup =</span> cup) <span class="sc">%&gt;%</span></span>
+<span id="cb334-4"><a href="sec-ggplot2-animation.html#cb334-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transform</span>(<span class="at">y =</span> theta <span class="sc">*</span> x <span class="sc">*</span> <span class="fu">log</span>(x, <span class="at">base =</span> <span class="dv">10</span>) </span>
+<span id="cb334-5"><a href="sec-ggplot2-animation.html#cb334-5" aria-hidden="true" tabindex="-1"></a>              <span class="sc">-</span> <span class="dv">1</span> <span class="sc">/</span> phi <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(phi <span class="sc">*</span> x <span class="sc">-</span> phi <span class="sc">/</span> <span class="fu">exp</span>(<span class="dv">1</span>))<span class="sc">^</span><span class="dv">4</span>))</span>
+<span id="cb334-6"><a href="sec-ggplot2-animation.html#cb334-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb334-7"><a href="sec-ggplot2-animation.html#cb334-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mapply</span>(</span>
+<span id="cb334-8"><a href="sec-ggplot2-animation.html#cb334-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> cup_curve, <span class="at">theta =</span> <span class="fu">c</span>(<span class="at">E =</span> <span class="dv">3</span>, <span class="at">D =</span> <span class="fl">2.8</span>, <span class="at">C =</span> <span class="fl">2.5</span>, <span class="at">B =</span> <span class="fl">2.2</span>, <span class="at">A =</span> <span class="dv">2</span>),</span>
+<span id="cb334-9"><a href="sec-ggplot2-animation.html#cb334-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">33</span>, <span class="dv">36</span>, <span class="dv">40</span>, <span class="dv">50</span>), <span class="at">cup =</span> <span class="fu">c</span>(<span class="st">&quot;E&quot;</span>, <span class="st">&quot;D&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;A&quot;</span>),</span>
+<span id="cb334-10"><a href="sec-ggplot2-animation.html#cb334-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">MoreArgs =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">50</span>), <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>, <span class="at">USE.NAMES =</span> <span class="cn">TRUE</span></span>
+<span id="cb334-11"><a href="sec-ggplot2-animation.html#cb334-11" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb334-12"><a href="sec-ggplot2-animation.html#cb334-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tween_states</span>(</span>
+<span id="cb334-13"><a href="sec-ggplot2-animation.html#cb334-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> .,</span>
+<span id="cb334-14"><a href="sec-ggplot2-animation.html#cb334-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">tweenlength =</span> <span class="dv">2</span>, <span class="at">statelength =</span> <span class="dv">1</span>,</span>
+<span id="cb334-15"><a href="sec-ggplot2-animation.html#cb334-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ease =</span> <span class="fu">rep</span>(<span class="st">&quot;cubic-in-out&quot;</span>, <span class="dv">4</span>), <span class="at">nframes =</span> <span class="dv">100</span></span>
+<span id="cb334-16"><a href="sec-ggplot2-animation.html#cb334-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb334-17"><a href="sec-ggplot2-animation.html#cb334-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> ., <span class="fu">aes</span>(x, y, <span class="at">color =</span> cup, <span class="at">frame =</span> .frame)) <span class="sc">+</span></span>
+<span id="cb334-18"><a href="sec-ggplot2-animation.html#cb334-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>() <span class="sc">+</span></span>
+<span id="cb334-19"><a href="sec-ggplot2-animation.html#cb334-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb334-20"><a href="sec-ggplot2-animation.html#cb334-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:cup-curve"></span>
 <img src="data-visualization-gallery_files/figure-html/cup-curve-1.png" alt="添加过渡效果" width="384" />
 <p class="caption">

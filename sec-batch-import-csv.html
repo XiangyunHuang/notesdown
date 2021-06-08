@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,43 +857,43 @@ div.csl-indent {
 <div id="sec:batch-import-csv" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> 批量读取 csv 文件</h2>
 <p>iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="sec-batch-import-csv.html#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量分组导出</span></span>
-<span id="cb180-2"><a href="sec-batch-import-csv.html#cb180-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb180-3"><a href="sec-batch-import-csv.html#cb180-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.table</span>(iris)[, <span class="fu">fwrite</span>(.SD, <span class="fu">paste0</span>(<span class="st">&quot;data/user_&quot;</span>, <span class="fu">unique</span>(Species), <span class="st">&quot;.csv&quot;</span>)), by <span class="ot">=</span> Species, .SDcols <span class="ot">=</span> <span class="fu">colnames</span>(iris)]</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="sec-batch-import-csv.html#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量分组导出</span></span>
+<span id="cb184-2"><a href="sec-batch-import-csv.html#cb184-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb184-3"><a href="sec-batch-import-csv.html#cb184-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.table</span>(iris)[, <span class="fu">fwrite</span>(.SD, <span class="fu">paste0</span>(<span class="st">&quot;data/user_&quot;</span>, <span class="fu">unique</span>(Species), <span class="st">&quot;.csv&quot;</span>)), by <span class="ot">=</span> Species, .SDcols <span class="ot">=</span> <span class="fu">colnames</span>(iris)]</span></code></pre></div>
 <p>读取文件夹 <code>data/</code> 所有 csv 数据文件</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="sec-batch-import-csv.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb181-2"><a href="sec-batch-import-csv.html#cb181-2" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&#39;rbind&#39;</span>, <span class="fu">lapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">&quot;*.csv&quot;</span>, <span class="at">path =</span> <span class="st">&quot;data/&quot;</span>), fread ) )</span>
-<span id="cb181-3"><a href="sec-batch-import-csv.html#cb181-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
-<span id="cb181-4"><a href="sec-batch-import-csv.html#cb181-4" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">&quot;*.csv&quot;</span>, <span class="at">path =</span> <span class="st">&quot;data/&quot;</span>), fread ))</span></code></pre></div>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="sec-batch-import-csv.html#cb182-1" aria-hidden="true" tabindex="-1"></a>xdf<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(xdf<span class="sc">$</span>date)</span>
-<span id="cb182-2"><a href="sec-batch-import-csv.html#cb182-2" aria-hidden="true" tabindex="-1"></a>xdf<span class="sc">$</span>ts <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="fu">as.numeric</span>(xdf<span class="sc">$</span>ts), <span class="at">origin =</span> <span class="st">&quot;1978-01-01&quot;</span>)</span>
-<span id="cb182-3"><a href="sec-batch-import-csv.html#cb182-3" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(xdf[<span class="fu">order</span>(xdf<span class="sc">$</span>ts), ], <span class="fu">interaction</span>(xdf<span class="sc">$</span>study, xdf<span class="sc">$</span>port)) <span class="sc">%&gt;%</span></span>
-<span id="cb182-4"><a href="sec-batch-import-csv.html#cb182-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(.x) {</span>
-<span id="cb182-5"><a href="sec-batch-import-csv.html#cb182-5" aria-hidden="true" tabindex="-1"></a>    .x[<span class="fu">nrow</span>(.x), ]</span>
-<span id="cb182-6"><a href="sec-batch-import-csv.html#cb182-6" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
-<span id="cb182-7"><a href="sec-batch-import-csv.html#cb182-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb182-8"><a href="sec-batch-import-csv.html#cb182-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Filter</span>(<span class="cf">function</span>(.x) {</span>
-<span id="cb182-9"><a href="sec-batch-import-csv.html#cb182-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(.x) <span class="sc">&gt;</span> <span class="dv">0</span></span>
-<span id="cb182-10"><a href="sec-batch-import-csv.html#cb182-10" aria-hidden="true" tabindex="-1"></a>  }, .) <span class="sc">%&gt;%</span></span>
-<span id="cb182-11"><a href="sec-batch-import-csv.html#cb182-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind.data.frame, .)</span>
-<span id="cb182-12"><a href="sec-batch-import-csv.html#cb182-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb182-13"><a href="sec-batch-import-csv.html#cb182-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb182-14"><a href="sec-batch-import-csv.html#cb182-14" aria-hidden="true" tabindex="-1"></a>xdf <span class="sc">%&gt;%</span></span>
-<span id="cb182-15"><a href="sec-batch-import-csv.html#cb182-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb182-16"><a href="sec-batch-import-csv.html#cb182-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(date),</span>
-<span id="cb182-17"><a href="sec-batch-import-csv.html#cb182-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ts =</span> anytime<span class="sc">::</span><span class="fu">anytime</span>(<span class="fu">as.numeric</span>(ts))</span>
-<span id="cb182-18"><a href="sec-batch-import-csv.html#cb182-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb182-19"><a href="sec-batch-import-csv.html#cb182-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ts) <span class="sc">%&gt;%</span></span>
-<span id="cb182-20"><a href="sec-batch-import-csv.html#cb182-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(study, port) <span class="sc">%&gt;%</span></span>
-<span id="cb182-21"><a href="sec-batch-import-csv.html#cb182-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb182-22"><a href="sec-batch-import-csv.html#cb182-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="sec-batch-import-csv.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb183-2"><a href="sec-batch-import-csv.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb183-3"><a href="sec-batch-import-csv.html#cb183-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb183-4"><a href="sec-batch-import-csv.html#cb183-4" aria-hidden="true" tabindex="-1"></a>mtcars <span class="ot">&lt;-</span> <span class="fu">tibble</span>(mtcars)</span>
-<span id="cb183-5"><a href="sec-batch-import-csv.html#cb183-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb183-6"><a href="sec-batch-import-csv.html#cb183-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
-<span id="cb183-7"><a href="sec-batch-import-csv.html#cb183-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="at">width =</span> <span class="dv">69</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sec-batch-import-csv.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb185-2"><a href="sec-batch-import-csv.html#cb185-2" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&#39;rbind&#39;</span>, <span class="fu">lapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">&quot;*.csv&quot;</span>, <span class="at">path =</span> <span class="st">&quot;data/&quot;</span>), fread ) )</span>
+<span id="cb185-3"><a href="sec-batch-import-csv.html#cb185-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
+<span id="cb185-4"><a href="sec-batch-import-csv.html#cb185-4" aria-hidden="true" tabindex="-1"></a>merged_df <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">lapply</span>(<span class="fu">list.files</span>(<span class="at">pattern =</span> <span class="st">&quot;*.csv&quot;</span>, <span class="at">path =</span> <span class="st">&quot;data/&quot;</span>), fread ))</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="sec-batch-import-csv.html#cb186-1" aria-hidden="true" tabindex="-1"></a>xdf<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(xdf<span class="sc">$</span>date)</span>
+<span id="cb186-2"><a href="sec-batch-import-csv.html#cb186-2" aria-hidden="true" tabindex="-1"></a>xdf<span class="sc">$</span>ts <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="fu">as.numeric</span>(xdf<span class="sc">$</span>ts), <span class="at">origin =</span> <span class="st">&quot;1978-01-01&quot;</span>)</span>
+<span id="cb186-3"><a href="sec-batch-import-csv.html#cb186-3" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(xdf[<span class="fu">order</span>(xdf<span class="sc">$</span>ts), ], <span class="fu">interaction</span>(xdf<span class="sc">$</span>study, xdf<span class="sc">$</span>port)) <span class="sc">%&gt;%</span></span>
+<span id="cb186-4"><a href="sec-batch-import-csv.html#cb186-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="cf">function</span>(.x) {</span>
+<span id="cb186-5"><a href="sec-batch-import-csv.html#cb186-5" aria-hidden="true" tabindex="-1"></a>    .x[<span class="fu">nrow</span>(.x), ]</span>
+<span id="cb186-6"><a href="sec-batch-import-csv.html#cb186-6" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
+<span id="cb186-7"><a href="sec-batch-import-csv.html#cb186-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb186-8"><a href="sec-batch-import-csv.html#cb186-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Filter</span>(<span class="cf">function</span>(.x) {</span>
+<span id="cb186-9"><a href="sec-batch-import-csv.html#cb186-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(.x) <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb186-10"><a href="sec-batch-import-csv.html#cb186-10" aria-hidden="true" tabindex="-1"></a>  }, .) <span class="sc">%&gt;%</span></span>
+<span id="cb186-11"><a href="sec-batch-import-csv.html#cb186-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind.data.frame, .)</span>
+<span id="cb186-12"><a href="sec-batch-import-csv.html#cb186-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb186-13"><a href="sec-batch-import-csv.html#cb186-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb186-14"><a href="sec-batch-import-csv.html#cb186-14" aria-hidden="true" tabindex="-1"></a>xdf <span class="sc">%&gt;%</span></span>
+<span id="cb186-15"><a href="sec-batch-import-csv.html#cb186-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb186-16"><a href="sec-batch-import-csv.html#cb186-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(date),</span>
+<span id="cb186-17"><a href="sec-batch-import-csv.html#cb186-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ts =</span> anytime<span class="sc">::</span><span class="fu">anytime</span>(<span class="fu">as.numeric</span>(ts))</span>
+<span id="cb186-18"><a href="sec-batch-import-csv.html#cb186-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb186-19"><a href="sec-batch-import-csv.html#cb186-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ts) <span class="sc">%&gt;%</span></span>
+<span id="cb186-20"><a href="sec-batch-import-csv.html#cb186-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(study, port) <span class="sc">%&gt;%</span></span>
+<span id="cb186-21"><a href="sec-batch-import-csv.html#cb186-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb186-22"><a href="sec-batch-import-csv.html#cb186-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="sec-batch-import-csv.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb187-2"><a href="sec-batch-import-csv.html#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb187-3"><a href="sec-batch-import-csv.html#cb187-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-4"><a href="sec-batch-import-csv.html#cb187-4" aria-hidden="true" tabindex="-1"></a>mtcars <span class="ot">&lt;-</span> <span class="fu">tibble</span>(mtcars)</span>
+<span id="cb187-5"><a href="sec-batch-import-csv.html#cb187-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-6"><a href="sec-batch-import-csv.html#cb187-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb187-7"><a href="sec-batch-import-csv.html#cb187-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="at">width =</span> <span class="dv">69</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 32 x 11
 ##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -915,8 +914,8 @@ div.csl-indent {
 ## 15  10.4     8  472    205  2.93  5.25  18.0     0     0     3     4
 ## 16  10.4     8  460    215  3     5.42  17.8     0     0     3     4
 ## # … with 16 more rows</code></pre>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="sec-batch-import-csv.html#cb185-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
-<span id="cb185-2"><a href="sec-batch-import-csv.html#cb185-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(., <span class="at">n =</span> <span class="fu">nrow</span>(.)<span class="sc">/</span><span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="sec-batch-import-csv.html#cb189-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb189-2"><a href="sec-batch-import-csv.html#cb189-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(., <span class="at">n =</span> <span class="fu">nrow</span>(.)<span class="sc">/</span><span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 32 x 11
 ##     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;

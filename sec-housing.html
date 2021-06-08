@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -861,9 +860,9 @@ div.csl-indent {
 <p>响应变量是离散类别，且存在强弱，等级，大小之分</p>
 <p>调用函数 <code>MASS::polr()</code></p>
 <p>数据集 housing 哥本哈根住房状况调查中的次数分布表，<code>Sat</code> 住户对目前居住环境的满意程度，是一个有序的因子变量，<code>Infl</code> 住户对物业管理的感知影响程度，<code>Type</code> 租赁住宿类型，如塔楼、中庭、公寓、露台，<code>Cont</code> 联系居民可与其他居民联系(低、高)，<code>Freq</code> 每个类中的居民人数，调查的人数</p>
-<div class="sourceCode" id="cb822"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb822-1"><a href="sec-housing.html#cb822-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;housing&quot;</span>, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
-<span id="cb822-2"><a href="sec-housing.html#cb822-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看数据 help(housing)</span></span>
-<span id="cb822-3"><a href="sec-housing.html#cb822-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(housing)</span></code></pre></div>
+<div class="sourceCode" id="cb827"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb827-1"><a href="sec-housing.html#cb827-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;housing&quot;</span>, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb827-2"><a href="sec-housing.html#cb827-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看数据 help(housing)</span></span>
+<span id="cb827-3"><a href="sec-housing.html#cb827-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(housing)</span></code></pre></div>
 <pre><code>##      Sat   Infl  Type Cont Freq
 ## 1    Low    Low Tower  Low   21
 ## 2 Medium    Low Tower  Low   21
@@ -871,7 +870,7 @@ div.csl-indent {
 ## 4    Low Medium Tower  Low   34
 ## 5 Medium Medium Tower  Low   22
 ## 6   High Medium Tower  Low   36</code></pre>
-<div class="sourceCode" id="cb824"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb824-1"><a href="sec-housing.html#cb824-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(housing)</span></code></pre></div>
+<div class="sourceCode" id="cb829"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb829-1"><a href="sec-housing.html#cb829-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(housing)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    72 obs. of  5 variables:
 ##  $ Sat : Ord.factor w/ 3 levels &quot;Low&quot;&lt;&quot;Medium&quot;&lt;..: 1 2 3 1 2 3 1 2 3 1 ...
 ##  $ Infl: Factor w/ 3 levels &quot;Low&quot;,&quot;Medium&quot;,..: 1 1 1 2 2 2 3 3 3 1 ...
@@ -879,9 +878,9 @@ div.csl-indent {
 ##  $ Cont: Factor w/ 2 levels &quot;Low&quot;,&quot;High&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Freq: int  21 21 28 34 22 36 10 11 36 61 ...</code></pre>
 <p>居民对居住环境满意度 Sat 三个等级的有序回归</p>
-<div class="sourceCode" id="cb826"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb826-1"><a href="sec-housing.html#cb826-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">&quot;contr.treatment&quot;</span>, <span class="st">&quot;contr.poly&quot;</span>))</span>
-<span id="cb826-2"><a href="sec-housing.html#cb826-2" aria-hidden="true" tabindex="-1"></a>house.plr <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(Sat <span class="sc">~</span> Infl <span class="sc">+</span> Type <span class="sc">+</span> Cont, <span class="at">weights =</span> Freq, <span class="at">data =</span> housing)</span>
-<span id="cb826-3"><a href="sec-housing.html#cb826-3" aria-hidden="true" tabindex="-1"></a>house.plr</span></code></pre></div>
+<div class="sourceCode" id="cb831"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb831-1"><a href="sec-housing.html#cb831-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">&quot;contr.treatment&quot;</span>, <span class="st">&quot;contr.poly&quot;</span>))</span>
+<span id="cb831-2"><a href="sec-housing.html#cb831-2" aria-hidden="true" tabindex="-1"></a>house.plr <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">polr</span>(Sat <span class="sc">~</span> Infl <span class="sc">+</span> Type <span class="sc">+</span> Cont, <span class="at">weights =</span> Freq, <span class="at">data =</span> housing)</span>
+<span id="cb831-3"><a href="sec-housing.html#cb831-3" aria-hidden="true" tabindex="-1"></a>house.plr</span></code></pre></div>
 <pre><code>## Call:
 ## MASS::polr(formula = Sat ~ Infl + Type + Cont, data = housing, 
 ##     weights = Freq)
@@ -899,18 +898,18 @@ div.csl-indent {
 ## Residual Deviance: 3479.149 
 ## AIC: 3495.149</code></pre>
 <p>再计算一下 P 值，置信区间</p>
-<div class="sourceCode" id="cb828"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb828-1"><a href="sec-housing.html#cb828-1" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(house.plr))</span>
-<span id="cb828-2"><a href="sec-housing.html#cb828-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(ctable[, <span class="st">&quot;t value&quot;</span>]), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb828-3"><a href="sec-housing.html#cb828-3" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ctable, <span class="st">&quot;p value&quot;</span> <span class="ot">=</span> p)</span>
-<span id="cb828-4"><a href="sec-housing.html#cb828-4" aria-hidden="true" tabindex="-1"></a><span class="co"># confidence intervals 计算置信区间</span></span>
-<span id="cb828-5"><a href="sec-housing.html#cb828-5" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(house.plr)</span>
-<span id="cb828-6"><a href="sec-housing.html#cb828-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(house.plr))</span></code></pre></div>
+<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="sec-housing.html#cb833-1" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(house.plr))</span>
+<span id="cb833-2"><a href="sec-housing.html#cb833-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(ctable[, <span class="st">&quot;t value&quot;</span>]), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb833-3"><a href="sec-housing.html#cb833-3" aria-hidden="true" tabindex="-1"></a>ctable <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ctable, <span class="st">&quot;p value&quot;</span> <span class="ot">=</span> p)</span>
+<span id="cb833-4"><a href="sec-housing.html#cb833-4" aria-hidden="true" tabindex="-1"></a><span class="co"># confidence intervals 计算置信区间</span></span>
+<span id="cb833-5"><a href="sec-housing.html#cb833-5" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">confint</span>(house.plr)</span>
+<span id="cb833-6"><a href="sec-housing.html#cb833-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(house.plr))</span></code></pre></div>
 <pre><code>##    InflMedium      InflHigh TypeApartment    TypeAtrium   TypeTerrace 
 ##     1.7619017     3.6284990     0.5641979     0.6933734     0.3358754 
 ##      ContHigh 
 ##     1.4337368</code></pre>
-<div class="sourceCode" id="cb830"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb830-1"><a href="sec-housing.html#cb830-1" aria-hidden="true" tabindex="-1"></a><span class="do">## OR and CI</span></span>
-<span id="cb830-2"><a href="sec-housing.html#cb830-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="at">OR =</span> <span class="fu">coef</span>(house.plr), ci))</span></code></pre></div>
+<div class="sourceCode" id="cb835"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb835-1"><a href="sec-housing.html#cb835-1" aria-hidden="true" tabindex="-1"></a><span class="do">## OR and CI</span></span>
+<span id="cb835-2"><a href="sec-housing.html#cb835-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">cbind</span>(<span class="at">OR =</span> <span class="fu">coef</span>(house.plr), ci))</span></code></pre></div>
 <pre><code>##                      OR     2.5 %    97.5 %
 ## InflMedium    1.7619017 1.4356845 2.1639915
 ## InflHigh      3.6284990 2.8319659 4.6626461

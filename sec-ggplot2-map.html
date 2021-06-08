@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,20 +857,20 @@ div.csl-indent {
 <div id="sec:ggplot2-map" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> 地图</h2>
 <p>USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 <a href="sec-ggplot2-map.html#fig:state-crimes">8.3</a></p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="sec-ggplot2-map.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
-<span id="cb267-2"><a href="sec-ggplot2-map.html#cb267-2" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">state =</span> <span class="fu">tolower</span>(<span class="fu">rownames</span>(USArrests)), USArrests)</span>
-<span id="cb267-3"><a href="sec-ggplot2-map.html#cb267-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 等价于 crimes %&gt;% tidyr::pivot_longer(Murder:Rape)</span></span>
-<span id="cb267-4"><a href="sec-ggplot2-map.html#cb267-4" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">names</span>(crimes)[<span class="sc">-</span><span class="dv">1</span>], <span class="cf">function</span>(j) {</span>
-<span id="cb267-5"><a href="sec-ggplot2-map.html#cb267-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">state =</span> crimes<span class="sc">$</span>state, <span class="at">variable =</span> j, <span class="at">value =</span> crimes[[j]])</span>
-<span id="cb267-6"><a href="sec-ggplot2-map.html#cb267-6" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb267-7"><a href="sec-ggplot2-map.html#cb267-7" aria-hidden="true" tabindex="-1"></a>crimes_long <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>, vars)</span>
-<span id="cb267-8"><a href="sec-ggplot2-map.html#cb267-8" aria-hidden="true" tabindex="-1"></a>states_map <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;state&quot;</span>)</span>
-<span id="cb267-9"><a href="sec-ggplot2-map.html#cb267-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">map_id =</span> state)) <span class="sc">+</span></span>
-<span id="cb267-10"><a href="sec-ggplot2-map.html#cb267-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Murder), <span class="at">map =</span> states_map) <span class="sc">+</span></span>
-<span id="cb267-11"><a href="sec-ggplot2-map.html#cb267-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x =</span> states_map<span class="sc">$</span>long, <span class="at">y =</span> states_map<span class="sc">$</span>lat) <span class="sc">+</span></span>
-<span id="cb267-12"><a href="sec-ggplot2-map.html#cb267-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_binned</span>(<span class="at">type =</span> <span class="st">&quot;viridis&quot;</span>) <span class="sc">+</span></span>
-<span id="cb267-13"><a href="sec-ggplot2-map.html#cb267-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>() <span class="sc">+</span></span>
-<span id="cb267-14"><a href="sec-ggplot2-map.html#cb267-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="sec-ggplot2-map.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
+<span id="cb271-2"><a href="sec-ggplot2-map.html#cb271-2" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">state =</span> <span class="fu">tolower</span>(<span class="fu">rownames</span>(USArrests)), USArrests)</span>
+<span id="cb271-3"><a href="sec-ggplot2-map.html#cb271-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 等价于 crimes %&gt;% tidyr::pivot_longer(Murder:Rape)</span></span>
+<span id="cb271-4"><a href="sec-ggplot2-map.html#cb271-4" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">names</span>(crimes)[<span class="sc">-</span><span class="dv">1</span>], <span class="cf">function</span>(j) {</span>
+<span id="cb271-5"><a href="sec-ggplot2-map.html#cb271-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">state =</span> crimes<span class="sc">$</span>state, <span class="at">variable =</span> j, <span class="at">value =</span> crimes[[j]])</span>
+<span id="cb271-6"><a href="sec-ggplot2-map.html#cb271-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb271-7"><a href="sec-ggplot2-map.html#cb271-7" aria-hidden="true" tabindex="-1"></a>crimes_long <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>, vars)</span>
+<span id="cb271-8"><a href="sec-ggplot2-map.html#cb271-8" aria-hidden="true" tabindex="-1"></a>states_map <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;state&quot;</span>)</span>
+<span id="cb271-9"><a href="sec-ggplot2-map.html#cb271-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crimes, <span class="fu">aes</span>(<span class="at">map_id =</span> state)) <span class="sc">+</span></span>
+<span id="cb271-10"><a href="sec-ggplot2-map.html#cb271-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_map</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Murder), <span class="at">map =</span> states_map) <span class="sc">+</span></span>
+<span id="cb271-11"><a href="sec-ggplot2-map.html#cb271-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x =</span> states_map<span class="sc">$</span>long, <span class="at">y =</span> states_map<span class="sc">$</span>lat) <span class="sc">+</span></span>
+<span id="cb271-12"><a href="sec-ggplot2-map.html#cb271-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_binned</span>(<span class="at">type =</span> <span class="st">&quot;viridis&quot;</span>) <span class="sc">+</span></span>
+<span id="cb271-13"><a href="sec-ggplot2-map.html#cb271-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>() <span class="sc">+</span></span>
+<span id="cb271-14"><a href="sec-ggplot2-map.html#cb271-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:state-crimes"></span>
 <img src="data-visualization-gallery_files/figure-html/state-crimes-1.png" alt="1975年美国各州犯罪事件" width="768" />
 <p class="caption">
@@ -879,18 +878,18 @@ div.csl-indent {
 </p>
 </div>
 <p>先来看看中国及其周边，见图<a href="sec-ggplot2-map.html#fig:incorrect-map">8.4</a>，这个地图的缺陷就是中国南海及九段线没有标记，台湾和中国大陆不是一种颜色标记，这里的地图数据来自 R 包 <strong>maps</strong> 和 <strong>mapdata</strong>，像这样的地图就不宜在国内正式刊物上出现。</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="sec-ggplot2-map.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
-<span id="cb268-2"><a href="sec-ggplot2-map.html#cb268-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapdata)</span>
-<span id="cb268-3"><a href="sec-ggplot2-map.html#cb268-3" aria-hidden="true" tabindex="-1"></a>east_asia <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;worldHires&quot;</span>,</span>
-<span id="cb268-4"><a href="sec-ggplot2-map.html#cb268-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">c</span>(</span>
-<span id="cb268-5"><a href="sec-ggplot2-map.html#cb268-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Japan&quot;</span>, <span class="st">&quot;Taiwan&quot;</span>, <span class="st">&quot;China&quot;</span>,</span>
-<span id="cb268-6"><a href="sec-ggplot2-map.html#cb268-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;North Korea&quot;</span>, <span class="st">&quot;South Korea&quot;</span></span>
-<span id="cb268-7"><a href="sec-ggplot2-map.html#cb268-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb268-8"><a href="sec-ggplot2-map.html#cb268-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb268-9"><a href="sec-ggplot2-map.html#cb268-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(east_asia, <span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">group =</span> group, <span class="at">fill =</span> region)) <span class="sc">+</span></span>
-<span id="cb268-10"><a href="sec-ggplot2-map.html#cb268-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb268-11"><a href="sec-ggplot2-map.html#cb268-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
-<span id="cb268-12"><a href="sec-ggplot2-map.html#cb268-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="sec-ggplot2-map.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
+<span id="cb272-2"><a href="sec-ggplot2-map.html#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapdata)</span>
+<span id="cb272-3"><a href="sec-ggplot2-map.html#cb272-3" aria-hidden="true" tabindex="-1"></a>east_asia <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;worldHires&quot;</span>,</span>
+<span id="cb272-4"><a href="sec-ggplot2-map.html#cb272-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">c</span>(</span>
+<span id="cb272-5"><a href="sec-ggplot2-map.html#cb272-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Japan&quot;</span>, <span class="st">&quot;Taiwan&quot;</span>, <span class="st">&quot;China&quot;</span>,</span>
+<span id="cb272-6"><a href="sec-ggplot2-map.html#cb272-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;North Korea&quot;</span>, <span class="st">&quot;South Korea&quot;</span></span>
+<span id="cb272-7"><a href="sec-ggplot2-map.html#cb272-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb272-8"><a href="sec-ggplot2-map.html#cb272-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb272-9"><a href="sec-ggplot2-map.html#cb272-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(east_asia, <span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">group =</span> group, <span class="at">fill =</span> region)) <span class="sc">+</span></span>
+<span id="cb272-10"><a href="sec-ggplot2-map.html#cb272-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb272-11"><a href="sec-ggplot2-map.html#cb272-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb272-12"><a href="sec-ggplot2-map.html#cb272-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:incorrect-map"></span>
 <img src="data-visualization-gallery_files/figure-html/incorrect-map-1.png" alt="中国及其周边" width="768" />
 <p class="caption">
@@ -898,37 +897,37 @@ div.csl-indent {
 </p>
 </div>
 <p>绘制真正的地图需要考虑投影坐标系，观察角度、分辨率、政策法规等一系列因素，它是一种复杂的图形，如图 <a href="sec-ggplot2-map.html#fig:draw-map">8.5</a> 所示。</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="sec-ggplot2-map.html#cb269-1" aria-hidden="true" tabindex="-1"></a>worldmap <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
-<span id="cb269-2"><a href="sec-ggplot2-map.html#cb269-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-3"><a href="sec-ggplot2-map.html#cb269-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 默认 mercator 投影下的默认视角 c(90, 0, mean(range(x)))</span></span>
-<span id="cb269-4"><a href="sec-ggplot2-map.html#cb269-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb269-5"><a href="sec-ggplot2-map.html#cb269-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb269-6"><a href="sec-ggplot2-map.html#cb269-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(</span>
-<span id="cb269-7"><a href="sec-ggplot2-map.html#cb269-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>)</span>
-<span id="cb269-8"><a href="sec-ggplot2-map.html#cb269-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb269-9"><a href="sec-ggplot2-map.html#cb269-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-10"><a href="sec-ggplot2-map.html#cb269-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 换观察角度</span></span>
-<span id="cb269-11"><a href="sec-ggplot2-map.html#cb269-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb269-12"><a href="sec-ggplot2-map.html#cb269-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb269-13"><a href="sec-ggplot2-map.html#cb269-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(</span>
-<span id="cb269-14"><a href="sec-ggplot2-map.html#cb269-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>),</span>
-<span id="cb269-15"><a href="sec-ggplot2-map.html#cb269-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb269-16"><a href="sec-ggplot2-map.html#cb269-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb269-17"><a href="sec-ggplot2-map.html#cb269-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-18"><a href="sec-ggplot2-map.html#cb269-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 换投影坐标系</span></span>
-<span id="cb269-19"><a href="sec-ggplot2-map.html#cb269-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb269-20"><a href="sec-ggplot2-map.html#cb269-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb269-21"><a href="sec-ggplot2-map.html#cb269-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(<span class="st">&quot;ortho&quot;</span>,</span>
-<span id="cb269-22"><a href="sec-ggplot2-map.html#cb269-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>)</span>
-<span id="cb269-23"><a href="sec-ggplot2-map.html#cb269-23" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb269-24"><a href="sec-ggplot2-map.html#cb269-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-25"><a href="sec-ggplot2-map.html#cb269-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 二者皆换</span></span>
-<span id="cb269-26"><a href="sec-ggplot2-map.html#cb269-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb269-27"><a href="sec-ggplot2-map.html#cb269-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb269-28"><a href="sec-ggplot2-map.html#cb269-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(<span class="st">&quot;ortho&quot;</span>,</span>
-<span id="cb269-29"><a href="sec-ggplot2-map.html#cb269-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>),</span>
-<span id="cb269-30"><a href="sec-ggplot2-map.html#cb269-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb269-31"><a href="sec-ggplot2-map.html#cb269-31" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="sec-ggplot2-map.html#cb273-1" aria-hidden="true" tabindex="-1"></a>worldmap <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">&quot;world&quot;</span>)</span>
+<span id="cb273-2"><a href="sec-ggplot2-map.html#cb273-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-3"><a href="sec-ggplot2-map.html#cb273-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 默认 mercator 投影下的默认视角 c(90, 0, mean(range(x)))</span></span>
+<span id="cb273-4"><a href="sec-ggplot2-map.html#cb273-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb273-5"><a href="sec-ggplot2-map.html#cb273-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb273-6"><a href="sec-ggplot2-map.html#cb273-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(</span>
+<span id="cb273-7"><a href="sec-ggplot2-map.html#cb273-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>)</span>
+<span id="cb273-8"><a href="sec-ggplot2-map.html#cb273-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb273-9"><a href="sec-ggplot2-map.html#cb273-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-10"><a href="sec-ggplot2-map.html#cb273-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 换观察角度</span></span>
+<span id="cb273-11"><a href="sec-ggplot2-map.html#cb273-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb273-12"><a href="sec-ggplot2-map.html#cb273-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb273-13"><a href="sec-ggplot2-map.html#cb273-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(</span>
+<span id="cb273-14"><a href="sec-ggplot2-map.html#cb273-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>),</span>
+<span id="cb273-15"><a href="sec-ggplot2-map.html#cb273-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb273-16"><a href="sec-ggplot2-map.html#cb273-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb273-17"><a href="sec-ggplot2-map.html#cb273-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-18"><a href="sec-ggplot2-map.html#cb273-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 换投影坐标系</span></span>
+<span id="cb273-19"><a href="sec-ggplot2-map.html#cb273-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb273-20"><a href="sec-ggplot2-map.html#cb273-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb273-21"><a href="sec-ggplot2-map.html#cb273-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(<span class="st">&quot;ortho&quot;</span>,</span>
+<span id="cb273-22"><a href="sec-ggplot2-map.html#cb273-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>)</span>
+<span id="cb273-23"><a href="sec-ggplot2-map.html#cb273-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb273-24"><a href="sec-ggplot2-map.html#cb273-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-25"><a href="sec-ggplot2-map.html#cb273-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 二者皆换</span></span>
+<span id="cb273-26"><a href="sec-ggplot2-map.html#cb273-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(worldmap, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb273-27"><a href="sec-ggplot2-map.html#cb273-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">fill =</span> region), <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb273-28"><a href="sec-ggplot2-map.html#cb273-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(<span class="st">&quot;ortho&quot;</span>,</span>
+<span id="cb273-29"><a href="sec-ggplot2-map.html#cb273-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">120</span>, <span class="dv">40</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>),</span>
+<span id="cb273-30"><a href="sec-ggplot2-map.html#cb273-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">orientation =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb273-31"><a href="sec-ggplot2-map.html#cb273-31" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:draw-map"></span>
 <img src="data-visualization-gallery_files/figure-html/draw-map-1.png" alt="画地图的正确姿势" width="45%" /><img src="data-visualization-gallery_files/figure-html/draw-map-2.png" alt="画地图的正确姿势" width="45%" /><img src="data-visualization-gallery_files/figure-html/draw-map-3.png" alt="画地图的正确姿势" width="45%" /><img src="data-visualization-gallery_files/figure-html/draw-map-4.png" alt="画地图的正确姿势" width="45%" />
 <p class="caption">

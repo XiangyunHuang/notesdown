@@ -1030,3 +1030,49 @@ dat[, .(length(unique(num_a))) , by = .(group_a)]
 ```
 
 :::
+
+按 Species 分组，对 Sepal.Length 降序排列，取 Top 3
+
+
+```r
+iris = as.data.table(iris)
+iris[order(-Sepal.Length), .SD[1:3], by="Species"]
+```
+
+```
+##       Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:  virginica          7.9         3.8          6.4         2.0
+## 2:  virginica          7.7         3.8          6.7         2.2
+## 3:  virginica          7.7         2.6          6.9         2.3
+## 4: versicolor          7.0         3.2          4.7         1.4
+## 5: versicolor          6.9         3.1          4.9         1.5
+## 6: versicolor          6.8         2.8          4.8         1.4
+## 7:     setosa          5.8         4.0          1.2         0.2
+## 8:     setosa          5.7         4.4          1.5         0.4
+## 9:     setosa          5.7         3.8          1.7         0.3
+```
+
+对 iris 各个列排序
+
+
+```r
+ind <- do.call(what = "order", args = iris[,c(5,1,2,3)])
+iris[ind, ]
+```
+
+```
+##      Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+##   1:          4.3         3.0          1.1         0.1    setosa
+##   2:          4.4         2.9          1.4         0.2    setosa
+##   3:          4.4         3.0          1.3         0.2    setosa
+##   4:          4.4         3.2          1.3         0.2    setosa
+##   5:          4.5         2.3          1.3         0.3    setosa
+##  ---                                                            
+## 146:          7.7         2.6          6.9         2.3 virginica
+## 147:          7.7         2.8          6.7         2.0 virginica
+## 148:          7.7         3.0          6.1         2.3 virginica
+## 149:          7.7         3.8          6.7         2.2 virginica
+## 150:          7.9         3.8          6.4         2.0 virginica
+```
+
+

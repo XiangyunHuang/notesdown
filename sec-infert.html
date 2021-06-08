@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,7 +857,7 @@ div.csl-indent {
 <div id="sec:infert" class="section level2" number="24.4">
 <h2><span class="header-section-number">24.4</span> 自然流产和人工流产后的不育</h2>
 <p><code>help(infert)</code></p>
-<div class="sourceCode" id="cb780"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb780-1"><a href="sec-infert.html#cb780-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(infert)</span></code></pre></div>
+<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="sec-infert.html#cb785-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(infert)</span></code></pre></div>
 <pre><code>##   education age parity induced case spontaneous stratum pooled.stratum
 ## 1    0-5yrs  26      6       1    1           2       1              3
 ## 2    0-5yrs  42      1       1    1           0       2              1
@@ -866,7 +865,7 @@ div.csl-indent {
 ## 4    0-5yrs  34      4       2    1           0       4              2
 ## 5   6-11yrs  35      3       1    1           1       5             32
 ## 6   6-11yrs  36      4       2    1           1       6             36</code></pre>
-<div class="sourceCode" id="cb782"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb782-1"><a href="sec-infert.html#cb782-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(infert)</span></code></pre></div>
+<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="sec-infert.html#cb787-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(infert)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    248 obs. of  8 variables:
 ##  $ education     : Factor w/ 3 levels &quot;0-5yrs&quot;,&quot;6-11yrs&quot;,..: 1 1 1 1 2 2 2 2 2 2 ...
 ##  $ age           : num  26 42 39 34 35 36 23 32 21 28 ...
@@ -877,10 +876,10 @@ div.csl-indent {
 ##  $ stratum       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ pooled.stratum: num  3 1 4 2 32 36 6 22 5 19 ...</code></pre>
 <p>存在无序分类变量</p>
-<div class="sourceCode" id="cb784"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb784-1"><a href="sec-infert.html#cb784-1" aria-hidden="true" tabindex="-1"></a>infert_glm_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced,</span>
-<span id="cb784-2"><a href="sec-infert.html#cb784-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb784-3"><a href="sec-infert.html#cb784-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb784-4"><a href="sec-infert.html#cb784-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_1)</span></code></pre></div>
+<div class="sourceCode" id="cb789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb789-1"><a href="sec-infert.html#cb789-1" aria-hidden="true" tabindex="-1"></a>infert_glm_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced,</span>
+<span id="cb789-2"><a href="sec-infert.html#cb789-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb789-3"><a href="sec-infert.html#cb789-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb789-4"><a href="sec-infert.html#cb789-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = case ~ spontaneous + induced, family = binomial(), 
@@ -906,10 +905,10 @@ div.csl-indent {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>考虑其他潜在的因素</p>
-<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="sec-infert.html#cb786-1" aria-hidden="true" tabindex="-1"></a>infert_glm_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> age <span class="sc">+</span> parity <span class="sc">+</span> education <span class="sc">+</span> spontaneous <span class="sc">+</span> induced,</span>
-<span id="cb786-2"><a href="sec-infert.html#cb786-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb786-3"><a href="sec-infert.html#cb786-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb786-4"><a href="sec-infert.html#cb786-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_2)</span></code></pre></div>
+<div class="sourceCode" id="cb791"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb791-1"><a href="sec-infert.html#cb791-1" aria-hidden="true" tabindex="-1"></a>infert_glm_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> age <span class="sc">+</span> parity <span class="sc">+</span> education <span class="sc">+</span> spontaneous <span class="sc">+</span> induced,</span>
+<span id="cb791-2"><a href="sec-infert.html#cb791-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb791-3"><a href="sec-infert.html#cb791-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb791-4"><a href="sec-infert.html#cb791-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = case ~ age + parity + education + spontaneous + 
@@ -939,11 +938,11 @@ div.csl-indent {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>实际上应该使用条件逻辑回归， 调用 <strong>survival</strong> 包</p>
-<div class="sourceCode" id="cb788"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb788-1"><a href="sec-infert.html#cb788-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb788-2"><a href="sec-infert.html#cb788-2" aria-hidden="true" tabindex="-1"></a>infert_glm_3 <span class="ot">&lt;-</span> <span class="fu">clogit</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced <span class="sc">+</span> <span class="fu">strata</span>(stratum),</span>
-<span id="cb788-3"><a href="sec-infert.html#cb788-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert</span>
-<span id="cb788-4"><a href="sec-infert.html#cb788-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb788-5"><a href="sec-infert.html#cb788-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_3)</span></code></pre></div>
+<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="sec-infert.html#cb793-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb793-2"><a href="sec-infert.html#cb793-2" aria-hidden="true" tabindex="-1"></a>infert_glm_3 <span class="ot">&lt;-</span> <span class="fu">clogit</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced <span class="sc">+</span> <span class="fu">strata</span>(stratum),</span>
+<span id="cb793-3"><a href="sec-infert.html#cb793-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert</span>
+<span id="cb793-4"><a href="sec-infert.html#cb793-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb793-5"><a href="sec-infert.html#cb793-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_3)</span></code></pre></div>
 <pre><code>## Call:
 ## coxph(formula = Surv(rep(1, 248L), case) ~ spontaneous + induced + 
 ##     strata(stratum), data = infert, method = &quot;exact&quot;)

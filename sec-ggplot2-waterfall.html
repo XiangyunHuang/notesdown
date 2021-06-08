@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,42 +857,42 @@ div.csl-indent {
 <div id="sec:ggplot2-waterfall" class="section level2" number="8.17">
 <h2><span class="header-section-number">8.17</span> 瀑布图</h2>
 <p>瀑布图 waterfall 与上月相比，谁增谁减，用瀑布图分别表示占比和绝对数值。<a href="https://vita.had.co.nz/papers/ggplot2-wires.pdf">瀑布图 waterfall</a></p>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="sec-ggplot2-waterfall.html#cb310-1" aria-hidden="true" tabindex="-1"></a>balance <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb310-2"><a href="sec-ggplot2-waterfall.html#cb310-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">event =</span> <span class="fu">c</span>(</span>
-<span id="cb310-3"><a href="sec-ggplot2-waterfall.html#cb310-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Starting</span><span class="sc">\n</span><span class="st">Cash&quot;</span>, <span class="st">&quot;Sales&quot;</span>, <span class="st">&quot;Refunds&quot;</span>,</span>
-<span id="cb310-4"><a href="sec-ggplot2-waterfall.html#cb310-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Payouts&quot;</span>, <span class="st">&quot;Court</span><span class="sc">\n</span><span class="st">Losses&quot;</span>, <span class="st">&quot;Court</span><span class="sc">\n</span><span class="st">Wins&quot;</span>, <span class="st">&quot;Contracts&quot;</span>, <span class="st">&quot;End</span><span class="sc">\n</span><span class="st">Cash&quot;</span></span>
-<span id="cb310-5"><a href="sec-ggplot2-waterfall.html#cb310-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb310-6"><a href="sec-ggplot2-waterfall.html#cb310-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">change =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">3400</span>, <span class="sc">-</span><span class="dv">1100</span>, <span class="sc">-</span><span class="dv">100</span>, <span class="sc">-</span><span class="dv">6600</span>, <span class="dv">3800</span>, <span class="dv">1400</span>, <span class="sc">-</span><span class="dv">2800</span>)</span>
-<span id="cb310-7"><a href="sec-ggplot2-waterfall.html#cb310-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb310-8"><a href="sec-ggplot2-waterfall.html#cb310-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-9"><a href="sec-ggplot2-waterfall.html#cb310-9" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>balance <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">0</span>, balance<span class="sc">$</span>change[<span class="sc">-</span><span class="fu">nrow</span>(balance)])) <span class="co"># 累计值</span></span>
-<span id="cb310-10"><a href="sec-ggplot2-waterfall.html#cb310-10" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(balance)</span>
-<span id="cb310-11"><a href="sec-ggplot2-waterfall.html#cb310-11" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>flow <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sign</span>(balance<span class="sc">$</span>change)) <span class="co"># 变化为正还是为负</span></span>
-<span id="cb310-12"><a href="sec-ggplot2-waterfall.html#cb310-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-13"><a href="sec-ggplot2-waterfall.html#cb310-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balance) <span class="sc">+</span></span>
-<span id="cb310-14"><a href="sec-ggplot2-waterfall.html#cb310-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb310-15"><a href="sec-ggplot2-waterfall.html#cb310-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(</span>
-<span id="cb310-16"><a href="sec-ggplot2-waterfall.html#cb310-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> time <span class="sc">-</span> <span class="fl">0.45</span>, <span class="at">xmax =</span> time <span class="sc">+</span> <span class="fl">0.45</span>,</span>
-<span id="cb310-17"><a href="sec-ggplot2-waterfall.html#cb310-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> balance, <span class="at">ymax =</span> balance <span class="sc">+</span> change, <span class="at">fill =</span> flow</span>
-<span id="cb310-18"><a href="sec-ggplot2-waterfall.html#cb310-18" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb310-19"><a href="sec-ggplot2-waterfall.html#cb310-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(</span>
-<span id="cb310-20"><a href="sec-ggplot2-waterfall.html#cb310-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> time,</span>
-<span id="cb310-21"><a href="sec-ggplot2-waterfall.html#cb310-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">pmin</span>(balance, balance <span class="sc">+</span> change) <span class="sc">-</span> <span class="dv">50</span>,</span>
-<span id="cb310-22"><a href="sec-ggplot2-waterfall.html#cb310-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> scales<span class="sc">::</span><span class="fu">dollar</span>(change)</span>
-<span id="cb310-23"><a href="sec-ggplot2-waterfall.html#cb310-23" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb310-24"><a href="sec-ggplot2-waterfall.html#cb310-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb310-25"><a href="sec-ggplot2-waterfall.html#cb310-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb310-26"><a href="sec-ggplot2-waterfall.html#cb310-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb310-27"><a href="sec-ggplot2-waterfall.html#cb310-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb310-28"><a href="sec-ggplot2-waterfall.html#cb310-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> balance<span class="sc">$</span>time,</span>
-<span id="cb310-29"><a href="sec-ggplot2-waterfall.html#cb310-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> balance<span class="sc">$</span>event</span>
-<span id="cb310-30"><a href="sec-ggplot2-waterfall.html#cb310-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb310-31"><a href="sec-ggplot2-waterfall.html#cb310-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb310-32"><a href="sec-ggplot2-waterfall.html#cb310-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Balance&quot;</span>,</span>
-<span id="cb310-33"><a href="sec-ggplot2-waterfall.html#cb310-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> scales<span class="sc">::</span>dollar</span>
-<span id="cb310-34"><a href="sec-ggplot2-waterfall.html#cb310-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb310-35"><a href="sec-ggplot2-waterfall.html#cb310-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>) <span class="sc">+</span></span>
-<span id="cb310-36"><a href="sec-ggplot2-waterfall.html#cb310-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="sec-ggplot2-waterfall.html#cb314-1" aria-hidden="true" tabindex="-1"></a>balance <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb314-2"><a href="sec-ggplot2-waterfall.html#cb314-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">event =</span> <span class="fu">c</span>(</span>
+<span id="cb314-3"><a href="sec-ggplot2-waterfall.html#cb314-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Starting</span><span class="sc">\n</span><span class="st">Cash&quot;</span>, <span class="st">&quot;Sales&quot;</span>, <span class="st">&quot;Refunds&quot;</span>,</span>
+<span id="cb314-4"><a href="sec-ggplot2-waterfall.html#cb314-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Payouts&quot;</span>, <span class="st">&quot;Court</span><span class="sc">\n</span><span class="st">Losses&quot;</span>, <span class="st">&quot;Court</span><span class="sc">\n</span><span class="st">Wins&quot;</span>, <span class="st">&quot;Contracts&quot;</span>, <span class="st">&quot;End</span><span class="sc">\n</span><span class="st">Cash&quot;</span></span>
+<span id="cb314-5"><a href="sec-ggplot2-waterfall.html#cb314-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb314-6"><a href="sec-ggplot2-waterfall.html#cb314-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">change =</span> <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">3400</span>, <span class="sc">-</span><span class="dv">1100</span>, <span class="sc">-</span><span class="dv">100</span>, <span class="sc">-</span><span class="dv">6600</span>, <span class="dv">3800</span>, <span class="dv">1400</span>, <span class="sc">-</span><span class="dv">2800</span>)</span>
+<span id="cb314-7"><a href="sec-ggplot2-waterfall.html#cb314-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb314-8"><a href="sec-ggplot2-waterfall.html#cb314-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb314-9"><a href="sec-ggplot2-waterfall.html#cb314-9" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>balance <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">0</span>, balance<span class="sc">$</span>change[<span class="sc">-</span><span class="fu">nrow</span>(balance)])) <span class="co"># 累计值</span></span>
+<span id="cb314-10"><a href="sec-ggplot2-waterfall.html#cb314-10" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(balance)</span>
+<span id="cb314-11"><a href="sec-ggplot2-waterfall.html#cb314-11" aria-hidden="true" tabindex="-1"></a>balance<span class="sc">$</span>flow <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sign</span>(balance<span class="sc">$</span>change)) <span class="co"># 变化为正还是为负</span></span>
+<span id="cb314-12"><a href="sec-ggplot2-waterfall.html#cb314-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb314-13"><a href="sec-ggplot2-waterfall.html#cb314-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(balance) <span class="sc">+</span></span>
+<span id="cb314-14"><a href="sec-ggplot2-waterfall.html#cb314-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb314-15"><a href="sec-ggplot2-waterfall.html#cb314-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(</span>
+<span id="cb314-16"><a href="sec-ggplot2-waterfall.html#cb314-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> time <span class="sc">-</span> <span class="fl">0.45</span>, <span class="at">xmax =</span> time <span class="sc">+</span> <span class="fl">0.45</span>,</span>
+<span id="cb314-17"><a href="sec-ggplot2-waterfall.html#cb314-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> balance, <span class="at">ymax =</span> balance <span class="sc">+</span> change, <span class="at">fill =</span> flow</span>
+<span id="cb314-18"><a href="sec-ggplot2-waterfall.html#cb314-18" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb314-19"><a href="sec-ggplot2-waterfall.html#cb314-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(</span>
+<span id="cb314-20"><a href="sec-ggplot2-waterfall.html#cb314-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> time,</span>
+<span id="cb314-21"><a href="sec-ggplot2-waterfall.html#cb314-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">pmin</span>(balance, balance <span class="sc">+</span> change) <span class="sc">-</span> <span class="dv">50</span>,</span>
+<span id="cb314-22"><a href="sec-ggplot2-waterfall.html#cb314-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> scales<span class="sc">::</span><span class="fu">dollar</span>(change)</span>
+<span id="cb314-23"><a href="sec-ggplot2-waterfall.html#cb314-23" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb314-24"><a href="sec-ggplot2-waterfall.html#cb314-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb314-25"><a href="sec-ggplot2-waterfall.html#cb314-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb314-26"><a href="sec-ggplot2-waterfall.html#cb314-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb314-27"><a href="sec-ggplot2-waterfall.html#cb314-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb314-28"><a href="sec-ggplot2-waterfall.html#cb314-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> balance<span class="sc">$</span>time,</span>
+<span id="cb314-29"><a href="sec-ggplot2-waterfall.html#cb314-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> balance<span class="sc">$</span>event</span>
+<span id="cb314-30"><a href="sec-ggplot2-waterfall.html#cb314-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb314-31"><a href="sec-ggplot2-waterfall.html#cb314-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb314-32"><a href="sec-ggplot2-waterfall.html#cb314-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Balance&quot;</span>,</span>
+<span id="cb314-33"><a href="sec-ggplot2-waterfall.html#cb314-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> scales<span class="sc">::</span>dollar</span>
+<span id="cb314-34"><a href="sec-ggplot2-waterfall.html#cb314-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb314-35"><a href="sec-ggplot2-waterfall.html#cb314-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>) <span class="sc">+</span></span>
+<span id="cb314-36"><a href="sec-ggplot2-waterfall.html#cb314-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:waterfall"></span>
 <img src="data-visualization-gallery_files/figure-html/waterfall-1.png" alt="瀑布图" width="672" />
 <p class="caption">

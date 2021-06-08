@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,18 +857,18 @@ div.csl-indent {
 <div id="sec:PlantGrowth" class="section level2" number="25.3">
 <h2><span class="header-section-number">25.3</span> 不同实验条件下植物生长情况</h2>
 <p>PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》<span class="citation">(<a href="#ref-Dobson_1983_Modelling" role="doc-biblioref">Dobson 1983</a>)</span> 第 2 章第 2 节的案例 — 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 <a href="sec-PlantGrowth.html#tab:PlantGrowth-data">25.1</a> 所示</p>
-<div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="sec-PlantGrowth.html#cb861-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do.call(&quot;cbind&quot;, lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = &quot;weight&quot;))</span></span>
-<span id="cb861-2"><a href="sec-PlantGrowth.html#cb861-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 或者</span></span>
-<span id="cb861-3"><a href="sec-PlantGrowth.html#cb861-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb861-4"><a href="sec-PlantGrowth.html#cb861-4" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(PlantGrowth, <span class="at">f =</span> PlantGrowth<span class="sc">$</span>group) <span class="sc">%&gt;%</span> <span class="co"># 分组</span></span>
-<span id="cb861-5"><a href="sec-PlantGrowth.html#cb861-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(., subset, <span class="at">select =</span> <span class="st">&quot;weight&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># 计算</span></span>
-<span id="cb861-6"><a href="sec-PlantGrowth.html#cb861-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="st">&quot;cbind&quot;</span>, .) <span class="sc">%&gt;%</span> <span class="co"># 合并</span></span>
-<span id="cb861-7"><a href="sec-PlantGrowth.html#cb861-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="fu">levels</span>(PlantGrowth<span class="sc">$</span>group)) <span class="sc">%&gt;%</span> <span class="co"># 重命名 `colnames&lt;-`(., levels(PlantGrowth$group))</span></span>
-<span id="cb861-8"><a href="sec-PlantGrowth.html#cb861-8" aria-hidden="true" tabindex="-1"></a>  t <span class="sc">%&gt;%</span> </span>
-<span id="cb861-9"><a href="sec-PlantGrowth.html#cb861-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb861-10"><a href="sec-PlantGrowth.html#cb861-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;不同生长环境下植物的干重&quot;</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb861-11"><a href="sec-PlantGrowth.html#cb861-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
-<span id="cb861-12"><a href="sec-PlantGrowth.html#cb861-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="sec-PlantGrowth.html#cb866-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do.call(&quot;cbind&quot;, lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = &quot;weight&quot;))</span></span>
+<span id="cb866-2"><a href="sec-PlantGrowth.html#cb866-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 或者</span></span>
+<span id="cb866-3"><a href="sec-PlantGrowth.html#cb866-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb866-4"><a href="sec-PlantGrowth.html#cb866-4" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(PlantGrowth, <span class="at">f =</span> PlantGrowth<span class="sc">$</span>group) <span class="sc">%&gt;%</span> <span class="co"># 分组</span></span>
+<span id="cb866-5"><a href="sec-PlantGrowth.html#cb866-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(., subset, <span class="at">select =</span> <span class="st">&quot;weight&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># 计算</span></span>
+<span id="cb866-6"><a href="sec-PlantGrowth.html#cb866-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Reduce</span>(<span class="st">&quot;cbind&quot;</span>, .) <span class="sc">%&gt;%</span> <span class="co"># 合并</span></span>
+<span id="cb866-7"><a href="sec-PlantGrowth.html#cb866-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="fu">levels</span>(PlantGrowth<span class="sc">$</span>group)) <span class="sc">%&gt;%</span> <span class="co"># 重命名 `colnames&lt;-`(., levels(PlantGrowth$group))</span></span>
+<span id="cb866-8"><a href="sec-PlantGrowth.html#cb866-8" aria-hidden="true" tabindex="-1"></a>  t <span class="sc">%&gt;%</span> </span>
+<span id="cb866-9"><a href="sec-PlantGrowth.html#cb866-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb866-10"><a href="sec-PlantGrowth.html#cb866-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;不同生长环境下植物的干重&quot;</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb866-11"><a href="sec-PlantGrowth.html#cb866-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
+<span id="cb866-12"><a href="sec-PlantGrowth.html#cb866-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:PlantGrowth-data">表 25.1: </span>不同生长环境下植物的干重</caption>
 <thead>
@@ -930,7 +929,7 @@ div.csl-indent {
 </tbody>
 </table>
 <p>设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响</p>
-<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="sec-PlantGrowth.html#cb862-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PlantGrowth)</span></code></pre></div>
+<div class="sourceCode" id="cb867"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb867-1"><a href="sec-PlantGrowth.html#cb867-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PlantGrowth)</span></code></pre></div>
 <pre><code>##      weight       group   
 ##  Min.   :3.590   ctrl:10  
 ##  1st Qu.:4.550   trt1:10  
@@ -946,18 +945,18 @@ div.csl-indent {
 </p>
 </div>
 <p>实验条件 trt1 和 trt2 对植物生长状况有显著的影响，为了量化这种影响，建立线性回归模型</p>
-<div class="sourceCode" id="cb864"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb864-1"><a href="sec-PlantGrowth.html#cb864-1" aria-hidden="true" tabindex="-1"></a>fit_sublm <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group,</span>
-<span id="cb864-2"><a href="sec-PlantGrowth.html#cb864-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth,</span>
-<span id="cb864-3"><a href="sec-PlantGrowth.html#cb864-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>)</span>
-<span id="cb864-4"><a href="sec-PlantGrowth.html#cb864-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb864-5"><a href="sec-PlantGrowth.html#cb864-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_sublm)</span></code></pre></div>
+<div class="sourceCode" id="cb869"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb869-1"><a href="sec-PlantGrowth.html#cb869-1" aria-hidden="true" tabindex="-1"></a>fit_sublm <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group,</span>
+<span id="cb869-2"><a href="sec-PlantGrowth.html#cb869-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth,</span>
+<span id="cb869-3"><a href="sec-PlantGrowth.html#cb869-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>)</span>
+<span id="cb869-4"><a href="sec-PlantGrowth.html#cb869-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb869-5"><a href="sec-PlantGrowth.html#cb869-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_sublm)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: weight
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## group      1 0.6882 0.68820  1.4191  0.249
 ## Residuals 18 8.7292 0.48496</code></pre>
-<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="sec-PlantGrowth.html#cb866-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_sublm)</span></code></pre></div>
+<div class="sourceCode" id="cb871"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb871-1"><a href="sec-PlantGrowth.html#cb871-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_sublm)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ group, data = PlantGrowth, subset = group %in% 
@@ -978,8 +977,8 @@ div.csl-indent {
 ## Multiple R-squared:  0.07308,    Adjusted R-squared:  0.02158 
 ## F-statistic: 1.419 on 1 and 18 DF,  p-value: 0.249</code></pre>
 <p>下面再通过检验的方式比较实验组和对照组相比，是否有显著作用</p>
-<div class="sourceCode" id="cb868"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb868-1"><a href="sec-PlantGrowth.html#cb868-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 控制组和实验组1比较</span></span>
-<span id="cb868-2"><a href="sec-PlantGrowth.html#cb868-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb873"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb873-1"><a href="sec-PlantGrowth.html#cb873-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 控制组和实验组1比较</span></span>
+<span id="cb873-2"><a href="sec-PlantGrowth.html#cb873-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -991,8 +990,8 @@ div.csl-indent {
 ## sample estimates:
 ## mean in group ctrl mean in group trt1 
 ##              5.032              4.661</code></pre>
-<div class="sourceCode" id="cb870"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb870-1"><a href="sec-PlantGrowth.html#cb870-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 控制组和实验组2比较</span></span>
-<span id="cb870-2"><a href="sec-PlantGrowth.html#cb870-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt2&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb875"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb875-1"><a href="sec-PlantGrowth.html#cb875-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 控制组和实验组2比较</span></span>
+<span id="cb875-2"><a href="sec-PlantGrowth.html#cb875-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">subset =</span> group <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt2&quot;</span>))</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -1005,11 +1004,11 @@ div.csl-indent {
 ## mean in group ctrl mean in group trt2 
 ##              5.032              5.526</code></pre>
 <p>检验结果表明，实验条件 trt2 会对植物生长产生显著效果，而实验条件 trt1 不会。在假定同方差的情况下，建立线性回归模型，同时考虑实验条件 trt1 和 trt2</p>
-<div class="sourceCode" id="cb872"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb872-1"><a href="sec-PlantGrowth.html#cb872-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型拟合</span></span>
-<span id="cb872-2"><a href="sec-PlantGrowth.html#cb872-2" aria-hidden="true" tabindex="-1"></a>fit_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span>
-<span id="cb872-3"><a href="sec-PlantGrowth.html#cb872-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb872-4"><a href="sec-PlantGrowth.html#cb872-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型输出</span></span>
-<span id="cb872-5"><a href="sec-PlantGrowth.html#cb872-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lm)</span></code></pre></div>
+<div class="sourceCode" id="cb877"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb877-1"><a href="sec-PlantGrowth.html#cb877-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型拟合</span></span>
+<span id="cb877-2"><a href="sec-PlantGrowth.html#cb877-2" aria-hidden="true" tabindex="-1"></a>fit_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span>
+<span id="cb877-3"><a href="sec-PlantGrowth.html#cb877-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb877-4"><a href="sec-PlantGrowth.html#cb877-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型输出</span></span>
+<span id="cb877-5"><a href="sec-PlantGrowth.html#cb877-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lm)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ group, data = PlantGrowth)
@@ -1029,8 +1028,8 @@ div.csl-indent {
 ## Residual standard error: 0.6234 on 27 degrees of freedom
 ## Multiple R-squared:  0.2641, Adjusted R-squared:  0.2096 
 ## F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
-<div class="sourceCode" id="cb874"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb874-1"><a href="sec-PlantGrowth.html#cb874-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 方差分析</span></span>
-<span id="cb874-2"><a href="sec-PlantGrowth.html#cb874-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_lm)</span></code></pre></div>
+<div class="sourceCode" id="cb879"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb879-1"><a href="sec-PlantGrowth.html#cb879-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 方差分析</span></span>
+<span id="cb879-2"><a href="sec-PlantGrowth.html#cb879-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_lm)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: weight
@@ -1039,8 +1038,8 @@ div.csl-indent {
 ## Residuals 27 10.4921  0.3886                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb876"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb876-1"><a href="sec-PlantGrowth.html#cb876-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 参数估计</span></span>
-<span id="cb876-2"><a href="sec-PlantGrowth.html#cb876-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(fit_lm))</span></code></pre></div>
+<div class="sourceCode" id="cb881"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb881-1"><a href="sec-PlantGrowth.html#cb881-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 参数估计</span></span>
+<span id="cb881-2"><a href="sec-PlantGrowth.html#cb881-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(fit_lm))</span></code></pre></div>
 <pre><code>##             Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept)    5.032  0.1971284 25.526514 1.936575e-20
 ## grouptrt1     -0.371  0.2787816 -1.330791 1.943879e-01
@@ -1082,24 +1081,24 @@ div.csl-indent {
 </tbody>
 </table>
 <p>还可以将模型转化为数学公式</p>
-<div class="sourceCode" id="cb878"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb878-1"><a href="sec-PlantGrowth.html#cb878-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 理论模型</span></span>
-<span id="cb878-2"><a href="sec-PlantGrowth.html#cb878-2" aria-hidden="true" tabindex="-1"></a>equatiomatic<span class="sc">::</span><span class="fu">extract_eq</span>(fit_lm)</span></code></pre></div>
+<div class="sourceCode" id="cb883"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb883-1"><a href="sec-PlantGrowth.html#cb883-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 理论模型</span></span>
+<span id="cb883-2"><a href="sec-PlantGrowth.html#cb883-2" aria-hidden="true" tabindex="-1"></a>equatiomatic<span class="sc">::</span><span class="fu">extract_eq</span>(fit_lm)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{weight} = \alpha + \beta_{1}(\operatorname{group}_{\operatorname{trt1}}) + \beta_{2}(\operatorname{group}_{\operatorname{trt2}}) + \epsilon
 \]</span></p>
-<div class="sourceCode" id="cb879"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb879-1"><a href="sec-PlantGrowth.html#cb879-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 拟合模型</span></span>
-<span id="cb879-2"><a href="sec-PlantGrowth.html#cb879-2" aria-hidden="true" tabindex="-1"></a>equatiomatic<span class="sc">::</span><span class="fu">extract_eq</span>(fit_lm, <span class="at">use_coefs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb884"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb884-1"><a href="sec-PlantGrowth.html#cb884-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 拟合模型</span></span>
+<span id="cb884-2"><a href="sec-PlantGrowth.html#cb884-2" aria-hidden="true" tabindex="-1"></a>equatiomatic<span class="sc">::</span><span class="fu">extract_eq</span>(fit_lm, <span class="at">use_coefs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{\widehat{weight}} = 5.03 - 0.37(\operatorname{group}_{\operatorname{trt1}}) + 0.49(\operatorname{group}_{\operatorname{trt2}})
 \]</span></p>
 <p>进一步地，我们在线性模型的基础上考虑每个实验组有不同的方差，先做方差齐性检验。</p>
-<div class="sourceCode" id="cb880"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb880-1"><a href="sec-PlantGrowth.html#cb880-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
+<div class="sourceCode" id="cb885"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb885-1"><a href="sec-PlantGrowth.html#cb885-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
 <pre><code>## 
 ##  Bartlett test of homogeneity of variances
 ## 
 ## data:  weight by group
 ## Bartlett&#39;s K-squared = 2.8786, df = 2, p-value = 0.2371</code></pre>
-<div class="sourceCode" id="cb882"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb882-1"><a href="sec-PlantGrowth.html#cb882-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fligner.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
+<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="sec-PlantGrowth.html#cb887-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fligner.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
 <pre><code>## 
 ##  Fligner-Killeen test of homogeneity of variances
 ## 
@@ -1107,34 +1106,34 @@ div.csl-indent {
 ## Fligner-Killeen:med chi-squared = 2.3499, df = 2, p-value = 0.3088</code></pre>
 <p>检验的结果显示，可以认为三个组的方差没有显著差异，但我们还是考虑每个组有不同的方差，看看放开假设能获得多少提升，后续会发现，从对数似然的角度来看，实际提升量很小，只有 7.72%</p>
 <p>上面同时比较多个总体的方差，会发现方差没有显著差异，那么接下来在假定方差齐性的条件下，比较均值的差异是否显著？</p>
-<div class="sourceCode" id="cb884"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb884-1"><a href="sec-PlantGrowth.html#cb884-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 参数检验，假定异方差</span></span>
-<span id="cb884-2"><a href="sec-PlantGrowth.html#cb884-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb889"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb889-1"><a href="sec-PlantGrowth.html#cb889-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 参数检验，假定异方差</span></span>
+<span id="cb889-2"><a href="sec-PlantGrowth.html#cb889-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## 
 ##  One-way analysis of means (not assuming equal variances)
 ## 
 ## data:  weight and group
 ## F = 5.181, num df = 2.000, denom df = 17.128, p-value = 0.01739</code></pre>
-<div class="sourceCode" id="cb886"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb886-1"><a href="sec-PlantGrowth.html#cb886-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 参数检验，假定方差齐性</span></span>
-<span id="cb886-2"><a href="sec-PlantGrowth.html#cb886-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb891"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb891-1"><a href="sec-PlantGrowth.html#cb891-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 参数检验，假定方差齐性</span></span>
+<span id="cb891-2"><a href="sec-PlantGrowth.html#cb891-2" aria-hidden="true" tabindex="-1"></a><span class="fu">oneway.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ##  One-way analysis of means
 ## 
 ## data:  weight and group
 ## F = 4.8461, num df = 2, denom df = 27, p-value = 0.01591</code></pre>
-<div class="sourceCode" id="cb888"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb888-1"><a href="sec-PlantGrowth.html#cb888-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 非参数检验</span></span>
-<span id="cb888-2"><a href="sec-PlantGrowth.html#cb888-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
+<div class="sourceCode" id="cb893"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb893-1"><a href="sec-PlantGrowth.html#cb893-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 非参数检验</span></span>
+<span id="cb893-2"><a href="sec-PlantGrowth.html#cb893-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code></pre></div>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test
 ## 
 ## data:  weight by group
 ## Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 <p>检验结果显示它们的均值是有显著差异的！</p>
-<div class="sourceCode" id="cb890"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb890-1"><a href="sec-PlantGrowth.html#cb890-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 固定效应模型</span></span>
-<span id="cb890-2"><a href="sec-PlantGrowth.html#cb890-2" aria-hidden="true" tabindex="-1"></a>fit_gls <span class="ot">&lt;-</span> nlme<span class="sc">::</span><span class="fu">gls</span>(weight <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb890-3"><a href="sec-PlantGrowth.html#cb890-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> nlme<span class="sc">::</span><span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group),</span>
-<span id="cb890-4"><a href="sec-PlantGrowth.html#cb890-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth, <span class="at">method =</span> <span class="st">&quot;REML&quot;</span></span>
-<span id="cb890-5"><a href="sec-PlantGrowth.html#cb890-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb890-6"><a href="sec-PlantGrowth.html#cb890-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_gls)</span></code></pre></div>
+<div class="sourceCode" id="cb895"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb895-1"><a href="sec-PlantGrowth.html#cb895-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 固定效应模型</span></span>
+<span id="cb895-2"><a href="sec-PlantGrowth.html#cb895-2" aria-hidden="true" tabindex="-1"></a>fit_gls <span class="ot">&lt;-</span> nlme<span class="sc">::</span><span class="fu">gls</span>(weight <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb895-3"><a href="sec-PlantGrowth.html#cb895-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">weights =</span> nlme<span class="sc">::</span><span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group),</span>
+<span id="cb895-4"><a href="sec-PlantGrowth.html#cb895-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth, <span class="at">method =</span> <span class="st">&quot;REML&quot;</span></span>
+<span id="cb895-5"><a href="sec-PlantGrowth.html#cb895-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb895-6"><a href="sec-PlantGrowth.html#cb895-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_gls)</span></code></pre></div>
 <pre><code>## Generalized least squares fit by REML
 ##   Model: weight ~ 1 
 ##   Data: PlantGrowth 
@@ -1158,9 +1157,9 @@ div.csl-indent {
 ## 
 ## Residual standard error: 0.5896195 
 ## Degrees of freedom: 30 total; 29 residual</code></pre>
-<div class="sourceCode" id="cb892"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb892-1"><a href="sec-PlantGrowth.html#cb892-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 随机效应模型</span></span>
-<span id="cb892-2"><a href="sec-PlantGrowth.html#cb892-2" aria-hidden="true" tabindex="-1"></a>fit_lme <span class="ot">&lt;-</span> nlme<span class="sc">::</span><span class="fu">lme</span>(weight <span class="sc">~</span> <span class="dv">1</span>, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group, <span class="at">data =</span> PlantGrowth)</span>
-<span id="cb892-3"><a href="sec-PlantGrowth.html#cb892-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme)</span></code></pre></div>
+<div class="sourceCode" id="cb897"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb897-1"><a href="sec-PlantGrowth.html#cb897-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 随机效应模型</span></span>
+<span id="cb897-2"><a href="sec-PlantGrowth.html#cb897-2" aria-hidden="true" tabindex="-1"></a>fit_lme <span class="ot">&lt;-</span> nlme<span class="sc">::</span><span class="fu">lme</span>(weight <span class="sc">~</span> <span class="dv">1</span>, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group, <span class="at">data =</span> PlantGrowth)</span>
+<span id="cb897-3"><a href="sec-PlantGrowth.html#cb897-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme)</span></code></pre></div>
 <pre><code>## Linear mixed-effects model fit by REML
 ##   Data: PlantGrowth 
 ##        AIC      BIC    logLik
@@ -1186,14 +1185,14 @@ div.csl-indent {
 y_{ij} = \mu + \epsilon_{ij}, i = 1,2,3
 \]</span></p>
 <p>其中 <span class="math inline">\(\mu\)</span> 是固定的未知参数，我们和之前假定同方差情形下的模型比较一下，现在异方差情况下模型提升的情况，从对数似然的角度来看</p>
-<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="sec-PlantGrowth.html#cb894-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lm)</span>
-<span id="cb894-2"><a href="sec-PlantGrowth.html#cb894-2" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -26.80952 (df=4)</span></span>
-<span id="cb894-3"><a href="sec-PlantGrowth.html#cb894-3" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lm, <span class="at">REML =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb894-4"><a href="sec-PlantGrowth.html#cb894-4" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -29.00481 (df=4)</span></span>
-<span id="cb894-5"><a href="sec-PlantGrowth.html#cb894-5" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_gls)</span>
-<span id="cb894-6"><a href="sec-PlantGrowth.html#cb894-6" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -31.24314 (df=4)</span></span>
-<span id="cb894-7"><a href="sec-PlantGrowth.html#cb894-7" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lme)</span>
-<span id="cb894-8"><a href="sec-PlantGrowth.html#cb894-8" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -30.72237 (df=3)</span></span></code></pre></div>
+<div class="sourceCode" id="cb899"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb899-1"><a href="sec-PlantGrowth.html#cb899-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lm)</span>
+<span id="cb899-2"><a href="sec-PlantGrowth.html#cb899-2" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -26.80952 (df=4)</span></span>
+<span id="cb899-3"><a href="sec-PlantGrowth.html#cb899-3" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lm, <span class="at">REML =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb899-4"><a href="sec-PlantGrowth.html#cb899-4" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -29.00481 (df=4)</span></span>
+<span id="cb899-5"><a href="sec-PlantGrowth.html#cb899-5" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_gls)</span>
+<span id="cb899-6"><a href="sec-PlantGrowth.html#cb899-6" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -31.24314 (df=4)</span></span>
+<span id="cb899-7"><a href="sec-PlantGrowth.html#cb899-7" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(fit_lme)</span>
+<span id="cb899-8"><a href="sec-PlantGrowth.html#cb899-8" aria-hidden="true" tabindex="-1"></a><span class="do">## &#39;log Lik.&#39; -30.72237 (df=3)</span></span></code></pre></div>
 <p>进一步地，我们考虑两水平模型，认为不同的实验组其均值和方差都不一样，检验三样本均值是否相等？</p>
 <p><span class="math inline">\(\mu_1 = \mu_2 = \mu_3\)</span> 检验，这里因为每组的样本量都一样，因此考虑 Turkey 的 T 法检验，检验均值是否有显著差别，实际上这里因为实验组数量只有2个，可以两两比对，如前所述。但是这里我们想扩展一下，考虑多组比较的问题。</p>
 <!-- 书籍 《概率论与数理统计教程》438 页重复数相等场合下的多重比较 T 法 [@Prob_2011_Mao] -->
@@ -1204,11 +1203,11 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 \end{align}\]</span></p>
 <p>其中 <span class="math inline">\(\mu_i\)</span> 是随机的未知变量，服从均值为 <span class="math inline">\(\mu_{\theta}\)</span> 方差为 <span class="math inline">\(Var(\xi_i) = \tau^2\)</span> 的正态分布</p>
 <p>我们用 <strong>MASS</strong> 包提供的 <code>glmmPQL()</code> 函数拟合该数据集</p>
-<div class="sourceCode" id="cb895"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb895-1"><a href="sec-PlantGrowth.html#cb895-1" aria-hidden="true" tabindex="-1"></a>fit_lme_pql <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(weight <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb895-2"><a href="sec-PlantGrowth.html#cb895-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb895-3"><a href="sec-PlantGrowth.html#cb895-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> PlantGrowth</span>
-<span id="cb895-4"><a href="sec-PlantGrowth.html#cb895-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb895-5"><a href="sec-PlantGrowth.html#cb895-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme_pql)</span></code></pre></div>
+<div class="sourceCode" id="cb900"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb900-1"><a href="sec-PlantGrowth.html#cb900-1" aria-hidden="true" tabindex="-1"></a>fit_lme_pql <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(weight <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb900-2"><a href="sec-PlantGrowth.html#cb900-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> group, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb900-3"><a href="sec-PlantGrowth.html#cb900-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">data =</span> PlantGrowth</span>
+<span id="cb900-4"><a href="sec-PlantGrowth.html#cb900-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb900-5"><a href="sec-PlantGrowth.html#cb900-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme_pql)</span></code></pre></div>
 <pre><code>## Linear mixed-effects model fit by maximum likelihood
 ##   Data: PlantGrowth 
 ##   AIC BIC logLik
@@ -1234,15 +1233,15 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ## Number of Groups: 3</code></pre>
 <p>我们再借助 <strong>brms</strong> 包从贝叶斯的角度来分析数据，并建模</p>
 <!-- 就以 brms 包为例谈谈先验、参数设置，默认的先验有可能太宽泛了，导致不是很合理 <https://discourse.mc-stan.org/t/11584> -->
-<div class="sourceCode" id="cb897"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb897-1"><a href="sec-PlantGrowth.html#cb897-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 贝叶斯模型</span></span>
-<span id="cb897-2"><a href="sec-PlantGrowth.html#cb897-2" aria-hidden="true" tabindex="-1"></a>fit_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span>
-<span id="cb897-3"><a href="sec-PlantGrowth.html#cb897-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/</span></span>
-<span id="cb897-4"><a href="sec-PlantGrowth.html#cb897-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rcpp)</span>
-<span id="cb897-5"><a href="sec-PlantGrowth.html#cb897-5" aria-hidden="true" tabindex="-1"></a>fit_lme_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(weight <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> group),</span>
-<span id="cb897-6"><a href="sec-PlantGrowth.html#cb897-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth, <span class="at">family =</span> <span class="fu">gaussian</span>(), </span>
-<span id="cb897-7"><a href="sec-PlantGrowth.html#cb897-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="dv">2019</span></span>
-<span id="cb897-8"><a href="sec-PlantGrowth.html#cb897-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb897-9"><a href="sec-PlantGrowth.html#cb897-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme_brm)</span></code></pre></div>
+<div class="sourceCode" id="cb902"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb902-1"><a href="sec-PlantGrowth.html#cb902-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 贝叶斯模型</span></span>
+<span id="cb902-2"><a href="sec-PlantGrowth.html#cb902-2" aria-hidden="true" tabindex="-1"></a>fit_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span>
+<span id="cb902-3"><a href="sec-PlantGrowth.html#cb902-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/</span></span>
+<span id="cb902-4"><a href="sec-PlantGrowth.html#cb902-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rcpp)</span>
+<span id="cb902-5"><a href="sec-PlantGrowth.html#cb902-5" aria-hidden="true" tabindex="-1"></a>fit_lme_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(weight <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> group),</span>
+<span id="cb902-6"><a href="sec-PlantGrowth.html#cb902-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> PlantGrowth, <span class="at">family =</span> <span class="fu">gaussian</span>(), </span>
+<span id="cb902-7"><a href="sec-PlantGrowth.html#cb902-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="dv">2019</span></span>
+<span id="cb902-8"><a href="sec-PlantGrowth.html#cb902-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb902-9"><a href="sec-PlantGrowth.html#cb902-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lme_brm)</span></code></pre></div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">

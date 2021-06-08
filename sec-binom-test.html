@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -860,37 +859,37 @@ div.csl-indent {
 <p>比例 <span class="math inline">\(p\)</span> 的检验， 做 <span class="math inline">\(n\)</span> 次独立试验，样本 <span class="math inline">\(X_1,\ldots,X_n \sim b(1, p)\)</span>，事件发生的总次数 <span class="math inline">\(\sum_{i=1}^{n}X_i\)</span></p>
 <p>函数 <code>binom.test</code> 用来检验伯努利试验中成功概率 <span class="math inline">\(p\)</span> 和给定概率 <span class="math inline">\(p_0\)</span> 的关系，属于精确检验。</p>
 <p>编程手动实现一个，再调用函数计算，比较结果</p>
-<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb528-1"><a href="sec-binom-test.html#cb528-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模拟一组样本</span></span>
-<span id="cb528-2"><a href="sec-binom-test.html#cb528-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="sec-binom-test.html#cb533-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模拟一组样本</span></span>
+<span id="cb533-2"><a href="sec-binom-test.html#cb533-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>))</span></code></pre></div>
 <p>二项分布中成功概率的检验</p>
-<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="sec-binom-test.html#cb529-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="fu">sum</span>(x), <span class="at">n =</span> <span class="dv">100</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="sec-binom-test.html#cb534-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="fu">sum</span>(x), <span class="at">n =</span> <span class="dv">100</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1.116e-09
+## number of successes = 19, number of trials = 100, p-value = 2.703e-10
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.1184432 0.2806980
 ## sample estimates:
 ## probability of success 
-##                    0.2</code></pre>
+##                   0.19</code></pre>
 <p>检验成功概率 p 是否等于 0.5， P 值 <span class="math inline">\(6.148 \times 10^{-11}\)</span> 结论是拒绝原假设</p>
-<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="sec-binom-test.html#cb531-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="fu">sum</span>(x), <span class="at">n =</span> <span class="dv">100</span>, <span class="at">p =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="sec-binom-test.html#cb536-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="fu">sum</span>(x), <span class="at">n =</span> <span class="dv">100</span>, <span class="at">p =</span> <span class="fl">0.2</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1
+## number of successes = 19, number of trials = 100, p-value = 0.9007
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.1184432 0.2806980
 ## sample estimates:
 ## probability of success 
-##                    0.2</code></pre>
+##                   0.19</code></pre>
 <p>检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设</p>
 <p>二项检验 <span class="citation">(<a href="#ref-Test_1934_binom" role="doc-biblioref">Clopper and Pearson 1934</a>)</span></p>
-<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="sec-binom-test.html#cb533-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage</span>(binom.test)</span></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="sec-binom-test.html#cb538-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage</span>(binom.test)</span></code></pre></div>
 <pre><code>binom.test(x, n, p = 0.5, alternative = c(&quot;two.sided&quot;, &quot;less&quot;, &quot;greater&quot;),
     conf.level = 0.95)</code></pre>
 </div>

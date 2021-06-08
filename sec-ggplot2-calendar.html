@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-06" />
+<meta name="date" content="2021-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,6 @@
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
-<script src="libs/default-1.0.0/default.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -858,27 +857,27 @@ div.csl-indent {
 <div id="sec:ggplot2-calendar" class="section level2" number="8.10">
 <h2><span class="header-section-number">8.10</span> 日历图</h2>
 <p>airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气温（华氏度）、风速（米/小时）、紫外线强度、臭氧含量四个指标，图 <a href="sec-ggplot2-calendar.html#fig:calendar-airquality">8.15</a> 展示了每日的气温变化。</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="sec-ggplot2-calendar.html#cb288-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">%&gt;%</span></span>
-<span id="cb288-2"><a href="sec-ggplot2-calendar.html#cb288-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">Date =</span> <span class="fu">seq.Date</span>(</span>
-<span id="cb288-3"><a href="sec-ggplot2-calendar.html#cb288-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">as.Date</span>(<span class="st">&quot;1973-05-01&quot;</span>),</span>
-<span id="cb288-4"><a href="sec-ggplot2-calendar.html#cb288-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">as.Date</span>(<span class="st">&quot;1973-09-30&quot;</span>), <span class="at">by =</span> <span class="st">&quot;day&quot;</span></span>
-<span id="cb288-5"><a href="sec-ggplot2-calendar.html#cb288-5" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb288-6"><a href="sec-ggplot2-calendar.html#cb288-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
-<span id="cb288-7"><a href="sec-ggplot2-calendar.html#cb288-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Week =</span> <span class="fu">as.integer</span>(<span class="fu">format</span>(Date, <span class="st">&quot;%W&quot;</span>)),</span>
-<span id="cb288-8"><a href="sec-ggplot2-calendar.html#cb288-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(<span class="fu">format</span>(Date, <span class="st">&quot;%Y&quot;</span>)),</span>
-<span id="cb288-9"><a href="sec-ggplot2-calendar.html#cb288-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Weekdays =</span> <span class="fu">factor</span>(<span class="fu">weekdays</span>(Date, <span class="at">abbreviate =</span> T),</span>
-<span id="cb288-10"><a href="sec-ggplot2-calendar.html#cb288-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Mon&quot;</span>, <span class="st">&quot;Tue&quot;</span>, <span class="st">&quot;Wed&quot;</span>, <span class="st">&quot;Thu&quot;</span>, <span class="st">&quot;Fri&quot;</span>, <span class="st">&quot;Sat&quot;</span>, <span class="st">&quot;Sun&quot;</span>)</span>
-<span id="cb288-11"><a href="sec-ggplot2-calendar.html#cb288-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb288-12"><a href="sec-ggplot2-calendar.html#cb288-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb288-13"><a href="sec-ggplot2-calendar.html#cb288-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Week, <span class="at">y =</span> Weekdays, <span class="at">fill =</span> Temp)) <span class="sc">+</span></span>
-<span id="cb288-14"><a href="sec-ggplot2-calendar.html#cb288-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">name =</span> <span class="st">&quot;Temp (F)&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>) <span class="sc">+</span></span>
-<span id="cb288-15"><a href="sec-ggplot2-calendar.html#cb288-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb288-16"><a href="sec-ggplot2-calendar.html#cb288-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="st">&quot;Year&quot;</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb288-17"><a href="sec-ggplot2-calendar.html#cb288-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb288-18"><a href="sec-ggplot2-calendar.html#cb288-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb288-19"><a href="sec-ggplot2-calendar.html#cb288-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">52</span>, <span class="at">length =</span> <span class="dv">12</span>),</span>
-<span id="cb288-20"><a href="sec-ggplot2-calendar.html#cb288-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> month.abb</span>
-<span id="cb288-21"><a href="sec-ggplot2-calendar.html#cb288-21" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="sec-ggplot2-calendar.html#cb292-1" aria-hidden="true" tabindex="-1"></a>airquality <span class="sc">%&gt;%</span></span>
+<span id="cb292-2"><a href="sec-ggplot2-calendar.html#cb292-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">Date =</span> <span class="fu">seq.Date</span>(</span>
+<span id="cb292-3"><a href="sec-ggplot2-calendar.html#cb292-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> <span class="fu">as.Date</span>(<span class="st">&quot;1973-05-01&quot;</span>),</span>
+<span id="cb292-4"><a href="sec-ggplot2-calendar.html#cb292-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> <span class="fu">as.Date</span>(<span class="st">&quot;1973-09-30&quot;</span>), <span class="at">by =</span> <span class="st">&quot;day&quot;</span></span>
+<span id="cb292-5"><a href="sec-ggplot2-calendar.html#cb292-5" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb292-6"><a href="sec-ggplot2-calendar.html#cb292-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
+<span id="cb292-7"><a href="sec-ggplot2-calendar.html#cb292-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Week =</span> <span class="fu">as.integer</span>(<span class="fu">format</span>(Date, <span class="st">&quot;%W&quot;</span>)),</span>
+<span id="cb292-8"><a href="sec-ggplot2-calendar.html#cb292-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">as.integer</span>(<span class="fu">format</span>(Date, <span class="st">&quot;%Y&quot;</span>)),</span>
+<span id="cb292-9"><a href="sec-ggplot2-calendar.html#cb292-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Weekdays =</span> <span class="fu">factor</span>(<span class="fu">weekdays</span>(Date, <span class="at">abbreviate =</span> T),</span>
+<span id="cb292-10"><a href="sec-ggplot2-calendar.html#cb292-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Mon&quot;</span>, <span class="st">&quot;Tue&quot;</span>, <span class="st">&quot;Wed&quot;</span>, <span class="st">&quot;Thu&quot;</span>, <span class="st">&quot;Fri&quot;</span>, <span class="st">&quot;Sat&quot;</span>, <span class="st">&quot;Sun&quot;</span>)</span>
+<span id="cb292-11"><a href="sec-ggplot2-calendar.html#cb292-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb292-12"><a href="sec-ggplot2-calendar.html#cb292-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb292-13"><a href="sec-ggplot2-calendar.html#cb292-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Week, <span class="at">y =</span> Weekdays, <span class="at">fill =</span> Temp)) <span class="sc">+</span></span>
+<span id="cb292-14"><a href="sec-ggplot2-calendar.html#cb292-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">name =</span> <span class="st">&quot;Temp (F)&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>) <span class="sc">+</span></span>
+<span id="cb292-15"><a href="sec-ggplot2-calendar.html#cb292-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb292-16"><a href="sec-ggplot2-calendar.html#cb292-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="st">&quot;Year&quot;</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb292-17"><a href="sec-ggplot2-calendar.html#cb292-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb292-18"><a href="sec-ggplot2-calendar.html#cb292-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb292-19"><a href="sec-ggplot2-calendar.html#cb292-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">52</span>, <span class="at">length =</span> <span class="dv">12</span>),</span>
+<span id="cb292-20"><a href="sec-ggplot2-calendar.html#cb292-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> month.abb</span>
+<span id="cb292-21"><a href="sec-ggplot2-calendar.html#cb292-21" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:calendar-airquality"></span>
 <img src="data-visualization-gallery_files/figure-html/calendar-airquality-1.png" alt="1973年5月至9月纽约的气温变化" width="768" />
 <p class="caption">
@@ -887,11 +886,11 @@ div.csl-indent {
 </div>
 <div class="rmdnote">
 <p>图 <a href="sec-ggplot2-calendar.html#fig:calendar-airquality">8.15</a> 横轴的刻度标签换成了月份，一个月为四周，一年 52～53 周，每周的第一天约定为星期一，1973年05月01日为星期二。代码中颇为技巧的在于 <code>format()</code> 函数从 Date 日期类型的数据提取第几周， 用 <code>weekdays()</code> 函数提取星期几，而 month.abb 则是一个内置常量，12个月份的英文缩写。在调用其它 R 包处理日期数据时要特别小心，要留意一周的的第一天是星期几，有的是星期一，有的是星期日，这往往和宗教信仰相关，星期日在西方也叫礼拜天。 上面 Base R 提供的日期函数认为一周的第一天是星期一，而调用 <strong>data.table</strong> 的话，默认一周是从星期日（礼拜天）开始的。</p>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="sec-ggplot2-calendar.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://d.cosx.org/d/421230</span></span>
-<span id="cb289-2"><a href="sec-ggplot2-calendar.html#cb289-2" aria-hidden="true" tabindex="-1"></a><span class="fu">weekdays</span>(<span class="fu">Sys.Date</span>(), <span class="at">abbreviate =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;Sun&quot;</code></pre>
-<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="sec-ggplot2-calendar.html#cb291-1" aria-hidden="true" tabindex="-1"></a>data.table<span class="sc">::</span><span class="fu">wday</span>(<span class="fu">Sys.Date</span>())</span></code></pre></div>
-<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="sec-ggplot2-calendar.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://d.cosx.org/d/421230</span></span>
+<span id="cb293-2"><a href="sec-ggplot2-calendar.html#cb293-2" aria-hidden="true" tabindex="-1"></a><span class="fu">weekdays</span>(<span class="fu">Sys.Date</span>(), <span class="at">abbreviate =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Tue&quot;</code></pre>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="sec-ggplot2-calendar.html#cb295-1" aria-hidden="true" tabindex="-1"></a>data.table<span class="sc">::</span><span class="fu">wday</span>(<span class="fu">Sys.Date</span>())</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
 </div>
 </div>
             </section>

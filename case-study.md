@@ -20,8 +20,8 @@
 <div class="figure" style="text-align: center">
 
 ```{=html}
-<div id="htmlwidget-6e15589a50293ab102cd" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6e15589a50293ab102cd">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4dc5f27af842012ccbee" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4dc5f27af842012ccbee">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 <p class="caption">(\#fig:workflow)模型</p>
