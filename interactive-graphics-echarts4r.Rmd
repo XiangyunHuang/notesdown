@@ -149,34 +149,81 @@ data("gapminder", package = "gapminder")
 titles <- map(unique(gapminder$year), function(x) {
   list(
     text = "Gapminder",
-    subtext = x,
     left = "center"
+  )
+})
+
+years <- map(unique(gapminder$year), function(x) {
+  list(
+    subtext = x,
+    left = "center",
+    top = "center",
+    z = 0,
+    subtextStyle = list(
+      fontSize = 100,
+      color = "rgb(170, 170, 170, 0.5)",
+      fontWeight = "bolder"
+    )
   )
 })
 
 # 添加一列颜色，各大洲和颜色的对应关系可自定义，调整 levels 或 labels 里面的顺序即可，也可不指定 levels ，调用其它调色板
 gapminder <- gapminder %>%
-  transform(color = factor(continent,
-    levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
-    labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
-  ))
+  transform(
+    color = factor(
+      continent,
+      levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
+      labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
+    )
+  )
 
 gapminder %>%
   group_by(year) %>%
   e_charts(x = gdpPercap, timeline = TRUE) %>%
-  e_scatter(serie = lifeExp, size = pop, bind = country, 
-            symbol_size = 5, name = "") %>%
+  e_scatter(
+    serie = lifeExp, size = pop, bind = country,
+    symbol_size = 5, name = ""
+  ) %>%
   e_add("itemStyle", color) %>%
-  e_y_axis(min = 20, max = 85, nameGap = 30, 
-           name = "Life Exp", nameLocation = 'center') %>%
-  e_x_axis(type = "log", min = 100, max = 100000, 
-           nameGap = 30, name = "GDP / Cap", nameLocation = 'center') %>%
+  e_y_axis(
+    min = 20, max = 85, nameGap = 30,
+    name = "Life Exp", nameLocation = "center"
+  ) %>%
+  e_x_axis(
+    type = "log", min = 100, max = 100000,
+    nameGap = 30, name = "GDP / Cap", nameLocation = "center"
+  ) %>%
   e_timeline_serie(title = titles) %>%
+  e_timeline_serie(title = years, index = 2) %>%
+  e_timeline_opts(playInterval = 1000) %>%
   e_grid(bottom = 100) %>%
-  e_tooltip() %>%
-  e_theme("default")
+  e_tooltip()
 ```
 
+```{r,eval=knitr::is_html_output()}
+# params.name 对应 bind
+# params.value[0] 对应 x
+# params.value[1] 对应 serie
+# params.value[2] 对应 size
+# tooltips 自定义
+# https://stackoverflow.com/questions/50554304/displaying-extra-variables-in-tooltips-echarts4r
+# 百分数处理
+# https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+mtcars %>%
+  tibble::rownames_to_column("model") %>%
+  e_charts(x = wt) %>%
+  e_scatter(serie = mpg, size = qsec, bind = model) %>%
+  e_tooltip(formatter = htmlwidgets::JS("
+          function(params) {
+              return (
+                  '<strong>' + params.name + '</strong>' +
+                  '<br />wt: ' + params.value[0] +
+                  '<br />mpg: ' + params.value[1] +
+                  '<br />qsec: ' + params.value[2]
+              )
+          }
+          "))
+```
 
 
 ## Shiny 集成 {#sec:shiny}
