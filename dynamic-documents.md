@@ -2,6 +2,8 @@
 
 <!-- 本章组织形式要参考书籍 <https://bookdown.org/yihui/rmarkdown-cookbook/> -->
 
+<!-- 第一节介绍通用的 R Markdown 语法，本章的组织最好按照使用场景来分 -->
+
 <div class="figure" style="text-align: center">
 <img src="images/rmarkdown.png" alt="R Markdown 极其周边生态" width="75%" />
 <p class="caption">(\#fig:rmarkdown-hex)R Markdown 极其周边生态</p>
@@ -46,8 +48,8 @@ rmarkdown 自 2014年09月17日在 CRAN 上发布第一个正式版本以来，�
 <div class="figure" style="text-align: center">
 
 ```{=html}
-<div id="htmlwidget-5ea96ffa9ed118dbe1bb" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5ea96ffa9ed118dbe1bb">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[knitr]    -> [动态文档|rmarkdown]\n[Pandoc]   -> [动态文档|rmarkdown]\n[Markdown] -> [动态文档|rmarkdown]\n[动态文档] -> [书籍笔记|bookdown]\n[动态文档] -> [静态网站|blogdown]\n[动态文档] -> [幻灯片|xaringan]\n[幻灯片]   -> [PowerPoint|officedown]\n[书籍笔记] -> [毕业论文|thesisdown]\n[静态网站] -> [个人简历|pagedown]\n[动态文档] -> [数据面板|flexdashboard]\n[数据面板] --> [交互图形|plotly]","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c3f8f8b260331cf600bc" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c3f8f8b260331cf600bc">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[knitr]    -> [动态文档|rmarkdown]\n[Pandoc]   -> [动态文档|rmarkdown]\n[Markdown] -> [动态文档|rmarkdown]\n[动态文档] -> [书籍笔记|bookdown]\n[动态文档] -> [静态网站|blogdown]\n[动态文档] -> [幻灯片|xaringan]\n[幻灯片]   -> [PowerPoint|officedown]\n[书籍笔记] -> [毕业论文|thesisdown]\n[静态网站] -> [个人简历|pagedown]\n[动态文档] -> [数据面板|flexdashboard]\n[数据面板] --> [交互图形|plotly]","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 <p class="caption">(\#fig:rmarkdown-ecosystem)rmarkdown 生态系统</p>
@@ -145,8 +147,8 @@ nomnoml::nomnoml("
 ```
 
 ```{=html}
-<div id="htmlwidget-3656e1014383691c8cc7" style="width:768px;height:192px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3656e1014383691c8cc7">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]\n[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]\n[Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]\n[Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]\n","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1c2e2361731eb68c0a79" style="width:768px;height:192px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c2e2361731eb68c0a79">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]\n[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]\n[Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]\n[Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]\n","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 ## 便携式文档 {#sec:portable-document}
@@ -331,6 +333,14 @@ tinytex::tlmgr_install(c('awesomebox', 'fontawesome5'))
 ## 网页文档 {#sec:web-document}
 
 丘怡轩开发的 [prettydoc](https://github.com/yixuan/prettydoc) 包提供了一系列模版，方便快速提高网页逼格。另有 Atsushi Yasumoto 开发的 [minidown](https://github.com/atusy/minidown) 包非常轻量，但是常用功能都覆盖了。
+
+
+
+谢益辉开发的 [xaringan](https://github.com/yihui/xaringan) 用于制作网页幻灯片，
+[xaringanthemer](https://github.com/gadenbuie/xaringanthemer) 为 xaringan 提供主题定制，
+[xaringanExtra](https://github.com/gadenbuie/xaringanExtra) 在 xaringan 之上提供各种功能扩展，
+[xaringanBuilder](https://github.com/jhelvy/xaringanBuilder) 为 xaringan 提供多种输出格式。
+
 
 ## 编写书籍 {#sec:bookdown}
 
