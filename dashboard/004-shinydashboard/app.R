@@ -200,8 +200,8 @@ server <- function(input, output) {
 
 shinyApp(
   ui = dashboardPage(
-    header = header,
-    sidebar = sidebar,
+    header = dashboardHeader(disable = T),
+    sidebar = dashboardSidebar(disable = T),
     body = body,
     title = "可视化系统"
   ),
