@@ -400,6 +400,20 @@ args("aggregate.ts")
 # getAnywhere(aggregate.formula)
 ```
 
+按 Species 分组，对 Sepal.Length 中大于平均值的数取平均
+
+
+```r
+aggregate(Sepal.Length ~ Species, iris, function(x) mean(x[x > mean(x)]))
+```
+
+```
+##      Species Sepal.Length
+## 1     setosa     5.313636
+## 2 versicolor     6.375000
+## 3  virginica     7.159091
+```
+
 
 ```r
 library(data.table)

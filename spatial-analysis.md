@@ -257,7 +257,7 @@ sessionInfo()
 ## [13] e1071_1.7-7        pillar_1.6.1       rlang_0.4.11       curl_4.3.1        
 ## [17] data.table_1.14.0  TTR_0.24.2         jquerylib_0.1.4    hexbin_1.28.2     
 ## [21] rmarkdown_2.8      stringr_1.4.0      htmlwidgets_1.5.3  igraph_1.2.6      
-## [25] proxy_0.4-26       broom_0.7.6        compiler_4.1.0     xfun_0.23         
+## [25] proxy_0.4-25       broom_0.7.6        compiler_4.1.0     xfun_0.23         
 ## [29] pkgconfig_2.0.3    htmltools_0.5.1.1  tidyselect_1.1.1   tibble_3.1.2      
 ## [33] bookdown_0.22      codetools_0.2-18   fansi_0.5.0        viridisLite_0.4.0 
 ## [37] crayon_1.4.1       dplyr_1.0.6        grid_4.1.0         jsonlite_1.7.2    

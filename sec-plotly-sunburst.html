@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>第 15 章 正则表达式 | 现代应用统计与 R 语言</title>
+  <title>9.23 旭日图 | 现代应用统计与 R 语言</title>
   <meta name="description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="第 15 章 正则表达式 | 现代应用统计与 R 语言" />
+  <meta property="og:title" content="9.23 旭日图 | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="第 15 章 正则表达式 | 现代应用统计与 R 语言" />
+  <meta name="twitter:title" content="9.23 旭日图 | 现代应用统计与 R 语言" />
   
   <meta name="twitter:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sec-encode-string.html"/>
-<link rel="next" href="chap-text-analysis.html"/>
+<link rel="prev" href="sec-plotly-treemap.html"/>
+<link rel="next" href="sec-plotly-color-palette.html"/>
 <script src="libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -845,38 +845,17 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="chap:regular-expressions" class="section level1" number="15">
-<h1><span class="header-section-number">第 15 章</span> 正则表达式</h1>
-<p>批量转换驼峰式命名</p>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="chap-regular-expressions.html#cb450-1" aria-hidden="true" tabindex="-1"></a>old_name <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;.&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;^[A-Z].*.Rmd$&quot;</span>)</span>
-<span id="cb450-2"><a href="chap-regular-expressions.html#cb450-2" aria-hidden="true" tabindex="-1"></a>new_name <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;rmd&quot;</span>, <span class="st">&quot;Rmd&quot;</span>, <span class="fu">tolower</span>(old_name))</span>
-<span id="cb450-3"><a href="chap-regular-expressions.html#cb450-3" aria-hidden="true" tabindex="-1"></a><span class="fu">file.rename</span>(<span class="at">from =</span> old_name, <span class="at">to =</span> new_name)</span></code></pre></div>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="chap-regular-expressions.html#cb451-1" aria-hidden="true" tabindex="-1"></a>html_lines <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">&quot;https://movie.douban.com/top250&quot;</span>)</span>
-<span id="cb451-2"><a href="chap-regular-expressions.html#cb451-2" aria-hidden="true" tabindex="-1"></a>doc <span class="ot">&lt;-</span> <span class="fu">paste0</span>(html_lines, <span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb451-3"><a href="chap-regular-expressions.html#cb451-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb451-4"><a href="chap-regular-expressions.html#cb451-4" aria-hidden="true" tabindex="-1"></a>title_lines <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&#39;class=&quot;title&quot;&#39;</span>, html_lines, <span class="at">value =</span> T)</span>
-<span id="cb451-5"><a href="chap-regular-expressions.html#cb451-5" aria-hidden="true" tabindex="-1"></a>titles <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;.*&gt;(.*?)&lt;.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, title_lines, <span class="at">perl =</span> T)</span>
-<span id="cb451-6"><a href="chap-regular-expressions.html#cb451-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb451-7"><a href="chap-regular-expressions.html#cb451-7" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&quot;.*&gt;(.*?)&lt;.*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, <span class="st">&#39;&lt;span class=&quot;title&quot;&gt;肖生克的救赎&lt;/span&gt;&#39;</span>, <span class="at">perl =</span> T)</span></code></pre></div>
-<p>解析术之 XPath</p>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="chap-regular-expressions.html#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
-<span id="cb452-2"><a href="chap-regular-expressions.html#cb452-2" aria-hidden="true" tabindex="-1"></a>dom <span class="ot">=</span> <span class="fu">read_html</span>(doc)</span>
-<span id="cb452-3"><a href="chap-regular-expressions.html#cb452-3" aria-hidden="true" tabindex="-1"></a>title_nodes <span class="ot">=</span> <span class="fu">xml_find_all</span>(dom, <span class="st">&#39;.//span[@class=&quot;title&quot;]&#39;</span>)</span>
-<span id="cb452-4"><a href="chap-regular-expressions.html#cb452-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xml_text</span>(title_nodes)</span></code></pre></div>
-<p>解析术之 CSS Selector</p>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="chap-regular-expressions.html#cb453-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb453-2"><a href="chap-regular-expressions.html#cb453-2" aria-hidden="true" tabindex="-1"></a><span class="fu">read_html</span>(doc) <span class="sc">%&gt;%</span></span>
-<span id="cb453-3"><a href="chap-regular-expressions.html#cb453-3" aria-hidden="true" tabindex="-1"></a><span class="fu">html_nodes</span>(<span class="st">&#39;.title&#39;</span>) <span class="sc">%&gt;%</span> <span class="co"># class=&quot;title&quot;的标签</span></span>
-<span id="cb453-4"><a href="chap-regular-expressions.html#cb453-4" aria-hidden="true" tabindex="-1"></a><span class="fu">html_text</span>()</span></code></pre></div>
-
+<div id="sec:plotly-sunburst" class="section level2" number="9.23">
+<h2><span class="header-section-number">9.23</span> 旭日图</h2>
+<p><a href="https://github.com/yogevherz/plotme">plotme</a></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="sec-encode-string.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="chap-text-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sec-plotly-treemap.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-plotly-color-palette.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -908,7 +887,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/XiangyunHuang/masr/edit/devel/regular-expressions.Rmd",
+"link": "https://github.com/XiangyunHuang/masr/edit/devel/interactive-web-graphics.Rmd",
 "text": "编辑"
 },
 "history": {
@@ -916,10 +895,10 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/XiangyunHuang/masr/blob/devel/regular-expressions.Rmd",
+"link": "https://github.com/XiangyunHuang/masr/blob/devel/interactive-web-graphics.Rmd",
 "text": "查看"
 },
-"download": ["https://github.com/XiangyunHuang/masr/raw/devel/regular-expressions.Rmd", "masr.pdf", "masr.epub"],
+"download": ["https://github.com/XiangyunHuang/masr/raw/devel/interactive-web-graphics.Rmd", "masr.pdf", "masr.epub"],
 "toc": {
 "collapse": "subsection"
 }

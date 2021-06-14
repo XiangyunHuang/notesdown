@@ -44,6 +44,11 @@ ggplot(mpg, aes(displ, hwy)) +
 7. Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
 8. [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
 9. [ggh4x](https://github.com/teunbrand/ggh4x) 提供 ggplot2 的额外定制功能
+10. [ggdist](https://github.com/mjskay/ggdist) Visualizations of distributions and uncertainty
+11. [gghighlight](https://github.com/yutannihilation/gghighlight)
+12. [ggnetwork](https://github.com/briatte/ggnetwork)
+13. [ggPMX](https://github.com/ggPMXdevelopment/ggPMX) 'ggplot2' Based Tool to Facilitate Diagnostic Plots for NLME Models
+14. [ggpp](https://github.com/aphalo/ggpp) ggpp: Grammar Extensions to 'ggplot2'
 
 [^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
 [^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
@@ -149,6 +154,8 @@ Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更�
 
 [ggcharts](https://github.com/thomas-neitmann/ggcharts) 和 [bbplot](https://github.com/bbc/bbplot)
 [prettyB](https://github.com/jumpingrivers/prettyB) 美化 Base R 图形
+[ggprism](https://github.com/csdaw/ggprism)
+
 
 ## 字体 {#sec:fonts}
 
@@ -225,15 +232,15 @@ p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
   ggtitle(label = "默认字体设置")
 
 p2 <- p1 + theme(
-  axis.title = element_text(family = "sans"),
-  axis.text = element_text(family = "serif")
+  axis.title = element_text(family = "Noto Sans"),
+  axis.text = element_text(family = "Noto Serif")
 ) +
   ggtitle(label = "英文字体设置")
 
 p3 <- p1 + labs(x = "温度", y = "压力") +
   theme(
     axis.title = element_text(family = "source-han-serif-cn"),
-    axis.text = element_text(family = "serif")
+    axis.text = element_text(family = "Noto Serif")
   ) +
   ggtitle(label = "中文字体设置")
 
@@ -248,15 +255,1677 @@ p4 <- p1 + labs(
 ) +
   theme(
     axis.title = element_text(family = "source-han-serif-cn"),
-    axis.text.x = element_text(family = "serif"),
-    axis.text.y = element_text(family = "sans"),
+    axis.text.x = element_text(family = "Noto Serif"),
+    axis.text.y = element_text(family = "Noto Sans"),
     title = element_text(family = "source-han-serif-cn"),
-    plot.subtitle = element_text(family = "sans", size = rel(0.7)),
-    plot.caption = element_text(family = "sans", size = rel(0.6))
+    plot.subtitle = element_text(family = "Noto Sans", size = rel(0.7)),
+    plot.caption = element_text(family = "Noto Sans", size = rel(0.6))
   ) +
   ggtitle(label = "任意字体设置")
 
 (p1 + p2) / (p3 + p4)
+```
+
+```
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
+## 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Serif' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family 'Noto Sans' not found, will use 'sans' instead
+```
+
+```
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family 'Noto Sans' not found, will use 'sans' instead
 ```
 
 <div class="figure" style="text-align: center">
@@ -268,9 +1937,10 @@ p4 <- p1 + labs(
 
 
 ```r
+# brew install font-roboto
 # 导入字体
 hrbrthemes::import_roboto_condensed()
-# showtextdb::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
+# sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
 ```
 
 

@@ -310,9 +310,9 @@ Iñaki Ucar 开发的 [cran2copr](https://github.com/Enchufa2/cran2copr) 项目�
    ```
    ## $sf
    ##  [1] "methods"    "classInt"   "DBI"        "graphics"   "grDevices" 
-   ##  [6] "grid"       "magrittr"   "Rcpp"       "stats"      "tools"     
-   ## [11] "units"      "utils"      "e1071"      "class"      "KernSmooth"
-   ## [16] "MASS"       "proxy"
+   ##  [6] "grid"       "magrittr"   "Rcpp"       "s2"         "stats"     
+   ## [11] "tools"      "units"      "utils"      "e1071"      "class"     
+   ## [16] "KernSmooth" "wk"         "MASS"       "proxy"      "cpp11"
    ```
    
    其主要的系统依赖分别是 GEOS 3.5.1, GDAL 2.2.2, PROJ 4.9.2
