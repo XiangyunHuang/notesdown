@@ -42,8 +42,10 @@ export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 ```bash
 # 配置
 sudo R CMD javareconf
+# 系统软件依赖
+brew install pcre2
 # 安装 rJava
-Rscript -e 'install.packages("rJava", type="soure")'
+Rscript -e 'install.packages("rJava", type="source")'
 ```
 
 最后安装 **sparklyr** 包，以及 Spark 环境，可以借助 `spark_install()` 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装。
@@ -57,10 +59,16 @@ sparklyr::spark_install(version = '3.0', hadoop_version = '2.7')
 <https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>，此环境自带 R 和 Python 接口。为了供 sparklyr 调用，先设置 `SPARK_HOME` 环境变量指向 Spark 安装位置，再连接单机版 Spark。
 
 ```{r}
+# 排错 https://github.com/sparklyr/sparklyr/issues/2827
+options(sparklyr.log.console = TRUE)
 # 连接 Spark 
 library(sparklyr)
 library(ggplot2)
-sc <- spark_connect(master = "local", spark_home = Sys.getenv("SPARK_HOME"))
+sc <- spark_connect(
+  master = "local",
+  spark_home = Sys.getenv("SPARK_HOME"),
+  config = list(sparklyr.gateway.address = "127.0.0.1")
+)
 # diamonds 数据集导入 Spark
 diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
 ```
@@ -214,6 +222,17 @@ if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
 library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
 sparkR.session(master = "local[*]", sparkConfig = list(spark.driver.memory = "2g"))
 ```
+
+::: {.rmdwarn data-latex="{警告}"}
+**SparkR** 要求 Java 版本满足：大于等于8，而小于12，我本地 MacOS 安装了 oracle-jdk 16.0.1 不兼容
+
+```
+Spark package found in SPARK_HOME: /opt/spark/spark-3.1.1-bin-hadoop3.2
+Error in checkJavaVersion() : 
+  Java version, greater than or equal to 8 and less than 12, is required for this package; found version: 16.0.1
+```
+:::
+
 
 `sparkConfig` 有哪些参数可以传递
 
