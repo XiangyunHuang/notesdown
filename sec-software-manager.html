@@ -853,7 +853,7 @@ div.csl-indent {
 <li>清理升级后的 CentOS 8 系统内核</li>
 </ol>
 <p>查找系统安装的内核</p>
-<div class="sourceCode" id="cb1283"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1283-1"><a href="sec-software-manager.html#cb1283-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rpm</span> <span class="at">-qa</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">grep</span> kernel</span></code></pre></div>
+<div class="sourceCode" id="cb1254"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1254-1"><a href="sec-software-manager.html#cb1254-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rpm</span> <span class="at">-qa</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">grep</span> kernel</span></code></pre></div>
 <pre><code>kernel-4.18.0-147.8.1.el8_1.x86_64
 kernel-4.18.0-193.6.3.el8_2.x86_64
 kernel-core-4.18.0-147.8.1.el8_1.x86_64
@@ -864,7 +864,7 @@ kernel-modules-4.18.0-193.6.3.el8_2.x86_64
 kernel-tools-4.18.0-193.6.3.el8_2.x86_64
 kernel-tools-libs-4.18.0-193.6.3.el8_2.x86_64</code></pre>
 <p>仅保留一个版本的内核，其它旧的内核都删除掉</p>
-<div class="sourceCode" id="cb1285"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1285-1"><a href="sec-software-manager.html#cb1285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf remove <span class="va">$(</span><span class="ex">dnf</span> repoquery <span class="at">--installonly</span> <span class="at">--latest-limit</span><span class="op">=</span>-1 <span class="at">-q</span><span class="va">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1256"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1256-1"><a href="sec-software-manager.html#cb1256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf remove <span class="va">$(</span><span class="ex">dnf</span> repoquery <span class="at">--installonly</span> <span class="at">--latest-limit</span><span class="op">=</span>-1 <span class="at">-q</span><span class="va">)</span></span></code></pre></div>
 <pre><code>模块依赖问题
 
  问题 1: conflicting requests
@@ -911,7 +911,7 @@ kernel-tools-libs-4.18.0-193.6.3.el8_2.x86_64</code></pre>
 
 完毕！</code></pre>
 <p><a href="https://unix.stackexchange.com/questions/587853/centos-8-modular-dependency-problems">解决上述模块依赖问题的办法</a> 是重置三个 Perl 模块</p>
-<div class="sourceCode" id="cb1287"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1287-1"><a href="sec-software-manager.html#cb1287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf module reset perl-DBD-MySQL perl-YAML perl-DBI</span></code></pre></div>
+<div class="sourceCode" id="cb1258"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1258-1"><a href="sec-software-manager.html#cb1258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf module reset perl-DBD-MySQL perl-YAML perl-DBI</span></code></pre></div>
 <pre><code>依赖关系解决。
 =======================================================================================================================
  软件包                      架构                       版本                         仓库                         大小
@@ -930,37 +930,37 @@ kernel-tools-libs-4.18.0-193.6.3.el8_2.x86_64</code></pre>
 <div id="subsec:apt-get" class="section level3" number="36.10.2">
 <h3><span class="header-section-number">A.10.2</span> apt</h3>
 <p>添加或删除 PPA (Personal Package Archive)，比如在 Ubuntu 20.04 及之前的版本上安装<a href="https://inkscape.org/release/inkscape-1.0/gnulinux/ubuntu/ppa/dl/">新版 Inkscape</a></p>
-<div class="sourceCode" id="cb1289"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1289-1"><a href="sec-software-manager.html#cb1289-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository ppa:inkscape.dev/stable</span>
-<span id="cb1289-2"><a href="sec-software-manager.html#cb1289-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="at">--remove</span> ppa:inkscape.dev/stable</span></code></pre></div>
-<div class="sourceCode" id="cb1290"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1290-1"><a href="sec-software-manager.html#cb1290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install build-essential <span class="co"># 修复依赖问题</span></span>
-<span id="cb1290-2"><a href="sec-software-manager.html#cb1290-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="co"># 更新资源列表</span></span>
-<span id="cb1290-3"><a href="sec-software-manager.html#cb1290-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade <span class="co"># 更新软件包</span></span>
-<span id="cb1290-4"><a href="sec-software-manager.html#cb1290-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoclean <span class="co"># 删除已卸的软件的备份</span></span>
-<span id="cb1290-5"><a href="sec-software-manager.html#cb1290-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get clean <span class="co"># 删除已装或已卸的软件的备份</span></span>
-<span id="cb1290-6"><a href="sec-software-manager.html#cb1290-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoremove <span class="at">--purge</span> <span class="pp">*</span> <span class="co"># 推荐卸载软件的方式</span></span>
-<span id="cb1290-7"><a href="sec-software-manager.html#cb1290-7" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> list <span class="at">--upgradable</span> <span class="co"># 列出可升级的包</span></span></code></pre></div>
+<div class="sourceCode" id="cb1260"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1260-1"><a href="sec-software-manager.html#cb1260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository ppa:inkscape.dev/stable</span>
+<span id="cb1260-2"><a href="sec-software-manager.html#cb1260-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="at">--remove</span> ppa:inkscape.dev/stable</span></code></pre></div>
+<div class="sourceCode" id="cb1261"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1261-1"><a href="sec-software-manager.html#cb1261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install build-essential <span class="co"># 修复依赖问题</span></span>
+<span id="cb1261-2"><a href="sec-software-manager.html#cb1261-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="co"># 更新资源列表</span></span>
+<span id="cb1261-3"><a href="sec-software-manager.html#cb1261-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade <span class="co"># 更新软件包</span></span>
+<span id="cb1261-4"><a href="sec-software-manager.html#cb1261-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoclean <span class="co"># 删除已卸的软件的备份</span></span>
+<span id="cb1261-5"><a href="sec-software-manager.html#cb1261-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get clean <span class="co"># 删除已装或已卸的软件的备份</span></span>
+<span id="cb1261-6"><a href="sec-software-manager.html#cb1261-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get autoremove <span class="at">--purge</span> <span class="pp">*</span> <span class="co"># 推荐卸载软件的方式</span></span>
+<span id="cb1261-7"><a href="sec-software-manager.html#cb1261-7" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> list <span class="at">--upgradable</span> <span class="co"># 列出可升级的包</span></span></code></pre></div>
 <p>找到并删除旧的内核</p>
-<div class="sourceCode" id="cb1291"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1291-1"><a href="sec-software-manager.html#cb1291-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dpkg</span> <span class="at">--list</span> <span class="kw">|</span> <span class="fu">grep</span> linux-image</span>
-<span id="cb1291-2"><a href="sec-software-manager.html#cb1291-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge linux-image-3.19.0-<span class="dt">{18</span><span class="op">,</span><span class="dt">20</span><span class="op">,</span><span class="dt">21</span><span class="op">,</span><span class="dt">25}</span></span>
-<span id="cb1291-3"><a href="sec-software-manager.html#cb1291-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> update-grub2</span></code></pre></div>
-<div class="sourceCode" id="cb1292"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1292-1"><a href="sec-software-manager.html#cb1292-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 搜索</span></span>
-<span id="cb1292-2"><a href="sec-software-manager.html#cb1292-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-cache</span> search octave <span class="kw">|</span> <span class="fu">grep</span> octave</span>
-<span id="cb1292-3"><a href="sec-software-manager.html#cb1292-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 查询</span></span>
-<span id="cb1292-4"><a href="sec-software-manager.html#cb1292-4" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> show octave</span>
-<span id="cb1292-5"><a href="sec-software-manager.html#cb1292-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
-<span id="cb1292-6"><a href="sec-software-manager.html#cb1292-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install octave</span></code></pre></div>
-<div class="sourceCode" id="cb1293"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1293-1"><a href="sec-software-manager.html#cb1293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install lsb-core</span>
-<span id="cb1293-2"><a href="sec-software-manager.html#cb1293-2" aria-hidden="true" tabindex="-1"></a><span class="ex">lsb_release</span> <span class="at">-a</span></span></code></pre></div>
-<div class="sourceCode" id="cb1294"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1294-1"><a href="sec-software-manager.html#cb1294-1" aria-hidden="true" tabindex="-1"></a><span class="ex">adduser</span> cloud2016 <span class="co"># 添加用户</span></span>
-<span id="cb1294-2"><a href="sec-software-manager.html#cb1294-2" aria-hidden="true" tabindex="-1"></a><span class="fu">passwd</span> cloud2016  <span class="co"># 用户密码设为 cloud</span></span>
-<span id="cb1294-3"><a href="sec-software-manager.html#cb1294-3" aria-hidden="true" tabindex="-1"></a><span class="fu">whereis</span> sudoers   <span class="co"># 查找文件位置</span></span>
-<span id="cb1294-4"><a href="sec-software-manager.html#cb1294-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-v</span> u+w /etc/sudoers <span class="co"># 给文件 sudoers 添加写权限</span></span>
-<span id="cb1294-5"><a href="sec-software-manager.html#cb1294-5" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> /etc/sudoers <span class="co"># 添加 cloud2016 管理员权限</span></span>
-<span id="cb1294-6"><a href="sec-software-manager.html#cb1294-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-v</span> u-w /etc/sudoers <span class="co"># 收回权限</span></span></code></pre></div>
+<div class="sourceCode" id="cb1262"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1262-1"><a href="sec-software-manager.html#cb1262-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dpkg</span> <span class="at">--list</span> <span class="kw">|</span> <span class="fu">grep</span> linux-image</span>
+<span id="cb1262-2"><a href="sec-software-manager.html#cb1262-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get purge linux-image-3.19.0-<span class="dt">{18</span><span class="op">,</span><span class="dt">20</span><span class="op">,</span><span class="dt">21</span><span class="op">,</span><span class="dt">25}</span></span>
+<span id="cb1262-3"><a href="sec-software-manager.html#cb1262-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> update-grub2</span></code></pre></div>
+<div class="sourceCode" id="cb1263"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1263-1"><a href="sec-software-manager.html#cb1263-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 搜索</span></span>
+<span id="cb1263-2"><a href="sec-software-manager.html#cb1263-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-cache</span> search octave <span class="kw">|</span> <span class="fu">grep</span> octave</span>
+<span id="cb1263-3"><a href="sec-software-manager.html#cb1263-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 查询</span></span>
+<span id="cb1263-4"><a href="sec-software-manager.html#cb1263-4" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> show octave</span>
+<span id="cb1263-5"><a href="sec-software-manager.html#cb1263-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
+<span id="cb1263-6"><a href="sec-software-manager.html#cb1263-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install octave</span></code></pre></div>
+<div class="sourceCode" id="cb1264"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1264-1"><a href="sec-software-manager.html#cb1264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install lsb-core</span>
+<span id="cb1264-2"><a href="sec-software-manager.html#cb1264-2" aria-hidden="true" tabindex="-1"></a><span class="ex">lsb_release</span> <span class="at">-a</span></span></code></pre></div>
+<div class="sourceCode" id="cb1265"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1265-1"><a href="sec-software-manager.html#cb1265-1" aria-hidden="true" tabindex="-1"></a><span class="ex">adduser</span> cloud2016 <span class="co"># 添加用户</span></span>
+<span id="cb1265-2"><a href="sec-software-manager.html#cb1265-2" aria-hidden="true" tabindex="-1"></a><span class="fu">passwd</span> cloud2016  <span class="co"># 用户密码设为 cloud</span></span>
+<span id="cb1265-3"><a href="sec-software-manager.html#cb1265-3" aria-hidden="true" tabindex="-1"></a><span class="fu">whereis</span> sudoers   <span class="co"># 查找文件位置</span></span>
+<span id="cb1265-4"><a href="sec-software-manager.html#cb1265-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-v</span> u+w /etc/sudoers <span class="co"># 给文件 sudoers 添加写权限</span></span>
+<span id="cb1265-5"><a href="sec-software-manager.html#cb1265-5" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> /etc/sudoers <span class="co"># 添加 cloud2016 管理员权限</span></span>
+<span id="cb1265-6"><a href="sec-software-manager.html#cb1265-6" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-v</span> u-w /etc/sudoers <span class="co"># 收回权限</span></span></code></pre></div>
 <p>安装确认 openssh-server 服务</p>
-<div class="sourceCode" id="cb1295"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1295-1"><a href="sec-software-manager.html#cb1295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install openssh-server</span>
-<span id="cb1295-2"><a href="sec-software-manager.html#cb1295-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> /etc/init.d/ssh start</span>
-<span id="cb1295-3"><a href="sec-software-manager.html#cb1295-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> <span class="at">-aux</span> <span class="kw">|</span> <span class="fu">grep</span> ssh</span></code></pre></div>
+<div class="sourceCode" id="cb1266"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1266-1"><a href="sec-software-manager.html#cb1266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install openssh-server</span>
+<span id="cb1266-2"><a href="sec-software-manager.html#cb1266-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> /etc/init.d/ssh start</span>
+<span id="cb1266-3"><a href="sec-software-manager.html#cb1266-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> <span class="at">-aux</span> <span class="kw">|</span> <span class="fu">grep</span> ssh</span></code></pre></div>
 
 </div>
 </div>

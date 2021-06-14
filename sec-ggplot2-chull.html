@@ -848,9 +848,9 @@ div.csl-indent {
 <div id="sec:ggplot2-chull" class="section level2" number="7.13">
 <h2><span class="header-section-number">7.13</span> 包络图</h2>
 <p>ggpubr 包提供了 <code>stat_chull()</code> 图层</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="sec-ggplot2-chull.html#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
-<span id="cb284-2"><a href="sec-ggplot2-chull.html#cb284-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(mpg, <span class="at">x =</span> <span class="st">&quot;displ&quot;</span>, <span class="at">y =</span> <span class="st">&quot;hwy&quot;</span>, <span class="at">color =</span> <span class="st">&quot;drv&quot;</span>)<span class="sc">+</span></span>
-<span id="cb284-3"><a href="sec-ggplot2-chull.html#cb284-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">stat_chull</span>(<span class="fu">aes</span>(<span class="at">color =</span> drv, <span class="at">fill =</span> drv), <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">geom =</span> <span class="st">&quot;polygon&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="sec-ggplot2-chull.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb255-2"><a href="sec-ggplot2-chull.html#cb255-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatter</span>(mpg, <span class="at">x =</span> <span class="st">&quot;displ&quot;</span>, <span class="at">y =</span> <span class="st">&quot;hwy&quot;</span>, <span class="at">color =</span> <span class="st">&quot;drv&quot;</span>)<span class="sc">+</span></span>
+<span id="cb255-3"><a href="sec-ggplot2-chull.html#cb255-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">stat_chull</span>(<span class="fu">aes</span>(<span class="at">color =</span> drv, <span class="at">fill =</span> drv), <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">geom =</span> <span class="st">&quot;polygon&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:stat-chull"></span>
 <img src="data-visualization-gallery_files/figure-html/stat-chull-1.png" alt="包络图" width="480" />
 <p class="caption">
@@ -858,7 +858,7 @@ div.csl-indent {
 </p>
 </div>
 <p>其背后的原理如下</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="sec-ggplot2-chull.html#cb285-1" aria-hidden="true" tabindex="-1"></a>stat_chull</span></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="sec-ggplot2-chull.html#cb256-1" aria-hidden="true" tabindex="-1"></a>stat_chull</span></code></pre></div>
 <pre><code>## function (mapping = NULL, data = NULL, geom = &quot;path&quot;, position = &quot;identity&quot;, 
 ##     na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...) 
 ## {
@@ -866,32 +866,32 @@ div.csl-indent {
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## &lt;bytecode: 0x558025d1dfc8&gt;
+## &lt;bytecode: 0x557f5f3d2ed0&gt;
 ## &lt;environment: namespace:ggpubr&gt;</code></pre>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="sec-ggplot2-chull.html#cb287-1" aria-hidden="true" tabindex="-1"></a>StatChull <span class="ot">&lt;-</span> <span class="fu">ggproto</span>(<span class="st">&quot;StatChull&quot;</span>, Stat,</span>
-<span id="cb287-2"><a href="sec-ggplot2-chull.html#cb287-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">compute_group =</span> <span class="cf">function</span>(data, scales) {</span>
-<span id="cb287-3"><a href="sec-ggplot2-chull.html#cb287-3" aria-hidden="true" tabindex="-1"></a>    data[<span class="fu">chull</span>(data<span class="sc">$</span>x, data<span class="sc">$</span>y), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb287-4"><a href="sec-ggplot2-chull.html#cb287-4" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb287-5"><a href="sec-ggplot2-chull.html#cb287-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">required_aes =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)</span>
-<span id="cb287-6"><a href="sec-ggplot2-chull.html#cb287-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb287-7"><a href="sec-ggplot2-chull.html#cb287-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-8"><a href="sec-ggplot2-chull.html#cb287-8" aria-hidden="true" tabindex="-1"></a>stat_chull <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">mapping =</span> <span class="cn">NULL</span>, <span class="at">data =</span> <span class="cn">NULL</span>, <span class="at">geom =</span> <span class="st">&quot;polygon&quot;</span>,</span>
-<span id="cb287-9"><a href="sec-ggplot2-chull.html#cb287-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">na.rm =</span> <span class="cn">FALSE</span>, <span class="at">show.legend =</span> <span class="cn">NA</span>,</span>
-<span id="cb287-10"><a href="sec-ggplot2-chull.html#cb287-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">inherit.aes =</span> <span class="cn">TRUE</span>, ...) {</span>
-<span id="cb287-11"><a href="sec-ggplot2-chull.html#cb287-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer</span>(</span>
-<span id="cb287-12"><a href="sec-ggplot2-chull.html#cb287-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> StatChull, <span class="at">data =</span> data, <span class="at">mapping =</span> mapping, <span class="at">geom =</span> geom,</span>
-<span id="cb287-13"><a href="sec-ggplot2-chull.html#cb287-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> position, <span class="at">show.legend =</span> show.legend, <span class="at">inherit.aes =</span> inherit.aes,</span>
-<span id="cb287-14"><a href="sec-ggplot2-chull.html#cb287-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">params =</span> <span class="fu">list</span>(<span class="at">na.rm =</span> na.rm, ...)</span>
-<span id="cb287-15"><a href="sec-ggplot2-chull.html#cb287-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb287-16"><a href="sec-ggplot2-chull.html#cb287-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb287-17"><a href="sec-ggplot2-chull.html#cb287-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-18"><a href="sec-ggplot2-chull.html#cb287-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(displ, hwy)) <span class="sc">+</span> </span>
-<span id="cb287-19"><a href="sec-ggplot2-chull.html#cb287-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb287-20"><a href="sec-ggplot2-chull.html#cb287-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_chull</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>)</span>
-<span id="cb287-21"><a href="sec-ggplot2-chull.html#cb287-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-22"><a href="sec-ggplot2-chull.html#cb287-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(displ, hwy, <span class="at">colour =</span> drv)) <span class="sc">+</span> </span>
-<span id="cb287-23"><a href="sec-ggplot2-chull.html#cb287-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb287-24"><a href="sec-ggplot2-chull.html#cb287-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_chull</span>(<span class="at">fill =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="sec-ggplot2-chull.html#cb258-1" aria-hidden="true" tabindex="-1"></a>StatChull <span class="ot">&lt;-</span> <span class="fu">ggproto</span>(<span class="st">&quot;StatChull&quot;</span>, Stat,</span>
+<span id="cb258-2"><a href="sec-ggplot2-chull.html#cb258-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">compute_group =</span> <span class="cf">function</span>(data, scales) {</span>
+<span id="cb258-3"><a href="sec-ggplot2-chull.html#cb258-3" aria-hidden="true" tabindex="-1"></a>    data[<span class="fu">chull</span>(data<span class="sc">$</span>x, data<span class="sc">$</span>y), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb258-4"><a href="sec-ggplot2-chull.html#cb258-4" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb258-5"><a href="sec-ggplot2-chull.html#cb258-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">required_aes =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)</span>
+<span id="cb258-6"><a href="sec-ggplot2-chull.html#cb258-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb258-7"><a href="sec-ggplot2-chull.html#cb258-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb258-8"><a href="sec-ggplot2-chull.html#cb258-8" aria-hidden="true" tabindex="-1"></a>stat_chull <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">mapping =</span> <span class="cn">NULL</span>, <span class="at">data =</span> <span class="cn">NULL</span>, <span class="at">geom =</span> <span class="st">&quot;polygon&quot;</span>,</span>
+<span id="cb258-9"><a href="sec-ggplot2-chull.html#cb258-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">na.rm =</span> <span class="cn">FALSE</span>, <span class="at">show.legend =</span> <span class="cn">NA</span>,</span>
+<span id="cb258-10"><a href="sec-ggplot2-chull.html#cb258-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">inherit.aes =</span> <span class="cn">TRUE</span>, ...) {</span>
+<span id="cb258-11"><a href="sec-ggplot2-chull.html#cb258-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer</span>(</span>
+<span id="cb258-12"><a href="sec-ggplot2-chull.html#cb258-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> StatChull, <span class="at">data =</span> data, <span class="at">mapping =</span> mapping, <span class="at">geom =</span> geom,</span>
+<span id="cb258-13"><a href="sec-ggplot2-chull.html#cb258-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> position, <span class="at">show.legend =</span> show.legend, <span class="at">inherit.aes =</span> inherit.aes,</span>
+<span id="cb258-14"><a href="sec-ggplot2-chull.html#cb258-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">params =</span> <span class="fu">list</span>(<span class="at">na.rm =</span> na.rm, ...)</span>
+<span id="cb258-15"><a href="sec-ggplot2-chull.html#cb258-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb258-16"><a href="sec-ggplot2-chull.html#cb258-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb258-17"><a href="sec-ggplot2-chull.html#cb258-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb258-18"><a href="sec-ggplot2-chull.html#cb258-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(displ, hwy)) <span class="sc">+</span> </span>
+<span id="cb258-19"><a href="sec-ggplot2-chull.html#cb258-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb258-20"><a href="sec-ggplot2-chull.html#cb258-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_chull</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb258-21"><a href="sec-ggplot2-chull.html#cb258-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb258-22"><a href="sec-ggplot2-chull.html#cb258-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(displ, hwy, <span class="at">colour =</span> drv)) <span class="sc">+</span> </span>
+<span id="cb258-23"><a href="sec-ggplot2-chull.html#cb258-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb258-24"><a href="sec-ggplot2-chull.html#cb258-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_chull</span>(<span class="at">fill =</span> <span class="cn">NA</span>)</span></code></pre></div>
 </div>
             </section>
 

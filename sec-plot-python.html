@@ -848,23 +848,23 @@ div.csl-indent {
 <div id="sec:plot-python" class="section level2" number="37.18">
 <h2><span class="header-section-number">B.18</span> Python 基础绘图</h2>
 <p>Python 的 matplotlib 模块支持保存的图片格式有 eps, pdf, pgf, png, ps, raw, rgba, svg, svgz，不支持 cairo_pdf 绘图设备，所以这里使用 pdf 设备，但是这样会导致图形没有字体嵌入，从而不符合出版要求。一个解决办法是在后期嵌入字体，图形默认使用数学字体 <a href="http://www.stixfonts.org/">STIX</a> 和英文字体 <a href="https://dejavu-fonts.github.io/">DejaVu Sans</a>，所以需要预先安装这些字体。</p>
-<div class="sourceCode" id="cb1397"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1397-1"><a href="sec-plot-python.html#cb1397-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CentOS 8</span></span>
-<span id="cb1397-2"><a href="sec-plot-python.html#cb1397-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> dejavu-fonts-common dejavu-sans-fonts <span class="dt">\</span></span>
-<span id="cb1397-3"><a href="sec-plot-python.html#cb1397-3" aria-hidden="true" tabindex="-1"></a>  dejavu-serif-fonts dejavu-sans-mono-fonts</span></code></pre></div>
+<div class="sourceCode" id="cb1368"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1368-1"><a href="sec-plot-python.html#cb1368-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CentOS 8</span></span>
+<span id="cb1368-2"><a href="sec-plot-python.html#cb1368-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> dejavu-fonts-common dejavu-sans-fonts <span class="dt">\</span></span>
+<span id="cb1368-3"><a href="sec-plot-python.html#cb1368-3" aria-hidden="true" tabindex="-1"></a>  dejavu-serif-fonts dejavu-sans-mono-fonts</span></code></pre></div>
 <p>借助 <strong>grDevices</strong> 包提供的 <code>embedFonts()</code> 函数，它支持 postscript 和 pdf 图形设备，嵌入字体借助了 <a href="https://www.ghostscript.com/">Ghostscript</a> 以及 PDF 阅读器 <a href="https://www.mupdf.com/">MuPDF</a></p>
 <div class="rmdnote">
 <p>Windows 系统下需要手动指定 Ghostscript 安装路径，特别地，如果你想增加可选字体范围，需要指定相应字体搜索路径，而 Linux/MacOS 平台下不需要关心 Ghostscript 的安装路径问题，</p>
-<div class="sourceCode" id="cb1398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1398-1"><a href="sec-plot-python.html#cb1398-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">R_GSCMD =</span> <span class="st">&quot;C:/Program Files/gs/gs9.26/bin/gswin64c.exe&quot;</span>)</span>
-<span id="cb1398-2"><a href="sec-plot-python.html#cb1398-2" aria-hidden="true" tabindex="-1"></a><span class="fu">embedFonts</span>(</span>
-<span id="cb1398-3"><a href="sec-plot-python.html#cb1398-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;cm.pdf&quot;</span>, <span class="at">outfile =</span> <span class="st">&quot;cm-embed.pdf&quot;</span>,</span>
-<span id="cb1398-4"><a href="sec-plot-python.html#cb1398-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fontpaths =</span> <span class="fu">system.file</span>(<span class="st">&quot;fonts&quot;</span>, <span class="at">package =</span> <span class="st">&quot;fontcm&quot;</span>)</span>
-<span id="cb1398-5"><a href="sec-plot-python.html#cb1398-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1398-6"><a href="sec-plot-python.html#cb1398-6" aria-hidden="true" tabindex="-1"></a><span class="fu">embedFonts</span>(<span class="at">file =</span> <span class="st">&quot;cm.pdf&quot;</span>, <span class="at">outfile =</span> <span class="st">&quot;cm-embed.pdf&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb1369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1369-1"><a href="sec-plot-python.html#cb1369-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">R_GSCMD =</span> <span class="st">&quot;C:/Program Files/gs/gs9.26/bin/gswin64c.exe&quot;</span>)</span>
+<span id="cb1369-2"><a href="sec-plot-python.html#cb1369-2" aria-hidden="true" tabindex="-1"></a><span class="fu">embedFonts</span>(</span>
+<span id="cb1369-3"><a href="sec-plot-python.html#cb1369-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;cm.pdf&quot;</span>, <span class="at">outfile =</span> <span class="st">&quot;cm-embed.pdf&quot;</span>,</span>
+<span id="cb1369-4"><a href="sec-plot-python.html#cb1369-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fontpaths =</span> <span class="fu">system.file</span>(<span class="st">&quot;fonts&quot;</span>, <span class="at">package =</span> <span class="st">&quot;fontcm&quot;</span>)</span>
+<span id="cb1369-5"><a href="sec-plot-python.html#cb1369-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1369-6"><a href="sec-plot-python.html#cb1369-6" aria-hidden="true" tabindex="-1"></a><span class="fu">embedFonts</span>(<span class="at">file =</span> <span class="st">&quot;cm.pdf&quot;</span>, <span class="at">outfile =</span> <span class="st">&quot;cm-embed.pdf&quot;</span>) </span></code></pre></div>
 </div>
 <p>另一个解决办法是使用 LaTeX 渲染图片中的文字，这就需要额外安装一些 LaTeX 宏包，此时默认执行渲染的 LaTeX 引擎是 PDFLaTeX。</p>
-<div class="sourceCode" id="cb1399"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1399-1"><a href="sec-plot-python.html#cb1399-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> install type1cm cm-super dvipng psnfss ucs ncntrsbk helvetic</span></code></pre></div>
+<div class="sourceCode" id="cb1370"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1370-1"><a href="sec-plot-python.html#cb1370-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> install type1cm cm-super dvipng psnfss ucs ncntrsbk helvetic</span></code></pre></div>
 <p>每年 4 月是 TeX Live 的升级月，升级指导见 <a href="https://www.tug.org/texlive/upgrade.html" class="uri">https://www.tug.org/texlive/upgrade.html</a>，升级之后，需要更新所有 LaTeX 宏包。</p>
-<div class="sourceCode" id="cb1400"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1400-1"><a href="sec-plot-python.html#cb1400-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--self</span> <span class="at">--all</span></span></code></pre></div>
+<div class="sourceCode" id="cb1371"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1371-1"><a href="sec-plot-python.html#cb1371-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--self</span> <span class="at">--all</span></span></code></pre></div>
 <p>如图 <a href="sec-plot-python.html#fig:matplotlib">B.12</a> 所示，我们采用第二个方法，它可以支持更好的数学公式显示，更多详情见 <a href="https://matplotlib.org/tutorials/text/mathtext.html" class="uri">https://matplotlib.org/tutorials/text/mathtext.html</a>。</p>
 <pre><code>## [&lt;matplotlib.lines.Line2D object at 0x7f38f43d74c0&gt;]</code></pre>
 <pre><code>## Text(0.5, 0, &#39;Coord $x$&#39;)</code></pre>
@@ -877,42 +877,42 @@ div.csl-indent {
 </div>
 <div class="rmdtip">
 <p>如果你的系统是 Windows/MacOS 可以添加 GPG 验证以增加安全性，最简单的方式就是：</p>
-<div class="sourceCode" id="cb1404"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1404-1"><a href="sec-plot-python.html#cb1404-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> <span class="at">--repository</span> http://www.preining.info/tlgpg/ install tlgpg</span></code></pre></div>
+<div class="sourceCode" id="cb1375"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1375-1"><a href="sec-plot-python.html#cb1375-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> <span class="at">--repository</span> http://www.preining.info/tlgpg/ install tlgpg</span></code></pre></div>
 </div>
 <p>二维函数 <span class="math inline">\(f(x,y) = 20 + x^2 + y^2 - 10*\cos(2*\pi*x) - 10*\cos(2*\pi*y)\)</span> 最小值 0 最大值 80</p>
-<div class="sourceCode" id="cb1405"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1405-1"><a href="sec-plot-python.html#cb1405-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> cos, pi</span>
-<span id="cb1405-2"><a href="sec-plot-python.html#cb1405-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1405-3"><a href="sec-plot-python.html#cb1405-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</span>
-<span id="cb1405-4"><a href="sec-plot-python.html#cb1405-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1405-5"><a href="sec-plot-python.html#cb1405-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
-<span id="cb1405-6"><a href="sec-plot-python.html#cb1405-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1405-7"><a href="sec-plot-python.html#cb1405-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rcParams</span>
-<span id="cb1405-8"><a href="sec-plot-python.html#cb1405-8" aria-hidden="true" tabindex="-1"></a>rcParams.update({<span class="st">&#39;font.size&#39;</span>: <span class="dv">18</span>, <span class="st">&#39;text.usetex&#39;</span>: <span class="va">True</span>}) <span class="co"># 其它可配置选项见 rcParams.keys()</span></span>
-<span id="cb1405-9"><a href="sec-plot-python.html#cb1405-9" aria-hidden="true" tabindex="-1"></a>plt.switch_backend(<span class="st">&#39;agg&#39;</span>)</span>
-<span id="cb1405-10"><a href="sec-plot-python.html#cb1405-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1405-11"><a href="sec-plot-python.html#cb1405-11" aria-hidden="true" tabindex="-1"></a>xDomain <span class="op">=</span> np.arange(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>, <span class="fl">.08</span>)</span>
-<span id="cb1405-12"><a href="sec-plot-python.html#cb1405-12" aria-hidden="true" tabindex="-1"></a>yDomain <span class="op">=</span> np.arange(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>, <span class="fl">.08</span>)</span>
-<span id="cb1405-13"><a href="sec-plot-python.html#cb1405-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1405-14"><a href="sec-plot-python.html#cb1405-14" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(xDomain, yDomain)</span>
-<span id="cb1405-15"><a href="sec-plot-python.html#cb1405-15" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> [<span class="dv">20</span> <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> (<span class="dv">10</span><span class="op">*</span>(cos(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>x) <span class="op">+</span> cos(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>y))) <span class="cf">for</span> x <span class="kw">in</span> xDomain <span class="cf">for</span> y <span class="kw">in</span> yDomain]</span>
-<span id="cb1405-16"><a href="sec-plot-python.html#cb1405-16" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.array(z).reshape(<span class="dv">128</span>,<span class="dv">128</span>)</span>
-<span id="cb1405-17"><a href="sec-plot-python.html#cb1405-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1405-18"><a href="sec-plot-python.html#cb1405-18" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">12</span>,<span class="dv">10</span>))</span>
-<span id="cb1405-19"><a href="sec-plot-python.html#cb1405-19" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.gca(projection<span class="op">=</span><span class="st">&#39;3d&#39;</span>)</span>
-<span id="cb1405-20"><a href="sec-plot-python.html#cb1405-20" aria-hidden="true" tabindex="-1"></a><span class="co">## &lt;string&gt;:1: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().</span></span>
-<span id="cb1405-21"><a href="sec-plot-python.html#cb1405-21" aria-hidden="true" tabindex="-1"></a>surf <span class="op">=</span> ax.plot_surface(X, Y, Z, cmap<span class="op">=</span>cm.RdYlGn, linewidth<span class="op">=</span><span class="dv">1</span>, antialiased<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb1405-22"><a href="sec-plot-python.html#cb1405-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1405-23"><a href="sec-plot-python.html#cb1405-23" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>)</span>
-<span id="cb1405-24"><a href="sec-plot-python.html#cb1405-24" aria-hidden="true" tabindex="-1"></a><span class="co">## (-5.12, 5.12)</span></span>
-<span id="cb1405-25"><a href="sec-plot-python.html#cb1405-25" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>)</span>
-<span id="cb1405-26"><a href="sec-plot-python.html#cb1405-26" aria-hidden="true" tabindex="-1"></a><span class="co">## (-5.12, 5.12)</span></span>
-<span id="cb1405-27"><a href="sec-plot-python.html#cb1405-27" aria-hidden="true" tabindex="-1"></a>ax.set_zlim(<span class="dv">0</span>, <span class="dv">80</span>)</span>
-<span id="cb1405-28"><a href="sec-plot-python.html#cb1405-28" aria-hidden="true" tabindex="-1"></a><span class="co">## (0.0, 80.0)</span></span>
-<span id="cb1405-29"><a href="sec-plot-python.html#cb1405-29" aria-hidden="true" tabindex="-1"></a>fig.colorbar(surf, aspect<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb1405-30"><a href="sec-plot-python.html#cb1405-30" aria-hidden="true" tabindex="-1"></a><span class="co">## &lt;matplotlib.colorbar.Colorbar object at 0x7f38eddb2c40&gt;</span></span>
-<span id="cb1405-31"><a href="sec-plot-python.html#cb1405-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r&#39;Rastrigin Function in Two Dimensions&#39;</span>)</span>
-<span id="cb1405-32"><a href="sec-plot-python.html#cb1405-32" aria-hidden="true" tabindex="-1"></a><span class="co">## Text(0.5, 0.92, &#39;Rastrigin Function in Two Dimensions&#39;)</span></span>
-<span id="cb1405-33"><a href="sec-plot-python.html#cb1405-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb1376"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1376-1"><a href="sec-plot-python.html#cb1376-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> cos, pi</span>
+<span id="cb1376-2"><a href="sec-plot-python.html#cb1376-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1376-3"><a href="sec-plot-python.html#cb1376-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</span>
+<span id="cb1376-4"><a href="sec-plot-python.html#cb1376-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1376-5"><a href="sec-plot-python.html#cb1376-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
+<span id="cb1376-6"><a href="sec-plot-python.html#cb1376-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-7"><a href="sec-plot-python.html#cb1376-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rcParams</span>
+<span id="cb1376-8"><a href="sec-plot-python.html#cb1376-8" aria-hidden="true" tabindex="-1"></a>rcParams.update({<span class="st">&#39;font.size&#39;</span>: <span class="dv">18</span>, <span class="st">&#39;text.usetex&#39;</span>: <span class="va">True</span>}) <span class="co"># 其它可配置选项见 rcParams.keys()</span></span>
+<span id="cb1376-9"><a href="sec-plot-python.html#cb1376-9" aria-hidden="true" tabindex="-1"></a>plt.switch_backend(<span class="st">&#39;agg&#39;</span>)</span>
+<span id="cb1376-10"><a href="sec-plot-python.html#cb1376-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-11"><a href="sec-plot-python.html#cb1376-11" aria-hidden="true" tabindex="-1"></a>xDomain <span class="op">=</span> np.arange(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>, <span class="fl">.08</span>)</span>
+<span id="cb1376-12"><a href="sec-plot-python.html#cb1376-12" aria-hidden="true" tabindex="-1"></a>yDomain <span class="op">=</span> np.arange(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>, <span class="fl">.08</span>)</span>
+<span id="cb1376-13"><a href="sec-plot-python.html#cb1376-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-14"><a href="sec-plot-python.html#cb1376-14" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(xDomain, yDomain)</span>
+<span id="cb1376-15"><a href="sec-plot-python.html#cb1376-15" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> [<span class="dv">20</span> <span class="op">+</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> (<span class="dv">10</span><span class="op">*</span>(cos(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>x) <span class="op">+</span> cos(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>y))) <span class="cf">for</span> x <span class="kw">in</span> xDomain <span class="cf">for</span> y <span class="kw">in</span> yDomain]</span>
+<span id="cb1376-16"><a href="sec-plot-python.html#cb1376-16" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.array(z).reshape(<span class="dv">128</span>,<span class="dv">128</span>)</span>
+<span id="cb1376-17"><a href="sec-plot-python.html#cb1376-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-18"><a href="sec-plot-python.html#cb1376-18" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">12</span>,<span class="dv">10</span>))</span>
+<span id="cb1376-19"><a href="sec-plot-python.html#cb1376-19" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.gca(projection<span class="op">=</span><span class="st">&#39;3d&#39;</span>)</span>
+<span id="cb1376-20"><a href="sec-plot-python.html#cb1376-20" aria-hidden="true" tabindex="-1"></a><span class="co">## &lt;string&gt;:1: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().</span></span>
+<span id="cb1376-21"><a href="sec-plot-python.html#cb1376-21" aria-hidden="true" tabindex="-1"></a>surf <span class="op">=</span> ax.plot_surface(X, Y, Z, cmap<span class="op">=</span>cm.RdYlGn, linewidth<span class="op">=</span><span class="dv">1</span>, antialiased<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1376-22"><a href="sec-plot-python.html#cb1376-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-23"><a href="sec-plot-python.html#cb1376-23" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>)</span>
+<span id="cb1376-24"><a href="sec-plot-python.html#cb1376-24" aria-hidden="true" tabindex="-1"></a><span class="co">## (-5.12, 5.12)</span></span>
+<span id="cb1376-25"><a href="sec-plot-python.html#cb1376-25" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="fl">5.12</span>, <span class="fl">5.12</span>)</span>
+<span id="cb1376-26"><a href="sec-plot-python.html#cb1376-26" aria-hidden="true" tabindex="-1"></a><span class="co">## (-5.12, 5.12)</span></span>
+<span id="cb1376-27"><a href="sec-plot-python.html#cb1376-27" aria-hidden="true" tabindex="-1"></a>ax.set_zlim(<span class="dv">0</span>, <span class="dv">80</span>)</span>
+<span id="cb1376-28"><a href="sec-plot-python.html#cb1376-28" aria-hidden="true" tabindex="-1"></a><span class="co">## (0.0, 80.0)</span></span>
+<span id="cb1376-29"><a href="sec-plot-python.html#cb1376-29" aria-hidden="true" tabindex="-1"></a>fig.colorbar(surf, aspect<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb1376-30"><a href="sec-plot-python.html#cb1376-30" aria-hidden="true" tabindex="-1"></a><span class="co">## &lt;matplotlib.colorbar.Colorbar object at 0x7f38eddb2c40&gt;</span></span>
+<span id="cb1376-31"><a href="sec-plot-python.html#cb1376-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="vs">r&#39;Rastrigin Function in Two Dimensions&#39;</span>)</span>
+<span id="cb1376-32"><a href="sec-plot-python.html#cb1376-32" aria-hidden="true" tabindex="-1"></a><span class="co">## Text(0.5, 0.92, &#39;Rastrigin Function in Two Dimensions&#39;)</span></span>
+<span id="cb1376-33"><a href="sec-plot-python.html#cb1376-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="other-softwares_files/figure-html/matplotlib-3.svg" width=".8\textwidth" style="display: block; margin: auto;" /></p>
 </div>
             </section>
