@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -848,7 +855,7 @@ div.csl-indent {
 <div id="sec:infert" class="section level2" number="23.4">
 <h2><span class="header-section-number">23.4</span> 自然流产和人工流产后的不育</h2>
 <p><code>help(infert)</code></p>
-<div class="sourceCode" id="cb740"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb740-1"><a href="sec-infert.html#cb740-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(infert)</span></code></pre></div>
+<div class="sourceCode" id="cb743"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb743-1"><a href="sec-infert.html#cb743-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(infert)</span></code></pre></div>
 <pre><code>##   education age parity induced case spontaneous stratum pooled.stratum
 ## 1    0-5yrs  26      6       1    1           2       1              3
 ## 2    0-5yrs  42      1       1    1           0       2              1
@@ -856,7 +863,7 @@ div.csl-indent {
 ## 4    0-5yrs  34      4       2    1           0       4              2
 ## 5   6-11yrs  35      3       1    1           1       5             32
 ## 6   6-11yrs  36      4       2    1           1       6             36</code></pre>
-<div class="sourceCode" id="cb742"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb742-1"><a href="sec-infert.html#cb742-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(infert)</span></code></pre></div>
+<div class="sourceCode" id="cb745"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb745-1"><a href="sec-infert.html#cb745-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(infert)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    248 obs. of  8 variables:
 ##  $ education     : Factor w/ 3 levels &quot;0-5yrs&quot;,&quot;6-11yrs&quot;,..: 1 1 1 1 2 2 2 2 2 2 ...
 ##  $ age           : num  26 42 39 34 35 36 23 32 21 28 ...
@@ -867,10 +874,10 @@ div.csl-indent {
 ##  $ stratum       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ pooled.stratum: num  3 1 4 2 32 36 6 22 5 19 ...</code></pre>
 <p>存在无序分类变量</p>
-<div class="sourceCode" id="cb744"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb744-1"><a href="sec-infert.html#cb744-1" aria-hidden="true" tabindex="-1"></a>infert_glm_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced,</span>
-<span id="cb744-2"><a href="sec-infert.html#cb744-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb744-3"><a href="sec-infert.html#cb744-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb744-4"><a href="sec-infert.html#cb744-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_1)</span></code></pre></div>
+<div class="sourceCode" id="cb747"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb747-1"><a href="sec-infert.html#cb747-1" aria-hidden="true" tabindex="-1"></a>infert_glm_1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced,</span>
+<span id="cb747-2"><a href="sec-infert.html#cb747-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb747-3"><a href="sec-infert.html#cb747-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb747-4"><a href="sec-infert.html#cb747-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = case ~ spontaneous + induced, family = binomial(), 
@@ -896,10 +903,10 @@ div.csl-indent {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>考虑其他潜在的因素</p>
-<div class="sourceCode" id="cb746"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb746-1"><a href="sec-infert.html#cb746-1" aria-hidden="true" tabindex="-1"></a>infert_glm_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> age <span class="sc">+</span> parity <span class="sc">+</span> education <span class="sc">+</span> spontaneous <span class="sc">+</span> induced,</span>
-<span id="cb746-2"><a href="sec-infert.html#cb746-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
-<span id="cb746-3"><a href="sec-infert.html#cb746-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb746-4"><a href="sec-infert.html#cb746-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_2)</span></code></pre></div>
+<div class="sourceCode" id="cb749"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb749-1"><a href="sec-infert.html#cb749-1" aria-hidden="true" tabindex="-1"></a>infert_glm_2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(case <span class="sc">~</span> age <span class="sc">+</span> parity <span class="sc">+</span> education <span class="sc">+</span> spontaneous <span class="sc">+</span> induced,</span>
+<span id="cb749-2"><a href="sec-infert.html#cb749-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert, <span class="at">family =</span> <span class="fu">binomial</span>()</span>
+<span id="cb749-3"><a href="sec-infert.html#cb749-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb749-4"><a href="sec-infert.html#cb749-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = case ~ age + parity + education + spontaneous + 
@@ -929,11 +936,11 @@ div.csl-indent {
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>实际上应该使用条件逻辑回归， 调用 <strong>survival</strong> 包</p>
-<div class="sourceCode" id="cb748"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb748-1"><a href="sec-infert.html#cb748-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb748-2"><a href="sec-infert.html#cb748-2" aria-hidden="true" tabindex="-1"></a>infert_glm_3 <span class="ot">&lt;-</span> <span class="fu">clogit</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced <span class="sc">+</span> <span class="fu">strata</span>(stratum),</span>
-<span id="cb748-3"><a href="sec-infert.html#cb748-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert</span>
-<span id="cb748-4"><a href="sec-infert.html#cb748-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb748-5"><a href="sec-infert.html#cb748-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_3)</span></code></pre></div>
+<div class="sourceCode" id="cb751"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb751-1"><a href="sec-infert.html#cb751-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb751-2"><a href="sec-infert.html#cb751-2" aria-hidden="true" tabindex="-1"></a>infert_glm_3 <span class="ot">&lt;-</span> <span class="fu">clogit</span>(case <span class="sc">~</span> spontaneous <span class="sc">+</span> induced <span class="sc">+</span> <span class="fu">strata</span>(stratum),</span>
+<span id="cb751-3"><a href="sec-infert.html#cb751-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> infert</span>
+<span id="cb751-4"><a href="sec-infert.html#cb751-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb751-5"><a href="sec-infert.html#cb751-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(infert_glm_3)</span></code></pre></div>
 <pre><code>## Call:
 ## coxph(formula = Surv(rep(1, 248L), case) ~ spontaneous + induced + 
 ##     strata(stratum), data = infert, method = &quot;exact&quot;)

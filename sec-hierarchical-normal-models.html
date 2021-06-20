@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -850,24 +857,24 @@ div.csl-indent {
 <p>Multilevel Models 多水平模型、Hierarchical Models 层次模型</p>
 <div id="sec:eight-schools" class="section level3" number="30.4.1">
 <h3><span class="header-section-number">30.4.1</span> schools 数据</h3>
-<div class="sourceCode" id="cb947"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb947-1"><a href="sec-hierarchical-normal-models.html#cb947-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型编译</span></span>
-<span id="cb947-2"><a href="sec-hierarchical-normal-models.html#cb947-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/eight_schools.stan&quot;</span>)</span>
-<span id="cb947-3"><a href="sec-hierarchical-normal-models.html#cb947-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb947-4"><a href="sec-hierarchical-normal-models.html#cb947-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型拟合</span></span>
-<span id="cb947-5"><a href="sec-hierarchical-normal-models.html#cb947-5" aria-hidden="true" tabindex="-1"></a>eight_schools_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb947-6"><a href="sec-hierarchical-normal-models.html#cb947-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>( <span class="co"># 观测数据</span></span>
-<span id="cb947-7"><a href="sec-hierarchical-normal-models.html#cb947-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="dv">8</span>,</span>
-<span id="cb947-8"><a href="sec-hierarchical-normal-models.html#cb947-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">28</span>, <span class="dv">8</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">7</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">18</span>, <span class="dv">12</span>),</span>
-<span id="cb947-9"><a href="sec-hierarchical-normal-models.html#cb947-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigma =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">16</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">10</span>, <span class="dv">18</span>)</span>
-<span id="cb947-10"><a href="sec-hierarchical-normal-models.html#cb947-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb947-11"><a href="sec-hierarchical-normal-models.html#cb947-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
-<span id="cb947-12"><a href="sec-hierarchical-normal-models.html#cb947-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
-<span id="cb947-13"><a href="sec-hierarchical-normal-models.html#cb947-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="co"># 马尔科夫链的数目</span></span>
-<span id="cb947-14"><a href="sec-hierarchical-normal-models.html#cb947-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
-<span id="cb947-15"><a href="sec-hierarchical-normal-models.html#cb947-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
-<span id="cb947-16"><a href="sec-hierarchical-normal-models.html#cb947-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
-<span id="cb947-17"><a href="sec-hierarchical-normal-models.html#cb947-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
-<span id="cb947-18"><a href="sec-hierarchical-normal-models.html#cb947-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb950"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb950-1"><a href="sec-hierarchical-normal-models.html#cb950-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型编译</span></span>
+<span id="cb950-2"><a href="sec-hierarchical-normal-models.html#cb950-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/eight_schools.stan&quot;</span>)</span>
+<span id="cb950-3"><a href="sec-hierarchical-normal-models.html#cb950-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb950-4"><a href="sec-hierarchical-normal-models.html#cb950-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型拟合</span></span>
+<span id="cb950-5"><a href="sec-hierarchical-normal-models.html#cb950-5" aria-hidden="true" tabindex="-1"></a>eight_schools_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb950-6"><a href="sec-hierarchical-normal-models.html#cb950-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>( <span class="co"># 观测数据</span></span>
+<span id="cb950-7"><a href="sec-hierarchical-normal-models.html#cb950-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="dv">8</span>,</span>
+<span id="cb950-8"><a href="sec-hierarchical-normal-models.html#cb950-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">28</span>, <span class="dv">8</span>, <span class="sc">-</span><span class="dv">3</span>, <span class="dv">7</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">18</span>, <span class="dv">12</span>),</span>
+<span id="cb950-9"><a href="sec-hierarchical-normal-models.html#cb950-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigma =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">16</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">10</span>, <span class="dv">18</span>)</span>
+<span id="cb950-10"><a href="sec-hierarchical-normal-models.html#cb950-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb950-11"><a href="sec-hierarchical-normal-models.html#cb950-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
+<span id="cb950-12"><a href="sec-hierarchical-normal-models.html#cb950-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
+<span id="cb950-13"><a href="sec-hierarchical-normal-models.html#cb950-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="co"># 马尔科夫链的数目</span></span>
+<span id="cb950-14"><a href="sec-hierarchical-normal-models.html#cb950-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
+<span id="cb950-15"><a href="sec-hierarchical-normal-models.html#cb950-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
+<span id="cb950-16"><a href="sec-hierarchical-normal-models.html#cb950-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
+<span id="cb950-17"><a href="sec-hierarchical-normal-models.html#cb950-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
+<span id="cb950-18"><a href="sec-hierarchical-normal-models.html#cb950-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.1 seconds.
@@ -877,50 +884,50 @@ div.csl-indent {
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.7 seconds.</code></pre>
+## Total execution time: 0.8 seconds.</code></pre>
 <p>模型拟合结果</p>
-<div class="sourceCode" id="cb949"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb949-1"><a href="sec-hierarchical-normal-models.html#cb949-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">cmdstan_summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb952"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb952-1"><a href="sec-hierarchical-normal-models.html#cb952-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">cmdstan_summary</span>()</span></code></pre></div>
 <pre><code>## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.023, 0.028, 0.024, 0.027) seconds, 0.10 seconds total
-## Sampling took (0.068, 0.091, 0.086, 0.090) seconds, 0.33 seconds total
+## Warmup took (0.027, 0.030, 0.025, 0.029) seconds, 0.11 seconds total
+## Sampling took (0.081, 0.094, 0.091, 0.097) seconds, 0.36 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7305     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.4e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.0e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.5e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.9e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     6742     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.0e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  5.5e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.3e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.7e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.2e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  6.7e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11600      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9147      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23032     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25155     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    24834      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    24537      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    21955      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25191      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    21655      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    21957     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    16919     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    26687      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    20779      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    25418      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    24530      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    25384     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    19513     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    17622      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    10705      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     8441      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    21256     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    23214     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    22919      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    22645      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    20262      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    23248      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    19985      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    20264     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    15614     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    24629      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    19176      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    23458      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    22638      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    23426     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    18008     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    16263      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
 ## and R_hat is the potential scale reduction factor on split chains (at 
 ## convergence, R_hat=1).</code></pre>
 <p>4 条马尔可夫链，19 个变量，2000 次迭代，轨迹数据如下</p>
-<div class="sourceCode" id="cb951"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb951-1"><a href="sec-hierarchical-normal-models.html#cb951-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb954"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb954-1"><a href="sec-hierarchical-normal-models.html#cb954-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>()</span></code></pre></div>
 <pre><code>## # A draws_array: 2000 iterations, 4 chains, and 19 variables
 ## , , variable = lp__
 ## 
@@ -964,7 +971,7 @@ div.csl-indent {
 ## 
 ## # ... with 1995 more iterations, and 15 more variables</code></pre>
 <p>提取参数 <span class="math inline">\(\mu\)</span> 的四条迭代点列</p>
-<div class="sourceCode" id="cb953"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb953-1"><a href="sec-hierarchical-normal-models.html#cb953-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;mu&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb956"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb956-1"><a href="sec-hierarchical-normal-models.html#cb956-1" aria-hidden="true" tabindex="-1"></a>eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;mu&quot;</span>)</span></code></pre></div>
 <pre><code>## # A draws_array: 2000 iterations, 4 chains, and 1 variables
 ## , , variable = mu
 ## 
@@ -978,9 +985,9 @@ div.csl-indent {
 ## 
 ## # ... with 1995 more iterations</code></pre>
 <p><code>eight_schools_fit</code> 是一个 R6 对象，包含整个模型信息</p>
-<div class="sourceCode" id="cb955"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb955-1"><a href="sec-hierarchical-normal-models.html#cb955-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(eight_schools_fit)</span></code></pre></div>
+<div class="sourceCode" id="cb958"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb958-1"><a href="sec-hierarchical-normal-models.html#cb958-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(eight_schools_fit)</span></code></pre></div>
 <pre><code>## [1] &quot;CmdStanMCMC&quot; &quot;CmdStanFit&quot;  &quot;R6&quot;</code></pre>
-<div class="sourceCode" id="cb957"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb957-1"><a href="sec-hierarchical-normal-models.html#cb957-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(eight_schools_fit)</span></code></pre></div>
+<div class="sourceCode" id="cb960"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb960-1"><a href="sec-hierarchical-normal-models.html#cb960-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(eight_schools_fit)</span></code></pre></div>
 <pre><code>## Classes &#39;CmdStanMCMC&#39;, &#39;CmdStanFit&#39;, &#39;R6&#39; &lt;CmdStanMCMC&gt;
 ##   Inherits from: &lt;CmdStanFit&gt;
 ##   Public:
@@ -1023,68 +1030,68 @@ div.csl-indent {
 ##     warmup_draws_: NULL
 ##     warmup_sampler_diagnostics_: NULL</code></pre>
 <p>模型诊断：查看迭代点列的平稳性</p>
-<div class="sourceCode" id="cb959"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb959-1"><a href="sec-hierarchical-normal-models.html#cb959-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_dens</span>(eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb962"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb962-1"><a href="sec-hierarchical-normal-models.html#cb962-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcmc_dens</span>(eight_schools_fit<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>)))</span></code></pre></div>
 <p><img src="bayesian-models_files/figure-html/mu-iteration-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>分层线性模型之生长曲线模型 <span class="citation">(<a href="#ref-Gelfand_1990_JASA" role="doc-biblioref">Gelfand et al. 1990</a>)</span></p>
 </div>
 <div id="subsec:rats" class="section level3" number="30.4.2">
 <h3><span class="header-section-number">30.4.2</span> rats 数据</h3>
 <p>贝叶斯分层图</p>
-<div class="sourceCode" id="cb960"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb960-1"><a href="sec-hierarchical-normal-models.html#cb960-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据准备</span></span>
-<span id="cb960-2"><a href="sec-hierarchical-normal-models.html#cb960-2" aria-hidden="true" tabindex="-1"></a><span class="co"># modified code from https://github.com/stan-dev/example-models/tree/master/bugs_examples/vol1/rats</span></span>
-<span id="cb960-3"><a href="sec-hierarchical-normal-models.html#cb960-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb960-4"><a href="sec-hierarchical-normal-models.html#cb960-4" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb960-5"><a href="sec-hierarchical-normal-models.html#cb960-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">c</span>(</span>
-<span id="cb960-6"><a href="sec-hierarchical-normal-models.html#cb960-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">151</span>, <span class="dv">145</span>, <span class="dv">147</span>, <span class="dv">155</span>, <span class="dv">135</span>, <span class="dv">159</span>, <span class="dv">141</span>, <span class="dv">159</span>, <span class="dv">177</span>, <span class="dv">134</span>,</span>
-<span id="cb960-7"><a href="sec-hierarchical-normal-models.html#cb960-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">160</span>, <span class="dv">143</span>, <span class="dv">154</span>, <span class="dv">171</span>, <span class="dv">163</span>, <span class="dv">160</span>, <span class="dv">142</span>, <span class="dv">156</span>, <span class="dv">157</span>, <span class="dv">152</span>, <span class="dv">154</span>, <span class="dv">139</span>, <span class="dv">146</span>,</span>
-<span id="cb960-8"><a href="sec-hierarchical-normal-models.html#cb960-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">157</span>, <span class="dv">132</span>, <span class="dv">160</span>, <span class="dv">169</span>, <span class="dv">157</span>, <span class="dv">137</span>, <span class="dv">153</span>, <span class="dv">199</span>, <span class="dv">199</span>, <span class="dv">214</span>, <span class="dv">200</span>, <span class="dv">188</span>, <span class="dv">210</span>,</span>
-<span id="cb960-9"><a href="sec-hierarchical-normal-models.html#cb960-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">189</span>, <span class="dv">201</span>, <span class="dv">236</span>, <span class="dv">182</span>, <span class="dv">208</span>, <span class="dv">188</span>, <span class="dv">200</span>, <span class="dv">221</span>, <span class="dv">216</span>, <span class="dv">207</span>, <span class="dv">187</span>, <span class="dv">203</span>, <span class="dv">212</span>,</span>
-<span id="cb960-10"><a href="sec-hierarchical-normal-models.html#cb960-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">203</span>, <span class="dv">205</span>, <span class="dv">190</span>, <span class="dv">191</span>, <span class="dv">211</span>, <span class="dv">185</span>, <span class="dv">207</span>, <span class="dv">216</span>, <span class="dv">205</span>, <span class="dv">180</span>, <span class="dv">200</span>, <span class="dv">246</span>, <span class="dv">249</span>,</span>
-<span id="cb960-11"><a href="sec-hierarchical-normal-models.html#cb960-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">263</span>, <span class="dv">237</span>, <span class="dv">230</span>, <span class="dv">252</span>, <span class="dv">231</span>, <span class="dv">248</span>, <span class="dv">285</span>, <span class="dv">220</span>, <span class="dv">261</span>, <span class="dv">220</span>, <span class="dv">244</span>, <span class="dv">270</span>, <span class="dv">242</span>,</span>
-<span id="cb960-12"><a href="sec-hierarchical-normal-models.html#cb960-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">248</span>, <span class="dv">234</span>, <span class="dv">243</span>, <span class="dv">259</span>, <span class="dv">246</span>, <span class="dv">253</span>, <span class="dv">225</span>, <span class="dv">229</span>, <span class="dv">250</span>, <span class="dv">237</span>, <span class="dv">257</span>, <span class="dv">261</span>, <span class="dv">248</span>,</span>
-<span id="cb960-13"><a href="sec-hierarchical-normal-models.html#cb960-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">219</span>, <span class="dv">244</span>, <span class="dv">283</span>, <span class="dv">293</span>, <span class="dv">312</span>, <span class="dv">272</span>, <span class="dv">280</span>, <span class="dv">298</span>, <span class="dv">275</span>, <span class="dv">297</span>, <span class="dv">350</span>, <span class="dv">260</span>, <span class="dv">313</span>,</span>
-<span id="cb960-14"><a href="sec-hierarchical-normal-models.html#cb960-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">273</span>, <span class="dv">289</span>, <span class="dv">326</span>, <span class="dv">281</span>, <span class="dv">288</span>, <span class="dv">280</span>, <span class="dv">283</span>, <span class="dv">307</span>, <span class="dv">286</span>, <span class="dv">298</span>, <span class="dv">267</span>, <span class="dv">272</span>, <span class="dv">285</span>,</span>
-<span id="cb960-15"><a href="sec-hierarchical-normal-models.html#cb960-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">286</span>, <span class="dv">303</span>, <span class="dv">295</span>, <span class="dv">289</span>, <span class="dv">258</span>, <span class="dv">286</span>, <span class="dv">320</span>, <span class="dv">354</span>, <span class="dv">328</span>, <span class="dv">297</span>, <span class="dv">323</span>, <span class="dv">331</span>, <span class="dv">305</span>,</span>
-<span id="cb960-16"><a href="sec-hierarchical-normal-models.html#cb960-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">338</span>, <span class="dv">376</span>, <span class="dv">296</span>, <span class="dv">352</span>, <span class="dv">314</span>, <span class="dv">325</span>, <span class="dv">358</span>, <span class="dv">312</span>, <span class="dv">324</span>, <span class="dv">316</span>, <span class="dv">317</span>, <span class="dv">336</span>, <span class="dv">321</span>,</span>
-<span id="cb960-17"><a href="sec-hierarchical-normal-models.html#cb960-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">334</span>, <span class="dv">302</span>, <span class="dv">302</span>, <span class="dv">323</span>, <span class="dv">331</span>, <span class="dv">345</span>, <span class="dv">333</span>, <span class="dv">316</span>, <span class="dv">291</span>, <span class="dv">324</span></span>
-<span id="cb960-18"><a href="sec-hierarchical-normal-models.html#cb960-18" aria-hidden="true" tabindex="-1"></a>), <span class="at">.Dim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">5</span>))</span>
-<span id="cb960-19"><a href="sec-hierarchical-normal-models.html#cb960-19" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">8.0</span>, <span class="fl">15.0</span>, <span class="fl">22.0</span>, <span class="fl">29.0</span>, <span class="fl">36.0</span>)</span>
-<span id="cb960-20"><a href="sec-hierarchical-normal-models.html#cb960-20" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fl">22.0</span></span>
-<span id="cb960-21"><a href="sec-hierarchical-normal-models.html#cb960-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb960-22"><a href="sec-hierarchical-normal-models.html#cb960-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb960-23"><a href="sec-hierarchical-normal-models.html#cb960-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型参数设置</span></span>
-<span id="cb960-24"><a href="sec-hierarchical-normal-models.html#cb960-24" aria-hidden="true" tabindex="-1"></a>chains <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb960-25"><a href="sec-hierarchical-normal-models.html#cb960-25" aria-hidden="true" tabindex="-1"></a>iter <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb960-26"><a href="sec-hierarchical-normal-models.html#cb960-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb960-27"><a href="sec-hierarchical-normal-models.html#cb960-27" aria-hidden="true" tabindex="-1"></a>init <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">list</span>(<span class="fu">list</span>(</span>
-<span id="cb960-28"><a href="sec-hierarchical-normal-models.html#cb960-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fu">rep</span>(<span class="dv">250</span>, <span class="dv">30</span>), <span class="at">beta =</span> <span class="fu">rep</span>(<span class="dv">6</span>, <span class="dv">30</span>),</span>
-<span id="cb960-29"><a href="sec-hierarchical-normal-models.html#cb960-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha_c =</span> <span class="dv">150</span>, <span class="at">beta_c =</span> <span class="dv">10</span>,</span>
-<span id="cb960-30"><a href="sec-hierarchical-normal-models.html#cb960-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">tausq_c =</span> <span class="dv">1</span>, <span class="at">tausq_alpha =</span> <span class="dv">1</span>,</span>
-<span id="cb960-31"><a href="sec-hierarchical-normal-models.html#cb960-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">tausq_beta =</span> <span class="dv">1</span></span>
-<span id="cb960-32"><a href="sec-hierarchical-normal-models.html#cb960-32" aria-hidden="true" tabindex="-1"></a>)), chains)</span></code></pre></div>
-<div class="sourceCode" id="cb961"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb961-1"><a href="sec-hierarchical-normal-models.html#cb961-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/rats.stan&quot;</span>)</span>
-<span id="cb961-2"><a href="sec-hierarchical-normal-models.html#cb961-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb961-3"><a href="sec-hierarchical-normal-models.html#cb961-3" aria-hidden="true" tabindex="-1"></a>rats_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
-<span id="cb961-4"><a href="sec-hierarchical-normal-models.html#cb961-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">T =</span> T, <span class="at">y =</span> y, <span class="at">x =</span> x, <span class="at">xbar =</span> xbar),</span>
-<span id="cb961-5"><a href="sec-hierarchical-normal-models.html#cb961-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> init,</span>
-<span id="cb961-6"><a href="sec-hierarchical-normal-models.html#cb961-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
-<span id="cb961-7"><a href="sec-hierarchical-normal-models.html#cb961-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
-<span id="cb961-8"><a href="sec-hierarchical-normal-models.html#cb961-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> chains, <span class="co"># 马尔科夫链的数目</span></span>
-<span id="cb961-9"><a href="sec-hierarchical-normal-models.html#cb961-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
-<span id="cb961-10"><a href="sec-hierarchical-normal-models.html#cb961-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
-<span id="cb961-11"><a href="sec-hierarchical-normal-models.html#cb961-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
-<span id="cb961-12"><a href="sec-hierarchical-normal-models.html#cb961-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
-<span id="cb961-13"><a href="sec-hierarchical-normal-models.html#cb961-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb963"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb963-1"><a href="sec-hierarchical-normal-models.html#cb963-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据准备</span></span>
+<span id="cb963-2"><a href="sec-hierarchical-normal-models.html#cb963-2" aria-hidden="true" tabindex="-1"></a><span class="co"># modified code from https://github.com/stan-dev/example-models/tree/master/bugs_examples/vol1/rats</span></span>
+<span id="cb963-3"><a href="sec-hierarchical-normal-models.html#cb963-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb963-4"><a href="sec-hierarchical-normal-models.html#cb963-4" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb963-5"><a href="sec-hierarchical-normal-models.html#cb963-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">c</span>(</span>
+<span id="cb963-6"><a href="sec-hierarchical-normal-models.html#cb963-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">151</span>, <span class="dv">145</span>, <span class="dv">147</span>, <span class="dv">155</span>, <span class="dv">135</span>, <span class="dv">159</span>, <span class="dv">141</span>, <span class="dv">159</span>, <span class="dv">177</span>, <span class="dv">134</span>,</span>
+<span id="cb963-7"><a href="sec-hierarchical-normal-models.html#cb963-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">160</span>, <span class="dv">143</span>, <span class="dv">154</span>, <span class="dv">171</span>, <span class="dv">163</span>, <span class="dv">160</span>, <span class="dv">142</span>, <span class="dv">156</span>, <span class="dv">157</span>, <span class="dv">152</span>, <span class="dv">154</span>, <span class="dv">139</span>, <span class="dv">146</span>,</span>
+<span id="cb963-8"><a href="sec-hierarchical-normal-models.html#cb963-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">157</span>, <span class="dv">132</span>, <span class="dv">160</span>, <span class="dv">169</span>, <span class="dv">157</span>, <span class="dv">137</span>, <span class="dv">153</span>, <span class="dv">199</span>, <span class="dv">199</span>, <span class="dv">214</span>, <span class="dv">200</span>, <span class="dv">188</span>, <span class="dv">210</span>,</span>
+<span id="cb963-9"><a href="sec-hierarchical-normal-models.html#cb963-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">189</span>, <span class="dv">201</span>, <span class="dv">236</span>, <span class="dv">182</span>, <span class="dv">208</span>, <span class="dv">188</span>, <span class="dv">200</span>, <span class="dv">221</span>, <span class="dv">216</span>, <span class="dv">207</span>, <span class="dv">187</span>, <span class="dv">203</span>, <span class="dv">212</span>,</span>
+<span id="cb963-10"><a href="sec-hierarchical-normal-models.html#cb963-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">203</span>, <span class="dv">205</span>, <span class="dv">190</span>, <span class="dv">191</span>, <span class="dv">211</span>, <span class="dv">185</span>, <span class="dv">207</span>, <span class="dv">216</span>, <span class="dv">205</span>, <span class="dv">180</span>, <span class="dv">200</span>, <span class="dv">246</span>, <span class="dv">249</span>,</span>
+<span id="cb963-11"><a href="sec-hierarchical-normal-models.html#cb963-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">263</span>, <span class="dv">237</span>, <span class="dv">230</span>, <span class="dv">252</span>, <span class="dv">231</span>, <span class="dv">248</span>, <span class="dv">285</span>, <span class="dv">220</span>, <span class="dv">261</span>, <span class="dv">220</span>, <span class="dv">244</span>, <span class="dv">270</span>, <span class="dv">242</span>,</span>
+<span id="cb963-12"><a href="sec-hierarchical-normal-models.html#cb963-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">248</span>, <span class="dv">234</span>, <span class="dv">243</span>, <span class="dv">259</span>, <span class="dv">246</span>, <span class="dv">253</span>, <span class="dv">225</span>, <span class="dv">229</span>, <span class="dv">250</span>, <span class="dv">237</span>, <span class="dv">257</span>, <span class="dv">261</span>, <span class="dv">248</span>,</span>
+<span id="cb963-13"><a href="sec-hierarchical-normal-models.html#cb963-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">219</span>, <span class="dv">244</span>, <span class="dv">283</span>, <span class="dv">293</span>, <span class="dv">312</span>, <span class="dv">272</span>, <span class="dv">280</span>, <span class="dv">298</span>, <span class="dv">275</span>, <span class="dv">297</span>, <span class="dv">350</span>, <span class="dv">260</span>, <span class="dv">313</span>,</span>
+<span id="cb963-14"><a href="sec-hierarchical-normal-models.html#cb963-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">273</span>, <span class="dv">289</span>, <span class="dv">326</span>, <span class="dv">281</span>, <span class="dv">288</span>, <span class="dv">280</span>, <span class="dv">283</span>, <span class="dv">307</span>, <span class="dv">286</span>, <span class="dv">298</span>, <span class="dv">267</span>, <span class="dv">272</span>, <span class="dv">285</span>,</span>
+<span id="cb963-15"><a href="sec-hierarchical-normal-models.html#cb963-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">286</span>, <span class="dv">303</span>, <span class="dv">295</span>, <span class="dv">289</span>, <span class="dv">258</span>, <span class="dv">286</span>, <span class="dv">320</span>, <span class="dv">354</span>, <span class="dv">328</span>, <span class="dv">297</span>, <span class="dv">323</span>, <span class="dv">331</span>, <span class="dv">305</span>,</span>
+<span id="cb963-16"><a href="sec-hierarchical-normal-models.html#cb963-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">338</span>, <span class="dv">376</span>, <span class="dv">296</span>, <span class="dv">352</span>, <span class="dv">314</span>, <span class="dv">325</span>, <span class="dv">358</span>, <span class="dv">312</span>, <span class="dv">324</span>, <span class="dv">316</span>, <span class="dv">317</span>, <span class="dv">336</span>, <span class="dv">321</span>,</span>
+<span id="cb963-17"><a href="sec-hierarchical-normal-models.html#cb963-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">334</span>, <span class="dv">302</span>, <span class="dv">302</span>, <span class="dv">323</span>, <span class="dv">331</span>, <span class="dv">345</span>, <span class="dv">333</span>, <span class="dv">316</span>, <span class="dv">291</span>, <span class="dv">324</span></span>
+<span id="cb963-18"><a href="sec-hierarchical-normal-models.html#cb963-18" aria-hidden="true" tabindex="-1"></a>), <span class="at">.Dim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">5</span>))</span>
+<span id="cb963-19"><a href="sec-hierarchical-normal-models.html#cb963-19" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">8.0</span>, <span class="fl">15.0</span>, <span class="fl">22.0</span>, <span class="fl">29.0</span>, <span class="fl">36.0</span>)</span>
+<span id="cb963-20"><a href="sec-hierarchical-normal-models.html#cb963-20" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fl">22.0</span></span>
+<span id="cb963-21"><a href="sec-hierarchical-normal-models.html#cb963-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb963-22"><a href="sec-hierarchical-normal-models.html#cb963-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb963-23"><a href="sec-hierarchical-normal-models.html#cb963-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 模型参数设置</span></span>
+<span id="cb963-24"><a href="sec-hierarchical-normal-models.html#cb963-24" aria-hidden="true" tabindex="-1"></a>chains <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb963-25"><a href="sec-hierarchical-normal-models.html#cb963-25" aria-hidden="true" tabindex="-1"></a>iter <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb963-26"><a href="sec-hierarchical-normal-models.html#cb963-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb963-27"><a href="sec-hierarchical-normal-models.html#cb963-27" aria-hidden="true" tabindex="-1"></a>init <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">list</span>(<span class="fu">list</span>(</span>
+<span id="cb963-28"><a href="sec-hierarchical-normal-models.html#cb963-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fu">rep</span>(<span class="dv">250</span>, <span class="dv">30</span>), <span class="at">beta =</span> <span class="fu">rep</span>(<span class="dv">6</span>, <span class="dv">30</span>),</span>
+<span id="cb963-29"><a href="sec-hierarchical-normal-models.html#cb963-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha_c =</span> <span class="dv">150</span>, <span class="at">beta_c =</span> <span class="dv">10</span>,</span>
+<span id="cb963-30"><a href="sec-hierarchical-normal-models.html#cb963-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">tausq_c =</span> <span class="dv">1</span>, <span class="at">tausq_alpha =</span> <span class="dv">1</span>,</span>
+<span id="cb963-31"><a href="sec-hierarchical-normal-models.html#cb963-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">tausq_beta =</span> <span class="dv">1</span></span>
+<span id="cb963-32"><a href="sec-hierarchical-normal-models.html#cb963-32" aria-hidden="true" tabindex="-1"></a>)), chains)</span></code></pre></div>
+<div class="sourceCode" id="cb964"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb964-1"><a href="sec-hierarchical-normal-models.html#cb964-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="at">stan_file =</span> <span class="st">&quot;code/rats.stan&quot;</span>)</span>
+<span id="cb964-2"><a href="sec-hierarchical-normal-models.html#cb964-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb964-3"><a href="sec-hierarchical-normal-models.html#cb964-3" aria-hidden="true" tabindex="-1"></a>rats_fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb964-4"><a href="sec-hierarchical-normal-models.html#cb964-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">T =</span> T, <span class="at">y =</span> y, <span class="at">x =</span> x, <span class="at">xbar =</span> xbar),</span>
+<span id="cb964-5"><a href="sec-hierarchical-normal-models.html#cb964-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> init,</span>
+<span id="cb964-6"><a href="sec-hierarchical-normal-models.html#cb964-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">1000</span>, <span class="co"># 每条链预处理迭代次数</span></span>
+<span id="cb964-7"><a href="sec-hierarchical-normal-models.html#cb964-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">2000</span>, <span class="co"># 每条链总迭代次数</span></span>
+<span id="cb964-8"><a href="sec-hierarchical-normal-models.html#cb964-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> chains, <span class="co"># 马尔科夫链的数目</span></span>
+<span id="cb964-9"><a href="sec-hierarchical-normal-models.html#cb964-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">1</span>, <span class="co"># 指定 CPU 核心数，可以给每条链分配一个</span></span>
+<span id="cb964-10"><a href="sec-hierarchical-normal-models.html#cb964-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_messages =</span> <span class="cn">FALSE</span>, <span class="co"># 不显示迭代的中间过程</span></span>
+<span id="cb964-11"><a href="sec-hierarchical-normal-models.html#cb964-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">0</span>, <span class="co"># 不显示采样的进度</span></span>
+<span id="cb964-12"><a href="sec-hierarchical-normal-models.html#cb964-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">20190425</span> <span class="co"># 设置随机数种子，不要使用 set.seed() 函数</span></span>
+<span id="cb964-13"><a href="sec-hierarchical-normal-models.html#cb964-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.6 seconds.
-## Chain 2 finished in 0.6 seconds.
+## Chain 2 finished in 0.7 seconds.
 ## Chain 3 finished in 0.7 seconds.
-## Chain 4 finished in 0.5 seconds.
+## Chain 4 finished in 0.6 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 0.6 seconds.
-## Total execution time: 2.7 seconds.</code></pre>
+## Mean chain execution time: 0.7 seconds.
+## Total execution time: 3.1 seconds.</code></pre>
 </div>
 </div>
 <h3>参考文献</h3>

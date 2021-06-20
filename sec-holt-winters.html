@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -868,20 +875,20 @@ b[t] &amp;= \beta (a[t] - a[t-1]) + (1-\beta) b[t-1] \\
 s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 \end{align}\]</span></p>
 <p><code>HoltWinters()</code> 用 Shiny App / 动画的形式展示 <span class="math inline">\(\alpha, \beta, \gamma\)</span> 三个参数对模型预测的影响，参数的确定通过最小化预测均方误差</p>
-<div class="sourceCode" id="cb891"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb891-1"><a href="sec-holt-winters.html#cb891-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Seasonal Holt-Winters</span></span>
-<span id="cb891-2"><a href="sec-holt-winters.html#cb891-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(co2))</span>
-<span id="cb891-3"><a href="sec-holt-winters.html#cb891-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m)</span>
-<span id="cb891-4"><a href="sec-holt-winters.html#cb891-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(m))</span>
-<span id="cb891-5"><a href="sec-holt-winters.html#cb891-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb891-6"><a href="sec-holt-winters.html#cb891-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="dv">50</span>, <span class="at">prediction.interval =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb891-7"><a href="sec-holt-winters.html#cb891-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m, p)</span>
-<span id="cb891-8"><a href="sec-holt-winters.html#cb891-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb891-9"><a href="sec-holt-winters.html#cb891-9" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(AirPassengers, <span class="at">seasonal =</span> <span class="st">&quot;mult&quot;</span>))</span>
-<span id="cb891-10"><a href="sec-holt-winters.html#cb891-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m)</span>
-<span id="cb891-11"><a href="sec-holt-winters.html#cb891-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb891-12"><a href="sec-holt-winters.html#cb891-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 指数平滑 Exponential Smoothing</span></span>
-<span id="cb891-13"><a href="sec-holt-winters.html#cb891-13" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(x, <span class="at">gamma =</span> <span class="cn">FALSE</span>, <span class="at">beta =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb891-14"><a href="sec-holt-winters.html#cb891-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">fitted</span>(m2)[,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="sec-holt-winters.html#cb894-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Seasonal Holt-Winters</span></span>
+<span id="cb894-2"><a href="sec-holt-winters.html#cb894-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(co2))</span>
+<span id="cb894-3"><a href="sec-holt-winters.html#cb894-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m)</span>
+<span id="cb894-4"><a href="sec-holt-winters.html#cb894-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(m))</span>
+<span id="cb894-5"><a href="sec-holt-winters.html#cb894-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb894-6"><a href="sec-holt-winters.html#cb894-6" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, <span class="dv">50</span>, <span class="at">prediction.interval =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb894-7"><a href="sec-holt-winters.html#cb894-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m, p)</span>
+<span id="cb894-8"><a href="sec-holt-winters.html#cb894-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb894-9"><a href="sec-holt-winters.html#cb894-9" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(AirPassengers, <span class="at">seasonal =</span> <span class="st">&quot;mult&quot;</span>))</span>
+<span id="cb894-10"><a href="sec-holt-winters.html#cb894-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m)</span>
+<span id="cb894-11"><a href="sec-holt-winters.html#cb894-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb894-12"><a href="sec-holt-winters.html#cb894-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 指数平滑 Exponential Smoothing</span></span>
+<span id="cb894-13"><a href="sec-holt-winters.html#cb894-13" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(x, <span class="at">gamma =</span> <span class="cn">FALSE</span>, <span class="at">beta =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb894-14"><a href="sec-holt-winters.html#cb894-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">fitted</span>(m2)[,<span class="dv">1</span>], <span class="at">col =</span> <span class="dv">3</span>)</span></code></pre></div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">

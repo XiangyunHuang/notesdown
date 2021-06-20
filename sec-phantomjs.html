@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -848,19 +855,19 @@ div.csl-indent {
 <div id="sec:phantomjs" class="section level2" number="37.10">
 <h2><span class="header-section-number">B.10</span> PhantomJS 网页截图</h2>
 <p>Winston Chang 开发了 <a href="https://github.com/wch/webshot">webshot</a> 包网页截图，它依赖 <a href="https://github.com/ariya/phantomjs/">PhantomJS</a>，所以首先需要安装</p>
-<div class="sourceCode" id="cb1336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1336-1"><a href="sec-phantomjs.html#cb1336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;webshot&quot;</span>)</span>
-<span id="cb1336-2"><a href="sec-phantomjs.html#cb1336-2" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">install_phantomjs</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1339-1"><a href="sec-phantomjs.html#cb1339-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;webshot&quot;</span>)</span>
+<span id="cb1339-2"><a href="sec-phantomjs.html#cb1339-2" aria-hidden="true" tabindex="-1"></a>webshot<span class="sc">::</span><span class="fu">install_phantomjs</span>()</span></code></pre></div>
 <p>以截取网页 <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a> 为例，</p>
-<div class="sourceCode" id="cb1337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1337-1"><a href="sec-phantomjs.html#cb1337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(webshot)</span>
-<span id="cb1337-2"><a href="sec-phantomjs.html#cb1337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r.png&quot;</span>)</span>
-<span id="cb1337-3"><a href="sec-phantomjs.html#cb1337-3" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r.pdf&quot;</span>) <span class="co"># Can also output to PDF</span></span></code></pre></div>
+<div class="sourceCode" id="cb1340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1340-1"><a href="sec-phantomjs.html#cb1340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(webshot)</span>
+<span id="cb1340-2"><a href="sec-phantomjs.html#cb1340-2" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r.png&quot;</span>)</span>
+<span id="cb1340-3"><a href="sec-phantomjs.html#cb1340-3" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r.pdf&quot;</span>) <span class="co"># Can also output to PDF</span></span></code></pre></div>
 <p>还可以截取 R Markdown 文档内容，注意是先编译 R Markdown 文档为 HTML 文档，然后截取网页</p>
-<div class="sourceCode" id="cb1338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1338-1"><a href="sec-phantomjs.html#cb1338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdshot</span>(<span class="fu">system.file</span>(<span class="st">&quot;examples/knitr-minimal.Rmd&quot;</span>, <span class="at">package =</span> <span class="st">&quot;knitr&quot;</span>), <span class="at">file =</span> <span class="st">&quot;screenshots/knitr-minimal.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1341-1"><a href="sec-phantomjs.html#cb1341-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdshot</span>(<span class="fu">system.file</span>(<span class="st">&quot;examples/knitr-minimal.Rmd&quot;</span>, <span class="at">package =</span> <span class="st">&quot;knitr&quot;</span>), <span class="at">file =</span> <span class="st">&quot;screenshots/knitr-minimal.png&quot;</span>)</span></code></pre></div>
 <p>裁剪出特定大小的图片，需要额外的系统依赖 GraphicsMagick (recommended) or ImageMagick installed</p>
-<div class="sourceCode" id="cb1339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1339-1"><a href="sec-phantomjs.html#cb1339-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Can specify pixel dimensions for resize()</span></span>
-<span id="cb1339-2"><a href="sec-phantomjs.html#cb1339-2" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r-small.png&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1339-3"><a href="sec-phantomjs.html#cb1339-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">resize</span>(<span class="st">&quot;400x&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1339-4"><a href="sec-phantomjs.html#cb1339-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">shrink</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1342-1"><a href="sec-phantomjs.html#cb1342-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Can specify pixel dimensions for resize()</span></span>
+<span id="cb1342-2"><a href="sec-phantomjs.html#cb1342-2" aria-hidden="true" tabindex="-1"></a><span class="fu">webshot</span>(<span class="st">&quot;https://www.r-project.org/&quot;</span>, <span class="st">&quot;r-small.png&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1342-3"><a href="sec-phantomjs.html#cb1342-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">resize</span>(<span class="st">&quot;400x&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1342-4"><a href="sec-phantomjs.html#cb1342-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">shrink</span>()</span></code></pre></div>
 <pre><code>** Processing: r-small.png
 400x442 pixels, 4x8 bits/pixel, RGB+alpha
 Reducing image to 3x8 bits/pixel, RGB

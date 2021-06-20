@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -849,51 +856,51 @@ div.csl-indent {
 <h2><span class="header-section-number">22.9</span> 回归诊断</h2>
 <p>包括线性模型和广义线性模型</p>
 <p>Regression Deletion Diagnostics <code>?influence.measures</code></p>
-<div class="sourceCode" id="cb679"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb679-1"><a href="sec-regression-diagnostics.html#cb679-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont) <span class="co"># 注册字体 CM Roman 到 PDF 设备</span></span>
-<span id="cb679-2"><a href="sec-regression-diagnostics.html#cb679-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(anscombe)</span>
-<span id="cb679-3"><a href="sec-regression-diagnostics.html#cb679-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">paste0</span>(<span class="st">&quot;y&quot;</span>, <span class="fu">seq</span>(<span class="dv">4</span>)), <span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, <span class="fu">seq</span>(<span class="dv">4</span>)), <span class="at">sep =</span> <span class="st">&quot;~&quot;</span>) <span class="co"># form &lt;- sprintf(&#39;y%d ~ x%d&#39;, 1:4, 1:4)</span></span>
-<span id="cb679-4"><a href="sec-regression-diagnostics.html#cb679-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(form, lm, <span class="at">data =</span> anscombe)</span>
-<span id="cb679-5"><a href="sec-regression-diagnostics.html#cb679-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="at">family =</span> <span class="st">&quot;CM Roman&quot;</span>)</span>
-<span id="cb679-6"><a href="sec-regression-diagnostics.html#cb679-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
-<span id="cb679-7"><a href="sec-regression-diagnostics.html#cb679-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">as.formula</span>(form[i]),</span>
-<span id="cb679-8"><a href="sec-regression-diagnostics.html#cb679-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> anscombe, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb679-9"><a href="sec-regression-diagnostics.html#cb679-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
-<span id="cb679-10"><a href="sec-regression-diagnostics.html#cb679-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">19</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">13</span>),</span>
-<span id="cb679-11"><a href="sec-regression-diagnostics.html#cb679-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="fu">as.expression</span>(<span class="fu">substitute</span>(<span class="fu">bold</span>(x[i]), <span class="fu">list</span>(<span class="at">i =</span> i))),</span>
-<span id="cb679-12"><a href="sec-regression-diagnostics.html#cb679-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="fu">as.expression</span>(<span class="fu">substitute</span>(<span class="fu">bold</span>(y[i]), <span class="fu">list</span>(<span class="at">i =</span> i)))</span>
-<span id="cb679-13"><a href="sec-regression-diagnostics.html#cb679-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb679-14"><a href="sec-regression-diagnostics.html#cb679-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(fit[[i]], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb679-15"><a href="sec-regression-diagnostics.html#cb679-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">7</span>, <span class="dv">12</span>, <span class="fu">bquote</span>(<span class="fu">bold</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">round</span>(<span class="fu">summary</span>(fit[[i]])<span class="sc">$</span>r.squared, <span class="dv">3</span>))))</span>
-<span id="cb679-16"><a href="sec-regression-diagnostics.html#cb679-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb679-17"><a href="sec-regression-diagnostics.html#cb679-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Anscombe&#39;s 4 Regression data sets&quot;</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>, <span class="at">cex =</span> <span class="fl">1.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb682"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb682-1"><a href="sec-regression-diagnostics.html#cb682-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont) <span class="co"># 注册字体 CM Roman 到 PDF 设备</span></span>
+<span id="cb682-2"><a href="sec-regression-diagnostics.html#cb682-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(anscombe)</span>
+<span id="cb682-3"><a href="sec-regression-diagnostics.html#cb682-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">paste0</span>(<span class="st">&quot;y&quot;</span>, <span class="fu">seq</span>(<span class="dv">4</span>)), <span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, <span class="fu">seq</span>(<span class="dv">4</span>)), <span class="at">sep =</span> <span class="st">&quot;~&quot;</span>) <span class="co"># form &lt;- sprintf(&#39;y%d ~ x%d&#39;, 1:4, 1:4)</span></span>
+<span id="cb682-4"><a href="sec-regression-diagnostics.html#cb682-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(form, lm, <span class="at">data =</span> anscombe)</span>
+<span id="cb682-5"><a href="sec-regression-diagnostics.html#cb682-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fl">0.1</span> <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="at">family =</span> <span class="st">&quot;CM Roman&quot;</span>)</span>
+<span id="cb682-6"><a href="sec-regression-diagnostics.html#cb682-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb682-7"><a href="sec-regression-diagnostics.html#cb682-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">as.formula</span>(form[i]),</span>
+<span id="cb682-8"><a href="sec-regression-diagnostics.html#cb682-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> anscombe, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb682-9"><a href="sec-regression-diagnostics.html#cb682-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
+<span id="cb682-10"><a href="sec-regression-diagnostics.html#cb682-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">19</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">13</span>),</span>
+<span id="cb682-11"><a href="sec-regression-diagnostics.html#cb682-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlab =</span> <span class="fu">as.expression</span>(<span class="fu">substitute</span>(<span class="fu">bold</span>(x[i]), <span class="fu">list</span>(<span class="at">i =</span> i))),</span>
+<span id="cb682-12"><a href="sec-regression-diagnostics.html#cb682-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylab =</span> <span class="fu">as.expression</span>(<span class="fu">substitute</span>(<span class="fu">bold</span>(y[i]), <span class="fu">list</span>(<span class="at">i =</span> i)))</span>
+<span id="cb682-13"><a href="sec-regression-diagnostics.html#cb682-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb682-14"><a href="sec-regression-diagnostics.html#cb682-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(fit[[i]], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb682-15"><a href="sec-regression-diagnostics.html#cb682-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">7</span>, <span class="dv">12</span>, <span class="fu">bquote</span>(<span class="fu">bold</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">round</span>(<span class="fu">summary</span>(fit[[i]])<span class="sc">$</span>r.squared, <span class="dv">3</span>))))</span>
+<span id="cb682-16"><a href="sec-regression-diagnostics.html#cb682-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb682-17"><a href="sec-regression-diagnostics.html#cb682-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Anscombe&#39;s 4 Regression data sets&quot;</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>, <span class="at">cex =</span> <span class="fl">1.2</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:anscombe-base"></span>
 <img src="linear-models_files/figure-html/anscombe-base-1.svg" alt="模型诊断很重要" width="672" />
 <p class="caption">
 图 22.1: 模型诊断很重要
 </p>
 </div>
-<div class="sourceCode" id="cb680"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb680-1"><a href="sec-regression-diagnostics.html#cb680-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb680-2"><a href="sec-regression-diagnostics.html#cb680-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb680-3"><a href="sec-regression-diagnostics.html#cb680-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;anscombe&quot;</span>)</span>
-<span id="cb680-4"><a href="sec-regression-diagnostics.html#cb680-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb680-5"><a href="sec-regression-diagnostics.html#cb680-5" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&#39;y%d ~ x%d&#39;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
-<span id="cb680-6"><a href="sec-regression-diagnostics.html#cb680-6" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(form, lm, <span class="at">data =</span> anscombe)</span>
-<span id="cb680-7"><a href="sec-regression-diagnostics.html#cb680-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb680-8"><a href="sec-regression-diagnostics.html#cb680-8" aria-hidden="true" tabindex="-1"></a>plot_lm <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
-<span id="cb680-9"><a href="sec-regression-diagnostics.html#cb680-9" aria-hidden="true" tabindex="-1"></a>  annotate_texts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;nonlinearity&quot;</span>, <span class="st">&quot;outlier&quot;</span>, <span class="st">&quot;influential point&quot;</span>)</span>
-<span id="cb680-10"><a href="sec-regression-diagnostics.html#cb680-10" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> anscombe, <span class="fu">aes_string</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, i), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;y&quot;</span>, i))) <span class="sc">+</span></span>
-<span id="cb680-11"><a href="sec-regression-diagnostics.html#cb680-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb680-12"><a href="sec-regression-diagnostics.html#cb680-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(fit[[i]])[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(fit[[i]])[<span class="dv">2</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb680-13"><a href="sec-regression-diagnostics.html#cb680-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb680-14"><a href="sec-regression-diagnostics.html#cb680-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb680-15"><a href="sec-regression-diagnostics.html#cb680-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">substitute</span>(<span class="fu">bold</span>(x[a]), <span class="fu">list</span>(<span class="at">a =</span> i)), <span class="at">y =</span> <span class="fu">substitute</span>(<span class="fu">bold</span>(y[b]), <span class="fu">list</span>(<span class="at">b =</span> i)),</span>
-<span id="cb680-16"><a href="sec-regression-diagnostics.html#cb680-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">bquote</span>(<span class="fu">bold</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">round</span>(<span class="fu">summary</span>(fit[[i]])<span class="sc">$</span>r.squared, <span class="dv">3</span>)))</span>
-<span id="cb680-17"><a href="sec-regression-diagnostics.html#cb680-17" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb680-18"><a href="sec-regression-diagnostics.html#cb680-18" aria-hidden="true" tabindex="-1"></a>  p <span class="sc">+</span> <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="dv">12</span>, <span class="at">y =</span> <span class="dv">11</span>, <span class="at">label =</span> annotate_texts[i])</span>
-<span id="cb680-19"><a href="sec-regression-diagnostics.html#cb680-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb680-20"><a href="sec-regression-diagnostics.html#cb680-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb680-21"><a href="sec-regression-diagnostics.html#cb680-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb680-22"><a href="sec-regression-diagnostics.html#cb680-22" aria-hidden="true" tabindex="-1"></a><span class="fu">Reduce</span>(<span class="st">&quot;+&quot;</span>, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, plot_lm))</span></code></pre></div>
+<div class="sourceCode" id="cb683"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb683-1"><a href="sec-regression-diagnostics.html#cb683-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb683-2"><a href="sec-regression-diagnostics.html#cb683-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb683-3"><a href="sec-regression-diagnostics.html#cb683-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;anscombe&quot;</span>)</span>
+<span id="cb683-4"><a href="sec-regression-diagnostics.html#cb683-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb683-5"><a href="sec-regression-diagnostics.html#cb683-5" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&#39;y%d ~ x%d&#39;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb683-6"><a href="sec-regression-diagnostics.html#cb683-6" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(form, lm, <span class="at">data =</span> anscombe)</span>
+<span id="cb683-7"><a href="sec-regression-diagnostics.html#cb683-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb683-8"><a href="sec-regression-diagnostics.html#cb683-8" aria-hidden="true" tabindex="-1"></a>plot_lm <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
+<span id="cb683-9"><a href="sec-regression-diagnostics.html#cb683-9" aria-hidden="true" tabindex="-1"></a>  annotate_texts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;nonlinearity&quot;</span>, <span class="st">&quot;outlier&quot;</span>, <span class="st">&quot;influential point&quot;</span>)</span>
+<span id="cb683-10"><a href="sec-regression-diagnostics.html#cb683-10" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> anscombe, <span class="fu">aes_string</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, i), <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;y&quot;</span>, i))) <span class="sc">+</span></span>
+<span id="cb683-11"><a href="sec-regression-diagnostics.html#cb683-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb683-12"><a href="sec-regression-diagnostics.html#cb683-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(fit[[i]])[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(fit[[i]])[<span class="dv">2</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb683-13"><a href="sec-regression-diagnostics.html#cb683-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb683-14"><a href="sec-regression-diagnostics.html#cb683-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb683-15"><a href="sec-regression-diagnostics.html#cb683-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">substitute</span>(<span class="fu">bold</span>(x[a]), <span class="fu">list</span>(<span class="at">a =</span> i)), <span class="at">y =</span> <span class="fu">substitute</span>(<span class="fu">bold</span>(y[b]), <span class="fu">list</span>(<span class="at">b =</span> i)),</span>
+<span id="cb683-16"><a href="sec-regression-diagnostics.html#cb683-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">bquote</span>(<span class="fu">bold</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">round</span>(<span class="fu">summary</span>(fit[[i]])<span class="sc">$</span>r.squared, <span class="dv">3</span>)))</span>
+<span id="cb683-17"><a href="sec-regression-diagnostics.html#cb683-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb683-18"><a href="sec-regression-diagnostics.html#cb683-18" aria-hidden="true" tabindex="-1"></a>  p <span class="sc">+</span> <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="dv">12</span>, <span class="at">y =</span> <span class="dv">11</span>, <span class="at">label =</span> annotate_texts[i])</span>
+<span id="cb683-19"><a href="sec-regression-diagnostics.html#cb683-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb683-20"><a href="sec-regression-diagnostics.html#cb683-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb683-21"><a href="sec-regression-diagnostics.html#cb683-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb683-22"><a href="sec-regression-diagnostics.html#cb683-22" aria-hidden="true" tabindex="-1"></a><span class="fu">Reduce</span>(<span class="st">&quot;+&quot;</span>, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, plot_lm))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:anscombe"></span>
 <img src="linear-models_files/figure-html/anscombe-1.png" alt="线性模型可能在欺骗你" width="672" />
 <p class="caption">

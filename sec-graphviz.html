@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -855,43 +862,43 @@ div.csl-indent {
 </p>
 </div>
 <p><a href="https://github.com/rich-iannone/DiagrammeR"><strong>DiagrammeR</strong></a> 包将 Graphviz 引入 R 语言</p>
-<div class="sourceCode" id="cb1347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1347-1"><a href="sec-graphviz.html#cb1347-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DiagrammeR)</span>
-<span id="cb1347-2"><a href="sec-graphviz.html#cb1347-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DiagrammeRsvg)</span>
-<span id="cb1347-3"><a href="sec-graphviz.html#cb1347-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb1347-4"><a href="sec-graphviz.html#cb1347-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsvg)</span>
-<span id="cb1347-5"><a href="sec-graphviz.html#cb1347-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1347-6"><a href="sec-graphviz.html#cb1347-6" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span></span>
-<span id="cb1347-7"><a href="sec-graphviz.html#cb1347-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;graph {</span></span>
-<span id="cb1347-8"><a href="sec-graphviz.html#cb1347-8" aria-hidden="true" tabindex="-1"></a><span class="st">        rankdir=LR; // Left to Right, instead of Top to Bottom</span></span>
-<span id="cb1347-9"><a href="sec-graphviz.html#cb1347-9" aria-hidden="true" tabindex="-1"></a><span class="st">        a -- { b c d };</span></span>
-<span id="cb1347-10"><a href="sec-graphviz.html#cb1347-10" aria-hidden="true" tabindex="-1"></a><span class="st">        b -- { c e };</span></span>
-<span id="cb1347-11"><a href="sec-graphviz.html#cb1347-11" aria-hidden="true" tabindex="-1"></a><span class="st">        c -- { e f };</span></span>
-<span id="cb1347-12"><a href="sec-graphviz.html#cb1347-12" aria-hidden="true" tabindex="-1"></a><span class="st">        d -- { f g };</span></span>
-<span id="cb1347-13"><a href="sec-graphviz.html#cb1347-13" aria-hidden="true" tabindex="-1"></a><span class="st">        e -- h;</span></span>
-<span id="cb1347-14"><a href="sec-graphviz.html#cb1347-14" aria-hidden="true" tabindex="-1"></a><span class="st">        f -- { h i j g };</span></span>
-<span id="cb1347-15"><a href="sec-graphviz.html#cb1347-15" aria-hidden="true" tabindex="-1"></a><span class="st">        g -- k;</span></span>
-<span id="cb1347-16"><a href="sec-graphviz.html#cb1347-16" aria-hidden="true" tabindex="-1"></a><span class="st">        h -- { o l };</span></span>
-<span id="cb1347-17"><a href="sec-graphviz.html#cb1347-17" aria-hidden="true" tabindex="-1"></a><span class="st">        i -- { l m j };</span></span>
-<span id="cb1347-18"><a href="sec-graphviz.html#cb1347-18" aria-hidden="true" tabindex="-1"></a><span class="st">        j -- { m n k };</span></span>
-<span id="cb1347-19"><a href="sec-graphviz.html#cb1347-19" aria-hidden="true" tabindex="-1"></a><span class="st">        k -- { n r };</span></span>
-<span id="cb1347-20"><a href="sec-graphviz.html#cb1347-20" aria-hidden="true" tabindex="-1"></a><span class="st">        l -- { o m };</span></span>
-<span id="cb1347-21"><a href="sec-graphviz.html#cb1347-21" aria-hidden="true" tabindex="-1"></a><span class="st">        m -- { o p n };</span></span>
-<span id="cb1347-22"><a href="sec-graphviz.html#cb1347-22" aria-hidden="true" tabindex="-1"></a><span class="st">        n -- { q r };</span></span>
-<span id="cb1347-23"><a href="sec-graphviz.html#cb1347-23" aria-hidden="true" tabindex="-1"></a><span class="st">        o -- { s p };</span></span>
-<span id="cb1347-24"><a href="sec-graphviz.html#cb1347-24" aria-hidden="true" tabindex="-1"></a><span class="st">        p -- { s t q };</span></span>
-<span id="cb1347-25"><a href="sec-graphviz.html#cb1347-25" aria-hidden="true" tabindex="-1"></a><span class="st">        q -- { t r };</span></span>
-<span id="cb1347-26"><a href="sec-graphviz.html#cb1347-26" aria-hidden="true" tabindex="-1"></a><span class="st">        r -- t;</span></span>
-<span id="cb1347-27"><a href="sec-graphviz.html#cb1347-27" aria-hidden="true" tabindex="-1"></a><span class="st">        s -- z;</span></span>
-<span id="cb1347-28"><a href="sec-graphviz.html#cb1347-28" aria-hidden="true" tabindex="-1"></a><span class="st">        t -- z;</span></span>
-<span id="cb1347-29"><a href="sec-graphviz.html#cb1347-29" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
-<span id="cb1347-30"><a href="sec-graphviz.html#cb1347-30" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb1347-31"><a href="sec-graphviz.html#cb1347-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 导出图形</span></span>
-<span id="cb1347-32"><a href="sec-graphviz.html#cb1347-32" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
-<span id="cb1347-33"><a href="sec-graphviz.html#cb1347-33" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_pdf</span>(<span class="st">&quot;graph.pdf&quot;</span>)</span>
-<span id="cb1347-34"><a href="sec-graphviz.html#cb1347-34" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
-<span id="cb1347-35"><a href="sec-graphviz.html#cb1347-35" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_png</span>(<span class="st">&quot;graph.png&quot;</span>)</span>
-<span id="cb1347-36"><a href="sec-graphviz.html#cb1347-36" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
-<span id="cb1347-37"><a href="sec-graphviz.html#cb1347-37" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_svg</span>(<span class="st">&quot;graph.svg&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1350-1"><a href="sec-graphviz.html#cb1350-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DiagrammeR)</span>
+<span id="cb1350-2"><a href="sec-graphviz.html#cb1350-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DiagrammeRsvg)</span>
+<span id="cb1350-3"><a href="sec-graphviz.html#cb1350-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1350-4"><a href="sec-graphviz.html#cb1350-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsvg)</span>
+<span id="cb1350-5"><a href="sec-graphviz.html#cb1350-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1350-6"><a href="sec-graphviz.html#cb1350-6" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span></span>
+<span id="cb1350-7"><a href="sec-graphviz.html#cb1350-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;graph {</span></span>
+<span id="cb1350-8"><a href="sec-graphviz.html#cb1350-8" aria-hidden="true" tabindex="-1"></a><span class="st">        rankdir=LR; // Left to Right, instead of Top to Bottom</span></span>
+<span id="cb1350-9"><a href="sec-graphviz.html#cb1350-9" aria-hidden="true" tabindex="-1"></a><span class="st">        a -- { b c d };</span></span>
+<span id="cb1350-10"><a href="sec-graphviz.html#cb1350-10" aria-hidden="true" tabindex="-1"></a><span class="st">        b -- { c e };</span></span>
+<span id="cb1350-11"><a href="sec-graphviz.html#cb1350-11" aria-hidden="true" tabindex="-1"></a><span class="st">        c -- { e f };</span></span>
+<span id="cb1350-12"><a href="sec-graphviz.html#cb1350-12" aria-hidden="true" tabindex="-1"></a><span class="st">        d -- { f g };</span></span>
+<span id="cb1350-13"><a href="sec-graphviz.html#cb1350-13" aria-hidden="true" tabindex="-1"></a><span class="st">        e -- h;</span></span>
+<span id="cb1350-14"><a href="sec-graphviz.html#cb1350-14" aria-hidden="true" tabindex="-1"></a><span class="st">        f -- { h i j g };</span></span>
+<span id="cb1350-15"><a href="sec-graphviz.html#cb1350-15" aria-hidden="true" tabindex="-1"></a><span class="st">        g -- k;</span></span>
+<span id="cb1350-16"><a href="sec-graphviz.html#cb1350-16" aria-hidden="true" tabindex="-1"></a><span class="st">        h -- { o l };</span></span>
+<span id="cb1350-17"><a href="sec-graphviz.html#cb1350-17" aria-hidden="true" tabindex="-1"></a><span class="st">        i -- { l m j };</span></span>
+<span id="cb1350-18"><a href="sec-graphviz.html#cb1350-18" aria-hidden="true" tabindex="-1"></a><span class="st">        j -- { m n k };</span></span>
+<span id="cb1350-19"><a href="sec-graphviz.html#cb1350-19" aria-hidden="true" tabindex="-1"></a><span class="st">        k -- { n r };</span></span>
+<span id="cb1350-20"><a href="sec-graphviz.html#cb1350-20" aria-hidden="true" tabindex="-1"></a><span class="st">        l -- { o m };</span></span>
+<span id="cb1350-21"><a href="sec-graphviz.html#cb1350-21" aria-hidden="true" tabindex="-1"></a><span class="st">        m -- { o p n };</span></span>
+<span id="cb1350-22"><a href="sec-graphviz.html#cb1350-22" aria-hidden="true" tabindex="-1"></a><span class="st">        n -- { q r };</span></span>
+<span id="cb1350-23"><a href="sec-graphviz.html#cb1350-23" aria-hidden="true" tabindex="-1"></a><span class="st">        o -- { s p };</span></span>
+<span id="cb1350-24"><a href="sec-graphviz.html#cb1350-24" aria-hidden="true" tabindex="-1"></a><span class="st">        p -- { s t q };</span></span>
+<span id="cb1350-25"><a href="sec-graphviz.html#cb1350-25" aria-hidden="true" tabindex="-1"></a><span class="st">        q -- { t r };</span></span>
+<span id="cb1350-26"><a href="sec-graphviz.html#cb1350-26" aria-hidden="true" tabindex="-1"></a><span class="st">        r -- t;</span></span>
+<span id="cb1350-27"><a href="sec-graphviz.html#cb1350-27" aria-hidden="true" tabindex="-1"></a><span class="st">        s -- z;</span></span>
+<span id="cb1350-28"><a href="sec-graphviz.html#cb1350-28" aria-hidden="true" tabindex="-1"></a><span class="st">        t -- z;</span></span>
+<span id="cb1350-29"><a href="sec-graphviz.html#cb1350-29" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1350-30"><a href="sec-graphviz.html#cb1350-30" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb1350-31"><a href="sec-graphviz.html#cb1350-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 导出图形</span></span>
+<span id="cb1350-32"><a href="sec-graphviz.html#cb1350-32" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
+<span id="cb1350-33"><a href="sec-graphviz.html#cb1350-33" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_pdf</span>(<span class="st">&quot;graph.pdf&quot;</span>)</span>
+<span id="cb1350-34"><a href="sec-graphviz.html#cb1350-34" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
+<span id="cb1350-35"><a href="sec-graphviz.html#cb1350-35" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_png</span>(<span class="st">&quot;graph.png&quot;</span>)</span>
+<span id="cb1350-36"><a href="sec-graphviz.html#cb1350-36" aria-hidden="true" tabindex="-1"></a><span class="fu">grViz</span>(graph) <span class="sc">%&gt;%</span></span>
+<span id="cb1350-37"><a href="sec-graphviz.html#cb1350-37" aria-hidden="true" tabindex="-1"></a>  export_svg <span class="sc">%&gt;%</span> charToRaw <span class="sc">%&gt;%</span> <span class="fu">rsvg_svg</span>(<span class="st">&quot;graph.svg&quot;</span>)</span></code></pre></div>
 </div>
             </section>
 

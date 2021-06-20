@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -855,7 +862,7 @@ div.csl-indent {
 <li>circumference: 橘树树干的周长，单位是毫米</li>
 </ul>
 <p>查看部分数据的情况</p>
-<div class="sourceCode" id="cb858"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb858-1"><a href="sec-orange.html#cb858-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Orange)</span></code></pre></div>
+<div class="sourceCode" id="cb861"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb861-1"><a href="sec-orange.html#cb861-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Orange)</span></code></pre></div>
 <pre><code>## Grouped Data: circumference ~ age | Tree
 ##   Tree  age circumference
 ## 1    1  118            30
@@ -865,7 +872,7 @@ div.csl-indent {
 ## 5    1 1231           120
 ## 6    1 1372           142</code></pre>
 <p>查看变量的属性</p>
-<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="sec-orange.html#cb860-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Orange)</span></code></pre></div>
+<div class="sourceCode" id="cb863"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb863-1"><a href="sec-orange.html#cb863-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Orange)</span></code></pre></div>
 <pre><code>## Classes &#39;nfnGroupedData&#39;, &#39;nfGroupedData&#39;, &#39;groupedData&#39; and &#39;data.frame&#39;:   35 obs. of  3 variables:
 ##  $ Tree         : Ord.factor w/ 5 levels &quot;3&quot;&lt;&quot;1&quot;&lt;&quot;5&quot;&lt;&quot;2&quot;&lt;..: 2 2 2 2 2 2 2 4 4 4 ...
 ##  $ age          : num  118 484 664 1004 1231 ...
@@ -879,20 +886,20 @@ div.csl-indent {
 ##   ..$ x: chr &quot;(days)&quot;
 ##   ..$ y: chr &quot;(mm)&quot;</code></pre>
 <p>说明 5 棵树之间的大小关系是 <code>3 &lt; 1 &lt; 5 &lt; 2 &lt; 4</code>，这里的数字 1，2，3，4，5 只是对树的编号，第一次测量时树的大小关系在 R 内用有序因子来表示。</p>
-<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="sec-orange.html#cb862-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(Orange<span class="sc">$</span>Tree)</span></code></pre></div>
+<div class="sourceCode" id="cb865"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb865-1"><a href="sec-orange.html#cb865-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(Orange<span class="sc">$</span>Tree)</span></code></pre></div>
 <pre><code>## [1] &quot;3&quot; &quot;1&quot; &quot;5&quot; &quot;2&quot; &quot;4&quot;</code></pre>
 <p>表 <a href="sec-orange.html#tab:orange-data">24.3</a> 记录了 5 颗橘树自 1968 年 12 月 31 日以来的生长情况</p>
-<div class="sourceCode" id="cb864"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb864-1"><a href="sec-orange.html#cb864-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate(data = Orange, circumference ~  age, FUN = mean)</span></span>
-<span id="cb864-2"><a href="sec-orange.html#cb864-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb864-3"><a href="sec-orange.html#cb864-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(</span>
-<span id="cb864-4"><a href="sec-orange.html#cb864-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Orange, <span class="at">v.names =</span> <span class="st">&quot;circumference&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Tree&quot;</span>,</span>
-<span id="cb864-5"><a href="sec-orange.html#cb864-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">timevar =</span> <span class="st">&quot;age&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb864-6"><a href="sec-orange.html#cb864-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb864-7"><a href="sec-orange.html#cb864-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb864-8"><a href="sec-orange.html#cb864-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;躯干周长（毫米）随时间（天）的变化&quot;</span>,</span>
-<span id="cb864-9"><a href="sec-orange.html#cb864-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(circumference)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
-<span id="cb864-10"><a href="sec-orange.html#cb864-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
-<span id="cb864-11"><a href="sec-orange.html#cb864-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb867"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb867-1"><a href="sec-orange.html#cb867-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate(data = Orange, circumference ~  age, FUN = mean)</span></span>
+<span id="cb867-2"><a href="sec-orange.html#cb867-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb867-3"><a href="sec-orange.html#cb867-3" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(</span>
+<span id="cb867-4"><a href="sec-orange.html#cb867-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Orange, <span class="at">v.names =</span> <span class="st">&quot;circumference&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Tree&quot;</span>,</span>
+<span id="cb867-5"><a href="sec-orange.html#cb867-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">timevar =</span> <span class="st">&quot;age&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb867-6"><a href="sec-orange.html#cb867-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb867-7"><a href="sec-orange.html#cb867-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb867-8"><a href="sec-orange.html#cb867-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;躯干周长（毫米）随时间（天）的变化&quot;</span>,</span>
+<span id="cb867-9"><a href="sec-orange.html#cb867-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(circumference)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
+<span id="cb867-10"><a href="sec-orange.html#cb867-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
+<span id="cb867-11"><a href="sec-orange.html#cb867-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:orange-data">表 24.3: </span>躯干周长（毫米）随时间（天）的变化</caption>
 <thead>
@@ -961,21 +968,21 @@ div.csl-indent {
 </tbody>
 </table>
 <p>图 <a href="sec-orange.html#fig:orange-tree">24.3</a> 以直观的方式展示 5 颗橘树的生长变化，相比于表 <a href="sec-orange.html#tab:orange-data">24.3</a> 我们能更加明确读取数据中的变化</p>
-<div class="sourceCode" id="cb865"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb865-1"><a href="sec-orange.html#cb865-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb865-2"><a href="sec-orange.html#cb865-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> Orange, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> circumference, <span class="at">color =</span> Tree)) <span class="sc">+</span></span>
-<span id="cb865-3"><a href="sec-orange.html#cb865-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb865-4"><a href="sec-orange.html#cb865-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb865-5"><a href="sec-orange.html#cb865-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb865-6"><a href="sec-orange.html#cb865-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;age (day)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;circumference (mm)&quot;</span>)</span>
-<span id="cb865-7"><a href="sec-orange.html#cb865-7" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<div class="sourceCode" id="cb868"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb868-1"><a href="sec-orange.html#cb868-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb868-2"><a href="sec-orange.html#cb868-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> Orange, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> circumference, <span class="at">color =</span> Tree)) <span class="sc">+</span></span>
+<span id="cb868-3"><a href="sec-orange.html#cb868-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb868-4"><a href="sec-orange.html#cb868-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb868-5"><a href="sec-orange.html#cb868-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb868-6"><a href="sec-orange.html#cb868-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;age (day)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;circumference (mm)&quot;</span>)</span>
+<span id="cb868-7"><a href="sec-orange.html#cb868-7" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:orange-tree"></span>
 <img src="case-study_files/figure-html/orange-tree-1.png" alt="橘树生长模型" width="672" />
 <p class="caption">
 图 24.3: 橘树生长模型
 </p>
 </div>
-<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="sec-orange.html#cb866-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
-<span id="cb866-2"><a href="sec-orange.html#cb866-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(age)</span></code></pre></div>
+<div class="sourceCode" id="cb869"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb869-1"><a href="sec-orange.html#cb869-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb869-2"><a href="sec-orange.html#cb869-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(age)</span></code></pre></div>
 <p><img src="case-study_files/figure-html/unnamed-chunk-7-1.gif" style="display: block; margin: auto;" /></p>
 
 </div>

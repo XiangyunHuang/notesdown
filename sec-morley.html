@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -849,15 +856,15 @@ div.csl-indent {
 <h2><span class="header-section-number">22.16</span> 迈克尔逊光速数据分析</h2>
 <!-- 重复测量数据：试验设计的巧妙 -->
 <p>1879 年迈克尔逊光速测量数据，记录了五次实验，每次试验测量 20 次光速，得到表格 <a href="sec-morley.html#tab:morley-data">22.2</a></p>
-<div class="sourceCode" id="cb699"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb699-1"><a href="sec-morley.html#cb699-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(</span>
-<span id="cb699-2"><a href="sec-morley.html#cb699-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> morley, <span class="at">v.names =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Expt&quot;</span>,</span>
-<span id="cb699-3"><a href="sec-morley.html#cb699-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">timevar =</span> <span class="st">&quot;Run&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb699-4"><a href="sec-morley.html#cb699-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb699-5"><a href="sec-morley.html#cb699-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb699-6"><a href="sec-morley.html#cb699-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;迈克尔逊光速数据&quot;</span>,</span>
-<span id="cb699-7"><a href="sec-morley.html#cb699-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(Speed)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
-<span id="cb699-8"><a href="sec-morley.html#cb699-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
-<span id="cb699-9"><a href="sec-morley.html#cb699-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb702"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb702-1"><a href="sec-morley.html#cb702-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(</span>
+<span id="cb702-2"><a href="sec-morley.html#cb702-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> morley, <span class="at">v.names =</span> <span class="st">&quot;Speed&quot;</span>, <span class="at">idvar =</span> <span class="st">&quot;Expt&quot;</span>,</span>
+<span id="cb702-3"><a href="sec-morley.html#cb702-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">timevar =</span> <span class="st">&quot;Run&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb702-4"><a href="sec-morley.html#cb702-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb702-5"><a href="sec-morley.html#cb702-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb702-6"><a href="sec-morley.html#cb702-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;迈克尔逊光速数据&quot;</span>,</span>
+<span id="cb702-7"><a href="sec-morley.html#cb702-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(Speed)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
+<span id="cb702-8"><a href="sec-morley.html#cb702-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
+<span id="cb702-9"><a href="sec-morley.html#cb702-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:morley-data">表 22.2: </span>迈克尔逊光速数据</caption>
 <thead>
@@ -1004,11 +1011,11 @@ div.csl-indent {
 </tbody>
 </table>
 <p>数据集 morley 中光速 Speed 已经编码过了，原始观测速度减去了 299000 (km/sec)，为了展示方便</p>
-<div class="sourceCode" id="cb700"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb700-1"><a href="sec-morley.html#cb700-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> morley, <span class="fu">aes</span>(<span class="at">x =</span> Expt, <span class="at">y =</span> Speed, <span class="at">group =</span> Expt)) <span class="sc">+</span></span>
-<span id="cb700-2"><a href="sec-morley.html#cb700-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb700-3"><a href="sec-morley.html#cb700-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
-<span id="cb700-4"><a href="sec-morley.html#cb700-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb700-5"><a href="sec-morley.html#cb700-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Expt&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Speed (km/sec)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb703"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb703-1"><a href="sec-morley.html#cb703-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> morley, <span class="fu">aes</span>(<span class="at">x =</span> Expt, <span class="at">y =</span> Speed, <span class="at">group =</span> Expt)) <span class="sc">+</span></span>
+<span id="cb703-2"><a href="sec-morley.html#cb703-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb703-3"><a href="sec-morley.html#cb703-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
+<span id="cb703-4"><a href="sec-morley.html#cb703-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb703-5"><a href="sec-morley.html#cb703-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Expt&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Speed (km/sec)&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:morley"></span>
 <img src="linear-models_files/figure-html/morley-1.png" alt="1879 年迈克尔逊光速实验数据" width="672" />
 <p class="caption">

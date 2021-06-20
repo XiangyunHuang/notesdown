@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -848,13 +855,13 @@ div.csl-indent {
 <div id="sec:loblolly" class="section level2" number="22.21">
 <h2><span class="header-section-number">22.21</span> 火炬松树的生长情况</h2>
 <p>表 <a href="sec-loblolly.html#tab:loblolly-data">22.3</a> 记录了 14 颗火炬树种子的生长情况</p>
-<div class="sourceCode" id="cb721"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb721-1"><a href="sec-loblolly.html#cb721-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(Loblolly, <span class="at">idvar =</span> <span class="st">&quot;Seed&quot;</span>, <span class="at">timevar =</span> <span class="st">&quot;age&quot;</span>,</span>
-<span id="cb721-2"><a href="sec-loblolly.html#cb721-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">v.names =</span> <span class="st">&quot;height&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb721-3"><a href="sec-loblolly.html#cb721-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb721-4"><a href="sec-loblolly.html#cb721-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;火炬松树的高度（英尺）随时间（年）的变化&quot;</span>,</span>
-<span id="cb721-5"><a href="sec-loblolly.html#cb721-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(height)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
-<span id="cb721-6"><a href="sec-loblolly.html#cb721-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
-<span id="cb721-7"><a href="sec-loblolly.html#cb721-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb724"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb724-1"><a href="sec-loblolly.html#cb724-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reshape</span>(Loblolly, <span class="at">idvar =</span> <span class="st">&quot;Seed&quot;</span>, <span class="at">timevar =</span> <span class="st">&quot;age&quot;</span>,</span>
+<span id="cb724-2"><a href="sec-loblolly.html#cb724-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">v.names =</span> <span class="st">&quot;height&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb724-3"><a href="sec-loblolly.html#cb724-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb724-4"><a href="sec-loblolly.html#cb724-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;火炬松树的高度（英尺）随时间（年）的变化&quot;</span>,</span>
+<span id="cb724-5"><a href="sec-loblolly.html#cb724-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="fu">gsub</span>(<span class="st">&quot;(height)&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">names</span>(.)),</span>
+<span id="cb724-6"><a href="sec-loblolly.html#cb724-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">&quot;c&quot;</span></span>
+<span id="cb724-7"><a href="sec-loblolly.html#cb724-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:loblolly-data">表 22.3: </span>火炬松树的高度（英尺）随时间（年）的变化</caption>
 <thead>
@@ -998,20 +1005,20 @@ div.csl-indent {
 </tbody>
 </table>
 <p>图 <a href="sec-loblolly.html#fig:loblolly-tree">22.6</a> 火炬树种子基本决定了树的长势，不同种子预示最后的高度，并且在生长期也是很稳定地生长</p>
-<div class="sourceCode" id="cb722"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb722-1"><a href="sec-loblolly.html#cb722-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> Loblolly, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> height, <span class="at">color =</span> Seed)) <span class="sc">+</span></span>
-<span id="cb722-2"><a href="sec-loblolly.html#cb722-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb722-3"><a href="sec-loblolly.html#cb722-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb722-4"><a href="sec-loblolly.html#cb722-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb722-5"><a href="sec-loblolly.html#cb722-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;age (yr)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;height (ft)&quot;</span>)</span>
-<span id="cb722-6"><a href="sec-loblolly.html#cb722-6" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<div class="sourceCode" id="cb725"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb725-1"><a href="sec-loblolly.html#cb725-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> Loblolly, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> height, <span class="at">color =</span> Seed)) <span class="sc">+</span></span>
+<span id="cb725-2"><a href="sec-loblolly.html#cb725-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb725-3"><a href="sec-loblolly.html#cb725-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb725-4"><a href="sec-loblolly.html#cb725-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb725-5"><a href="sec-loblolly.html#cb725-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;age (yr)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;height (ft)&quot;</span>)</span>
+<span id="cb725-6"><a href="sec-loblolly.html#cb725-6" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:loblolly-tree"></span>
 <img src="linear-models_files/figure-html/loblolly-tree-1.png" alt="不同火炬树的生长情况" width="672" />
 <p class="caption">
 图 22.6: 不同火炬树的生长情况
 </p>
 </div>
-<div class="sourceCode" id="cb723"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb723-1"><a href="sec-loblolly.html#cb723-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
-<span id="cb723-2"><a href="sec-loblolly.html#cb723-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(age)</span></code></pre></div>
+<div class="sourceCode" id="cb726"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb726-1"><a href="sec-loblolly.html#cb726-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<span id="cb726-2"><a href="sec-loblolly.html#cb726-2" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">transition_reveal</span>(age)</span></code></pre></div>
 <p><img src="linear-models_files/figure-html/unnamed-chunk-20-1.gif" style="display: block; margin: auto;" /></p>
 </div>
             </section>

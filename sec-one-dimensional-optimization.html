@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -852,26 +859,26 @@ div.csl-indent {
 g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \\
 f(y) = \int_{0}^{y} g(s) \exp(-s) ds
 \]</span></p>
-<div class="sourceCode" id="cb1199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1199-1"><a href="sec-one-dimensional-optimization.html#cb1199-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1199-2"><a href="sec-one-dimensional-optimization.html#cb1199-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(t) {</span>
-<span id="cb1199-3"><a href="sec-one-dimensional-optimization.html#cb1199-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sqrt</span>(t) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>t<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1199-4"><a href="sec-one-dimensional-optimization.html#cb1199-4" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> x)<span class="sc">$</span>value</span>
-<span id="cb1199-5"><a href="sec-one-dimensional-optimization.html#cb1199-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1199-6"><a href="sec-one-dimensional-optimization.html#cb1199-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1199-7"><a href="sec-one-dimensional-optimization.html#cb1199-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
-<span id="cb1199-8"><a href="sec-one-dimensional-optimization.html#cb1199-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(s) {</span>
-<span id="cb1199-9"><a href="sec-one-dimensional-optimization.html#cb1199-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Vectorize</span>(g, <span class="st">&quot;x&quot;</span>)(s) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>s)</span>
-<span id="cb1199-10"><a href="sec-one-dimensional-optimization.html#cb1199-10" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> y)<span class="sc">$</span>value</span>
-<span id="cb1199-11"><a href="sec-one-dimensional-optimization.html#cb1199-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1199-12"><a href="sec-one-dimensional-optimization.html#cb1199-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1199-13"><a href="sec-one-dimensional-optimization.html#cb1199-13" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize</span>(f, <span class="at">interval =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>), <span class="at">maximum =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1202-1"><a href="sec-one-dimensional-optimization.html#cb1202-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1202-2"><a href="sec-one-dimensional-optimization.html#cb1202-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(t) {</span>
+<span id="cb1202-3"><a href="sec-one-dimensional-optimization.html#cb1202-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sqrt</span>(t) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>t<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1202-4"><a href="sec-one-dimensional-optimization.html#cb1202-4" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> x)<span class="sc">$</span>value</span>
+<span id="cb1202-5"><a href="sec-one-dimensional-optimization.html#cb1202-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1202-6"><a href="sec-one-dimensional-optimization.html#cb1202-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1202-7"><a href="sec-one-dimensional-optimization.html#cb1202-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
+<span id="cb1202-8"><a href="sec-one-dimensional-optimization.html#cb1202-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(s) {</span>
+<span id="cb1202-9"><a href="sec-one-dimensional-optimization.html#cb1202-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Vectorize</span>(g, <span class="st">&quot;x&quot;</span>)(s) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>s)</span>
+<span id="cb1202-10"><a href="sec-one-dimensional-optimization.html#cb1202-10" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> y)<span class="sc">$</span>value</span>
+<span id="cb1202-11"><a href="sec-one-dimensional-optimization.html#cb1202-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1202-12"><a href="sec-one-dimensional-optimization.html#cb1202-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1202-13"><a href="sec-one-dimensional-optimization.html#cb1202-13" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize</span>(f, <span class="at">interval =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>), <span class="at">maximum =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## $minimum
 ## [1] 66.84459
 ## 
 ## $objective
 ## [1] -0.3201572</code></pre>
 <p>计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，<code>g(c(1,2))</code> 则会报错</p>
-<div class="sourceCode" id="cb1201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1201-1"><a href="sec-one-dimensional-optimization.html#cb1201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">g</span>(<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1204-1"><a href="sec-one-dimensional-optimization.html#cb1204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">g</span>(<span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## [1] -0.453392</code></pre>
 </div>
             </section>

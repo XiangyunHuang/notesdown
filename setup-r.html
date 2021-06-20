@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -850,7 +857,7 @@ div.csl-indent {
 <div class="rmdwarn">
 <p>本小节仅用于展示目前书籍写作过程中安装的 R 包依赖，不会出现在最终的书稿中</p>
 </div>
-<div class="sourceCode" id="cb1501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1501-1"><a href="setup-r.html#cb1501-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>(<span class="fu">sort</span>(<span class="fu">.packages</span>(T)))</span></code></pre></div>
+<div class="sourceCode" id="cb1504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1504-1"><a href="setup-r.html#cb1504-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>(<span class="fu">sort</span>(<span class="fu">.packages</span>(T)))</span></code></pre></div>
 <pre><code>## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
@@ -1070,39 +1077,39 @@ div.csl-indent {
 ## [391] xtable_1.8-4               xts_0.12.1                
 ## [393] yaml_2.2.1                 zip_2.2.0                 
 ## [395] zoo_1.8-9</code></pre>
-<div class="sourceCode" id="cb1503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1503-1"><a href="setup-r.html#cb1503-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb1503-2"><a href="setup-r.html#cb1503-2" aria-hidden="true" tabindex="-1"></a>pdb <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">CRAN_package_db</span>()</span>
-<span id="cb1503-3"><a href="setup-r.html#cb1503-3" aria-hidden="true" tabindex="-1"></a>pkg <span class="ot">&lt;-</span> <span class="fu">subset</span>(desc<span class="sc">::</span><span class="fu">desc_get_deps</span>(), <span class="at">subset =</span> type <span class="sc">==</span> <span class="st">&quot;Imports&quot;</span>, <span class="at">select =</span> <span class="st">&quot;package&quot;</span>, <span class="at">drop =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1503-4"><a href="setup-r.html#cb1503-4" aria-hidden="true" tabindex="-1"></a>pkg <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">package_dependencies</span>(<span class="at">packages =</span> pkg, <span class="at">db =</span> pdb, <span class="at">recursive =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> <span class="co"># 是否包含递归依赖</span></span>
-<span id="cb1503-5"><a href="setup-r.html#cb1503-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1503-6"><a href="setup-r.html#cb1503-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.vector</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1503-7"><a href="setup-r.html#cb1503-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(., pkg) <span class="sc">%&gt;%</span></span>
-<span id="cb1503-8"><a href="setup-r.html#cb1503-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1503-9"><a href="setup-r.html#cb1503-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>()</span>
-<span id="cb1503-10"><a href="setup-r.html#cb1503-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1503-11"><a href="setup-r.html#cb1503-11" aria-hidden="true" tabindex="-1"></a>pkg_quote <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1503-12"><a href="setup-r.html#cb1503-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Armadillo&quot;</span>, <span class="st">&quot;Rcpp&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Stan&quot;</span>, <span class="st">&quot;DataTables&quot;</span>, <span class="st">&quot;Dygraphs&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>,</span>
-<span id="cb1503-13"><a href="setup-r.html#cb1503-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Grobs&quot;</span>, <span class="st">&quot;Geospatial&quot;</span>, <span class="st">&quot;Eigen&quot;</span>, <span class="st">&quot;Sundown&quot;</span>, <span class="st">&quot;plog&quot;</span>, <span class="st">&quot;TeX Live&quot;</span>, <span class="st">&quot;Tidyverse&quot;</span>,</span>
-<span id="cb1503-14"><a href="setup-r.html#cb1503-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;LaTeX&quot;</span>, <span class="st">&quot;ADMB&quot;</span>, <span class="st">&quot;matplotlib&quot;</span>, <span class="st">&quot;Yihui Xie&quot;</span>, <span class="st">&quot;With&quot;</span>, <span class="st">&quot;Highcharts&quot;</span>,</span>
-<span id="cb1503-15"><a href="setup-r.html#cb1503-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;kable&quot;</span>, <span class="st">&quot;plotly.js&quot;</span>, <span class="st">&quot;Python&quot;</span>, <span class="st">&quot;Formattable&quot;</span></span>
-<span id="cb1503-16"><a href="setup-r.html#cb1503-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1503-17"><a href="setup-r.html#cb1503-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 单引号</span></span>
-<span id="cb1503-18"><a href="setup-r.html#cb1503-18" aria-hidden="true" tabindex="-1"></a>pkg_regexp <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;&#39;(&quot;</span>, <span class="fu">paste</span>(pkg_quote, <span class="at">collapse =</span> <span class="st">&quot;|&quot;</span>), <span class="st">&quot;)&#39;&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1503-19"><a href="setup-r.html#cb1503-19" aria-hidden="true" tabindex="-1"></a><span class="co"># R 包列表</span></span>
-<span id="cb1503-20"><a href="setup-r.html#cb1503-20" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pdb,</span>
-<span id="cb1503-21"><a href="setup-r.html#cb1503-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> <span class="sc">!</span><span class="fu">duplicated</span>(pdb<span class="sc">$</span>Package) <span class="sc">&amp;</span> Package <span class="sc">%in%</span> pkg,</span>
-<span id="cb1503-22"><a href="setup-r.html#cb1503-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Version&quot;</span>, <span class="st">&quot;Title&quot;</span>)</span>
-<span id="cb1503-23"><a href="setup-r.html#cb1503-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb1503-24"><a href="setup-r.html#cb1503-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(.,</span>
-<span id="cb1503-25"><a href="setup-r.html#cb1503-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> <span class="fu">gsub</span>(<span class="st">&quot;(</span><span class="sc">\\\n</span><span class="st">)&quot;</span>, <span class="st">&quot; &quot;</span>, Title),</span>
-<span id="cb1503-26"><a href="setup-r.html#cb1503-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Package =</span> <span class="fu">paste</span>(<span class="st">&quot;**&quot;</span>, Package, <span class="st">&quot;**&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1503-27"><a href="setup-r.html#cb1503-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1503-28"><a href="setup-r.html#cb1503-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(., <span class="at">Title =</span> <span class="fu">gsub</span>(pkg_regexp, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, Title)) <span class="sc">%&gt;%</span></span>
-<span id="cb1503-29"><a href="setup-r.html#cb1503-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(., <span class="at">Title =</span> <span class="fu">gsub</span>(<span class="st">&#39;&quot;(Grid)&quot;&#39;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, Title)) <span class="sc">%&gt;%</span></span>
-<span id="cb1503-30"><a href="setup-r.html#cb1503-30" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
-<span id="cb1503-31"><a href="setup-r.html#cb1503-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;依赖的 R 包&quot;</span>, <span class="at">format =</span> <span class="st">&quot;pandoc&quot;</span>,</span>
-<span id="cb1503-32"><a href="setup-r.html#cb1503-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb1503-33"><a href="setup-r.html#cb1503-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb1506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1506-1"><a href="setup-r.html#cb1506-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1506-2"><a href="setup-r.html#cb1506-2" aria-hidden="true" tabindex="-1"></a>pdb <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">CRAN_package_db</span>()</span>
+<span id="cb1506-3"><a href="setup-r.html#cb1506-3" aria-hidden="true" tabindex="-1"></a>pkg <span class="ot">&lt;-</span> <span class="fu">subset</span>(desc<span class="sc">::</span><span class="fu">desc_get_deps</span>(), <span class="at">subset =</span> type <span class="sc">==</span> <span class="st">&quot;Imports&quot;</span>, <span class="at">select =</span> <span class="st">&quot;package&quot;</span>, <span class="at">drop =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1506-4"><a href="setup-r.html#cb1506-4" aria-hidden="true" tabindex="-1"></a>pkg <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">package_dependencies</span>(<span class="at">packages =</span> pkg, <span class="at">db =</span> pdb, <span class="at">recursive =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> <span class="co"># 是否包含递归依赖</span></span>
+<span id="cb1506-5"><a href="setup-r.html#cb1506-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1506-6"><a href="setup-r.html#cb1506-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.vector</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1506-7"><a href="setup-r.html#cb1506-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(., pkg) <span class="sc">%&gt;%</span></span>
+<span id="cb1506-8"><a href="setup-r.html#cb1506-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1506-9"><a href="setup-r.html#cb1506-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>()</span>
+<span id="cb1506-10"><a href="setup-r.html#cb1506-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1506-11"><a href="setup-r.html#cb1506-11" aria-hidden="true" tabindex="-1"></a>pkg_quote <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1506-12"><a href="setup-r.html#cb1506-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Armadillo&quot;</span>, <span class="st">&quot;Rcpp&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;Stan&quot;</span>, <span class="st">&quot;DataTables&quot;</span>, <span class="st">&quot;Dygraphs&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>,</span>
+<span id="cb1506-13"><a href="setup-r.html#cb1506-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Grobs&quot;</span>, <span class="st">&quot;Geospatial&quot;</span>, <span class="st">&quot;Eigen&quot;</span>, <span class="st">&quot;Sundown&quot;</span>, <span class="st">&quot;plog&quot;</span>, <span class="st">&quot;TeX Live&quot;</span>, <span class="st">&quot;Tidyverse&quot;</span>,</span>
+<span id="cb1506-14"><a href="setup-r.html#cb1506-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;LaTeX&quot;</span>, <span class="st">&quot;ADMB&quot;</span>, <span class="st">&quot;matplotlib&quot;</span>, <span class="st">&quot;Yihui Xie&quot;</span>, <span class="st">&quot;With&quot;</span>, <span class="st">&quot;Highcharts&quot;</span>,</span>
+<span id="cb1506-15"><a href="setup-r.html#cb1506-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;kable&quot;</span>, <span class="st">&quot;plotly.js&quot;</span>, <span class="st">&quot;Python&quot;</span>, <span class="st">&quot;Formattable&quot;</span></span>
+<span id="cb1506-16"><a href="setup-r.html#cb1506-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1506-17"><a href="setup-r.html#cb1506-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 单引号</span></span>
+<span id="cb1506-18"><a href="setup-r.html#cb1506-18" aria-hidden="true" tabindex="-1"></a>pkg_regexp <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;&#39;(&quot;</span>, <span class="fu">paste</span>(pkg_quote, <span class="at">collapse =</span> <span class="st">&quot;|&quot;</span>), <span class="st">&quot;)&#39;&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1506-19"><a href="setup-r.html#cb1506-19" aria-hidden="true" tabindex="-1"></a><span class="co"># R 包列表</span></span>
+<span id="cb1506-20"><a href="setup-r.html#cb1506-20" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(pdb,</span>
+<span id="cb1506-21"><a href="setup-r.html#cb1506-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> <span class="sc">!</span><span class="fu">duplicated</span>(pdb<span class="sc">$</span>Package) <span class="sc">&amp;</span> Package <span class="sc">%in%</span> pkg,</span>
+<span id="cb1506-22"><a href="setup-r.html#cb1506-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Version&quot;</span>, <span class="st">&quot;Title&quot;</span>)</span>
+<span id="cb1506-23"><a href="setup-r.html#cb1506-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb1506-24"><a href="setup-r.html#cb1506-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(.,</span>
+<span id="cb1506-25"><a href="setup-r.html#cb1506-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> <span class="fu">gsub</span>(<span class="st">&quot;(</span><span class="sc">\\\n</span><span class="st">)&quot;</span>, <span class="st">&quot; &quot;</span>, Title),</span>
+<span id="cb1506-26"><a href="setup-r.html#cb1506-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Package =</span> <span class="fu">paste</span>(<span class="st">&quot;**&quot;</span>, Package, <span class="st">&quot;**&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1506-27"><a href="setup-r.html#cb1506-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1506-28"><a href="setup-r.html#cb1506-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(., <span class="at">Title =</span> <span class="fu">gsub</span>(pkg_regexp, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, Title)) <span class="sc">%&gt;%</span></span>
+<span id="cb1506-29"><a href="setup-r.html#cb1506-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(., <span class="at">Title =</span> <span class="fu">gsub</span>(<span class="st">&#39;&quot;(Grid)&quot;&#39;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, Title)) <span class="sc">%&gt;%</span></span>
+<span id="cb1506-30"><a href="setup-r.html#cb1506-30" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(.,</span>
+<span id="cb1506-31"><a href="setup-r.html#cb1506-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;依赖的 R 包&quot;</span>, <span class="at">format =</span> <span class="st">&quot;pandoc&quot;</span>,</span>
+<span id="cb1506-32"><a href="setup-r.html#cb1506-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb1506-33"><a href="setup-r.html#cb1506-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table>
 <caption><span id="tab:all-pkgs">表 B.1: </span>依赖的 R 包</caption>
 <thead>
@@ -2458,41 +2465,41 @@ div.csl-indent {
 <div class="rmdtip">
 <p>本书意欲覆盖的内容</p>
 </div>
-<div class="sourceCode" id="cb1504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1504-1"><a href="setup-r.html#cb1504-1" aria-hidden="true" tabindex="-1"></a>inla_pdb <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1504-2"><a href="setup-r.html#cb1504-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Package =</span> <span class="st">&quot;INLA&quot;</span>,</span>
-<span id="cb1504-3"><a href="setup-r.html#cb1504-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">paste</span>(</span>
-<span id="cb1504-4"><a href="setup-r.html#cb1504-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Full Bayesian Analysis of Latent Gaussian Models&quot;</span>,</span>
-<span id="cb1504-5"><a href="setup-r.html#cb1504-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;using Integrated Nested Laplace Approximations&quot;</span></span>
-<span id="cb1504-6"><a href="setup-r.html#cb1504-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1504-7"><a href="setup-r.html#cb1504-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1504-8"><a href="setup-r.html#cb1504-8" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1504-9"><a href="setup-r.html#cb1504-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;rgl&quot;</span>, <span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;nlme&quot;</span>, <span class="st">&quot;mgcv&quot;</span>,</span>
-<span id="cb1504-10"><a href="setup-r.html#cb1504-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;gee&quot;</span>, <span class="st">&quot;gam&quot;</span>, <span class="st">&quot;gamm4&quot;</span>, <span class="st">&quot;cgam&quot;</span>, <span class="st">&quot;cglm&quot;</span>, <span class="st">&quot;pscl&quot;</span>,</span>
-<span id="cb1504-11"><a href="setup-r.html#cb1504-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GLMMadaptive&quot;</span>, <span class="st">&quot;gee4&quot;</span>, <span class="st">&quot;geoR&quot;</span>, <span class="st">&quot;LaplacesDemon&quot;</span>, <span class="st">&quot;glmnet&quot;</span>,</span>
-<span id="cb1504-12"><a href="setup-r.html#cb1504-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;betareg&quot;</span>, <span class="st">&quot;quantreg&quot;</span>, <span class="st">&quot;agridat&quot;</span>, <span class="st">&quot;moments&quot;</span>, <span class="st">&quot;R2BayesX&quot;</span>,</span>
-<span id="cb1504-13"><a href="setup-r.html#cb1504-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;geoRglm&quot;</span>, <span class="st">&quot;spaMM&quot;</span>, <span class="st">&quot;spBayes&quot;</span>, <span class="st">&quot;CARBayes&quot;</span>, <span class="st">&quot;PrevMap&quot;</span>,</span>
-<span id="cb1504-14"><a href="setup-r.html#cb1504-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;FRK&quot;</span>, <span class="st">&quot;lgcp&quot;</span>, <span class="st">&quot;HSAR&quot;</span>, <span class="st">&quot;spNNGP&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>, <span class="st">&quot;BANOVA&quot;</span>,</span>
-<span id="cb1504-15"><a href="setup-r.html#cb1504-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;rpql&quot;</span>, <span class="st">&quot;QGglmm&quot;</span>, <span class="st">&quot;glmmsr&quot;</span>, <span class="st">&quot;glmmboot&quot;</span>, <span class="st">&quot;glmm&quot;</span>,</span>
-<span id="cb1504-16"><a href="setup-r.html#cb1504-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;glmmML&quot;</span>, <span class="st">&quot;glmmEP&quot;</span>, <span class="st">&quot;r2glmm&quot;</span>, <span class="st">&quot;hglm&quot;</span>, <span class="st">&quot;glmmLasso&quot;</span>,</span>
-<span id="cb1504-17"><a href="setup-r.html#cb1504-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;blme&quot;</span>, <span class="st">&quot;MCMCglmm&quot;</span>, <span class="st">&quot;MCMCpack&quot;</span>, <span class="st">&quot;glmmTMB&quot;</span>, <span class="st">&quot;geepack&quot;</span>,</span>
-<span id="cb1504-18"><a href="setup-r.html#cb1504-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;glmmfields&quot;</span>, <span class="st">&quot;rstan&quot;</span>, <span class="st">&quot;rstanarm&quot;</span>, <span class="st">&quot;brms&quot;</span>, <span class="st">&quot;greta&quot;</span>,</span>
-<span id="cb1504-19"><a href="setup-r.html#cb1504-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BayesX&quot;</span>, <span class="st">&quot;Boom&quot;</span>, <span class="st">&quot;nimble&quot;</span>, <span class="st">&quot;rjags&quot;</span>, <span class="st">&quot;R2OpenBUGS&quot;</span>,</span>
-<span id="cb1504-20"><a href="setup-r.html#cb1504-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;R2BayesX&quot;</span>, <span class="st">&quot;BoomSpikeSlab&quot;</span>, <span class="st">&quot;inlabru&quot;</span>, <span class="st">&quot;INLABMA&quot;</span>,</span>
-<span id="cb1504-21"><a href="setup-r.html#cb1504-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;lmtest&quot;</span>, <span class="st">&quot;VGAM&quot;</span>, <span class="st">&quot;plotly&quot;</span>, <span class="st">&quot;leaflet&quot;</span>, <span class="st">&quot;LatticeKrig&quot;</span></span>
-<span id="cb1504-22"><a href="setup-r.html#cb1504-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1504-23"><a href="setup-r.html#cb1504-23" aria-hidden="true" tabindex="-1"></a>pdb <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">CRAN_package_db</span>()</span>
-<span id="cb1504-24"><a href="setup-r.html#cb1504-24" aria-hidden="true" tabindex="-1"></a>book_pdb <span class="ot">&lt;-</span> <span class="fu">subset</span>(pdb,</span>
-<span id="cb1504-25"><a href="setup-r.html#cb1504-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> <span class="sc">!</span><span class="fu">duplicated</span>(pdb<span class="sc">$</span>Package) <span class="sc">&amp;</span> Package <span class="sc">%in%</span> pkgs,</span>
-<span id="cb1504-26"><a href="setup-r.html#cb1504-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Title&quot;</span>)</span>
-<span id="cb1504-27"><a href="setup-r.html#cb1504-27" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1504-28"><a href="setup-r.html#cb1504-28" aria-hidden="true" tabindex="-1"></a>book_pdb <span class="ot">&lt;-</span> <span class="fu">rbind.data.frame</span>(book_pdb, inla_pdb)</span>
-<span id="cb1504-29"><a href="setup-r.html#cb1504-29" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Title <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;(</span><span class="sc">\\\n</span><span class="st">)&quot;</span>, <span class="st">&quot; &quot;</span>, book_pdb<span class="sc">$</span>Title)</span>
-<span id="cb1504-30"><a href="setup-r.html#cb1504-30" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Title <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;&#39;(Armadillo|BayesX|Eigen|ggplot2|lme4|mgcv|Stan|Leaflet|plotly.js)&#39;&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, book_pdb<span class="sc">$</span>Title)</span>
-<span id="cb1504-31"><a href="setup-r.html#cb1504-31" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Package <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;**&quot;</span>, book_pdb<span class="sc">$</span>Package, <span class="st">&quot;**&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1504-32"><a href="setup-r.html#cb1504-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(book_pdb,</span>
-<span id="cb1504-33"><a href="setup-r.html#cb1504-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;本书使用的 R 包&quot;</span>, <span class="at">format =</span> <span class="st">&quot;pandoc&quot;</span>,</span>
-<span id="cb1504-34"><a href="setup-r.html#cb1504-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb1504-35"><a href="setup-r.html#cb1504-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1507-1"><a href="setup-r.html#cb1507-1" aria-hidden="true" tabindex="-1"></a>inla_pdb <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1507-2"><a href="setup-r.html#cb1507-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Package =</span> <span class="st">&quot;INLA&quot;</span>,</span>
+<span id="cb1507-3"><a href="setup-r.html#cb1507-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Title =</span> <span class="fu">paste</span>(</span>
+<span id="cb1507-4"><a href="setup-r.html#cb1507-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Full Bayesian Analysis of Latent Gaussian Models&quot;</span>,</span>
+<span id="cb1507-5"><a href="setup-r.html#cb1507-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;using Integrated Nested Laplace Approximations&quot;</span></span>
+<span id="cb1507-6"><a href="setup-r.html#cb1507-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1507-7"><a href="setup-r.html#cb1507-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1507-8"><a href="setup-r.html#cb1507-8" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1507-9"><a href="setup-r.html#cb1507-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;patchwork&quot;</span>, <span class="st">&quot;rgl&quot;</span>, <span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;nlme&quot;</span>, <span class="st">&quot;mgcv&quot;</span>,</span>
+<span id="cb1507-10"><a href="setup-r.html#cb1507-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;gee&quot;</span>, <span class="st">&quot;gam&quot;</span>, <span class="st">&quot;gamm4&quot;</span>, <span class="st">&quot;cgam&quot;</span>, <span class="st">&quot;cglm&quot;</span>, <span class="st">&quot;pscl&quot;</span>,</span>
+<span id="cb1507-11"><a href="setup-r.html#cb1507-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;GLMMadaptive&quot;</span>, <span class="st">&quot;gee4&quot;</span>, <span class="st">&quot;geoR&quot;</span>, <span class="st">&quot;LaplacesDemon&quot;</span>, <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb1507-12"><a href="setup-r.html#cb1507-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;betareg&quot;</span>, <span class="st">&quot;quantreg&quot;</span>, <span class="st">&quot;agridat&quot;</span>, <span class="st">&quot;moments&quot;</span>, <span class="st">&quot;R2BayesX&quot;</span>,</span>
+<span id="cb1507-13"><a href="setup-r.html#cb1507-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;geoRglm&quot;</span>, <span class="st">&quot;spaMM&quot;</span>, <span class="st">&quot;spBayes&quot;</span>, <span class="st">&quot;CARBayes&quot;</span>, <span class="st">&quot;PrevMap&quot;</span>,</span>
+<span id="cb1507-14"><a href="setup-r.html#cb1507-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;FRK&quot;</span>, <span class="st">&quot;lgcp&quot;</span>, <span class="st">&quot;HSAR&quot;</span>, <span class="st">&quot;spNNGP&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>, <span class="st">&quot;BANOVA&quot;</span>,</span>
+<span id="cb1507-15"><a href="setup-r.html#cb1507-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;rpql&quot;</span>, <span class="st">&quot;QGglmm&quot;</span>, <span class="st">&quot;glmmsr&quot;</span>, <span class="st">&quot;glmmboot&quot;</span>, <span class="st">&quot;glmm&quot;</span>,</span>
+<span id="cb1507-16"><a href="setup-r.html#cb1507-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;glmmML&quot;</span>, <span class="st">&quot;glmmEP&quot;</span>, <span class="st">&quot;r2glmm&quot;</span>, <span class="st">&quot;hglm&quot;</span>, <span class="st">&quot;glmmLasso&quot;</span>,</span>
+<span id="cb1507-17"><a href="setup-r.html#cb1507-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;blme&quot;</span>, <span class="st">&quot;MCMCglmm&quot;</span>, <span class="st">&quot;MCMCpack&quot;</span>, <span class="st">&quot;glmmTMB&quot;</span>, <span class="st">&quot;geepack&quot;</span>,</span>
+<span id="cb1507-18"><a href="setup-r.html#cb1507-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;glmmfields&quot;</span>, <span class="st">&quot;rstan&quot;</span>, <span class="st">&quot;rstanarm&quot;</span>, <span class="st">&quot;brms&quot;</span>, <span class="st">&quot;greta&quot;</span>,</span>
+<span id="cb1507-19"><a href="setup-r.html#cb1507-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BayesX&quot;</span>, <span class="st">&quot;Boom&quot;</span>, <span class="st">&quot;nimble&quot;</span>, <span class="st">&quot;rjags&quot;</span>, <span class="st">&quot;R2OpenBUGS&quot;</span>,</span>
+<span id="cb1507-20"><a href="setup-r.html#cb1507-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;R2BayesX&quot;</span>, <span class="st">&quot;BoomSpikeSlab&quot;</span>, <span class="st">&quot;inlabru&quot;</span>, <span class="st">&quot;INLABMA&quot;</span>,</span>
+<span id="cb1507-21"><a href="setup-r.html#cb1507-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;lmtest&quot;</span>, <span class="st">&quot;VGAM&quot;</span>, <span class="st">&quot;plotly&quot;</span>, <span class="st">&quot;leaflet&quot;</span>, <span class="st">&quot;LatticeKrig&quot;</span></span>
+<span id="cb1507-22"><a href="setup-r.html#cb1507-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1507-23"><a href="setup-r.html#cb1507-23" aria-hidden="true" tabindex="-1"></a>pdb <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">CRAN_package_db</span>()</span>
+<span id="cb1507-24"><a href="setup-r.html#cb1507-24" aria-hidden="true" tabindex="-1"></a>book_pdb <span class="ot">&lt;-</span> <span class="fu">subset</span>(pdb,</span>
+<span id="cb1507-25"><a href="setup-r.html#cb1507-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">subset =</span> <span class="sc">!</span><span class="fu">duplicated</span>(pdb<span class="sc">$</span>Package) <span class="sc">&amp;</span> Package <span class="sc">%in%</span> pkgs,</span>
+<span id="cb1507-26"><a href="setup-r.html#cb1507-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Title&quot;</span>)</span>
+<span id="cb1507-27"><a href="setup-r.html#cb1507-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1507-28"><a href="setup-r.html#cb1507-28" aria-hidden="true" tabindex="-1"></a>book_pdb <span class="ot">&lt;-</span> <span class="fu">rbind.data.frame</span>(book_pdb, inla_pdb)</span>
+<span id="cb1507-29"><a href="setup-r.html#cb1507-29" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Title <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;(</span><span class="sc">\\\n</span><span class="st">)&quot;</span>, <span class="st">&quot; &quot;</span>, book_pdb<span class="sc">$</span>Title)</span>
+<span id="cb1507-30"><a href="setup-r.html#cb1507-30" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Title <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;&#39;(Armadillo|BayesX|Eigen|ggplot2|lme4|mgcv|Stan|Leaflet|plotly.js)&#39;&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, book_pdb<span class="sc">$</span>Title)</span>
+<span id="cb1507-31"><a href="setup-r.html#cb1507-31" aria-hidden="true" tabindex="-1"></a>book_pdb<span class="sc">$</span>Package <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;**&quot;</span>, book_pdb<span class="sc">$</span>Package, <span class="st">&quot;**&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1507-32"><a href="setup-r.html#cb1507-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(book_pdb,</span>
+<span id="cb1507-33"><a href="setup-r.html#cb1507-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;本书使用的 R 包&quot;</span>, <span class="at">format =</span> <span class="st">&quot;pandoc&quot;</span>,</span>
+<span id="cb1507-34"><a href="setup-r.html#cb1507-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb1507-35"><a href="setup-r.html#cb1507-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <table>
 <caption><span id="tab:book-pkgs">表 B.2: </span>本书使用的 R 包</caption>
 <thead>

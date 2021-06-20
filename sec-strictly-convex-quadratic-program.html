@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -849,7 +856,7 @@ div.csl-indent {
 <h2><span class="header-section-number">35.4</span> 凸二次规划</h2>
 <p>在 R 中使用 quadprog 包求解二次规划<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a>，而 ipoptr 包可用来求解一般的非线性约束的非线性规划<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。</p>
 <p><span class="math display">\[\min(-d^{T}b+1/2b^{T}Db), A^{T}b \geq b_{0}\]</span></p>
-<div class="sourceCode" id="cb1203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1203-1"><a href="sec-strictly-convex-quadratic-program.html#cb1203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve.QP</span>(Dmat, dvec, Amat, bvec, <span class="at">meq =</span> <span class="dv">0</span>, <span class="at">factorized =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1206-1"><a href="sec-strictly-convex-quadratic-program.html#cb1206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve.QP</span>(Dmat, dvec, Amat, bvec, <span class="at">meq =</span> <span class="dv">0</span>, <span class="at">factorized =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>参数 <code>Dmat</code>、<code>dvec</code>、<code>Amat</code>、<code>bvec</code> 分别对应二次规划问题中的 <span class="math inline">\(D,d,A,b_{0}\)</span></p>
 <p>现在有如下二次规划问题</p>
 <p><span class="math display">\[
@@ -864,11 +871,11 @@ A = \begin{bmatrix}1 &amp; 1\\
 b_{0} = (2,-2,-3)
 \]</span></p>
 <p>上述二次规划问题的可行域如图所示</p>
-<div class="sourceCode" id="cb1204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1204-1"><a href="sec-strictly-convex-quadratic-program.html#cb1204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb1204-2"><a href="sec-strictly-convex-quadratic-program.html#cb1204-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">5.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">3.5</span>), <span class="at">type =</span> <span class="st">&quot;n&quot;</span>,</span>
-<span id="cb1204-3"><a href="sec-strictly-convex-quadratic-program.html#cb1204-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;x&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;y&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Feasible Region&quot;</span></span>
-<span id="cb1204-4"><a href="sec-strictly-convex-quadratic-program.html#cb1204-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1204-5"><a href="sec-strictly-convex-quadratic-program.html#cb1204-5" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">border =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1207-1"><a href="sec-strictly-convex-quadratic-program.html#cb1207-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb1207-2"><a href="sec-strictly-convex-quadratic-program.html#cb1207-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">5.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">3.5</span>), <span class="at">type =</span> <span class="st">&quot;n&quot;</span>,</span>
+<span id="cb1207-3"><a href="sec-strictly-convex-quadratic-program.html#cb1207-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;x&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;y&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Feasible Region&quot;</span></span>
+<span id="cb1207-4"><a href="sec-strictly-convex-quadratic-program.html#cb1207-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1207-5"><a href="sec-strictly-convex-quadratic-program.html#cb1207-5" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">border =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;gray&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:feasible-region"></span>
 <img src="numerical-optimization_files/figure-html/feasible-region-1.png" alt="可行域" width="384" />
 <p class="caption">
@@ -876,14 +883,14 @@ b_{0} = (2,-2,-3)
 </p>
 </div>
 <p><strong>quadprog</strong> 包的 <code>solve.QP</code> 函数求解二次规划</p>
-<div class="sourceCode" id="cb1205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1205-1"><a href="sec-strictly-convex-quadratic-program.html#cb1205-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quadprog)</span>
-<span id="cb1205-2"><a href="sec-strictly-convex-quadratic-program.html#cb1205-2" aria-hidden="true" tabindex="-1"></a>Dmat <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1205-3"><a href="sec-strictly-convex-quadratic-program.html#cb1205-3" aria-hidden="true" tabindex="-1"></a>dvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">2</span>)</span>
-<span id="cb1205-4"><a href="sec-strictly-convex-quadratic-program.html#cb1205-4" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1205-5"><a href="sec-strictly-convex-quadratic-program.html#cb1205-5" aria-hidden="true" tabindex="-1"></a>bvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">3</span>)</span>
-<span id="cb1205-6"><a href="sec-strictly-convex-quadratic-program.html#cb1205-6" aria-hidden="true" tabindex="-1"></a>Amat <span class="ot">&lt;-</span> <span class="fu">t</span>(A)</span>
-<span id="cb1205-7"><a href="sec-strictly-convex-quadratic-program.html#cb1205-7" aria-hidden="true" tabindex="-1"></a>sol <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(Dmat, dvec, Amat, bvec, <span class="at">meq =</span> <span class="dv">0</span>)</span>
-<span id="cb1205-8"><a href="sec-strictly-convex-quadratic-program.html#cb1205-8" aria-hidden="true" tabindex="-1"></a>sol</span></code></pre></div>
+<div class="sourceCode" id="cb1208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1208-1"><a href="sec-strictly-convex-quadratic-program.html#cb1208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quadprog)</span>
+<span id="cb1208-2"><a href="sec-strictly-convex-quadratic-program.html#cb1208-2" aria-hidden="true" tabindex="-1"></a>Dmat <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1208-3"><a href="sec-strictly-convex-quadratic-program.html#cb1208-3" aria-hidden="true" tabindex="-1"></a>dvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb1208-4"><a href="sec-strictly-convex-quadratic-program.html#cb1208-4" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1208-5"><a href="sec-strictly-convex-quadratic-program.html#cb1208-5" aria-hidden="true" tabindex="-1"></a>bvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb1208-6"><a href="sec-strictly-convex-quadratic-program.html#cb1208-6" aria-hidden="true" tabindex="-1"></a>Amat <span class="ot">&lt;-</span> <span class="fu">t</span>(A)</span>
+<span id="cb1208-7"><a href="sec-strictly-convex-quadratic-program.html#cb1208-7" aria-hidden="true" tabindex="-1"></a>sol <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(Dmat, dvec, Amat, bvec, <span class="at">meq =</span> <span class="dv">0</span>)</span>
+<span id="cb1208-8"><a href="sec-strictly-convex-quadratic-program.html#cb1208-8" aria-hidden="true" tabindex="-1"></a>sol</span></code></pre></div>
 <pre><code>## $solution
 ## [1] 0.1666667 1.8333333
 ## 
@@ -902,30 +909,30 @@ b_{0} = (2,-2,-3)
 ## $iact
 ## [1] 1</code></pre>
 <p>在可行域上画出等高线，表示目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解</p>
-<div class="sourceCode" id="cb1207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1207-1"><a href="sec-strictly-convex-quadratic-program.html#cb1207-1" aria-hidden="true" tabindex="-1"></a>qp_sol <span class="ot">&lt;-</span> sol<span class="sc">$</span>solution <span class="co"># 二次规划的解</span></span>
-<span id="cb1207-2"><a href="sec-strictly-convex-quadratic-program.html#cb1207-2" aria-hidden="true" tabindex="-1"></a>uc_sol <span class="ot">&lt;-</span> sol<span class="sc">$</span>unconstrained.solution <span class="co"># 无约束情况下的解</span></span>
-<span id="cb1207-3"><a href="sec-strictly-convex-quadratic-program.html#cb1207-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 画图</span></span>
-<span id="cb1207-4"><a href="sec-strictly-convex-quadratic-program.html#cb1207-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
-<span id="cb1207-5"><a href="sec-strictly-convex-quadratic-program.html#cb1207-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">5.5</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
-<span id="cb1207-6"><a href="sec-strictly-convex-quadratic-program.html#cb1207-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">3.5</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
-<span id="cb1207-7"><a href="sec-strictly-convex-quadratic-program.html#cb1207-7" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
-<span id="cb1207-8"><a href="sec-strictly-convex-quadratic-program.html#cb1207-8" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">with</span>(grid, x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">4</span>)</span>
-<span id="cb1207-9"><a href="sec-strictly-convex-quadratic-program.html#cb1207-9" aria-hidden="true" tabindex="-1"></a><span class="fu">levelplot</span>(z <span class="sc">~</span> x <span class="sc">*</span> y, grid,</span>
-<span id="cb1207-10"><a href="sec-strictly-convex-quadratic-program.html#cb1207-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">cuts =</span> <span class="dv">40</span>,</span>
-<span id="cb1207-11"><a href="sec-strictly-convex-quadratic-program.html#cb1207-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel =</span> <span class="cf">function</span>(...) {</span>
-<span id="cb1207-12"><a href="sec-strictly-convex-quadratic-program.html#cb1207-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.levelplot</span>(...)</span>
-<span id="cb1207-13"><a href="sec-strictly-convex-quadratic-program.html#cb1207-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.polygon</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>),</span>
-<span id="cb1207-14"><a href="sec-strictly-convex-quadratic-program.html#cb1207-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">border =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1207-15"><a href="sec-strictly-convex-quadratic-program.html#cb1207-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;transparent&quot;</span></span>
-<span id="cb1207-16"><a href="sec-strictly-convex-quadratic-program.html#cb1207-16" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1207-17"><a href="sec-strictly-convex-quadratic-program.html#cb1207-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.points</span>(<span class="fu">c</span>(uc_sol[<span class="dv">1</span>], qp_sol[<span class="dv">1</span>]),</span>
-<span id="cb1207-18"><a href="sec-strictly-convex-quadratic-program.html#cb1207-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(uc_sol[<span class="dv">2</span>], qp_sol[<span class="dv">2</span>]),</span>
-<span id="cb1207-19"><a href="sec-strictly-convex-quadratic-program.html#cb1207-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd =</span> <span class="dv">5</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>), <span class="at">pch =</span> <span class="dv">19</span></span>
-<span id="cb1207-20"><a href="sec-strictly-convex-quadratic-program.html#cb1207-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1207-21"><a href="sec-strictly-convex-quadratic-program.html#cb1207-21" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb1207-22"><a href="sec-strictly-convex-quadratic-program.html#cb1207-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">colorkey =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1207-23"><a href="sec-strictly-convex-quadratic-program.html#cb1207-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.regions =</span> <span class="fu">terrain.colors</span>(<span class="dv">40</span>)</span>
-<span id="cb1207-24"><a href="sec-strictly-convex-quadratic-program.html#cb1207-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1210-1"><a href="sec-strictly-convex-quadratic-program.html#cb1210-1" aria-hidden="true" tabindex="-1"></a>qp_sol <span class="ot">&lt;-</span> sol<span class="sc">$</span>solution <span class="co"># 二次规划的解</span></span>
+<span id="cb1210-2"><a href="sec-strictly-convex-quadratic-program.html#cb1210-2" aria-hidden="true" tabindex="-1"></a>uc_sol <span class="ot">&lt;-</span> sol<span class="sc">$</span>unconstrained.solution <span class="co"># 无约束情况下的解</span></span>
+<span id="cb1210-3"><a href="sec-strictly-convex-quadratic-program.html#cb1210-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 画图</span></span>
+<span id="cb1210-4"><a href="sec-strictly-convex-quadratic-program.html#cb1210-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb1210-5"><a href="sec-strictly-convex-quadratic-program.html#cb1210-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="fl">5.5</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb1210-6"><a href="sec-strictly-convex-quadratic-program.html#cb1210-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">3.5</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb1210-7"><a href="sec-strictly-convex-quadratic-program.html#cb1210-7" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb1210-8"><a href="sec-strictly-convex-quadratic-program.html#cb1210-8" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">with</span>(grid, x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> y<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> y <span class="sc">+</span> <span class="dv">4</span>)</span>
+<span id="cb1210-9"><a href="sec-strictly-convex-quadratic-program.html#cb1210-9" aria-hidden="true" tabindex="-1"></a><span class="fu">levelplot</span>(z <span class="sc">~</span> x <span class="sc">*</span> y, grid,</span>
+<span id="cb1210-10"><a href="sec-strictly-convex-quadratic-program.html#cb1210-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">cuts =</span> <span class="dv">40</span>,</span>
+<span id="cb1210-11"><a href="sec-strictly-convex-quadratic-program.html#cb1210-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel =</span> <span class="cf">function</span>(...) {</span>
+<span id="cb1210-12"><a href="sec-strictly-convex-quadratic-program.html#cb1210-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.levelplot</span>(...)</span>
+<span id="cb1210-13"><a href="sec-strictly-convex-quadratic-program.html#cb1210-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.polygon</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">3</span>),</span>
+<span id="cb1210-14"><a href="sec-strictly-convex-quadratic-program.html#cb1210-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">border =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1210-15"><a href="sec-strictly-convex-quadratic-program.html#cb1210-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;transparent&quot;</span></span>
+<span id="cb1210-16"><a href="sec-strictly-convex-quadratic-program.html#cb1210-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1210-17"><a href="sec-strictly-convex-quadratic-program.html#cb1210-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">panel.points</span>(<span class="fu">c</span>(uc_sol[<span class="dv">1</span>], qp_sol[<span class="dv">1</span>]),</span>
+<span id="cb1210-18"><a href="sec-strictly-convex-quadratic-program.html#cb1210-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(uc_sol[<span class="dv">2</span>], qp_sol[<span class="dv">2</span>]),</span>
+<span id="cb1210-19"><a href="sec-strictly-convex-quadratic-program.html#cb1210-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">lwd =</span> <span class="dv">5</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>), <span class="at">pch =</span> <span class="dv">19</span></span>
+<span id="cb1210-20"><a href="sec-strictly-convex-quadratic-program.html#cb1210-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1210-21"><a href="sec-strictly-convex-quadratic-program.html#cb1210-21" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb1210-22"><a href="sec-strictly-convex-quadratic-program.html#cb1210-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">colorkey =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1210-23"><a href="sec-strictly-convex-quadratic-program.html#cb1210-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.regions =</span> <span class="fu">terrain.colors</span>(<span class="dv">40</span>)</span>
+<span id="cb1210-24"><a href="sec-strictly-convex-quadratic-program.html#cb1210-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
 <img src="numerical-optimization_files/figure-html/unnamed-chunk-6-1.png" alt="无约束和有约束条件下的解" width="384" />
 <p class="caption">

@@ -22,41 +22,116 @@ Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78
 
 
 ```r
+library(magrittr)
+```
+
+
+```r
+if (!is.na(Sys.getenv('CI', NA))) {
+  Sys.setenv(R_CRAN_WEB = "https://cloud.r-project.org/")
+} else {
+  Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN")
+}
+
+pdb <- tools::CRAN_package_db()
+sub_pdb <- subset(pdb, subset = !duplicated(pdb[, "Package"]) & pdb[, "Package"] %in% .packages(T))
+pkg_pdb <- subset(sub_pdb,
+  subset = grepl("Yihui Xie", sub_pdb[, "Maintainer"]) | grepl("Hadley Wickham", sub_pdb[, "Maintainer"]),
+  select = c("Maintainer", "Package", "Version", "Published", "Title")
+)
+
+pkg_pdb <- transform(pkg_pdb, Title = gsub("(\\\n)", " ", Title))
+```
+
+
+```r
 library(DT)
 ```
 
 
 ```r
-data.frame(name1 = c(
-  "<b>加粗</b>",
-  "<em>强调</em>",
-  "正常"
-), name2 = c(
-  '<a href="http://rstudio.com">超链</a>', # 支持超链接
-  '<a href="#" onclick="alert(\'Hello\');">点击</a>',
-  '正常'
-)) %>%
-  datatable(
-    data = .,
-    escape = F, # 设置 escape = F
-    colnames = c('<span style="color:red">第1列</span>', "<em>第2列</em>"),
-    caption = htmltools::tags$caption(
-      style = "caption-side: top; text-align: center;",
-      "表格 2: ", htmltools::em("表格标题")
-    ), # 在表格底部显示标题，默认在表格上方显示标题
-    filter = "top", # 过滤框
-    options = list(
-      language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
-      pageLength = 5, # 每页显示5行
-      dom = "tip",
-      autoWidth = TRUE # 自动页面宽度
+datatable(pkg_pdb[order(pkg_pdb$Maintainer, decreasing = T), ],
+  rownames = F, # 不显示行名
+  extensions = c("Buttons", "RowGroup"),
+  options = list(
+    pageLength = 10, # 每页显示的行数
+    dom = "Brtp", # 去掉显示行数 i、过滤 f 的能力，翻页用 p 表示
+    ordering = F, # 去掉列排序能力
+    buttons = c("copy", "csv", "excel", "pdf", "print"), # 提供打印按钮
+    rowGroup = list(dataSrc = 0), # 按 Maintainer 列分组
+    columnDefs = list(
+      list(className = "dt-center", targets = 0), # 不显示行名，则 targets 从 0 开始，否则从 1 开始
+      list(visible = FALSE, targets = 0) # 不显示 Maintainer 列
     )
-  )
+  ),
+  caption = "谢大和哈神维护的 R 包"
+)
 ```
 
 ```{=html}
-<div id="htmlwidget-45215fd4e3496da4f8f8" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-45215fd4e3496da4f8f8">{"x":{"filter":"top","filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","caption":"<caption style=\"caption-side: top; text-align: center;\">\n  表格 2: \n  <em>表格标题<\/em>\n<\/caption>","data":[["1","2","3"],["<b>加粗<\/b>","<em>强调<\/em>","正常"],["<a href=\"http://rstudio.com\">超链<\/a>","<a href=\"#\" onclick=\"alert('Hello');\">点击<\/a>","正常"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th><span style=\"color:red\">第1列<\/span><\/th>\n      <th><em>第2列<\/em><\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"},"pageLength":5,"dom":"tip","autoWidth":true,"order":[],"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c64e258321940b906ece" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c64e258321940b906ece">{"x":{"filter":"none","extensions":["Buttons","RowGroup"],"caption":"<caption>谢大和哈神维护的 R 包<\/caption>","data":[["Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;h.wickham@gmail.com&gt;"],["bookdown","DT","evaluate","formatR","highr","knitr","markdown","mime","rmarkdown","tinytex","xfun","assertthat","cubelyr","dbplyr","dplyr","dtplyr","ellipsis","forcats","generics","gtable","haven","httr","lazyeval","modelr","plyr","productplots","rappdirs","roxygen2","rvest","scales","stringr","testthat","tidyr","tidyverse","waldo","reshape2"],["0.22","0.18","0.14","1.11","0.9","1.33","1.1","0.10","2.9","0.32","0.24","0.2.1","1.0.1","2.1.1","1.0.7","1.1.0","0.3.2","0.5.1","0.1.0","0.3.0","2.4.1","1.4.2","0.2.2","0.1.8","1.8.6","0.1.1","0.3.3","7.1.1","1.0.0","1.1.1","1.4.0","3.0.3","1.1.3","1.3.1","0.2.5","1.4.4"],["2021-04-22","2021-04-14","2019-05-28","2021-06-01","2021-04-16","2021-04-24","2019-08-07","2021-02-13","2021-06-15","2021-05-29","2021-06-15","2019-03-21","2020-11-24","2021-04-06","2021-06-18","2021-02-20","2021-04-29","2021-01-27","2020-10-31","2019-03-25","2021-04-23","2020-07-20","2019-03-15","2020-05-19","2020-03-03","2016-07-02","2021-01-31","2020-06-27","2021-03-09","2020-05-11","2019-02-10","2021-06-16","2021-03-03","2021-04-15","2021-03-08","2020-04-09"],["Authoring Books and Technical Documents with R Markdown","A Wrapper of the JavaScript Library 'DataTables'","Parsing and Evaluation Tools that Provide More Details than the Default","Format R Code Automatically","Syntax Highlighting for R Source Code","A General-Purpose Package for Dynamic Report Generation in R","Render Markdown with the C Library 'Sundown'","Map Filenames to MIME Types","Dynamic Documents for R","Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents","Supporting Functions for Packages Maintained by 'Yihui Xie'","Easy Pre and Post Assertions","A Data Cube 'dplyr' Backend","A 'dplyr' Back End for Databases","A Grammar of Data Manipulation","Data Table Back-End for 'dplyr'","Tools for Working with ...","Tools for Working with Categorical Variables (Factors)","Common S3 Generics not Provided by Base R Methods Related to Model Fitting","Arrange 'Grobs' in Tables","Import and Export 'SPSS', 'Stata' and 'SAS' Files","Tools for Working with URLs and HTTP","Lazy (Non-Standard) Evaluation","Modelling Functions that Work with the Pipe","Tools for Splitting, Applying and Combining Data","Product Plots for R","Application Directories: Determine Where to Save Data, Caches, and Logs","In-Line Documentation for R","Easily Harvest (Scrape) Web Pages","Scale Functions for Visualization","Simple, Consistent Wrappers for Common String Operations","Unit Testing for R","Tidy Messy Data","Easily Install and Load the 'Tidyverse'","Find Differences Between R Objects","Flexibly Reshape Data: A Reboot of the Reshape Package"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Maintainer<\/th>\n      <th>Package<\/th>\n      <th>Version<\/th>\n      <th>Published<\/th>\n      <th>Title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"dom":"Brtp","ordering":false,"buttons":["copy","csv","excel","pdf","print"],"rowGroup":{"dataSrc":0},"columnDefs":[{"className":"dt-center","targets":0},{"visible":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+```
+
+
+
+
+
+```r
+colorize_num <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", x),
+    sprintf("<span style='color:%s'>%s</span>", "red", x)
+  )
+}
+colorize_pct <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", scales::percent(x, accuracy = 0.01)),
+    sprintf("<span style='color:%s'>%s</span>", "red", scales::percent(x, accuracy = 0.01))
+  )
+}
+
+colorize_pp <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", paste0(round(100*x, digits = 2), "PP")),
+    sprintf("<span style='color:%s'>%s</span>", "red", paste0(round(100*x, digits = 2), "PP"))
+  )
+}
+
+colorize_text <- function(x, color = "red") {
+    sprintf("<span style='color:%s'>%s</span>", color, x )
+}
+
+library(tibble)
+
+dat = tribble(
+  ~name1, ~name2,
+  as.character(htmltools::tags$b("加粗")), '<a href="http://rstudio.com">超链</a>', # 支持超链接
+  as.character(htmltools::em("强调")), '<a href="#" onclick="alert(\'Hello\');">点击</a>',
+  colorize_text("正常", "green"), '正常'
+)
+
+datatable(
+  data = dat,
+  escape = F, # 设置 escape = F
+  colnames = c(colorize_text("第1列", "red"), as.character(htmltools::em("第2列"))),
+  caption = htmltools::tags$caption(
+    style = "caption-side: top; text-align: center;",
+    "表格 2: ", htmltools::em("表格标题")
+  ), # 在表格底部显示标题，默认在表格上方显示标题
+  # filter = "top", # 过滤框
+  options = list(
+    language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
+    pageLength = 5, # 每页显示5行
+    dom = "tip",
+    autoWidth = TRUE # 自动页面宽度
+  )
+)
+```
+
+```{=html}
+<div id="htmlwidget-1801e7a5d62aacd3807b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1801e7a5d62aacd3807b">{"x":{"filter":"none","caption":"<caption style=\"caption-side: top; text-align: center;\">\n  表格 2: \n  <em>表格标题<\/em>\n<\/caption>","data":[["1","2","3"],["<b>加粗<\/b>","<em>强调<\/em>","<span style='color:green'>正常<\/span>"],["<a href=\"http://rstudio.com\">超链<\/a>","<a href=\"#\" onclick=\"alert('Hello');\">点击<\/a>","正常"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th><span style='color:red'>第1列<\/span><\/th>\n      <th><em>第2列<\/em><\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"},"pageLength":5,"dom":"tip","autoWidth":true,"order":[],"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
 下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
@@ -289,16 +364,18 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.18         
+## [1] kableExtra_1.3.4 reactable_0.2.3  tibble_3.1.2     DT_0.18         
+## [5] magrittr_2.0.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] rstudioapi_0.13   xml2_1.3.2        knitr_1.33        magrittr_2.0.1   
-##  [5] munsell_0.5.0     rvest_1.0.0       viridisLite_0.4.0 colorspace_2.0-1 
-##  [9] R6_2.5.0          rlang_0.4.11      httr_1.4.2        stringr_1.4.0    
-## [13] tools_4.1.0       webshot_0.5.2     xfun_0.23         jquerylib_0.1.4  
-## [17] systemfonts_1.0.2 htmltools_0.5.1.1 crosstalk_1.1.1   yaml_2.2.1       
-## [21] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     sass_0.4.0       
-## [25] htmlwidgets_1.5.3 glue_1.4.2        evaluate_0.14     rmarkdown_2.8    
-## [29] stringi_1.6.2     compiler_4.1.0    bslib_0.2.5.1     scales_1.1.1     
-## [33] svglite_2.0.0     jsonlite_1.7.2
+##  [1] pillar_1.6.1      bslib_0.2.5.1     compiler_4.1.0    jquerylib_0.1.4  
+##  [5] tools_4.1.0       digest_0.6.27     viridisLite_0.4.0 jsonlite_1.7.2   
+##  [9] evaluate_0.14     lifecycle_1.0.0   pkgconfig_2.0.3   rlang_0.4.11     
+## [13] rstudioapi_0.13   crosstalk_1.1.1   yaml_2.2.1        xfun_0.23        
+## [17] stringr_1.4.0     httr_1.4.2        knitr_1.33        xml2_1.3.2       
+## [21] systemfonts_1.0.2 htmlwidgets_1.5.3 sass_0.4.0        vctrs_0.3.8      
+## [25] webshot_0.5.2     svglite_2.0.0     glue_1.4.2        R6_2.5.0         
+## [29] fansi_0.5.0       rmarkdown_2.8     bookdown_0.22     scales_1.1.1     
+## [33] ellipsis_0.3.2    htmltools_0.5.1.1 rvest_1.0.0       colorspace_2.0-1 
+## [37] utf8_1.2.1        stringi_1.6.2     munsell_0.5.0     crayon_1.4.1
 ```

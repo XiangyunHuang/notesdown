@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -849,32 +856,32 @@ div.csl-indent {
 <h2><span class="header-section-number">20.3</span> t 检验的功效</h2>
 <p><code>power.t.test()</code> 计算单样本或两样本的 t 检验的功效，或者根据功效计算参数，如样本量</p>
 <p><a href="https://yihui.org/cn/2018/02/cohen-s-d/">Cohen’s d</a> 单样本/配对 t 检验的功效分析</p>
-<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="sec-power-t-test.html#cb607-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">30</span>  <span class="co"># 样本量（只是一个例子）</span></span>
-<span id="cb607-2"><a href="sec-power-t-test.html#cb607-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">12</span>, <span class="fl">0.01</span>)</span>
-<span id="cb607-3"><a href="sec-power-t-test.html#cb607-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb607-4"><a href="sec-power-t-test.html#cb607-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">xx =</span> x<span class="sc">/</span><span class="fu">sqrt</span>(n), <span class="at">yy =</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(x, n <span class="sc">-</span> <span class="dv">1</span>)))</span>
-<span id="cb607-5"><a href="sec-power-t-test.html#cb607-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat, <span class="fu">aes</span>(<span class="at">x =</span> xx, <span class="at">y =</span> yy)) <span class="sc">+</span></span>
-<span id="cb607-6"><a href="sec-power-t-test.html#cb607-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb607-7"><a href="sec-power-t-test.html#cb607-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>, <span class="fl">1.2</span>, <span class="dv">2</span>), <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb607-8"><a href="sec-power-t-test.html#cb607-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb607-9"><a href="sec-power-t-test.html#cb607-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;d = t / sqrt(n)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;2 * (1 - pt(x, n - 1))&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb610"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb610-1"><a href="sec-power-t-test.html#cb610-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">30</span>  <span class="co"># 样本量（只是一个例子）</span></span>
+<span id="cb610-2"><a href="sec-power-t-test.html#cb610-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">12</span>, <span class="fl">0.01</span>)</span>
+<span id="cb610-3"><a href="sec-power-t-test.html#cb610-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb610-4"><a href="sec-power-t-test.html#cb610-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">xx =</span> x<span class="sc">/</span><span class="fu">sqrt</span>(n), <span class="at">yy =</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(x, n <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb610-5"><a href="sec-power-t-test.html#cb610-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat, <span class="fu">aes</span>(<span class="at">x =</span> xx, <span class="at">y =</span> yy)) <span class="sc">+</span></span>
+<span id="cb610-6"><a href="sec-power-t-test.html#cb610-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb610-7"><a href="sec-power-t-test.html#cb610-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>, <span class="fl">1.2</span>, <span class="dv">2</span>), <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb610-8"><a href="sec-power-t-test.html#cb610-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb610-9"><a href="sec-power-t-test.html#cb610-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;d = t / sqrt(n)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;2 * (1 - pt(x, n - 1))&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:power-t-test"></span>
 <img src="power-analysis_files/figure-html/power-t-test-1.png" alt="t 检验的功效" width="672" />
 <p class="caption">
 图 20.1: t 检验的功效
 </p>
 </div>
-<div class="sourceCode" id="cb608"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb608-1"><a href="sec-power-t-test.html#cb608-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage</span>(power.t.test)</span></code></pre></div>
+<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="sec-power-t-test.html#cb611-1" aria-hidden="true" tabindex="-1"></a><span class="fu">usage</span>(power.t.test)</span></code></pre></div>
 <pre><code>power.t.test(n = NULL, delta = NULL, sd = 1, sig.level = 0.05, power = NULL,
     type = c(&quot;two.sample&quot;, &quot;one.sample&quot;, &quot;paired&quot;),
     alternative = c(&quot;two.sided&quot;, &quot;one.sided&quot;), strict = FALSE,
     tol = .Machine$double.eps^0.25)</code></pre>
-<div class="sourceCode" id="cb610"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb610-1"><a href="sec-power-t-test.html#cb610-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(</span>
-<span id="cb610-2"><a href="sec-power-t-test.html#cb610-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>, <span class="at">delta =</span> <span class="fl">2.2</span>,</span>
-<span id="cb610-3"><a href="sec-power-t-test.html#cb610-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb610-4"><a href="sec-power-t-test.html#cb610-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>,</span>
-<span id="cb610-5"><a href="sec-power-t-test.html#cb610-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span></span>
-<span id="cb610-6"><a href="sec-power-t-test.html#cb610-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="sec-power-t-test.html#cb613-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(</span>
+<span id="cb613-2"><a href="sec-power-t-test.html#cb613-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>, <span class="at">delta =</span> <span class="fl">2.2</span>,</span>
+<span id="cb613-3"><a href="sec-power-t-test.html#cb613-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb613-4"><a href="sec-power-t-test.html#cb613-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>,</span>
+<span id="cb613-5"><a href="sec-power-t-test.html#cb613-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span></span>
+<span id="cb613-6"><a href="sec-power-t-test.html#cb613-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## 
 ##      Two-sample t test power calculation 
 ## 
@@ -927,15 +934,15 @@ div.csl-indent {
 </table>
 <p>参数 <code>n</code>，<code>delta</code>，<code>power</code>，<code>sd</code> 和 <code>sig.level</code> 必须有一个值为 <code>NULL</code>，为 <code>NULL</code> 的参数是由其它参数决定的。</p>
 <p><a href="https://en.wikipedia.org/wiki/Jacob_Cohen_(statistician)">Jacob Cohen</a> 提出的 Cohen’s d 和 Cohen’s f 详见书籍 <span class="citation">(<a href="#ref-Cohen1988" role="doc-biblioref">Cohen 1988</a>)</span>，他的代表性文章，地球是圆的 <span class="citation">(<a href="#ref-Cohen_1994_Earth" role="doc-biblioref">Cohen 1994</a>)</span></p>
-<div class="sourceCode" id="cb612"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb612-1"><a href="sec-power-t-test.html#cb612-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 前面 t 检验和方差分析检验的等价功效计算</span></span>
-<span id="cb612-2"><a href="sec-power-t-test.html#cb612-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
-<span id="cb612-3"><a href="sec-power-t-test.html#cb612-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(</span>
-<span id="cb612-4"><a href="sec-power-t-test.html#cb612-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">d =</span> <span class="fl">2.2</span> <span class="sc">/</span> <span class="fl">6.4</span>,</span>
-<span id="cb612-5"><a href="sec-power-t-test.html#cb612-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>,</span>
-<span id="cb612-6"><a href="sec-power-t-test.html#cb612-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
-<span id="cb612-7"><a href="sec-power-t-test.html#cb612-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>,</span>
-<span id="cb612-8"><a href="sec-power-t-test.html#cb612-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span></span>
-<span id="cb612-9"><a href="sec-power-t-test.html#cb612-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="sec-power-t-test.html#cb615-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 前面 t 检验和方差分析检验的等价功效计算</span></span>
+<span id="cb615-2"><a href="sec-power-t-test.html#cb615-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb615-3"><a href="sec-power-t-test.html#cb615-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(</span>
+<span id="cb615-4"><a href="sec-power-t-test.html#cb615-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">d =</span> <span class="fl">2.2</span> <span class="sc">/</span> <span class="fl">6.4</span>,</span>
+<span id="cb615-5"><a href="sec-power-t-test.html#cb615-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span>,</span>
+<span id="cb615-6"><a href="sec-power-t-test.html#cb615-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb615-7"><a href="sec-power-t-test.html#cb615-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>,</span>
+<span id="cb615-8"><a href="sec-power-t-test.html#cb615-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span></span>
+<span id="cb615-9"><a href="sec-power-t-test.html#cb615-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## 
 ##      Two-sample t test power calculation 
 ## 
@@ -946,12 +953,12 @@ div.csl-indent {
 ##     alternative = two.sided
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<div class="sourceCode" id="cb614"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb614-1"><a href="sec-power-t-test.html#cb614-1" aria-hidden="true" tabindex="-1"></a><span class="co"># f 是如何和上面的组间/组内方差等价指定的</span></span>
-<span id="cb614-2"><a href="sec-power-t-test.html#cb614-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.anova.test</span>(</span>
-<span id="cb614-3"><a href="sec-power-t-test.html#cb614-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> <span class="dv">4</span>, <span class="co"># 组数</span></span>
-<span id="cb614-4"><a href="sec-power-t-test.html#cb614-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> <span class="fl">0.5</span>,</span>
-<span id="cb614-5"><a href="sec-power-t-test.html#cb614-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> <span class="fl">0.95</span> <span class="co"># 检验的效</span></span>
-<span id="cb614-6"><a href="sec-power-t-test.html#cb614-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="sec-power-t-test.html#cb617-1" aria-hidden="true" tabindex="-1"></a><span class="co"># f 是如何和上面的组间/组内方差等价指定的</span></span>
+<span id="cb617-2"><a href="sec-power-t-test.html#cb617-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.anova.test</span>(</span>
+<span id="cb617-3"><a href="sec-power-t-test.html#cb617-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> <span class="dv">4</span>, <span class="co"># 组数</span></span>
+<span id="cb617-4"><a href="sec-power-t-test.html#cb617-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> <span class="fl">0.5</span>,</span>
+<span id="cb617-5"><a href="sec-power-t-test.html#cb617-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">power =</span> <span class="fl">0.95</span> <span class="co"># 检验的效</span></span>
+<span id="cb617-6"><a href="sec-power-t-test.html#cb617-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## 
 ##      Balanced one-way analysis of variance power calculation 
 ## 
@@ -962,26 +969,26 @@ div.csl-indent {
 ##           power = 0.95
 ## 
 ## NOTE: n is number in each group</code></pre>
-<div class="sourceCode" id="cb616"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb616-1"><a href="sec-power-t-test.html#cb616-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb616-2"><a href="sec-power-t-test.html#cb616-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aggregate</span>(</span>
-<span id="cb616-3"><a href="sec-power-t-test.html#cb616-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> PlantGrowth, weight <span class="sc">~</span> group,</span>
-<span id="cb616-4"><a href="sec-power-t-test.html#cb616-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">dist_mean =</span> <span class="fu">mean</span>(x), <span class="at">dist_sd =</span> <span class="fu">sd</span>(x))</span>
-<span id="cb616-5"><a href="sec-power-t-test.html#cb616-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb616-6"><a href="sec-power-t-test.html#cb616-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind.data.frame</span>(weight, group)</span>
-<span id="cb616-7"><a href="sec-power-t-test.html#cb616-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb619-1"><a href="sec-power-t-test.html#cb619-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
+<span id="cb619-2"><a href="sec-power-t-test.html#cb619-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aggregate</span>(</span>
+<span id="cb619-3"><a href="sec-power-t-test.html#cb619-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> PlantGrowth, weight <span class="sc">~</span> group,</span>
+<span id="cb619-4"><a href="sec-power-t-test.html#cb619-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">dist_mean =</span> <span class="fu">mean</span>(x), <span class="at">dist_sd =</span> <span class="fu">sd</span>(x))</span>
+<span id="cb619-5"><a href="sec-power-t-test.html#cb619-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb619-6"><a href="sec-power-t-test.html#cb619-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind.data.frame</span>(weight, group)</span>
+<span id="cb619-7"><a href="sec-power-t-test.html#cb619-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="rmdnote">
 <p>R 3.5.0 以后，函数 <code>aggregate</code> 的参数 <code>drop</code> 默认设置为 <code>TRUE</code> 表示扔掉未用来分组的变量，聚合返回的是一个矩阵类型的数据对象。</p>
 </div>
 <p><a href="https://github.com/const-ae/ggsignif"><strong>ggsignif</strong></a> 添加显著性注释</p>
-<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="sec-power-t-test.html#cb617-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb617-2"><a href="sec-power-t-test.html#cb617-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsignif)</span>
-<span id="cb617-3"><a href="sec-power-t-test.html#cb617-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb617-4"><a href="sec-power-t-test.html#cb617-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> PlantGrowth, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> weight)) <span class="sc">+</span></span>
-<span id="cb617-5"><a href="sec-power-t-test.html#cb617-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb617-6"><a href="sec-power-t-test.html#cb617-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_signif</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>), <span class="fu">c</span>(<span class="st">&quot;trt1&quot;</span>, <span class="st">&quot;trt2&quot;</span>)), </span>
-<span id="cb617-7"><a href="sec-power-t-test.html#cb617-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">map_signif_level =</span> <span class="cf">function</span>(p) <span class="fu">sprintf</span>(<span class="st">&quot;p = %.2g&quot;</span>, p), </span>
-<span id="cb617-8"><a href="sec-power-t-test.html#cb617-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">textsize =</span> <span class="dv">6</span>, <span class="at">test =</span> <span class="st">&quot;t.test&quot;</span>) <span class="sc">+</span></span>
-<span id="cb617-9"><a href="sec-power-t-test.html#cb617-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb620"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb620-1"><a href="sec-power-t-test.html#cb620-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb620-2"><a href="sec-power-t-test.html#cb620-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsignif)</span>
+<span id="cb620-3"><a href="sec-power-t-test.html#cb620-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb620-4"><a href="sec-power-t-test.html#cb620-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> PlantGrowth, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> weight)) <span class="sc">+</span></span>
+<span id="cb620-5"><a href="sec-power-t-test.html#cb620-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb620-6"><a href="sec-power-t-test.html#cb620-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_signif</span>(<span class="at">comparisons =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;trt1&quot;</span>), <span class="fu">c</span>(<span class="st">&quot;trt1&quot;</span>, <span class="st">&quot;trt2&quot;</span>)), </span>
+<span id="cb620-7"><a href="sec-power-t-test.html#cb620-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">map_signif_level =</span> <span class="cf">function</span>(p) <span class="fu">sprintf</span>(<span class="st">&quot;p = %.2g&quot;</span>, p), </span>
+<span id="cb620-8"><a href="sec-power-t-test.html#cb620-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">textsize =</span> <span class="dv">6</span>, <span class="at">test =</span> <span class="st">&quot;t.test&quot;</span>) <span class="sc">+</span></span>
+<span id="cb620-9"><a href="sec-power-t-test.html#cb620-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p>无条件 <span class="math inline">\(2 \times 2\)</span> 列联表</p>
 <p>fisher.test <a href="https://en.wikipedia.org/wiki/Fisher&#39;s_exact_test" class="uri">https://en.wikipedia.org/wiki/Fisher's_exact_test</a></p>
 <p><a href="https://cran.r-project.org/package=Exact">Exact</a>

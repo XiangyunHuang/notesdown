@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -890,15 +897,15 @@ s.t.\left\{
  \end{array} \right.
 \end{array} 
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1195-1"><a href="sec-linear-program.html#cb1195-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)</span>
-<span id="cb1195-2"><a href="sec-linear-program.html#cb1195-2" aria-hidden="true" tabindex="-1"></a>f.obj <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>)</span>
-<span id="cb1195-3"><a href="sec-linear-program.html#cb1195-3" aria-hidden="true" tabindex="-1"></a>f.con <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1195-4"><a href="sec-linear-program.html#cb1195-4" aria-hidden="true" tabindex="-1"></a>f.dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>)</span>
-<span id="cb1195-5"><a href="sec-linear-program.html#cb1195-5" aria-hidden="true" tabindex="-1"></a>f.rhs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">6</span>)</span>
-<span id="cb1195-6"><a href="sec-linear-program.html#cb1195-6" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lp</span>(<span class="st">&quot;min&quot;</span>, f.obj, f.con, f.dir, f.rhs)</span>
-<span id="cb1195-7"><a href="sec-linear-program.html#cb1195-7" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1198-1"><a href="sec-linear-program.html#cb1198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)</span>
+<span id="cb1198-2"><a href="sec-linear-program.html#cb1198-2" aria-hidden="true" tabindex="-1"></a>f.obj <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>)</span>
+<span id="cb1198-3"><a href="sec-linear-program.html#cb1198-3" aria-hidden="true" tabindex="-1"></a>f.con <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1198-4"><a href="sec-linear-program.html#cb1198-4" aria-hidden="true" tabindex="-1"></a>f.dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>)</span>
+<span id="cb1198-5"><a href="sec-linear-program.html#cb1198-5" aria-hidden="true" tabindex="-1"></a>f.rhs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">6</span>)</span>
+<span id="cb1198-6"><a href="sec-linear-program.html#cb1198-6" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lp</span>(<span class="st">&quot;min&quot;</span>, f.obj, f.con, f.dir, f.rhs)</span>
+<span id="cb1198-7"><a href="sec-linear-program.html#cb1198-7" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] -31.4</code></pre>
-<div class="sourceCode" id="cb1197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1197-1"><a href="sec-linear-program.html#cb1197-1" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1200-1"><a href="sec-linear-program.html#cb1200-1" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] 2.4 3.4</code></pre>
 </div>
             </section>

@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -850,8 +857,8 @@ div.csl-indent {
 <p>BirthWeight 数据集记录了婴儿的体重随年龄的变化情况，年龄以周为单位计，体重以克为单位计</p>
 <p><img src="linear-models_files/figure-html/Birth-Weight-1.png" width="672" style="display: block; margin: auto;" /><img src="linear-models_files/figure-html/Birth-Weight-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>性别和年龄两个变量，分别是离散型的分类变量和连续型的变量</p>
-<div class="sourceCode" id="cb705"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb705-1"><a href="sec-BirthWeight.html#cb705-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 带截距项和不带截距项</span></span>
-<span id="cb705-2"><a href="sec-BirthWeight.html#cb705-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(l1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb708"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb708-1"><a href="sec-BirthWeight.html#cb708-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 带截距项和不带截距项</span></span>
+<span id="cb708-2"><a href="sec-BirthWeight.html#cb708-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(l1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = birthw ~ sex + age)
@@ -876,7 +883,7 @@ div.csl-indent {
 ##      (Intercept) sexF 
 ## sexF  0.07            
 ## age  -1.00       -0.12</code></pre>
-<div class="sourceCode" id="cb707"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb707-1"><a href="sec-BirthWeight.html#cb707-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(l1)</span></code></pre></div>
+<div class="sourceCode" id="cb710"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb710-1"><a href="sec-BirthWeight.html#cb710-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(l1)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: birthw
@@ -886,8 +893,8 @@ div.csl-indent {
 ## Residuals 21  658771   31370                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb709"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb709-1"><a href="sec-BirthWeight.html#cb709-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 与带交互项的模型比较</span></span>
-<span id="cb709-2"><a href="sec-BirthWeight.html#cb709-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(li <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> sex<span class="sc">:</span>age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb712"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb712-1"><a href="sec-BirthWeight.html#cb712-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 与带交互项的模型比较</span></span>
+<span id="cb712-2"><a href="sec-BirthWeight.html#cb712-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(li <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> sex<span class="sc">:</span>age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = birthw ~ sex + sex:age)
@@ -914,7 +921,7 @@ div.csl-indent {
 ## sexF     -0.69                     
 ## sexM:age -1.00        0.69         
 ## sexF:age  0.00       -0.72  0.00</code></pre>
-<div class="sourceCode" id="cb711"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb711-1"><a href="sec-BirthWeight.html#cb711-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(li, l1)</span></code></pre></div>
+<div class="sourceCode" id="cb714"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb714-1"><a href="sec-BirthWeight.html#cb714-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(li, l1)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: birthw ~ sex + sex:age
@@ -922,8 +929,8 @@ div.csl-indent {
 ##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
 ## 1     20 652425                           
 ## 2     21 658771 -1   -6346.2 0.1945 0.6639</code></pre>
-<div class="sourceCode" id="cb713"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb713-1"><a href="sec-BirthWeight.html#cb713-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类似，只是使用 glm 命令来拟合而已</span></span>
-<span id="cb713-2"><a href="sec-BirthWeight.html#cb713-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zi <span class="ot">&lt;-</span> <span class="fu">glm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">family =</span> <span class="fu">gaussian</span>()))</span></code></pre></div>
+<div class="sourceCode" id="cb716"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb716-1"><a href="sec-BirthWeight.html#cb716-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类似，只是使用 glm 命令来拟合而已</span></span>
+<span id="cb716-2"><a href="sec-BirthWeight.html#cb716-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zi <span class="ot">&lt;-</span> <span class="fu">glm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">family =</span> <span class="fu">gaussian</span>()))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = birthw ~ sex + age, family = gaussian())
@@ -947,7 +954,7 @@ div.csl-indent {
 ## AIC: 321.39
 ## 
 ## Number of Fisher Scoring iterations: 2</code></pre>
-<div class="sourceCode" id="cb715"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb715-1"><a href="sec-BirthWeight.html#cb715-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi)</span></code></pre></div>
+<div class="sourceCode" id="cb718"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb718-1"><a href="sec-BirthWeight.html#cb718-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model: gaussian, link: identity
@@ -961,8 +968,8 @@ div.csl-indent {
 ## NULL                    23    1829873
 ## sex   1    76163        22    1753711
 ## age   1  1094940        21     658771</code></pre>
-<div class="sourceCode" id="cb717"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb717-1"><a href="sec-BirthWeight.html#cb717-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(z.o4 &lt;- update(zi, subset = -4))</span></span>
-<span id="cb717-2"><a href="sec-BirthWeight.html#cb717-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zz <span class="ot">&lt;-</span> <span class="fu">update</span>(zi, birthw <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sex<span class="sc">:</span>age))</span></code></pre></div>
+<div class="sourceCode" id="cb720"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb720-1"><a href="sec-BirthWeight.html#cb720-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(z.o4 &lt;- update(zi, subset = -4))</span></span>
+<span id="cb720-2"><a href="sec-BirthWeight.html#cb720-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zz <span class="ot">&lt;-</span> <span class="fu">update</span>(zi, birthw <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sex<span class="sc">:</span>age))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = birthw ~ sex + age + sex:age, family = gaussian())
@@ -987,7 +994,7 @@ div.csl-indent {
 ## AIC: 323.16
 ## 
 ## Number of Fisher Scoring iterations: 2</code></pre>
-<div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb719-1"><a href="sec-BirthWeight.html#cb719-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi, zz)</span></code></pre></div>
+<div class="sourceCode" id="cb722"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb722-1"><a href="sec-BirthWeight.html#cb722-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi, zz)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model 1: birthw ~ sex + age

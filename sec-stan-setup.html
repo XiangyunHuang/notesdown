@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -848,21 +855,21 @@ div.csl-indent {
 <div id="sec:stan-setup" class="section level2" number="30.1">
 <h2><span class="header-section-number">30.1</span> 软件配置</h2>
 <p>从 GitHub 下载最新版的源码包 <a href="https://github.com/stan-dev/cmdstan/releases/latest" class="uri">https://github.com/stan-dev/cmdstan/releases/latest</a>，编译二进制版本</p>
-<div class="sourceCode" id="cb932"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb932-1"><a href="sec-stan-setup.html#cb932-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> /Users/xiangyun/Desktop/cmdstan-2.26.0.tar.gz <span class="at">-C</span> /opt/</span>
-<span id="cb932-2"><a href="sec-stan-setup.html#cb932-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cmdstan-2.26.0</span>
-<span id="cb932-3"><a href="sec-stan-setup.html#cb932-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> build</span></code></pre></div>
+<div class="sourceCode" id="cb935"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb935-1"><a href="sec-stan-setup.html#cb935-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> /Users/xiangyun/Desktop/cmdstan-2.26.0.tar.gz <span class="at">-C</span> /opt/</span>
+<span id="cb935-2"><a href="sec-stan-setup.html#cb935-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cmdstan-2.26.0</span>
+<span id="cb935-3"><a href="sec-stan-setup.html#cb935-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> build</span></code></pre></div>
 <p>设置环境变量 CMDSTAN 指向 CmdStan 安装路径，加载 <strong>cmdstanr</strong> 包会自动检测和加载</p>
-<div class="sourceCode" id="cb933"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb933-1"><a href="sec-stan-setup.html#cb933-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">CMDSTAN=</span><span class="st">&quot;/opt/cmdstan-2.26.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb936"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb936-1"><a href="sec-stan-setup.html#cb936-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">CMDSTAN=</span><span class="st">&quot;/opt/cmdstan-2.26.0&quot;</span>)</span></code></pre></div>
 <p>还可以设置环境变量 <code>CMDSTANR_NO_VER_CHECK=TRUE</code>，让 cmdstanr 不要检查 CmdStan 版本状态，是不是最新版，比如本书将固定下 CmdStan 版本为 2.26.0</p>
 <p><strong>cmdstanr</strong> 当前还在开发中，安装方式如下</p>
-<div class="sourceCode" id="cb934"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb934-1"><a href="sec-stan-setup.html#cb934-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&#39;stan-dev/cmdstanr&#39;</span>)</span>
-<span id="cb934-2"><a href="sec-stan-setup.html#cb934-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
-<span id="cb934-3"><a href="sec-stan-setup.html#cb934-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;cmdstanr&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;https://mc-stan.org/r-packages/&quot;</span>, <span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb937"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb937-1"><a href="sec-stan-setup.html#cb937-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&#39;stan-dev/cmdstanr&#39;</span>)</span>
+<span id="cb937-2"><a href="sec-stan-setup.html#cb937-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
+<span id="cb937-3"><a href="sec-stan-setup.html#cb937-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;cmdstanr&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;https://mc-stan.org/r-packages/&quot;</span>, <span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>)))</span></code></pre></div>
 <p>另有一篇博文介绍在 <a href="https://www.maxmantei.com/blog/2020-05-16-installing-cmdstanr-on-windows/cmdstanr-windows/">Windows 系统上安装 cmdstanr</a> 的过程，这里不做展开。</p>
-<div class="sourceCode" id="cb935"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb935-1"><a href="sec-stan-setup.html#cb935-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rstan</span></span>
-<span id="cb935-2"><a href="sec-stan-setup.html#cb935-2" aria-hidden="true" tabindex="-1"></a><span class="co"># brms</span></span>
-<span id="cb935-3"><a href="sec-stan-setup.html#cb935-3" aria-hidden="true" tabindex="-1"></a><span class="co"># rstanarm</span></span>
-<span id="cb935-4"><a href="sec-stan-setup.html#cb935-4" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&#39;rmcelreath/rethinking&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb938"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb938-1"><a href="sec-stan-setup.html#cb938-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rstan</span></span>
+<span id="cb938-2"><a href="sec-stan-setup.html#cb938-2" aria-hidden="true" tabindex="-1"></a><span class="co"># brms</span></span>
+<span id="cb938-3"><a href="sec-stan-setup.html#cb938-3" aria-hidden="true" tabindex="-1"></a><span class="co"># rstanarm</span></span>
+<span id="cb938-4"><a href="sec-stan-setup.html#cb938-4" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&#39;rmcelreath/rethinking&#39;</span>)</span></code></pre></div>
 </div>
             </section>
 

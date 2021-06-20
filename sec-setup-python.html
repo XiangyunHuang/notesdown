@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -143,10 +143,17 @@
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
-<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<script src="libs/jszip-1.10.20/jszip.min.js"></script>
+<script src="libs/pdfmake-1.10.20/pdfmake.js"></script>
+<script src="libs/pdfmake-1.10.20/vfs_fonts.js"></script>
+<link href="libs/dt-ext-buttons-1.10.20/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-buttons-1.10.20/js/dataTables.buttons.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.flash.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.html5.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.colVis.min.js"></script>
+<script src="libs/dt-ext-buttons-1.10.20/js/buttons.print.min.js"></script>
+<link href="libs/dt-ext-rowgroup-1.10.20/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-rowgroup-1.10.20/js/dataTables.rowGroup.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -850,27 +857,27 @@ div.csl-indent {
 <p>首先创建一个 Python 虚拟环境，环境隔离可以减少对系统的侵入，方便迭代更新和项目管理。创建一个虚拟环境，步骤非常简单，下面以 CentOS 8 为例：</p>
 <ol style="list-style-type: decimal">
 <li><p>安装虚拟模块 virtualenv</p>
-<div class="sourceCode" id="cb1358"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1358-1"><a href="sec-setup-python.html#cb1358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> virtualenv</span></code></pre></div></li>
+<div class="sourceCode" id="cb1361"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1361-1"><a href="sec-setup-python.html#cb1361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> virtualenv</span></code></pre></div></li>
 <li><p>准备 Python 虚拟环境存放位置</p>
-<div class="sourceCode" id="cb1359"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1359-1"><a href="sec-setup-python.html#cb1359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
+<div class="sourceCode" id="cb1362"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1362-1"><a href="sec-setup-python.html#cb1362-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mkdir <span class="at">-p</span> /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
 <li><p>给虚拟环境必要的访问权限</p>
-<div class="sourceCode" id="cb1360"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1360-1"><a href="sec-setup-python.html#cb1360-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span>:<span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
+<div class="sourceCode" id="cb1363"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1363-1"><a href="sec-setup-python.html#cb1363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> <span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span>:<span class="va">$(</span><span class="fu">whoami</span><span class="va">)</span> /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
 <li><p>初始化虚拟环境</p>
-<div class="sourceCode" id="cb1361"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1361-1"><a href="sec-setup-python.html#cb1361-1" aria-hidden="true" tabindex="-1"></a><span class="ex">virtualenv</span> <span class="at">-p</span> /usr/bin/python3 /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
+<div class="sourceCode" id="cb1364"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1364-1"><a href="sec-setup-python.html#cb1364-1" aria-hidden="true" tabindex="-1"></a><span class="ex">virtualenv</span> <span class="at">-p</span> /usr/bin/python3 /opt/.virtualenvs/r-tensorflow</span></code></pre></div></li>
 <li><p>激活虚拟环境，安装必要的模块</p>
-<div class="sourceCode" id="cb1362"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1362-1"><a href="sec-setup-python.html#cb1362-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /opt/.virtualenvs/r-tensorflow/bin/activate</span>
-<span id="cb1362-2"><a href="sec-setup-python.html#cb1362-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install numpy</span></code></pre></div></li>
+<div class="sourceCode" id="cb1365"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1365-1"><a href="sec-setup-python.html#cb1365-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /opt/.virtualenvs/r-tensorflow/bin/activate</span>
+<span id="cb1365-2"><a href="sec-setup-python.html#cb1365-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install numpy</span></code></pre></div></li>
 </ol>
 <p>一般来讲，系统自带的 pip 版本较低，可以考虑升级 pip 版本。</p>
-<div class="sourceCode" id="cb1363"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1363-1"><a href="sec-setup-python.html#cb1363-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple pip <span class="at">-U</span></span></code></pre></div>
+<div class="sourceCode" id="cb1366"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1366-1"><a href="sec-setup-python.html#cb1366-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple pip <span class="at">-U</span></span></code></pre></div>
 <p>根据项目配置文件 requirements.txt 安装多个 Python 模块，每个 Python 项目都应该有这么个文件来描述项目需要的依赖环境，包含 Python 模块及其版本号。</p>
-<div class="sourceCode" id="cb1364"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1364-1"><a href="sec-setup-python.html#cb1364-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple <span class="at">-r</span> requirements.txt</span></code></pre></div>
+<div class="sourceCode" id="cb1367"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1367-1"><a href="sec-setup-python.html#cb1367-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple <span class="at">-r</span> requirements.txt</span></code></pre></div>
 <p>指定 Python 模块的镜像地址，加快下载速度，特别是对于国内的环境，加速镜像站点非常有意义，特别是遇到大型的 Python 模块，比如 tensorflow 框架</p>
-<div class="sourceCode" id="cb1365"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1365-1"><a href="sec-setup-python.html#cb1365-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple tensorflow</span></code></pre></div>
+<div class="sourceCode" id="cb1368"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1368-1"><a href="sec-setup-python.html#cb1368-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple tensorflow</span></code></pre></div>
 <p>conda 创建 Python 3.8 虚拟环境，并命名为 tensorflow</p>
-<div class="sourceCode" id="cb1366"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1366-1"><a href="sec-setup-python.html#cb1366-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> tensorflow python=3.8</span></code></pre></div>
+<div class="sourceCode" id="cb1369"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1369-1"><a href="sec-setup-python.html#cb1369-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> tensorflow python=3.8</span></code></pre></div>
 <p>激活 tensorflow 环境</p>
-<div class="sourceCode" id="cb1367"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1367-1"><a href="sec-setup-python.html#cb1367-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate tensorflow</span></code></pre></div>
+<div class="sourceCode" id="cb1370"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1370-1"><a href="sec-setup-python.html#cb1370-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate tensorflow</span></code></pre></div>
 </div>
             </section>
 
