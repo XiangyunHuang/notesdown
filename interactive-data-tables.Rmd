@@ -51,8 +51,9 @@ datatable(pkg_pdb[order(pkg_pdb$Maintainer, decreasing = T), ],
   extensions = c("Buttons", "RowGroup"),
   options = list(
     pageLength = 10, # 每页显示的行数
+    language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
     dom = "Brtp", # 去掉显示行数 i、过滤 f 的能力，翻页用 p 表示
-    ordering = F, # 去掉列排序能力
+    ordering = F, # 去掉列排序
     buttons = c("copy", "csv", "excel", "pdf", "print"), # 提供打印按钮
     rowGroup = list(dataSrc = 0), # 按 Maintainer 列分组
     columnDefs = list(
@@ -96,9 +97,9 @@ library(tibble)
 
 dat = tribble(
   ~name1, ~name2,
-  as.character(htmltools::tags$b("加粗")), '<a href="http://rstudio.com">超链</a>', # 支持超链接
-  as.character(htmltools::em("强调")), '<a href="#" onclick="alert(\'Hello\');">点击</a>',
-  colorize_text("正常", "green"), '正常'
+  as.character(htmltools::tags$b("加粗")), as.character(htmltools::a(href = "https://rstudio.com", "超链")), # 支持超链接
+  as.character(htmltools::em("强调")), '<a href="#" onclick="alert(\'Hello World\');">Hello</a>',
+  as.character(htmltools::span(style = 'color:red', "正常")), '正常'
 )
 
 datatable(
@@ -111,10 +112,8 @@ datatable(
   ), # 在表格底部显示标题，默认在表格上方显示标题
   # filter = "top", # 过滤框
   options = list(
-    language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
     pageLength = 5, # 每页显示5行
-    dom = "tip",
-    autoWidth = TRUE # 自动页面宽度
+    dom = "t"
   )
 )
 ```
