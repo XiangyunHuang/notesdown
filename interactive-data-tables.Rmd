@@ -21,35 +21,102 @@ Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78
 [DT](https://github.com/rstudio/DT) 基于 jQuery 的 JS 库 [DataTables](https://datatables.net/) 提供了一个 R 的封装，封装工具和许多其他基于 JS 库的 R 包一样，比如即将介绍的 **reactable** 包，都依赖于 [htmlwidgets](https://github.com/ramnathv/htmlwidgets)。
 
 ```{r}
+library(magrittr)
+```
+
+```{r}
+if (!is.na(Sys.getenv('CI', NA))) {
+  Sys.setenv(R_CRAN_WEB = "https://cloud.r-project.org/")
+} else {
+  Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN")
+}
+
+pdb <- tools::CRAN_package_db()
+sub_pdb <- subset(pdb, subset = !duplicated(pdb[, "Package"]) & pdb[, "Package"] %in% .packages(T))
+pkg_pdb <- subset(sub_pdb,
+  subset = grepl("Yihui Xie", sub_pdb[, "Maintainer"]) | grepl("Hadley Wickham", sub_pdb[, "Maintainer"]),
+  select = c("Maintainer", "Package", "Version", "Published", "Title")
+)
+
+pkg_pdb <- transform(pkg_pdb, Title = gsub("(\\\n)", " ", Title))
+```
+
+```{r}
 library(DT)
 ```
 
-```{r custom-dt-table,eval=knitr::is_html_output()}
-data.frame(name1 = c(
-  "<b>加粗</b>",
-  "<em>强调</em>",
-  "正常"
-), name2 = c(
-  '<a href="http://rstudio.com">超链</a>', # 支持超链接
-  '<a href="#" onclick="alert(\'Hello\');">点击</a>',
-  '正常'
-)) %>%
-  datatable(
-    data = .,
-    escape = F, # 设置 escape = F
-    colnames = c('<span style="color:red">第1列</span>', "<em>第2列</em>"),
-    caption = htmltools::tags$caption(
-      style = "caption-side: top; text-align: center;",
-      "表格 2: ", htmltools::em("表格标题")
-    ), # 在表格底部显示标题，默认在表格上方显示标题
-    filter = "top", # 过滤框
-    options = list(
-      language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
-      pageLength = 5, # 每页显示5行
-      dom = "tip",
-      autoWidth = TRUE # 自动页面宽度
+```{r custom-ext-table,eval=knitr::is_html_output()}
+datatable(pkg_pdb[order(pkg_pdb$Maintainer, decreasing = T), ],
+  rownames = F, # 不显示行名
+  extensions = c("Buttons", "RowGroup"),
+  options = list(
+    pageLength = 10, # 每页显示的行数
+    dom = "Brtp", # 去掉显示行数 i、过滤 f 的能力，翻页用 p 表示
+    ordering = F, # 去掉列排序能力
+    buttons = c("copy", "csv", "excel", "pdf", "print"), # 提供打印按钮
+    rowGroup = list(dataSrc = 0), # 按 Maintainer 列分组
+    columnDefs = list(
+      list(className = "dt-center", targets = 0), # 不显示行名，则 targets 从 0 开始，否则从 1 开始
+      list(visible = FALSE, targets = 0) # 不显示 Maintainer 列
     )
+  ),
+  caption = "谢大和哈神维护的 R 包"
+)
+```
+
+
+
+
+```{r custom-dt-table,eval=knitr::is_html_output()}
+colorize_num <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", x),
+    sprintf("<span style='color:%s'>%s</span>", "red", x)
   )
+}
+colorize_pct <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", scales::percent(x, accuracy = 0.01)),
+    sprintf("<span style='color:%s'>%s</span>", "red", scales::percent(x, accuracy = 0.01))
+  )
+}
+
+colorize_pp <- function(x) {
+  ifelse(x > 0,
+    sprintf("<span style='color:%s'>%s</span>", "green", paste0(round(100*x, digits = 2), "PP")),
+    sprintf("<span style='color:%s'>%s</span>", "red", paste0(round(100*x, digits = 2), "PP"))
+  )
+}
+
+colorize_text <- function(x, color = "red") {
+    sprintf("<span style='color:%s'>%s</span>", color, x )
+}
+
+library(tibble)
+
+dat = tribble(
+  ~name1, ~name2,
+  as.character(htmltools::tags$b("加粗")), '<a href="http://rstudio.com">超链</a>', # 支持超链接
+  as.character(htmltools::em("强调")), '<a href="#" onclick="alert(\'Hello\');">点击</a>',
+  colorize_text("正常", "green"), '正常'
+)
+
+datatable(
+  data = dat,
+  escape = F, # 设置 escape = F
+  colnames = c(colorize_text("第1列", "red"), as.character(htmltools::em("第2列"))),
+  caption = htmltools::tags$caption(
+    style = "caption-side: top; text-align: center;",
+    "表格 2: ", htmltools::em("表格标题")
+  ), # 在表格底部显示标题，默认在表格上方显示标题
+  # filter = "top", # 过滤框
+  options = list(
+    language = list(url = "//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"), # 汉化
+    pageLength = 5, # 每页显示5行
+    dom = "tip",
+    autoWidth = TRUE # 自动页面宽度
+  )
+)
 ```
 
 下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
