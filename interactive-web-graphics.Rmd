@@ -19,6 +19,7 @@ library(plotly, warn.conflicts = FALSE)
 # ggplotly <- plotly::ggplotly
 ```
 
+
 ::: {.rmdtip data-latex="{提示}"}
 plotly 包的函数使用起来还是比较复杂的，特别是需要打磨细节以打造数据产品时，此外，其依赖相当重，仅数据处理就包含两套方法 --- dplyr 和 data.table，引起很多函数冲突，可谓「苦其久矣」！因此，准备另起炉灶，开发一个新的 R 包 qplotly，取意 quick plotly，以 `qplot_ly()` 替代 `plot_ly()`。类似简化 API 的工作有 [simplevis](https://github.com/StatisticsNZ/simplevis)、
 [autoplotly](https://github.com/terrytangyuan/autoplotly)、
@@ -29,18 +30,14 @@ Paul C. Bauer 的书 [Applied Data Visualization](https://bookdown.org/paul/appl
 :::
 
 [echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
+[ECharts2Shiny](https://github.com/XD-DENG/ECharts2Shiny) 包将 ECharts 嵌入 shiny 框架中。
 
-[billboarder](https://github.com/dreamRs/billboarder)
 
-[dygraphs](https://github.com/rstudio/dygraphs) 包基于 [dygraphs](https://github.com/danvk/dygraphs) 可视化库，将时序数据可视化，更多情况见 <https://dygraphs.com/>。
+[timevis](https://github.com/daattali/timevis) 创建交互式的时间线的时序可视化，它基于 [Vis](https://visjs.org/) 的 [vis-timeline](https://github.com/visjs/vis-timeline) 模块，支持 shiny 集成。[dygraphs](https://github.com/rstudio/dygraphs) 包基于 [dygraphs](https://github.com/danvk/dygraphs) 可视化库，将时序数据可视化，更多情况见 <https://dygraphs.com/>。[leaflet](https://github.com/rstudio/leaflet) 提供 [leaflet](https://leafletjs.com/) 的 R 接口。[apexcharter](https://github.com/dreamRs/apexcharter) 提供 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 R 接口。还有 [billboarder](https://github.com/dreamRs/billboarder) 等。更完整地，请看 Etienne Bacher 维护的 R 包列表 [r-js-adaptation](https://github.com/etiennebacher/r-js-adaptation) 。
 
-[leaflet](https://github.com/rstudio/leaflet) 提供 [leaflet](https://leafletjs.com/) 的 R 接口
 
-[timevis](https://github.com/daattali/timevis) 创建交互式的时间线的时序可视化，它基于 [Vis](https://visjs.org/) 的 [vis-timeline](https://github.com/visjs/vis-timeline) 模块，支持 shiny 集成。
+对于想了解 htmlwidgets 框架，JavaScript 响应式编程的读者，推荐 John Coene 新书 [JavaScript for R](https://book.javascript-for-r.com/)
 
-[ECharts2Shiny](https://github.com/XD-DENG/ECharts2Shiny) 包也是将 ECharts 嵌入 shiny 框架中。
-
-对于想了解 htmlwidgets 框架，JavaScript 响应式编程的读者，推荐 John Coene 新书 [JavaScript for R](https://book.javascript-for-r.com/) 
 
 ::: {.rmdtip data-latex="{提示}"}
 学习 [plotly](https://github.com/ropensci/plotly) 和 [highcharter](https://github.com/jbkunst/highcharter) 为代表的 基于 JavaScript 的 R 包，共有四重境界：第一重是照着帮助文档的示例，示例有啥我们做啥；第二重是明白帮助文档中 R 函数和 JavaScript 函数的对应关系，能力达到 JS 库的功能边界；第三重是深度自定义一些扩展性的 JS 功能，放飞自我；第四重是重新造轮子，为所欲为。下面的介绍希望能帮助读者到达第二重境界。
@@ -86,16 +83,21 @@ plot_ly(diamonds,
 ) %>%
   config(
     toImageButtonOptions = list(
-      format = "svg", filename = paste("plot", Sys.Date(), sep = "_")
-    ),
+      format = "svg", filename = paste("plot", Sys.Date(), sep = "_"),
+      width = 450, height = 300 
+      # 设置下载图片的尺寸 https://github.com/ropensci/plotly/issues/1556#issuecomment-505833092
+    ), # 还可设置为 PNG 格式，可用 rsvg 的 rsvg_pdf 函数转化为 PDF
+    modeBarButtons = list(list("toImage")), # 保留下载按钮
+    # 完整的列表见 https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js
     watermark = F,
     displaylogo = FALSE, # 移除 Plotly 的 logo
     locale = "zh-CN", # 汉化
+    # staticPlot = TRUE, # 静态图形而不是交互图形
     # modeBarButtonsToRemove = c(
     #   "zoom2d", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d", "pan2d",
     #   "hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"
     # ), # 去掉任意一个按钮
-    displayModeBar = FALSE, # 去掉整个顶部工具栏
+    # displayModeBar = FALSE, # 去掉整个顶部工具栏
     showLink = FALSE
   ) %>%
   layout(
@@ -155,14 +157,7 @@ ggplotly(gg, dynamicTicks = "y") %>%
         hoverlabel = list(bgcolor = "white"))
 ```
 
-## 图形导出 {#sec:export}
 
-orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形具有很强的导出功能，[安装 orca](https://github.com/plotly/orca#installation) 后，`plotly::orca()` 函数可以将基于 htmlwidgets 的 plotly 图形对象导出为 PNG、PDF 和 SVG 等格式的高质量静态图片。
-
-```{r,eval=FALSE}
-p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
-orca(p, "plot.svg")
-```
 
 ## 散点图 {#sec:plotly-scatter}
 
@@ -1433,6 +1428,14 @@ dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") %>%
   dyUnzoom()
 ```
 
+## 图形导出 {#sec:export}
+
+orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形具有很强的导出功能，[安装 orca](https://github.com/plotly/orca#installation) 后，`plotly::orca()` 函数可以将基于 htmlwidgets 的 plotly 图形对象导出为 PNG、PDF 和 SVG 等格式的高质量静态图片。
+
+```{r,eval=FALSE}
+p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
+orca(p, "plot.svg")
+```
 
 ## 其他 JS 库 {#sec:r2d3}
 
