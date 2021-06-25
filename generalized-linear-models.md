@@ -145,8 +145,18 @@ bottom_row <- plot_grid(p2, p3, labels = c('B', 'C'), label_size = 12)
 
 ```
 ## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
+```
 
+```
+## Warning: Removed 12 rows containing missing values (geom_point).
+```
+
+```
 ## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
+```
+
+```
+## Warning: Removed 12 rows containing missing values (geom_point).
 ```
 
 ```r
@@ -155,6 +165,8 @@ plot_grid(p1, bottom_row, labels = c('A', ''), label_size = 12, ncol = 1)
 
 ```
 ## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
+
+## Warning: Removed 12 rows containing missing values (geom_point).
 ```
 
 <div class="figure" style="text-align: center">

@@ -33,7 +33,7 @@
   
 <link rel="prev" href="sec-housing.html"/>
 <link rel="next" href="sec-generalized-log-linear-model.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.3/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.4.1/plotly.js"></script>
 <script src="libs/mathjax-2.7.4/cdn.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
@@ -857,38 +857,38 @@ div.csl-indent {
 <h2><span class="header-section-number">23.8</span> 癫痫病发作次数</h2>
 <p>纵向数据 <span class="citation">(<a href="#ref-Peter_1990_epil" role="doc-biblioref">Thall and Vail 1990</a>)</span>，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立</p>
 <p>数据集 epil 记录癫痫发作的次数及病人的特征，下面是数据建模分析过程</p>
-<div class="sourceCode" id="cb800"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb800-1"><a href="sec-epileptics-counts.html#cb800-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(epil, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
-<span id="cb800-2"><a href="sec-epileptics-counts.html#cb800-2" aria-hidden="true" tabindex="-1"></a>fit_glm_epil <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
-<span id="cb800-3"><a href="sec-epileptics-counts.html#cb800-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson,</span>
-<span id="cb800-4"><a href="sec-epileptics-counts.html#cb800-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> epil</span>
-<span id="cb800-5"><a href="sec-epileptics-counts.html#cb800-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb800-6"><a href="sec-epileptics-counts.html#cb800-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glm_epil)</span>
-<span id="cb800-7"><a href="sec-epileptics-counts.html#cb800-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-8"><a href="sec-epileptics-counts.html#cb800-8" aria-hidden="true" tabindex="-1"></a>fit_glmm_epil<span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
-<span id="cb800-9"><a href="sec-epileptics-counts.html#cb800-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> subject,</span>
-<span id="cb800-10"><a href="sec-epileptics-counts.html#cb800-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson, <span class="at">data =</span> epil</span>
-<span id="cb800-11"><a href="sec-epileptics-counts.html#cb800-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb800-12"><a href="sec-epileptics-counts.html#cb800-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_epil)</span>
-<span id="cb800-13"><a href="sec-epileptics-counts.html#cb800-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-14"><a href="sec-epileptics-counts.html#cb800-14" aria-hidden="true" tabindex="-1"></a>fit_glmm_lme4 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject),</span>
-<span id="cb800-15"><a href="sec-epileptics-counts.html#cb800-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson, <span class="at">data =</span> epil</span>
-<span id="cb800-16"><a href="sec-epileptics-counts.html#cb800-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb800-17"><a href="sec-epileptics-counts.html#cb800-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_lme4)</span>
-<span id="cb800-18"><a href="sec-epileptics-counts.html#cb800-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-19"><a href="sec-epileptics-counts.html#cb800-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-20"><a href="sec-epileptics-counts.html#cb800-20" aria-hidden="true" tabindex="-1"></a>fit_glmm_glmmtmb <span class="ot">&lt;-</span> glmmTMB<span class="sc">::</span><span class="fu">glmmTMB</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject),</span>
-<span id="cb800-21"><a href="sec-epileptics-counts.html#cb800-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> epil, <span class="at">family =</span> poisson, <span class="at">REML =</span> <span class="cn">TRUE</span></span>
-<span id="cb800-22"><a href="sec-epileptics-counts.html#cb800-22" aria-hidden="true" tabindex="-1"></a>) <span class="co"># REML 估计</span></span>
-<span id="cb800-23"><a href="sec-epileptics-counts.html#cb800-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_glmmtmb)</span>
-<span id="cb800-24"><a href="sec-epileptics-counts.html#cb800-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-25"><a href="sec-epileptics-counts.html#cb800-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb800-26"><a href="sec-epileptics-counts.html#cb800-26" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/drizopoulos/GLMMadaptive</span></span>
-<span id="cb800-27"><a href="sec-epileptics-counts.html#cb800-27" aria-hidden="true" tabindex="-1"></a>fit_glmm_glmmadaptive <span class="ot">&lt;-</span> GLMMadaptive<span class="sc">::</span><span class="fu">mixed_model</span>(</span>
-<span id="cb800-28"><a href="sec-epileptics-counts.html#cb800-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">fixed =</span> y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
-<span id="cb800-29"><a href="sec-epileptics-counts.html#cb800-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> subject, <span class="at">data =</span> epil,</span>
-<span id="cb800-30"><a href="sec-epileptics-counts.html#cb800-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>()</span>
-<span id="cb800-31"><a href="sec-epileptics-counts.html#cb800-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb800-32"><a href="sec-epileptics-counts.html#cb800-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_glmmadaptive)</span></code></pre></div>
+<div class="sourceCode" id="cb803"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb803-1"><a href="sec-epileptics-counts.html#cb803-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(epil, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb803-2"><a href="sec-epileptics-counts.html#cb803-2" aria-hidden="true" tabindex="-1"></a>fit_glm_epil <span class="ot">&lt;-</span> <span class="fu">glm</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
+<span id="cb803-3"><a href="sec-epileptics-counts.html#cb803-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson,</span>
+<span id="cb803-4"><a href="sec-epileptics-counts.html#cb803-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> epil</span>
+<span id="cb803-5"><a href="sec-epileptics-counts.html#cb803-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb803-6"><a href="sec-epileptics-counts.html#cb803-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glm_epil)</span>
+<span id="cb803-7"><a href="sec-epileptics-counts.html#cb803-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-8"><a href="sec-epileptics-counts.html#cb803-8" aria-hidden="true" tabindex="-1"></a>fit_glmm_epil<span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">glmmPQL</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
+<span id="cb803-9"><a href="sec-epileptics-counts.html#cb803-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> subject,</span>
+<span id="cb803-10"><a href="sec-epileptics-counts.html#cb803-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson, <span class="at">data =</span> epil</span>
+<span id="cb803-11"><a href="sec-epileptics-counts.html#cb803-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb803-12"><a href="sec-epileptics-counts.html#cb803-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_epil)</span>
+<span id="cb803-13"><a href="sec-epileptics-counts.html#cb803-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-14"><a href="sec-epileptics-counts.html#cb803-14" aria-hidden="true" tabindex="-1"></a>fit_glmm_lme4 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject),</span>
+<span id="cb803-15"><a href="sec-epileptics-counts.html#cb803-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> poisson, <span class="at">data =</span> epil</span>
+<span id="cb803-16"><a href="sec-epileptics-counts.html#cb803-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb803-17"><a href="sec-epileptics-counts.html#cb803-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_lme4)</span>
+<span id="cb803-18"><a href="sec-epileptics-counts.html#cb803-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-19"><a href="sec-epileptics-counts.html#cb803-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-20"><a href="sec-epileptics-counts.html#cb803-20" aria-hidden="true" tabindex="-1"></a>fit_glmm_glmmtmb <span class="ot">&lt;-</span> glmmTMB<span class="sc">::</span><span class="fu">glmmTMB</span>(y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject),</span>
+<span id="cb803-21"><a href="sec-epileptics-counts.html#cb803-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> epil, <span class="at">family =</span> poisson, <span class="at">REML =</span> <span class="cn">TRUE</span></span>
+<span id="cb803-22"><a href="sec-epileptics-counts.html#cb803-22" aria-hidden="true" tabindex="-1"></a>) <span class="co"># REML 估计</span></span>
+<span id="cb803-23"><a href="sec-epileptics-counts.html#cb803-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_glmmtmb)</span>
+<span id="cb803-24"><a href="sec-epileptics-counts.html#cb803-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-25"><a href="sec-epileptics-counts.html#cb803-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb803-26"><a href="sec-epileptics-counts.html#cb803-26" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/drizopoulos/GLMMadaptive</span></span>
+<span id="cb803-27"><a href="sec-epileptics-counts.html#cb803-27" aria-hidden="true" tabindex="-1"></a>fit_glmm_glmmadaptive <span class="ot">&lt;-</span> GLMMadaptive<span class="sc">::</span><span class="fu">mixed_model</span>(</span>
+<span id="cb803-28"><a href="sec-epileptics-counts.html#cb803-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">fixed =</span> y <span class="sc">~</span> lbase <span class="sc">*</span> trt <span class="sc">+</span> lage <span class="sc">+</span> V4,</span>
+<span id="cb803-29"><a href="sec-epileptics-counts.html#cb803-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> subject, <span class="at">data =</span> epil,</span>
+<span id="cb803-30"><a href="sec-epileptics-counts.html#cb803-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">poisson</span>()</span>
+<span id="cb803-31"><a href="sec-epileptics-counts.html#cb803-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb803-32"><a href="sec-epileptics-counts.html#cb803-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_glmm_glmmadaptive)</span></code></pre></div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">

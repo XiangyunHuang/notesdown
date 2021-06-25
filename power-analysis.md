@@ -376,7 +376,7 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggplot2_3.3.3  lme4_1.1-27    Matrix_1.3-4   pwr_1.3-0      formatR_1.11  
+## [1] ggplot2_3.3.5  lme4_1.1-27.1  Matrix_1.3-4   pwr_1.3-0      formatR_1.11  
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
@@ -385,13 +385,13 @@ sessionInfo()
 ##  [9] boot_1.3-28       digest_0.6.27     tibble_3.1.2      jsonlite_1.7.2   
 ## [13] evaluate_0.14     lifecycle_1.0.0   nlme_3.1-152      gtable_0.3.0     
 ## [17] lattice_0.20-44   pkgconfig_2.0.3   rlang_0.4.11      DBI_1.1.1        
-## [21] yaml_2.2.1        xfun_0.23         withr_2.4.2       dplyr_1.0.6      
+## [21] yaml_2.2.1        xfun_0.24         withr_2.4.2       dplyr_1.0.7      
 ## [25] stringr_1.4.0     knitr_1.33        generics_0.1.0    vctrs_0.3.8      
 ## [29] sass_0.4.0        tidyselect_1.1.1  grid_4.1.0        glue_1.4.2       
-## [33] R6_2.5.0          fansi_0.5.0       rmarkdown_2.8     bookdown_0.22    
+## [33] R6_2.5.0          fansi_0.5.0       rmarkdown_2.9     bookdown_0.22    
 ## [37] minqa_1.2.4       farver_2.1.0      purrr_0.3.4       ellipsis_0.3.2   
 ## [41] scales_1.1.1      htmltools_0.5.1.1 MASS_7.3-54       splines_4.1.0    
-## [45] assertthat_0.2.1  colorspace_2.0-1  labeling_0.4.2    utf8_1.2.1       
+## [45] assertthat_0.2.1  colorspace_2.0-2  labeling_0.4.2    utf8_1.2.1       
 ## [49] stringi_1.6.2     munsell_0.5.0     crayon_1.4.1
 ```
 

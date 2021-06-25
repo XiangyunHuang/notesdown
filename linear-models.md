@@ -1037,12 +1037,12 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] patchwork_1.1.1 extrafont_0.17  gganimate_1.0.7 ggplot2_3.3.3  
+## [1] patchwork_1.1.1 extrafont_0.17  gganimate_1.0.7 ggplot2_3.3.5  
 ## [5] magrittr_2.0.1 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.23         bslib_0.2.5.1    
-##  [5] purrr_0.3.4       lattice_0.20-44   splines_4.1.0     colorspace_2.0-1 
+##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.24         bslib_0.2.5.1    
+##  [5] purrr_0.3.4       lattice_0.20-44   splines_4.1.0     colorspace_2.0-2 
 ##  [9] vctrs_0.3.8       generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0
 ## [13] mgcv_1.8-36       yaml_2.2.1        utf8_1.2.1        rlang_0.4.11     
 ## [17] jquerylib_0.1.4   pillar_1.6.1      glue_1.4.2        withr_2.4.2      
@@ -1051,9 +1051,9 @@ sessionInfo()
 ## [29] knitr_1.33        fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.8   
 ## [33] highr_0.9         Rcpp_1.0.6        scales_1.1.1      jsonlite_1.7.2   
 ## [37] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.6.2    
-## [41] bookdown_0.22     dplyr_1.0.6       grid_4.1.0        tools_4.1.0      
+## [41] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
 ## [45] sass_0.4.0        tibble_3.1.2      crayon_1.4.1      extrafontdb_1.0  
 ## [49] pkgconfig_2.0.3   Matrix_1.3-4      ellipsis_0.3.2    prettyunits_1.1.1
-## [53] assertthat_0.2.1  rmarkdown_2.8     R6_2.5.0          nlme_3.1-152     
+## [53] assertthat_0.2.1  rmarkdown_2.9     R6_2.5.0          nlme_3.1-152     
 ## [57] compiler_4.1.0
 ```

@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55ff096a5210>
+## <bytecode: 0x5593da11fa88>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55ff096a5210>
+## <bytecode: 0x5593da11fa88>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7fe0c5526e20>]
+## [<matplotlib.lines.Line2D object at 0x7f8090158e20>]
 plt.show()
 ```
 
@@ -190,8 +190,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c85483b2710e.c -o c85483b2710e.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c85483b2710e.so c85483b2710e.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c ca9752126501e.c -o ca9752126501e.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o ca9752126501e.so ca9752126501e.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -336,10 +336,10 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
 ##  [5] rlang_0.4.11      fastmap_1.1.0     highr_0.9         stringr_1.4.0    
-##  [9] tools_4.1.0       grid_4.1.0        xfun_0.23         png_0.1-7        
+##  [9] tools_4.1.0       grid_4.1.0        xfun_0.24         png_0.1-7        
 ## [13] jquerylib_0.1.4   htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1       
 ## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4     
 ## [21] later_1.2.0       sass_0.4.0        promises_1.2.0.1  evaluate_0.14    
-## [25] mime_0.10         rmarkdown_2.8     stringi_1.6.2     compiler_4.1.0   
+## [25] mime_0.11         rmarkdown_2.9     stringi_1.6.2     compiler_4.1.0   
 ## [29] bslib_0.2.5.1     jsonlite_1.7.2    httpuv_1.6.1
 ```
