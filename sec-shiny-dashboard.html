@@ -430,9 +430,10 @@ div.csl-indent {
 <li class="chapter" data-level="9.23" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>9.23</b> 旭日图</a></li>
 <li class="chapter" data-level="9.24" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>9.24</b> 调色板</a></li>
 <li class="chapter" data-level="9.25" data-path="sec-highcharter.html"><a href="sec-highcharter.html"><i class="fa fa-check"></i><b>9.25</b> 面积图</a></li>
-<li class="chapter" data-level="9.26" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.26</b> 时序图</a></li>
-<li class="chapter" data-level="9.27" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.27</b> 其他 JS 库</a></li>
-<li class="chapter" data-level="9.28" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.28</b> 运行环境</a></li>
+<li class="chapter" data-level="9.26" data-path="sec-highcharter-animation.html"><a href="sec-highcharter-animation.html"><i class="fa fa-check"></i><b>9.26</b> 动画</a></li>
+<li class="chapter" data-level="9.27" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.27</b> 时序图</a></li>
+<li class="chapter" data-level="9.28" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.28</b> 其他 JS 库</a></li>
+<li class="chapter" data-level="9.29" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.29</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="chap-network.html"><a href="chap-network.html"><i class="fa fa-check"></i><b>10</b> 交互式网络图形</a></li>
 <li class="chapter" data-level="11" data-path="chap-echarts4r.html"><a href="chap-echarts4r.html"><i class="fa fa-check"></i><b>11</b> 交互式图形 echarts4r</a>
@@ -856,198 +857,198 @@ div.csl-indent {
 <h2><span class="header-section-number">13.8</span> 仪表盘</h2>
 <p>dashboard 翻译过来叫仪表盘，就是驾驶仓的那个玩意，形象地表达作为掌舵者应该关注的对象。R 包 shiny 出现后，仪表盘的制作显得非常容易，也很快形成了一个生态，比如 <a href="https://rstudio.github.io/shinydashboard">shinydashboard</a>、 <a href="https://github.com/rstudio/flexdashboard">flexdashboard</a> 等，此外 <a href="https://github.com/RinteRface/bs4Dash">bs4Dash</a> 基于 Bootstrap 4 的仪表盘，目前 shiny 和 rmarkdown 都在向 Bootstrap 4 升级，这是未来的方向。 <a href="https://github.com/RinteRface/shinydashboardPlus">shinydashboardPlus</a> 主要目的在于扩展 <strong>shinydashboard</strong> 包</p>
 <p>shinydashboard 包</p>
-<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="sec-shiny-dashboard.html#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="do">## app.R ##</span></span>
-<span id="cb412-2"><a href="sec-shiny-dashboard.html#cb412-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb412-3"><a href="sec-shiny-dashboard.html#cb412-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
-<span id="cb412-4"><a href="sec-shiny-dashboard.html#cb412-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-5"><a href="sec-shiny-dashboard.html#cb412-5" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
-<span id="cb412-6"><a href="sec-shiny-dashboard.html#cb412-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">&quot;Basic dashboard&quot;</span>),</span>
-<span id="cb412-7"><a href="sec-shiny-dashboard.html#cb412-7" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Sidebar content</span></span>
-<span id="cb412-8"><a href="sec-shiny-dashboard.html#cb412-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardSidebar</span>(</span>
-<span id="cb412-9"><a href="sec-shiny-dashboard.html#cb412-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sidebarMenu</span>(</span>
-<span id="cb412-10"><a href="sec-shiny-dashboard.html#cb412-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">menuItem</span>(<span class="st">&quot;Dashboard&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;dashboard&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;dashboard&quot;</span>)),</span>
-<span id="cb412-11"><a href="sec-shiny-dashboard.html#cb412-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">menuItem</span>(<span class="st">&quot;Widgets&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;widgets&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;th&quot;</span>))</span>
-<span id="cb412-12"><a href="sec-shiny-dashboard.html#cb412-12" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb412-13"><a href="sec-shiny-dashboard.html#cb412-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb412-14"><a href="sec-shiny-dashboard.html#cb412-14" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Body content</span></span>
-<span id="cb412-15"><a href="sec-shiny-dashboard.html#cb412-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardBody</span>(</span>
-<span id="cb412-16"><a href="sec-shiny-dashboard.html#cb412-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">tabItems</span>(</span>
-<span id="cb412-17"><a href="sec-shiny-dashboard.html#cb412-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># First tab content</span></span>
-<span id="cb412-18"><a href="sec-shiny-dashboard.html#cb412-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;dashboard&quot;</span>,</span>
-<span id="cb412-19"><a href="sec-shiny-dashboard.html#cb412-19" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">fluidRow</span>(</span>
-<span id="cb412-20"><a href="sec-shiny-dashboard.html#cb412-20" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">box</span>(<span class="fu">plotOutput</span>(<span class="st">&quot;plot1&quot;</span>, <span class="at">height =</span> <span class="dv">250</span>)),</span>
-<span id="cb412-21"><a href="sec-shiny-dashboard.html#cb412-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-22"><a href="sec-shiny-dashboard.html#cb412-22" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">box</span>(</span>
-<span id="cb412-23"><a href="sec-shiny-dashboard.html#cb412-23" aria-hidden="true" tabindex="-1"></a>                            <span class="at">title =</span> <span class="st">&quot;Controls&quot;</span>,</span>
-<span id="cb412-24"><a href="sec-shiny-dashboard.html#cb412-24" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sliderInput</span>(<span class="st">&quot;slider&quot;</span>, <span class="st">&quot;Number of observations:&quot;</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">50</span>)</span>
-<span id="cb412-25"><a href="sec-shiny-dashboard.html#cb412-25" aria-hidden="true" tabindex="-1"></a>                        )</span>
-<span id="cb412-26"><a href="sec-shiny-dashboard.html#cb412-26" aria-hidden="true" tabindex="-1"></a>                    )</span>
-<span id="cb412-27"><a href="sec-shiny-dashboard.html#cb412-27" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb412-28"><a href="sec-shiny-dashboard.html#cb412-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-29"><a href="sec-shiny-dashboard.html#cb412-29" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Second tab content</span></span>
-<span id="cb412-30"><a href="sec-shiny-dashboard.html#cb412-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;widgets&quot;</span>,</span>
-<span id="cb412-31"><a href="sec-shiny-dashboard.html#cb412-31" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">h2</span>(<span class="st">&quot;Widgets tab content&quot;</span>)</span>
-<span id="cb412-32"><a href="sec-shiny-dashboard.html#cb412-32" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb412-33"><a href="sec-shiny-dashboard.html#cb412-33" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb412-34"><a href="sec-shiny-dashboard.html#cb412-34" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb412-35"><a href="sec-shiny-dashboard.html#cb412-35" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb412-36"><a href="sec-shiny-dashboard.html#cb412-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-37"><a href="sec-shiny-dashboard.html#cb412-37" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb412-38"><a href="sec-shiny-dashboard.html#cb412-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">122</span>)</span>
-<span id="cb412-39"><a href="sec-shiny-dashboard.html#cb412-39" aria-hidden="true" tabindex="-1"></a>    histdata <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">500</span>)</span>
-<span id="cb412-40"><a href="sec-shiny-dashboard.html#cb412-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-41"><a href="sec-shiny-dashboard.html#cb412-41" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>plot1 <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb412-42"><a href="sec-shiny-dashboard.html#cb412-42" aria-hidden="true" tabindex="-1"></a>        data <span class="ot">&lt;-</span> histdata[<span class="fu">seq_len</span>(input<span class="sc">$</span>slider)]</span>
-<span id="cb412-43"><a href="sec-shiny-dashboard.html#cb412-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">hist</span>(data)</span>
-<span id="cb412-44"><a href="sec-shiny-dashboard.html#cb412-44" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb412-45"><a href="sec-shiny-dashboard.html#cb412-45" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb412-46"><a href="sec-shiny-dashboard.html#cb412-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb412-47"><a href="sec-shiny-dashboard.html#cb412-47" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="sec-shiny-dashboard.html#cb417-1" aria-hidden="true" tabindex="-1"></a><span class="do">## app.R ##</span></span>
+<span id="cb417-2"><a href="sec-shiny-dashboard.html#cb417-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb417-3"><a href="sec-shiny-dashboard.html#cb417-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb417-4"><a href="sec-shiny-dashboard.html#cb417-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-5"><a href="sec-shiny-dashboard.html#cb417-5" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">dashboardPage</span>(</span>
+<span id="cb417-6"><a href="sec-shiny-dashboard.html#cb417-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardHeader</span>(<span class="at">title =</span> <span class="st">&quot;Basic dashboard&quot;</span>),</span>
+<span id="cb417-7"><a href="sec-shiny-dashboard.html#cb417-7" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Sidebar content</span></span>
+<span id="cb417-8"><a href="sec-shiny-dashboard.html#cb417-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardSidebar</span>(</span>
+<span id="cb417-9"><a href="sec-shiny-dashboard.html#cb417-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sidebarMenu</span>(</span>
+<span id="cb417-10"><a href="sec-shiny-dashboard.html#cb417-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">menuItem</span>(<span class="st">&quot;Dashboard&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;dashboard&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;dashboard&quot;</span>)),</span>
+<span id="cb417-11"><a href="sec-shiny-dashboard.html#cb417-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">menuItem</span>(<span class="st">&quot;Widgets&quot;</span>, <span class="at">tabName =</span> <span class="st">&quot;widgets&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;th&quot;</span>))</span>
+<span id="cb417-12"><a href="sec-shiny-dashboard.html#cb417-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb417-13"><a href="sec-shiny-dashboard.html#cb417-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb417-14"><a href="sec-shiny-dashboard.html#cb417-14" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Body content</span></span>
+<span id="cb417-15"><a href="sec-shiny-dashboard.html#cb417-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardBody</span>(</span>
+<span id="cb417-16"><a href="sec-shiny-dashboard.html#cb417-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">tabItems</span>(</span>
+<span id="cb417-17"><a href="sec-shiny-dashboard.html#cb417-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># First tab content</span></span>
+<span id="cb417-18"><a href="sec-shiny-dashboard.html#cb417-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;dashboard&quot;</span>,</span>
+<span id="cb417-19"><a href="sec-shiny-dashboard.html#cb417-19" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">fluidRow</span>(</span>
+<span id="cb417-20"><a href="sec-shiny-dashboard.html#cb417-20" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">box</span>(<span class="fu">plotOutput</span>(<span class="st">&quot;plot1&quot;</span>, <span class="at">height =</span> <span class="dv">250</span>)),</span>
+<span id="cb417-21"><a href="sec-shiny-dashboard.html#cb417-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-22"><a href="sec-shiny-dashboard.html#cb417-22" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">box</span>(</span>
+<span id="cb417-23"><a href="sec-shiny-dashboard.html#cb417-23" aria-hidden="true" tabindex="-1"></a>                            <span class="at">title =</span> <span class="st">&quot;Controls&quot;</span>,</span>
+<span id="cb417-24"><a href="sec-shiny-dashboard.html#cb417-24" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sliderInput</span>(<span class="st">&quot;slider&quot;</span>, <span class="st">&quot;Number of observations:&quot;</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">50</span>)</span>
+<span id="cb417-25"><a href="sec-shiny-dashboard.html#cb417-25" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb417-26"><a href="sec-shiny-dashboard.html#cb417-26" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb417-27"><a href="sec-shiny-dashboard.html#cb417-27" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb417-28"><a href="sec-shiny-dashboard.html#cb417-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-29"><a href="sec-shiny-dashboard.html#cb417-29" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Second tab content</span></span>
+<span id="cb417-30"><a href="sec-shiny-dashboard.html#cb417-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tabItem</span>(<span class="at">tabName =</span> <span class="st">&quot;widgets&quot;</span>,</span>
+<span id="cb417-31"><a href="sec-shiny-dashboard.html#cb417-31" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">h2</span>(<span class="st">&quot;Widgets tab content&quot;</span>)</span>
+<span id="cb417-32"><a href="sec-shiny-dashboard.html#cb417-32" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb417-33"><a href="sec-shiny-dashboard.html#cb417-33" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb417-34"><a href="sec-shiny-dashboard.html#cb417-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb417-35"><a href="sec-shiny-dashboard.html#cb417-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb417-36"><a href="sec-shiny-dashboard.html#cb417-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-37"><a href="sec-shiny-dashboard.html#cb417-37" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
+<span id="cb417-38"><a href="sec-shiny-dashboard.html#cb417-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">122</span>)</span>
+<span id="cb417-39"><a href="sec-shiny-dashboard.html#cb417-39" aria-hidden="true" tabindex="-1"></a>    histdata <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">500</span>)</span>
+<span id="cb417-40"><a href="sec-shiny-dashboard.html#cb417-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-41"><a href="sec-shiny-dashboard.html#cb417-41" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>plot1 <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb417-42"><a href="sec-shiny-dashboard.html#cb417-42" aria-hidden="true" tabindex="-1"></a>        data <span class="ot">&lt;-</span> histdata[<span class="fu">seq_len</span>(input<span class="sc">$</span>slider)]</span>
+<span id="cb417-43"><a href="sec-shiny-dashboard.html#cb417-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">hist</span>(data)</span>
+<span id="cb417-44"><a href="sec-shiny-dashboard.html#cb417-44" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb417-45"><a href="sec-shiny-dashboard.html#cb417-45" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb417-46"><a href="sec-shiny-dashboard.html#cb417-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb417-47"><a href="sec-shiny-dashboard.html#cb417-47" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
 <p>shinydashboardPlus 包</p>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="sec-shiny-dashboard.html#cb413-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb413-2"><a href="sec-shiny-dashboard.html#cb413-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
-<span id="cb413-3"><a href="sec-shiny-dashboard.html#cb413-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboardPlus)</span>
-<span id="cb413-4"><a href="sec-shiny-dashboard.html#cb413-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb413-5"><a href="sec-shiny-dashboard.html#cb413-5" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(</span>
-<span id="cb413-6"><a href="sec-shiny-dashboard.html#cb413-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">dashboardPage</span>(</span>
-<span id="cb413-7"><a href="sec-shiny-dashboard.html#cb413-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardHeader</span>(),</span>
-<span id="cb413-8"><a href="sec-shiny-dashboard.html#cb413-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardSidebar</span>(),</span>
-<span id="cb413-9"><a href="sec-shiny-dashboard.html#cb413-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardBody</span>(</span>
-<span id="cb413-10"><a href="sec-shiny-dashboard.html#cb413-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">box</span>(</span>
-<span id="cb413-11"><a href="sec-shiny-dashboard.html#cb413-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">solidHeader =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb413-12"><a href="sec-shiny-dashboard.html#cb413-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">&quot;Status summary&quot;</span>,</span>
-<span id="cb413-13"><a href="sec-shiny-dashboard.html#cb413-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">background =</span> <span class="cn">NULL</span>,</span>
-<span id="cb413-14"><a href="sec-shiny-dashboard.html#cb413-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">4</span>,</span>
-<span id="cb413-15"><a href="sec-shiny-dashboard.html#cb413-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">status =</span> <span class="st">&quot;danger&quot;</span>,</span>
-<span id="cb413-16"><a href="sec-shiny-dashboard.html#cb413-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">footer =</span> <span class="fu">fluidRow</span>(</span>
-<span id="cb413-17"><a href="sec-shiny-dashboard.html#cb413-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">column</span>(</span>
-<span id="cb413-18"><a href="sec-shiny-dashboard.html#cb413-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">width =</span> <span class="dv">6</span>,</span>
-<span id="cb413-19"><a href="sec-shiny-dashboard.html#cb413-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">descriptionBlock</span>(</span>
-<span id="cb413-20"><a href="sec-shiny-dashboard.html#cb413-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">number =</span> <span class="st">&quot;17%&quot;</span>,</span>
-<span id="cb413-21"><a href="sec-shiny-dashboard.html#cb413-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberColor =</span> <span class="st">&quot;green&quot;</span>,</span>
-<span id="cb413-22"><a href="sec-shiny-dashboard.html#cb413-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberIcon =</span> <span class="st">&quot;fa fa-caret-up&quot;</span>,</span>
-<span id="cb413-23"><a href="sec-shiny-dashboard.html#cb413-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> <span class="st">&quot;$35,210.43&quot;</span>,</span>
-<span id="cb413-24"><a href="sec-shiny-dashboard.html#cb413-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="st">&quot;TOTAL REVENUE&quot;</span>,</span>
-<span id="cb413-25"><a href="sec-shiny-dashboard.html#cb413-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">rightBorder =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb413-26"><a href="sec-shiny-dashboard.html#cb413-26" aria-hidden="true" tabindex="-1"></a>              <span class="at">marginBottom =</span> <span class="cn">FALSE</span></span>
-<span id="cb413-27"><a href="sec-shiny-dashboard.html#cb413-27" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb413-28"><a href="sec-shiny-dashboard.html#cb413-28" aria-hidden="true" tabindex="-1"></a>          ),</span>
-<span id="cb413-29"><a href="sec-shiny-dashboard.html#cb413-29" aria-hidden="true" tabindex="-1"></a>          <span class="fu">column</span>(</span>
-<span id="cb413-30"><a href="sec-shiny-dashboard.html#cb413-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">width =</span> <span class="dv">6</span>,</span>
-<span id="cb413-31"><a href="sec-shiny-dashboard.html#cb413-31" aria-hidden="true" tabindex="-1"></a>            <span class="fu">descriptionBlock</span>(</span>
-<span id="cb413-32"><a href="sec-shiny-dashboard.html#cb413-32" aria-hidden="true" tabindex="-1"></a>              <span class="at">number =</span> <span class="st">&quot;18%&quot;</span>,</span>
-<span id="cb413-33"><a href="sec-shiny-dashboard.html#cb413-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberColor =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb413-34"><a href="sec-shiny-dashboard.html#cb413-34" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberIcon =</span> <span class="st">&quot;fa fa-caret-down&quot;</span>,</span>
-<span id="cb413-35"><a href="sec-shiny-dashboard.html#cb413-35" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> <span class="st">&quot;1200&quot;</span>,</span>
-<span id="cb413-36"><a href="sec-shiny-dashboard.html#cb413-36" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="st">&quot;GOAL COMPLETION&quot;</span>,</span>
-<span id="cb413-37"><a href="sec-shiny-dashboard.html#cb413-37" aria-hidden="true" tabindex="-1"></a>              <span class="at">rightBorder =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb413-38"><a href="sec-shiny-dashboard.html#cb413-38" aria-hidden="true" tabindex="-1"></a>              <span class="at">marginBottom =</span> <span class="cn">FALSE</span></span>
-<span id="cb413-39"><a href="sec-shiny-dashboard.html#cb413-39" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb413-40"><a href="sec-shiny-dashboard.html#cb413-40" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb413-41"><a href="sec-shiny-dashboard.html#cb413-41" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb413-42"><a href="sec-shiny-dashboard.html#cb413-42" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb413-43"><a href="sec-shiny-dashboard.html#cb413-43" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb413-44"><a href="sec-shiny-dashboard.html#cb413-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Description Blocks&quot;</span></span>
-<span id="cb413-45"><a href="sec-shiny-dashboard.html#cb413-45" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb413-46"><a href="sec-shiny-dashboard.html#cb413-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">server =</span> <span class="cf">function</span>(input, output) { }</span>
-<span id="cb413-47"><a href="sec-shiny-dashboard.html#cb413-47" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="sec-shiny-dashboard.html#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb418-2"><a href="sec-shiny-dashboard.html#cb418-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb418-3"><a href="sec-shiny-dashboard.html#cb418-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboardPlus)</span>
+<span id="cb418-4"><a href="sec-shiny-dashboard.html#cb418-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb418-5"><a href="sec-shiny-dashboard.html#cb418-5" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(</span>
+<span id="cb418-6"><a href="sec-shiny-dashboard.html#cb418-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">dashboardPage</span>(</span>
+<span id="cb418-7"><a href="sec-shiny-dashboard.html#cb418-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardHeader</span>(),</span>
+<span id="cb418-8"><a href="sec-shiny-dashboard.html#cb418-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardSidebar</span>(),</span>
+<span id="cb418-9"><a href="sec-shiny-dashboard.html#cb418-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dashboardBody</span>(</span>
+<span id="cb418-10"><a href="sec-shiny-dashboard.html#cb418-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">box</span>(</span>
+<span id="cb418-11"><a href="sec-shiny-dashboard.html#cb418-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">solidHeader =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb418-12"><a href="sec-shiny-dashboard.html#cb418-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">&quot;Status summary&quot;</span>,</span>
+<span id="cb418-13"><a href="sec-shiny-dashboard.html#cb418-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">background =</span> <span class="cn">NULL</span>,</span>
+<span id="cb418-14"><a href="sec-shiny-dashboard.html#cb418-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">4</span>,</span>
+<span id="cb418-15"><a href="sec-shiny-dashboard.html#cb418-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">status =</span> <span class="st">&quot;danger&quot;</span>,</span>
+<span id="cb418-16"><a href="sec-shiny-dashboard.html#cb418-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">footer =</span> <span class="fu">fluidRow</span>(</span>
+<span id="cb418-17"><a href="sec-shiny-dashboard.html#cb418-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">column</span>(</span>
+<span id="cb418-18"><a href="sec-shiny-dashboard.html#cb418-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">width =</span> <span class="dv">6</span>,</span>
+<span id="cb418-19"><a href="sec-shiny-dashboard.html#cb418-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">descriptionBlock</span>(</span>
+<span id="cb418-20"><a href="sec-shiny-dashboard.html#cb418-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">number =</span> <span class="st">&quot;17%&quot;</span>,</span>
+<span id="cb418-21"><a href="sec-shiny-dashboard.html#cb418-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberColor =</span> <span class="st">&quot;green&quot;</span>,</span>
+<span id="cb418-22"><a href="sec-shiny-dashboard.html#cb418-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberIcon =</span> <span class="st">&quot;fa fa-caret-up&quot;</span>,</span>
+<span id="cb418-23"><a href="sec-shiny-dashboard.html#cb418-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> <span class="st">&quot;$35,210.43&quot;</span>,</span>
+<span id="cb418-24"><a href="sec-shiny-dashboard.html#cb418-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="st">&quot;TOTAL REVENUE&quot;</span>,</span>
+<span id="cb418-25"><a href="sec-shiny-dashboard.html#cb418-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">rightBorder =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb418-26"><a href="sec-shiny-dashboard.html#cb418-26" aria-hidden="true" tabindex="-1"></a>              <span class="at">marginBottom =</span> <span class="cn">FALSE</span></span>
+<span id="cb418-27"><a href="sec-shiny-dashboard.html#cb418-27" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb418-28"><a href="sec-shiny-dashboard.html#cb418-28" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb418-29"><a href="sec-shiny-dashboard.html#cb418-29" aria-hidden="true" tabindex="-1"></a>          <span class="fu">column</span>(</span>
+<span id="cb418-30"><a href="sec-shiny-dashboard.html#cb418-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">width =</span> <span class="dv">6</span>,</span>
+<span id="cb418-31"><a href="sec-shiny-dashboard.html#cb418-31" aria-hidden="true" tabindex="-1"></a>            <span class="fu">descriptionBlock</span>(</span>
+<span id="cb418-32"><a href="sec-shiny-dashboard.html#cb418-32" aria-hidden="true" tabindex="-1"></a>              <span class="at">number =</span> <span class="st">&quot;18%&quot;</span>,</span>
+<span id="cb418-33"><a href="sec-shiny-dashboard.html#cb418-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberColor =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb418-34"><a href="sec-shiny-dashboard.html#cb418-34" aria-hidden="true" tabindex="-1"></a>              <span class="at">numberIcon =</span> <span class="st">&quot;fa fa-caret-down&quot;</span>,</span>
+<span id="cb418-35"><a href="sec-shiny-dashboard.html#cb418-35" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> <span class="st">&quot;1200&quot;</span>,</span>
+<span id="cb418-36"><a href="sec-shiny-dashboard.html#cb418-36" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="st">&quot;GOAL COMPLETION&quot;</span>,</span>
+<span id="cb418-37"><a href="sec-shiny-dashboard.html#cb418-37" aria-hidden="true" tabindex="-1"></a>              <span class="at">rightBorder =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb418-38"><a href="sec-shiny-dashboard.html#cb418-38" aria-hidden="true" tabindex="-1"></a>              <span class="at">marginBottom =</span> <span class="cn">FALSE</span></span>
+<span id="cb418-39"><a href="sec-shiny-dashboard.html#cb418-39" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb418-40"><a href="sec-shiny-dashboard.html#cb418-40" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb418-41"><a href="sec-shiny-dashboard.html#cb418-41" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb418-42"><a href="sec-shiny-dashboard.html#cb418-42" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb418-43"><a href="sec-shiny-dashboard.html#cb418-43" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb418-44"><a href="sec-shiny-dashboard.html#cb418-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Description Blocks&quot;</span></span>
+<span id="cb418-45"><a href="sec-shiny-dashboard.html#cb418-45" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb418-46"><a href="sec-shiny-dashboard.html#cb418-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">server =</span> <span class="cf">function</span>(input, output) { }</span>
+<span id="cb418-47"><a href="sec-shiny-dashboard.html#cb418-47" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>shinymaterial 包</p>
-<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="sec-shiny-dashboard.html#cb414-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb414-2"><a href="sec-shiny-dashboard.html#cb414-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinymaterial)</span>
-<span id="cb414-3"><a href="sec-shiny-dashboard.html#cb414-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb414-4"><a href="sec-shiny-dashboard.html#cb414-4" aria-hidden="true" tabindex="-1"></a><span class="co"># https://ericrayanderson.github.io/shinymaterial/</span></span>
-<span id="cb414-5"><a href="sec-shiny-dashboard.html#cb414-5" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/ericrayanderson/shinymaterial</span></span>
-<span id="cb414-6"><a href="sec-shiny-dashboard.html#cb414-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb414-7"><a href="sec-shiny-dashboard.html#cb414-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap shinymaterial apps in material_page</span></span>
-<span id="cb414-8"><a href="sec-shiny-dashboard.html#cb414-8" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">material_page</span>(</span>
-<span id="cb414-9"><a href="sec-shiny-dashboard.html#cb414-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;用户画像&quot;</span>,</span>
-<span id="cb414-10"><a href="sec-shiny-dashboard.html#cb414-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nav_bar_fixed =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb414-11"><a href="sec-shiny-dashboard.html#cb414-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 每个 sidebar 内容</span></span>
-<span id="cb414-12"><a href="sec-shiny-dashboard.html#cb414-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav</span>(</span>
-<span id="cb414-13"><a href="sec-shiny-dashboard.html#cb414-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb414-14"><a href="sec-shiny-dashboard.html#cb414-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Place side-nav tabs within side-nav</span></span>
-<span id="cb414-15"><a href="sec-shiny-dashboard.html#cb414-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">material_side_nav_tabs</span>(</span>
-<span id="cb414-16"><a href="sec-shiny-dashboard.html#cb414-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">side_nav_tabs =</span> <span class="fu">c</span>(</span>
-<span id="cb414-17"><a href="sec-shiny-dashboard.html#cb414-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;数据汇总&quot;</span> <span class="ot">=</span> <span class="st">&quot;tab_1&quot;</span>,</span>
-<span id="cb414-18"><a href="sec-shiny-dashboard.html#cb414-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;趋势信息&quot;</span> <span class="ot">=</span> <span class="st">&quot;tab_2&quot;</span></span>
-<span id="cb414-19"><a href="sec-shiny-dashboard.html#cb414-19" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb414-20"><a href="sec-shiny-dashboard.html#cb414-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">icons =</span> <span class="fu">c</span>(<span class="st">&quot;cast&quot;</span>, <span class="st">&quot;insert_chart&quot;</span>)</span>
-<span id="cb414-21"><a href="sec-shiny-dashboard.html#cb414-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb414-22"><a href="sec-shiny-dashboard.html#cb414-22" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb414-23"><a href="sec-shiny-dashboard.html#cb414-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 每个 tab 页面的内容</span></span>
-<span id="cb414-24"><a href="sec-shiny-dashboard.html#cb414-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav_tab_content</span>(</span>
-<span id="cb414-25"><a href="sec-shiny-dashboard.html#cb414-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">side_nav_tab_id =</span> <span class="st">&quot;tab_1&quot;</span>,</span>
-<span id="cb414-26"><a href="sec-shiny-dashboard.html#cb414-26" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">h2</span>(<span class="st">&quot;第一个tab页&quot;</span>)</span>
-<span id="cb414-27"><a href="sec-shiny-dashboard.html#cb414-27" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb414-28"><a href="sec-shiny-dashboard.html#cb414-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav_tab_content</span>(</span>
-<span id="cb414-29"><a href="sec-shiny-dashboard.html#cb414-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">side_nav_tab_id =</span> <span class="st">&quot;tab_2&quot;</span>,</span>
-<span id="cb414-30"><a href="sec-shiny-dashboard.html#cb414-30" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">h2</span>(<span class="st">&quot;第二个tab页&quot;</span>)</span>
-<span id="cb414-31"><a href="sec-shiny-dashboard.html#cb414-31" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb414-32"><a href="sec-shiny-dashboard.html#cb414-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb414-33"><a href="sec-shiny-dashboard.html#cb414-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb414-34"><a href="sec-shiny-dashboard.html#cb414-34" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb414-35"><a href="sec-shiny-dashboard.html#cb414-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb414-36"><a href="sec-shiny-dashboard.html#cb414-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb414-37"><a href="sec-shiny-dashboard.html#cb414-37" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="sec-shiny-dashboard.html#cb419-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb419-2"><a href="sec-shiny-dashboard.html#cb419-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinymaterial)</span>
+<span id="cb419-3"><a href="sec-shiny-dashboard.html#cb419-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb419-4"><a href="sec-shiny-dashboard.html#cb419-4" aria-hidden="true" tabindex="-1"></a><span class="co"># https://ericrayanderson.github.io/shinymaterial/</span></span>
+<span id="cb419-5"><a href="sec-shiny-dashboard.html#cb419-5" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/ericrayanderson/shinymaterial</span></span>
+<span id="cb419-6"><a href="sec-shiny-dashboard.html#cb419-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb419-7"><a href="sec-shiny-dashboard.html#cb419-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap shinymaterial apps in material_page</span></span>
+<span id="cb419-8"><a href="sec-shiny-dashboard.html#cb419-8" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">material_page</span>(</span>
+<span id="cb419-9"><a href="sec-shiny-dashboard.html#cb419-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;用户画像&quot;</span>,</span>
+<span id="cb419-10"><a href="sec-shiny-dashboard.html#cb419-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nav_bar_fixed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb419-11"><a href="sec-shiny-dashboard.html#cb419-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 每个 sidebar 内容</span></span>
+<span id="cb419-12"><a href="sec-shiny-dashboard.html#cb419-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav</span>(</span>
+<span id="cb419-13"><a href="sec-shiny-dashboard.html#cb419-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fixed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb419-14"><a href="sec-shiny-dashboard.html#cb419-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Place side-nav tabs within side-nav</span></span>
+<span id="cb419-15"><a href="sec-shiny-dashboard.html#cb419-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">material_side_nav_tabs</span>(</span>
+<span id="cb419-16"><a href="sec-shiny-dashboard.html#cb419-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">side_nav_tabs =</span> <span class="fu">c</span>(</span>
+<span id="cb419-17"><a href="sec-shiny-dashboard.html#cb419-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;数据汇总&quot;</span> <span class="ot">=</span> <span class="st">&quot;tab_1&quot;</span>,</span>
+<span id="cb419-18"><a href="sec-shiny-dashboard.html#cb419-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;趋势信息&quot;</span> <span class="ot">=</span> <span class="st">&quot;tab_2&quot;</span></span>
+<span id="cb419-19"><a href="sec-shiny-dashboard.html#cb419-19" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb419-20"><a href="sec-shiny-dashboard.html#cb419-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">icons =</span> <span class="fu">c</span>(<span class="st">&quot;cast&quot;</span>, <span class="st">&quot;insert_chart&quot;</span>)</span>
+<span id="cb419-21"><a href="sec-shiny-dashboard.html#cb419-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb419-22"><a href="sec-shiny-dashboard.html#cb419-22" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb419-23"><a href="sec-shiny-dashboard.html#cb419-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 每个 tab 页面的内容</span></span>
+<span id="cb419-24"><a href="sec-shiny-dashboard.html#cb419-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav_tab_content</span>(</span>
+<span id="cb419-25"><a href="sec-shiny-dashboard.html#cb419-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">side_nav_tab_id =</span> <span class="st">&quot;tab_1&quot;</span>,</span>
+<span id="cb419-26"><a href="sec-shiny-dashboard.html#cb419-26" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">h2</span>(<span class="st">&quot;第一个tab页&quot;</span>)</span>
+<span id="cb419-27"><a href="sec-shiny-dashboard.html#cb419-27" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb419-28"><a href="sec-shiny-dashboard.html#cb419-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">material_side_nav_tab_content</span>(</span>
+<span id="cb419-29"><a href="sec-shiny-dashboard.html#cb419-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">side_nav_tab_id =</span> <span class="st">&quot;tab_2&quot;</span>,</span>
+<span id="cb419-30"><a href="sec-shiny-dashboard.html#cb419-30" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">h2</span>(<span class="st">&quot;第二个tab页&quot;</span>)</span>
+<span id="cb419-31"><a href="sec-shiny-dashboard.html#cb419-31" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb419-32"><a href="sec-shiny-dashboard.html#cb419-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb419-33"><a href="sec-shiny-dashboard.html#cb419-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb419-34"><a href="sec-shiny-dashboard.html#cb419-34" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
+<span id="cb419-35"><a href="sec-shiny-dashboard.html#cb419-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb419-36"><a href="sec-shiny-dashboard.html#cb419-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb419-37"><a href="sec-shiny-dashboard.html#cb419-37" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div>
 <p>miniUI 包</p>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="sec-shiny-dashboard.html#cb415-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb415-2"><a href="sec-shiny-dashboard.html#cb415-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miniUI)</span>
-<span id="cb415-3"><a href="sec-shiny-dashboard.html#cb415-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb415-4"><a href="sec-shiny-dashboard.html#cb415-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb415-5"><a href="sec-shiny-dashboard.html#cb415-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-6"><a href="sec-shiny-dashboard.html#cb415-6" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">miniPage</span>(</span>
-<span id="cb415-7"><a href="sec-shiny-dashboard.html#cb415-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gadgetTitleBar</span>(<span class="st">&quot;Shiny gadget example&quot;</span>),</span>
-<span id="cb415-8"><a href="sec-shiny-dashboard.html#cb415-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">miniTabstripPanel</span>(</span>
-<span id="cb415-9"><a href="sec-shiny-dashboard.html#cb415-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Parameters&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;sliders&quot;</span>),</span>
-<span id="cb415-10"><a href="sec-shiny-dashboard.html#cb415-10" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
-<span id="cb415-11"><a href="sec-shiny-dashboard.html#cb415-11" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">sliderInput</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;Year&quot;</span>, <span class="dv">1978</span>, <span class="dv">2010</span>, <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">2010</span>), <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb415-12"><a href="sec-shiny-dashboard.html#cb415-12" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb415-13"><a href="sec-shiny-dashboard.html#cb415-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb415-14"><a href="sec-shiny-dashboard.html#cb415-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Visualize&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;area-chart&quot;</span>),</span>
-<span id="cb415-15"><a href="sec-shiny-dashboard.html#cb415-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
-<span id="cb415-16"><a href="sec-shiny-dashboard.html#cb415-16" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">plotOutput</span>(<span class="st">&quot;cars&quot;</span>, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>)</span>
-<span id="cb415-17"><a href="sec-shiny-dashboard.html#cb415-17" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb415-18"><a href="sec-shiny-dashboard.html#cb415-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb415-19"><a href="sec-shiny-dashboard.html#cb415-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Map&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;map-o&quot;</span>),</span>
-<span id="cb415-20"><a href="sec-shiny-dashboard.html#cb415-20" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(<span class="at">padding =</span> <span class="dv">0</span>,</span>
-<span id="cb415-21"><a href="sec-shiny-dashboard.html#cb415-21" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">leafletOutput</span>(<span class="st">&quot;map&quot;</span>, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>)</span>
-<span id="cb415-22"><a href="sec-shiny-dashboard.html#cb415-22" aria-hidden="true" tabindex="-1"></a>                 ),</span>
-<span id="cb415-23"><a href="sec-shiny-dashboard.html#cb415-23" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniButtonBlock</span>(</span>
-<span id="cb415-24"><a href="sec-shiny-dashboard.html#cb415-24" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">actionButton</span>(<span class="st">&quot;resetMap&quot;</span>, <span class="st">&quot;Reset&quot;</span>)</span>
-<span id="cb415-25"><a href="sec-shiny-dashboard.html#cb415-25" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb415-26"><a href="sec-shiny-dashboard.html#cb415-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb415-27"><a href="sec-shiny-dashboard.html#cb415-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Data&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;table&quot;</span>),</span>
-<span id="cb415-28"><a href="sec-shiny-dashboard.html#cb415-28" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
-<span id="cb415-29"><a href="sec-shiny-dashboard.html#cb415-29" aria-hidden="true" tabindex="-1"></a>                   DT<span class="sc">::</span><span class="fu">dataTableOutput</span>(<span class="st">&quot;table&quot;</span>)</span>
-<span id="cb415-30"><a href="sec-shiny-dashboard.html#cb415-30" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb415-31"><a href="sec-shiny-dashboard.html#cb415-31" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb415-32"><a href="sec-shiny-dashboard.html#cb415-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">selected =</span> <span class="st">&quot;Map&quot;</span></span>
-<span id="cb415-33"><a href="sec-shiny-dashboard.html#cb415-33" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb415-34"><a href="sec-shiny-dashboard.html#cb415-34" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb415-35"><a href="sec-shiny-dashboard.html#cb415-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-36"><a href="sec-shiny-dashboard.html#cb415-36" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb415-37"><a href="sec-shiny-dashboard.html#cb415-37" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>cars <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb415-38"><a href="sec-shiny-dashboard.html#cb415-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span>(ggplot2)</span>
-<span id="cb415-39"><a href="sec-shiny-dashboard.html#cb415-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(speed, dist)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
-<span id="cb415-40"><a href="sec-shiny-dashboard.html#cb415-40" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb415-41"><a href="sec-shiny-dashboard.html#cb415-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-42"><a href="sec-shiny-dashboard.html#cb415-42" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
-<span id="cb415-43"><a href="sec-shiny-dashboard.html#cb415-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">force</span>(input<span class="sc">$</span>resetMap)</span>
-<span id="cb415-44"><a href="sec-shiny-dashboard.html#cb415-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-45"><a href="sec-shiny-dashboard.html#cb415-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">leaflet</span>(quakes, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb415-46"><a href="sec-shiny-dashboard.html#cb415-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addMarkers</span>(<span class="at">lng =</span> <span class="sc">~</span>long, <span class="at">lat =</span> <span class="sc">~</span>lat)</span>
-<span id="cb415-47"><a href="sec-shiny-dashboard.html#cb415-47" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb415-48"><a href="sec-shiny-dashboard.html#cb415-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-49"><a href="sec-shiny-dashboard.html#cb415-49" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> DT<span class="sc">::</span><span class="fu">renderDataTable</span>({</span>
-<span id="cb415-50"><a href="sec-shiny-dashboard.html#cb415-50" aria-hidden="true" tabindex="-1"></a>    diamonds</span>
-<span id="cb415-51"><a href="sec-shiny-dashboard.html#cb415-51" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb415-52"><a href="sec-shiny-dashboard.html#cb415-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-53"><a href="sec-shiny-dashboard.html#cb415-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>done, {</span>
-<span id="cb415-54"><a href="sec-shiny-dashboard.html#cb415-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopApp</span>(<span class="cn">TRUE</span>)</span>
-<span id="cb415-55"><a href="sec-shiny-dashboard.html#cb415-55" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb415-56"><a href="sec-shiny-dashboard.html#cb415-56" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb415-57"><a href="sec-shiny-dashboard.html#cb415-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb415-58"><a href="sec-shiny-dashboard.html#cb415-58" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="sec-shiny-dashboard.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb420-2"><a href="sec-shiny-dashboard.html#cb420-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miniUI)</span>
+<span id="cb420-3"><a href="sec-shiny-dashboard.html#cb420-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb420-4"><a href="sec-shiny-dashboard.html#cb420-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb420-5"><a href="sec-shiny-dashboard.html#cb420-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-6"><a href="sec-shiny-dashboard.html#cb420-6" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">miniPage</span>(</span>
+<span id="cb420-7"><a href="sec-shiny-dashboard.html#cb420-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gadgetTitleBar</span>(<span class="st">&quot;Shiny gadget example&quot;</span>),</span>
+<span id="cb420-8"><a href="sec-shiny-dashboard.html#cb420-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">miniTabstripPanel</span>(</span>
+<span id="cb420-9"><a href="sec-shiny-dashboard.html#cb420-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Parameters&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;sliders&quot;</span>),</span>
+<span id="cb420-10"><a href="sec-shiny-dashboard.html#cb420-10" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
+<span id="cb420-11"><a href="sec-shiny-dashboard.html#cb420-11" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">sliderInput</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;Year&quot;</span>, <span class="dv">1978</span>, <span class="dv">2010</span>, <span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">2010</span>), <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb420-12"><a href="sec-shiny-dashboard.html#cb420-12" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb420-13"><a href="sec-shiny-dashboard.html#cb420-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb420-14"><a href="sec-shiny-dashboard.html#cb420-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Visualize&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;area-chart&quot;</span>),</span>
+<span id="cb420-15"><a href="sec-shiny-dashboard.html#cb420-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
+<span id="cb420-16"><a href="sec-shiny-dashboard.html#cb420-16" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">plotOutput</span>(<span class="st">&quot;cars&quot;</span>, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>)</span>
+<span id="cb420-17"><a href="sec-shiny-dashboard.html#cb420-17" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb420-18"><a href="sec-shiny-dashboard.html#cb420-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb420-19"><a href="sec-shiny-dashboard.html#cb420-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Map&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;map-o&quot;</span>),</span>
+<span id="cb420-20"><a href="sec-shiny-dashboard.html#cb420-20" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(<span class="at">padding =</span> <span class="dv">0</span>,</span>
+<span id="cb420-21"><a href="sec-shiny-dashboard.html#cb420-21" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">leafletOutput</span>(<span class="st">&quot;map&quot;</span>, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>)</span>
+<span id="cb420-22"><a href="sec-shiny-dashboard.html#cb420-22" aria-hidden="true" tabindex="-1"></a>                 ),</span>
+<span id="cb420-23"><a href="sec-shiny-dashboard.html#cb420-23" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniButtonBlock</span>(</span>
+<span id="cb420-24"><a href="sec-shiny-dashboard.html#cb420-24" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">actionButton</span>(<span class="st">&quot;resetMap&quot;</span>, <span class="st">&quot;Reset&quot;</span>)</span>
+<span id="cb420-25"><a href="sec-shiny-dashboard.html#cb420-25" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb420-26"><a href="sec-shiny-dashboard.html#cb420-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb420-27"><a href="sec-shiny-dashboard.html#cb420-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">miniTabPanel</span>(<span class="st">&quot;Data&quot;</span>, <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">&quot;table&quot;</span>),</span>
+<span id="cb420-28"><a href="sec-shiny-dashboard.html#cb420-28" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">miniContentPanel</span>(</span>
+<span id="cb420-29"><a href="sec-shiny-dashboard.html#cb420-29" aria-hidden="true" tabindex="-1"></a>                   DT<span class="sc">::</span><span class="fu">dataTableOutput</span>(<span class="st">&quot;table&quot;</span>)</span>
+<span id="cb420-30"><a href="sec-shiny-dashboard.html#cb420-30" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb420-31"><a href="sec-shiny-dashboard.html#cb420-31" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb420-32"><a href="sec-shiny-dashboard.html#cb420-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">selected =</span> <span class="st">&quot;Map&quot;</span></span>
+<span id="cb420-33"><a href="sec-shiny-dashboard.html#cb420-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb420-34"><a href="sec-shiny-dashboard.html#cb420-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb420-35"><a href="sec-shiny-dashboard.html#cb420-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-36"><a href="sec-shiny-dashboard.html#cb420-36" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb420-37"><a href="sec-shiny-dashboard.html#cb420-37" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>cars <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb420-38"><a href="sec-shiny-dashboard.html#cb420-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">require</span>(ggplot2)</span>
+<span id="cb420-39"><a href="sec-shiny-dashboard.html#cb420-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(speed, dist)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
+<span id="cb420-40"><a href="sec-shiny-dashboard.html#cb420-40" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb420-41"><a href="sec-shiny-dashboard.html#cb420-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-42"><a href="sec-shiny-dashboard.html#cb420-42" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb420-43"><a href="sec-shiny-dashboard.html#cb420-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">force</span>(input<span class="sc">$</span>resetMap)</span>
+<span id="cb420-44"><a href="sec-shiny-dashboard.html#cb420-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-45"><a href="sec-shiny-dashboard.html#cb420-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">leaflet</span>(quakes, <span class="at">height =</span> <span class="st">&quot;100%&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb420-46"><a href="sec-shiny-dashboard.html#cb420-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addMarkers</span>(<span class="at">lng =</span> <span class="sc">~</span>long, <span class="at">lat =</span> <span class="sc">~</span>lat)</span>
+<span id="cb420-47"><a href="sec-shiny-dashboard.html#cb420-47" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb420-48"><a href="sec-shiny-dashboard.html#cb420-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-49"><a href="sec-shiny-dashboard.html#cb420-49" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>table <span class="ot">&lt;-</span> DT<span class="sc">::</span><span class="fu">renderDataTable</span>({</span>
+<span id="cb420-50"><a href="sec-shiny-dashboard.html#cb420-50" aria-hidden="true" tabindex="-1"></a>    diamonds</span>
+<span id="cb420-51"><a href="sec-shiny-dashboard.html#cb420-51" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb420-52"><a href="sec-shiny-dashboard.html#cb420-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-53"><a href="sec-shiny-dashboard.html#cb420-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>done, {</span>
+<span id="cb420-54"><a href="sec-shiny-dashboard.html#cb420-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopApp</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb420-55"><a href="sec-shiny-dashboard.html#cb420-55" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb420-56"><a href="sec-shiny-dashboard.html#cb420-56" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb420-57"><a href="sec-shiny-dashboard.html#cb420-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb420-58"><a href="sec-shiny-dashboard.html#cb420-58" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
 </div>
             </section>
 

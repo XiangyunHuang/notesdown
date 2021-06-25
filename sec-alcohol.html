@@ -430,9 +430,10 @@ div.csl-indent {
 <li class="chapter" data-level="9.23" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>9.23</b> 旭日图</a></li>
 <li class="chapter" data-level="9.24" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>9.24</b> 调色板</a></li>
 <li class="chapter" data-level="9.25" data-path="sec-highcharter.html"><a href="sec-highcharter.html"><i class="fa fa-check"></i><b>9.25</b> 面积图</a></li>
-<li class="chapter" data-level="9.26" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.26</b> 时序图</a></li>
-<li class="chapter" data-level="9.27" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.27</b> 其他 JS 库</a></li>
-<li class="chapter" data-level="9.28" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.28</b> 运行环境</a></li>
+<li class="chapter" data-level="9.26" data-path="sec-highcharter-animation.html"><a href="sec-highcharter-animation.html"><i class="fa fa-check"></i><b>9.26</b> 动画</a></li>
+<li class="chapter" data-level="9.27" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.27</b> 时序图</a></li>
+<li class="chapter" data-level="9.28" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.28</b> 其他 JS 库</a></li>
+<li class="chapter" data-level="9.29" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.29</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="chap-network.html"><a href="chap-network.html"><i class="fa fa-check"></i><b>10</b> 交互式网络图形</a></li>
 <li class="chapter" data-level="11" data-path="chap-echarts4r.html"><a href="chap-echarts4r.html"><i class="fa fa-check"></i><b>11</b> 交互式图形 echarts4r</a>
@@ -857,7 +858,7 @@ div.csl-indent {
 <p>存在有序分类数据</p>
 <p>酒精的作用 effects of alcohol, tobacco and interaction, age-adjusted
 数据集描述见 <code>help(esoph)</code></p>
-<div class="sourceCode" id="cb733"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb733-1"><a href="sec-alcohol.html#cb733-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(esoph)</span></code></pre></div>
+<div class="sourceCode" id="cb738"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb738-1"><a href="sec-alcohol.html#cb738-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(esoph)</span></code></pre></div>
 <pre><code>##   agegp     alcgp    tobgp ncases ncontrols
 ## 1 25-34 0-39g/day 0-9g/day      0        40
 ## 2 25-34 0-39g/day    10-19      0        10
@@ -865,33 +866,33 @@ div.csl-indent {
 ## 4 25-34 0-39g/day      30+      0         5
 ## 5 25-34     40-79 0-9g/day      0        27
 ## 6 25-34     40-79    10-19      0         7</code></pre>
-<div class="sourceCode" id="cb735"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb735-1"><a href="sec-alcohol.html#cb735-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(esoph)</span></code></pre></div>
+<div class="sourceCode" id="cb740"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb740-1"><a href="sec-alcohol.html#cb740-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(esoph)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    88 obs. of  5 variables:
 ##  $ agegp    : Ord.factor w/ 6 levels &quot;25-34&quot;&lt;&quot;35-44&quot;&lt;..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ alcgp    : Ord.factor w/ 4 levels &quot;0-39g/day&quot;&lt;&quot;40-79&quot;&lt;..: 1 1 1 1 2 2 2 2 3 3 ...
 ##  $ tobgp    : Ord.factor w/ 4 levels &quot;0-9g/day&quot;&lt;&quot;10-19&quot;&lt;..: 1 2 3 4 1 2 3 4 1 2 ...
 ##  $ ncases   : num  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ ncontrols: num  40 10 6 5 27 7 4 7 2 1 ...</code></pre>
-<div class="sourceCode" id="cb737"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb737-1"><a href="sec-alcohol.html#cb737-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> agegp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> agegp)) <span class="sc">+</span></span>
-<span id="cb737-2"><a href="sec-alcohol.html#cb737-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-3"><a href="sec-alcohol.html#cb737-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-4"><a href="sec-alcohol.html#cb737-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb737-5"><a href="sec-alcohol.html#cb737-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb737-6"><a href="sec-alcohol.html#cb737-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> alcgp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> alcgp)) <span class="sc">+</span></span>
-<span id="cb737-7"><a href="sec-alcohol.html#cb737-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-8"><a href="sec-alcohol.html#cb737-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-9"><a href="sec-alcohol.html#cb737-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb737-10"><a href="sec-alcohol.html#cb737-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb737-11"><a href="sec-alcohol.html#cb737-11" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> tobgp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> tobgp)) <span class="sc">+</span></span>
-<span id="cb737-12"><a href="sec-alcohol.html#cb737-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-13"><a href="sec-alcohol.html#cb737-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb737-14"><a href="sec-alcohol.html#cb737-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb737-15"><a href="sec-alcohol.html#cb737-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb737-16"><a href="sec-alcohol.html#cb737-16" aria-hidden="true" tabindex="-1"></a>bottom_row <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(p2, p3, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>), <span class="at">label_size =</span> <span class="dv">12</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb742"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb742-1"><a href="sec-alcohol.html#cb742-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> agegp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> agegp)) <span class="sc">+</span></span>
+<span id="cb742-2"><a href="sec-alcohol.html#cb742-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-3"><a href="sec-alcohol.html#cb742-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-4"><a href="sec-alcohol.html#cb742-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb742-5"><a href="sec-alcohol.html#cb742-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb742-6"><a href="sec-alcohol.html#cb742-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> alcgp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> alcgp)) <span class="sc">+</span></span>
+<span id="cb742-7"><a href="sec-alcohol.html#cb742-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-8"><a href="sec-alcohol.html#cb742-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-9"><a href="sec-alcohol.html#cb742-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb742-10"><a href="sec-alcohol.html#cb742-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb742-11"><a href="sec-alcohol.html#cb742-11" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> esoph, <span class="fu">aes</span>(<span class="at">x =</span> tobgp, <span class="at">y =</span> ncases <span class="sc">/</span> ncontrols, <span class="at">color =</span> tobgp)) <span class="sc">+</span></span>
+<span id="cb742-12"><a href="sec-alcohol.html#cb742-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-13"><a href="sec-alcohol.html#cb742-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb742-14"><a href="sec-alcohol.html#cb742-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb742-15"><a href="sec-alcohol.html#cb742-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb742-16"><a href="sec-alcohol.html#cb742-16" aria-hidden="true" tabindex="-1"></a>bottom_row <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(p2, p3, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>), <span class="at">label_size =</span> <span class="dv">12</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
 
 ## Warning: Removed 12 rows containing non-finite values (stat_boxplot).</code></pre>
-<div class="sourceCode" id="cb739"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb739-1"><a href="sec-alcohol.html#cb739-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(p1, bottom_row, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;&#39;</span>), <span class="at">label_size =</span> <span class="dv">12</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb744"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb744-1"><a href="sec-alcohol.html#cb744-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(p1, bottom_row, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;&#39;</span>), <span class="at">label_size =</span> <span class="dv">12</span>, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 12 rows containing non-finite values (stat_boxplot).</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:esoph-data"></span>
 <img src="generalized-linear-models_files/figure-html/esoph-data-1.png" alt="吸烟喝酒和食道癌的关系" width="672" />
@@ -899,13 +900,13 @@ div.csl-indent {
 图 23.1: 吸烟喝酒和食道癌的关系
 </p>
 </div>
-<div class="sourceCode" id="cb741"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb741-1"><a href="sec-alcohol.html#cb741-1" aria-hidden="true" tabindex="-1"></a>fit_esoph_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(ncases, ncontrols) <span class="sc">~</span> agegp <span class="sc">+</span> tobgp <span class="sc">*</span> alcgp,</span>
-<span id="cb741-2"><a href="sec-alcohol.html#cb741-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> esoph, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>)</span>
-<span id="cb741-3"><a href="sec-alcohol.html#cb741-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb742"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb742-1"><a href="sec-alcohol.html#cb742-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rcpp)</span>
-<span id="cb742-2"><a href="sec-alcohol.html#cb742-2" aria-hidden="true" tabindex="-1"></a>fit_esoph_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(ncases <span class="sc">|</span> <span class="fu">trials</span>(ncases <span class="sc">+</span> ncontrols) <span class="sc">~</span> agegp <span class="sc">+</span> tobgp <span class="sc">*</span> alcgp,</span>
-<span id="cb742-3"><a href="sec-alcohol.html#cb742-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> esoph, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb742-4"><a href="sec-alcohol.html#cb742-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb746"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb746-1"><a href="sec-alcohol.html#cb746-1" aria-hidden="true" tabindex="-1"></a>fit_esoph_glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(ncases, ncontrols) <span class="sc">~</span> agegp <span class="sc">+</span> tobgp <span class="sc">*</span> alcgp,</span>
+<span id="cb746-2"><a href="sec-alcohol.html#cb746-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> esoph, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>)</span>
+<span id="cb746-3"><a href="sec-alcohol.html#cb746-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb747"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb747-1"><a href="sec-alcohol.html#cb747-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rcpp)</span>
+<span id="cb747-2"><a href="sec-alcohol.html#cb747-2" aria-hidden="true" tabindex="-1"></a>fit_esoph_brm <span class="ot">&lt;-</span> brms<span class="sc">::</span><span class="fu">brm</span>(ncases <span class="sc">|</span> <span class="fu">trials</span>(ncases <span class="sc">+</span> ncontrols) <span class="sc">~</span> agegp <span class="sc">+</span> tobgp <span class="sc">*</span> alcgp,</span>
+<span id="cb747-3"><a href="sec-alcohol.html#cb747-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> esoph, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb747-4"><a href="sec-alcohol.html#cb747-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
             </section>
 

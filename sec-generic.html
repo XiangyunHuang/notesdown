@@ -430,9 +430,10 @@ div.csl-indent {
 <li class="chapter" data-level="9.23" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>9.23</b> 旭日图</a></li>
 <li class="chapter" data-level="9.24" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>9.24</b> 调色板</a></li>
 <li class="chapter" data-level="9.25" data-path="sec-highcharter.html"><a href="sec-highcharter.html"><i class="fa fa-check"></i><b>9.25</b> 面积图</a></li>
-<li class="chapter" data-level="9.26" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.26</b> 时序图</a></li>
-<li class="chapter" data-level="9.27" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.27</b> 其他 JS 库</a></li>
-<li class="chapter" data-level="9.28" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.28</b> 运行环境</a></li>
+<li class="chapter" data-level="9.26" data-path="sec-highcharter-animation.html"><a href="sec-highcharter-animation.html"><i class="fa fa-check"></i><b>9.26</b> 动画</a></li>
+<li class="chapter" data-level="9.27" data-path="sec-dygraphs.html"><a href="sec-dygraphs.html"><i class="fa fa-check"></i><b>9.27</b> 时序图</a></li>
+<li class="chapter" data-level="9.28" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>9.28</b> 其他 JS 库</a></li>
+<li class="chapter" data-level="9.29" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>9.29</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="chap-network.html"><a href="chap-network.html"><i class="fa fa-check"></i><b>10</b> 交互式网络图形</a></li>
 <li class="chapter" data-level="11" data-path="chap-echarts4r.html"><a href="chap-echarts4r.html"><i class="fa fa-check"></i><b>11</b> 交互式图形 echarts4r</a>
@@ -859,22 +860,22 @@ div.csl-indent {
 <p>— Barry Rowlingson<a href="#fn56" class="footnote-ref" id="fnref56"><sup>56</sup></a></p>
 </blockquote>
 <p>如果要让下标从 0 开始的话，我们需要在现有的向量类型 vector 上定义新的向量类型 vector0，在其上并且实现索引运算 <code>[</code> 和赋值修改元素的运算 <code>[&lt;-</code></p>
-<div class="sourceCode" id="cb1548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1548-1"><a href="sec-generic.html#cb1548-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stat.ethz.ch/pipermail/r-help/2004-March/048682.html</span></span>
-<span id="cb1548-2"><a href="sec-generic.html#cb1548-2" aria-hidden="true" tabindex="-1"></a>as.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">structure</span>(x, <span class="at">class =</span> <span class="st">&quot;vector0&quot;</span>) <span class="co"># 创建一种新的数据结构 vector0</span></span>
-<span id="cb1548-3"><a href="sec-generic.html#cb1548-3" aria-hidden="true" tabindex="-1"></a>as.vector.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">unclass</span>(x)</span>
-<span id="cb1548-4"><a href="sec-generic.html#cb1548-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[.vector0&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, i) <span class="fu">as.vector0</span>(<span class="fu">as.vector.vector0</span>(x)[i <span class="sc">+</span> <span class="dv">1</span>]) <span class="co"># 索引操作</span></span>
-<span id="cb1548-5"><a href="sec-generic.html#cb1548-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[&lt;-.vector0&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, i, value) { <span class="co"># 赋值操作</span></span>
-<span id="cb1548-6"><a href="sec-generic.html#cb1548-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.vector.vector0</span>(x)</span>
-<span id="cb1548-7"><a href="sec-generic.html#cb1548-7" aria-hidden="true" tabindex="-1"></a>  x[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> value</span>
-<span id="cb1548-8"><a href="sec-generic.html#cb1548-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.vector0</span>(x)</span>
-<span id="cb1548-9"><a href="sec-generic.html#cb1548-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1548-10"><a href="sec-generic.html#cb1548-10" aria-hidden="true" tabindex="-1"></a>print.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">print</span>(<span class="fu">as.vector.vector0</span>(x)) <span class="co"># 实现 print 方法</span></span></code></pre></div>
+<div class="sourceCode" id="cb1553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1553-1"><a href="sec-generic.html#cb1553-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stat.ethz.ch/pipermail/r-help/2004-March/048682.html</span></span>
+<span id="cb1553-2"><a href="sec-generic.html#cb1553-2" aria-hidden="true" tabindex="-1"></a>as.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">structure</span>(x, <span class="at">class =</span> <span class="st">&quot;vector0&quot;</span>) <span class="co"># 创建一种新的数据结构 vector0</span></span>
+<span id="cb1553-3"><a href="sec-generic.html#cb1553-3" aria-hidden="true" tabindex="-1"></a>as.vector.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">unclass</span>(x)</span>
+<span id="cb1553-4"><a href="sec-generic.html#cb1553-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[.vector0&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, i) <span class="fu">as.vector0</span>(<span class="fu">as.vector.vector0</span>(x)[i <span class="sc">+</span> <span class="dv">1</span>]) <span class="co"># 索引操作</span></span>
+<span id="cb1553-5"><a href="sec-generic.html#cb1553-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;[&lt;-.vector0&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, i, value) { <span class="co"># 赋值操作</span></span>
+<span id="cb1553-6"><a href="sec-generic.html#cb1553-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.vector.vector0</span>(x)</span>
+<span id="cb1553-7"><a href="sec-generic.html#cb1553-7" aria-hidden="true" tabindex="-1"></a>  x[i <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> value</span>
+<span id="cb1553-8"><a href="sec-generic.html#cb1553-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.vector0</span>(x)</span>
+<span id="cb1553-9"><a href="sec-generic.html#cb1553-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1553-10"><a href="sec-generic.html#cb1553-10" aria-hidden="true" tabindex="-1"></a>print.vector0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">print</span>(<span class="fu">as.vector.vector0</span>(x)) <span class="co"># 实现 print 方法</span></span></code></pre></div>
 <p>举个例子看看</p>
-<div class="sourceCode" id="cb1549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1549-1"><a href="sec-generic.html#cb1549-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="co"># 是一个内置的现有向量类型 vector</span></span></code></pre></div>
+<div class="sourceCode" id="cb1554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1554-1"><a href="sec-generic.html#cb1554-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="co"># 是一个内置的现有向量类型 vector</span></span></code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode" id="cb1551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1551-1"><a href="sec-generic.html#cb1551-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.vector0</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="co"># 转化为新建的 vector0 类型</span></span>
-<span id="cb1551-2"><a href="sec-generic.html#cb1551-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> x[<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>] <span class="co"># 对 x 的元素替换修改</span></span>
-<span id="cb1551-3"><a href="sec-generic.html#cb1551-3" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb1556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1556-1"><a href="sec-generic.html#cb1556-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.vector0</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="co"># 转化为新建的 vector0 类型</span></span>
+<span id="cb1556-2"><a href="sec-generic.html#cb1556-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> x[<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>] <span class="co"># 对 x 的元素替换修改</span></span>
+<span id="cb1556-3"><a href="sec-generic.html#cb1556-3" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>##  [1] 100 200 300 400 500   6   7   8   9  10</code></pre>
 <p>第三方 R 包大大扩展了 Base R 函数 <code>plot()</code> 的功能，比如 <strong>mgcv</strong> ，<strong>nlme</strong> 包和 <strong>lattice</strong> 包等，表 <a href="sec-generic.html#tab:generic-functions">D.1</a> 列出当前环境下， <code>plot()</code> 绘图方法。</p>
 <pre><code>## Warning in matrix(methods(&quot;plot&quot;), ncol = 3): data length [52] is not a sub-
