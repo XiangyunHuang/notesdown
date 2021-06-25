@@ -19,6 +19,15 @@ library(plotly, warn.conflicts = FALSE)
 # ggplotly <- plotly::ggplotly
 ```
 
+::: {.rmdtip data-latex="{提示}"}
+plotly 包的函数使用起来还是比较复杂的，特别是需要打磨细节以打造数据产品时，此外，其依赖相当重，仅数据处理就包含两套方法 --- dplyr 和 data.table，引起很多函数冲突，可谓「苦其久矣」！因此，准备另起炉灶，开发一个新的 R 包 qplotly，取意 quick plotly，以 `qplot_ly()` 替代 `plot_ly()`。类似简化 API 的工作有 [simplevis](https://github.com/StatisticsNZ/simplevis)、
+[autoplotly](https://github.com/terrytangyuan/autoplotly)、
+[ggfortify](https://github.com/sinhrks/ggfortify) 和 [plotme](https://github.com/yogevherz/plotme)。
+
+plotly 团队开发了 [plotly.js](https://github.com/plotly/plotly.js) 库，且维护了 R 接口文档 (https://plotly.com/r/)，Carson Sievert 开发了 [plotly](https://github.com/ropensci/plotly) 包，配套书 [Interactive web-based data visualization with R, plotly, and shiny](https://plotly-r.com/)。
+Paul C. Bauer 的书 [Applied Data Visualization](https://bookdown.org/paul/applied-data-visualization/) 介绍 plotly <https://bookdown.org/paul/applied-data-visualization/what-is-plotly.html>
+:::
+
 [echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
 
 [billboarder](https://github.com/dreamRs/billboarder)
@@ -1194,6 +1203,194 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 
 ```
 :::
+
+
+## 动画 {#sec:highcharter-animation}
+
+动态条形图
+
+```{r,eval=FALSE}
+library(highcharter) # highcharter 的依赖也很重
+library(idbr)
+library(purrr)
+library(dplyr) # 未来替代一下
+
+# the US Census Bureau International Data Base API
+# 美国人口普查局国际数据库 API
+idb_api_key("35f116582d5a89d11a47c7ffbfc2ba309133f09d")
+yrs <- seq(1980, 2030, by = 5)
+
+df <- map_dfr(c("male", "female"), function(sex) {
+  transform(get_idb("US", yrs, sex = sex), sex_label = sex)
+})
+
+df <- df %>%
+  transform(population = pop * ifelse(sex_label == "male", -1, 1))
+
+# 数据变换
+series <- df %>%
+  group_by(sex_label, age) %>%
+  do(data = list(sequence = .$population)) %>%
+  ungroup() %>%
+  group_by(sex_label) %>%
+  do(data = .$data) %>%
+  mutate(name = sex_label) %>%
+  list_parse()
+
+maxpop <- max(abs(df$population))
+
+xaxis <- list(
+  categories = sort(unique(df$age)),
+  reversed = FALSE, tickInterval = 5,
+  labels = list(step = 5)
+)
+
+highchart() %>%
+  hc_chart(type = "bar") %>%
+  hc_motion(
+    enabled = TRUE,
+    labels = yrs,
+    series = c(0, 1),
+    autoplay = TRUE,
+    updateInterval = 10,
+    playIcon = "fa fa-play",
+    pauseIcon = "fa fa-pause"
+  ) %>%
+  hc_add_series_list(series) %>%
+  hc_plotOptions(
+    series = list(stacking = "normal"),
+    bar = list(groupPadding = 0, pointPadding = 0, borderWidth = 0)
+  ) %>%
+  hc_tooltip(
+    shared = FALSE,
+    formatter = JS("
+      function() {
+          return '<b>' + this.series.name +
+              ', age ' + this.point.category +
+              '</b><br/>' + 'Population: ' +
+              Highcharts.numberFormat(Math.abs(this.point.y), 0);
+      }
+   ")
+  ) %>%
+  hc_yAxis(
+    labels = list(
+      formatter = JS("
+        function() {
+            return Math.abs(this.value) / 1000000 + 'M';
+        }
+      ")
+    ),
+    tickInterval = 0.5e6,
+    min = -maxpop,
+    max = maxpop
+  ) %>%
+  hc_xAxis(
+    xaxis,
+    rlist::list.merge(xaxis, list(opposite = TRUE, linkedTo = 0))
+  )
+```
+
+动态气泡图
+
+```{r,eval=FALSE}
+highchart() %>%
+  hc_xAxis(min = 0, max = 10) %>%
+  hc_yAxis(min = 0, max = 10) %>%
+  hc_motion(enabled = TRUE) %>%
+  hc_add_series(
+    type = "bubble",
+    data = list(
+      list(
+        sequence = list(
+          list(x = 1, y = 1, z = 10),
+          list(x = 2, y = 3, z = 5),
+          list(x = 3, y = 5, z = 8)
+        )
+      )
+    )
+  )
+```
+
+
+```{r,eval=FALSE}
+highchart() %>%
+  hc_xAxis(min = 0, max = 10) %>%
+  hc_yAxis(min = 0, max = 10) %>%
+  hc_add_series(
+    type = "bubble", 
+    name = "气泡图",
+    data = list(
+      list(x = 1, y = 1, z = 10)
+    )
+  )
+```
+
+动态散点图
+
+```{r,eval=FALSE}
+library(highcharter)
+
+highchart() %>%
+  hc_chart(type = "scatter") %>%
+  hc_yAxis(max = 6, min = 0) %>%
+  hc_xAxis(max = 6, min = 0) %>%
+  hc_add_series(
+    name = "Australia",
+    data = list(
+      list(sequence = list(c(1, 1), c(2, 2), c(3, 3), c(4, 4)))
+    )
+  ) %>%
+  hc_add_series(
+    name = "United States",
+    data = list(
+      list(sequence = list(c(0, 0), c(3, 2), c(4, 3), c(4, 1)))
+    )
+  ) %>%
+  hc_add_series(
+    name = "China",
+    data = list(
+      list(sequence = list(c(3, 2), c(2, 2), c(1, 1), c(2, 5)))
+    )
+  ) %>%
+  hc_motion(
+    enabled = TRUE,
+    labels = 2000:2003,
+    series = c(0, 1, 2)
+  )
+```
+
+动态柱状图
+
+```{r,eval=FALSE}
+highchart() %>%
+  hc_chart(type = "column") %>%
+  hc_yAxis(max = 6, min = 0) %>%
+  hc_add_series(name = "A", data = c(2, 3, 4), zIndex = -10) %>%
+  hc_add_series(
+    name = "B",
+    data = list(
+      list(sequence = c(1, 2, 3, 4)),
+      list(sequence = c(3, 2, 1, 3)),
+      list(sequence = c(2, 5, 4, 3))
+    )
+  ) %>%
+  hc_add_series(
+    name = "C",
+    data = list(
+      list(sequence = c(3, 2, 1, 3)),
+      list(sequence = c(2, 5, 4, 3)),
+      list(sequence = c(1, 2, 3, 4))
+    )
+  ) %>%
+  hc_motion(
+    enabled = TRUE,
+    labels = 2000:2003,
+    series = c(1, 2),
+    playIcon = "fa fa-play",
+    pauseIcon = "fa fa-pause"
+  )
+```
+
 
 ## 时序图 {#sec:dygraphs}
 
