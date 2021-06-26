@@ -40,6 +40,7 @@ jobs:
       HADOOP_VERSION: "3.2"
       SPARK_HOME: "/opt/spark/spark-3.1.1-bin-hadoop3.2"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_VERSION: ${{ matrix.config.r }}
 
     steps:
       - name: Checkout repo
@@ -114,6 +115,10 @@ jobs:
           path: _bookdown_files
           key: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-${{ hashFiles('**/*Rmd') }}
           restore-keys: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-
+
+      - name: Add Write Permission To R library
+        run: |
+          sudo chown -R $(whoami):root /opt/R/${R_VERSION}/lib/R/library
 
       - name: Install R packages
         run: |
