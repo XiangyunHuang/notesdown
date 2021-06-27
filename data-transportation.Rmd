@@ -58,7 +58,7 @@ sparklyr::spark_install(version = '3.0', hadoop_version = '2.7')
 也可以先手动下载 Spark 软件环境，建议选择就近镜像站点下载，比如在北京选择清华站点
 <https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>，此环境自带 R 和 Python 接口。为了供 sparklyr 调用，先设置 `SPARK_HOME` 环境变量指向 Spark 安装位置，再连接单机版 Spark。
 
-```{r}
+```{r,eval=FALSE}
 # 排错 https://github.com/sparklyr/sparklyr/issues/2827
 options(sparklyr.log.console = TRUE)
 # 连接 Spark 
@@ -66,11 +66,20 @@ library(sparklyr)
 library(ggplot2)
 sc <- spark_connect(
   master = "local",
-  spark_home = Sys.getenv("SPARK_HOME"),
-  config = list(sparklyr.gateway.address = "127.0.0.1")
+  # config = list(sparklyr.gateway.address = "127.0.0.1"),
+  spark_home = Sys.getenv("SPARK_HOME")
 )
 # diamonds 数据集导入 Spark
 diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
+```
+```{r}
+library(RSQLite)
+
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+dbWriteTable(con, "diamonds", ggplot2::diamonds)
+
+dbListTables(con)
 ```
 
 做数据的聚合统计，有两种方式。一种是使用用 R 包 dplyr 提供的数据操作语法，下面以按 cut 分组统计钻石的数量为例，说明 dplyr 提供的数据操作方式。
@@ -88,18 +97,27 @@ diamonds_tbl <- diamonds_tbl %>%
 
 另一种是使用结构化查询语言 SQL，这自不必说，大多数情况下，使用和一般的 SQL 没什么两样。
 
-```{r}
+```{r,eval=FALSE}
 library(DBI)
 diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
+diamonds_preview
+```
+```{r}
+library(DBI)
+diamonds_preview <- dbGetQuery(con, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
 diamonds_preview
 ```
 
 :::::: {.columns}
 ::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
 
-```{r}
+```{r,eval=FALSE}
 # SQL 中的 AVG 和 R 中的 mean 函数是类似的
 diamonds_price <- dbGetQuery(sc, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
+diamonds_price
+```
+```{r}
+diamonds_price <- dbGetQuery(con, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
 diamonds_price
 ```
 
@@ -112,6 +130,7 @@ a column separator -->
 ::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
 
 ```{r}
+library(ggplot2)
 library(data.table)
 diamonds <- as.data.table(diamonds)
 diamonds[,.(mean_price = mean(price)), by = .(cut)]
@@ -123,7 +142,6 @@ diamonds[,.(mean_price = mean(price)), by = .(cut)]
 将结果数据用 ggplot2 呈现出来
 
 ```{r}
-library(ggplot2)
 ggplot(diamonds_preview, aes(cut, cnt)) +
   geom_col() +
   theme_minimal()
@@ -131,8 +149,12 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
-```{r}
+```{r,eval=FALSE}
 diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
+diamonds_sample
+```
+```{r}
+diamonds_sample <- dbGetQuery(con, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
 diamonds_sample
 ```
 
@@ -140,7 +162,7 @@ diamonds_sample
 
 窗口函数 <https://www.cnblogs.com/ZackSun/p/9713435.html>
 
-```{r}
+```{r,eval=FALSE}
 diamonds_rank <- dbGetQuery(sc, "
   SELECT cut, price, RANK() OVER (PARTITION BY cut ORDER BY price) AS rank 
   FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)
@@ -156,7 +178,7 @@ LATERAL VIEW 把一列拆成多行
 
 创建数据集
 
-```{r}
+```{r,eval=FALSE}
 # 先删除存在的表 person
 dbGetQuery(sc, "DROP TABLE IF EXISTS person")
 # 创建表 person
@@ -173,15 +195,13 @@ INSERT INTO person VALUES
 
 查看数据集
 
-```{r}
-dbGetQuery(sc,"SELECT * FROM person")
+```{r,eval=FALSE}
+dbGetQuery(sc, "SELECT * FROM person")
 ```
 
-行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>
+行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
 
-LATERAL VIEW 展开
-
-```{r}
+```{r,eval=FALSE}
 dbGetQuery(sc,"
 SELECT * FROM person
     LATERAL VIEW EXPLODE(ARRAY(30, 60)) tabelName AS c_age
@@ -192,7 +212,7 @@ LIMIT 6
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
 
-```{r}
+```{r,eval=FALSE}
 # 今天
 dbGetQuery(sc, "select current_date")
 # 昨天
@@ -205,8 +225,11 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 最后，使用完记得关闭 Spark 连接
 
-```{r}
+```{r,eval=FALSE}
 spark_disconnect(sc)
+```
+```{r}
+dbDisconnect(con)
 ```
 
 ### SparkR {#subsec:sparkr}
