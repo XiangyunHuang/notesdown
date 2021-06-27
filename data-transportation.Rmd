@@ -58,7 +58,7 @@ sparklyr::spark_install(version = '3.0', hadoop_version = '2.7')
 也可以先手动下载 Spark 软件环境，建议选择就近镜像站点下载，比如在北京选择清华站点
 <https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz>，此环境自带 R 和 Python 接口。为了供 sparklyr 调用，先设置 `SPARK_HOME` 环境变量指向 Spark 安装位置，再连接单机版 Spark。
 
-```{r,eval=FALSE}
+```{r}
 # 排错 https://github.com/sparklyr/sparklyr/issues/2827
 options(sparklyr.log.console = TRUE)
 # 连接 Spark 
@@ -71,15 +71,6 @@ sc <- spark_connect(
 )
 # diamonds 数据集导入 Spark
 diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
-```
-```{r}
-library(RSQLite)
-
-con <- dbConnect(RSQLite::SQLite(), ":memory:")
-
-dbWriteTable(con, "diamonds", ggplot2::diamonds)
-
-dbListTables(con)
 ```
 
 做数据的聚合统计，有两种方式。一种是使用用 R 包 dplyr 提供的数据操作语法，下面以按 cut 分组统计钻石的数量为例，说明 dplyr 提供的数据操作方式。
@@ -97,27 +88,18 @@ diamonds_tbl <- diamonds_tbl %>%
 
 另一种是使用结构化查询语言 SQL，这自不必说，大多数情况下，使用和一般的 SQL 没什么两样。
 
-```{r,eval=FALSE}
-library(DBI)
-diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
-diamonds_preview
-```
 ```{r}
 library(DBI)
-diamonds_preview <- dbGetQuery(con, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
+diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
 diamonds_preview
 ```
 
 :::::: {.columns}
 ::: {.column width="47.5%" data-latex="{0.475\textwidth}"}
 
-```{r,eval=FALSE}
+```{r}
 # SQL 中的 AVG 和 R 中的 mean 函数是类似的
 diamonds_price <- dbGetQuery(sc, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
-diamonds_price
-```
-```{r}
-diamonds_price <- dbGetQuery(con, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
 diamonds_price
 ```
 
@@ -149,7 +131,7 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
-```{r,eval=FALSE}
+```{r}
 diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
 diamonds_sample
 ```
@@ -158,7 +140,7 @@ diamonds_sample
 
 窗口函数 <https://www.cnblogs.com/ZackSun/p/9713435.html>
 
-```{r,eval=FALSE}
+```{r}
 diamonds_rank <- dbGetQuery(sc, "
   SELECT cut, price, RANK() OVER (PARTITION BY cut ORDER BY price) AS rank 
   FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)
@@ -174,7 +156,7 @@ LATERAL VIEW 把一列拆成多行
 
 创建数据集
 
-```{r,eval=FALSE}
+```{r}
 # 先删除存在的表 person
 dbGetQuery(sc, "DROP TABLE IF EXISTS person")
 # 创建表 person
@@ -191,13 +173,13 @@ INSERT INTO person VALUES
 
 查看数据集
 
-```{r,eval=FALSE}
+```{r}
 dbGetQuery(sc, "SELECT * FROM person")
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
 
-```{r,eval=FALSE}
+```{r}
 dbGetQuery(sc,"
 SELECT * FROM person
     LATERAL VIEW EXPLODE(ARRAY(30, 60)) tabelName AS c_age
@@ -208,7 +190,7 @@ LIMIT 6
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
 
-```{r,eval=FALSE}
+```{r}
 # 今天
 dbGetQuery(sc, "select current_date")
 # 昨天
@@ -221,11 +203,8 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 最后，使用完记得关闭 Spark 连接
 
-```{r,eval=FALSE}
-spark_disconnect(sc)
-```
 ```{r}
-dbDisconnect(con)
+spark_disconnect(sc)
 ```
 
 ### SparkR {#subsec:sparkr}
@@ -243,7 +222,7 @@ sparkR.session(master = "local[*]", sparkConfig = list(spark.driver.memory = "2g
 ```
 
 ::: {.rmdwarn data-latex="{警告}"}
-**SparkR** 要求 Java 版本满足：大于等于8，而小于12，我本地 MacOS 安装了 oracle-jdk 16.0.1 不兼容
+**SparkR** 要求 Java 版本满足：大于等于8，而小于12，本地 MacOS 安装高版本，比如 oracle-jdk 16.0.1 会报不兼容的错误。
 
 ```
 Spark package found in SPARK_HOME: /opt/spark/spark-3.1.1-bin-hadoop3.2
