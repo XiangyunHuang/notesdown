@@ -878,53 +878,53 @@ Subject: 测试邮件
 
 这是一封测试邮件！</code></pre>
 <p>将邮件内容保存为 mail.txt 文件，然后使用 curl 命令行工具将邮件内容发出去。</p>
-<div class="sourceCode" id="cb360"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb360-1"><a href="sec-send-emails.html#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--url</span> <span class="st">&#39;smtp://公司邮件服务器地址:开放的端口号&#39;</span> <span class="dt">\</span></span>
-<span id="cb360-2"><a href="sec-send-emails.html#cb360-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--ssl-reqd</span> <span class="at">--mail-from</span> <span class="st">&#39;本人公司邮箱地址&#39;</span> <span class="dt">\</span></span>
-<span id="cb360-3"><a href="sec-send-emails.html#cb360-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--mail-rcpt</span> <span class="st">&#39;他人公司邮箱地址&#39;</span> <span class="dt">\</span></span>
-<span id="cb360-4"><a href="sec-send-emails.html#cb360-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--upload-file</span> data/mail.txt <span class="dt">\</span></span>
-<span id="cb360-5"><a href="sec-send-emails.html#cb360-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--user</span> <span class="st">&#39;本人公司邮箱地址:邮箱登陆密码&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb366-1"><a href="sec-send-emails.html#cb366-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--url</span> <span class="st">&#39;smtp://公司邮件服务器地址:开放的端口号&#39;</span> <span class="dt">\</span></span>
+<span id="cb366-2"><a href="sec-send-emails.html#cb366-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--ssl-reqd</span> <span class="at">--mail-from</span> <span class="st">&#39;本人公司邮箱地址&#39;</span> <span class="dt">\</span></span>
+<span id="cb366-3"><a href="sec-send-emails.html#cb366-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--mail-rcpt</span> <span class="st">&#39;他人公司邮箱地址&#39;</span> <span class="dt">\</span></span>
+<span id="cb366-4"><a href="sec-send-emails.html#cb366-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--upload-file</span> data/mail.txt <span class="dt">\</span></span>
+<span id="cb366-5"><a href="sec-send-emails.html#cb366-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--user</span> <span class="st">&#39;本人公司邮箱地址:邮箱登陆密码&#39;</span></span></code></pre></div>
 <p>注意 Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。 下面以 blastula 包为例怎么支持 Gmail/Outlook/QQ 等邮件发送，过程分两步，第一步配置密钥</p>
-<div class="sourceCode" id="cb361"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb361-1"><a href="sec-send-emails.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CentOS 8 上安装依赖</span></span>
-<span id="cb361-2"><a href="sec-send-emails.html#cb361-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> libsecret-devel libsodium-devel</span></code></pre></div>
-<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="sec-send-emails.html#cb362-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 R 包 keyring</span></span>
-<span id="cb362-2"><a href="sec-send-emails.html#cb362-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;keyring&quot;</span>)</span>
-<span id="cb362-3"><a href="sec-send-emails.html#cb362-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置密钥证书，到底如何在 Linux 服务器上配置还不知道</span></span>
-<span id="cb362-4"><a href="sec-send-emails.html#cb362-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keyring)</span>
-<span id="cb362-5"><a href="sec-send-emails.html#cb362-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb362-6"><a href="sec-send-emails.html#cb362-6" aria-hidden="true" tabindex="-1"></a><span class="co"># creds_envvar(</span></span>
-<span id="cb362-7"><a href="sec-send-emails.html#cb362-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   user = Sys.getenv(&quot;SMTP_USER&quot;),</span></span>
-<span id="cb362-8"><a href="sec-send-emails.html#cb362-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   pass_envvar = Sys.getenv(&quot;SMTP_PASSWORD&quot;),</span></span>
-<span id="cb362-9"><a href="sec-send-emails.html#cb362-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   provider = &quot;outlook&quot;,</span></span>
-<span id="cb362-10"><a href="sec-send-emails.html#cb362-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   use_ssl = TRUE</span></span>
-<span id="cb362-11"><a href="sec-send-emails.html#cb362-11" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb362-12"><a href="sec-send-emails.html#cb362-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb362-13"><a href="sec-send-emails.html#cb362-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blastula)</span>
-<span id="cb362-14"><a href="sec-send-emails.html#cb362-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 运行一次就可以了</span></span>
-<span id="cb362-15"><a href="sec-send-emails.html#cb362-15" aria-hidden="true" tabindex="-1"></a><span class="fu">create_smtp_creds_key</span>(</span>
-<span id="cb362-16"><a href="sec-send-emails.html#cb362-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">&quot;outlook&quot;</span>, </span>
-<span id="cb362-17"><a href="sec-send-emails.html#cb362-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">user =</span> <span class="st">&quot;xxx@outlook.com&quot;</span>, <span class="co"># 邮件地址</span></span>
-<span id="cb362-18"><a href="sec-send-emails.html#cb362-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">provider =</span> <span class="st">&quot;outlook&quot;</span></span>
-<span id="cb362-19"><a href="sec-send-emails.html#cb362-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb367"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb367-1"><a href="sec-send-emails.html#cb367-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CentOS 8 上安装依赖</span></span>
+<span id="cb367-2"><a href="sec-send-emails.html#cb367-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> libsecret-devel libsodium-devel</span></code></pre></div>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="sec-send-emails.html#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 R 包 keyring</span></span>
+<span id="cb368-2"><a href="sec-send-emails.html#cb368-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;keyring&quot;</span>)</span>
+<span id="cb368-3"><a href="sec-send-emails.html#cb368-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置密钥证书，到底如何在 Linux 服务器上配置还不知道</span></span>
+<span id="cb368-4"><a href="sec-send-emails.html#cb368-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keyring)</span>
+<span id="cb368-5"><a href="sec-send-emails.html#cb368-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb368-6"><a href="sec-send-emails.html#cb368-6" aria-hidden="true" tabindex="-1"></a><span class="co"># creds_envvar(</span></span>
+<span id="cb368-7"><a href="sec-send-emails.html#cb368-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   user = Sys.getenv(&quot;SMTP_USER&quot;),</span></span>
+<span id="cb368-8"><a href="sec-send-emails.html#cb368-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   pass_envvar = Sys.getenv(&quot;SMTP_PASSWORD&quot;),</span></span>
+<span id="cb368-9"><a href="sec-send-emails.html#cb368-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   provider = &quot;outlook&quot;,</span></span>
+<span id="cb368-10"><a href="sec-send-emails.html#cb368-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   use_ssl = TRUE</span></span>
+<span id="cb368-11"><a href="sec-send-emails.html#cb368-11" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb368-12"><a href="sec-send-emails.html#cb368-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb368-13"><a href="sec-send-emails.html#cb368-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blastula)</span>
+<span id="cb368-14"><a href="sec-send-emails.html#cb368-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 运行一次就可以了</span></span>
+<span id="cb368-15"><a href="sec-send-emails.html#cb368-15" aria-hidden="true" tabindex="-1"></a><span class="fu">create_smtp_creds_key</span>(</span>
+<span id="cb368-16"><a href="sec-send-emails.html#cb368-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">&quot;outlook&quot;</span>, </span>
+<span id="cb368-17"><a href="sec-send-emails.html#cb368-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">user =</span> <span class="st">&quot;xxx@outlook.com&quot;</span>, <span class="co"># 邮件地址</span></span>
+<span id="cb368-18"><a href="sec-send-emails.html#cb368-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">provider =</span> <span class="st">&quot;outlook&quot;</span></span>
+<span id="cb368-19"><a href="sec-send-emails.html#cb368-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>第二步，准备邮件内容，包括邮件主题、发/收件人、抄送人、邮件主体和附件</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="sec-send-emails.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blastula)</span>
-<span id="cb363-2"><a href="sec-send-emails.html#cb363-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb363-3"><a href="sec-send-emails.html#cb363-3" aria-hidden="true" tabindex="-1"></a>attachment <span class="ot">&lt;-</span> <span class="st">&quot;data/mail.txt&quot;</span> <span class="co"># 如果没有附件，引号内留空即可。</span></span>
-<span id="cb363-4"><a href="sec-send-emails.html#cb363-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用</span></span>
-<span id="cb363-5"><a href="sec-send-emails.html#cb363-5" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="st">&quot;examples/html-document.Rmd&quot;</span> </span>
-<span id="cb363-6"><a href="sec-send-emails.html#cb363-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb363-7"><a href="sec-send-emails.html#cb363-7" aria-hidden="true" tabindex="-1"></a>email <span class="ot">&lt;-</span> <span class="fu">render_email</span>(body) <span class="sc">%&gt;%</span></span>
-<span id="cb363-8"><a href="sec-send-emails.html#cb363-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_attachment</span>(<span class="at">file =</span> attachment)</span>
-<span id="cb363-9"><a href="sec-send-emails.html#cb363-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb363-10"><a href="sec-send-emails.html#cb363-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 发送邮件</span></span>
-<span id="cb363-11"><a href="sec-send-emails.html#cb363-11" aria-hidden="true" tabindex="-1"></a><span class="fu">smtp_send</span>(</span>
-<span id="cb363-12"><a href="sec-send-emails.html#cb363-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="fu">c</span>(<span class="st">&quot;张三&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@outlook.com&quot;</span>), <span class="co"># 发件人</span></span>
-<span id="cb363-13"><a href="sec-send-emails.html#cb363-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="fu">c</span>(<span class="st">&quot;李四&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@foxmail.com&quot;</span>,</span>
-<span id="cb363-14"><a href="sec-send-emails.html#cb363-14" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;王五&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@gmail.com&quot;</span>), <span class="co"># 收件人</span></span>
-<span id="cb363-15"><a href="sec-send-emails.html#cb363-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">cc =</span> <span class="fu">c</span>(<span class="st">&quot;赵六&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@outlook.com&quot;</span>), <span class="co"># 抄送人</span></span>
-<span id="cb363-16"><a href="sec-send-emails.html#cb363-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">subject =</span> <span class="st">&quot;这是一封测试邮件&quot;</span>,</span>
-<span id="cb363-17"><a href="sec-send-emails.html#cb363-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">email =</span> email,</span>
-<span id="cb363-18"><a href="sec-send-emails.html#cb363-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">credentials =</span> <span class="fu">creds_key</span>(<span class="at">id =</span> <span class="st">&quot;outlook&quot;</span>)</span>
-<span id="cb363-19"><a href="sec-send-emails.html#cb363-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="sec-send-emails.html#cb369-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blastula)</span>
+<span id="cb369-2"><a href="sec-send-emails.html#cb369-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb369-3"><a href="sec-send-emails.html#cb369-3" aria-hidden="true" tabindex="-1"></a>attachment <span class="ot">&lt;-</span> <span class="st">&quot;data/mail.txt&quot;</span> <span class="co"># 如果没有附件，引号内留空即可。</span></span>
+<span id="cb369-4"><a href="sec-send-emails.html#cb369-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用</span></span>
+<span id="cb369-5"><a href="sec-send-emails.html#cb369-5" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="st">&quot;examples/html-document.Rmd&quot;</span> </span>
+<span id="cb369-6"><a href="sec-send-emails.html#cb369-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb369-7"><a href="sec-send-emails.html#cb369-7" aria-hidden="true" tabindex="-1"></a>email <span class="ot">&lt;-</span> <span class="fu">render_email</span>(body) <span class="sc">%&gt;%</span></span>
+<span id="cb369-8"><a href="sec-send-emails.html#cb369-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_attachment</span>(<span class="at">file =</span> attachment)</span>
+<span id="cb369-9"><a href="sec-send-emails.html#cb369-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb369-10"><a href="sec-send-emails.html#cb369-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 发送邮件</span></span>
+<span id="cb369-11"><a href="sec-send-emails.html#cb369-11" aria-hidden="true" tabindex="-1"></a><span class="fu">smtp_send</span>(</span>
+<span id="cb369-12"><a href="sec-send-emails.html#cb369-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="fu">c</span>(<span class="st">&quot;张三&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@outlook.com&quot;</span>), <span class="co"># 发件人</span></span>
+<span id="cb369-13"><a href="sec-send-emails.html#cb369-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="fu">c</span>(<span class="st">&quot;李四&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@foxmail.com&quot;</span>,</span>
+<span id="cb369-14"><a href="sec-send-emails.html#cb369-14" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;王五&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@gmail.com&quot;</span>), <span class="co"># 收件人</span></span>
+<span id="cb369-15"><a href="sec-send-emails.html#cb369-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">cc =</span> <span class="fu">c</span>(<span class="st">&quot;赵六&quot;</span> <span class="ot">=</span> <span class="st">&quot;xxx@outlook.com&quot;</span>), <span class="co"># 抄送人</span></span>
+<span id="cb369-16"><a href="sec-send-emails.html#cb369-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">subject =</span> <span class="st">&quot;这是一封测试邮件&quot;</span>,</span>
+<span id="cb369-17"><a href="sec-send-emails.html#cb369-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">email =</span> email,</span>
+<span id="cb369-18"><a href="sec-send-emails.html#cb369-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">credentials =</span> <span class="fu">creds_key</span>(<span class="at">id =</span> <span class="st">&quot;outlook&quot;</span>)</span>
+<span id="cb369-19"><a href="sec-send-emails.html#cb369-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div class="footnotes">
 <hr />

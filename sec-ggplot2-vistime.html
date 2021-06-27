@@ -869,60 +869,60 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec:ggplot2-vistime" class="section level2" number="8.22">
 <h2><span class="header-section-number">8.22</span> 时间线</h2>
-<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="sec-ggplot2-vistime.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 交互动态图 https://github.com/shosaco/vistime</span></span>
-<span id="cb320-2"><a href="sec-ggplot2-vistime.html#cb320-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 刘思喆 2018 数据科学的时间轴 https://bjt.name/2018/11/18/timeline.html</span></span>
-<span id="cb320-3"><a href="sec-ggplot2-vistime.html#cb320-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
-<span id="cb320-4"><a href="sec-ggplot2-vistime.html#cb320-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textConnection</span>(<span class="st">&quot;</span></span>
-<span id="cb320-5"><a href="sec-ggplot2-vistime.html#cb320-5" aria-hidden="true" tabindex="-1"></a><span class="st">The Future of Data Analysis,1962</span></span>
-<span id="cb320-6"><a href="sec-ggplot2-vistime.html#cb320-6" aria-hidden="true" tabindex="-1"></a><span class="st">Relational Database,1970</span></span>
-<span id="cb320-7"><a href="sec-ggplot2-vistime.html#cb320-7" aria-hidden="true" tabindex="-1"></a><span class="st">Data science(Peter Naur),1974</span></span>
-<span id="cb320-8"><a href="sec-ggplot2-vistime.html#cb320-8" aria-hidden="true" tabindex="-1"></a><span class="st">Two-Way Communication,1975</span></span>
-<span id="cb320-9"><a href="sec-ggplot2-vistime.html#cb320-9" aria-hidden="true" tabindex="-1"></a><span class="st">Exploratory Data Analysis,1977</span></span>
-<span id="cb320-10"><a href="sec-ggplot2-vistime.html#cb320-10" aria-hidden="true" tabindex="-1"></a><span class="st">Business Intelligence,1989</span></span>
-<span id="cb320-11"><a href="sec-ggplot2-vistime.html#cb320-11" aria-hidden="true" tabindex="-1"></a><span class="st">The First Database Report,1992</span></span>
-<span id="cb320-12"><a href="sec-ggplot2-vistime.html#cb320-12" aria-hidden="true" tabindex="-1"></a><span class="st">The World Wide Web Explodes,1995</span></span>
-<span id="cb320-13"><a href="sec-ggplot2-vistime.html#cb320-13" aria-hidden="true" tabindex="-1"></a><span class="st">Data Mining and Knowledge Discovery,1997</span></span>
-<span id="cb320-14"><a href="sec-ggplot2-vistime.html#cb320-14" aria-hidden="true" tabindex="-1"></a><span class="st">S(ACM Software System Award),1998</span></span>
-<span id="cb320-15"><a href="sec-ggplot2-vistime.html#cb320-15" aria-hidden="true" tabindex="-1"></a><span class="st">Statistical Modeling: The Two Cultures,2001</span></span>
-<span id="cb320-16"><a href="sec-ggplot2-vistime.html#cb320-16" aria-hidden="true" tabindex="-1"></a><span class="st">Hadoop,2006</span></span>
-<span id="cb320-17"><a href="sec-ggplot2-vistime.html#cb320-17" aria-hidden="true" tabindex="-1"></a><span class="st">Data scientist,2008</span></span>
-<span id="cb320-18"><a href="sec-ggplot2-vistime.html#cb320-18" aria-hidden="true" tabindex="-1"></a><span class="st">NOSQL,2009</span></span>
-<span id="cb320-19"><a href="sec-ggplot2-vistime.html#cb320-19" aria-hidden="true" tabindex="-1"></a><span class="st">Deep Learning,2015</span></span>
-<span id="cb320-20"><a href="sec-ggplot2-vistime.html#cb320-20" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>),</span>
-<span id="cb320-21"><a href="sec-ggplot2-vistime.html#cb320-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
-<span id="cb320-22"><a href="sec-ggplot2-vistime.html#cb320-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb320-23"><a href="sec-ggplot2-vistime.html#cb320-23" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Event&quot;</span>, <span class="st">&quot;EventDate&quot;</span>)</span>
-<span id="cb320-24"><a href="sec-ggplot2-vistime.html#cb320-24" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>EventDate <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(x<span class="sc">$</span>EventDate, <span class="st">&quot;/01/01&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>))</span>
-<span id="cb320-25"><a href="sec-ggplot2-vistime.html#cb320-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-26"><a href="sec-ggplot2-vistime.html#cb320-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(timelineS)</span>
-<span id="cb320-27"><a href="sec-ggplot2-vistime.html#cb320-27" aria-hidden="true" tabindex="-1"></a><span class="fu">timelineS</span>(x,</span>
-<span id="cb320-28"><a href="sec-ggplot2-vistime.html#cb320-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">paste</span>(x[[<span class="dv">1</span>]], <span class="fu">format</span>(x[[<span class="dv">2</span>]], <span class="st">&quot;%Y&quot;</span>)),</span>
-<span id="cb320-29"><a href="sec-ggplot2-vistime.html#cb320-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">line.color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">label.angle =</span> <span class="dv">15</span></span>
-<span id="cb320-30"><a href="sec-ggplot2-vistime.html#cb320-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="sec-ggplot2-vistime.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 交互动态图 https://github.com/shosaco/vistime</span></span>
+<span id="cb326-2"><a href="sec-ggplot2-vistime.html#cb326-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 刘思喆 2018 数据科学的时间轴 https://bjt.name/2018/11/18/timeline.html</span></span>
+<span id="cb326-3"><a href="sec-ggplot2-vistime.html#cb326-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb326-4"><a href="sec-ggplot2-vistime.html#cb326-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textConnection</span>(<span class="st">&quot;</span></span>
+<span id="cb326-5"><a href="sec-ggplot2-vistime.html#cb326-5" aria-hidden="true" tabindex="-1"></a><span class="st">The Future of Data Analysis,1962</span></span>
+<span id="cb326-6"><a href="sec-ggplot2-vistime.html#cb326-6" aria-hidden="true" tabindex="-1"></a><span class="st">Relational Database,1970</span></span>
+<span id="cb326-7"><a href="sec-ggplot2-vistime.html#cb326-7" aria-hidden="true" tabindex="-1"></a><span class="st">Data science(Peter Naur),1974</span></span>
+<span id="cb326-8"><a href="sec-ggplot2-vistime.html#cb326-8" aria-hidden="true" tabindex="-1"></a><span class="st">Two-Way Communication,1975</span></span>
+<span id="cb326-9"><a href="sec-ggplot2-vistime.html#cb326-9" aria-hidden="true" tabindex="-1"></a><span class="st">Exploratory Data Analysis,1977</span></span>
+<span id="cb326-10"><a href="sec-ggplot2-vistime.html#cb326-10" aria-hidden="true" tabindex="-1"></a><span class="st">Business Intelligence,1989</span></span>
+<span id="cb326-11"><a href="sec-ggplot2-vistime.html#cb326-11" aria-hidden="true" tabindex="-1"></a><span class="st">The First Database Report,1992</span></span>
+<span id="cb326-12"><a href="sec-ggplot2-vistime.html#cb326-12" aria-hidden="true" tabindex="-1"></a><span class="st">The World Wide Web Explodes,1995</span></span>
+<span id="cb326-13"><a href="sec-ggplot2-vistime.html#cb326-13" aria-hidden="true" tabindex="-1"></a><span class="st">Data Mining and Knowledge Discovery,1997</span></span>
+<span id="cb326-14"><a href="sec-ggplot2-vistime.html#cb326-14" aria-hidden="true" tabindex="-1"></a><span class="st">S(ACM Software System Award),1998</span></span>
+<span id="cb326-15"><a href="sec-ggplot2-vistime.html#cb326-15" aria-hidden="true" tabindex="-1"></a><span class="st">Statistical Modeling: The Two Cultures,2001</span></span>
+<span id="cb326-16"><a href="sec-ggplot2-vistime.html#cb326-16" aria-hidden="true" tabindex="-1"></a><span class="st">Hadoop,2006</span></span>
+<span id="cb326-17"><a href="sec-ggplot2-vistime.html#cb326-17" aria-hidden="true" tabindex="-1"></a><span class="st">Data scientist,2008</span></span>
+<span id="cb326-18"><a href="sec-ggplot2-vistime.html#cb326-18" aria-hidden="true" tabindex="-1"></a><span class="st">NOSQL,2009</span></span>
+<span id="cb326-19"><a href="sec-ggplot2-vistime.html#cb326-19" aria-hidden="true" tabindex="-1"></a><span class="st">Deep Learning,2015</span></span>
+<span id="cb326-20"><a href="sec-ggplot2-vistime.html#cb326-20" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>),</span>
+<span id="cb326-21"><a href="sec-ggplot2-vistime.html#cb326-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb326-22"><a href="sec-ggplot2-vistime.html#cb326-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb326-23"><a href="sec-ggplot2-vistime.html#cb326-23" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Event&quot;</span>, <span class="st">&quot;EventDate&quot;</span>)</span>
+<span id="cb326-24"><a href="sec-ggplot2-vistime.html#cb326-24" aria-hidden="true" tabindex="-1"></a>x<span class="sc">$</span>EventDate <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(x<span class="sc">$</span>EventDate, <span class="st">&quot;/01/01&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>))</span>
+<span id="cb326-25"><a href="sec-ggplot2-vistime.html#cb326-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-26"><a href="sec-ggplot2-vistime.html#cb326-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(timelineS)</span>
+<span id="cb326-27"><a href="sec-ggplot2-vistime.html#cb326-27" aria-hidden="true" tabindex="-1"></a><span class="fu">timelineS</span>(x,</span>
+<span id="cb326-28"><a href="sec-ggplot2-vistime.html#cb326-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">paste</span>(x[[<span class="dv">1</span>]], <span class="fu">format</span>(x[[<span class="dv">2</span>]], <span class="st">&quot;%Y&quot;</span>)),</span>
+<span id="cb326-29"><a href="sec-ggplot2-vistime.html#cb326-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">line.color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">label.angle =</span> <span class="dv">15</span></span>
+<span id="cb326-30"><a href="sec-ggplot2-vistime.html#cb326-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:vis-timeline"></span>
 <img src="data-visualization-gallery_files/figure-html/vis-timeline-1.png" alt="数据科学的时间轴" width="960" />
 <p class="caption">
 图 8.32: 数据科学的时间轴
 </p>
 </div>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="sec-ggplot2-vistime.html#cb321-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(timeline)</span>
-<span id="cb321-2"><a href="sec-ggplot2-vistime.html#cb321-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ww2, <span class="at">package =</span> <span class="st">&#39;timeline&#39;</span>)</span>
-<span id="cb321-3"><a href="sec-ggplot2-vistime.html#cb321-3" aria-hidden="true" tabindex="-1"></a><span class="fu">timeline</span>(ww2, ww2.events, <span class="at">event.spots=</span><span class="dv">2</span>, <span class="at">event.label=</span><span class="st">&#39;&#39;</span>, <span class="at">event.above=</span><span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="sec-ggplot2-vistime.html#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 适合放在动态幻灯片</span></span>
-<span id="cb322-2"><a href="sec-ggplot2-vistime.html#cb322-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 美团风格的写轮眼</span></span>
-<span id="cb322-3"><a href="sec-ggplot2-vistime.html#cb322-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 时间线</span></span>
-<span id="cb322-4"><a href="sec-ggplot2-vistime.html#cb322-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vistime)</span>
-<span id="cb322-5"><a href="sec-ggplot2-vistime.html#cb322-5" aria-hidden="true" tabindex="-1"></a><span class="co"># presidents and vice presidents</span></span>
-<span id="cb322-6"><a href="sec-ggplot2-vistime.html#cb322-6" aria-hidden="true" tabindex="-1"></a>pres <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb322-7"><a href="sec-ggplot2-vistime.html#cb322-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Position =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;President&quot;</span>, <span class="st">&quot;Vice&quot;</span>), <span class="at">each =</span> <span class="dv">3</span>),</span>
-<span id="cb322-8"><a href="sec-ggplot2-vistime.html#cb322-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Name =</span> <span class="fu">c</span>(<span class="st">&quot;Washington&quot;</span>, <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;Adams&quot;</span>, <span class="st">&quot;Jefferson&quot;</span>), <span class="dv">2</span>), <span class="st">&quot;Burr&quot;</span>),</span>
-<span id="cb322-9"><a href="sec-ggplot2-vistime.html#cb322-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="fu">c</span>(<span class="st">&quot;1789-03-29&quot;</span>, <span class="st">&quot;1797-02-03&quot;</span>, <span class="st">&quot;1801-02-03&quot;</span>),</span>
-<span id="cb322-10"><a href="sec-ggplot2-vistime.html#cb322-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">end =</span> <span class="fu">c</span>(<span class="st">&quot;1797-02-03&quot;</span>, <span class="st">&quot;1801-02-03&quot;</span>, <span class="st">&quot;1809-02-03&quot;</span>),</span>
-<span id="cb322-11"><a href="sec-ggplot2-vistime.html#cb322-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">c</span>(<span class="st">&quot;#cbb69d&quot;</span>, <span class="st">&quot;#603913&quot;</span>, <span class="st">&quot;#c69c6e&quot;</span>)</span>
-<span id="cb322-12"><a href="sec-ggplot2-vistime.html#cb322-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb322-13"><a href="sec-ggplot2-vistime.html#cb322-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb322-14"><a href="sec-ggplot2-vistime.html#cb322-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hc_vistime</span>(pres, <span class="at">col.event =</span> <span class="st">&quot;Position&quot;</span>, <span class="at">col.group =</span> <span class="st">&quot;Name&quot;</span>, </span>
-<span id="cb322-15"><a href="sec-ggplot2-vistime.html#cb322-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">&quot;Presidents of the USA&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="sec-ggplot2-vistime.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(timeline)</span>
+<span id="cb327-2"><a href="sec-ggplot2-vistime.html#cb327-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ww2, <span class="at">package =</span> <span class="st">&#39;timeline&#39;</span>)</span>
+<span id="cb327-3"><a href="sec-ggplot2-vistime.html#cb327-3" aria-hidden="true" tabindex="-1"></a><span class="fu">timeline</span>(ww2, ww2.events, <span class="at">event.spots=</span><span class="dv">2</span>, <span class="at">event.label=</span><span class="st">&#39;&#39;</span>, <span class="at">event.above=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="sec-ggplot2-vistime.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 适合放在动态幻灯片</span></span>
+<span id="cb328-2"><a href="sec-ggplot2-vistime.html#cb328-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 美团风格的写轮眼</span></span>
+<span id="cb328-3"><a href="sec-ggplot2-vistime.html#cb328-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 时间线</span></span>
+<span id="cb328-4"><a href="sec-ggplot2-vistime.html#cb328-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vistime)</span>
+<span id="cb328-5"><a href="sec-ggplot2-vistime.html#cb328-5" aria-hidden="true" tabindex="-1"></a><span class="co"># presidents and vice presidents</span></span>
+<span id="cb328-6"><a href="sec-ggplot2-vistime.html#cb328-6" aria-hidden="true" tabindex="-1"></a>pres <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb328-7"><a href="sec-ggplot2-vistime.html#cb328-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Position =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;President&quot;</span>, <span class="st">&quot;Vice&quot;</span>), <span class="at">each =</span> <span class="dv">3</span>),</span>
+<span id="cb328-8"><a href="sec-ggplot2-vistime.html#cb328-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Name =</span> <span class="fu">c</span>(<span class="st">&quot;Washington&quot;</span>, <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;Adams&quot;</span>, <span class="st">&quot;Jefferson&quot;</span>), <span class="dv">2</span>), <span class="st">&quot;Burr&quot;</span>),</span>
+<span id="cb328-9"><a href="sec-ggplot2-vistime.html#cb328-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="fu">c</span>(<span class="st">&quot;1789-03-29&quot;</span>, <span class="st">&quot;1797-02-03&quot;</span>, <span class="st">&quot;1801-02-03&quot;</span>),</span>
+<span id="cb328-10"><a href="sec-ggplot2-vistime.html#cb328-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">end =</span> <span class="fu">c</span>(<span class="st">&quot;1797-02-03&quot;</span>, <span class="st">&quot;1801-02-03&quot;</span>, <span class="st">&quot;1809-02-03&quot;</span>),</span>
+<span id="cb328-11"><a href="sec-ggplot2-vistime.html#cb328-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">c</span>(<span class="st">&quot;#cbb69d&quot;</span>, <span class="st">&quot;#603913&quot;</span>, <span class="st">&quot;#c69c6e&quot;</span>)</span>
+<span id="cb328-12"><a href="sec-ggplot2-vistime.html#cb328-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb328-13"><a href="sec-ggplot2-vistime.html#cb328-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb328-14"><a href="sec-ggplot2-vistime.html#cb328-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hc_vistime</span>(pres, <span class="at">col.event =</span> <span class="st">&quot;Position&quot;</span>, <span class="at">col.group =</span> <span class="st">&quot;Name&quot;</span>, </span>
+<span id="cb328-15"><a href="sec-ggplot2-vistime.html#cb328-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">title =</span> <span class="st">&quot;Presidents of the USA&quot;</span>)</span></code></pre></div>
 </div>
             </section>
 

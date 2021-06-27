@@ -75,20 +75,6 @@ sc <- spark_connect(
 diamonds_tbl <- copy_to(sc, ggplot2::diamonds, "diamonds")
 ```
 
-```r
-library(RSQLite)
-
-con <- dbConnect(RSQLite::SQLite(), ":memory:")
-
-dbWriteTable(con, "diamonds", ggplot2::diamonds)
-
-dbListTables(con)
-```
-
-```
-## [1] "diamonds"
-```
-
 做数据的聚合统计，有两种方式。一种是使用用 R 包 dplyr 提供的数据操作语法，下面以按 cut 分组统计钻石的数量为例，说明 dplyr 提供的数据操作方式。
 
 
@@ -112,18 +98,12 @@ diamonds_preview <- dbGetQuery(sc, "SELECT count(*) as cnt, cut FROM diamonds GR
 diamonds_preview
 ```
 
-```r
-library(DBI)
-diamonds_preview <- dbGetQuery(con, "SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut")
-diamonds_preview
-```
-
 ```
 ##     cnt       cut
-## 1  1610      Fair
-## 2  4906      Good
-## 3 21551     Ideal
-## 4 13791   Premium
+## 1 21551     Ideal
+## 2 13791   Premium
+## 3  4906      Good
+## 4  1610      Fair
 ## 5 12082 Very Good
 ```
 
@@ -137,17 +117,12 @@ diamonds_price <- dbGetQuery(sc, "SELECT AVG(price) as mean_price, cut FROM diam
 diamonds_price
 ```
 
-```r
-diamonds_price <- dbGetQuery(con, "SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut")
-diamonds_price
-```
-
 ```
 ##   mean_price       cut
-## 1   4358.758      Fair
-## 2   3928.864      Good
-## 3   3457.542     Ideal
-## 4   4584.258   Premium
+## 1   3457.542     Ideal
+## 2   4584.258   Premium
+## 3   3928.864      Good
+## 4   4358.758      Fair
 ## 5   3981.760 Very Good
 ```
 
@@ -188,7 +163,7 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
   theme_minimal()
 ```
 
-<img src="data-transportation_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" />
+<img src="data-transportation_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
@@ -196,6 +171,16 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 ```r
 diamonds_sample <- dbGetQuery(sc, "SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6")
 diamonds_sample
+```
+
+```
+##   carat     cut color clarity depth table price    x    y    z
+## 1  0.71 Premium     F     VS1  59.1  59.0  2920 5.88 5.83 3.46
+## 2  0.75 Premium     H     VS1  61.9  61.0  2961 5.85 5.82 3.61
+## 3  0.32 Premium     I    VVS2  60.7  59.0   561 4.40 4.43 2.68
+## 4  1.03   Ideal     H      I1  61.5  57.0  3172 6.48 6.52 4.00
+## 5  0.74   Ideal     F     VS1  62.0  54.8  3340 5.81 5.83 3.61
+## 6  1.01   Ideal     E      I1  62.0  57.0  3450 6.41 6.37 3.96
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -210,6 +195,16 @@ diamonds_rank <- dbGetQuery(sc, "
   LIMIT 6
 ")
 diamonds_rank
+```
+
+```
+##    cut price rank
+## 1 Fair  2112    1
+## 2 Fair  3250    2
+## 3 Fair  3980    3
+## 4 Good   490    1
+## 5 Good   755    2
+## 6 Good  1080    3
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -242,6 +237,14 @@ INSERT INTO person VALUES
 dbGetQuery(sc, "SELECT * FROM person")
 ```
 
+```
+##    id name age class  address
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2
+```
+
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
 
 
@@ -254,18 +257,57 @@ LIMIT 6
 ")
 ```
 
+```
+##    id name age class  address c_age d_age
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80
+```
+
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
 
 
 ```r
 # 今天
 dbGetQuery(sc, "select current_date")
+```
+
+```
+##   current_date()
+## 1     2021-06-27
+```
+
+```r
 # 昨天
 dbGetQuery(sc, "select date_sub(current_date, 1)")
+```
+
+```
+##   date_sub(current_date(), 1)
+## 1                  2021-06-26
+```
+
+```r
 # 本月最后一天 current_date 所属月份的最后一天
 dbGetQuery(sc, "select last_day(current_date)")
+```
+
+```
+##   last_day(current_date())
+## 1               2021-06-30
+```
+
+```r
 # 星期几
 dbGetQuery(sc, "select dayofweek(current_date)")
+```
+
+```
+##   dayofweek(current_date())
+## 1                         1
 ```
 
 最后，使用完记得关闭 Spark 连接
@@ -273,10 +315,6 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```r
 spark_disconnect(sc)
-```
-
-```r
-dbDisconnect(con)
 ```
 
 ### SparkR {#subsec:sparkr}
@@ -294,7 +332,7 @@ sparkR.session(master = "local[*]", sparkConfig = list(spark.driver.memory = "2g
 ```
 
 ::: {.rmdwarn data-latex="{警告}"}
-**SparkR** 要求 Java 版本满足：大于等于8，而小于12，我本地 MacOS 安装了 oracle-jdk 16.0.1 不兼容
+**SparkR** 要求 Java 版本满足：大于等于8，而小于12，本地 MacOS 安装高版本，比如 oracle-jdk 16.0.1 会报不兼容的错误。
 
 ```
 Spark package found in SPARK_HOME: /opt/spark/spark-3.1.1-bin-hadoop3.2

@@ -869,33 +869,33 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec:ggplot2-fit" class="section level2" number="8.14">
 <h2><span class="header-section-number">8.14</span> 拟合图</h2>
-<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="sec-ggplot2-fit.html#cb302-1" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">9</span><span class="sc">:</span><span class="dv">9</span></span>
-<span id="cb302-2"><a href="sec-ggplot2-fit.html#cb302-2" aria-hidden="true" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">abs</span>(xx))</span>
-<span id="cb302-3"><a href="sec-ggplot2-fit.html#cb302-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xx, yy,</span>
-<span id="cb302-4"><a href="sec-ggplot2-fit.html#cb302-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb302-5"><a href="sec-ggplot2-fit.html#cb302-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x),</span>
-<span id="cb302-6"><a href="sec-ggplot2-fit.html#cb302-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(<span class="fu">abs</span>(x)))</span>
-<span id="cb302-7"><a href="sec-ggplot2-fit.html#cb302-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb302-8"><a href="sec-ggplot2-fit.html#cb302-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">spline</span>(xx, yy, <span class="at">n =</span> <span class="dv">101</span>, <span class="at">method =</span> <span class="st">&quot;fmm&quot;</span>, <span class="at">ties =</span> mean), <span class="at">col =</span> <span class="st">&quot;pink&quot;</span>)</span>
-<span id="cb302-9"><a href="sec-ggplot2-fit.html#cb302-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb302-10"><a href="sec-ggplot2-fit.html#cb302-10" aria-hidden="true" tabindex="-1"></a>myspline <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, data, ...) {</span>
-<span id="cb302-11"><a href="sec-ggplot2-fit.html#cb302-11" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(formula, data)</span>
-<span id="cb302-12"><a href="sec-ggplot2-fit.html#cb302-12" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">splinefun</span>(dat[[<span class="dv">2</span>]], dat[[<span class="dv">1</span>]])</span>
-<span id="cb302-13"><a href="sec-ggplot2-fit.html#cb302-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(res) <span class="ot">&lt;-</span> <span class="st">&quot;myspline&quot;</span></span>
-<span id="cb302-14"><a href="sec-ggplot2-fit.html#cb302-14" aria-hidden="true" tabindex="-1"></a>  res</span>
-<span id="cb302-15"><a href="sec-ggplot2-fit.html#cb302-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb302-16"><a href="sec-ggplot2-fit.html#cb302-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb302-17"><a href="sec-ggplot2-fit.html#cb302-17" aria-hidden="true" tabindex="-1"></a>predict.myspline <span class="ot">&lt;-</span> <span class="cf">function</span>(object, newdata, ...) {</span>
-<span id="cb302-18"><a href="sec-ggplot2-fit.html#cb302-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">object</span>(newdata[[<span class="dv">1</span>]])</span>
-<span id="cb302-19"><a href="sec-ggplot2-fit.html#cb302-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb302-20"><a href="sec-ggplot2-fit.html#cb302-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb302-21"><a href="sec-ggplot2-fit.html#cb302-21" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">9</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb302-22"><a href="sec-ggplot2-fit.html#cb302-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">y =</span> <span class="fu">sqrt</span>(<span class="fu">abs</span>(x))) <span class="sc">%&gt;%</span></span>
-<span id="cb302-23"><a href="sec-ggplot2-fit.html#cb302-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb302-24"><a href="sec-ggplot2-fit.html#cb302-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb302-25"><a href="sec-ggplot2-fit.html#cb302-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> myspline, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> F, <span class="at">color =</span> <span class="st">&quot;pink&quot;</span>) <span class="sc">+</span></span>
-<span id="cb302-26"><a href="sec-ggplot2-fit.html#cb302-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x), <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(<span class="fu">abs</span>(x)))) <span class="sc">+</span></span>
-<span id="cb302-27"><a href="sec-ggplot2-fit.html#cb302-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="sec-ggplot2-fit.html#cb308-1" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">9</span><span class="sc">:</span><span class="dv">9</span></span>
+<span id="cb308-2"><a href="sec-ggplot2-fit.html#cb308-2" aria-hidden="true" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">abs</span>(xx))</span>
+<span id="cb308-3"><a href="sec-ggplot2-fit.html#cb308-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xx, yy,</span>
+<span id="cb308-4"><a href="sec-ggplot2-fit.html#cb308-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb308-5"><a href="sec-ggplot2-fit.html#cb308-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x),</span>
+<span id="cb308-6"><a href="sec-ggplot2-fit.html#cb308-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(<span class="fu">abs</span>(x)))</span>
+<span id="cb308-7"><a href="sec-ggplot2-fit.html#cb308-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb308-8"><a href="sec-ggplot2-fit.html#cb308-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">spline</span>(xx, yy, <span class="at">n =</span> <span class="dv">101</span>, <span class="at">method =</span> <span class="st">&quot;fmm&quot;</span>, <span class="at">ties =</span> mean), <span class="at">col =</span> <span class="st">&quot;pink&quot;</span>)</span>
+<span id="cb308-9"><a href="sec-ggplot2-fit.html#cb308-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-10"><a href="sec-ggplot2-fit.html#cb308-10" aria-hidden="true" tabindex="-1"></a>myspline <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, data, ...) {</span>
+<span id="cb308-11"><a href="sec-ggplot2-fit.html#cb308-11" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(formula, data)</span>
+<span id="cb308-12"><a href="sec-ggplot2-fit.html#cb308-12" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">splinefun</span>(dat[[<span class="dv">2</span>]], dat[[<span class="dv">1</span>]])</span>
+<span id="cb308-13"><a href="sec-ggplot2-fit.html#cb308-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(res) <span class="ot">&lt;-</span> <span class="st">&quot;myspline&quot;</span></span>
+<span id="cb308-14"><a href="sec-ggplot2-fit.html#cb308-14" aria-hidden="true" tabindex="-1"></a>  res</span>
+<span id="cb308-15"><a href="sec-ggplot2-fit.html#cb308-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb308-16"><a href="sec-ggplot2-fit.html#cb308-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-17"><a href="sec-ggplot2-fit.html#cb308-17" aria-hidden="true" tabindex="-1"></a>predict.myspline <span class="ot">&lt;-</span> <span class="cf">function</span>(object, newdata, ...) {</span>
+<span id="cb308-18"><a href="sec-ggplot2-fit.html#cb308-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">object</span>(newdata[[<span class="dv">1</span>]])</span>
+<span id="cb308-19"><a href="sec-ggplot2-fit.html#cb308-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb308-20"><a href="sec-ggplot2-fit.html#cb308-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-21"><a href="sec-ggplot2-fit.html#cb308-21" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">9</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb308-22"><a href="sec-ggplot2-fit.html#cb308-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">y =</span> <span class="fu">sqrt</span>(<span class="fu">abs</span>(x))) <span class="sc">%&gt;%</span></span>
+<span id="cb308-23"><a href="sec-ggplot2-fit.html#cb308-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb308-24"><a href="sec-ggplot2-fit.html#cb308-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">pch =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb308-25"><a href="sec-ggplot2-fit.html#cb308-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> myspline, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> F, <span class="at">color =</span> <span class="st">&quot;pink&quot;</span>) <span class="sc">+</span></span>
+<span id="cb308-26"><a href="sec-ggplot2-fit.html#cb308-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(x), <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(<span class="fu">abs</span>(x)))) <span class="sc">+</span></span>
+<span id="cb308-27"><a href="sec-ggplot2-fit.html#cb308-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:spline-fun"></span>
 <img src="data-visualization-gallery_files/figure-html/spline-fun-1.png" alt="自定义样条函数" width="45%" /><img src="data-visualization-gallery_files/figure-html/spline-fun-2.png" alt="自定义样条函数" width="45%" />
 <p class="caption">
@@ -903,16 +903,16 @@ div.csl-indent {
 </p>
 </div>
 <p>下面以真实数据集 trees 为例，介绍 <code>geom_smooth()</code> 支持的拟合方法，比如 <code>"lm"</code> 线性回归和 <code>"nls"</code> 非线性回归</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="sec-ggplot2-fit.html#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trees, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(Girth), <span class="at">y =</span> <span class="fu">log</span>(Volume))) <span class="sc">+</span></span>
-<span id="cb303-2"><a href="sec-ggplot2-fit.html#cb303-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb303-3"><a href="sec-ggplot2-fit.html#cb303-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb303-4"><a href="sec-ggplot2-fit.html#cb303-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb303-5"><a href="sec-ggplot2-fit.html#cb303-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trees, <span class="fu">aes</span>(<span class="at">x =</span> Girth, <span class="at">y =</span> Volume)) <span class="sc">+</span></span>
-<span id="cb303-6"><a href="sec-ggplot2-fit.html#cb303-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb303-7"><a href="sec-ggplot2-fit.html#cb303-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
-<span id="cb303-8"><a href="sec-ggplot2-fit.html#cb303-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;nls&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> a <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b, <span class="at">se =</span> F,</span>
-<span id="cb303-9"><a href="sec-ggplot2-fit.html#cb303-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">start =</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">5</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">36</span>))</span>
-<span id="cb303-10"><a href="sec-ggplot2-fit.html#cb303-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="sec-ggplot2-fit.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trees, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(Girth), <span class="at">y =</span> <span class="fu">log</span>(Volume))) <span class="sc">+</span></span>
+<span id="cb309-2"><a href="sec-ggplot2-fit.html#cb309-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb309-3"><a href="sec-ggplot2-fit.html#cb309-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb309-4"><a href="sec-ggplot2-fit.html#cb309-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb309-5"><a href="sec-ggplot2-fit.html#cb309-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trees, <span class="fu">aes</span>(<span class="at">x =</span> Girth, <span class="at">y =</span> Volume)) <span class="sc">+</span></span>
+<span id="cb309-6"><a href="sec-ggplot2-fit.html#cb309-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb309-7"><a href="sec-ggplot2-fit.html#cb309-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb309-8"><a href="sec-ggplot2-fit.html#cb309-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;nls&quot;</span>, <span class="at">formula =</span> y <span class="sc">~</span> a <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b, <span class="at">se =</span> F,</span>
+<span id="cb309-9"><a href="sec-ggplot2-fit.html#cb309-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">start =</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">5</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">36</span>))</span>
+<span id="cb309-10"><a href="sec-ggplot2-fit.html#cb309-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:smooth-methods"></span>
 <img src="data-visualization-gallery_files/figure-html/smooth-methods-1.png" alt="平滑方法" width="45%" /><img src="data-visualization-gallery_files/figure-html/smooth-methods-2.png" alt="平滑方法" width="45%" />
 <p class="caption">
