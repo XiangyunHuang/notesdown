@@ -743,7 +743,90 @@ ggplot(balance) +
   theme_minimal()
 ```
 
-## streamgraph {#sec:ggplot2-streamgraph}
+## 桑基图 {#sec:ggplot2-sankey}
+
+[ggalluvial](https://github.com/corybrunson/ggalluvial)
+
+```{r}
+titanic_wide <- data.frame(Titanic)
+```
+
+
+```{r}
+head(titanic_wide)
+```
+
+
+```{r ggalluvial,fig.cap="桑基图"}
+library(ggalluvial)
+ggplot(data = titanic_wide,
+       aes(axis1 = Class, axis2 = Sex, axis3 = Age,
+           y = Freq)) +
+  scale_x_discrete(limits = c("Class", "Sex", "Age"), expand = c(.2, .05)) +
+  xlab("Demographic") +
+  geom_alluvium(aes(fill = Survived)) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  theme_minimal() +
+  ggtitle("passengers on the maiden voyage of the Titanic",
+          "stratified by demographics and survival")
+```
+
+## 马赛克图 {#sec:ggplot2-ggmosaic}
+
+```{r UCBAdmissions,fig.cap="UCBAdmissions 马赛克图"}
+library(ggmosaic)
+ggplot(data = as.data.frame(UCBAdmissions)) +
+  geom_mosaic(aes(weight = Freq, x = product(Gender, Admit), fill = Dept)) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Admit", y = "Gender")
+```
+
+
+## 凹凸图 {#sec:ggplot2-bump}
+
+[ggbump](https://github.com/davidsjoberg/ggbump) 排序随位置的变化
+
+```{r ggbump,fig.cap="凹凸图"}
+# remotes::install_github("davidsjoberg/ggbump")
+library(ggbump)
+# 代码修改自 https://github.com/davidsjoberg/ggbump
+df <- data.frame(
+  season = c(
+    "Spring", "Pre-season", "Summer", "Season finale", "Autumn", "Winter",
+    "Spring", "Pre-season", "Summer", "Season finale", "Autumn", "Winter",
+    "Spring", "Pre-season", "Summer", "Season finale", "Autumn", "Winter",
+    "Spring", "Pre-season", "Summer", "Season finale", "Autumn", "Winter"
+  ),
+  rank = c(
+    1, 3, 4, 2, 1, 4,
+    2, 4, 1, 3, 2, 3,
+    4, 1, 2, 4, 4, 1,
+    3, 2, 3, 1, 3, 2
+  ),
+  player = c(
+    rep("David", 6),
+    rep("Anna", 6),
+    rep("Franz", 6),
+    rep("Ika", 6)
+  )
+)
+
+# Create factors and order factor
+df <- transform(df, season = factor(season, levels = unique(season)))
+
+# Add manual axis labels to plot
+ggplot(df, aes(season, rank, color = player)) +
+  geom_bump(size = 2, smooth = 20, show.legend = F) +
+  geom_point(size = 5, aes(shape = player)) +
+  theme_minimal(base_size = 10, base_line_size = 0) +
+  theme(panel.grid.major = element_blank(),
+        axis.ticks = element_blank()) +
+  scale_color_manual(values = RColorBrewer::brewer.pal(name = "Set2", n = 4))
+```
+
+## 水流图 {#sec:ggplot2-streamgraph}
 
 常用于时间序列数据展示的堆积区域图，[ggstream](https://github.com/davidsjoberg/ggstream) 和 [streamgraph](https://github.com/hrbrmstr/streamgraph)
 
