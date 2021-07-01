@@ -175,12 +175,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.72     Ideal     G     VS2  62.8    56  2805 5.74 5.70 3.59
-## 2  0.86   Premium     H     SI1  62.7    59  2851 6.04 5.98 3.77
-## 3  0.75   Premium     D     SI1  59.2    58  3024 5.96 5.93 3.52
-## 4  0.72 Very Good     E     VS2  63.0    58  3065 5.69 5.73 3.60
-## 5  0.75     Ideal     E     VS2  62.4    57  3263 5.76 5.81 3.61
-## 6  0.90      Good     F     SI2  63.1    56  3519 6.12 6.18 3.88
+## 1  0.32   Premium     G     VS2  60.5    58   561 4.41 4.42 2.67
+## 2  0.73     Ideal     F     VS1  61.1    57  3140 5.80 5.89 3.57
+## 3  0.71   Premium     E    VVS2  59.0    59  3380 5.88 5.82 3.45
+## 4  0.30 Very Good     I     VS2  60.7    56   407 4.32 4.34 2.63
+## 5  0.72     Ideal     F     VS2  61.3    55  3495 5.78 5.83 3.56
+## 6  1.04   Premium     G     SI2  62.8    59  3564 6.47 6.42 4.05
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -199,12 +199,12 @@ diamonds_rank
 
 ```
 ##     cut price rank
-## 1  Fair  1138    1
-## 2  Good  1443    1
-## 3 Ideal   605    1
-## 4 Ideal   605    1
-## 5 Ideal   675    3
-## 6 Ideal   734    4
+## 1  Good   588    1
+## 2  Good   974    2
+## 3  Good  3376    3
+## 4 Ideal   438    1
+## 5 Ideal   482    2
+## 6 Ideal   498    3
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -277,7 +277,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-06-30
+## 1     2021-07-01
 ```
 
 ```r
@@ -287,7 +287,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-06-29
+## 1                  2021-06-30
 ```
 
 ```r
@@ -297,7 +297,7 @@ dbGetQuery(sc, "select last_day(current_date)")
 
 ```
 ##   last_day(current_date())
-## 1               2021-06-30
+## 1               2021-07-31
 ```
 
 ```r
@@ -307,7 +307,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         4
+## 1                         5
 ```
 
 最后，使用完记得关闭 Spark 连接
