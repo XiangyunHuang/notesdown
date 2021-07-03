@@ -88,10 +88,10 @@ Tn
 
 ```
 ## $quantile
-## [1] 2.560686
+## [1] 2.561259
 ## 
 ## $f.quantile
-## [1] 1.881036e-07
+## [1] 2.433308e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
