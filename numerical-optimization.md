@@ -4,6 +4,8 @@
 凸优化 [Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR)
 [Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 和 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog)
 
+
+
 按照 [MOSEK](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html) 的优化材料，都用 R 替换实现，一直到马科维茨组合优化。梳理一个表格，各种规划类型，各个 R 包的功能。
 
 Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)
@@ -15,7 +17,7 @@ Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathwor
 
 
 
-## 线性规划 {#sec:linear-program}
+## 线性规划 {#sec:linear-programming}
 
 注意以下求解器的区别，以具体的问题描述出来，体现能力的不同。
 
@@ -23,6 +25,8 @@ Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathwor
 
 [glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
 [Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。
+
+[ompr](https://github.com/dirkschumacher/ompr) 求解混合整数线性规划问题
 
 [lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 --
 [lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) 和 [lpSolve](https://github.com/gaborcsardi/lpSolve) 也提供类似的能力。
@@ -72,9 +76,13 @@ s.t.\left\{
 
 ```r
 library(lpSolve)
+# 目标
 f.obj <- c(-6, -5)
+# 约束
 f.con <- matrix(c(1, 4, 6, 4, 2, -5), nrow = 3, byrow = TRUE)
+# 方向
 f.dir <- c("<=", "<=", "<=")
+# 右手边
 f.rhs <- c(16, 28, 6)
 res <- lp("min", f.obj, f.con, f.dir, f.rhs)
 res$objval
@@ -92,56 +100,158 @@ res$solution
 ## [1] 2.4 3.4
 ```
 
-## 一元非线性优化 {#sec:one-dimensional-optimization}
+## 整数规划 {#sec:integer-programming}
 
-复合函数求极值
+### 一般整数规划 {#common-integer-programming}
 
-$$
-g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \\
-f(y) = \int_{0}^{y} g(s) \exp(-s) ds
-$$
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 0.2x_1 + 0.6x_2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+    5x_1  + 3x_2 \leq 250\\
+    -3x_1 + 2x_2 \leq 4\\
+    x_1,x_2 \geq 0, \quad x_1,x_2 \in \mathbb{Z}
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
 
 
 ```r
-g <- function(x) {
-  integrate(function(t) {
-    -sqrt(t) * exp(-t^2)
-  }, lower = 0, upper = x)$value
-}
-
-f <- function(y) {
-  integrate(function(s) {
-    Vectorize(g, "x")(s) * exp(-s)
-  }, lower = 0, upper = y)$value
-}
-
-optimize(f, interval = c(10, 100), maximum = FALSE)
+# 目标
+f.obj <- c(0.2, 0.6)
+# 约束
+f.con <- matrix(c(5, 3, -3, 2), nrow = 2, byrow = TRUE)
+# 方向
+f.dir <- c("<=", "<=")
+# 右手边
+f.rhs <- c(250, 4)
+# 限制两个变量都是整数
+res <- lp("max", f.obj, f.con, f.dir, f.rhs, int.vec=1:2)
+res$objval
 ```
 
 ```
-## $minimum
-## [1] 66.84459
+## [1] 29.2
+```
+
+```r
+res$solution
+```
+
+```
+## [1] 26 40
+```
+
+### 0-1 整数规划 {#binary-integer-programming}
+
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 0.2x_1 + 0.6x_2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+    5x_1  + 3x_2 \leq 250\\
+    -3x_1 + 2x_2 \leq 4\\
+    x_1,x_2 \in {0,1}
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+
+```r
+# 目标
+f.obj <- c(0.2, 0.6)
+# 约束
+f.con <- matrix(c(5, 3, -3, 2), nrow = 2, byrow = TRUE)
+# 方向
+f.dir <- c("<=", "<=")
+# 右手边
+f.rhs <- c(250, 4)
+# 限制两个变量都是0-1整数
+res <- lp("max", f.obj, f.con, f.dir, f.rhs, int.vec=1:2, all.bin = TRUE)
+res$objval
+```
+
+```
+## [1] 0.8
+```
+
+```r
+res$solution
+```
+
+```
+## [1] 1 1
+```
+
+### 混合整数规划 {#mixed-integer-programming}
+
+一部分变量要求是整数
+
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 3x_1 + 7x_2 - 12x_3 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+    5x_1 + 7x_2 + 2x_3 \leq 61\\
+    3x_1 + 2x_2 - 9x_3 \leq 35\\
+    x_1 + 3x_2 + x_3 \leq 31\\
+    x_1,x_2 \geq 0, \quad x_3 \in [-10, 10]
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+
+```r
+# 还必须安装 ROI.plugin.lpsolve
+library(ROI)
+prob <- OP(objective = L_objective(c(3, 7, -12)),
+           # 第1个变量是连续值，第2、3个变量是整数
+           types = c("C", "I", "I"),
+           constraints = L_constraint(L = rbind(c(5, 7,  2), 
+                                                c(3, 2, -9), 
+                                                c(1, 3,  1)),
+                                      dir = c("<=", "<=", "<="), 
+                                      rhs = c(61, 35, 31)),
+           # 约束：第3个变量的下、上界分别是 -10 和 10
+           bounds = V_bound(li = 3, ui = 3, lb = -10, ub = 10, nobj = 3),
+           maximum = TRUE)
+prob
+```
+
+```
+## ROI Optimization Problem:
 ## 
-## $objective
-## [1] -0.3201572
+## Maximize a linear objective function of length 3 with
+## - 1 continuous objective variable,
+## - 2 integer objective variables,
+## 
+## subject to
+## - 3 constraints of type linear.
+## - 1 lower and 1 upper non-standard variable bound.
 ```
-
-计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，`g(c(1,2))` 则会报错
-
 
 ```r
-g(1)
+res <- ROI_solve(prob)
+res$solution
 ```
 
 ```
-## [1] -0.453392
+## [1]  0.3333333  8.0000000 -2.0000000
 ```
 
-## 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
+```r
+res$objval
+```
 
-需要使用启发式算法来求解这类规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，
+```
+## [1] 81
+```
 
-## 凸二次规划 {#sec:strictly-convex-quadratic-program}
+## 二次规划 {#sec:quadratic-programming}
+
+### 凸二次规划 {#sec:strictly-convex-quadratic-program}
 
 在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，而 ipoptr 包可用来求解一般的非线性约束的非线性规划[^intro-ipoptr]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
 
@@ -249,11 +359,70 @@ levelplot(z ~ x * y, grid,
 ```
 
 <div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-6-1.png" alt="无约束和有约束条件下的解" width="384" />
-<p class="caption">(\#fig:unnamed-chunk-6)无约束和有约束条件下的解</p>
+<img src="numerical-optimization_files/figure-html/unnamed-chunk-7-1.png" alt="无约束和有约束条件下的解" width="384" />
+<p class="caption">(\#fig:unnamed-chunk-7)无约束和有约束条件下的解</p>
 </div>
 
 可行域 `polypath` 线性约束 非线性约束如何
+
+## 非线性规划 {#sec:nonlinear-programming}
+
+### 一元非线性优化 {#sec:one-dimensional-optimization}
+
+复合函数求极值
+
+$$
+g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \\
+f(y) = \int_{0}^{y} g(s) \exp(-s) ds
+$$
+
+
+```r
+g <- function(x) {
+  integrate(function(t) {
+    -sqrt(t) * exp(-t^2)
+  }, lower = 0, upper = x)$value
+}
+
+f <- function(y) {
+  integrate(function(s) {
+    Vectorize(g, "x")(s) * exp(-s)
+  }, lower = 0, upper = y)$value
+}
+
+optimize(f, interval = c(10, 100), maximum = FALSE)
+```
+
+```
+## $minimum
+## [1] 66.84459
+## 
+## $objective
+## [1] -0.3201572
+```
+
+计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，`g(c(1,2))` 则会报错
+
+
+```r
+g(1)
+```
+
+```
+## [1] -0.453392
+```
+
+### 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
+
+需要使用启发式算法来求解这类规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，
+
+### 一元非线性方程 {#sec:optimize}
+
+[牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
+
+
+
+## 线性最小二乘 {#sec:linear-least-squares}
 
 ## 对数似然 {#sec:log-lik}
 
@@ -292,16 +461,13 @@ persp(mu, sigma, z,
 )
 ```
 
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
+<img src="numerical-optimization_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" />
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
 [^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
 [^intro-ipoptr]: https://www.ucl.ac.uk/~uctpjyy/ipoptr.html
 
-## 一元非线性方程 {#sec:optimize}
-
-[牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
 
 ## 微分方程 {#sec:non-linear-tseries}
 
