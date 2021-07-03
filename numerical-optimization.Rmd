@@ -1,35 +1,20 @@
 # 数值优化 {#chap:numerical-optimization}
 
-> 数值微分、，带约束与无约束，多元函数优化，带约束和无约束，整数优化
-凸优化 [Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR)
-[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 和 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog)
-
-求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>
-
-按照 [MOSEK](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html) 的优化材料，都用 R 替换实现，一直到马科维茨组合优化。梳理一个表格，各种规划类型，各个 R 包的功能。
-
+R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](	https://CRAN.R-project.org/view=Optimization)。本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。商业的优化求解器的介绍见 [MOSEK 优化材料](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html) 和
 Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)
 
 
-[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。
-
-[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计
-
+Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计。
+[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。
 
 
 ## 线性规划 {#sec:linear-programming}
 
-注意以下求解器的区别，以具体的问题描述出来，体现能力的不同。
+[clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
+[Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。[lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 --
+[lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) 和 [lpSolve](https://github.com/gaborcsardi/lpSolve) 也提供类似的能力。[ompr](https://github.com/dirkschumacher/ompr) 求解混合整数线性规划问题。
 
-[clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。
-
-[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
-[Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。
-
-[ompr](https://github.com/dirkschumacher/ompr) 求解混合整数线性规划问题
-
-[lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 --
-[lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) 和 [lpSolve](https://github.com/gaborcsardi/lpSolve) 也提供类似的能力。
+举个例子，如下
 
 \begin{equation*}
 \begin{array}{l}
@@ -44,7 +29,7 @@ Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathwor
 \end{array}
 \end{equation*}
 
-
+写成矩阵形式
 
 \begin{equation*}
 \begin{array}{l}
@@ -72,6 +57,7 @@ s.t.\left\{
 \end{array} 
 \end{equation*}
 
+对应成 R 代码如下
 
 ```{r}
 library(lpSolve)
@@ -222,7 +208,7 @@ $$
 
 上述二次规划问题的可行域如图所示
 
-```{r feasible-region,echo=TRUE,fig.cap="可行域",fig.width=4,fig.height=4}
+```{r feasible-region,echo=TRUE,fig.cap="可行域",fig.width=4.5,fig.height=4}
 plot(0, 0,
   xlim = c(-2, 5.5), ylim = c(-1, 3.5), type = "n",
   xlab = "x", ylab = "y", main = "Feasible Region"
@@ -232,7 +218,7 @@ polygon(c(2, 5, -1), c(0, 3, 3), border = TRUE, lwd = 2, col = "gray")
 
 **quadprog** 包的 `solve.QP` 函数求解二次规划
 
-```{r,echo=TRUE}
+```{r}
 library(quadprog)
 Dmat <- 2 * matrix(c(1, -1 / 2, -1 / 2, 1), nrow = 2, byrow = TRUE)
 dvec <- c(-3, 2)
@@ -245,7 +231,7 @@ sol
 
 在可行域上画出等高线，表示目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
 
-```{r,echo=TRUE,fig.cap="无约束和有约束条件下的解",fig.width=4,fig.height=4}
+```{r quadprog,fig.cap="无约束和有约束条件下的解",fig.width=4.5,fig.height=4}
 qp_sol <- sol$solution # 二次规划的解
 uc_sol <- sol$unconstrained.solution # 无约束情况下的解
 # 画图
@@ -273,6 +259,12 @@ levelplot(z ~ x * y, grid,
 ```	
 
 可行域 `polypath` 线性约束 非线性约束如何
+
+
+```{r,eval=FALSE}
+library(CVXR)
+library(nloptr)
+```
 
 ## 非线性规划 {#sec:nonlinear-programming}
 
@@ -309,9 +301,117 @@ g(1)
 
 ### 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
 
+```{r}
+# 目标函数
+fr <- function(x) {
+  100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
+}
+library(numDeriv)
+# 梯度函数
+grr <- function(x) {
+  grad(fr, c(x[1], x[2])) 
+}
+optim(par = c(-1.2, 1), fr = fr, grr = grr, method = "BFGS")
+```
+
+### 多元约束非线性优化 {#sec:constrained-nonlinear-optimization}
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad (x_1 + 3x_2 + x_3)^2 + 4(x_1 - x_2)^2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     x_1 + x_2 + x_3 - 1 = 0 \\
+     6 x_2 + 4 x_3 - x_1^3 - 3 > 0 \\
+     x_1, x_2, x_3 > 0
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+```{r}
+# 目标函数
+fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
+# 目标函数的梯度
+gr <- function(x) {
+  g <- rep(NA, 3)
+  # 对 x[1] 求偏导
+  g[1] <- 2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]) 
+  # 对 x[2] 求偏导
+  g[2] <- 6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2])
+  # 对 x[3] 求偏导
+  g[3] <- 2 * (x[1] + 3 * x[2] + x[3])
+  g
+}
+# 等式约束
+heq <- function(x) {
+  h <- rep(NA, 1)
+  h[1] <- x[1] + x[2] + x[3] - 1
+  h
+}
+# 等式约束的雅可比矩阵
+heq.jac <- function(x) {
+  j <- matrix(NA, 1, length(x))
+  j[1, ] <- c(1, 1, 1)
+  j
+}
+# 不等式约束
+hin <- function(x) {
+  h <- rep(NA, 1)
+  h[1] <- 6 * x[2] + 4 * x[3] - x[1]^3 - 3
+  h[2] <- x[1]
+  h[3] <- x[2]
+  h[4] <- x[3]
+  h
+}
+# 不等式约束的雅可比矩阵
+hin.jac <- function(x) {
+  j <- matrix(NA, 4, length(x))
+  j[1, ] <- c(-3 * x[1]^2, 6, 4)
+  j[2, ] <- c(1, 0, 0)
+  j[3, ] <- c(0, 1, 0)
+  j[4, ] <- c(0, 0, 1)
+  j
+}
+```
+
+调用求解器
+
+```{r}
+library(numDeriv)
+library(alabama)
+set.seed(12)
+# 初始值
+p0 <- runif(3)
+# 求目标函数的极小值
+ans <- constrOptim.nl(
+  par = p0, 
+  # 目标函数
+  fn = fn, 
+  gr = gr, 
+  # 等式约束
+  heq = heq,
+  heq.jac = heq.jac, 
+  # 不等式约束
+  hin = hin, 
+  hin.jac = hin.jac,
+  # 不显示迭代过程
+  control.outer = list(trace = FALSE) 
+)
+ans
+```
+ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。
+
+```{r,eval=FALSE}
+# 不提供梯度函数
+ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
+```
+
 需要使用启发式算法来求解这类规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，
 
-### 一元非线性方程 {#sec:optimize}
+
+## 非线性方程 {#sec:nonlinear-equations}
+
+### 一元非线性方程 {#subsec:one-optimize}
 
 [牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
 
