@@ -4,7 +4,7 @@
 凸优化 [Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR)
 [Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 和 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog)
 
-
+求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>
 
 按照 [MOSEK](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html) 的优化材料，都用 R 替换实现，一直到马科维茨组合优化。梳理一个表格，各种规划类型，各个 R 包的功能。
 
@@ -153,7 +153,7 @@ res$solution
     \begin{array}{l}
     5x_1  + 3x_2 \leq 250\\
     -3x_1 + 2x_2 \leq 4\\
-    x_1,x_2 \in {0,1}
+    x_1,x_2 \in \{0,1\}
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -206,17 +206,23 @@ res$solution
 ```r
 # 还必须安装 ROI.plugin.lpsolve
 library(ROI)
-prob <- OP(objective = L_objective(c(3, 7, -12)),
-           # 第1个变量是连续值，第2、3个变量是整数
-           types = c("C", "I", "I"),
-           constraints = L_constraint(L = rbind(c(5, 7,  2), 
-                                                c(3, 2, -9), 
-                                                c(1, 3,  1)),
-                                      dir = c("<=", "<=", "<="), 
-                                      rhs = c(61, 35, 31)),
-           # 约束：第3个变量的下、上界分别是 -10 和 10
-           bounds = V_bound(li = 3, ui = 3, lb = -10, ub = 10, nobj = 3),
-           maximum = TRUE)
+prob <- OP(
+  objective = L_objective(c(3, 7, -12)),
+  # 指定变量类型：第1个变量是连续值，第2、3个变量是整数
+  types = c("C", "I", "I"),
+  constraints = L_constraint(
+    L = rbind(
+      c(5, 7, 2),
+      c(3, 2, -9),
+      c(1, 3, 1)
+    ),
+    dir = c("<=", "<=", "<="),
+    rhs = c(61, 35, 31)
+  ),
+  # 添加约束：第3个变量的下、上界分别是 -10 和 10
+  bounds = V_bound(li = 3, ui = 3, lb = -10, ub = 10, nobj = 3),
+  maximum = TRUE
+)
 prob
 ```
 

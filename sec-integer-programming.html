@@ -921,7 +921,7 @@ div.csl-indent {
     \begin{array}{l}
     5x_1  + 3x_2 \leq 250\\
     -3x_1 + 2x_2 \leq 4\\
-    x_1,x_2 \in {0,1}
+    x_1,x_2 \in \{0,1\}
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
@@ -957,18 +957,24 @@ div.csl-indent {
 \end{equation*}\]</span></p>
 <div class="sourceCode" id="cb1275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1275-1"><a href="sec-integer-programming.html#cb1275-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 还必须安装 ROI.plugin.lpsolve</span></span>
 <span id="cb1275-2"><a href="sec-integer-programming.html#cb1275-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI)</span>
-<span id="cb1275-3"><a href="sec-integer-programming.html#cb1275-3" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">OP</span>(<span class="at">objective =</span> <span class="fu">L_objective</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="sc">-</span><span class="dv">12</span>)),</span>
-<span id="cb1275-4"><a href="sec-integer-programming.html#cb1275-4" aria-hidden="true" tabindex="-1"></a>           <span class="co"># 第1个变量是连续值，第2、3个变量是整数</span></span>
-<span id="cb1275-5"><a href="sec-integer-programming.html#cb1275-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
-<span id="cb1275-6"><a href="sec-integer-programming.html#cb1275-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">constraints =</span> <span class="fu">L_constraint</span>(<span class="at">L =</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">7</span>,  <span class="dv">2</span>), </span>
-<span id="cb1275-7"><a href="sec-integer-programming.html#cb1275-7" aria-hidden="true" tabindex="-1"></a>                                                <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">9</span>), </span>
-<span id="cb1275-8"><a href="sec-integer-programming.html#cb1275-8" aria-hidden="true" tabindex="-1"></a>                                                <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>,  <span class="dv">1</span>)),</span>
-<span id="cb1275-9"><a href="sec-integer-programming.html#cb1275-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>), </span>
-<span id="cb1275-10"><a href="sec-integer-programming.html#cb1275-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">61</span>, <span class="dv">35</span>, <span class="dv">31</span>)),</span>
-<span id="cb1275-11"><a href="sec-integer-programming.html#cb1275-11" aria-hidden="true" tabindex="-1"></a>           <span class="co"># 约束：第3个变量的下、上界分别是 -10 和 10</span></span>
-<span id="cb1275-12"><a href="sec-integer-programming.html#cb1275-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">li =</span> <span class="dv">3</span>, <span class="at">ui =</span> <span class="dv">3</span>, <span class="at">lb =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ub =</span> <span class="dv">10</span>, <span class="at">nobj =</span> <span class="dv">3</span>),</span>
-<span id="cb1275-13"><a href="sec-integer-programming.html#cb1275-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">maximum =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1275-14"><a href="sec-integer-programming.html#cb1275-14" aria-hidden="true" tabindex="-1"></a>prob</span></code></pre></div>
+<span id="cb1275-3"><a href="sec-integer-programming.html#cb1275-3" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1275-4"><a href="sec-integer-programming.html#cb1275-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">L_objective</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="sc">-</span><span class="dv">12</span>)),</span>
+<span id="cb1275-5"><a href="sec-integer-programming.html#cb1275-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 指定变量类型：第1个变量是连续值，第2、3个变量是整数</span></span>
+<span id="cb1275-6"><a href="sec-integer-programming.html#cb1275-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
+<span id="cb1275-7"><a href="sec-integer-programming.html#cb1275-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">L_constraint</span>(</span>
+<span id="cb1275-8"><a href="sec-integer-programming.html#cb1275-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">L =</span> <span class="fu">rbind</span>(</span>
+<span id="cb1275-9"><a href="sec-integer-programming.html#cb1275-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>),</span>
+<span id="cb1275-10"><a href="sec-integer-programming.html#cb1275-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">9</span>),</span>
+<span id="cb1275-11"><a href="sec-integer-programming.html#cb1275-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb1275-12"><a href="sec-integer-programming.html#cb1275-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1275-13"><a href="sec-integer-programming.html#cb1275-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>),</span>
+<span id="cb1275-14"><a href="sec-integer-programming.html#cb1275-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">61</span>, <span class="dv">35</span>, <span class="dv">31</span>)</span>
+<span id="cb1275-15"><a href="sec-integer-programming.html#cb1275-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1275-16"><a href="sec-integer-programming.html#cb1275-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 添加约束：第3个变量的下、上界分别是 -10 和 10</span></span>
+<span id="cb1275-17"><a href="sec-integer-programming.html#cb1275-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">li =</span> <span class="dv">3</span>, <span class="at">ui =</span> <span class="dv">3</span>, <span class="at">lb =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ub =</span> <span class="dv">10</span>, <span class="at">nobj =</span> <span class="dv">3</span>),</span>
+<span id="cb1275-18"><a href="sec-integer-programming.html#cb1275-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">TRUE</span></span>
+<span id="cb1275-19"><a href="sec-integer-programming.html#cb1275-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1275-20"><a href="sec-integer-programming.html#cb1275-20" aria-hidden="true" tabindex="-1"></a>prob</span></code></pre></div>
 <pre><code>## ROI Optimization Problem:
 ## 
 ## Maximize a linear objective function of length 3 with
