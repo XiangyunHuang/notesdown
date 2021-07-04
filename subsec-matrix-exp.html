@@ -700,11 +700,10 @@ div.csl-indent {
 <li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
 <li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
 </ul></li>
-<li class="chapter" data-level="33" data-path="chap-neural-networks.html"><a href="chap-neural-networks.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
+<li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
-<li class="chapter" data-level="33.1" data-path="sec-tensorflow.html"><a href="sec-tensorflow.html"><i class="fa fa-check"></i><b>33.1</b> tensorflow</a></li>
-<li class="chapter" data-level="33.2" data-path="setup-mxnet.html"><a href="setup-mxnet.html"><i class="fa fa-check"></i><b>33.2</b> 安装配置</a></li>
-<li class="chapter" data-level="33.3" data-path="mxnet-session-info.html"><a href="mxnet-session-info.html"><i class="fa fa-check"></i><b>33.3</b> 运行环境</a></li>
+<li class="chapter" data-level="33.1" data-path="sec-mxnet.html"><a href="sec-mxnet.html"><i class="fa fa-check"></i><b>33.1</b> mxnet</a></li>
+<li class="chapter" data-level="33.2" data-path="neural-network-session.html"><a href="neural-network-session.html"><i class="fa fa-check"></i><b>33.2</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="34" data-path="chap-matrix-operations.html"><a href="chap-matrix-operations.html"><i class="fa fa-check"></i><b>34</b> 矩阵运算</a>
 <ul>
@@ -899,31 +898,31 @@ div.csl-indent {
 <h2><span class="header-section-number">34.5</span> 矩阵乘方</h2>
 <p>矩阵 A 首先是一个方阵，对称性和正定性未知，n 个 矩阵 A 相乘</p>
 <p>统计之都论坛讨论如何求矩阵的乘方 <a href="https://d.cosx.org/d/5619-svd" class="uri">https://d.cosx.org/d/5619-svd</a></p>
-<div class="sourceCode" id="cb1086"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1086-1"><a href="subsec-matrix-exp.html#cb1086-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;%^%&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(mat, pow) {</span>
-<span id="cb1086-2"><a href="subsec-matrix-exp.html#cb1086-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.matrix</span>(mat)) mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(mat)</span>
-<span id="cb1086-3"><a href="subsec-matrix-exp.html#cb1086-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">diff</span>(<span class="fu">dim</span>(mat)))</span>
-<span id="cb1086-4"><a href="subsec-matrix-exp.html#cb1086-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pow <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb1086-5"><a href="subsec-matrix-exp.html#cb1086-5" aria-hidden="true" tabindex="-1"></a>    pow <span class="ot">&lt;-</span> <span class="sc">-</span>pow</span>
-<span id="cb1086-6"><a href="subsec-matrix-exp.html#cb1086-6" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">&lt;-</span> <span class="fu">solve</span>(mat)</span>
-<span id="cb1086-7"><a href="subsec-matrix-exp.html#cb1086-7" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1086-8"><a href="subsec-matrix-exp.html#cb1086-8" aria-hidden="true" tabindex="-1"></a>  pow <span class="ot">&lt;-</span> <span class="fu">round</span>(pow)</span>
-<span id="cb1086-9"><a href="subsec-matrix-exp.html#cb1086-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(pow <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">return</span>(<span class="fu">diag</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(mat))), <span class="fu">return</span>(mat))</span>
-<span id="cb1086-10"><a href="subsec-matrix-exp.html#cb1086-10" aria-hidden="true" tabindex="-1"></a>  get.exponents <span class="ot">&lt;-</span> <span class="cf">function</span>(pow)</span>
-<span id="cb1086-11"><a href="subsec-matrix-exp.html#cb1086-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (pow <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NULL</span> <span class="cf">else</span> <span class="fu">c</span>(k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span><span class="fu">floor</span>(<span class="fu">log2</span>(pow)), <span class="fu">get.exponents</span>(pow <span class="sc">-</span> k))</span>
-<span id="cb1086-12"><a href="subsec-matrix-exp.html#cb1086-12" aria-hidden="true" tabindex="-1"></a>  ans <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">nrow</span>(mat))</span>
-<span id="cb1086-13"><a href="subsec-matrix-exp.html#cb1086-13" aria-hidden="true" tabindex="-1"></a>  dlog2exp <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="sc">-</span><span class="fu">diff</span>(<span class="fu">c</span>(<span class="fu">log2</span>(<span class="fu">get.exponents</span>(pow)), <span class="dv">0</span>)))</span>
-<span id="cb1086-14"><a href="subsec-matrix-exp.html#cb1086-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(dlog2exp)) {</span>
-<span id="cb1086-15"><a href="subsec-matrix-exp.html#cb1086-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (dlog2exp[j]) <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>dlog2exp[j]) mat <span class="ot">&lt;-</span> mat <span class="sc">%*%</span> mat</span>
-<span id="cb1086-16"><a href="subsec-matrix-exp.html#cb1086-16" aria-hidden="true" tabindex="-1"></a>    ans <span class="ot">&lt;-</span> ans <span class="sc">%*%</span> mat</span>
-<span id="cb1086-17"><a href="subsec-matrix-exp.html#cb1086-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1086-18"><a href="subsec-matrix-exp.html#cb1086-18" aria-hidden="true" tabindex="-1"></a>  ans</span>
-<span id="cb1086-19"><a href="subsec-matrix-exp.html#cb1086-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1073"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1073-1"><a href="subsec-matrix-exp.html#cb1073-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;%^%&quot;</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(mat, pow) {</span>
+<span id="cb1073-2"><a href="subsec-matrix-exp.html#cb1073-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.matrix</span>(mat)) mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(mat)</span>
+<span id="cb1073-3"><a href="subsec-matrix-exp.html#cb1073-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">diff</span>(<span class="fu">dim</span>(mat)))</span>
+<span id="cb1073-4"><a href="subsec-matrix-exp.html#cb1073-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pow <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb1073-5"><a href="subsec-matrix-exp.html#cb1073-5" aria-hidden="true" tabindex="-1"></a>    pow <span class="ot">&lt;-</span> <span class="sc">-</span>pow</span>
+<span id="cb1073-6"><a href="subsec-matrix-exp.html#cb1073-6" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">&lt;-</span> <span class="fu">solve</span>(mat)</span>
+<span id="cb1073-7"><a href="subsec-matrix-exp.html#cb1073-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1073-8"><a href="subsec-matrix-exp.html#cb1073-8" aria-hidden="true" tabindex="-1"></a>  pow <span class="ot">&lt;-</span> <span class="fu">round</span>(pow)</span>
+<span id="cb1073-9"><a href="subsec-matrix-exp.html#cb1073-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(pow <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">return</span>(<span class="fu">diag</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(mat))), <span class="fu">return</span>(mat))</span>
+<span id="cb1073-10"><a href="subsec-matrix-exp.html#cb1073-10" aria-hidden="true" tabindex="-1"></a>  get.exponents <span class="ot">&lt;-</span> <span class="cf">function</span>(pow)</span>
+<span id="cb1073-11"><a href="subsec-matrix-exp.html#cb1073-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (pow <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NULL</span> <span class="cf">else</span> <span class="fu">c</span>(k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span><span class="fu">floor</span>(<span class="fu">log2</span>(pow)), <span class="fu">get.exponents</span>(pow <span class="sc">-</span> k))</span>
+<span id="cb1073-12"><a href="subsec-matrix-exp.html#cb1073-12" aria-hidden="true" tabindex="-1"></a>  ans <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">nrow</span>(mat))</span>
+<span id="cb1073-13"><a href="subsec-matrix-exp.html#cb1073-13" aria-hidden="true" tabindex="-1"></a>  dlog2exp <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="sc">-</span><span class="fu">diff</span>(<span class="fu">c</span>(<span class="fu">log2</span>(<span class="fu">get.exponents</span>(pow)), <span class="dv">0</span>)))</span>
+<span id="cb1073-14"><a href="subsec-matrix-exp.html#cb1073-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(dlog2exp)) {</span>
+<span id="cb1073-15"><a href="subsec-matrix-exp.html#cb1073-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (dlog2exp[j]) <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>dlog2exp[j]) mat <span class="ot">&lt;-</span> mat <span class="sc">%*%</span> mat</span>
+<span id="cb1073-16"><a href="subsec-matrix-exp.html#cb1073-16" aria-hidden="true" tabindex="-1"></a>    ans <span class="ot">&lt;-</span> ans <span class="sc">%*%</span> mat</span>
+<span id="cb1073-17"><a href="subsec-matrix-exp.html#cb1073-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1073-18"><a href="subsec-matrix-exp.html#cb1073-18" aria-hidden="true" tabindex="-1"></a>  ans</span>
+<span id="cb1073-19"><a href="subsec-matrix-exp.html#cb1073-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>奇异值分解</p>
-<div class="sourceCode" id="cb1087"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1087-1"><a href="subsec-matrix-exp.html#cb1087-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">svd</span>(A)</span>
-<span id="cb1087-2"><a href="subsec-matrix-exp.html#cb1087-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(s<span class="sc">$</span>u<span class="sc">%*%</span><span class="fu">diag</span>(s<span class="sc">$</span>d)<span class="sc">%*%</span><span class="fu">t</span>(s<span class="sc">$</span>v),A)</span></code></pre></div>
+<div class="sourceCode" id="cb1074"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1074-1"><a href="subsec-matrix-exp.html#cb1074-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">svd</span>(A)</span>
+<span id="cb1074-2"><a href="subsec-matrix-exp.html#cb1074-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(s<span class="sc">$</span>u<span class="sc">%*%</span><span class="fu">diag</span>(s<span class="sc">$</span>d)<span class="sc">%*%</span><span class="fu">t</span>(s<span class="sc">$</span>v),A)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>特征值及分解 <span class="math inline">\(A = V \Lambda V^{-1}\)</span> 求解矩阵 A 的 n 次方</p>
-<div class="sourceCode" id="cb1089"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1089-1"><a href="subsec-matrix-exp.html#cb1089-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb1076"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1076-1"><a href="subsec-matrix-exp.html#cb1076-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
 ## [1]  4.236068 -0.236068
@@ -932,15 +931,15 @@ div.csl-indent {
 ##           [,1]       [,2]
 ## [1,] 0.5257311 -0.8506508
 ## [2,] 0.8506508  0.5257311</code></pre>
-<div class="sourceCode" id="cb1091"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1091-1"><a href="subsec-matrix-exp.html#cb1091-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>values) <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors)</span></code></pre></div>
+<div class="sourceCode" id="cb1078"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1078-1"><a href="subsec-matrix-exp.html#cb1078-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>values) <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb1093"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1093-1"><a href="subsec-matrix-exp.html#cb1093-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>values)<span class="sc">^</span><span class="dv">3</span> <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors)</span></code></pre></div>
+<div class="sourceCode" id="cb1080"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1080-1"><a href="subsec-matrix-exp.html#cb1080-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>(A)<span class="sc">$</span>vectors <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>values)<span class="sc">^</span><span class="dv">3</span> <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   21   34
 ## [2,]   34   55</code></pre>
-<div class="sourceCode" id="cb1095"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1095-1"><a href="subsec-matrix-exp.html#cb1095-1" aria-hidden="true" tabindex="-1"></a>A <span class="sc">%*%</span> A <span class="sc">%*%</span> A</span></code></pre></div>
+<div class="sourceCode" id="cb1082"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1082-1"><a href="subsec-matrix-exp.html#cb1082-1" aria-hidden="true" tabindex="-1"></a>A <span class="sc">%*%</span> A <span class="sc">%*%</span> A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   21   34
 ## [2,]   34   55</code></pre>

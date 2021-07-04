@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>33.1 tensorflow | 现代应用统计与 R 语言</title>
+  <title>33.1 mxnet | 现代应用统计与 R 语言</title>
   <meta name="description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="33.1 tensorflow | 现代应用统计与 R 语言" />
+  <meta property="og:title" content="33.1 mxnet | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="33.1 tensorflow | 现代应用统计与 R 语言" />
+  <meta name="twitter:title" content="33.1 mxnet | 现代应用统计与 R 语言" />
   
   <meta name="twitter:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="chap-neural-networks.html"/>
-<link rel="next" href="setup-mxnet.html"/>
+<link rel="prev" href="chap-neural-network.html"/>
+<link rel="next" href="neural-network-session.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -700,11 +700,10 @@ div.csl-indent {
 <li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
 <li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
 </ul></li>
-<li class="chapter" data-level="33" data-path="chap-neural-networks.html"><a href="chap-neural-networks.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
+<li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
-<li class="chapter" data-level="33.1" data-path="sec-tensorflow.html"><a href="sec-tensorflow.html"><i class="fa fa-check"></i><b>33.1</b> tensorflow</a></li>
-<li class="chapter" data-level="33.2" data-path="setup-mxnet.html"><a href="setup-mxnet.html"><i class="fa fa-check"></i><b>33.2</b> 安装配置</a></li>
-<li class="chapter" data-level="33.3" data-path="mxnet-session-info.html"><a href="mxnet-session-info.html"><i class="fa fa-check"></i><b>33.3</b> 运行环境</a></li>
+<li class="chapter" data-level="33.1" data-path="sec-mxnet.html"><a href="sec-mxnet.html"><i class="fa fa-check"></i><b>33.1</b> mxnet</a></li>
+<li class="chapter" data-level="33.2" data-path="neural-network-session.html"><a href="neural-network-session.html"><i class="fa fa-check"></i><b>33.2</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="34" data-path="chap-matrix-operations.html"><a href="chap-matrix-operations.html"><i class="fa fa-check"></i><b>34</b> 矩阵运算</a>
 <ul>
@@ -895,74 +894,42 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sec:tensorflow" class="section level2" number="33.1">
-<h2><span class="header-section-number">33.1</span> tensorflow</h2>
+<div id="sec:mxnet" class="section level2" number="33.1">
+<h2><span class="header-section-number">33.1</span> mxnet</h2>
 <div class="rmdinfo">
-<p>本地使用 miniconda3 创建了一个叫 tensorflow 的虚拟环境，且已经把 tensorflow 框架安装好</p>
+<p>mxnet 的 R 接口不太稳定好用，安装也比较麻烦，因此，通过 reticulate 包将 Python 模块 mxnet 导入 R 环境，然后调用其函数。</p>
 </div>
-<p>安装 tensorflow</p>
-<div class="sourceCode" id="cb1034"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1034-1"><a href="sec-tensorflow.html#cb1034-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate r-reticulate</span>
-<span id="cb1034-2"><a href="sec-tensorflow.html#cb1034-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple tensorflow</span></code></pre></div>
-<div class="sourceCode" id="cb1035"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1035-1"><a href="sec-tensorflow.html#cb1035-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tensorflow)</span></code></pre></div>
-<p>测试 tensorflow 安装环境</p>
-<div class="sourceCode" id="cb1036"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1036-1"><a href="sec-tensorflow.html#cb1036-1" aria-hidden="true" tabindex="-1"></a>tf<span class="sc">$</span><span class="fu">constant</span>(<span class="st">&quot;Hello Tensorflow&quot;</span>)</span></code></pre></div>
-<pre><code>## tf.Tensor(b&#39;Hello Tensorflow&#39;, shape=(), dtype=string)</code></pre>
-<p><a href="https://github.com/henry090/fastai" class="uri">https://github.com/henry090/fastai</a></p>
-<div class="sidebar">
-<p>如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱</p>
-</div>
-<p>如果同时安装了 R 包 mxnet，可以直接将 R 环境中矩阵类型的数据对象转化为 R 中的 MXNDArray 对象</p>
-<div class="sourceCode" id="cb1038"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1038-1"><a href="sec-tensorflow.html#cb1038-1" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1038-2"><a href="sec-tensorflow.html#cb1038-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m)</span>
-<span id="cb1038-3"><a href="sec-tensorflow.html#cb1038-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mxnet)</span>
-<span id="cb1038-4"><a href="sec-tensorflow.html#cb1038-4" aria-hidden="true" tabindex="-1"></a>(mm <span class="ot">&lt;-</span> mxnet<span class="sc">::</span><span class="fu">mx.nd.array</span>(m)) <span class="co"># 转成 R 中的 MXNDArray</span></span>
-<span id="cb1038-5"><a href="sec-tensorflow.html#cb1038-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mm)</span></code></pre></div>
-<p>借助 mxnet 包，亦可以直接创建 MXNDArray 类型的数据对象</p>
-<div class="sourceCode" id="cb1039"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1039-1"><a href="sec-tensorflow.html#cb1039-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R 中的 MXNDArray</span></span>
-<span id="cb1039-2"><a href="sec-tensorflow.html#cb1039-2" aria-hidden="true" tabindex="-1"></a>(y <span class="ot">&lt;-</span> mxnet<span class="sc">::</span><span class="fu">mx.rnorm</span>(<span class="at">shape =</span> 10L, <span class="at">mean =</span> 0L, <span class="at">sd =</span> 1L))</span>
-<span id="cb1039-3"><a href="sec-tensorflow.html#cb1039-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(y)</span></code></pre></div>
-<p>multiply 是子模块 mxnet.ndarray 下的一个函数，Python 中的两个 mx.nd.array 数据对象做矩阵乘法</p>
-<div class="sourceCode" id="cb1040"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1040-1"><a href="sec-tensorflow.html#cb1040-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">*</span> y</span></code></pre></div>
-<div class="sidebar">
-<p>如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱</p>
-</div>
-<p>mxnet 的 R 接口比 Python 接口弱很多，所以本文使用 reticulate 包，将 mxnet 模块导入到 R 环境中来介绍。mxnet 框架包含很多子模块，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开。<a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a></p>
-<div class="sourceCode" id="cb1041"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1041-1"><a href="sec-tensorflow.html#cb1041-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入 mxnet 中的 ndarray</span></span>
-<span id="cb1041-2"><a href="sec-tensorflow.html#cb1041-2" aria-hidden="true" tabindex="-1"></a>nd <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">import</span>(<span class="st">&quot;mxnet.ndarray&quot;</span>, <span class="at">convert =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1041-3"><a href="sec-tensorflow.html#cb1041-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(nd)</span></code></pre></div>
+<p>mxnet 框架包含很多子模块，详见<a href="https://mxnet.apache.org/versions/1.8.0/api">接口文档</a>，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开。</p>
+<div class="sourceCode" id="cb1033"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1033-1"><a href="sec-mxnet.html#cb1033-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入 mxnet 中的 ndarray</span></span>
+<span id="cb1033-2"><a href="sec-mxnet.html#cb1033-2" aria-hidden="true" tabindex="-1"></a>nd <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">import</span>(<span class="st">&quot;mxnet.ndarray&quot;</span>, <span class="at">convert =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1033-3"><a href="sec-mxnet.html#cb1033-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(nd)</span></code></pre></div>
 <pre><code>## [1] &quot;python.builtin.module&quot; &quot;python.builtin.object&quot;</code></pre>
 <p>zeros 是子模块 mxnet.ndarray 下的一个函数</p>
-<div class="sourceCode" id="cb1043"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1043-1"><a href="sec-tensorflow.html#cb1043-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> nd<span class="sc">$</span><span class="fu">zeros</span>(<span class="fu">c</span>(3L, 4L)) <span class="co"># 得到 python 中的 mx.nd.array</span></span>
-<span id="cb1043-2"><a href="sec-tensorflow.html#cb1043-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb1035"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1035-1"><a href="sec-mxnet.html#cb1035-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> nd<span class="sc">$</span><span class="fu">zeros</span>(<span class="fu">c</span>(3L, 4L)) <span class="co"># 得到 python 中的 mx.nd.array</span></span>
+<span id="cb1035-2"><a href="sec-mxnet.html#cb1035-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>## 
 ## [[0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]]
 ## &lt;NDArray 3x4 @cpu(0)&gt;</code></pre>
-<p>将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象具 mx.nd.array 有 <code>asnumpy()</code> 方法</p>
-<div class="sourceCode" id="cb1045"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1045-1"><a href="sec-tensorflow.html#cb1045-1" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> x<span class="sc">$</span><span class="fu">asnumpy</span>()) <span class="co"># 得到 R 中的 matrix</span></span></code></pre></div>
+<p>将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象 mx.nd.array 有 <code>asnumpy()</code> 方法</p>
+<div class="sourceCode" id="cb1037"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1037-1"><a href="sec-mxnet.html#cb1037-1" aria-hidden="true" tabindex="-1"></a>(m1 <span class="ot">&lt;-</span> x<span class="sc">$</span><span class="fu">asnumpy</span>()) <span class="co"># 得到 R 中的 matrix</span></span></code></pre></div>
 <pre><code>## [[0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]]</code></pre>
-<div class="sourceCode" id="cb1047"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1047-1"><a href="sec-tensorflow.html#cb1047-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb1039"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1039-1"><a href="sec-mxnet.html#cb1039-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m1)</span></code></pre></div>
 <pre><code>## [1] &quot;numpy.ndarray&quot;         &quot;python.builtin.object&quot;</code></pre>
-<div class="sourceCode" id="cb1049"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1049-1"><a href="sec-tensorflow.html#cb1049-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1049-2"><a href="sec-tensorflow.html#cb1049-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb1041"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1041-1"><a href="sec-mxnet.html#cb1041-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1041-2"><a href="sec-mxnet.html#cb1041-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m2)</span></code></pre></div>
 <pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="45">
-<li id="fn45"><p>mxnet 的 Python 接口 <a href="https://mxnet.apache.org/api/python/docs/api/ndarray/ndarray.html" class="uri">https://mxnet.apache.org/api/python/docs/api/ndarray/ndarray.html</a>，此篇介绍源起 <a href="https://d.cosx.org/d/419785-r-gluon">在 R 中使用 gluon</a><a href="sec-tensorflow.html#fnref45" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="chap-neural-networks.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="setup-mxnet.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="chap-neural-network.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="neural-network-session.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

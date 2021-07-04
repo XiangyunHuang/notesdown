@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="mxnet-session-info.html"/>
+<link rel="prev" href="neural-network-session.html"/>
 <link rel="next" href="subsec-matrix-multiplication.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
@@ -700,11 +700,10 @@ div.csl-indent {
 <li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
 <li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
 </ul></li>
-<li class="chapter" data-level="33" data-path="chap-neural-networks.html"><a href="chap-neural-networks.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
+<li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
-<li class="chapter" data-level="33.1" data-path="sec-tensorflow.html"><a href="sec-tensorflow.html"><i class="fa fa-check"></i><b>33.1</b> tensorflow</a></li>
-<li class="chapter" data-level="33.2" data-path="setup-mxnet.html"><a href="setup-mxnet.html"><i class="fa fa-check"></i><b>33.2</b> 安装配置</a></li>
-<li class="chapter" data-level="33.3" data-path="mxnet-session-info.html"><a href="mxnet-session-info.html"><i class="fa fa-check"></i><b>33.3</b> 运行环境</a></li>
+<li class="chapter" data-level="33.1" data-path="sec-mxnet.html"><a href="sec-mxnet.html"><i class="fa fa-check"></i><b>33.1</b> mxnet</a></li>
+<li class="chapter" data-level="33.2" data-path="neural-network-session.html"><a href="neural-network-session.html"><i class="fa fa-check"></i><b>33.2</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="34" data-path="chap-matrix-operations.html"><a href="chap-matrix-operations.html"><i class="fa fa-check"></i><b>34</b> 矩阵运算</a>
 <ul>
@@ -906,9 +905,9 @@ div.csl-indent {
 </blockquote>
 <!-- 解释基本的矩阵概念，比如秩、迹、行列式、直积等 -->
 <p>分块矩阵操作，各类分解算法，及其 R 实现</p>
-<div class="sourceCode" id="cb1058"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1058-1"><a href="chap-matrix-operations.html#cb1058-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb1045"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1045-1"><a href="chap-matrix-operations.html#cb1045-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Matrix)</span></code></pre></div>
 <p>以 attitude 数据集为例介绍各种矩阵操作</p>
-<div class="sourceCode" id="cb1059"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1059-1"><a href="chap-matrix-operations.html#cb1059-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
+<div class="sourceCode" id="cb1046"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1046-1"><a href="chap-matrix-operations.html#cb1046-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(attitude)</span></code></pre></div>
 <pre><code>##   rating complaints privileges learning raises critical advance
 ## 1     43         51         30       39     61       92      45
 ## 2     63         64         51       54     63       73      47
@@ -923,8 +922,8 @@ learning 学习机会
 raises 根据表现晋升
 critical 批评
 advancel 进步</p>
-<div class="sourceCode" id="cb1061"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1061-1"><a href="chap-matrix-operations.html#cb1061-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(rating <span class="sc">~</span>. , <span class="at">data =</span> attitude)</span>
-<span id="cb1061-2"><a href="chap-matrix-operations.html#cb1061-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit) <span class="co"># 模型是显著的，很多变量的系数不显著</span></span></code></pre></div>
+<div class="sourceCode" id="cb1048"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1048-1"><a href="chap-matrix-operations.html#cb1048-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(rating <span class="sc">~</span>. , <span class="at">data =</span> attitude)</span>
+<span id="cb1048-2"><a href="chap-matrix-operations.html#cb1048-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit) <span class="co"># 模型是显著的，很多变量的系数不显著</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = rating ~ ., data = attitude)
@@ -948,7 +947,7 @@ advancel 进步</p>
 ## Residual standard error: 7.068 on 23 degrees of freedom
 ## Multiple R-squared:  0.7326, Adjusted R-squared:  0.6628 
 ## F-statistic:  10.5 on 6 and 23 DF,  p-value: 1.24e-05</code></pre>
-<div class="sourceCode" id="cb1063"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1063-1"><a href="chap-matrix-operations.html#cb1063-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit)</span></code></pre></div>
+<div class="sourceCode" id="cb1050"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1050-1"><a href="chap-matrix-operations.html#cb1050-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: rating
@@ -963,9 +962,9 @@ advancel 进步</p>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <!-- 矩阵变换对应的几何意义，和实际数据对应的意义 -->
-<div class="sourceCode" id="cb1065"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1065-1"><a href="chap-matrix-operations.html#cb1065-1" aria-hidden="true" tabindex="-1"></a>attitude_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix.data.frame</span>(attitude)</span>
-<span id="cb1065-2"><a href="chap-matrix-operations.html#cb1065-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成演示用的矩阵</span></span>
-<span id="cb1065-3"><a href="chap-matrix-operations.html#cb1065-3" aria-hidden="true" tabindex="-1"></a>demo_mat <span class="ot">&lt;-</span> <span class="fu">t</span>(attitude_mat[, <span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%*%</span> attitude_mat[, <span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb1052"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1052-1"><a href="chap-matrix-operations.html#cb1052-1" aria-hidden="true" tabindex="-1"></a>attitude_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix.data.frame</span>(attitude)</span>
+<span id="cb1052-2"><a href="chap-matrix-operations.html#cb1052-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成演示用的矩阵</span></span>
+<span id="cb1052-3"><a href="chap-matrix-operations.html#cb1052-3" aria-hidden="true" tabindex="-1"></a>demo_mat <span class="ot">&lt;-</span> <span class="fu">t</span>(attitude_mat[, <span class="sc">-</span><span class="dv">1</span>]) <span class="sc">%*%</span> attitude_mat[, <span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
@@ -981,7 +980,7 @@ Denton, Peter B, Stephen J Parke, Terence Tao, and Xining Zhang. 2019. <span>“
           </div>
         </div>
       </div>
-<a href="mxnet-session-info.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="neural-network-session.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="subsec-matrix-multiplication.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

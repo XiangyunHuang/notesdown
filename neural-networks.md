@@ -1,4 +1,4 @@
-# 神经网络 {#chap:neural-networks}
+# 神经网络 {#chap:neural-network}
 
 
 
@@ -6,89 +6,17 @@
 >
 >   --- Robert Gentleman, SSC 2003, Halifax (June 2003)
 
+近年来，深度学习框架越来越多，比较受欢迎的有 [tensorflow](https://github.com/tensorflow/tensorflow)、[pytorch](https://github.com/pytorch/pytorch) 和 [mxnet](https://github.com/apache/incubator-mxnet)，RStudio 团队也陆续给它们提供了 R 接口，[tensorflow](https://github.com/rstudio/tensorflow)、[keras](https://github.com/rstudio/keras) 和 [torch](https://github.com/mlverse/torch)。此外，相关主题的还有 [fastai](https://github.com/henry090/fastai)。
 
-R 实现的部分，没有 tensorflow 等框架
+Norm Matloff 等开发的 [polyreg](https://github.com/matloff/polyreg) 包以多元多项式回归替代神经网络，Brian Ripley 开发的 nnet 包以单层前馈神经网络用于多项对数线性模型。
 
-Norm Matloff 等开发的 [polyreg](https://github.com/matloff/polyreg) 包以多元多项式回归替代神经网络
-
-Brian Ripley 开发的 nnet 包以单层前馈神经网络用于多项对数线性模型
-
-
-```r
-library(nnet)
-```
-
-## tensorflow {#sec:tensorflow}
+## mxnet {#sec:mxnet}
 
 ::: {.rmdinfo data-latex="{信息}"}
-本地使用 miniconda3 创建了一个叫 tensorflow 的虚拟环境，且已经把 tensorflow 框架安装好
+mxnet 的 R 接口不太稳定好用，安装也比较麻烦，因此，通过 reticulate 包将 Python 模块 mxnet 导入 R 环境，然后调用其函数。
 :::
 
-安装 tensorflow
-
-```bash
-conda activate r-reticulate
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow
-```
-
-
-```r
-library(tensorflow)
-```
-
-测试 tensorflow 安装环境
-
-
-```r
-tf$constant("Hello Tensorflow")
-```
-
-```
-## tf.Tensor(b'Hello Tensorflow', shape=(), dtype=string)
-```
-
-<https://github.com/henry090/fastai>
-
-
-::: sidebar
-如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱
-:::
-
-如果同时安装了 R 包 mxnet，可以直接将 R 环境中矩阵类型的数据对象转化为 R 中的 MXNDArray 对象
-
-
-```r
-(m <- matrix(data = 1:12, nrow = 3, ncol = 4, byrow = TRUE))
-class(m)
-library(mxnet)
-(mm <- mxnet::mx.nd.array(m)) # 转成 R 中的 MXNDArray
-class(mm)
-```
-
-借助 mxnet 包，亦可以直接创建 MXNDArray 类型的数据对象
-
-
-```r
-# R 中的 MXNDArray
-(y <- mxnet::mx.rnorm(shape = 10L, mean = 0L, sd = 1L))
-class(y)
-```
-
-multiply 是子模块 mxnet.ndarray 下的一个函数，Python 中的两个 mx.nd.array 数据对象做矩阵乘法
-
-
-```r
-3 * y
-```
-
-
-::: sidebar
-如果调用了 mxnet 包，就不要使用 reticulate 包将 Python 模块 mxnet 也导入进来，这会造成混乱
-:::
-
-mxnet 的 R 接口比 Python 接口弱很多，所以本文使用 reticulate 包，将 mxnet 模块导入到 R 环境中来介绍。mxnet 框架包含很多子模块，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开 [^mxnet-ndarray]。
-
-[^mxnet-ndarray]: mxnet 的 Python 接口 <https://mxnet.apache.org/api/python/docs/api/ndarray/ndarray.html>，此篇介绍源起 [在 R 中使用 gluon](https://d.cosx.org/d/419785-r-gluon)
+mxnet 框架包含很多子模块，详见[接口文档](https://mxnet.apache.org/versions/1.8.0/api)，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开。
 
 
 ```r
@@ -100,7 +28,6 @@ class(nd)
 ```
 ## [1] "python.builtin.module" "python.builtin.object"
 ```
-
 zeros 是子模块 mxnet.ndarray 下的一个函数
 
 
@@ -117,11 +44,11 @@ x
 ## <NDArray 3x4 @cpu(0)>
 ```
 
-将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象具 mx.nd.array 有 `asnumpy()` 方法
+将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象 mx.nd.array 有 `asnumpy()` 方法
 
 
 ```r
-(m <- x$asnumpy()) # 得到 R 中的 matrix
+(m1 <- x$asnumpy()) # 得到 R 中的 matrix
 ```
 
 ```
@@ -131,62 +58,25 @@ x
 ```
 
 ```r
-class(m)
+class(m1)
 ```
 
 ```
 ## [1] "numpy.ndarray"         "python.builtin.object"
 ```
 
+
+
 ```r
-m = matrix(data = 1:12, nrow = 3, ncol = 4, byrow = TRUE)
-class(m)
+m2 = matrix(data = 1:12, nrow = 3, ncol = 4, byrow = TRUE)
+class(m2)
 ```
 
 ```
 ## [1] "matrix" "array"
 ```
 
-
-## 安装配置 {#setup-mxnet}
-
-[^mxnet-centos]: 当前系统是红帽系的 Fedora 29，安装过程参照 CentOS <https://mxnet.apache.org/get_started/centos_setup.html>
-
-下载 mxnet 源码 [^mxnet-centos]
-
-```bash
-git clone --depth=1 --branch=master https://github.com/apache/incubator-mxnet.git
-cd incubator-mxnet
-git submodule update --init 
-```
-
-安装系统依赖
-
-```bash
-sudo dnf install -y openblas-devel lapack-devel atlas-devel opencv-devel jemalloc-devel \
-  ccache llvm doxygen graphviz clang libomp-devel fftw-devel
-```
-
-编译 mxnet 动态库
-
-```bash
-mkdir build; cd build; cmake -DUSE_CUDA=OFF ..; make -j $(nproc); cd ..
-```
-
-安装 R 包依赖
-
-```r
-remotes::install_deps('~/incubator-mxnet/R-package')
-```
-
-编译并安装 R 包
-
-```bash
-make -f R-package/Makefile rpkg
-```
-
-
-## 运行环境 {#mxnet-session-info}
+## 运行环境 {#neural-network-session}
 
 
 ```r
@@ -214,19 +104,14 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] tensorflow_2.4.0 nnet_7.3-16      reticulate_1.20 
+## [1] tensorflow_2.5.0 nnet_7.3-16      reticulate_1.20 
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.6        whisker_0.4       knitr_1.33        magrittr_2.0.1   
 ##  [5] lattice_0.20-44   R6_2.5.0          rlang_0.4.11      stringr_1.4.0    
-##  [9] tools_4.1.0       grid_4.1.0        xfun_0.23         png_0.1-7        
+##  [9] tools_4.1.0       grid_4.1.0        xfun_0.24         png_0.1-7        
 ## [13] jquerylib_0.1.4   tfruns_1.5.0      htmltools_0.5.1.1 yaml_2.2.1       
-## [17] digest_0.6.27     bookdown_0.22     Matrix_1.3-4      base64enc_0.1-3  
-## [21] sass_0.4.0        codetools_0.2-18  evaluate_0.14     rmarkdown_2.8    
+## [17] digest_0.6.27     bookdown_0.22     Matrix_1.3-4      codetools_0.2-18 
+## [21] base64enc_0.1-3   sass_0.4.0        evaluate_0.14     rmarkdown_2.9    
 ## [25] stringi_1.6.2     compiler_4.1.0    bslib_0.2.5.1     jsonlite_1.7.2
 ```
-
-
-mxnet 提供了 R 语言
-[安装指导](https://mxnet.apache.org/get_started/ubuntu_setup.html#install-the-mxnet-package-for-r) 和 [R参考手册](https://mxnet.apache.org/api/r/docs/api/R-package/build/mxnet-r-reference-manual.pdf)
-

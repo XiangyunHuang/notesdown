@@ -700,11 +700,10 @@ div.csl-indent {
 <li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
 <li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
 </ul></li>
-<li class="chapter" data-level="33" data-path="chap-neural-networks.html"><a href="chap-neural-networks.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
+<li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
-<li class="chapter" data-level="33.1" data-path="sec-tensorflow.html"><a href="sec-tensorflow.html"><i class="fa fa-check"></i><b>33.1</b> tensorflow</a></li>
-<li class="chapter" data-level="33.2" data-path="setup-mxnet.html"><a href="setup-mxnet.html"><i class="fa fa-check"></i><b>33.2</b> 安装配置</a></li>
-<li class="chapter" data-level="33.3" data-path="mxnet-session-info.html"><a href="mxnet-session-info.html"><i class="fa fa-check"></i><b>33.3</b> 运行环境</a></li>
+<li class="chapter" data-level="33.1" data-path="sec-mxnet.html"><a href="sec-mxnet.html"><i class="fa fa-check"></i><b>33.1</b> mxnet</a></li>
+<li class="chapter" data-level="33.2" data-path="neural-network-session.html"><a href="neural-network-session.html"><i class="fa fa-check"></i><b>33.2</b> 运行环境</a></li>
 </ul></li>
 <li class="chapter" data-level="34" data-path="chap-matrix-operations.html"><a href="chap-matrix-operations.html"><i class="fa fa-check"></i><b>34</b> 矩阵运算</a>
 <ul>
@@ -989,13 +988,13 @@ a column separator --></p>
 <p>diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html</a></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
-<pre><code>##   carat     cut color clarity depth table price    x    y    z
-## 1  0.70   Ideal     G     VS2  62.7    54  3172 5.65 5.70 3.65
-## 2  0.74   Ideal     D     VS2  62.2    56  3454 5.79 5.81 3.61
-## 3  0.74   Ideal     F     VS1  61.9    54  3590 5.78 5.82 3.59
-## 4  1.39 Premium     I      I1  62.6    57  3985 7.15 7.10 4.46
-## 5  0.90 Premium     F     SI1  62.6    60  4103 6.11 6.06 3.81
-## 6  0.91 Premium     G     VS2  59.5    58  4241 6.34 6.26 3.75</code></pre>
+<pre><code>##   carat       cut color clarity depth table price    x    y    z
+## 1  0.90      Fair     I     SI1  65.8    56  2873 6.01 5.96 3.94
+## 2  0.70     Ideal     G     VS2  61.8    57  2929 5.68 5.71 3.52
+## 3  0.60     Ideal     G    VVS1  62.1    56  3001 5.42 5.43 3.37
+## 4  0.70      Good     E     VS1  60.2    61  3018 5.71 5.75 3.45
+## 5  0.90 Very Good     J     VS1  60.4    58  3358 6.22 6.27 3.77
+## 6  0.91   Premium     F     SI1  62.7    59  3644 6.23 6.18 3.89</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -1004,13 +1003,13 @@ a column separator --></p>
 <span id="cb161-4"><a href="sec-spark-with-r.html#cb161-4" aria-hidden="true" tabindex="-1"></a><span class="st">  LIMIT 6</span></span>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
-<pre><code>##     cut price rank
-## 1  Fair   960    1
-## 2  Good  1801    1
-## 3  Good  3768    2
-## 4  Good  4761    3
-## 5  Good 17447    4
-## 6 Ideal   531    1</code></pre>
+<pre><code>##    cut price rank
+## 1 Fair  3696    1
+## 2 Fair  3743    2
+## 3 Good   476    1
+## 4 Good  3717    2
+## 5 Good  4452    3
+## 6 Good  4547    4</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
