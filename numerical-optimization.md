@@ -23,10 +23,9 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
   \min_x \quad -6x_1 -5x_2 \\
     s.t.\left\{ 
     \begin{array}{l}
-    x_1  + 4x_2 \leq 16\\
-    6x_1 + 4x_2 \leq 28\\
-    2x_1 - 5x_2 \leq 6\\
-    0 \leq x    \leq 10
+    x_1  + 4x_2 & \leq 16\\
+    6x_1 + 4x_2 & \leq 28\\
+    2x_1 - 5x_2 & \leq 6
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -53,8 +52,7 @@ s.t.\left\{
    16 \\
    28 \\
    6
-  \end{bmatrix}\\
-  0 \leq x \leq 10
+  \end{bmatrix}
  \end{array} \right.
 \end{array} 
 \end{equation*}
@@ -360,12 +358,24 @@ levelplot(z ~ x * y, grid,
 
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
 
+R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 $A \geq 0$，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 $A > 0$。
+
+以二分类问题为例，采用 SMO (Sequential Minimization Optimization) 求解器，将 SVM 的二次优化问题分解。
+
 
 ```r
 library(kernlab)
+set.seed(123)
+x <- rbind(matrix(rnorm(120), 60, 2), matrix(rnorm(120, mean = 3), 60, 2))
+y <- matrix(c(rep(1, 60), rep(-1, 60)))
+svp <- ksvm(x, y, type = "C-svc")
+plot(svp, data = x)
 ```
 
-R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 $A \geq 0$，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 $A > 0$。
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="432" />
+<p class="caption">(\#fig:toy-binary)二分类问题</p>
+</div>
 
 ## 非线性规划 {#sec:nonlinear-programming}
 
@@ -667,7 +677,7 @@ persp(mu, sigma, z,
 )
 ```
 
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" />
+<img src="numerical-optimization_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
@@ -690,5 +700,49 @@ scatter3D(lor$x, lor$y, lor$z,
   type = "o", cex = 0.3,
   colkey = FALSE, box = FALSE
 )
+```
+
+## 运行环境 {#sec:numerical-optimization-session}
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 4.1.0 (2021-05-18)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.2 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] alabama_2015.3-1    numDeriv_2016.8-1.1 kernlab_0.9-29     
+## [4] lattice_0.20-44     quadprog_1.5-8      ROI_1.0-0          
+## [7] lpSolve_5.6.15     
+## 
+## loaded via a namespace (and not attached):
+##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               magrittr_2.0.1          
+##  [4] R6_2.5.0                 rlang_0.4.11             stringr_1.4.0           
+##  [7] highr_0.9                tools_4.1.0              grid_4.1.0              
+## [10] xfun_0.24                registry_0.5-1           jquerylib_0.1.4         
+## [13] htmltools_0.5.1.1        yaml_2.2.1               digest_0.6.27           
+## [16] bookdown_0.22            sass_0.4.0               ROI.plugin.lpsolve_1.0-1
+## [19] evaluate_0.14            slam_0.1-48              rmarkdown_2.9           
+## [22] stringi_1.6.2            compiler_4.1.0           bslib_0.2.5.1           
+## [25] jsonlite_1.7.2
 ```
 

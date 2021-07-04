@@ -762,6 +762,7 @@ div.csl-indent {
 <li class="chapter" data-level="36.6" data-path="sec-linear-least-squares.html"><a href="sec-linear-least-squares.html"><i class="fa fa-check"></i><b>36.6</b> 线性最小二乘</a></li>
 <li class="chapter" data-level="36.7" data-path="sec-log-lik.html"><a href="sec-log-lik.html"><i class="fa fa-check"></i><b>36.7</b> 对数似然</a></li>
 <li class="chapter" data-level="36.8" data-path="sec-non-linear-tseries.html"><a href="sec-non-linear-tseries.html"><i class="fa fa-check"></i><b>36.8</b> 微分方程</a></li>
+<li class="chapter" data-level="36.9" data-path="sec-numerical-optimization-session.html"><a href="sec-numerical-optimization-session.html"><i class="fa fa-check"></i><b>36.9</b> 运行环境</a></li>
 </ul></li>
 <li class="appendix"><span><b>附录</b></span></li>
 <li class="chapter" data-level="A" data-path="chap-linux-command-bash.html"><a href="chap-linux-command-bash.html"><i class="fa fa-check"></i><b>A</b> 命令行操作</a>
@@ -976,8 +977,20 @@ b_{0} = (2,-2,-3)
 </p>
 </div>
 <p>kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。</p>
-<div class="sourceCode" id="cb1286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1286-1"><a href="sec-quadratic-programming.html#cb1286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span></code></pre></div>
 <p>R 包 kernlab 的函数 <code>ipop()</code> 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 <span class="math inline">\(A \geq 0\)</span>，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 <span class="math inline">\(A &gt; 0\)</span>。</p>
+<p>以二分类问题为例，采用 SMO (Sequential Minimization Optimization) 求解器，将 SVM 的二次优化问题分解。</p>
+<div class="sourceCode" id="cb1286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1286-1"><a href="sec-quadratic-programming.html#cb1286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span>
+<span id="cb1286-2"><a href="sec-quadratic-programming.html#cb1286-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1286-3"><a href="sec-quadratic-programming.html#cb1286-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">120</span>), <span class="dv">60</span>, <span class="dv">2</span>), <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">120</span>, <span class="at">mean =</span> <span class="dv">3</span>), <span class="dv">60</span>, <span class="dv">2</span>))</span>
+<span id="cb1286-4"><a href="sec-quadratic-programming.html#cb1286-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">60</span>), <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">60</span>)))</span>
+<span id="cb1286-5"><a href="sec-quadratic-programming.html#cb1286-5" aria-hidden="true" tabindex="-1"></a>svp <span class="ot">&lt;-</span> <span class="fu">ksvm</span>(x, y, <span class="at">type =</span> <span class="st">&quot;C-svc&quot;</span>)</span>
+<span id="cb1286-6"><a href="sec-quadratic-programming.html#cb1286-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(svp, <span class="at">data =</span> x)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:toy-binary"></span>
+<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="432" />
+<p class="caption">
+图 36.3: 二分类问题
+</p>
+</div>
 </div>
 </div>
 <div class="footnotes">
