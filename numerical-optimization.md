@@ -373,7 +373,7 @@ plot(svp, data = x)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="432" />
+<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="528" />
 <p class="caption">(\#fig:toy-binary)二分类问题</p>
 </div>
 
@@ -433,31 +433,66 @@ $$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
 
 
 ```r
-fn <- function(A) { # 输入矩阵，输出向量
-  x <- A[, 1]
-  y <- A[, 2]
-  f <- (x^2 + y - 11)^2 + (x + y^2 - 7)^2
-  f
+fn <- function(x, y) { # 输入两个向量，输出一个向量
+   (x^2 + y - 11)^2 + (x + y^2 - 7)^2
 }
-xy <- expand.grid(
+
+library(magrittr)
+df <- expand.grid(
   x = seq(-5, 5, length = 101),
   y = seq(-5, 5, length = 101)
-)
-df <- data.frame(fnxy = fn(xy), xy)
+) %>% 
+  transform(fnxy = fn(x, y))
+
 library(lattice)
-wireframe(fnxy ~ x * y, data = df, 
+wireframe(
+  data = df, fnxy ~ x * y,
   shade = TRUE, drape = FALSE,
-  xlab = "x", ylab = "y", zlab = "f",
-  scales = list(arrows = FALSE),
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = expression(f(x[1],x[2])),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = -240, x = -70, y = 0)
 )
 ```
 
 <div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="432" />
+<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
 <p class="caption">(\#fig:himmelblau)Himmelblau 函数图像</p>
 </div>
 
+
+```r
+# 目标函数
+fn <- function(x){
+   (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
+}
+library(numDeriv)
+# 梯度函数
+gr <- function(x) {
+  grad(fn, c(x[1], x[2])) 
+}
+optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
+```
+
+```
+## $par
+## [1] -2.805118  3.131313
+## 
+## $value
+## [1] 2.069971e-27
+## 
+## $counts
+## function gradient 
+##       42       15 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+```
 
 $$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
@@ -467,7 +502,6 @@ $$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 fn <- function(x) {
   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
 }
-library(numDeriv)
 # 梯度函数
 gr <- function(x) {
   grad(fn, c(x[1], x[2])) 
@@ -677,7 +711,7 @@ persp(mu, sigma, z,
 )
 ```
 
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+<img src="numerical-optimization_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" />
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
@@ -730,19 +764,18 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] alabama_2015.3-1    numDeriv_2016.8-1.1 kernlab_0.9-29     
-## [4] lattice_0.20-44     quadprog_1.5-8      ROI_1.0-0          
-## [7] lpSolve_5.6.15     
+## [1] alabama_2015.3-1    numDeriv_2016.8-1.1 magrittr_2.0.1     
+## [4] kernlab_0.9-29      lattice_0.20-44     quadprog_1.5-8     
+## [7] ROI_1.0-0           lpSolve_5.6.15     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               magrittr_2.0.1          
-##  [4] R6_2.5.0                 rlang_0.4.11             stringr_1.4.0           
-##  [7] highr_0.9                tools_4.1.0              grid_4.1.0              
-## [10] xfun_0.24                registry_0.5-1           jquerylib_0.1.4         
-## [13] htmltools_0.5.1.1        yaml_2.2.1               digest_0.6.27           
-## [16] bookdown_0.22            sass_0.4.0               ROI.plugin.lpsolve_1.0-1
-## [19] evaluate_0.14            slam_0.1-48              rmarkdown_2.9           
-## [22] stringi_1.6.2            compiler_4.1.0           bslib_0.2.5.1           
-## [25] jsonlite_1.7.2
+##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               R6_2.5.0                
+##  [4] rlang_0.4.11             stringr_1.4.0            highr_0.9               
+##  [7] tools_4.1.0              grid_4.1.0               xfun_0.24               
+## [10] registry_0.5-1           jquerylib_0.1.4          htmltools_0.5.1.1       
+## [13] yaml_2.2.1               digest_0.6.27            bookdown_0.22           
+## [16] sass_0.4.0               ROI.plugin.lpsolve_1.0-1 evaluate_0.14           
+## [19] slam_0.1-48              rmarkdown_2.9            stringi_1.6.2           
+## [22] compiler_4.1.0           bslib_0.2.5.1            jsonlite_1.7.2
 ```
 
