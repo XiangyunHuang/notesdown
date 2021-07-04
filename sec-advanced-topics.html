@@ -451,16 +451,7 @@ div.csl-indent {
 <li class="chapter" data-level="10.29" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>10.29</b> 其他 JS 库</a></li>
 <li class="chapter" data-level="10.30" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>10.30</b> 运行环境</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="chap-dynamic-network-visualization.html"><a href="chap-dynamic-network-visualization.html"><i class="fa fa-check"></i><b>11</b> 交互网络图形</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html"><i class="fa fa-check"></i><b>11.1</b> 网络分析</a></li>
-<li class="chapter" data-level="11.2" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html"><i class="fa fa-check"></i><b>11.2</b> 交互图形</a>
-<ul>
-<li class="chapter" data-level="11.2.1" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:networkD3"><i class="fa fa-check"></i><b>11.2.1</b> networkD3</a></li>
-<li class="chapter" data-level="11.2.2" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:visNetwork"><i class="fa fa-check"></i><b>11.2.2</b> visNetwork</a></li>
-<li class="chapter" data-level="11.2.3" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:r2d3"><i class="fa fa-check"></i><b>11.2.3</b> r2d3</a></li>
-</ul></li>
-</ul></li>
+<li class="chapter" data-level="11" data-path="chap-network.html"><a href="chap-network.html"><i class="fa fa-check"></i><b>11</b> 交互式网络图形</a></li>
 <li class="chapter" data-level="12" data-path="chap-echarts4r.html"><a href="chap-echarts4r.html"><i class="fa fa-check"></i><b>12</b> 交互式图形 echarts4r</a>
 <ul>
 <li class="chapter" data-level="12.1" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>12.1</b> 地图</a></li>
@@ -898,46 +889,46 @@ div.csl-indent {
 <div id="sec:advanced-topics" class="section level2" number="14.5">
 <h2><span class="header-section-number">14.5</span> 高级主题</h2>
 <p>异步编程，并发访问</p>
-<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="sec-advanced-topics.html#cb475-1" aria-hidden="true" tabindex="-1"></a><span class="do">## shiny 异步编程</span></span>
-<span id="cb475-2"><a href="sec-advanced-topics.html#cb475-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 解决问题，多人同时访问 Shiny 应用的情况下，必须等另一个人完成访问的情况下才能继续访问</span></span>
-<span id="cb475-3"><a href="sec-advanced-topics.html#cb475-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-4"><a href="sec-advanced-topics.html#cb475-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb475-5"><a href="sec-advanced-topics.html#cb475-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb475-6"><a href="sec-advanced-topics.html#cb475-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(promises)</span>
-<span id="cb475-7"><a href="sec-advanced-topics.html#cb475-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-8"><a href="sec-advanced-topics.html#cb475-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multiprocess)</span>
-<span id="cb475-9"><a href="sec-advanced-topics.html#cb475-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-10"><a href="sec-advanced-topics.html#cb475-10" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb475-11"><a href="sec-advanced-topics.html#cb475-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">h2</span>(<span class="st">&quot;测试异步下载&quot;</span>),</span>
-<span id="cb475-12"><a href="sec-advanced-topics.html#cb475-12" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">ol</span>(</span>
-<span id="cb475-13"><a href="sec-advanced-topics.html#cb475-13" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Verify that plot appears below&quot;</span>),</span>
-<span id="cb475-14"><a href="sec-advanced-topics.html#cb475-14" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Verify that pressing Download results in 5 second delay, then rock.csv being downloaded&quot;</span>),</span>
-<span id="cb475-15"><a href="sec-advanced-topics.html#cb475-15" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Check &#39;Throw on download?&#39; checkbox and verify that pressing Download results in 5 second delay, then error, as well as stack traces in console&quot;</span>)</span>
-<span id="cb475-16"><a href="sec-advanced-topics.html#cb475-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb475-17"><a href="sec-advanced-topics.html#cb475-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hr</span>(),</span>
-<span id="cb475-18"><a href="sec-advanced-topics.html#cb475-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">checkboxInput</span>(<span class="st">&quot;throw&quot;</span>, <span class="st">&quot;Throw on download?&quot;</span>),</span>
-<span id="cb475-19"><a href="sec-advanced-topics.html#cb475-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">downloadButton</span>(<span class="st">&quot;download&quot;</span>, <span class="st">&quot;下载 (等待5秒)&quot;</span>),</span>
-<span id="cb475-20"><a href="sec-advanced-topics.html#cb475-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotOutput</span>(<span class="st">&quot;plot&quot;</span>)</span>
-<span id="cb475-21"><a href="sec-advanced-topics.html#cb475-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb475-22"><a href="sec-advanced-topics.html#cb475-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-23"><a href="sec-advanced-topics.html#cb475-23" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb475-24"><a href="sec-advanced-topics.html#cb475-24" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>download <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(<span class="st">&quot;rock.csv&quot;</span>, <span class="cf">function</span>(file) {</span>
-<span id="cb475-25"><a href="sec-advanced-topics.html#cb475-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">future</span>({<span class="fu">Sys.sleep</span>(<span class="dv">5</span>)}) <span class="sc">%...&gt;%</span></span>
-<span id="cb475-26"><a href="sec-advanced-topics.html#cb475-26" aria-hidden="true" tabindex="-1"></a>      {</span>
-<span id="cb475-27"><a href="sec-advanced-topics.html#cb475-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (input<span class="sc">$</span>throw) {</span>
-<span id="cb475-28"><a href="sec-advanced-topics.html#cb475-28" aria-hidden="true" tabindex="-1"></a>          <span class="fu">stop</span>(<span class="st">&quot;boom&quot;</span>)</span>
-<span id="cb475-29"><a href="sec-advanced-topics.html#cb475-29" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
-<span id="cb475-30"><a href="sec-advanced-topics.html#cb475-30" aria-hidden="true" tabindex="-1"></a>          <span class="fu">write.csv</span>(rock, file)</span>
-<span id="cb475-31"><a href="sec-advanced-topics.html#cb475-31" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb475-32"><a href="sec-advanced-topics.html#cb475-32" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb475-33"><a href="sec-advanced-topics.html#cb475-33" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb475-34"><a href="sec-advanced-topics.html#cb475-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-35"><a href="sec-advanced-topics.html#cb475-35" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb475-36"><a href="sec-advanced-topics.html#cb475-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(cars)</span>
-<span id="cb475-37"><a href="sec-advanced-topics.html#cb475-37" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb475-38"><a href="sec-advanced-topics.html#cb475-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb475-39"><a href="sec-advanced-topics.html#cb475-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb475-40"><a href="sec-advanced-topics.html#cb475-40" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="sec-advanced-topics.html#cb473-1" aria-hidden="true" tabindex="-1"></a><span class="do">## shiny 异步编程</span></span>
+<span id="cb473-2"><a href="sec-advanced-topics.html#cb473-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 解决问题，多人同时访问 Shiny 应用的情况下，必须等另一个人完成访问的情况下才能继续访问</span></span>
+<span id="cb473-3"><a href="sec-advanced-topics.html#cb473-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-4"><a href="sec-advanced-topics.html#cb473-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb473-5"><a href="sec-advanced-topics.html#cb473-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb473-6"><a href="sec-advanced-topics.html#cb473-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(promises)</span>
+<span id="cb473-7"><a href="sec-advanced-topics.html#cb473-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-8"><a href="sec-advanced-topics.html#cb473-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multiprocess)</span>
+<span id="cb473-9"><a href="sec-advanced-topics.html#cb473-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-10"><a href="sec-advanced-topics.html#cb473-10" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb473-11"><a href="sec-advanced-topics.html#cb473-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">h2</span>(<span class="st">&quot;测试异步下载&quot;</span>),</span>
+<span id="cb473-12"><a href="sec-advanced-topics.html#cb473-12" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">ol</span>(</span>
+<span id="cb473-13"><a href="sec-advanced-topics.html#cb473-13" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Verify that plot appears below&quot;</span>),</span>
+<span id="cb473-14"><a href="sec-advanced-topics.html#cb473-14" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Verify that pressing Download results in 5 second delay, then rock.csv being downloaded&quot;</span>),</span>
+<span id="cb473-15"><a href="sec-advanced-topics.html#cb473-15" aria-hidden="true" tabindex="-1"></a>    tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">&quot;Check &#39;Throw on download?&#39; checkbox and verify that pressing Download results in 5 second delay, then error, as well as stack traces in console&quot;</span>)</span>
+<span id="cb473-16"><a href="sec-advanced-topics.html#cb473-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb473-17"><a href="sec-advanced-topics.html#cb473-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hr</span>(),</span>
+<span id="cb473-18"><a href="sec-advanced-topics.html#cb473-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">checkboxInput</span>(<span class="st">&quot;throw&quot;</span>, <span class="st">&quot;Throw on download?&quot;</span>),</span>
+<span id="cb473-19"><a href="sec-advanced-topics.html#cb473-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">downloadButton</span>(<span class="st">&quot;download&quot;</span>, <span class="st">&quot;下载 (等待5秒)&quot;</span>),</span>
+<span id="cb473-20"><a href="sec-advanced-topics.html#cb473-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotOutput</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb473-21"><a href="sec-advanced-topics.html#cb473-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb473-22"><a href="sec-advanced-topics.html#cb473-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-23"><a href="sec-advanced-topics.html#cb473-23" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb473-24"><a href="sec-advanced-topics.html#cb473-24" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>download <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(<span class="st">&quot;rock.csv&quot;</span>, <span class="cf">function</span>(file) {</span>
+<span id="cb473-25"><a href="sec-advanced-topics.html#cb473-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">future</span>({<span class="fu">Sys.sleep</span>(<span class="dv">5</span>)}) <span class="sc">%...&gt;%</span></span>
+<span id="cb473-26"><a href="sec-advanced-topics.html#cb473-26" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb473-27"><a href="sec-advanced-topics.html#cb473-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (input<span class="sc">$</span>throw) {</span>
+<span id="cb473-28"><a href="sec-advanced-topics.html#cb473-28" aria-hidden="true" tabindex="-1"></a>          <span class="fu">stop</span>(<span class="st">&quot;boom&quot;</span>)</span>
+<span id="cb473-29"><a href="sec-advanced-topics.html#cb473-29" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb473-30"><a href="sec-advanced-topics.html#cb473-30" aria-hidden="true" tabindex="-1"></a>          <span class="fu">write.csv</span>(rock, file)</span>
+<span id="cb473-31"><a href="sec-advanced-topics.html#cb473-31" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb473-32"><a href="sec-advanced-topics.html#cb473-32" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb473-33"><a href="sec-advanced-topics.html#cb473-33" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb473-34"><a href="sec-advanced-topics.html#cb473-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-35"><a href="sec-advanced-topics.html#cb473-35" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>plot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb473-36"><a href="sec-advanced-topics.html#cb473-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(cars)</span>
+<span id="cb473-37"><a href="sec-advanced-topics.html#cb473-37" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb473-38"><a href="sec-advanced-topics.html#cb473-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb473-39"><a href="sec-advanced-topics.html#cb473-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb473-40"><a href="sec-advanced-topics.html#cb473-40" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div>
 </div>
             </section>
 
