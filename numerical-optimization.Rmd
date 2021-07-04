@@ -23,10 +23,9 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
   \min_x \quad -6x_1 -5x_2 \\
     s.t.\left\{ 
     \begin{array}{l}
-    x_1  + 4x_2 \leq 16\\
-    6x_1 + 4x_2 \leq 28\\
-    2x_1 - 5x_2 \leq 6\\
-    0 \leq x    \leq 10
+    x_1  + 4x_2 & \leq 16\\
+    6x_1 + 4x_2 & \leq 28\\
+    2x_1 - 5x_2 & \leq 6
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -53,8 +52,7 @@ s.t.\left\{
    16 \\
    28 \\
    6
-  \end{bmatrix}\\
-  0 \leq x \leq 10
+  \end{bmatrix}
  \end{array} \right.
 \end{array} 
 \end{equation*}
@@ -263,11 +261,18 @@ levelplot(z ~ x * y, grid,
 
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
 
-```{r,eval=FALSE}
-library(kernlab)
-```
-
 R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 $A \geq 0$，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 $A > 0$。
+
+以二分类问题为例，采用 SMO (Sequential Minimization Optimization) 求解器，将 SVM 的二次优化问题分解。
+
+```{r toy-binary,fig.width=4.5,fig.height=4,fig.cap="二分类问题"}
+library(kernlab)
+set.seed(123)
+x <- rbind(matrix(rnorm(120), 60, 2), matrix(rnorm(120, mean = 3), 60, 2))
+y <- matrix(c(rep(1, 60), rep(-1, 60)))
+svp <- ksvm(x, y, type = "C-svc")
+plot(svp, data = x)
+```
 
 ## 非线性规划 {#sec:nonlinear-programming}
 
@@ -507,5 +512,11 @@ scatter3D(lor$x, lor$y, lor$z,
   type = "o", cex = 0.3,
   colkey = FALSE, box = FALSE
 )
+```
+
+## 运行环境 {#sec:numerical-optimization-session}
+
+```{r}
+sessionInfo()
 ```
 
