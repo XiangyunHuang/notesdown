@@ -5,7 +5,9 @@ Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathwor
 
 
 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计。
-[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。
+[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。
+
+谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
 
 
 ## 线性规划 {#sec:linear-programming}
@@ -60,6 +62,7 @@ s.t.\left\{
 对应成 R 代码如下
 
 ```{r}
+# lpSolve 添加约束条件
 library(lpSolve)
 # 目标
 f.obj <- c(-6, -5)
@@ -190,19 +193,19 @@ $$\min(-d^{T}b+1/2b^{T}Db), A^{T}b \geq b_{0}$$
 solve.QP(Dmat, dvec, Amat, bvec, meq = 0, factorized = FALSE)
 ```
 
-参数 `Dmat`、`dvec`、`Amat`、`bvec` 分别对应二次规划问题中的 $D,d,A,b_{0}$ 
+参数 `Dmat`、`dvec`、`Amat`、`bvec` 分别对应二次规划问题中的 $D,d,A,b_{0}$。
 
-现在有如下二次规划问题
+下面举个例子，有如下二次规划问题
 
 $$
 D = 2* \begin{bmatrix}1 & -1/2\\
 -1/2 & 1
-\end{bmatrix},
-d = (-3,2),
+\end{bmatrix}, \quad
+d = (-3,2), \quad
 A = \begin{bmatrix}1 & 1\\
 -1 & 1 \\
 0  & -1
-\end{bmatrix},
+\end{bmatrix}, \quad
 b_{0} = (2,-2,-3)
 $$
 
@@ -264,7 +267,7 @@ kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类
 library(kernlab)
 ```
 
-R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，而 R 包 quadprog 只能求解正定的二次规划问题。
+R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 $A \geq 0$，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 $A > 0$。
 
 ## 非线性规划 {#sec:nonlinear-programming}
 
@@ -300,6 +303,35 @@ g(1)
 ```
 
 ### 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
+
+Himmelblau 函数是一个多摸函数，常用于优化算法的比较。
+
+$$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
+它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$、$f(-2.8051, 3.1313) = 0$、$f(3, 2) = 0$ 和 $f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
+
+```{r himmelblau,fig.cap="Himmelblau 函数图像",fig.width=4.5,fig.height=4}
+fn <- function(A) { # 输入矩阵，输出向量
+  x <- A[, 1]
+  y <- A[, 2]
+  f <- (x^2 + y - 11)^2 + (x + y^2 - 7)^2
+  f
+}
+xy <- expand.grid(
+  x = seq(-5, 5, length = 101),
+  y = seq(-5, 5, length = 101)
+)
+df <- data.frame(fnxy = fn(xy), xy)
+library(lattice)
+wireframe(fnxy ~ x * y, data = df, 
+  shade = TRUE, drape = FALSE,
+  xlab = "x", ylab = "y", zlab = "f",
+  scales = list(arrows = FALSE),
+  screen = list(z = -240, x = -70, y = 0)
+)
+```
+
+
+$$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
 ```{r}
 # 目标函数
