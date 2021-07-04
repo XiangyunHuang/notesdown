@@ -451,7 +451,16 @@ div.csl-indent {
 <li class="chapter" data-level="10.29" data-path="sec-r2d3.html"><a href="sec-r2d3.html"><i class="fa fa-check"></i><b>10.29</b> 其他 JS 库</a></li>
 <li class="chapter" data-level="10.30" data-path="sec-session-web.html"><a href="sec-session-web.html"><i class="fa fa-check"></i><b>10.30</b> 运行环境</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="chap-network.html"><a href="chap-network.html"><i class="fa fa-check"></i><b>11</b> 交互式网络图形</a></li>
+<li class="chapter" data-level="11" data-path="chap-dynamic-network-visualization.html"><a href="chap-dynamic-network-visualization.html"><i class="fa fa-check"></i><b>11</b> 交互网络图形</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html"><i class="fa fa-check"></i><b>11.1</b> 网络分析</a></li>
+<li class="chapter" data-level="11.2" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html"><i class="fa fa-check"></i><b>11.2</b> 交互图形</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:networkD3"><i class="fa fa-check"></i><b>11.2.1</b> networkD3</a></li>
+<li class="chapter" data-level="11.2.2" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:visNetwork"><i class="fa fa-check"></i><b>11.2.2</b> visNetwork</a></li>
+<li class="chapter" data-level="11.2.3" data-path="sec-javascript-network.html"><a href="sec-javascript-network.html#subsec:r2d3"><i class="fa fa-check"></i><b>11.2.3</b> r2d3</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="12" data-path="chap-echarts4r.html"><a href="chap-echarts4r.html"><i class="fa fa-check"></i><b>12</b> 交互式图形 echarts4r</a>
 <ul>
 <li class="chapter" data-level="12.1" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>12.1</b> 地图</a></li>
@@ -980,13 +989,13 @@ a column separator --></p>
 <p>diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html</a></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
-<pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.70 Very Good     F     VS2  62.3    58  2812 5.64 5.72 3.54
-## 2  0.71   Premium     D     SI1  59.7    59  2863 5.82 5.80 3.47
-## 3  0.90      Good     H     SI1  66.1    57  3282 5.94 5.99 3.94
-## 4  1.10     Ideal     F      I1  61.8    56  3678 6.61 6.65 4.10
-## 5  1.01      Good     H     SI2  65.7    60  3926 6.17 6.19 4.06
-## 6  1.01      Good     F     SI2  58.2    61  4140 6.47 6.53 3.78</code></pre>
+<pre><code>##   carat     cut color clarity depth table price    x    y    z
+## 1  0.70   Ideal     G     VS2  62.7    54  3172 5.65 5.70 3.65
+## 2  0.74   Ideal     D     VS2  62.2    56  3454 5.79 5.81 3.61
+## 3  0.74   Ideal     F     VS1  61.9    54  3590 5.78 5.82 3.59
+## 4  1.39 Premium     I      I1  62.6    57  3985 7.15 7.10 4.46
+## 5  0.90 Premium     F     SI1  62.6    60  4103 6.11 6.06 3.81
+## 6  0.91 Premium     G     VS2  59.5    58  4241 6.34 6.26 3.75</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -995,13 +1004,13 @@ a column separator --></p>
 <span id="cb161-4"><a href="sec-spark-with-r.html#cb161-4" aria-hidden="true" tabindex="-1"></a><span class="st">  LIMIT 6</span></span>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
-<pre><code>##    cut price rank
-## 1 Fair   833    1
-## 2 Fair  2376    2
-## 3 Fair  3633    3
-## 4 Good   596    1
-## 5 Good   619    2
-## 6 Good   969    3</code></pre>
+<pre><code>##     cut price rank
+## 1  Fair   960    1
+## 2  Good  1801    1
+## 3  Good  3768    2
+## 4  Good  4761    3
+## 5  Good 17447    4
+## 6 Ideal   531    1</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>

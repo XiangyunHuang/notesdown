@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>23.20 婴儿的体重随年龄的变化情况 | 现代应用统计与 R 语言</title>
+  <title>11.1 网络分析 | 现代应用统计与 R 语言</title>
   <meta name="description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="23.20 婴儿的体重随年龄的变化情况 | 现代应用统计与 R 语言" />
+  <meta property="og:title" content="11.1 网络分析 | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="23.20 婴儿的体重随年龄的变化情况 | 现代应用统计与 R 语言" />
+  <meta name="twitter:title" content="11.1 网络分析 | 现代应用统计与 R 语言" />
   
   <meta name="twitter:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sec-DNase.html"/>
-<link rel="next" href="sec-loblolly.html"/>
+<link rel="prev" href="chap-dynamic-network-visualization.html"/>
+<link rel="next" href="sec-javascript-network.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -895,164 +895,17 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sec:BirthWeight" class="section level2" number="23.20">
-<h2><span class="header-section-number">23.20</span> 婴儿的体重随年龄的变化情况</h2>
-<p>BirthWeight 数据集记录了婴儿的体重随年龄的变化情况，年龄以周为单位计，体重以克为单位计</p>
-<p><img src="linear-models_files/figure-html/Birth-Weight-1.png" width="672" style="display: block; margin: auto;" /><img src="linear-models_files/figure-html/Birth-Weight-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>性别和年龄两个变量，分别是离散型的分类变量和连续型的变量</p>
-<div class="sourceCode" id="cb772"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb772-1"><a href="sec-BirthWeight.html#cb772-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 带截距项和不带截距项</span></span>
-<span id="cb772-2"><a href="sec-BirthWeight.html#cb772-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(l1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = birthw ~ sex + age)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -257.49 -125.28  -58.44  169.00  303.98 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1610.28     786.08  -2.049   0.0532 .  
-## sexF         -163.04      72.81  -2.239   0.0361 *  
-## age           120.89      20.46   5.908 7.28e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 177.1 on 21 degrees of freedom
-## Multiple R-squared:   0.64,  Adjusted R-squared:  0.6057 
-## F-statistic: 18.67 on 2 and 21 DF,  p-value: 2.194e-05
-## 
-## Correlation of Coefficients:
-##      (Intercept) sexF 
-## sexF  0.07            
-## age  -1.00       -0.12</code></pre>
-<div class="sourceCode" id="cb774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb774-1"><a href="sec-BirthWeight.html#cb774-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(l1)</span></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: birthw
-##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## sex        1   76163   76163  2.4279    0.1341    
-## age        1 1094940 1094940 34.9040 7.284e-06 ***
-## Residuals 21  658771   31370                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb776"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb776-1"><a href="sec-BirthWeight.html#cb776-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 与带交互项的模型比较</span></span>
-<span id="cb776-2"><a href="sec-BirthWeight.html#cb776-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(li <span class="ot">&lt;-</span> <span class="fu">lm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> sex<span class="sc">:</span>age), <span class="at">correlation =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = birthw ~ sex + sex:age)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -246.69 -138.11  -39.13  176.57  274.28 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1268.67    1114.64  -1.138 0.268492    
-## sexF         -872.99    1611.33  -0.542 0.593952    
-## sexM:age      111.98      29.05   3.855 0.000986 ***
-## sexF:age      130.40      30.00   4.347 0.000313 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 180.6 on 20 degrees of freedom
-## Multiple R-squared:  0.6435, Adjusted R-squared:   0.59 
-## F-statistic: 12.03 on 3 and 20 DF,  p-value: 0.000101
-## 
-## Correlation of Coefficients:
-##          (Intercept) sexF  sexM:age
-## sexF     -0.69                     
-## sexM:age -1.00        0.69         
-## sexF:age  0.00       -0.72  0.00</code></pre>
-<div class="sourceCode" id="cb778"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb778-1"><a href="sec-BirthWeight.html#cb778-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(li, l1)</span></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Model 1: birthw ~ sex + sex:age
-## Model 2: birthw ~ sex + age
-##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
-## 1     20 652425                           
-## 2     21 658771 -1   -6346.2 0.1945 0.6639</code></pre>
-<div class="sourceCode" id="cb780"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb780-1"><a href="sec-BirthWeight.html#cb780-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类似，只是使用 glm 命令来拟合而已</span></span>
-<span id="cb780-2"><a href="sec-BirthWeight.html#cb780-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zi <span class="ot">&lt;-</span> <span class="fu">glm</span>(birthw <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">family =</span> <span class="fu">gaussian</span>()))</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = birthw ~ sex + age, family = gaussian())
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -257.49  -125.28   -58.44   169.00   303.98  
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1610.28     786.08  -2.049   0.0532 .  
-## sexF         -163.04      72.81  -2.239   0.0361 *  
-## age           120.89      20.46   5.908 7.28e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for gaussian family taken to be 31370.04)
-## 
-##     Null deviance: 1829873  on 23  degrees of freedom
-## Residual deviance:  658771  on 21  degrees of freedom
-## AIC: 321.39
-## 
-## Number of Fisher Scoring iterations: 2</code></pre>
-<div class="sourceCode" id="cb782"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb782-1"><a href="sec-BirthWeight.html#cb782-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi)</span></code></pre></div>
-<pre><code>## Analysis of Deviance Table
-## 
-## Model: gaussian, link: identity
-## 
-## Response: birthw
-## 
-## Terms added sequentially (first to last)
-## 
-## 
-##      Df Deviance Resid. Df Resid. Dev
-## NULL                    23    1829873
-## sex   1    76163        22    1753711
-## age   1  1094940        21     658771</code></pre>
-<div class="sourceCode" id="cb784"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb784-1"><a href="sec-BirthWeight.html#cb784-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(z.o4 &lt;- update(zi, subset = -4))</span></span>
-<span id="cb784-2"><a href="sec-BirthWeight.html#cb784-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(zz <span class="ot">&lt;-</span> <span class="fu">update</span>(zi, birthw <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sex<span class="sc">:</span>age))</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = birthw ~ sex + age + sex:age, family = gaussian())
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -246.69  -138.11   -39.13   176.57   274.28  
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1268.67    1114.64  -1.138 0.268492    
-## sexF         -872.99    1611.33  -0.542 0.593952    
-## age           111.98      29.05   3.855 0.000986 ***
-## sexF:age       18.42      41.76   0.441 0.663893    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for gaussian family taken to be 32621.23)
-## 
-##     Null deviance: 1829873  on 23  degrees of freedom
-## Residual deviance:  652425  on 20  degrees of freedom
-## AIC: 323.16
-## 
-## Number of Fisher Scoring iterations: 2</code></pre>
-<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="sec-BirthWeight.html#cb786-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(zi, zz)</span></code></pre></div>
-<pre><code>## Analysis of Deviance Table
-## 
-## Model 1: birthw ~ sex + age
-## Model 2: birthw ~ sex + age + sex:age
-##   Resid. Df Resid. Dev Df Deviance
-## 1        21     658771            
-## 2        20     652425  1   6346.2</code></pre>
+<div id="sec:network-analysis" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> 网络分析</h2>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="sec-network-analysis.html#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span></code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="sec-DNase.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-loblolly.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="chap-dynamic-network-visualization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-javascript-network.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -1084,7 +937,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/XiangyunHuang/masr/edit/devel/linear-models.Rmd",
+"link": "https://github.com/XiangyunHuang/masr/edit/devel/interactive-network-graphics.Rmd",
 "text": "编辑"
 },
 "history": {
@@ -1092,10 +945,10 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/XiangyunHuang/masr/blob/devel/linear-models.Rmd",
+"link": "https://github.com/XiangyunHuang/masr/blob/devel/interactive-network-graphics.Rmd",
 "text": "查看"
 },
-"download": ["https://github.com/XiangyunHuang/masr/raw/devel/linear-models.Rmd", "masr.pdf", "masr.epub"],
+"download": ["https://github.com/XiangyunHuang/masr/raw/devel/interactive-network-graphics.Rmd", "masr.pdf", "masr.epub"],
 "toc": {
 "collapse": "subsection"
 }
