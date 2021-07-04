@@ -265,7 +265,7 @@ R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次�
 
 以二分类问题为例，采用 SMO (Sequential Minimization Optimization) 求解器，将 SVM 的二次优化问题分解。
 
-```{r toy-binary,fig.width=4.5,fig.height=4,fig.cap="二分类问题"}
+```{r toy-binary,fig.width=5.5,fig.height=5,fig.cap="二分类问题"}
 library(kernlab)
 set.seed(123)
 x <- rbind(matrix(rnorm(120), 60, 2), matrix(rnorm(120, mean = 3), 60, 2))
@@ -314,27 +314,43 @@ Himmelblau 函数是一个多摸函数，常用于优化算法的比较。
 $$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
 它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$、$f(-2.8051, 3.1313) = 0$、$f(3, 2) = 0$ 和 $f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
 
-```{r himmelblau,fig.cap="Himmelblau 函数图像",fig.width=4.5,fig.height=4}
-fn <- function(A) { # 输入矩阵，输出向量
-  x <- A[, 1]
-  y <- A[, 2]
-  f <- (x^2 + y - 11)^2 + (x + y^2 - 7)^2
-  f
+```{r himmelblau,fig.cap="Himmelblau 函数图像",fig.width=5.5,fig.height=5}
+fn <- function(x, y) { # 输入两个向量，输出一个向量
+   (x^2 + y - 11)^2 + (x + y^2 - 7)^2
 }
-xy <- expand.grid(
+
+library(magrittr)
+df <- expand.grid(
   x = seq(-5, 5, length = 101),
   y = seq(-5, 5, length = 101)
-)
-df <- data.frame(fnxy = fn(xy), xy)
+) %>% 
+  transform(fnxy = fn(x, y))
+
 library(lattice)
-wireframe(fnxy ~ x * y, data = df, 
+wireframe(
+  data = df, fnxy ~ x * y,
   shade = TRUE, drape = FALSE,
-  xlab = "x", ylab = "y", zlab = "f",
-  scales = list(arrows = FALSE),
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = expression(f(x[1],x[2])),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = -240, x = -70, y = 0)
 )
 ```
 
+```{r}
+# 目标函数
+fn <- function(x){
+   (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
+}
+library(numDeriv)
+# 梯度函数
+gr <- function(x) {
+  grad(fn, c(x[1], x[2])) 
+}
+optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
+```
 
 $$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
@@ -343,7 +359,6 @@ $$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 fn <- function(x) {
   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
 }
-library(numDeriv)
 # 梯度函数
 gr <- function(x) {
   grad(fn, c(x[1], x[2])) 
