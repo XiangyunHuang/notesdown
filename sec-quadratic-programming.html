@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-03" />
+<meta name="date" content="2021-07-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -893,17 +893,17 @@ div.csl-indent {
 <p>在 R 中使用 quadprog 包求解二次规划<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a>，而 ipoptr 包可用来求解一般的非线性约束的非线性规划<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。</p>
 <p><span class="math display">\[\min(-d^{T}b+1/2b^{T}Db), A^{T}b \geq b_{0}\]</span></p>
 <div class="sourceCode" id="cb1281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1281-1"><a href="sec-quadratic-programming.html#cb1281-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve.QP</span>(Dmat, dvec, Amat, bvec, <span class="at">meq =</span> <span class="dv">0</span>, <span class="at">factorized =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p>参数 <code>Dmat</code>、<code>dvec</code>、<code>Amat</code>、<code>bvec</code> 分别对应二次规划问题中的 <span class="math inline">\(D,d,A,b_{0}\)</span></p>
-<p>现在有如下二次规划问题</p>
+<p>参数 <code>Dmat</code>、<code>dvec</code>、<code>Amat</code>、<code>bvec</code> 分别对应二次规划问题中的 <span class="math inline">\(D,d,A,b_{0}\)</span>。</p>
+<p>下面举个例子，有如下二次规划问题</p>
 <p><span class="math display">\[
 D = 2* \begin{bmatrix}1 &amp; -1/2\\
 -1/2 &amp; 1
-\end{bmatrix},
-d = (-3,2),
+\end{bmatrix}, \quad
+d = (-3,2), \quad
 A = \begin{bmatrix}1 &amp; 1\\
 -1 &amp; 1 \\
 0  &amp; -1
-\end{bmatrix},
+\end{bmatrix}, \quad
 b_{0} = (2,-2,-3)
 \]</span></p>
 <p>上述二次规划问题的可行域如图所示</p>
@@ -977,7 +977,7 @@ b_{0} = (2,-2,-3)
 </div>
 <p>kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。</p>
 <div class="sourceCode" id="cb1286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1286-1"><a href="sec-quadratic-programming.html#cb1286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span></code></pre></div>
-<p>R 包 kernlab 的函数 <code>ipop()</code> 实现内点法可以求解半正定的二次规划问题，而 R 包 quadprog 只能求解正定的二次规划问题。</p>
+<p>R 包 kernlab 的函数 <code>ipop()</code> 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 <span class="math inline">\(A \geq 0\)</span>，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 <span class="math inline">\(A &gt; 0\)</span>。</p>
 </div>
 </div>
 <div class="footnotes">

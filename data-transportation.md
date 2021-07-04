@@ -175,12 +175,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.32 Very Good     H     VS1  62.8    58   561 4.35 4.37 2.74
-## 2  0.70   Premium     G    VVS1  62.8    58  3234 5.68 5.62 3.55
-## 3  0.61 Very Good     E      IF  61.7    58  3337 5.39 5.47 3.35
-## 4  0.71 Very Good     D     VS1  63.2    57  3406 5.63 5.67 3.57
-## 5  0.84     Ideal     D     SI1  62.4    57  3685 6.03 6.08 3.78
-## 6  1.13     Ideal     H     SI2  60.4    56  3797 6.78 6.70 4.07
+## 1  0.70   Premium     F     VS2  61.7    58  2838 5.69 5.63 3.49
+## 2  0.72     Ideal     H    VVS1  61.4    56  3124 5.79 5.77 3.55
+## 3  0.77   Premium     E     VS2  60.5    59  3291 5.92 5.98 3.60
+## 4  1.00      Fair     D     SI2  64.8    60  3304 6.23 6.18 4.02
+## 5  1.01 Very Good     J     SI1  62.9    57  3499 6.35 6.37 4.00
+## 6  0.91   Premium     F     SI2  58.2    61  3746 6.58 6.41 3.77
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -198,13 +198,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Good  1226    1
-## 2 Good  1240    2
-## 3 Good  1279    3
-## 4 Good  1364    4
-## 5 Good  1436    5
-## 6 Good  1851    6
+##     cut price rank
+## 1  Good  1012    1
+## 2  Good  2441    2
+## 3  Good  2459    3
+## 4  Good  3584    4
+## 5 Ideal   422    1
+## 6 Ideal   723    2
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -239,10 +239,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -259,12 +259,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -277,7 +277,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-07-03
+## 1     2021-07-04
 ```
 
 ```r
@@ -287,7 +287,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-07-02
+## 1                  2021-07-03
 ```
 
 ```r
@@ -307,7 +307,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         7
+## 1                         1
 ```
 
 最后，使用完记得关闭 Spark 连接

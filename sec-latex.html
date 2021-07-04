@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-03" />
+<meta name="date" content="2021-07-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -891,73 +891,73 @@ div.csl-indent {
 <p>另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <a href="https://pgf-tikz.github.io/pgf/pgfmanual.pdf" class="uri">https://pgf-tikz.github.io/pgf/pgfmanual.pdf</a>。</p>
 <div id="sub:latex-tinytex" class="section level3" number="38.15.1">
 <h3><span class="header-section-number">B.15.1</span> TinyTeX 发行版</h3>
-<div class="sourceCode" id="cb1437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1437-1"><a href="sec-latex.html#cb1437-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytex)</span>
-<span id="cb1437-2"><a href="sec-latex.html#cb1437-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 升级 TinyTeX 发行版</span></span>
-<span id="cb1437-3"><a href="sec-latex.html#cb1437-3" aria-hidden="true" tabindex="-1"></a>upgrade_tinytex <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">repos =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb1437-4"><a href="sec-latex.html#cb1437-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 此处还要考虑用户输错的情况和选择离用户最近（快）的站点</span></span>
-<span id="cb1437-5"><a href="sec-latex.html#cb1437-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(repos)) repos <span class="ot">=</span> <span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/CTAN/&quot;</span></span>
-<span id="cb1437-6"><a href="sec-latex.html#cb1437-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1437-7"><a href="sec-latex.html#cb1437-7" aria-hidden="true" tabindex="-1"></a>  file_ext <span class="ot">&lt;-</span> <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>) <span class="st">&quot;.exe&quot;</span> <span class="cf">else</span> <span class="st">&quot;.sh&quot;</span></span>
-<span id="cb1437-8"><a href="sec-latex.html#cb1437-8" aria-hidden="true" tabindex="-1"></a>  tlmgr_url <span class="ot">&lt;-</span> <span class="fu">paste</span>(repos, <span class="st">&quot;/systems/texlive/tlnet/update-tlmgr-latest&quot;</span>, file_ext, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb1437-9"><a href="sec-latex.html#cb1437-9" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;update-tlmgr-latest&quot;</span>, file_ext)</span>
-<span id="cb1437-10"><a href="sec-latex.html#cb1437-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="at">url =</span> tlmgr_url, <span class="at">destfile =</span> file_name, </span>
-<span id="cb1437-11"><a href="sec-latex.html#cb1437-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">mode =</span> <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>) <span class="st">&quot;wb&quot;</span> <span class="cf">else</span> <span class="st">&quot;w&quot;</span>)</span>
-<span id="cb1437-12"><a href="sec-latex.html#cb1437-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1437-13"><a href="sec-latex.html#cb1437-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># window下 命令行窗口下 如何执行 exe 文件</span></span>
-<span id="cb1437-14"><a href="sec-latex.html#cb1437-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>){</span>
-<span id="cb1437-15"><a href="sec-latex.html#cb1437-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">shell.exec</span>(<span class="at">file =</span> file_name)</span>
-<span id="cb1437-16"><a href="sec-latex.html#cb1437-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(<span class="st">&quot;update-tlmgr-latest.exe&quot;</span>)</span>
-<span id="cb1437-17"><a href="sec-latex.html#cb1437-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1437-18"><a href="sec-latex.html#cb1437-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
-<span id="cb1437-19"><a href="sec-latex.html#cb1437-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">system</span>(<span class="st">&quot;sudo sh update-tlmgr-latest.sh  -- --upgrade&quot;</span>)</span>
-<span id="cb1437-20"><a href="sec-latex.html#cb1437-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1437-21"><a href="sec-latex.html#cb1437-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(<span class="st">&quot;update-tlmgr-latest.sh&quot;</span>)</span>
-<span id="cb1437-22"><a href="sec-latex.html#cb1437-22" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1437-23"><a href="sec-latex.html#cb1437-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1437-24"><a href="sec-latex.html#cb1437-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 类似地 Linux 下执行 sh</span></span>
-<span id="cb1437-25"><a href="sec-latex.html#cb1437-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 升级完了 删除 update-tlmgr-latest.exe</span></span>
-<span id="cb1437-26"><a href="sec-latex.html#cb1437-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1438-1"><a href="sec-latex.html#cb1438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tinytex)</span>
+<span id="cb1438-2"><a href="sec-latex.html#cb1438-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 升级 TinyTeX 发行版</span></span>
+<span id="cb1438-3"><a href="sec-latex.html#cb1438-3" aria-hidden="true" tabindex="-1"></a>upgrade_tinytex <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">repos =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb1438-4"><a href="sec-latex.html#cb1438-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 此处还要考虑用户输错的情况和选择离用户最近（快）的站点</span></span>
+<span id="cb1438-5"><a href="sec-latex.html#cb1438-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(repos)) repos <span class="ot">=</span> <span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/CTAN/&quot;</span></span>
+<span id="cb1438-6"><a href="sec-latex.html#cb1438-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1438-7"><a href="sec-latex.html#cb1438-7" aria-hidden="true" tabindex="-1"></a>  file_ext <span class="ot">&lt;-</span> <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>) <span class="st">&quot;.exe&quot;</span> <span class="cf">else</span> <span class="st">&quot;.sh&quot;</span></span>
+<span id="cb1438-8"><a href="sec-latex.html#cb1438-8" aria-hidden="true" tabindex="-1"></a>  tlmgr_url <span class="ot">&lt;-</span> <span class="fu">paste</span>(repos, <span class="st">&quot;/systems/texlive/tlnet/update-tlmgr-latest&quot;</span>, file_ext, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb1438-9"><a href="sec-latex.html#cb1438-9" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;update-tlmgr-latest&quot;</span>, file_ext)</span>
+<span id="cb1438-10"><a href="sec-latex.html#cb1438-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="at">url =</span> tlmgr_url, <span class="at">destfile =</span> file_name, </span>
+<span id="cb1438-11"><a href="sec-latex.html#cb1438-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">mode =</span> <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>) <span class="st">&quot;wb&quot;</span> <span class="cf">else</span> <span class="st">&quot;w&quot;</span>)</span>
+<span id="cb1438-12"><a href="sec-latex.html#cb1438-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1438-13"><a href="sec-latex.html#cb1438-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># window下 命令行窗口下 如何执行 exe 文件</span></span>
+<span id="cb1438-14"><a href="sec-latex.html#cb1438-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(.Platform<span class="sc">$</span>OS.type <span class="sc">==</span> <span class="st">&quot;windows&quot;</span>){</span>
+<span id="cb1438-15"><a href="sec-latex.html#cb1438-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">shell.exec</span>(<span class="at">file =</span> file_name)</span>
+<span id="cb1438-16"><a href="sec-latex.html#cb1438-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(<span class="st">&quot;update-tlmgr-latest.exe&quot;</span>)</span>
+<span id="cb1438-17"><a href="sec-latex.html#cb1438-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1438-18"><a href="sec-latex.html#cb1438-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb1438-19"><a href="sec-latex.html#cb1438-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">system</span>(<span class="st">&quot;sudo sh update-tlmgr-latest.sh  -- --upgrade&quot;</span>)</span>
+<span id="cb1438-20"><a href="sec-latex.html#cb1438-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1438-21"><a href="sec-latex.html#cb1438-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(<span class="st">&quot;update-tlmgr-latest.sh&quot;</span>)</span>
+<span id="cb1438-22"><a href="sec-latex.html#cb1438-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1438-23"><a href="sec-latex.html#cb1438-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1438-24"><a href="sec-latex.html#cb1438-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 类似地 Linux 下执行 sh</span></span>
+<span id="cb1438-25"><a href="sec-latex.html#cb1438-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 升级完了 删除 update-tlmgr-latest.exe</span></span>
+<span id="cb1438-26"><a href="sec-latex.html#cb1438-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><a href="https://github.com/wch">Winston Chang</a> 整理了一份 LaTeX 常用命令速查小抄 <a href="https://wch.github.io/latexsheet/latexsheet.pdf" class="uri">https://wch.github.io/latexsheet/latexsheet.pdf</a></p>
 </div>
 <div id="subsec:tlmgr-setup" class="section level3" number="38.15.2">
 <h3><span class="header-section-number">B.15.2</span> 安装和更新</h3>
 <p>tlmgr (TeXLive Manager) 是 LaTeX 包管理器</p>
-<div class="sourceCode" id="cb1438"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1438-1"><a href="sec-latex.html#cb1438-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 就近选择 CTAN 镜像站点</span></span>
-<span id="cb1438-2"><a href="sec-latex.html#cb1438-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet</span>
-<span id="cb1438-3"><a href="sec-latex.html#cb1438-3" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> option repository http://mirror.ctan.org/systems/texlive/tlnet</span>
-<span id="cb1438-4"><a href="sec-latex.html#cb1438-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 可更新的 TeX 包列表</span></span>
-<span id="cb1438-5"><a href="sec-latex.html#cb1438-5" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--list</span></span>
-<span id="cb1438-6"><a href="sec-latex.html#cb1438-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 更新所有已经安装的 TeX 包</span></span>
-<span id="cb1438-7"><a href="sec-latex.html#cb1438-7" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--all</span></span>
-<span id="cb1438-8"><a href="sec-latex.html#cb1438-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 更新 tlmgr 管理器本身</span></span>
-<span id="cb1438-9"><a href="sec-latex.html#cb1438-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--self</span></span>
-<span id="cb1438-10"><a href="sec-latex.html#cb1438-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
-<span id="cb1438-11"><a href="sec-latex.html#cb1438-11" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> install ctex fandol</span>
-<span id="cb1438-12"><a href="sec-latex.html#cb1438-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 列出套装</span></span>
-<span id="cb1438-13"><a href="sec-latex.html#cb1438-13" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list schemes</span>
-<span id="cb1438-14"><a href="sec-latex.html#cb1438-14" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list collections</span>
-<span id="cb1438-15"><a href="sec-latex.html#cb1438-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 列出已经安装的 TeX 包</span></span>
-<span id="cb1438-16"><a href="sec-latex.html#cb1438-16" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list <span class="at">--only-installed</span></span>
-<span id="cb1438-17"><a href="sec-latex.html#cb1438-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 GPG 公钥（只限Win/Mac）</span></span>
-<span id="cb1438-18"><a href="sec-latex.html#cb1438-18" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> <span class="at">--repository</span> http://www.preining.info/tlgpg/ install tlgpg</span></code></pre></div>
+<div class="sourceCode" id="cb1439"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1439-1"><a href="sec-latex.html#cb1439-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 就近选择 CTAN 镜像站点</span></span>
+<span id="cb1439-2"><a href="sec-latex.html#cb1439-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet</span>
+<span id="cb1439-3"><a href="sec-latex.html#cb1439-3" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> option repository http://mirror.ctan.org/systems/texlive/tlnet</span>
+<span id="cb1439-4"><a href="sec-latex.html#cb1439-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 可更新的 TeX 包列表</span></span>
+<span id="cb1439-5"><a href="sec-latex.html#cb1439-5" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--list</span></span>
+<span id="cb1439-6"><a href="sec-latex.html#cb1439-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 更新所有已经安装的 TeX 包</span></span>
+<span id="cb1439-7"><a href="sec-latex.html#cb1439-7" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--all</span></span>
+<span id="cb1439-8"><a href="sec-latex.html#cb1439-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 更新 tlmgr 管理器本身</span></span>
+<span id="cb1439-9"><a href="sec-latex.html#cb1439-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> update <span class="at">--self</span></span>
+<span id="cb1439-10"><a href="sec-latex.html#cb1439-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
+<span id="cb1439-11"><a href="sec-latex.html#cb1439-11" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> install ctex fandol</span>
+<span id="cb1439-12"><a href="sec-latex.html#cb1439-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 列出套装</span></span>
+<span id="cb1439-13"><a href="sec-latex.html#cb1439-13" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list schemes</span>
+<span id="cb1439-14"><a href="sec-latex.html#cb1439-14" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list collections</span>
+<span id="cb1439-15"><a href="sec-latex.html#cb1439-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 列出已经安装的 TeX 包</span></span>
+<span id="cb1439-16"><a href="sec-latex.html#cb1439-16" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> list <span class="at">--only-installed</span></span>
+<span id="cb1439-17"><a href="sec-latex.html#cb1439-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 GPG 公钥（只限Win/Mac）</span></span>
+<span id="cb1439-18"><a href="sec-latex.html#cb1439-18" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> <span class="at">--repository</span> http://www.preining.info/tlgpg/ install tlgpg</span></code></pre></div>
 </div>
 <div id="subsec:tlmgr-search" class="section level3" number="38.15.3">
 <h3><span class="header-section-number">B.15.3</span> 查询和搜索</h3>
-<div class="sourceCode" id="cb1439"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1439-1"><a href="sec-latex.html#cb1439-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="pp">*</span>what<span class="pp">*</span></span></code></pre></div>
+<div class="sourceCode" id="cb1440"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1440-1"><a href="sec-latex.html#cb1440-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="pp">*</span>what<span class="pp">*</span></span></code></pre></div>
 <p>参数 <code>\*what\*</code> 是正则表达式</p>
-<div class="sourceCode" id="cb1440"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1440-1"><a href="sec-latex.html#cb1440-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="at">--file</span> tikz.sty</span></code></pre></div>
+<div class="sourceCode" id="cb1441"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1441-1"><a href="sec-latex.html#cb1441-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="at">--file</span> tikz.sty</span></code></pre></div>
 <pre><code>## langsci:
 ##  texmf-dist/tex/xelatex/langsci/langsci-tikz.sty
 ## pgf:
 ##  texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty</code></pre>
 <p>等价于</p>
-<div class="sourceCode" id="cb1442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1442-1"><a href="sec-latex.html#cb1442-1" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">tlmgr_search</span>(<span class="st">&#39;tikz.sty&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1443-1"><a href="sec-latex.html#cb1443-1" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">tlmgr_search</span>(<span class="st">&#39;tikz.sty&#39;</span>)</span></code></pre></div>
 <p>这样，我们就可以知道要使用 <code>\usepackage{tikz}</code> 就得先安装 <strong>pgf</strong> 包，此外，管道命令也是支持的</p>
-<div class="sourceCode" id="cb1443"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1443-1"><a href="sec-latex.html#cb1443-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="at">--file</span> font <span class="kw">|</span> <span class="fu">grep</span> math</span></code></pre></div>
+<div class="sourceCode" id="cb1444"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1444-1"><a href="sec-latex.html#cb1444-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> search <span class="at">--file</span> font <span class="kw">|</span> <span class="fu">grep</span> math</span></code></pre></div>
 <p>查询 CTAN 仓库列表</p>
-<div class="sourceCode" id="cb1444"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1444-1"><a href="sec-latex.html#cb1444-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> repository list</span></code></pre></div>
+<div class="sourceCode" id="cb1445"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1445-1"><a href="sec-latex.html#cb1445-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> repository list</span></code></pre></div>
 <p>一般地， 只显示已安装的 LaTeX 宏包的名字及大小</p>
-<div class="sourceCode" id="cb1445"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1445-1"><a href="sec-latex.html#cb1445-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> info <span class="at">--list</span> <span class="at">--only-installed</span> <span class="at">--data</span> name,size</span></code></pre></div>
+<div class="sourceCode" id="cb1446"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1446-1"><a href="sec-latex.html#cb1446-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tlmgr</span> info <span class="at">--list</span> <span class="at">--only-installed</span> <span class="at">--data</span> name,size</span></code></pre></div>
 <p>更多命令详见<a href="https://www.tug.org/texlive/doc/tlmgr.html#install-option-...-pkg">tlmgr 管理器手册</a></p>
 </div>
 <div id="subsec:latex-tikz" class="section level3" number="38.15.4">
