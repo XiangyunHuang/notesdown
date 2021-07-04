@@ -4,11 +4,14 @@ R 语言提供了相当多的优化求解器，比较完整的概览见[优化�
 Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)
 
 
-Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计。
-[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。
+Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。
 
 谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
 
+
+<!-- 
+TODO: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，TSP 问题
+-->
 
 ## 线性规划 {#sec:linear-programming}
 
@@ -185,7 +188,7 @@ res$objval
 
 在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，而 ipoptr 包可用来求解一般的非线性约束的非线性规划[^intro-ipoptr]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
 
-$$\min(-d^{T}b+1/2b^{T}Db), A^{T}b \geq b_{0}$$
+$$\min_b -d^{\top}b+\frac{1}{2}b^{\top}Db, \quad A^{\top}b \geq b_{0}$$
 
 ```{r,echo=TRUE,eval=FALSE}
 solve.QP(Dmat, dvec, Amat, bvec, meq = 0, factorized = FALSE)
@@ -281,8 +284,7 @@ plot(svp, data = x)
 复合函数求极值
 
 $$
-g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \\
-f(y) = \int_{0}^{y} g(s) \exp(-s) ds
+g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \quad f(y) = \int_{0}^{y} g(s) \exp(-s) ds
 $$
 
 ```{r}
@@ -332,7 +334,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = expression(f(x[1],x[2])),
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = -240, x = -70, y = 0)
@@ -458,7 +460,7 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
 
-需要使用启发式算法来求解这类规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，
+
 
 
 ## 非线性方程 {#sec:nonlinear-equations}
