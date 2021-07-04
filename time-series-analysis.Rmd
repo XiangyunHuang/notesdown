@@ -196,8 +196,6 @@ autoplot(sunspot.year, xlab = "Year", ylab = "Yearly Sunspot Data, 1700-1988") +
 
 ```{r sunspot-dygraphs,eval=knitr::is_html_output()}
 library(dygraphs)
-dygraph(sunspot.month)
-
 hw <- HoltWinters(sunspot.month)
 predicted <- predict(hw, n.ahead = 72, prediction.interval = TRUE)
 
@@ -260,7 +258,7 @@ legend("topleft", colnames(EuStockMarkets),
 ## 其它特征的时间序列 {#sec:other-ts}
 
 
-```{r other-ts, fig.cap="时间序列：非平稳、周期性、非线性", fig.subcap=c("1960-1980年强生公司每股季度收益", "1949-1960年月均航班乘客数量", "1920-1939 年诺丁汉月均气温", "1821-1934 年加拿大山猫陷阱数量"), fig.ncol=2,fig.width=8,fig.height=6,fig.show='hold'}
+```{r other-ts, fig.cap="时间序列：非平稳、周期性、非线性", fig.subcap=c("1960-1980年强生公司每股季度收益", "1949-1960年月均航班乘客数量", "1920-1939 年诺丁汉月均气温", "1821-1934 年加拿大山猫陷阱数量"), fig.ncol=2,fig.width=8,fig.height=6,fig.show='hold', out.width="45%"}
 plot(JohnsonJohnson)
 plot(AirPassengers)
 plot(nottem)
@@ -274,13 +272,13 @@ plot(lynx)
 
 ```{r hk-stock-data,cache=is.na(Sys.getenv('CI', NA)),eval=!is.na(Sys.getenv('CI', NA))}
 # 美团
-meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
+meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo", from = '2019-06-30')
 # 阿里
-ali <- quantmod::getSymbols("9988.HK", auto.assign = FALSE, src = "yahoo")
+ali <- quantmod::getSymbols("9988.HK", auto.assign = FALSE, src = "yahoo", from = '2019-06-30')
 # 京东
-sw <- quantmod::getSymbols("9618.HK", auto.assign = FALSE, src = "yahoo")
+sw <- quantmod::getSymbols("9618.HK", auto.assign = FALSE, src = "yahoo", from = '2019-06-30')
 # 腾讯
-tx <- quantmod::getSymbols("0700.HK", auto.assign = FALSE, src = "yahoo")
+tx <- quantmod::getSymbols("0700.HK", auto.assign = FALSE, src = "yahoo", from = '2019-06-30')
 ```
 ```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)), fig.cap="港股走势"}
 highchart(type = "stock") %>% 
@@ -288,6 +286,15 @@ highchart(type = "stock") %>%
   hc_add_series(ali, type = "ohlc", name = '阿里巴巴') %>% 
   hc_add_series(sw, type = "ohlc", name = '京东') %>% 
   hc_add_series(tx, type = "ohlc", name = '腾讯')
+```
+```{r,eval=FALSE}
+# 如何共 x 轴，右对齐
+plot(as.ts(meituan[, "3690.HK.Close"]), col = "orange", ylab = "股价")
+lines(as.ts(ali[, "9988.HK.Close"]), col = "springgreen4")
+lines(as.ts(sw[, "9618.HK.Close"]), col = "purple4")
+lines(as.ts(tx[, "0700.HK.Close"]), col = "lightsteelblue4")
+legend("topright", col = c("Orange", "springgreen4", "purple4", "lightsteelblue4"), 
+       lty = 1, legend = c("美团", "阿里", "京东", "腾讯") )
 ```
 
 ## 美股走势 {#sec:us-stock}
@@ -311,6 +318,7 @@ highchart(type = "stock") %>%
   hc_add_series(baba, type = "ohlc", name = '阿里巴巴') %>% 
   hc_add_series(coe, type = "ohlc", name = '51Talk')
 ```
+
 
 
 ## 51Talk 股价走势 {#sec:coe-stock}
