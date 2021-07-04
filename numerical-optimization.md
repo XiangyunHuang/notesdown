@@ -1,17 +1,30 @@
 # 数值优化 {#chap:numerical-optimization}
 
-R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](	https://CRAN.R-project.org/view=Optimization)。本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。商业的优化求解器的介绍见 [MOSEK 优化材料](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html) 和
+R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。商业的优化求解器的介绍见 [MOSEK 优化材料](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html)、
 Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)
 
-
-Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。
+Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013;@GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。
 
 谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
 
 
+```r
+# lpsolve 和 ROI.plugin.lpsolve
+# nloptr 和 ROI.plugin.nloptr
+library(lpSolve)
+library(numDeriv)
+library(alabama)
+library(ROI) # 加载时自动注册相关求解器
+library(magrittr)
+library(lattice)
+library(quadprog)
+library(kernlab) # 优化问题和机器学习的关系
+```
+
 <!-- 
-TODO: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题，[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，TSP 问题
+TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
 -->
+
 
 ## 线性规划 {#sec:linear-programming}
 
@@ -196,7 +209,7 @@ res$solution
 ```r
 # 还必须安装 ROI.plugin.lpsolve
 library(ROI)
-prob <- OP(
+op <- OP(
   objective = L_objective(c(3, 7, -12)),
   # 指定变量类型：第1个变量是连续值，第2、3个变量是整数
   types = c("C", "I", "I"),
@@ -213,7 +226,7 @@ prob <- OP(
   bounds = V_bound(li = 3, ui = 3, lb = -10, ub = 10, nobj = 3),
   maximum = TRUE
 )
-prob
+op
 ```
 
 ```
@@ -229,7 +242,7 @@ prob
 ```
 
 ```r
-res <- ROI_solve(prob)
+res <- ROI_solve(op)
 res$solution
 ```
 
@@ -529,6 +542,30 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## NULL
 ```
 
+
+```r
+# 需要安装 nloptr 和 ROI.plugin.nloptr 才可调用 nloptr 提供的求解器
+library(ROI)
+op <- OP(
+  objective = F_objective(fn, n = 2L, G = gr),
+  bounds = V_bound(ld = -3, ud = 3, nobj = 2L)
+)
+nlp <- ROI_solve(op, solver = "nloptr.lbfgs", start = c(-1.2, 1))
+nlp$objval
+```
+
+```
+## [1] 1.364878e-17
+```
+
+```r
+nlp$solution
+```
+
+```
+## [1] 1 1
+```
+
 ### 多元约束非线性优化 {#sec:constrained-nonlinear-optimization}
 
 \begin{equation*}
@@ -659,12 +696,9 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 
 
 ```r
-# 不提供梯度函数
+# 不提供梯度函数，照样可以求解
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
-
-
-
 
 ## 非线性方程 {#sec:nonlinear-equations}
 
@@ -713,7 +747,7 @@ persp(mu, sigma, z,
 )
 ```
 
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" />
+<img src="numerical-optimization_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" />
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
@@ -766,18 +800,19 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] alabama_2015.3-1    numDeriv_2016.8-1.1 magrittr_2.0.1     
-## [4] kernlab_0.9-29      lattice_0.20-44     quadprog_1.5-8     
-## [7] ROI_1.0-0           lpSolve_5.6.15     
+## [1] kernlab_0.9-29      quadprog_1.5-8      lattice_0.20-44    
+## [4] magrittr_2.0.1      ROI_1.0-0           alabama_2015.3-1   
+## [7] numDeriv_2016.8-1.1 lpSolve_5.6.15     
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               R6_2.5.0                
-##  [4] rlang_0.4.11             stringr_1.4.0            highr_0.9               
+##  [4] rlang_0.4.11             highr_0.9                stringr_1.4.0           
 ##  [7] tools_4.1.0              grid_4.1.0               xfun_0.24               
-## [10] registry_0.5-1           jquerylib_0.1.4          htmltools_0.5.1.1       
-## [13] yaml_2.2.1               digest_0.6.27            bookdown_0.22           
-## [16] sass_0.4.0               ROI.plugin.lpsolve_1.0-1 evaluate_0.14           
-## [19] slam_0.1-48              rmarkdown_2.9            stringi_1.6.2           
-## [22] compiler_4.1.0           bslib_0.2.5.1            jsonlite_1.7.2
+## [10] registry_0.5-1           ROI.plugin.nloptr_1.0-0  jquerylib_0.1.4         
+## [13] htmltools_0.5.1.1        yaml_2.2.1               digest_0.6.27           
+## [16] bookdown_0.22            nloptr_1.2.2.2           sass_0.4.0              
+## [19] ROI.plugin.lpsolve_1.0-1 evaluate_0.14            slam_0.1-48             
+## [22] rmarkdown_2.9            stringi_1.6.2            compiler_4.1.0          
+## [25] bslib_0.2.5.1            jsonlite_1.7.2
 ```
 
