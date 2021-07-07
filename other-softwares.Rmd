@@ -4,14 +4,10 @@
 library(reticulate)
 knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
 # 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
-if(!is.na(Sys.getenv('CI', NA))) {
-  # CI 环境
-  reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-  # reticulate::use_condaenv(condaenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-  # reticulate::py_config()
-} else {
+reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
+
+if(is.na(Sys.getenv('CI', NA))) {
   # Local macOS 环境
-  reticulate::use_python(python = '/usr/local/bin/python3', required = TRUE)
   Sys.setenv(R_CRAN_WEB = "https://mirrors.tuna.tsinghua.edu.cn/CRAN") # 用于 tools::CRAN_package_db()
 }
 # reticulate::py_discover_config()
