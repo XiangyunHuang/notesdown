@@ -14,15 +14,15 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
 
 
 ```r
-# lpsolve 和 ROI.plugin.lpsolve
-# nloptr 和 ROI.plugin.nloptr
-library(lpSolve)
-library(numDeriv)
-library(alabama) # 可用 nloptr 替代
-library(ROI) # 加载时自动注册相关求解器
-library(lattice)
-library(quadprog) # 可用 nloptr 替代
-library(kernlab) # 优化问题和机器学习的关系
+# 安装 lpsolve 和 ROI.plugin.lpsolve
+# 安装 nloptr 和 ROI.plugin.nloptr
+library(lpSolve)    # 线性规划
+library(numDeriv)   # 计算数值梯度
+library(alabama)    # 用于非线性约束规划，可用 nloptr 替代
+library(ROI)        # 加载时自动注册相关求解器
+library(lattice)    # 图形绘制
+library(quadprog)   # 用于二次规划，可用 nloptr 替代
+library(kernlab)    # 优化问题和机器学习的关系
 ```
 
 <!-- 
@@ -466,7 +466,7 @@ g(1)
 
 <!-- ?nlm -->
 
-Himmelblau 函数是一个多摸函数，常用于优化算法的比较。
+Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。
 
 $$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
 它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$、$f(-2.8051, 3.1313) = 0$、$f(3, 2) = 0$ 和 $f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
@@ -517,10 +517,9 @@ wireframe(
 
 
 ```r
-library(numDeriv)
 # 梯度函数
 gr <- function(x) {
-  grad(fn, c(x[1], x[2])) 
+  numDeriv::grad(fn, c(x[1], x[2])) 
 }
 optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ```
@@ -578,7 +577,7 @@ wireframe(
 ```r
 # 梯度函数
 gr <- function(x) {
-  grad(fn, c(x[1], x[2])) 
+  numDeriv::grad(fn, c(x[1], x[2])) 
 }
 optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ```
@@ -625,9 +624,9 @@ nlp$solution
 ## [1] 1 1
 ```
 
-Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $d$ 维形式如下：
-$$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{d}\sum_{i=1}^{d}\cos(cx_i)} + a + \mathrm{e}$$
-其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots,d$，$x_i \in [-10, 10]$，$f(x)$ 在 $x^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(x^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
+Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $n$ 维形式如下：
+$$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$
+其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots, n$，$x_i \in [-10, 10]$，$f(x)$ 在 $x^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(x^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
 
 
 ```r
@@ -715,7 +714,9 @@ fn(x = c(2, 2))
 ## [1] 6.593599
 ```
 
-这里，还有另外一个例子，Radistrigin 函数
+这里，还有另外一个例子，Radistrigin 函数也是多摸函数
+
+$$f(\mathsf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)$$
 
 
 ```r
@@ -844,7 +845,7 @@ hin.jac <- function(x) {
 }
 ```
 
-调用 alabama 包提供求解器 
+调用 **alabama** 包的求解器 
 
 
 ```r
@@ -1042,7 +1043,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.129393 4.685430 3.907302 1.227739
+## [1] 1.228102 4.283035 4.346772 1.115686
 ```
 
 ```r
@@ -1050,7 +1051,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.38799
+## [1] 17.85385
 ```
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
 
@@ -1067,6 +1068,8 @@ nlp$objval
 经典的岭回归、Lasso 回归、最优子集回归都包含优化问题，可调 nloptr 包求解。
 <!-- 广义最小二乘 gls -->
 
+**glmnet** 和 **MASS** 实现岭回归
+
 ## 对数似然 {#sec:log-likelihood}
 
 随机变量 X 服从参数为 $\lambda > 0$ 的指数分布，密度函数 $p(x)$ 为
@@ -1081,7 +1084,7 @@ nlp$objval
 \end{array}
 \end{equation*}
 
-其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell(\lambda) = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle} = \frac{1}{n}\sum_{i=1}^{n}$，极大值 $\ell(\lambda_{mle}) = n(\log \bar{X} - \bar{X}^2)$。
+其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell(\lambda) = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle} = \frac{1}{n}\sum_{i=1}^{n}x_i$，极大值 $\ell(\lambda_{mle}) = n(\log \bar{X} - \bar{X}^2)$。
 
 根据上述样本，计算样本均值 $(\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})$ 和方差 $(0.8\sigma, 1.5\sigma)$。
 已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell(\mu,\sigma^2) = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。正态分布的密度函数的对数可用 `dnorm(..., log = TRUE)` 计算。
@@ -1137,10 +1140,16 @@ persp(mu, sigma, z,
 
 [ode45 求解偏微分方程](https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/)
 
+**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 ODE 方程的边值问题。
+
 
 ```r
+library(rootSolve)
+library(deSolve)
+library(bvpSolve)
+# 洛伦兹方程、人口模型、寿险精算模型、混沌
 library(nonlinearTseries)
-library(plot3D)
+library(plot3D) # 可用 lattice 替代
 lor <- lorenz(do.plot = F)
 
 scatter3D(lor$x, lor$y, lor$z,
