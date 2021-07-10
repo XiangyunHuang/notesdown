@@ -1,11 +1,16 @@
 # 数值优化 {#chap:numerical-optimization}
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。商业的优化求解器的介绍见 [MOSEK 优化材料](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html)、
-Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)
+Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)。开源的求解器，如 Octave <https://octave.org/doc/v6.2.0/Optimization.html#Optimization>。
 
-Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013;@GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。
+[RcppEnsmallen](https://github.com/coatless/rcppensmallen) 数值优化
+通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。[RcppNumerical](https://github.com/yixuan/RcppNumerical) 无约束数值优化，一维/多维数值积分。
+
+Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题 [@nloptr]，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。提供了一般的求解器介绍 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html>。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013;@GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。
 
 谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
+
+<!-- 尽量都用一个求解器来介绍 nloptr，花一个较大篇幅单独介绍各个优化器，给出推荐优化器求解器 -->
 
 
 ```r
@@ -13,17 +18,30 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
 # nloptr 和 ROI.plugin.nloptr
 library(lpSolve)
 library(numDeriv)
-library(alabama)
+library(alabama) # 可用 nloptr 替代
 library(ROI) # 加载时自动注册相关求解器
 library(magrittr)
 library(lattice)
-library(quadprog)
+library(quadprog) # 可用 nloptr 替代
 library(kernlab) # 优化问题和机器学习的关系
 ```
 
 <!-- 
 TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
+
+```r
+library(GA)
+library(NMOF) # Numerical Methods and Optimization in Finance http://www.nmof.info/
+library(igraph)
+```
+
+网络优化问题
+
+[PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics)
+投资组合优化，均值-方差，收益和风险权衡 
+Rmetrics 提供系列时间序列数据分析和建模的 R 包，包括投资组合 fPortfolio、多元分析 fMultivar fGarch 自回归条件异方差模型、fCopulae 二元相依结构的 Copulae 分析、fBasics 市场和基础统计
 -->
+
 
 
 ## 线性规划 {#sec:linear-programming}
@@ -262,7 +280,9 @@ res$objval
 
 ### 凸二次规划 {#sec:strictly-convex-quadratic-program}
 
-在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，而 ipoptr 包可用来求解一般的非线性约束的非线性规划[^intro-ipoptr]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
+[^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
+
+在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
 
 $$\min_b -d^{\top}b+\frac{1}{2}b^{\top}Db, \quad A^{\top}b \geq b_{0}$$
 
@@ -372,6 +392,8 @@ levelplot(z ~ x * y, grid,
 <p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
 </div>
 
+### 半正定二次优化 {#subsec:semidefinite-optimization}
+
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
 
 R 包 kernlab 的函数 `ipop()` 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 $A \geq 0$，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 $A > 0$。
@@ -394,6 +416,8 @@ plot(svp, data = x)
 </div>
 
 ## 非线性规划 {#sec:nonlinear-programming}
+
+开源的非线性优化求解器，推荐使用 nloptr，它支持全局优化，同时推荐 ROI，它有统一的接口函数。
 
 ### 一元非线性优化 {#sec:one-dimensional-optimization}
 
@@ -441,6 +465,8 @@ g(1)
 
 ### 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
 
+<!-- ?nlm -->
+
 Himmelblau 函数是一个多摸函数，常用于优化算法的比较。
 
 $$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
@@ -448,16 +474,17 @@ $$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
 
 
 ```r
-fn <- function(x, y) { # 输入两个向量，输出一个向量
-   (x^2 + y - 11)^2 + (x + y^2 - 7)^2
+# 目标函数
+fn <- function(x) {
+   (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
 }
 
-library(magrittr)
 df <- expand.grid(
   x = seq(-5, 5, length = 101),
   y = seq(-5, 5, length = 101)
-) %>% 
-  transform(fnxy = fn(x, y))
+)
+
+df$fnxy = apply(df, 1, fn)
 
 library(lattice)
 wireframe(
@@ -479,10 +506,6 @@ wireframe(
 
 
 ```r
-# 目标函数
-fn <- function(x){
-   (x[1]^2 + x[2] - 11)^2 + (x[1] + x[2]^2 - 7)^2
-}
 library(numDeriv)
 # 梯度函数
 gr <- function(x) {
@@ -509,14 +532,39 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## NULL
 ```
 
+香蕉函数
 $$f(x,y) = 100 * (x_2 -x_1^2)^2 + (1 - x_1)^2$$
+
+```r
+fn <- function(x) {
+  (100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2)
+}
+
+df <- expand.grid(
+  x = seq(-2.5, 2.5, length = 101),
+  y = seq(-2.5, 2.5, length = 101)
+)
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -70, y = 0)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/rosenbrock-1.png" alt="香蕉函数图像" width="528" />
+<p class="caption">(\#fig:rosenbrock)香蕉函数图像</p>
+</div>
 
 
 ```r
-# 目标函数
-fn <- function(x) {
-  100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
-}
 # 梯度函数
 gr <- function(x) {
   grad(fn, c(x[1], x[2])) 
@@ -566,7 +614,162 @@ nlp$solution
 ## [1] 1 1
 ```
 
+Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $d$ 维形式如下：
+$$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{d}\sum_{i=1}^{d}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{d}\sum_{i=1}^{d}\cos(cx_i)} + a + \mathrm{e}$$
+其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots,d$，$x_i \in [-10, 10]$，$f(x)$ 在 $x^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(x^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
+
+
+```r
+fn <- function(x, a = 20, b = 0.2, c = 2 * pi) {
+  sum1 <- sum(x^2)
+  sum2 <- sum(cos(c * x))
+  -a * exp(-b * sqrt(sum1 / 2)) - exp(sum2 / 2) + a + exp(1)
+}
+
+df <- expand.grid(
+  x = seq(-10, 10, length.out = 201),
+  y = seq(-10, 10, length.out = 201)
+)
+
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -70, y = 0)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/ackley-1.png" alt="二维 Ackley 函数图像" width="528" />
+<p class="caption">(\#fig:ackley)二维 Ackley 函数图像</p>
+</div>
+
+以 10 维的 Ackley 函数为例，我们还是尝试一下普通的优化算法 Nelder–Mead 算法，初值选择 $(2,2,\cdots,2)$ ，看下效果，以便与后面全局搜索算法比较。
+
+
+```r
+op <- OP(
+  objective = F_objective(fn, n = 10L),
+  bounds = V_bound(ld = -10, ud = 10, nobj = 10L)
+)
+
+nlp <- ROI_solve(op, solver = "nloptr.neldermead", start = rep(2, 10))
+nlp$solution
+```
+
+```
+##  [1] 2 2 2 2 2 2 2 2 2 2
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] -133.8717
+```
+
+可以说完全没有优化效果，已经陷入局部极小值。根据[nloptr 全局优化算法](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#global-optimization)的介绍，这里采用 directL 算法，因为是全局优化，不用选择初值。
+
+
+```r
+# 调全局优化器
+nlp <- ROI_solve(op, solver = "nloptr.directL")
+nlp$solution
+```
+
+```
+##  [1] 0 0 0 0 0 0 0 0 0 0
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] -145.6949
+```
+
+```r
+fn(x = c(2, 2))
+```
+
+```
+## [1] 6.593599
+```
+
+这里，还有另外一个例子，Radistrigin 函数
+
+
+```r
+fn <- function(x) {
+  sum(x^2 - 10 * cos(2 * pi * x) + 10)
+}
+
+df <- expand.grid(
+  x = seq(-4, 4, length.out = 201),
+  y = seq(-4, 4, length.out = 201)
+)
+
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -65, y = 0)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/radistrigin-1.png" alt="Radistrigin 函数" width="528" />
+<p class="caption">(\#fig:radistrigin)Radistrigin 函数</p>
+</div>
+
+设置 10 维 的优化
+
+
+```r
+op <- OP(
+  objective = F_objective(fn, n = 10L),
+  bounds = V_bound(ld = -50, ud = 50, nobj = 10L)
+)
+```
+
+调全局优化器求解非凸优化问题
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.directL")
+nlp$solution
+```
+
+```
+##  [1] 0 0 0 0 0 0 0 0 0 0
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 0
+```
+
 ### 多元约束非线性优化 {#sec:constrained-nonlinear-optimization}
+
+目标函数是非线性的，约束条件也是非线性的。
+<!-- ?nlminb 无约束或箱式约束优化  constrOptim 线性不等式约束优化 -->
 
 \begin{equation*}
 \begin{array}{l}
@@ -602,14 +805,16 @@ heq <- function(x) {
   h
 }
 # 等式约束的雅可比矩阵
+# 这里只有一个等式约束，所以雅可比矩阵行数为 1
 heq.jac <- function(x) {
   j <- matrix(NA, 1, length(x))
   j[1, ] <- c(1, 1, 1)
   j
 }
 # 不等式约束
+# 要求必须是严格不等式，不能带等号，方向是 x > 0 
 hin <- function(x) {
-  h <- rep(NA, 1)
+  h <- rep(NA, length(x))
   h[1] <- 6 * x[2] + 4 * x[3] - x[1]^3 - 3
   h[2] <- x[1]
   h[3] <- x[2]
@@ -617,6 +822,7 @@ hin <- function(x) {
   h
 }
 # 不等式约束的雅可比矩阵
+# 其实是有 4 个不等式约束，包括 3 个变量，雅可比矩阵行数是 4
 hin.jac <- function(x) {
   j <- matrix(NA, 4, length(x))
   j[1, ] <- c(-3 * x[1]^2, 6, 4)
@@ -627,7 +833,7 @@ hin.jac <- function(x) {
 }
 ```
 
-调用求解器
+调用 alabama 包提供求解器 
 
 
 ```r
@@ -692,6 +898,7 @@ ans
 ## $K
 ## [1] 4.269112e-08
 ```
+
 ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。
 
 
@@ -699,6 +906,142 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 # 不提供梯度函数，照样可以求解
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
+
+与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于 <https://coin-or.github.io/Ipopt/INTERFACES.html>，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad x_1 x_4 (x_1 + x_2 + x_3) + x_3 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     x_1^2 + x_2^2 + x_3^2 + x_4^2 = 40 \\
+     x_1 x_2 x_3 x_4 \geq 25 \\
+     1 \geq x_1, x_2, x_3, x_4 \leq 5
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+考虑用 ROI 调 nloptr 实现，看结果是否和例子一致，nloptr 支持不等式约束包含等号，支持箱式约束。
+
+
+```r
+# 一个 4 维的目标函数
+fn <- function(x) {
+  x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3]
+}
+# 目标函数的梯度
+gr <- function(x) {
+  c(
+    x[4] * (2 * x[1] + x[2] + x[3]), x[1] * x[4],
+    x[1] * x[4] + 1, x[1] * (x[1] + x[2] + x[3])
+  )
+}
+# 等式约束
+heq <- function(x) {
+  sum(x^2)
+}
+# 等式约束的雅可比
+heq.jac <- function(x) {
+  2 * c(x[1], x[2], x[3], x[4])
+}
+# 不等式约束
+hin <- function(x) {
+  prod(x)
+}
+# 不等式约束的雅可比
+hin.jac <- function(x) {
+  c(prod(x[-1]), prod(x[-2]), prod(x[-3]), prod(x[-4]))
+}
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 4L, G = gr), # 4 个目标变量
+  constraints = F_constraint(
+    F = list(heq = heq, hin = hin),
+    dir = c("==", ">="),
+    rhs = c(40, 25),
+    # 等式和不等式约束的雅可比
+    J = list(heq.jac = heq.jac, hin.jac = hin.jac)
+  ),
+  bounds = V_bound(ld = 1, ud = 5, nobj = 4L),
+  maximum = FALSE # 求最小
+)
+```
+
+
+```r
+# 目标函数初始值
+fn(c(1, 5, 5, 1))
+```
+
+```
+## [1] 16
+```
+
+```r
+# 目标函数最优值
+fn(c(1.00000000, 4.74299963, 3.82114998, 1.37940829))
+```
+
+```
+## [1] 17.01402
+```
+
+求解一般的非线性约束问题，求解器 nloptr.mma / nloptr.cobyla 仅支持非线性不等式约束，不支持等式约束，而 nlminb 只支持等式约束，因此，下面分别调用 nloptr.auglag、nloptr.slsqp 和 nloptr.isres 来求解上述优化问题。
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.auglag", start = c(1, 5, 5, 1))
+nlp$solution
+```
+
+```
+## [1] 1.000000 4.743025 3.821117 1.379413
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 17.01402
+```
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(1, 5, 5, 1))
+nlp$solution
+```
+
+```
+## [1] 1.000000 4.742996 3.821155 1.379408
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 17.01402
+```
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.isres", start = c(1, 5, 5, 1))
+nlp$solution
+```
+
+```
+## [1] 1.035930 4.783425 3.772990 1.345497
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 17.14319
+```
+可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
 
 ## 非线性方程 {#sec:nonlinear-equations}
 
@@ -710,7 +1053,29 @@ ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 
 ## 线性最小二乘 {#sec:linear-least-squares}
 
-## 对数似然 {#sec:log-lik}
+<!-- 岭回归、Lasso 优化、最优子集回归，都可以用 nloptr 求解 -->
+<!-- 广义最小二乘 gls -->
+
+## 对数似然 {#sec:log-likelihood}
+
+随机变量 X 服从参数为 $\lambda > 0$ 的指数分布，密度函数 $p(x)$ 为
+
+\begin{equation*}
+\begin{array}{l}
+ p(x) = \left\{ 
+    \begin{array}{l}
+    \lambda\mathrm{e}^{-\lambda x}, & x \geq 0\\
+    0, & x < 0
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle}$。
+
+根据上述样本，计算样本均值 $(\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})$ 和方差 $(0.8\sigma, 1.5\sigma)$。
+已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。
+
+生成服从指数分布的样本，计算样本的均值和方差，依据均值和方差构造区间，然后将区间网格化，在此网格上绘制正态分布的对数似然函数。绕那么大一个圈子，其实就是绘制正态分布的对数似然函数。
 
 
 ```r
@@ -718,12 +1083,14 @@ set.seed(1234)
 n <- 20 # 随机数的个数
 x <- rexp(n, rate = 5) # 服从指数分布的随机数
 m <- 40 # 网格数
-mu <- seq(mean(x) - 1.5 * sd(x) / sqrt(n),
-          mean(x) + 1.5 * sd(x) / sqrt(n),
-          length.out = m
+mu <- seq(
+  mean(x) - 1.5 * sd(x) / sqrt(n),
+  mean(x) + 1.5 * sd(x) / sqrt(n),
+  length.out = m
 )
 sigma <- seq(0.8 * sd(x), 1.5 * sd(x), length.out = m)
 tmp <- expand.grid(x = mu, y = sigma)
+# 正态分布的对数似然
 loglikelihood <- function(b) -sum(dnorm(x, b[1], b[2], log = TRUE))
 pp <- apply(tmp, 1, loglikelihood)
 z <- matrix(pp, m, m)
@@ -734,26 +1101,26 @@ facetcol <- cut(zfacet, nbcol)
 
 par(mar = c(0.1, 2, 0.1, 0.1))
 persp(mu, sigma, z,
-      xlab = "\n \u03bc", ylab = "\n \u03c3",
-      zlab = "\n log-likelihood",
-      border = NA,
-      ticktype = "simple",
-      col = color[facetcol],
-      theta = 50, phi = 25,
-      r = 60, d = 0.1, expand = .6,
-      ltheta = 90, lphi = 180,
-      shade = 0.1, nticks = 5, 
-      box = TRUE, axes = TRUE
+  xlab = "\n \u03bc", ylab = "\n \u03c3",
+  zlab = "\n log-likelihood",
+  border = NA,
+  ticktype = "simple",
+  col = color[facetcol],
+  theta = 50, phi = 25,
+  r = 60, d = 0.1, expand = .6,
+  ltheta = 90, lphi = 180,
+  shade = 0.1, nticks = 5,
+  box = TRUE, axes = TRUE
 )
 ```
 
-<img src="numerical-optimization_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/log-likelihood-1.png" alt="正态分布的负对数似然函数" width="672" />
+<p class="caption">(\#fig:log-likelihood)正态分布的负对数似然函数</p>
+</div>
+
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
-
-[^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
-[^intro-ipoptr]: https://www.ucl.ac.uk/~uctpjyy/ipoptr.html
-
 
 ## 微分方程 {#sec:non-linear-tseries}
 

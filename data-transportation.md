@@ -175,12 +175,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.90      Good     F     SI2  64.2    62  2964 6.08 6.00 3.88
-## 2  0.91     Ideal     I     SI2  61.6    57  2981 6.24 6.23 3.84
-## 3  0.77 Very Good     D     VS1  62.4    58  3643 5.82 5.87 3.65
-## 4  1.03      Fair     D     SI2  66.4    56  3743 6.31 6.19 4.15
-## 5  0.82     Ideal     F     VS2  61.5    57  3798 6.01 6.05 3.71
-## 6  0.60     Ideal     D    VVS1  62.5    55  4209 5.42 5.40 3.38
+## 1  0.71   Premium     E     SI1  61.4    58  2817 5.77 5.73 3.53
+## 2  0.71      Good     G     VS1  63.5    55  2853 5.64 5.66 3.59
+## 3  0.70     Ideal     G    VVS1  62.6    57  3247 5.65 5.70 3.55
+## 4  0.76 Very Good     E     VS1  62.1    58  3415 5.84 5.89 3.64
+## 5  0.90      Fair     E     VS2  65.0    55  4057 6.11 6.04 3.95
+## 6  1.20 Very Good     G     SI1  63.4    55  4520 6.72 6.65 4.24
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -198,13 +198,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair   816    1
-## 2 Good  1415    1
-## 3 Good  2278    2
-## 4 Good  3121    3
-## 5 Good  3859    4
-## 6 Good  3952    5
+##     cut price rank
+## 1  Fair  5622    1
+## 2  Good  1422    1
+## 3  Good  3000    2
+## 4  Good  5376    3
+## 5  Good  6349    4
+## 6 Ideal   490    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -277,7 +277,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-07-07
+## 1     2021-07-10
 ```
 
 ```r
@@ -287,7 +287,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-07-06
+## 1                  2021-07-09
 ```
 
 ```r
@@ -307,7 +307,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         4
+## 1                         7
 ```
 
 最后，使用完记得关闭 Spark 连接

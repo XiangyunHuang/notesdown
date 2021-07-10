@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-07" />
+<meta name="date" content="2021-07-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -755,6 +755,7 @@ div.csl-indent {
 <li class="chapter" data-level="36.3" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html"><i class="fa fa-check"></i><b>36.3</b> 二次规划</a>
 <ul>
 <li class="chapter" data-level="36.3.1" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#sec:strictly-convex-quadratic-program"><i class="fa fa-check"></i><b>36.3.1</b> 凸二次规划</a></li>
+<li class="chapter" data-level="36.3.2" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#subsec:semidefinite-optimization"><i class="fa fa-check"></i><b>36.3.2</b> 半正定二次优化</a></li>
 </ul></li>
 <li class="chapter" data-level="36.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>36.4</b> 非线性规划</a>
 <ul>
@@ -767,7 +768,7 @@ div.csl-indent {
 <li class="chapter" data-level="36.5.1" data-path="sec-nonlinear-equations.html"><a href="sec-nonlinear-equations.html#subsec:one-optimize"><i class="fa fa-check"></i><b>36.5.1</b> 一元非线性方程</a></li>
 </ul></li>
 <li class="chapter" data-level="36.6" data-path="sec-linear-least-squares.html"><a href="sec-linear-least-squares.html"><i class="fa fa-check"></i><b>36.6</b> 线性最小二乘</a></li>
-<li class="chapter" data-level="36.7" data-path="sec-log-lik.html"><a href="sec-log-lik.html"><i class="fa fa-check"></i><b>36.7</b> 对数似然</a></li>
+<li class="chapter" data-level="36.7" data-path="sec-log-likelihood.html"><a href="sec-log-likelihood.html"><i class="fa fa-check"></i><b>36.7</b> 对数似然</a></li>
 <li class="chapter" data-level="36.8" data-path="sec-non-linear-tseries.html"><a href="sec-non-linear-tseries.html"><i class="fa fa-check"></i><b>36.8</b> 微分方程</a></li>
 <li class="chapter" data-level="36.9" data-path="sec-numerical-optimization-session.html"><a href="sec-numerical-optimization-session.html"><i class="fa fa-check"></i><b>36.9</b> 运行环境</a></li>
 </ul></li>
@@ -894,40 +895,61 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sec:log-lik" class="section level2" number="36.7">
+<div id="sec:log-likelihood" class="section level2" number="36.7">
 <h2><span class="header-section-number">36.7</span> 对数似然</h2>
-<div class="sourceCode" id="cb1287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1287-1"><a href="sec-log-lik.html#cb1287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb1287-2"><a href="sec-log-lik.html#cb1287-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># 随机数的个数</span></span>
-<span id="cb1287-3"><a href="sec-log-lik.html#cb1287-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">5</span>) <span class="co"># 服从指数分布的随机数</span></span>
-<span id="cb1287-4"><a href="sec-log-lik.html#cb1287-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">40</span> <span class="co"># 网格数</span></span>
-<span id="cb1287-5"><a href="sec-log-lik.html#cb1287-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">mean</span>(x) <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
-<span id="cb1287-6"><a href="sec-log-lik.html#cb1287-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mean</span>(x) <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
-<span id="cb1287-7"><a href="sec-log-lik.html#cb1287-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">length.out =</span> m</span>
-<span id="cb1287-8"><a href="sec-log-lik.html#cb1287-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1287-9"><a href="sec-log-lik.html#cb1287-9" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">sd</span>(x), <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x), <span class="at">length.out =</span> m)</span>
-<span id="cb1287-10"><a href="sec-log-lik.html#cb1287-10" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> mu, <span class="at">y =</span> sigma)</span>
-<span id="cb1287-11"><a href="sec-log-lik.html#cb1287-11" aria-hidden="true" tabindex="-1"></a>loglikelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dnorm</span>(x, b[<span class="dv">1</span>], b[<span class="dv">2</span>], <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1287-12"><a href="sec-log-lik.html#cb1287-12" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">apply</span>(tmp, <span class="dv">1</span>, loglikelihood)</span>
-<span id="cb1287-13"><a href="sec-log-lik.html#cb1287-13" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(pp, m, m)</span>
-<span id="cb1287-14"><a href="sec-log-lik.html#cb1287-14" aria-hidden="true" tabindex="-1"></a>nbcol <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb1287-15"><a href="sec-log-lik.html#cb1287-15" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(nbcol)</span>
-<span id="cb1287-16"><a href="sec-log-lik.html#cb1287-16" aria-hidden="true" tabindex="-1"></a>zfacet <span class="ot">&lt;-</span> z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>m] <span class="sc">+</span> z[<span class="sc">-</span>m, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> z[<span class="sc">-</span>m, <span class="sc">-</span>m]</span>
-<span id="cb1287-17"><a href="sec-log-lik.html#cb1287-17" aria-hidden="true" tabindex="-1"></a>facetcol <span class="ot">&lt;-</span> <span class="fu">cut</span>(zfacet, nbcol)</span>
-<span id="cb1287-18"><a href="sec-log-lik.html#cb1287-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1287-19"><a href="sec-log-lik.html#cb1287-19" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
-<span id="cb1287-20"><a href="sec-log-lik.html#cb1287-20" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(mu, sigma, z,</span>
-<span id="cb1287-21"><a href="sec-log-lik.html#cb1287-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> \u03bc&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> \u03c3&quot;</span>,</span>
-<span id="cb1287-22"><a href="sec-log-lik.html#cb1287-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">zlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> log-likelihood&quot;</span>,</span>
-<span id="cb1287-23"><a href="sec-log-lik.html#cb1287-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">border =</span> <span class="cn">NA</span>,</span>
-<span id="cb1287-24"><a href="sec-log-lik.html#cb1287-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticktype =</span> <span class="st">&quot;simple&quot;</span>,</span>
-<span id="cb1287-25"><a href="sec-log-lik.html#cb1287-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> color[facetcol],</span>
-<span id="cb1287-26"><a href="sec-log-lik.html#cb1287-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">theta =</span> <span class="dv">50</span>, <span class="at">phi =</span> <span class="dv">25</span>,</span>
-<span id="cb1287-27"><a href="sec-log-lik.html#cb1287-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">r =</span> <span class="dv">60</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> .<span class="dv">6</span>,</span>
-<span id="cb1287-28"><a href="sec-log-lik.html#cb1287-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
-<span id="cb1287-29"><a href="sec-log-lik.html#cb1287-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">nticks =</span> <span class="dv">5</span>, </span>
-<span id="cb1287-30"><a href="sec-log-lik.html#cb1287-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">box =</span> <span class="cn">TRUE</span>, <span class="at">axes =</span> <span class="cn">TRUE</span></span>
-<span id="cb1287-31"><a href="sec-log-lik.html#cb1287-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p><img src="numerical-optimization_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>随机变量 X 服从参数为 <span class="math inline">\(\lambda &gt; 0\)</span> 的指数分布，密度函数 <span class="math inline">\(p(x)\)</span> 为</p>
+<p><span class="math display">\[\begin{equation*}
+\begin{array}{l}
+ p(x) = \left\{ 
+    \begin{array}{l}
+    \lambda\mathrm{e}^{-\lambda x}, &amp; x \geq 0\\
+    0, &amp; x &lt; 0
+    \end{array} \right.
+\end{array}
+\end{equation*}\]</span></p>
+<p>其中，<span class="math inline">\(\lambda &gt; 0\)</span>，下面给定一系列模拟样本观察值 <span class="math inline">\(x_1, x_2, \cdots, x_n\)</span>，估计参数 <span class="math inline">\(\lambda\)</span>。对数似然函数 <span class="math inline">\(\ell = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i\)</span>。解此方程即可得到 <span class="math inline">\(\lambda\)</span> 的极大似然估计 <span class="math inline">\(\lambda_{mle}\)</span>。</p>
+<p>根据上述样本，计算样本均值 <span class="math inline">\((\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})\)</span> 和方差 <span class="math inline">\((0.8\sigma, 1.5\sigma)\)</span>。
+已知正态分布 <span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}\)</span> 的对数似然形式 <span class="math inline">\(\ell = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)\)</span>。</p>
+<p>生成服从指数分布的样本，计算样本的均值和方差，依据均值和方差构造区间，然后将区间网格化，在此网格上绘制正态分布的对数似然函数。绕那么大一个圈子，其实就是绘制正态分布的对数似然函数。</p>
+<div class="sourceCode" id="cb1322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1322-1"><a href="sec-log-likelihood.html#cb1322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1322-2"><a href="sec-log-likelihood.html#cb1322-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># 随机数的个数</span></span>
+<span id="cb1322-3"><a href="sec-log-likelihood.html#cb1322-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="at">rate =</span> <span class="dv">5</span>) <span class="co"># 服从指数分布的随机数</span></span>
+<span id="cb1322-4"><a href="sec-log-likelihood.html#cb1322-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">40</span> <span class="co"># 网格数</span></span>
+<span id="cb1322-5"><a href="sec-log-likelihood.html#cb1322-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
+<span id="cb1322-6"><a href="sec-log-likelihood.html#cb1322-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb1322-7"><a href="sec-log-likelihood.html#cb1322-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x) <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb1322-8"><a href="sec-log-likelihood.html#cb1322-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">length.out =</span> m</span>
+<span id="cb1322-9"><a href="sec-log-likelihood.html#cb1322-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1322-10"><a href="sec-log-likelihood.html#cb1322-10" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">sd</span>(x), <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(x), <span class="at">length.out =</span> m)</span>
+<span id="cb1322-11"><a href="sec-log-likelihood.html#cb1322-11" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> mu, <span class="at">y =</span> sigma)</span>
+<span id="cb1322-12"><a href="sec-log-likelihood.html#cb1322-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 正态分布的对数似然</span></span>
+<span id="cb1322-13"><a href="sec-log-likelihood.html#cb1322-13" aria-hidden="true" tabindex="-1"></a>loglikelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dnorm</span>(x, b[<span class="dv">1</span>], b[<span class="dv">2</span>], <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1322-14"><a href="sec-log-likelihood.html#cb1322-14" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">apply</span>(tmp, <span class="dv">1</span>, loglikelihood)</span>
+<span id="cb1322-15"><a href="sec-log-likelihood.html#cb1322-15" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">matrix</span>(pp, m, m)</span>
+<span id="cb1322-16"><a href="sec-log-likelihood.html#cb1322-16" aria-hidden="true" tabindex="-1"></a>nbcol <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1322-17"><a href="sec-log-likelihood.html#cb1322-17" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">hcl.colors</span>(nbcol)</span>
+<span id="cb1322-18"><a href="sec-log-likelihood.html#cb1322-18" aria-hidden="true" tabindex="-1"></a>zfacet <span class="ot">&lt;-</span> z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> z[<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span>m] <span class="sc">+</span> z[<span class="sc">-</span>m, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">+</span> z[<span class="sc">-</span>m, <span class="sc">-</span>m]</span>
+<span id="cb1322-19"><a href="sec-log-likelihood.html#cb1322-19" aria-hidden="true" tabindex="-1"></a>facetcol <span class="ot">&lt;-</span> <span class="fu">cut</span>(zfacet, nbcol)</span>
+<span id="cb1322-20"><a href="sec-log-likelihood.html#cb1322-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1322-21"><a href="sec-log-likelihood.html#cb1322-21" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb1322-22"><a href="sec-log-likelihood.html#cb1322-22" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(mu, sigma, z,</span>
+<span id="cb1322-23"><a href="sec-log-likelihood.html#cb1322-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> \u03bc&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> \u03c3&quot;</span>,</span>
+<span id="cb1322-24"><a href="sec-log-likelihood.html#cb1322-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st"> log-likelihood&quot;</span>,</span>
+<span id="cb1322-25"><a href="sec-log-likelihood.html#cb1322-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="cn">NA</span>,</span>
+<span id="cb1322-26"><a href="sec-log-likelihood.html#cb1322-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">ticktype =</span> <span class="st">&quot;simple&quot;</span>,</span>
+<span id="cb1322-27"><a href="sec-log-likelihood.html#cb1322-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> color[facetcol],</span>
+<span id="cb1322-28"><a href="sec-log-likelihood.html#cb1322-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="dv">50</span>, <span class="at">phi =</span> <span class="dv">25</span>,</span>
+<span id="cb1322-29"><a href="sec-log-likelihood.html#cb1322-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="dv">60</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> .<span class="dv">6</span>,</span>
+<span id="cb1322-30"><a href="sec-log-likelihood.html#cb1322-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
+<span id="cb1322-31"><a href="sec-log-likelihood.html#cb1322-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">nticks =</span> <span class="dv">5</span>,</span>
+<span id="cb1322-32"><a href="sec-log-likelihood.html#cb1322-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">box =</span> <span class="cn">TRUE</span>, <span class="at">axes =</span> <span class="cn">TRUE</span></span>
+<span id="cb1322-33"><a href="sec-log-likelihood.html#cb1322-33" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:log-likelihood"></span>
+<img src="numerical-optimization_files/figure-html/log-likelihood-1.png" alt="正态分布的负对数似然函数" width="672" />
+<p class="caption">
+图 36.8: 正态分布的负对数似然函数
+</p>
+</div>
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 </div>
             </section>
