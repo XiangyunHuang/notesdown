@@ -546,8 +546,9 @@ nlp$objval
 
 ### 多元约束非线性优化 {#sec:constrained-nonlinear-optimization}
 
-目标函数是非线性的，约束条件也是非线性的。
-<!-- ?nlminb 无约束或箱式约束优化  constrOptim 线性不等式约束优化 -->
+R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可求解线性不等式约束优化，下面主要介绍非线性约束的非线性优化问题。
+
+第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。
 
 \begin{equation*}
 \begin{array}{l}
@@ -643,7 +644,7 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
 
-与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于 <https://coin-or.github.io/Ipopt/INTERFACES.html>，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
+与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于[Ipopt 官网](https://coin-or.github.io/Ipopt/INTERFACES.html)，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
 
 \begin{equation*}
 \begin{array}{l}
@@ -728,7 +729,78 @@ nlp <- ROI_solve(op, solver = "nloptr.isres", start = c(1, 5, 5, 1))
 nlp$solution
 nlp$objval
 ```
-可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
+
+可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad \mathrm{e}^{\prod_{i=1}^{5} x_i} - \frac{1}{2}(x_1^3 + x_2^3 + 1)^2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     \sum_{i=1}^{5}x_i^2 - 10 &= 0 \\
+     x_2 x_3 - 5x_4 x_5 &= 0 \\
+     x_1^3 + x_2^3 + 1 &= 0
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+```{r}
+# 一个 5 维的目标函数
+fn <- function(x) {
+  exp(prod(x)) - 0.5 * (x[1]^3 + x[2]^3 + 1)^2
+}
+# 目标函数的梯度
+gr <- function(x) {
+  c(
+    exp(prod(x))*prod(x[-1]) - 3*(x[1]^3 + x[2]^3 + 1)*x[1]^2,
+    exp(prod(x))*prod(x[-2]) - 3*(x[1]^3 + x[2]^3 + 1)*x[2]^2,
+    exp(prod(x))*prod(x[-3]), 
+    exp(prod(x))*prod(x[-4]),
+    exp(prod(x))*prod(x[-5])
+  )
+}
+# 等式约束
+heq <- function(x) {
+  c(
+    sum(x^2) - 10,
+    x[2] * x[3] - 5 * x[4] * x[5],
+    x[1]^3 + x[2]^3 + 1
+  )
+}
+# 等式约束的雅可比
+heq.jac <- function(x) {
+  matrix(c(2 * x[1], 2 * x[2], 2 * x[3], 2 * x[4], 2 * x[5],
+    0, x[3], x[2], -5 * x[5], -5 * x[4],
+    3 * x[1]^2, 3 * x[2]^2, 0, 0, 0),
+    ncol = 5, byrow = TRUE
+  )
+}
+```
+
+```{r}
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 5L, G = gr), # 5 个目标变量
+  constraints = F_constraint(
+    F = list(heq = heq),
+    dir = "==",
+    rhs = 0,
+    # 等式的雅可比
+    J = list(heq.jac = heq.jac)
+  ),
+  bounds = V_bound(ld = -Inf, ud = Inf, nobj = 5L),
+  maximum = FALSE # 求最小
+)
+```
+
+调用 SQP（序列二次规划） 求解器
+
+```{r}
+nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(-1.8, 1.7, 1.9, -0.8,-0.8))
+nlp$solution
+```
+
+计算结果和 Octave 的示例一致。
 
 ## 非线性方程 {#sec:nonlinear-equations}
 
