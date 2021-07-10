@@ -489,12 +489,12 @@ library(lattice)
 # 减少三维图形的边空
 lattice.options(
   layout.widths = list(
-    left.padding = list(x = -1.2, units = "inches"),
-    right.padding = list(x = -1.2, units = "inches")
+    left.padding = list(x = -.6, units = "inches"),
+    right.padding = list(x = -1.0, units = "inches")
   ),
   layout.heights = list(
-    bottom.padding = list(x = -1.2, units = "inches"),
-    top.padding = list(x = -1.2, units = "inches")
+    bottom.padding = list(x = -.8, units = "inches"),
+    top.padding = list(x = -1.0, units = "inches")
   )
 )
 
@@ -1042,7 +1042,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.169768 4.624229 3.975839 1.198091
+## [1] 1.008001 3.828952 4.703340 1.483602
 ```
 
 ```r
@@ -1050,7 +1050,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.66815
+## [1] 18.97058
 ```
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
 
