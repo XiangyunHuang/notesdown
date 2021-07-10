@@ -28,7 +28,7 @@ library(kernlab) # 优化问题和机器学习的关系
 <!-- 
 TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
 
-```{r}
+```r
 library(GA)
 library(NMOF) # Numerical Methods and Optimization in Finance http://www.nmof.info/
 library(igraph)
@@ -216,7 +216,9 @@ res$objval
 
 ### 凸二次规划 {#sec:strictly-convex-quadratic-program}
 
-在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，而 ipoptr 包可用来求解一般的非线性约束的非线性规划[^intro-ipoptr]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
+[^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
+
+在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
 
 $$\min_b -d^{\top}b+\frac{1}{2}b^{\top}Db, \quad A^{\top}b \geq b_{0}$$
 
@@ -726,40 +728,43 @@ nlp$objval
 
 ## 线性最小二乘 {#sec:linear-least-squares}
 
-岭回归、Lasso 优化
-广义最小二乘
-gls
+<!-- 岭回归、Lasso 优化、最优子集回归，都可以用 nloptr 求解 -->
+<!-- 广义最小二乘 gls -->
 
-## 对数似然 {#sec:log-lik}
+## 对数似然 {#sec:log-likelihood}
 
-随机变量 X 服从指数分布，密度函数为
+随机变量 X 服从参数为 $\lambda > 0$ 的指数分布，密度函数 $p(x)$ 为
 
 \begin{equation*}
 \begin{array}{l}
  p(x) = \left\{ 
     \begin{array}{l}
-    \lambda\mathrm{e}^{-\lambda x}, x \geq 0\\
-    0, x < 0
+    \lambda\mathrm{e}^{-\lambda x}, & x \geq 0\\
+    0, & x < 0
     \end{array} \right.
 \end{array}
 \end{equation*}
 
+其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle}$。
 
+根据上述样本，计算样本均值 $(\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})$ 和方差 $(0.8\sigma, 1.5\sigma)$。
+已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。
 
-$$\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n}$$
+生成服从指数分布的样本，计算样本的均值和方差，依据均值和方差构造区间，然后将区间网格化，在此网格上绘制正态分布的对数似然函数。绕那么大一个圈子，其实就是绘制正态分布的对数似然函数。
 
-
-```{r}
+```{r log-likelihood, fig.cap="正态分布的负对数似然函数"}
 set.seed(1234)
 n <- 20 # 随机数的个数
 x <- rexp(n, rate = 5) # 服从指数分布的随机数
 m <- 40 # 网格数
-mu <- seq(mean(x) - 1.5 * sd(x) / sqrt(n),
-          mean(x) + 1.5 * sd(x) / sqrt(n),
-          length.out = m
+mu <- seq(
+  mean(x) - 1.5 * sd(x) / sqrt(n),
+  mean(x) + 1.5 * sd(x) / sqrt(n),
+  length.out = m
 )
 sigma <- seq(0.8 * sd(x), 1.5 * sd(x), length.out = m)
 tmp <- expand.grid(x = mu, y = sigma)
+# 正态分布的对数似然
 loglikelihood <- function(b) -sum(dnorm(x, b[1], b[2], log = TRUE))
 pp <- apply(tmp, 1, loglikelihood)
 z <- matrix(pp, m, m)
@@ -770,26 +775,21 @@ facetcol <- cut(zfacet, nbcol)
 
 par(mar = c(0.1, 2, 0.1, 0.1))
 persp(mu, sigma, z,
-      xlab = "\n \u03bc", ylab = "\n \u03c3",
-      zlab = "\n log-likelihood",
-      border = NA,
-      ticktype = "simple",
-      col = color[facetcol],
-      theta = 50, phi = 25,
-      r = 60, d = 0.1, expand = .6,
-      ltheta = 90, lphi = 180,
-      shade = 0.1, nticks = 5, 
-      box = TRUE, axes = TRUE
+  xlab = "\n \u03bc", ylab = "\n \u03c3",
+  zlab = "\n log-likelihood",
+  border = NA,
+  ticktype = "simple",
+  col = color[facetcol],
+  theta = 50, phi = 25,
+  r = 60, d = 0.1, expand = .6,
+  ltheta = 90, lphi = 180,
+  shade = 0.1, nticks = 5,
+  box = TRUE, axes = TRUE
 )
 ```
 
-指数分布的对数似然函数的极大值点 $\big\(\frac{1}{\bar{X}}, - n (1 + \ln{\bar{X}}) \big\)$
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
-
-[^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
-[^intro-ipoptr]: https://www.ucl.ac.uk/~uctpjyy/ipoptr.html
-
 
 ## 微分方程 {#sec:non-linear-tseries}
 
