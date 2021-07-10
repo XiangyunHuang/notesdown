@@ -20,7 +20,6 @@ library(lpSolve)
 library(numDeriv)
 library(alabama) # 可用 nloptr 替代
 library(ROI) # 加载时自动注册相关求解器
-library(magrittr)
 library(lattice)
 library(quadprog) # 可用 nloptr 替代
 library(kernlab) # 优化问题和机器学习的关系
@@ -1043,7 +1042,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.338815 3.798213 4.760241 1.058991
+## [1] 1.169768 4.624229 3.975839 1.198091
 ```
 
 ```r
@@ -1051,7 +1050,7 @@ nlp$objval
 ```
 
 ```
-## [1] 18.79252
+## [1] 17.66815
 ```
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
 
@@ -1063,9 +1062,9 @@ nlp$objval
 
 
 
-## 线性最小二乘 {#sec:linear-least-squares}
+## 最小二乘 {#sec:least-squares}
 
-<!-- 岭回归、Lasso 优化、最优子集回归，都可以用 nloptr 求解 -->
+经典的岭回归、Lasso 回归、最优子集回归都包含优化问题，可调 nloptr 包求解。
 <!-- 广义最小二乘 gls -->
 
 ## 对数似然 {#sec:log-likelihood}
@@ -1082,10 +1081,10 @@ nlp$objval
 \end{array}
 \end{equation*}
 
-其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle}$。
+其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle} = \frac{1}{\lambda}\sum_{i=1}^{n}$，极大值 $\ell(\lambda_{mle}) = n(\log \bar{X} - \bar{X}^2)$。
 
 根据上述样本，计算样本均值 $(\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})$ 和方差 $(0.8\sigma, 1.5\sigma)$。
-已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。
+已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。正态分布的密度函数的对数可用 `dnorm(..., log = TRUE)` 计算。
 
 生成服从指数分布的样本，计算样本的均值和方差，依据均值和方差构造区间，然后将区间网格化，在此网格上绘制正态分布的对数似然函数。绕那么大一个圈子，其实就是绘制正态分布的对数似然函数。
 
@@ -1180,18 +1179,18 @@ sessionInfo()
 ## 
 ## other attached packages:
 ## [1] kernlab_0.9-29      quadprog_1.5-8      lattice_0.20-44    
-## [4] magrittr_2.0.1      ROI_1.0-0           alabama_2015.3-1   
-## [7] numDeriv_2016.8-1.1 lpSolve_5.6.15     
+## [4] ROI_1.0-0           alabama_2015.3-1    numDeriv_2016.8-1.1
+## [7] lpSolve_5.6.15     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               R6_2.5.0                
-##  [4] rlang_0.4.11             highr_0.9                stringr_1.4.0           
-##  [7] tools_4.1.0              grid_4.1.0               xfun_0.24               
-## [10] registry_0.5-1           ROI.plugin.nloptr_1.0-0  jquerylib_0.1.4         
-## [13] htmltools_0.5.1.1        yaml_2.2.1               digest_0.6.27           
-## [16] bookdown_0.22            nloptr_1.2.2.2           sass_0.4.0              
-## [19] ROI.plugin.lpsolve_1.0-1 evaluate_0.14            slam_0.1-48             
-## [22] rmarkdown_2.9            stringi_1.6.2            compiler_4.1.0          
-## [25] bslib_0.2.5.1            jsonlite_1.7.2
+##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               magrittr_2.0.1          
+##  [4] R6_2.5.0                 rlang_0.4.11             highr_0.9               
+##  [7] stringr_1.4.0            tools_4.1.0              grid_4.1.0              
+## [10] xfun_0.24                registry_0.5-1           ROI.plugin.nloptr_1.0-0 
+## [13] jquerylib_0.1.4          htmltools_0.5.1.1        yaml_2.2.1              
+## [16] digest_0.6.27            bookdown_0.22            nloptr_1.2.2.2          
+## [19] sass_0.4.0               ROI.plugin.lpsolve_1.0-1 evaluate_0.14           
+## [22] slam_0.1-48              rmarkdown_2.9            stringi_1.6.2           
+## [25] compiler_4.1.0           bslib_0.2.5.1            jsonlite_1.7.2
 ```
 
