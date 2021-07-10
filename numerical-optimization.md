@@ -487,6 +487,18 @@ df <- expand.grid(
 df$fnxy = apply(df, 1, fn)
 
 library(lattice)
+# 减少三维图形的边空
+lattice.options(
+  layout.widths = list(
+    left.padding = list(x = -1.2, units = "inches"),
+    right.padding = list(x = -1.2, units = "inches")
+  ),
+  layout.heights = list(
+    bottom.padding = list(x = -1.2, units = "inches"),
+    top.padding = list(x = -1.2, units = "inches")
+  )
+)
+
 wireframe(
   data = df, fnxy ~ x * y,
   shade = TRUE, drape = FALSE,
@@ -916,7 +928,7 @@ ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
     \begin{array}{l}
      x_1^2 + x_2^2 + x_3^2 + x_4^2 = 40 \\
      x_1 x_2 x_3 x_4 \geq 25 \\
-     1 \geq x_1, x_2, x_3, x_4 \leq 5
+     1 \leq x_1, x_2, x_3, x_4 \leq 5
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -1031,7 +1043,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.035930 4.783425 3.772990 1.345497
+## [1] 1.338815 3.798213 4.760241 1.058991
 ```
 
 ```r
@@ -1039,7 +1051,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.14319
+## [1] 18.79252
 ```
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)。
 

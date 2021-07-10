@@ -5,20 +5,20 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>36.4 非线性规划 | 现代应用统计与 R 语言</title>
-  <meta name="description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta name="description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="36.4 非线性规划 | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta property="og:description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="36.4 非线性规划 | 现代应用统计与 R 语言" />
   
-  <meta name="twitter:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta name="twitter:description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
 
 <meta name="author" content="黄湘云" />
@@ -945,16 +945,28 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \quad f(y) = \int_{0}^{y} g(s) \exp(
 <span id="cb1274-11"><a href="sec-nonlinear-programming.html#cb1274-11" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
 <span id="cb1274-12"><a href="sec-nonlinear-programming.html#cb1274-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1274-13"><a href="sec-nonlinear-programming.html#cb1274-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
-<span id="cb1274-14"><a href="sec-nonlinear-programming.html#cb1274-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
-<span id="cb1274-15"><a href="sec-nonlinear-programming.html#cb1274-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
-<span id="cb1274-16"><a href="sec-nonlinear-programming.html#cb1274-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1274-17"><a href="sec-nonlinear-programming.html#cb1274-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
-<span id="cb1274-18"><a href="sec-nonlinear-programming.html#cb1274-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
-<span id="cb1274-19"><a href="sec-nonlinear-programming.html#cb1274-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">f</span>(x[<span class="dv">1</span>],x[<span class="dv">2</span>])), <span class="at">rot =</span> <span class="dv">90</span>),</span>
-<span id="cb1274-20"><a href="sec-nonlinear-programming.html#cb1274-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
-<span id="cb1274-21"><a href="sec-nonlinear-programming.html#cb1274-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
-<span id="cb1274-22"><a href="sec-nonlinear-programming.html#cb1274-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="sc">-</span><span class="dv">240</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
-<span id="cb1274-23"><a href="sec-nonlinear-programming.html#cb1274-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb1274-14"><a href="sec-nonlinear-programming.html#cb1274-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 减少三维图形的边空</span></span>
+<span id="cb1274-15"><a href="sec-nonlinear-programming.html#cb1274-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lattice.options</span>(</span>
+<span id="cb1274-16"><a href="sec-nonlinear-programming.html#cb1274-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout.widths =</span> <span class="fu">list</span>(</span>
+<span id="cb1274-17"><a href="sec-nonlinear-programming.html#cb1274-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">left.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>),</span>
+<span id="cb1274-18"><a href="sec-nonlinear-programming.html#cb1274-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">right.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb1274-19"><a href="sec-nonlinear-programming.html#cb1274-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1274-20"><a href="sec-nonlinear-programming.html#cb1274-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout.heights =</span> <span class="fu">list</span>(</span>
+<span id="cb1274-21"><a href="sec-nonlinear-programming.html#cb1274-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">bottom.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>),</span>
+<span id="cb1274-22"><a href="sec-nonlinear-programming.html#cb1274-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">top.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb1274-23"><a href="sec-nonlinear-programming.html#cb1274-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1274-24"><a href="sec-nonlinear-programming.html#cb1274-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1274-25"><a href="sec-nonlinear-programming.html#cb1274-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1274-26"><a href="sec-nonlinear-programming.html#cb1274-26" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1274-27"><a href="sec-nonlinear-programming.html#cb1274-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1274-28"><a href="sec-nonlinear-programming.html#cb1274-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1274-29"><a href="sec-nonlinear-programming.html#cb1274-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1274-30"><a href="sec-nonlinear-programming.html#cb1274-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1274-31"><a href="sec-nonlinear-programming.html#cb1274-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">f</span>(x[<span class="dv">1</span>],x[<span class="dv">2</span>])), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1274-32"><a href="sec-nonlinear-programming.html#cb1274-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1274-33"><a href="sec-nonlinear-programming.html#cb1274-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1274-34"><a href="sec-nonlinear-programming.html#cb1274-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="sc">-</span><span class="dv">240</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1274-35"><a href="sec-nonlinear-programming.html#cb1274-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:himmelblau"></span>
 <img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
 <p class="caption">
@@ -1263,7 +1275,7 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \quad f(y) = \int_{0}^{y} g(s) \exp(
     \begin{array}{l}
      x_1^2 + x_2^2 + x_3^2 + x_4^2 = 40 \\
      x_1 x_2 x_3 x_4 \geq 25 \\
-     1 \geq x_1, x_2, x_3, x_4 \leq 5
+     1 \leq x_1, x_2, x_3, x_4 \leq 5
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
@@ -1327,9 +1339,9 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) dt, \quad f(y) = \int_{0}^{y} g(s) \exp(
 <pre><code>## [1] 17.01402</code></pre>
 <div class="sourceCode" id="cb1318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1318-1"><a href="sec-nonlinear-programming.html#cb1318-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
 <span id="cb1318-2"><a href="sec-nonlinear-programming.html#cb1318-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.035930 4.783425 3.772990 1.345497</code></pre>
+<pre><code>## [1] 1.338815 3.798213 4.760241 1.058991</code></pre>
 <div class="sourceCode" id="cb1320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1320-1"><a href="sec-nonlinear-programming.html#cb1320-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] 17.14319</code></pre>
+<pre><code>## [1] 18.79252</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>。</p>
 </div>
 </div>

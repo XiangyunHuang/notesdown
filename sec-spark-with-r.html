@@ -5,20 +5,20 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.1 Spark 与 R 语言 | 现代应用统计与 R 语言</title>
-  <meta name="description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta name="description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.1 Spark 与 R 语言 | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta property="og:description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="6.1 Spark 与 R 语言 | 现代应用统计与 R 语言" />
   
-  <meta name="twitter:description" content="线性模型理论及其应用，特别是各个模型的适用范围、参数估计方法、模型检验和诊断，重视理论和算法实现的并重，同时附以真实的案例分析。恪守所有的模型都是线性模型的原则，将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，我们还要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
+  <meta name="twitter:description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
 
 <meta name="author" content="黄湘云" />
@@ -989,13 +989,13 @@ a column separator --></p>
 <p>diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html</a></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
-<pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.71   Premium     E     SI1  61.4    58  2817 5.77 5.73 3.53
-## 2  0.71      Good     G     VS1  63.5    55  2853 5.64 5.66 3.59
-## 3  0.70     Ideal     G    VVS1  62.6    57  3247 5.65 5.70 3.55
-## 4  0.76 Very Good     E     VS1  62.1    58  3415 5.84 5.89 3.64
-## 5  0.90      Fair     E     VS2  65.0    55  4057 6.11 6.04 3.95
-## 6  1.20 Very Good     G     SI1  63.4    55  4520 6.72 6.65 4.24</code></pre>
+<pre><code>##   carat     cut color clarity depth table price    x    y    z
+## 1  0.30   Ideal     F     VS1  61.0    56   570 4.35 4.37 2.66
+## 2  1.07 Premium     G      I1  62.3    60  3547 6.55 6.51 4.07
+## 3  0.80   Ideal     D     SI1  62.7    57  3564 5.88 5.92 3.70
+## 4  1.00    Good     J     VS2  64.3    59  3580 6.27 6.21 4.01
+## 5  0.90    Good     D     VS2  57.9    62  3604 6.33 6.24 3.64
+## 6  1.04 Premium     G     SI1  60.3    58  3780 6.60 6.55 3.96</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -1004,13 +1004,13 @@ a column separator --></p>
 <span id="cb161-4"><a href="sec-spark-with-r.html#cb161-4" aria-hidden="true" tabindex="-1"></a><span class="st">  LIMIT 6</span></span>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
-<pre><code>##     cut price rank
-## 1  Fair  5622    1
-## 2  Good  1422    1
-## 3  Good  3000    2
-## 4  Good  5376    3
-## 5  Good  6349    4
-## 6 Ideal   490    1</code></pre>
+<pre><code>##    cut price rank
+## 1 Fair  3593    1
+## 2 Good   954    1
+## 3 Good  2435    2
+## 4 Good  3718    3
+## 5 Good  4678    4
+## 6 Good  6874    5</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
