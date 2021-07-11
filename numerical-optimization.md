@@ -281,22 +281,20 @@ res$objval
 
 [^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
 
-在 R 中使用 quadprog 包求解二次规划[^intro-quadprog]，quadprogXT 包用来求解带绝对值约束的二次规划，pracma 包提供 quadprog 函数就是对 quadprog 包的 solve.QP 进行封装，使得调用风格更像 Matlab 而已。quadprog 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。
+在 R 中使用 **quadprog** [@quadprog2019] 包求解二次规划[^intro-quadprog]，**quadprogXT** 包用来求解带绝对值约束的二次规划，**pracma** [@pracma2021]包提供 `quadprog()` 函数就是对 **quadprog** 包的 `solve.QP()` 进行封装，调用风格更像 Matlab。**quadprog** 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。quadprog 求解的二次型的形式如下：
 
-$$\min_b -d^{\top}b+\frac{1}{2}b^{\top}Db, \quad A^{\top}b \geq b_{0}$$
+$$\min_b - d^{\top}b +\frac{1}{2}b^{\top}Db , \quad A^{\top}b \geq b_{0}$$
 
 
 ```r
 solve.QP(Dmat, dvec, Amat, bvec, meq = 0, factorized = FALSE)
 ```
 
-参数 `Dmat`、`dvec`、`Amat`、`bvec` 分别对应二次规划问题中的 $D,d,A,b_{0}$。
-
-下面举个例子，有如下二次规划问题
+参数 `Dmat`、`dvec`、`Amat`、`bvec` 分别对应二次规划问题中的 $D,d,A,b_{0}$。下面举个二次规划的具体例子
 
 $$
-D = 2* \begin{bmatrix}1 & -1/2\\
--1/2 & 1
+D = \begin{bmatrix}2 & -1\\
+-1 & 2
 \end{bmatrix}, \quad
 d = (-3,2), \quad
 A = \begin{bmatrix}1 & 1\\
@@ -305,8 +303,8 @@ A = \begin{bmatrix}1 & 1\\
 \end{bmatrix}, \quad
 b_{0} = (2,-2,-3)
 $$
-
-上述二次规划问题的可行域如图所示
+即目标函数 $$Q(x,y) = x^2 + y^2 -xy+3x-2y+4$$
+它的可行域如图\@ref(fig:feasible-region)所示
 
 
 ```r
@@ -322,17 +320,17 @@ polygon(c(2, 5, -1), c(0, 3, 3), border = TRUE, lwd = 2, col = "gray")
 <p class="caption">(\#fig:feasible-region)可行域</p>
 </div>
 
-**quadprog** 包的 `solve.QP` 函数求解二次规划
+调用 **quadprog** 包的 `solve.QP()` 函数求解此二次规划问题
 
 
 ```r
 library(quadprog)
-Dmat <- 2 * matrix(c(1, -1 / 2, -1 / 2, 1), nrow = 2, byrow = TRUE)
+Dmat <- matrix(c(2, -1, -1, 2), nrow = 2, byrow = TRUE)
 dvec <- c(-3, 2)
 A <- matrix(c(1, 1, -1, 1, 0, -1), ncol = 2, byrow = TRUE)
 bvec <- c(2, -2, -3)
 Amat <- t(A)
-sol <- solve.QP(Dmat, dvec, Amat, bvec, meq = 0)
+sol <- solve.QP(Dmat = Dmat, dvec = dvec, Amat = Amat, bvec = bvec)
 sol
 ```
 
@@ -356,7 +354,33 @@ sol
 ## [1] 1
 ```
 
-在可行域上画出等高线，表示目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
+ROI 默认的二次规划的标准形式为 $\frac{1}{2}x^{\top}Qx + a^{\top}x$，在传递参数值的时候注意和上面的区别。
+
+
+```r
+library(ROI)
+op <- OP(
+  objective = Q_objective(Q = Dmat, L = -dvec),
+  constraints = L_constraint(A, rep(">=", 3), bvec),
+  maximum = FALSE # 默认求最小
+)
+nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(1, 2))
+nlp$objval
+```
+
+```
+## [1] -0.08333333
+```
+
+```r
+nlp$solution
+```
+
+```
+## [1] 0.1666667 1.8333333
+```
+
+在可行域上画出等高线，标记目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
 
 
 ```r
@@ -367,6 +391,7 @@ library(lattice)
 x <- seq(-2, 5.5, length.out = 500)
 y <- seq(-1, 3.5, length.out = 500)
 grid <- expand.grid(x = x, y = y)
+# 二次规划的目标函数
 grid$z <- with(grid, x^2 + y^2 - x * y + 3 * x - 2 * y + 4)
 levelplot(z ~ x * y, grid,
   cuts = 40,
@@ -376,7 +401,8 @@ levelplot(z ~ x * y, grid,
       border = TRUE,
       lwd = 2, col = "transparent"
     )
-    panel.points(c(uc_sol[1], qp_sol[1]),
+    panel.points(
+      c(uc_sol[1], qp_sol[1]),
       c(uc_sol[2], qp_sol[2]),
       lwd = 5, col = c("red", "yellow"), pch = 19
     )
@@ -390,6 +416,7 @@ levelplot(z ~ x * y, grid,
 <img src="numerical-optimization_files/figure-html/quadprog-1.png" alt="无约束和有约束条件下的解" width="432" />
 <p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
 </div>
+
 
 ### 半正定二次优化 {#subsec:semidefinite-optimization}
 
@@ -1044,7 +1071,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.002451 4.622012 3.950568 1.424026
+## [1] 1.275905 4.421801 4.182293 1.152453
 ```
 
 ```r
@@ -1052,7 +1079,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.61908
+## [1] 18.71005
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
@@ -1140,7 +1167,15 @@ nlp$solution
 
 [牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
 
+## 多目标规划 {#sec:pareto-optimization}
 
+[GPareto](https://github.com/mbinois/GPareto)
+
+## 经典优化问题 {#sec:classic-optimization}
+
+旅行商问题、背包问题、指派问题、选址问题、网络流量问题
+
+规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
 
 ## 最小二乘 {#sec:least-squares}
 
