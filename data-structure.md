@@ -128,7 +128,7 @@ formatC(round(runif(1, 1e8, 1e9)), digits = 10, big.mark = ",")
 ```
 
 ```
-## [1] "355,260,092"
+## [1] "136,639,760"
 ```
 
 
@@ -160,7 +160,7 @@ strftime(x = Sys.time(), format = "%H:%M")
 ```
 
 ```
-## [1] "10:40"
+## [1] "12:05"
 ```
 
 Table: (\#tab:table-of-date) 日期表格

@@ -1085,7 +1085,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.076415 4.331183 4.266847 1.372559
+## [1] 1.005379 4.689168 3.870403 1.422140
 ```
 
 ```r
@@ -1093,7 +1093,7 @@ nlp$objval
 ```
 
 ```
-## [1] 18.56028
+## [1] 17.54627
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
@@ -1236,44 +1236,38 @@ HorizontalGrid(grid.lines = 2, grid.col = 'blue', grid.lty = 1)
 
 
 ```r
-set.seed(1234)
+set.seed(2021)
 n <- 20 # 随机数的个数
 x <- rexp(n, rate = 5) # 服从指数分布的随机数
 m <- 40 # 网格数
+
 mu <- seq(
   mean(x) - 1.5 * sd(x) / sqrt(n),
   mean(x) + 1.5 * sd(x) / sqrt(n),
   length.out = m
 )
 sigma <- seq(0.8 * sd(x), 1.5 * sd(x), length.out = m)
-tmp <- expand.grid(x = mu, y = sigma)
+df <- expand.grid(x = mu, y = sigma)
 # 正态分布的对数似然
-loglikelihood <- function(b) -sum(dnorm(x, b[1], b[2], log = TRUE))
-pp <- apply(tmp, 1, loglikelihood)
-z <- matrix(pp, m, m)
-nbcol <- 100
-color <- hcl.colors(nbcol)
-zfacet <- z[-1, -1] + z[-1, -m] + z[-m, -1] + z[-m, -m]
-facetcol <- cut(zfacet, nbcol)
+loglik <- function(b, x0) -sum(dnorm(x0, b[1], b[2], log = TRUE))
 
-par(mar = c(0.1, 2, 0.1, 0.1))
-persp(mu, sigma, z,
-  xlab = "\n \u03bc", ylab = "\n \u03c3",
-  zlab = "\n log-likelihood",
-  border = NA,
-  ticktype = "simple",
-  col = color[facetcol],
-  theta = 50, phi = 25,
-  r = 60, d = 0.1, expand = .6,
-  ltheta = 90, lphi = 180,
-  shade = 0.1, nticks = 5,
-  box = TRUE, axes = TRUE
+df$fnxy = apply(df, 1, loglik, x0 = x)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(mu), 
+  ylab = expression(sigma), 
+  zlab = list(expression(-loglik(mu, sigma)), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -70, y = 0)
 )
 ```
 
 <div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/log-likelihood-1.png" alt="正态分布的负对数似然函数" width="672" />
-<p class="caption">(\#fig:log-likelihood)正态分布的负对数似然函数</p>
+<img src="numerical-optimization_files/figure-html/log-likelihood-1.png" alt="正态分布参数的负对数似然函数" width="528" />
+<p class="caption">(\#fig:log-likelihood)正态分布参数的负对数似然函数</p>
 </div>
 
 
