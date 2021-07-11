@@ -9,8 +9,8 @@ RStudio 首席技术官 CTO  Joe Cheng 在 2019年 RStudio 大会上介绍  [企
 <div class="figure" style="text-align: center">
 
 ```{=html}
-<div id="htmlwidget-3a44755be3731efe5cf0" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3a44755be3731efe5cf0">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: dashed visual=ellipse\n#direction: down\n\n[<box>HTML]       -> [网页三剑客]\n[<box>JavaScript] -> [网页三剑客]\n[<box>CSS]        -> [<table>网页三剑客|bslib|htmltools||sass|jquerylib||thematic|htmlwidgets]\n\n[设计布局|flexdashboard|bs4Dash] -> [<actor>开发应用|R Shiny]\n[设计交互|shinyFeedback|shinyWidgets] -> [<actor>开发应用|R Shiny]\n\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n\n[开发应用] <- [<table>处理数据|Base R|SQL||data.table|dplyr||tidyr|purrr]\n[开发应用] <- [<table>制作图形|ggplot2|plotly||echarts4r|leaflet||dygraphs|apexcharter||highcharter|visNetwork]\n[开发应用] <- [<table>制作表格|DT|gt||reactable|formattable||kableExtra|sparkline]\n\n","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f87b51ad210c64e2e4e5" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f87b51ad210c64e2e4e5">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: dashed visual=ellipse\n#direction: down\n\n[<box>HTML]       -> [网页三剑客]\n[<box>JavaScript] -> [网页三剑客]\n[<box>CSS]        -> [<table>网页三剑客|bslib|htmltools||sass|jquerylib||thematic|htmlwidgets]\n\n[设计布局|flexdashboard|bs4Dash] -> [<actor>开发应用|R Shiny]\n[设计交互|shinyFeedback|shinyWidgets] -> [<actor>开发应用|R Shiny]\n\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n[网页三剑客]  -> [<actor>开发应用|R Shiny]\n\n[开发应用] <- [<table>处理数据|Base R|SQL||data.table|dplyr||tidyr|purrr]\n[开发应用] <- [<table>制作图形|ggplot2|plotly||echarts4r|leaflet||dygraphs|apexcharter||highcharter|visNetwork]\n[开发应用] <- [<table>制作表格|DT|gt||reactable|formattable||kableExtra|sparkline]\n\n","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 <p class="caption">(\#fig:shiny-ecosystem)Shiny 生态系统</p>
@@ -622,7 +622,7 @@ sessionInfo()
 ## [1] data.table_1.14.0 shiny_1.6.0      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.6        knitr_1.33        magrittr_2.0.1    xtable_1.8-4     
+##  [1] Rcpp_1.0.7        knitr_1.33        magrittr_2.0.1    xtable_1.8-4     
 ##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0    
 ##  [9] highr_0.9         tools_4.1.0       nomnoml_0.2.3     xfun_0.24        
 ## [13] jquerylib_0.1.4   ellipsis_0.3.2    htmltools_0.5.1.1 yaml_2.2.1       

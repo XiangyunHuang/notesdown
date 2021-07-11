@@ -902,11 +902,11 @@ div.csl-indent {
 <!-- 多项逻辑回归模型 Multinomial-Logistic-Regression-Models -->
 <p>在线性回归的基础上，响应变量是离散的类别，且无序 <span class="citation">(<a href="#ref-mnlogit_2016_JSS" role="doc-biblioref">Hasan, Wang, and Mahani 2016</a>)</span></p>
 <p>birthwt 数据是 1986 年在马萨诸塞州斯普林菲尔德的 Baystate 医疗中心收集的，用于研究婴儿出生体重低的相关危险因素</p>
-<div class="sourceCode" id="cb825"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb825-1"><a href="sec-birthwt.html#cb825-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载数据</span></span>
-<span id="cb825-2"><a href="sec-birthwt.html#cb825-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(MASS)</span></span>
-<span id="cb825-3"><a href="sec-birthwt.html#cb825-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(birthwt, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
-<span id="cb825-4"><a href="sec-birthwt.html#cb825-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看 birthwt 数据集 `help(birthwt)`</span></span>
-<span id="cb825-5"><a href="sec-birthwt.html#cb825-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(birthwt)</span></code></pre></div>
+<div class="sourceCode" id="cb822"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb822-1"><a href="sec-birthwt.html#cb822-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载数据</span></span>
+<span id="cb822-2"><a href="sec-birthwt.html#cb822-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(MASS)</span></span>
+<span id="cb822-3"><a href="sec-birthwt.html#cb822-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(birthwt, <span class="at">package =</span> <span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb822-4"><a href="sec-birthwt.html#cb822-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看 birthwt 数据集 `help(birthwt)`</span></span>
+<span id="cb822-5"><a href="sec-birthwt.html#cb822-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(birthwt)</span></code></pre></div>
 <pre><code>##    low age lwt race smoke ptl ht ui ftv  bwt
 ## 85   0  19 182    2     0   0  0  1   0 2523
 ## 86   0  33 155    3     0   0  0  0   3 2551
@@ -914,7 +914,7 @@ div.csl-indent {
 ## 88   0  21 108    1     1   0  0  1   2 2594
 ## 89   0  18 107    1     1   0  0  1   0 2600
 ## 91   0  21 124    3     0   0  0  0   0 2622</code></pre>
-<div class="sourceCode" id="cb827"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb827-1"><a href="sec-birthwt.html#cb827-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(birthwt)</span></code></pre></div>
+<div class="sourceCode" id="cb824"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb824-1"><a href="sec-birthwt.html#cb824-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(birthwt)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    189 obs. of  10 variables:
 ##  $ low  : int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ age  : int  19 33 20 21 18 21 22 17 29 26 ...
@@ -927,10 +927,10 @@ div.csl-indent {
 ##  $ ftv  : int  0 3 1 2 0 0 1 1 1 0 ...
 ##  $ bwt  : int  2523 2551 2557 2594 2600 2622 2637 2637 2663 2665 ...</code></pre>
 <p><code>low</code> 表示婴儿出生体重小于 2.5kg，<code>age</code> 表示母亲的年龄（年），<code>lwt</code> 母亲最后一次月经期间的体重(磅)，<code>race</code> 母亲的种族(1 =白人，2 =黑人，3 =其他)。，<code>smoke</code> 怀孕期间的吸烟状况，<code>ptl</code> 以前早产的次数，<code>ht</code> 高血压病史，<code>ui</code> 子宫过敏，<code>ftv</code> 妊娠头三个月的医生就诊次数，<code>bwt</code> 出生体重（克）</p>
-<div class="sourceCode" id="cb829"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb829-1"><a href="sec-birthwt.html#cb829-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(birthwt, <span class="fu">tapply</span>(lwt, ui, var))</span></code></pre></div>
+<div class="sourceCode" id="cb826"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb826-1"><a href="sec-birthwt.html#cb826-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(birthwt, <span class="fu">tapply</span>(lwt, ui, var))</span></code></pre></div>
 <pre><code>##        0        1 
 ## 940.8472 783.7196</code></pre>
-<div class="sourceCode" id="cb831"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb831-1"><a href="sec-birthwt.html#cb831-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb828"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb828-1"><a href="sec-birthwt.html#cb828-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ##  Two Sample t-test
 ## 
@@ -942,7 +942,7 @@ div.csl-indent {
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        131.7578        118.6429</code></pre>
-<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="sec-birthwt.html#cb833-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt)</span></code></pre></div>
+<div class="sourceCode" id="cb830"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb830-1"><a href="sec-birthwt.html#cb830-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt)</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
@@ -954,25 +954,25 @@ div.csl-indent {
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        131.7578        118.6429</code></pre>
-<div class="sourceCode" id="cb835"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb835-1"><a href="sec-birthwt.html#cb835-1" aria-hidden="true" tabindex="-1"></a><span class="co"># birthwt$ui &lt;- as.factor(birthwt$ui)</span></span>
-<span id="cb835-2"><a href="sec-birthwt.html#cb835-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(lattice)</span></span>
-<span id="cb835-3"><a href="sec-birthwt.html#cb835-3" aria-hidden="true" tabindex="-1"></a><span class="co"># bwplot(lwt ~ ui, data = birthwt, pch = &quot;|&quot;)</span></span>
-<span id="cb835-4"><a href="sec-birthwt.html#cb835-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb835-5"><a href="sec-birthwt.html#cb835-5" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt)</span></code></pre></div>
+<div class="sourceCode" id="cb832"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb832-1"><a href="sec-birthwt.html#cb832-1" aria-hidden="true" tabindex="-1"></a><span class="co"># birthwt$ui &lt;- as.factor(birthwt$ui)</span></span>
+<span id="cb832-2"><a href="sec-birthwt.html#cb832-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(lattice)</span></span>
+<span id="cb832-3"><a href="sec-birthwt.html#cb832-3" aria-hidden="true" tabindex="-1"></a><span class="co"># bwplot(lwt ~ ui, data = birthwt, pch = &quot;|&quot;)</span></span>
+<span id="cb832-4"><a href="sec-birthwt.html#cb832-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb832-5"><a href="sec-birthwt.html#cb832-5" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(lwt <span class="sc">~</span> ui, <span class="at">data =</span> birthwt)</span></code></pre></div>
 <p><img src="generalized-linear-models_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb836"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb836-1"><a href="sec-birthwt.html#cb836-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 重新编码，数据预处理，方便代入模型</span></span>
-<span id="cb836-2"><a href="sec-birthwt.html#cb836-2" aria-hidden="true" tabindex="-1"></a>bwt <span class="ot">&lt;-</span> <span class="fu">with</span>(birthwt, {</span>
-<span id="cb836-3"><a href="sec-birthwt.html#cb836-3" aria-hidden="true" tabindex="-1"></a>  race <span class="ot">&lt;-</span> <span class="fu">factor</span>(race, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;other&quot;</span>))</span>
-<span id="cb836-4"><a href="sec-birthwt.html#cb836-4" aria-hidden="true" tabindex="-1"></a>  ptd <span class="ot">&lt;-</span> <span class="fu">factor</span>(ptl <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb836-5"><a href="sec-birthwt.html#cb836-5" aria-hidden="true" tabindex="-1"></a>  ftv <span class="ot">&lt;-</span> <span class="fu">factor</span>(ftv)</span>
-<span id="cb836-6"><a href="sec-birthwt.html#cb836-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">levels</span>(ftv)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;2+&quot;</span> <span class="co"># 除了前两个水平外，其余的都编码为 2+</span></span>
-<span id="cb836-7"><a href="sec-birthwt.html#cb836-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb836-8"><a href="sec-birthwt.html#cb836-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="fu">factor</span>(low), age, lwt, race, <span class="at">smoke =</span> (smoke <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb836-9"><a href="sec-birthwt.html#cb836-9" aria-hidden="true" tabindex="-1"></a>    ptd, <span class="at">ht =</span> (ht <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">ui =</span> (ui <span class="sc">&gt;</span> <span class="dv">0</span>), ftv</span>
-<span id="cb836-10"><a href="sec-birthwt.html#cb836-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb836-11"><a href="sec-birthwt.html#cb836-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<div class="sourceCode" id="cb837"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb837-1"><a href="sec-birthwt.html#cb837-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看编码后的数据</span></span>
-<span id="cb837-2"><a href="sec-birthwt.html#cb837-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bwt)</span></code></pre></div>
+<div class="sourceCode" id="cb833"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb833-1"><a href="sec-birthwt.html#cb833-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 重新编码，数据预处理，方便代入模型</span></span>
+<span id="cb833-2"><a href="sec-birthwt.html#cb833-2" aria-hidden="true" tabindex="-1"></a>bwt <span class="ot">&lt;-</span> <span class="fu">with</span>(birthwt, {</span>
+<span id="cb833-3"><a href="sec-birthwt.html#cb833-3" aria-hidden="true" tabindex="-1"></a>  race <span class="ot">&lt;-</span> <span class="fu">factor</span>(race, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;other&quot;</span>))</span>
+<span id="cb833-4"><a href="sec-birthwt.html#cb833-4" aria-hidden="true" tabindex="-1"></a>  ptd <span class="ot">&lt;-</span> <span class="fu">factor</span>(ptl <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb833-5"><a href="sec-birthwt.html#cb833-5" aria-hidden="true" tabindex="-1"></a>  ftv <span class="ot">&lt;-</span> <span class="fu">factor</span>(ftv)</span>
+<span id="cb833-6"><a href="sec-birthwt.html#cb833-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">levels</span>(ftv)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;2+&quot;</span> <span class="co"># 除了前两个水平外，其余的都编码为 2+</span></span>
+<span id="cb833-7"><a href="sec-birthwt.html#cb833-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb833-8"><a href="sec-birthwt.html#cb833-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="fu">factor</span>(low), age, lwt, race, <span class="at">smoke =</span> (smoke <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb833-9"><a href="sec-birthwt.html#cb833-9" aria-hidden="true" tabindex="-1"></a>    ptd, <span class="at">ht =</span> (ht <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">ui =</span> (ui <span class="sc">&gt;</span> <span class="dv">0</span>), ftv</span>
+<span id="cb833-10"><a href="sec-birthwt.html#cb833-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb833-11"><a href="sec-birthwt.html#cb833-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div class="sourceCode" id="cb834"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb834-1"><a href="sec-birthwt.html#cb834-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看编码后的数据</span></span>
+<span id="cb834-2"><a href="sec-birthwt.html#cb834-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bwt)</span></code></pre></div>
 <pre><code>##   low age lwt  race smoke   ptd    ht    ui ftv
 ## 1   0  19 182 black FALSE FALSE FALSE  TRUE   0
 ## 2   0  33 155 other FALSE FALSE FALSE FALSE  2+
@@ -980,7 +980,7 @@ div.csl-indent {
 ## 4   0  21 108 white  TRUE FALSE FALSE  TRUE  2+
 ## 5   0  18 107 white  TRUE FALSE FALSE  TRUE   0
 ## 6   0  21 124 other FALSE FALSE FALSE FALSE   0</code></pre>
-<div class="sourceCode" id="cb839"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb839-1"><a href="sec-birthwt.html#cb839-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(bwt)</span></code></pre></div>
+<div class="sourceCode" id="cb836"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb836-1"><a href="sec-birthwt.html#cb836-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(bwt)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    189 obs. of  9 variables:
 ##  $ low  : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ age  : int  19 33 20 21 18 21 22 17 29 26 ...
@@ -992,8 +992,8 @@ div.csl-indent {
 ##  $ ui   : logi  TRUE FALSE FALSE TRUE TRUE FALSE ...
 ##  $ ftv  : Factor w/ 3 levels &quot;0&quot;,&quot;1&quot;,&quot;2+&quot;: 1 3 2 3 1 1 2 2 2 1 ...</code></pre>
 <p>广义线性模型拟合，二项逻辑回归，响应变量为婴儿出生的体重，以2.5kg为界，它被编码成二分类变量 0或1</p>
-<div class="sourceCode" id="cb841"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb841-1"><a href="sec-birthwt.html#cb841-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">&quot;contr.treatment&quot;</span>, <span class="st">&quot;contr.poly&quot;</span>))</span>
-<span id="cb841-2"><a href="sec-birthwt.html#cb841-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(<span class="at">formula =</span> low <span class="sc">~</span> ., <span class="at">family =</span> binomial, <span class="at">data =</span> bwt)</span></code></pre></div>
+<div class="sourceCode" id="cb838"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb838-1"><a href="sec-birthwt.html#cb838-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">&quot;contr.treatment&quot;</span>, <span class="st">&quot;contr.poly&quot;</span>))</span>
+<span id="cb838-2"><a href="sec-birthwt.html#cb838-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(<span class="at">formula =</span> low <span class="sc">~</span> ., <span class="at">family =</span> binomial, <span class="at">data =</span> bwt)</span></code></pre></div>
 <pre><code>## 
 ## Call:  glm(formula = low ~ ., family = binomial, data = bwt)
 ## 
@@ -1007,8 +1007,8 @@ div.csl-indent {
 ## Null Deviance:       234.7 
 ## Residual Deviance: 195.5     AIC: 217.5</code></pre>
 <p>多项逻辑回归</p>
-<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="sec-birthwt.html#cb843-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
-<span id="cb843-2"><a href="sec-birthwt.html#cb843-2" aria-hidden="true" tabindex="-1"></a>(bwt.mu <span class="ot">&lt;-</span> <span class="fu">multinom</span>(<span class="at">formula =</span> low <span class="sc">~</span> ., <span class="at">data =</span> bwt))</span></code></pre></div>
+<div class="sourceCode" id="cb840"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb840-1"><a href="sec-birthwt.html#cb840-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb840-2"><a href="sec-birthwt.html#cb840-2" aria-hidden="true" tabindex="-1"></a>(bwt.mu <span class="ot">&lt;-</span> <span class="fu">multinom</span>(<span class="at">formula =</span> low <span class="sc">~</span> ., <span class="at">data =</span> bwt))</span></code></pre></div>
 <pre><code>## # weights:  12 (11 variable)
 ## initial  value 131.004817 
 ## iter  10 value 98.029803
@@ -1025,7 +1025,7 @@ div.csl-indent {
 ## 
 ## Residual Deviance: 195.4755 
 ## AIC: 217.4755</code></pre>
-<div class="sourceCode" id="cb846"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb846-1"><a href="sec-birthwt.html#cb846-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bwt.mu)</span></code></pre></div>
+<div class="sourceCode" id="cb843"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb843-1"><a href="sec-birthwt.html#cb843-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(bwt.mu)</span></code></pre></div>
 <pre><code>## Call:
 ## multinom(formula = low ~ ., data = bwt)
 ## 
@@ -1046,14 +1046,14 @@ div.csl-indent {
 ## Residual Deviance: 195.4755 
 ## AIC: 217.4755</code></pre>
 <p>计算 Z 分数和 P 值</p>
-<div class="sourceCode" id="cb848"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb848-1"><a href="sec-birthwt.html#cb848-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">summary</span>(bwt.mu)<span class="sc">$</span>coefficients <span class="sc">/</span> <span class="fu">summary</span>(bwt.mu)<span class="sc">$</span>standard.errors</span>
-<span id="cb848-2"><a href="sec-birthwt.html#cb848-2" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb845"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb845-1"><a href="sec-birthwt.html#cb845-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">summary</span>(bwt.mu)<span class="sc">$</span>coefficients <span class="sc">/</span> <span class="fu">summary</span>(bwt.mu)<span class="sc">$</span>standard.errors</span>
+<span id="cb845-2"><a href="sec-birthwt.html#cb845-2" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
 <pre><code>## (Intercept)         age         lwt   raceblack   raceother   smokeTRUE 
 ##   0.6613291  -0.9621210  -2.2107121   2.2247140   1.6039635   1.7775069 
 ##     ptdTRUE      htTRUE      uiTRUE        ftv1       ftv2+ 
 ##   2.7958023   2.6544170   1.4648486  -0.9102516   0.3922159</code></pre>
-<div class="sourceCode" id="cb850"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb850-1"><a href="sec-birthwt.html#cb850-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z), <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb850-2"><a href="sec-birthwt.html#cb850-2" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<div class="sourceCode" id="cb847"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb847-1"><a href="sec-birthwt.html#cb847-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z), <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb847-2"><a href="sec-birthwt.html#cb847-2" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
 <pre><code>## (Intercept)         age         lwt   raceblack   raceother   smokeTRUE 
 ## 0.508401310 0.335988847 0.027055777 0.026100443 0.108722092 0.075484881 
 ##     ptdTRUE      htTRUE      uiTRUE        ftv1       ftv2+ 

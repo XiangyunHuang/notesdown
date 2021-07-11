@@ -380,7 +380,7 @@ sessionInfo()
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.6        highr_0.9         pillar_1.6.1      bslib_0.2.5.1    
+##  [1] Rcpp_1.0.7        highr_0.9         pillar_1.6.1      bslib_0.2.5.1    
 ##  [5] compiler_4.1.0    nloptr_1.2.2.2    jquerylib_0.1.4   tools_4.1.0      
 ##  [9] boot_1.3-28       digest_0.6.27     tibble_3.1.2      jsonlite_1.7.2   
 ## [13] evaluate_0.14     lifecycle_1.0.0   nlme_3.1-152      gtable_0.3.0     

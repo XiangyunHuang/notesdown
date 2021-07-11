@@ -900,33 +900,33 @@ div.csl-indent {
 <div id="sec:gt-kableExtra" class="section level2" number="13.2">
 <h2><span class="header-section-number">13.2</span> gt 和 kableExtra</h2>
 <p>如表 <a href="sec-gt-kableExtra.html#tab:kable-styles">13.1</a> 所示，我们可以自定义表格样式，比如配色，例子修改自 kableExtra 帮助文档 <a href="https://haozhu233.github.io/kableExtra/bookdown/cross-format-tables-in-bookdown.html" class="uri">https://haozhu233.github.io/kableExtra/bookdown/cross-format-tables-in-bookdown.html</a>，同时支持 HTML 和 LaTeX 输出， 但是 LaTeX 输出需要在文档类选项中增加 table 选项，即 <code>classoption: "table"</code>，这样就可以加载 colortbl 宏包，进而提供 <code>\rowcolor</code> 等 LaTeX 命令，在表格中给每个格子定制颜色。我们推荐在 classoption 中添加 table 选项，而不是再次加载 xcolor 包，比如像这样 <code>\usepackage[table]{xcolor}</code>，这会在 R Markdown 中引起冲突。<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
-<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="sec-gt-kableExtra.html#cb461-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb461-2"><a href="sec-gt-kableExtra.html#cb461-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb461-3"><a href="sec-gt-kableExtra.html#cb461-3" aria-hidden="true" tabindex="-1"></a>iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span></span>
-<span id="cb461-4"><a href="sec-gt-kableExtra.html#cb461-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
-<span id="cb461-5"><a href="sec-gt-kableExtra.html#cb461-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sepal.Length =</span></span>
-<span id="cb461-6"><a href="sec-gt-kableExtra.html#cb461-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_spec</span>(Sepal.Length,</span>
-<span id="cb461-7"><a href="sec-gt-kableExtra.html#cb461-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">bold =</span> T,</span>
-<span id="cb461-8"><a href="sec-gt-kableExtra.html#cb461-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="fu">spec_color</span>(Sepal.Length, <span class="at">end =</span> <span class="fl">0.9</span>),</span>
-<span id="cb461-9"><a href="sec-gt-kableExtra.html#cb461-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">font_size =</span> <span class="fu">spec_font_size</span>(Sepal.Length)</span>
-<span id="cb461-10"><a href="sec-gt-kableExtra.html#cb461-10" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb461-11"><a href="sec-gt-kableExtra.html#cb461-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb461-12"><a href="sec-gt-kableExtra.html#cb461-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">Species =</span> <span class="fu">cell_spec</span>(</span>
-<span id="cb461-13"><a href="sec-gt-kableExtra.html#cb461-13" aria-hidden="true" tabindex="-1"></a>    Species,</span>
-<span id="cb461-14"><a href="sec-gt-kableExtra.html#cb461-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">bold =</span> T,</span>
-<span id="cb461-15"><a href="sec-gt-kableExtra.html#cb461-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">background =</span> <span class="fu">spec_color</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb461-16"><a href="sec-gt-kableExtra.html#cb461-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">end =</span> <span class="fl">0.9</span>,</span>
-<span id="cb461-17"><a href="sec-gt-kableExtra.html#cb461-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb461-18"><a href="sec-gt-kableExtra.html#cb461-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb461-19"><a href="sec-gt-kableExtra.html#cb461-19" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb461-20"><a href="sec-gt-kableExtra.html#cb461-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
-<span id="cb461-21"><a href="sec-gt-kableExtra.html#cb461-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">escape =</span> F, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>, <span class="at">booktabs =</span> T,</span>
-<span id="cb461-22"><a href="sec-gt-kableExtra.html#cb461-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;自定义表格样式&quot;</span></span>
-<span id="cb461-23"><a href="sec-gt-kableExtra.html#cb461-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb461-24"><a href="sec-gt-kableExtra.html#cb461-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;condensed&quot;</span>),</span>
-<span id="cb461-25"><a href="sec-gt-kableExtra.html#cb461-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">latex_options =</span> <span class="st">&quot;striped&quot;</span>,</span>
-<span id="cb461-26"><a href="sec-gt-kableExtra.html#cb461-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">full_width =</span> F</span>
-<span id="cb461-27"><a href="sec-gt-kableExtra.html#cb461-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="sec-gt-kableExtra.html#cb458-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb458-2"><a href="sec-gt-kableExtra.html#cb458-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb458-3"><a href="sec-gt-kableExtra.html#cb458-3" aria-hidden="true" tabindex="-1"></a>iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span></span>
+<span id="cb458-4"><a href="sec-gt-kableExtra.html#cb458-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
+<span id="cb458-5"><a href="sec-gt-kableExtra.html#cb458-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sepal.Length =</span></span>
+<span id="cb458-6"><a href="sec-gt-kableExtra.html#cb458-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_spec</span>(Sepal.Length,</span>
+<span id="cb458-7"><a href="sec-gt-kableExtra.html#cb458-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">bold =</span> T,</span>
+<span id="cb458-8"><a href="sec-gt-kableExtra.html#cb458-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="fu">spec_color</span>(Sepal.Length, <span class="at">end =</span> <span class="fl">0.9</span>),</span>
+<span id="cb458-9"><a href="sec-gt-kableExtra.html#cb458-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">font_size =</span> <span class="fu">spec_font_size</span>(Sepal.Length)</span>
+<span id="cb458-10"><a href="sec-gt-kableExtra.html#cb458-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb458-11"><a href="sec-gt-kableExtra.html#cb458-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb458-12"><a href="sec-gt-kableExtra.html#cb458-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">Species =</span> <span class="fu">cell_spec</span>(</span>
+<span id="cb458-13"><a href="sec-gt-kableExtra.html#cb458-13" aria-hidden="true" tabindex="-1"></a>    Species,</span>
+<span id="cb458-14"><a href="sec-gt-kableExtra.html#cb458-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">bold =</span> T,</span>
+<span id="cb458-15"><a href="sec-gt-kableExtra.html#cb458-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">background =</span> <span class="fu">spec_color</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb458-16"><a href="sec-gt-kableExtra.html#cb458-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">end =</span> <span class="fl">0.9</span>,</span>
+<span id="cb458-17"><a href="sec-gt-kableExtra.html#cb458-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">option =</span> <span class="st">&quot;A&quot;</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb458-18"><a href="sec-gt-kableExtra.html#cb458-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb458-19"><a href="sec-gt-kableExtra.html#cb458-19" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb458-20"><a href="sec-gt-kableExtra.html#cb458-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb458-21"><a href="sec-gt-kableExtra.html#cb458-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">escape =</span> F, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>, <span class="at">booktabs =</span> T,</span>
+<span id="cb458-22"><a href="sec-gt-kableExtra.html#cb458-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;自定义表格样式&quot;</span></span>
+<span id="cb458-23"><a href="sec-gt-kableExtra.html#cb458-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb458-24"><a href="sec-gt-kableExtra.html#cb458-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;condensed&quot;</span>),</span>
+<span id="cb458-25"><a href="sec-gt-kableExtra.html#cb458-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">latex_options =</span> <span class="st">&quot;striped&quot;</span>,</span>
+<span id="cb458-26"><a href="sec-gt-kableExtra.html#cb458-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">full_width =</span> F</span>
+<span id="cb458-27"><a href="sec-gt-kableExtra.html#cb458-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:kable-styles">表 13.1: </span>自定义表格样式
@@ -1124,39 +1124,39 @@ Species
 </tbody>
 </table>
 <p>一个非常基本的 gt 制作的表格</p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="sec-gt-kableExtra.html#cb462-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb462-2"><a href="sec-gt-kableExtra.html#cb462-2" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
-<span id="cb462-3"><a href="sec-gt-kableExtra.html#cb462-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb462-4"><a href="sec-gt-kableExtra.html#cb462-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="sec-gt-kableExtra.html#cb459-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb459-2"><a href="sec-gt-kableExtra.html#cb459-2" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb459-3"><a href="sec-gt-kableExtra.html#cb459-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb459-4"><a href="sec-gt-kableExtra.html#cb459-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
 <p>然后添加表格的标题和副标题，套上 <code>md()</code> 函数后，标题和副标题支持 Markdown 语法，告别 HTML 的制表方式吧！其它表格元素，如脚注支持和表格的列指标关联</p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="sec-gt-kableExtra.html#cb463-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb463-2"><a href="sec-gt-kableExtra.html#cb463-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb463-3"><a href="sec-gt-kableExtra.html#cb463-3" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span></span>
-<span id="cb463-4"><a href="sec-gt-kableExtra.html#cb463-4" aria-hidden="true" tabindex="-1"></a>  as.data.table <span class="sc">%&gt;%</span> </span>
-<span id="cb463-5"><a href="sec-gt-kableExtra.html#cb463-5" aria-hidden="true" tabindex="-1"></a>  .[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), by <span class="ot">=</span> .(Species)] <span class="sc">%&gt;%</span> </span>
-<span id="cb463-6"><a href="sec-gt-kableExtra.html#cb463-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb463-7"><a href="sec-gt-kableExtra.html#cb463-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb463-8"><a href="sec-gt-kableExtra.html#cb463-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">&quot;**鸢尾花**数据集&quot;</span>),</span>
-<span id="cb463-9"><a href="sec-gt-kableExtra.html#cb463-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;R 内置数据集&quot;</span></span>
-<span id="cb463-10"><a href="sec-gt-kableExtra.html#cb463-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb463-11"><a href="sec-gt-kableExtra.html#cb463-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
-<span id="cb463-12"><a href="sec-gt-kableExtra.html#cb463-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(Sepal.Length),</span>
-<span id="cb463-13"><a href="sec-gt-kableExtra.html#cb463-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(<span class="at">palette =</span> <span class="fu">terrain.colors</span>(<span class="dv">5</span>, <span class="at">rev =</span> T), <span class="at">domain =</span> <span class="cn">NULL</span>)</span>
-<span id="cb463-14"><a href="sec-gt-kableExtra.html#cb463-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb463-15"><a href="sec-gt-kableExtra.html#cb463-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
-<span id="cb463-16"><a href="sec-gt-kableExtra.html#cb463-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(Species),</span>
-<span id="cb463-17"><a href="sec-gt-kableExtra.html#cb463-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_factor</span>(<span class="at">palette =</span> <span class="fu">hcl.colors</span>(<span class="dv">3</span>), <span class="at">domain =</span> <span class="cn">NULL</span>)</span>
-<span id="cb463-18"><a href="sec-gt-kableExtra.html#cb463-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb463-19"><a href="sec-gt-kableExtra.html#cb463-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
-<span id="cb463-20"><a href="sec-gt-kableExtra.html#cb463-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="fu">md</span>(<span class="st">&quot;据说数据集最早收集自 Fisher&#39;s or Anderson&#39;s&quot;</span>),</span>
-<span id="cb463-21"><a href="sec-gt-kableExtra.html#cb463-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>(<span class="at">columns =</span> <span class="fu">vars</span>(Sepal.Length))</span>
-<span id="cb463-22"><a href="sec-gt-kableExtra.html#cb463-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb463-23"><a href="sec-gt-kableExtra.html#cb463-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
-<span id="cb463-24"><a href="sec-gt-kableExtra.html#cb463-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="st">&quot;鸢尾花的类别&quot;</span>,</span>
-<span id="cb463-25"><a href="sec-gt-kableExtra.html#cb463-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>(</span>
-<span id="cb463-26"><a href="sec-gt-kableExtra.html#cb463-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">columns =</span> <span class="fu">vars</span>(Species)</span>
-<span id="cb463-27"><a href="sec-gt-kableExtra.html#cb463-27" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb463-28"><a href="sec-gt-kableExtra.html#cb463-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="sec-gt-kableExtra.html#cb460-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb460-2"><a href="sec-gt-kableExtra.html#cb460-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb460-3"><a href="sec-gt-kableExtra.html#cb460-3" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span></span>
+<span id="cb460-4"><a href="sec-gt-kableExtra.html#cb460-4" aria-hidden="true" tabindex="-1"></a>  as.data.table <span class="sc">%&gt;%</span> </span>
+<span id="cb460-5"><a href="sec-gt-kableExtra.html#cb460-5" aria-hidden="true" tabindex="-1"></a>  .[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), by <span class="ot">=</span> .(Species)] <span class="sc">%&gt;%</span> </span>
+<span id="cb460-6"><a href="sec-gt-kableExtra.html#cb460-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb460-7"><a href="sec-gt-kableExtra.html#cb460-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb460-8"><a href="sec-gt-kableExtra.html#cb460-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">md</span>(<span class="st">&quot;**鸢尾花**数据集&quot;</span>),</span>
+<span id="cb460-9"><a href="sec-gt-kableExtra.html#cb460-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;R 内置数据集&quot;</span></span>
+<span id="cb460-10"><a href="sec-gt-kableExtra.html#cb460-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb460-11"><a href="sec-gt-kableExtra.html#cb460-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
+<span id="cb460-12"><a href="sec-gt-kableExtra.html#cb460-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(Sepal.Length),</span>
+<span id="cb460-13"><a href="sec-gt-kableExtra.html#cb460-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(<span class="at">palette =</span> <span class="fu">terrain.colors</span>(<span class="dv">5</span>, <span class="at">rev =</span> T), <span class="at">domain =</span> <span class="cn">NULL</span>)</span>
+<span id="cb460-14"><a href="sec-gt-kableExtra.html#cb460-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb460-15"><a href="sec-gt-kableExtra.html#cb460-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
+<span id="cb460-16"><a href="sec-gt-kableExtra.html#cb460-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(Species),</span>
+<span id="cb460-17"><a href="sec-gt-kableExtra.html#cb460-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_factor</span>(<span class="at">palette =</span> <span class="fu">hcl.colors</span>(<span class="dv">3</span>), <span class="at">domain =</span> <span class="cn">NULL</span>)</span>
+<span id="cb460-18"><a href="sec-gt-kableExtra.html#cb460-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb460-19"><a href="sec-gt-kableExtra.html#cb460-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
+<span id="cb460-20"><a href="sec-gt-kableExtra.html#cb460-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="fu">md</span>(<span class="st">&quot;据说数据集最早收集自 Fisher&#39;s or Anderson&#39;s&quot;</span>),</span>
+<span id="cb460-21"><a href="sec-gt-kableExtra.html#cb460-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>(<span class="at">columns =</span> <span class="fu">vars</span>(Sepal.Length))</span>
+<span id="cb460-22"><a href="sec-gt-kableExtra.html#cb460-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb460-23"><a href="sec-gt-kableExtra.html#cb460-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_footnote</span>(</span>
+<span id="cb460-24"><a href="sec-gt-kableExtra.html#cb460-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">footnote =</span> <span class="st">&quot;鸢尾花的类别&quot;</span>,</span>
+<span id="cb460-25"><a href="sec-gt-kableExtra.html#cb460-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>(</span>
+<span id="cb460-26"><a href="sec-gt-kableExtra.html#cb460-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">columns =</span> <span class="fu">vars</span>(Species)</span>
+<span id="cb460-27"><a href="sec-gt-kableExtra.html#cb460-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb460-28"><a href="sec-gt-kableExtra.html#cb460-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>更多细节的设置见 Thomas Mock 的博文<a href="https://themockup.blog/posts/2020-05-16-gt-a-grammer-of-tables/">gt - a (G)rammar of (T)ables</a></p>
 <div class="rmdnote">
 <p>当前 gt 包对 LaTeX 的支持比较弱，上述表格在 HTML 网页环境中可以看到的效果并不能一一对应到 LaTeX 输出中。且 gt 包生成 LaTeX 表格会自动加载宏包 amsmath、booktabs、caption 和 longtable， <code>gt_latex_dependencies()</code> 且不能控制</p>

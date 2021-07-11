@@ -251,7 +251,7 @@ sessionInfo()
 ## [10] sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.6         lubridate_1.7.10   tidyr_1.1.3        png_0.1-7         
+##  [1] Rcpp_1.0.7         lubridate_1.7.10   tidyr_1.1.3        png_0.1-7         
 ##  [5] class_7.3-19       zoo_1.8-9          assertthat_0.2.1   digest_0.6.27     
 ##  [9] utf8_1.2.1         R6_2.5.0           backports_1.2.1    evaluate_0.14     
 ## [13] e1071_1.7-7        pillar_1.6.1       rlang_0.4.11       curl_4.3.2        

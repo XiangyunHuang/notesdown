@@ -2,7 +2,143 @@
 
 
 
-Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/> 
+相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 `deriv()`、`D()` 等可以做一些简单的微分运算，扩展包 [Ryacas](https://github.com/r-cas/ryacas) 提供 [Yacas](https://github.com/grzegorzmazur/yacas/) 核心计算引擎，[symengine](https://github.com/symengine/symengine.R) 引入 C++ 符号计算库[SymEngine](https://github.com/symengine/)，相比于 **Ryacas**，**symengine** 不会和 Base R 函数冲突。Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/>。
+
+
+```r
+# 多元函数求偏导
+ftoo <- deriv(expression(sin(x1) + sin(x2) + cos(3 * x1 * x2) + x1^2 + x2^2),
+  namevec = c("x1", "x2"), function.arg = TRUE
+)
+# 隐函数求偏导
+deriv(y ~ sin(cos(x) * y), namevec = c("x","y"), function.arg = TRUE)
+```
+
+```
+## function (x, y) 
+## {
+##     .expr1 <- cos(x)
+##     .expr2 <- .expr1 * y
+##     .expr4 <- cos(.expr2)
+##     .value <- sin(.expr2)
+##     .grad <- array(0, c(length(.value), 2L), list(NULL, c("x", 
+##         "y")))
+##     .grad[, "x"] <- -(.expr4 * (sin(x) * y))
+##     .grad[, "y"] <- .expr4 * .expr1
+##     attr(.value, "gradient") <- .grad
+##     .value
+## }
+```
+
+下面以标准正态分布的密度函数为例，
+
+
+```r
+NormDensity <- expression(1 / sqrt(2 * pi) * exp(-x^2 / 2))
+# 递归的方法求高阶倒数
+DD <- function(expr, name, order = 1) {
+  if (order < 1) {
+    stop("'order' must be >= 1")
+  }
+  if (order == 1) {
+    D(expr, name)
+  } else {
+    DD(D(expr, name), name, order - 1)
+  }
+}
+# 计算三阶导数
+DD(NormDensity, "x", 3)
+```
+
+```
+## 1/sqrt(2 * pi) * (exp(-x^2/2) * (2 * x/2) * (2/2) + ((exp(-x^2/2) * 
+##     (2/2) - exp(-x^2/2) * (2 * x/2) * (2 * x/2)) * (2 * x/2) + 
+##     exp(-x^2/2) * (2 * x/2) * (2/2)))
+```
+Deriv 可以将 R 表达式简化
+
+
+```r
+library(Deriv)
+Simplify(DD(NormDensity, "x", 3))
+```
+
+```
+## x * (3 - x^2) * exp(-(x^2/2))/sqrt(2 * pi)
+```
+即 $x (3 - x^2) \mathrm{e}^{-x^2/2}/\sqrt{2 \pi}$，`eval()` 将表达式转为函数，代入数值运算。
+
+
+```r
+Tetrachoric <- function(x, j) {
+  (-1)^(j - 1) / sqrt(factorial(j)) * eval(DD(NormDensity, "x", j))
+}
+Tetrachoric(2, 3)
+```
+
+```
+## [1] -0.04408344
+```
+
+下面简单介绍 symengine 的符号计算能力
+
+
+```r
+library(symengine)
+# 声明几个符号变量
+use_vars(x, y, z)
+# 表达式展开
+expr <- (x + y + z) ^ 2L - 42L
+expand(expr)
+```
+
+```
+## (Add)	-42 + 2*x*y + 2*x*z + 2*y*z + x^2 + y^2 + z^2
+```
+
+变量替换
+
+
+```r
+a <- S("a")
+# z 用 a 替换
+expr <- subs(expr, z, a)
+# y 用 x^2 替换
+expr <- subs(expr, y, x^2L)
+expr
+```
+
+```
+## (Add)	-42 + (a + x + x^2)^2
+```
+
+表达式求 2 阶偏导
+
+
+```r
+d1_expr <- DD(expr, "x", 2)
+expand(d1_expr)
+```
+
+```
+## (Add)	2 + 4*a + 12*x + 12*x^2
+```
+
+求解带参数 $a$ 的一元二次方程
+
+
+```r
+solutions <- solve(d1_expr, "x")
+solutions
+```
+
+```
+## VecBasic of length 2
+## V( -1/2 + (-1/2)*sqrt(1 + (-1/3)*(2 + 4*a)), -1/2 + (1/2)*sqrt(1 + (-1/3)*(2 + 4*a)) )
+```
+
+
+
 
 
 ```python
@@ -13,56 +149,20 @@ x = Symbol('x')
 # 积分
 integrate(x**2 + x + 1, x)
 # 因式分解
-```
-
-```
-##  3    2    
-## x    x     
-## -- + -- + x
-## 3    2
-```
-
-```python
 factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
-```
-
-```
-##                                                                           2
-## 22.5*(0.333333333333333*x - 1.0)*(0.333333333333333*x + 1.0)*(1.0*x + 0.6)
 ```
 
 
 
 ```r
 library(Ryacas)
-```
 
-
-```r
 x <- ysym("x")
 integrate(f = x^2 + x + 1, var = "x")
-```
 
-```
-## y: x^3/3+x^2/2+x
-```
-
-
-```r
 yac_str(y_fn("5*x^4/2 + 3*x^3 - 108*x^2/5 - 27*x - 81/10", "Factor"))
-```
 
-```
-## [1] "5/2*(x+3)*(x-3)*(x+3/5)^2"
-```
-
-
-```r
 eq <- function(x) x^2 + x + 1
 integrate(f = eq, lower = 0, upper = 1)
-```
-
-```
-## 1.833333 with absolute error < 2e-14
 ```
 

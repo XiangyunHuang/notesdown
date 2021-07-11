@@ -1049,7 +1049,7 @@ sessionInfo()
 ## [21] DBI_1.1.1         tweenr_1.0.2      lifecycle_1.0.0   stringr_1.4.0    
 ## [25] munsell_0.5.0     gtable_0.3.0      evaluate_0.14     labeling_0.4.2   
 ## [29] knitr_1.33        fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.8   
-## [33] highr_0.9         Rcpp_1.0.6        scales_1.1.1      jsonlite_1.7.2   
+## [33] highr_0.9         Rcpp_1.0.7        scales_1.1.1      jsonlite_1.7.2   
 ## [37] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.6.2    
 ## [41] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
 ## [45] sass_0.4.0        tibble_3.1.2      crayon_1.4.1      extrafontdb_1.0  

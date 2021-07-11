@@ -899,30 +899,96 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="chap:symbolic-computation" class="section level1" number="35">
 <h1><span class="header-section-number">第 35 章</span> 符号计算</h1>
-<p>Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation">(<a href="#ref-SymPy" role="doc-biblioref">Meurer et al. 2017</a>)</span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a></p>
-<div class="sourceCode" id="cb1234"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1234-1"><a href="chap-symbolic-computation.html#cb1234-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> <span class="op">*</span> </span>
-<span id="cb1234-2"><a href="chap-symbolic-computation.html#cb1234-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置显示样式</span></span>
-<span id="cb1234-3"><a href="chap-symbolic-computation.html#cb1234-3" aria-hidden="true" tabindex="-1"></a>init_printing(use_unicode<span class="op">=</span><span class="va">False</span>, wrap_line<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb1234-4"><a href="chap-symbolic-computation.html#cb1234-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> Symbol(<span class="st">&#39;x&#39;</span>)</span>
-<span id="cb1234-5"><a href="chap-symbolic-computation.html#cb1234-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 积分</span></span>
-<span id="cb1234-6"><a href="chap-symbolic-computation.html#cb1234-6" aria-hidden="true" tabindex="-1"></a>integrate(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x <span class="op">+</span> <span class="dv">1</span>, x)</span>
-<span id="cb1234-7"><a href="chap-symbolic-computation.html#cb1234-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 因式分解</span></span></code></pre></div>
-<pre><code>##  3    2    
-## x    x     
-## -- + -- + x
-## 3    2</code></pre>
-<div class="sourceCode" id="cb1236"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1236-1"><a href="chap-symbolic-computation.html#cb1236-1" aria-hidden="true" tabindex="-1"></a>factor(<span class="dv">5</span><span class="op">*</span>x<span class="op">**</span><span class="dv">4</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">3</span> <span class="op">-</span> <span class="dv">108</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">5</span> <span class="op">-</span> <span class="dv">27</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">81</span><span class="op">/</span><span class="dv">10</span>)</span></code></pre></div>
-<pre><code>##                                                                           2
-## 22.5*(0.333333333333333*x - 1.0)*(0.333333333333333*x + 1.0)*(1.0*x + 0.6)</code></pre>
-<div class="sourceCode" id="cb1238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1238-1"><a href="chap-symbolic-computation.html#cb1238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Ryacas)</span></code></pre></div>
-<div class="sourceCode" id="cb1239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1239-1"><a href="chap-symbolic-computation.html#cb1239-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ysym</span>(<span class="st">&quot;x&quot;</span>)</span>
-<span id="cb1239-2"><a href="chap-symbolic-computation.html#cb1239-2" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(<span class="at">f =</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="dv">1</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
-<pre><code>## y: x^3/3+x^2/2+x</code></pre>
-<div class="sourceCode" id="cb1241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1241-1"><a href="chap-symbolic-computation.html#cb1241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yac_str</span>(<span class="fu">y_fn</span>(<span class="st">&quot;5*x^4/2 + 3*x^3 - 108*x^2/5 - 27*x - 81/10&quot;</span>, <span class="st">&quot;Factor&quot;</span>))</span></code></pre></div>
-<pre><code>## [1] &quot;5/2*(x+3)*(x-3)*(x+3/5)^2&quot;</code></pre>
-<div class="sourceCode" id="cb1243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1243-1"><a href="chap-symbolic-computation.html#cb1243-1" aria-hidden="true" tabindex="-1"></a>eq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb1243-2"><a href="chap-symbolic-computation.html#cb1243-2" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(<span class="at">f =</span> eq, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## 1.833333 with absolute error &lt; 2e-14</code></pre>
+<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code>deriv()</code>、<code>D()</code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation">(<a href="#ref-SymPy" role="doc-biblioref">Meurer et al. 2017</a>)</span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
+<div class="sourceCode" id="cb1231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1231-1"><a href="chap-symbolic-computation.html#cb1231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 多元函数求偏导</span></span>
+<span id="cb1231-2"><a href="chap-symbolic-computation.html#cb1231-2" aria-hidden="true" tabindex="-1"></a>ftoo <span class="ot">&lt;-</span> <span class="fu">deriv</span>(<span class="fu">expression</span>(<span class="fu">sin</span>(x1) <span class="sc">+</span> <span class="fu">sin</span>(x2) <span class="sc">+</span> <span class="fu">cos</span>(<span class="dv">3</span> <span class="sc">*</span> x1 <span class="sc">*</span> x2) <span class="sc">+</span> x1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x2<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb1231-3"><a href="chap-symbolic-computation.html#cb1231-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">namevec =</span> <span class="fu">c</span>(<span class="st">&quot;x1&quot;</span>, <span class="st">&quot;x2&quot;</span>), <span class="at">function.arg =</span> <span class="cn">TRUE</span></span>
+<span id="cb1231-4"><a href="chap-symbolic-computation.html#cb1231-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1231-5"><a href="chap-symbolic-computation.html#cb1231-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 隐函数求偏导</span></span>
+<span id="cb1231-6"><a href="chap-symbolic-computation.html#cb1231-6" aria-hidden="true" tabindex="-1"></a><span class="fu">deriv</span>(y <span class="sc">~</span> <span class="fu">sin</span>(<span class="fu">cos</span>(x) <span class="sc">*</span> y), <span class="at">namevec =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>), <span class="at">function.arg =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## function (x, y) 
+## {
+##     .expr1 &lt;- cos(x)
+##     .expr2 &lt;- .expr1 * y
+##     .expr4 &lt;- cos(.expr2)
+##     .value &lt;- sin(.expr2)
+##     .grad &lt;- array(0, c(length(.value), 2L), list(NULL, c(&quot;x&quot;, 
+##         &quot;y&quot;)))
+##     .grad[, &quot;x&quot;] &lt;- -(.expr4 * (sin(x) * y))
+##     .grad[, &quot;y&quot;] &lt;- .expr4 * .expr1
+##     attr(.value, &quot;gradient&quot;) &lt;- .grad
+##     .value
+## }</code></pre>
+<p>下面以标准正态分布的密度函数为例，</p>
+<div class="sourceCode" id="cb1233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1233-1"><a href="chap-symbolic-computation.html#cb1233-1" aria-hidden="true" tabindex="-1"></a>NormDensity <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> pi) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>))</span>
+<span id="cb1233-2"><a href="chap-symbolic-computation.html#cb1233-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 递归的方法求高阶倒数</span></span>
+<span id="cb1233-3"><a href="chap-symbolic-computation.html#cb1233-3" aria-hidden="true" tabindex="-1"></a>DD <span class="ot">&lt;-</span> <span class="cf">function</span>(expr, name, <span class="at">order =</span> <span class="dv">1</span>) {</span>
+<span id="cb1233-4"><a href="chap-symbolic-computation.html#cb1233-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (order <span class="sc">&lt;</span> <span class="dv">1</span>) {</span>
+<span id="cb1233-5"><a href="chap-symbolic-computation.html#cb1233-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;&#39;order&#39; must be &gt;= 1&quot;</span>)</span>
+<span id="cb1233-6"><a href="chap-symbolic-computation.html#cb1233-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1233-7"><a href="chap-symbolic-computation.html#cb1233-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (order <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb1233-8"><a href="chap-symbolic-computation.html#cb1233-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">D</span>(expr, name)</span>
+<span id="cb1233-9"><a href="chap-symbolic-computation.html#cb1233-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1233-10"><a href="chap-symbolic-computation.html#cb1233-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">DD</span>(<span class="fu">D</span>(expr, name), name, order <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb1233-11"><a href="chap-symbolic-computation.html#cb1233-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1233-12"><a href="chap-symbolic-computation.html#cb1233-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1233-13"><a href="chap-symbolic-computation.html#cb1233-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算三阶导数</span></span>
+<span id="cb1233-14"><a href="chap-symbolic-computation.html#cb1233-14" aria-hidden="true" tabindex="-1"></a><span class="fu">DD</span>(NormDensity, <span class="st">&quot;x&quot;</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## 1/sqrt(2 * pi) * (exp(-x^2/2) * (2 * x/2) * (2/2) + ((exp(-x^2/2) * 
+##     (2/2) - exp(-x^2/2) * (2 * x/2) * (2 * x/2)) * (2 * x/2) + 
+##     exp(-x^2/2) * (2 * x/2) * (2/2)))</code></pre>
+<p>Deriv 可以将 R 表达式简化</p>
+<div class="sourceCode" id="cb1235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1235-1"><a href="chap-symbolic-computation.html#cb1235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Deriv)</span>
+<span id="cb1235-2"><a href="chap-symbolic-computation.html#cb1235-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span>(<span class="fu">DD</span>(NormDensity, <span class="st">&quot;x&quot;</span>, <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## x * (3 - x^2) * exp(-(x^2/2))/sqrt(2 * pi)</code></pre>
+<p>即 <span class="math inline">\(x (3 - x^2) \mathrm{e}^{-x^2/2}/\sqrt{2 \pi}\)</span>，<code>eval()</code> 将表达式转为函数，代入数值运算。</p>
+<div class="sourceCode" id="cb1237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1237-1"><a href="chap-symbolic-computation.html#cb1237-1" aria-hidden="true" tabindex="-1"></a>Tetrachoric <span class="ot">&lt;-</span> <span class="cf">function</span>(x, j) {</span>
+<span id="cb1237-2"><a href="chap-symbolic-computation.html#cb1237-2" aria-hidden="true" tabindex="-1"></a>  (<span class="sc">-</span><span class="dv">1</span>)<span class="sc">^</span>(j <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">factorial</span>(j)) <span class="sc">*</span> <span class="fu">eval</span>(<span class="fu">DD</span>(NormDensity, <span class="st">&quot;x&quot;</span>, j))</span>
+<span id="cb1237-3"><a href="chap-symbolic-computation.html#cb1237-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1237-4"><a href="chap-symbolic-computation.html#cb1237-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Tetrachoric</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] -0.04408344</code></pre>
+<p>下面简单介绍 symengine 的符号计算能力</p>
+<div class="sourceCode" id="cb1239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1239-1"><a href="chap-symbolic-computation.html#cb1239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(symengine)</span>
+<span id="cb1239-2"><a href="chap-symbolic-computation.html#cb1239-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 声明几个符号变量</span></span>
+<span id="cb1239-3"><a href="chap-symbolic-computation.html#cb1239-3" aria-hidden="true" tabindex="-1"></a><span class="fu">use_vars</span>(x, y, z)</span>
+<span id="cb1239-4"><a href="chap-symbolic-computation.html#cb1239-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 表达式展开</span></span>
+<span id="cb1239-5"><a href="chap-symbolic-computation.html#cb1239-5" aria-hidden="true" tabindex="-1"></a>expr <span class="ot">&lt;-</span> (x <span class="sc">+</span> y <span class="sc">+</span> z) <span class="sc">^</span> 2L <span class="sc">-</span> 42L</span>
+<span id="cb1239-6"><a href="chap-symbolic-computation.html#cb1239-6" aria-hidden="true" tabindex="-1"></a><span class="fu">expand</span>(expr)</span></code></pre></div>
+<pre><code>## (Add)    -42 + 2*x*y + 2*x*z + 2*y*z + x^2 + y^2 + z^2</code></pre>
+<p>变量替换</p>
+<div class="sourceCode" id="cb1241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1241-1"><a href="chap-symbolic-computation.html#cb1241-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">S</span>(<span class="st">&quot;a&quot;</span>)</span>
+<span id="cb1241-2"><a href="chap-symbolic-computation.html#cb1241-2" aria-hidden="true" tabindex="-1"></a><span class="co"># z 用 a 替换</span></span>
+<span id="cb1241-3"><a href="chap-symbolic-computation.html#cb1241-3" aria-hidden="true" tabindex="-1"></a>expr <span class="ot">&lt;-</span> <span class="fu">subs</span>(expr, z, a)</span>
+<span id="cb1241-4"><a href="chap-symbolic-computation.html#cb1241-4" aria-hidden="true" tabindex="-1"></a><span class="co"># y 用 x^2 替换</span></span>
+<span id="cb1241-5"><a href="chap-symbolic-computation.html#cb1241-5" aria-hidden="true" tabindex="-1"></a>expr <span class="ot">&lt;-</span> <span class="fu">subs</span>(expr, y, x<span class="sc">^</span>2L)</span>
+<span id="cb1241-6"><a href="chap-symbolic-computation.html#cb1241-6" aria-hidden="true" tabindex="-1"></a>expr</span></code></pre></div>
+<pre><code>## (Add)    -42 + (a + x + x^2)^2</code></pre>
+<p>表达式求 2 阶偏导</p>
+<div class="sourceCode" id="cb1243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1243-1"><a href="chap-symbolic-computation.html#cb1243-1" aria-hidden="true" tabindex="-1"></a>d1_expr <span class="ot">&lt;-</span> <span class="fu">DD</span>(expr, <span class="st">&quot;x&quot;</span>, <span class="dv">2</span>)</span>
+<span id="cb1243-2"><a href="chap-symbolic-computation.html#cb1243-2" aria-hidden="true" tabindex="-1"></a><span class="fu">expand</span>(d1_expr)</span></code></pre></div>
+<pre><code>## (Add)    2 + 4*a + 12*x + 12*x^2</code></pre>
+<p>求解带参数 <span class="math inline">\(a\)</span> 的一元二次方程</p>
+<div class="sourceCode" id="cb1245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1245-1"><a href="chap-symbolic-computation.html#cb1245-1" aria-hidden="true" tabindex="-1"></a>solutions <span class="ot">&lt;-</span> <span class="fu">solve</span>(d1_expr, <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb1245-2"><a href="chap-symbolic-computation.html#cb1245-2" aria-hidden="true" tabindex="-1"></a>solutions</span></code></pre></div>
+<pre><code>## VecBasic of length 2
+## V( -1/2 + (-1/2)*sqrt(1 + (-1/3)*(2 + 4*a)), -1/2 + (1/2)*sqrt(1 + (-1/3)*(2 + 4*a)) )</code></pre>
+<div class="sourceCode" id="cb1247"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1247-1"><a href="chap-symbolic-computation.html#cb1247-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> <span class="op">*</span> </span>
+<span id="cb1247-2"><a href="chap-symbolic-computation.html#cb1247-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置显示样式</span></span>
+<span id="cb1247-3"><a href="chap-symbolic-computation.html#cb1247-3" aria-hidden="true" tabindex="-1"></a>init_printing(use_unicode<span class="op">=</span><span class="va">False</span>, wrap_line<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1247-4"><a href="chap-symbolic-computation.html#cb1247-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> Symbol(<span class="st">&#39;x&#39;</span>)</span>
+<span id="cb1247-5"><a href="chap-symbolic-computation.html#cb1247-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 积分</span></span>
+<span id="cb1247-6"><a href="chap-symbolic-computation.html#cb1247-6" aria-hidden="true" tabindex="-1"></a>integrate(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x <span class="op">+</span> <span class="dv">1</span>, x)</span>
+<span id="cb1247-7"><a href="chap-symbolic-computation.html#cb1247-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 因式分解</span></span>
+<span id="cb1247-8"><a href="chap-symbolic-computation.html#cb1247-8" aria-hidden="true" tabindex="-1"></a>factor(<span class="dv">5</span><span class="op">*</span>x<span class="op">**</span><span class="dv">4</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">3</span> <span class="op">-</span> <span class="dv">108</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="dv">5</span> <span class="op">-</span> <span class="dv">27</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">81</span><span class="op">/</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1248-1"><a href="chap-symbolic-computation.html#cb1248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Ryacas)</span>
+<span id="cb1248-2"><a href="chap-symbolic-computation.html#cb1248-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1248-3"><a href="chap-symbolic-computation.html#cb1248-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ysym</span>(<span class="st">&quot;x&quot;</span>)</span>
+<span id="cb1248-4"><a href="chap-symbolic-computation.html#cb1248-4" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(<span class="at">f =</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="dv">1</span>, <span class="at">var =</span> <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb1248-5"><a href="chap-symbolic-computation.html#cb1248-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1248-6"><a href="chap-symbolic-computation.html#cb1248-6" aria-hidden="true" tabindex="-1"></a><span class="fu">yac_str</span>(<span class="fu">y_fn</span>(<span class="st">&quot;5*x^4/2 + 3*x^3 - 108*x^2/5 - 27*x - 81/10&quot;</span>, <span class="st">&quot;Factor&quot;</span>))</span>
+<span id="cb1248-7"><a href="chap-symbolic-computation.html#cb1248-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1248-8"><a href="chap-symbolic-computation.html#cb1248-8" aria-hidden="true" tabindex="-1"></a>eq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1248-9"><a href="chap-symbolic-computation.html#cb1248-9" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(<span class="at">f =</span> eq, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> <span class="dv">1</span>)</span></code></pre></div>
 
 </div>
 <h3>参考文献</h3>
