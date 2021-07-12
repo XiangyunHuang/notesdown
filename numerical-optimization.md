@@ -672,9 +672,9 @@ $$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{
 
 ```r
 fn <- function(x, a = 20, b = 0.2, c = 2 * pi) {
-  sum1 <- sum(x^2)
-  sum2 <- sum(cos(c * x))
-  -a * exp(-b * sqrt(sum1 / 2)) - exp(sum2 / 2) + a + exp(1)
+  mean1 <- mean(x^2)
+  mean2 <- mean(cos(c * x))
+  -a * exp(-b * sqrt(mean1)) - exp(mean2) + a + exp(1)
 }
 
 df <- expand.grid(
@@ -701,7 +701,7 @@ wireframe(
 <p class="caption">(\#fig:ackley)二维 Ackley 函数图像</p>
 </div>
 
-以 10 维的 Ackley 函数为例，我们还是尝试一下普通的优化算法 Nelder–Mead 算法，初值选择 $(2,2,\cdots,2)$ ，看下效果，以便与后面全局搜索算法比较。
+以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder–Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
 
 ```r
@@ -723,7 +723,7 @@ nlp$objval
 ```
 
 ```
-## [1] -133.8717
+## [1] 6.593599
 ```
 
 可以说完全没有优化效果，已经陷入局部极小值。根据[nloptr 全局优化算法](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#global-optimization)的介绍，这里采用 directL 算法，因为是全局优化，不用选择初值。
@@ -744,11 +744,19 @@ nlp$objval
 ```
 
 ```
-## [1] -145.6949
+## [1] 4.440892e-16
 ```
 
 ```r
 fn(x = c(2, 2))
+```
+
+```
+## [1] 6.593599
+```
+
+```r
+fn(x = rep(2, 10))
 ```
 
 ```
@@ -1085,7 +1093,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.005379 4.689168 3.870403 1.422140
+## [1] 1.194289 4.140167 4.439813 1.312291
 ```
 
 ```r
@@ -1093,7 +1101,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.54627
+## [1] 19.75858
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
@@ -1212,6 +1220,63 @@ HorizontalGrid(grid.lines = 2, grid.col = 'blue', grid.lty = 1)
 <!-- 广义最小二乘 gls -->
 
 **glmnet** 和 **MASS** 实现岭回归
+
+$$y = X\beta + \epsilon$$
+
+$\hat{\beta} = (X^{\top}X)^{-1}X^{\top}y, \quad \hat{Y} = X(X^{\top}X)^{-1}X^{\top}y$
+
+
+```r
+set.seed(123)
+n <- 200
+p <- 50
+x <- matrix(rnorm(n * p), n)
+y <- rnorm(n)
+lm(y ~ x + 0)
+# y 的估计
+# 教科书版
+fit_base = function(x, y) {
+  x %*% solve(t(x) %*% x) %*% t(x) %*% y
+}
+# 先向量计算，然后矩阵计算
+fit_vector = function(x, y) {
+  x %*% (solve(t(x) %*% x) %*% (t(x) %*% y))
+}
+# X'X 是对称的，防止求逆
+fit_inv = function(x, y) {
+  x %*% solve(crossprod(x), crossprod(x, y))
+}
+```
+
+QR 分解 $X_{n\times p} = Q_{n\times p} R_{p\times p}$，$n > p$，$Q^{\top}Q = I$，$R$ 是上三角矩阵，$\hat{Y} = X(X^{\top}X)^{-1}X^{\top}y = QQ^{\top}y$
+
+
+```r
+fit_qr <- function(x, y) {
+  decomp <- qr(x)
+  qr.qy(decomp, qr.qty(decomp, y))
+}
+lm.fit(x, y)
+```
+
+若 $A = X^{\top}X$ 是正定矩阵，则 $A = LL^{\top}$，$L$ 是下三角矩阵
+
+
+```r
+fit_chol <- function(x, y) {
+  decomp <- chol(crossprod(x))
+  lxy <- backsolve(decomp, crossprod(x, y), transpose = TRUE)
+  b <- backsolve(decomp, lxy)
+  x %*% b
+}
+```
+
+
+```r
+library(RcppEigen) ## Using C/C++
+system.time(fastLmPure(x, y, method = 1)) ## QR
+system.time(fastLmPure(x, y, method = 2)) ## Cholesky
+```
 
 ## 对数似然 {#sec:log-likelihood}
 
