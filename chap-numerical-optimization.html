@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-12" />
+<meta name="date" content="2021-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -905,30 +905,16 @@ Matlab 优化工具箱 <a href="https://ww2.mathworks.cn/help/releases/R2021a/pd
 通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。<a href="https://github.com/yixuan/RcppNumerical">RcppNumerical</a> 无约束数值优化，一维/多维数值积分。</p>
 <p>谷歌开源的运筹优化工具 <a href="https://github.com/google/or-tools">or-tools</a> 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 <a href="https://github.com/Operations-Research-Science/Ebook-Linear_Programming">线性规划</a> 一书值得一看。</p>
 <!-- 尽量都用一个求解器来介绍 nloptr，花一个较大篇幅单独介绍各个优化器，给出推荐优化器求解器 -->
-<div class="sourceCode" id="cb1249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1249-1"><a href="chap-numerical-optimization.html#cb1249-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 lpsolve 和 ROI.plugin.lpsolve</span></span>
-<span id="cb1249-2"><a href="chap-numerical-optimization.html#cb1249-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 nloptr 和 ROI.plugin.nloptr</span></span>
-<span id="cb1249-3"><a href="chap-numerical-optimization.html#cb1249-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)    <span class="co"># 线性规划</span></span>
-<span id="cb1249-4"><a href="chap-numerical-optimization.html#cb1249-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)   <span class="co"># 计算数值梯度</span></span>
-<span id="cb1249-5"><a href="chap-numerical-optimization.html#cb1249-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(alabama)    <span class="co"># 用于非线性约束规划，可用 nloptr 替代</span></span>
-<span id="cb1249-6"><a href="chap-numerical-optimization.html#cb1249-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI)        <span class="co"># 加载时自动注册相关求解器</span></span>
-<span id="cb1249-7"><a href="chap-numerical-optimization.html#cb1249-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)    <span class="co"># 图形绘制</span></span>
-<span id="cb1249-8"><a href="chap-numerical-optimization.html#cb1249-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quadprog)   <span class="co"># 用于二次规划，可用 nloptr 替代</span></span>
-<span id="cb1249-9"><a href="chap-numerical-optimization.html#cb1249-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)    <span class="co"># 优化问题和机器学习的关系</span></span></code></pre></div>
-<!-- 
-TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
-
-```r
-library(GA)
-library(NMOF) # Numerical Methods and Optimization in Finance http://www.nmof.info/
-library(igraph)
-```
-
-网络优化问题
-
-[PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics)
-投资组合优化，均值-方差，收益和风险权衡 
-Rmetrics 提供系列时间序列数据分析和建模的 R 包，包括投资组合 fPortfolio、多元分析 fMultivar fGarch 自回归条件异方差模型、fCopulae 二元相依结构的 Copulae 分析、fBasics 市场和基础统计
--->
+<div class="sourceCode" id="cb1249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1249-1"><a href="chap-numerical-optimization.html#cb1249-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载 ROI 时不要自动加载插件</span></span>
+<span id="cb1249-2"><a href="chap-numerical-optimization.html#cb1249-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">ROI_LOAD_PLUGINS =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1249-3"><a href="chap-numerical-optimization.html#cb1249-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)    <span class="co"># 线性规划求解器</span></span>
+<span id="cb1249-4"><a href="chap-numerical-optimization.html#cb1249-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI)        <span class="co"># 优化工具箱</span></span>
+<span id="cb1249-5"><a href="chap-numerical-optimization.html#cb1249-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI.plugin.alabama)  <span class="co"># 注册 alabama 求解器</span></span>
+<span id="cb1249-6"><a href="chap-numerical-optimization.html#cb1249-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI.plugin.nloptr)   <span class="co"># 注册 nloptr 求解器</span></span>
+<span id="cb1249-7"><a href="chap-numerical-optimization.html#cb1249-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI.plugin.lpsolve)  <span class="co"># 注册 lpsolve 求解器</span></span>
+<span id="cb1249-8"><a href="chap-numerical-optimization.html#cb1249-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI.plugin.quadprog) <span class="co"># 注册 quadprog 求解器</span></span>
+<span id="cb1249-9"><a href="chap-numerical-optimization.html#cb1249-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)    <span class="co"># 图形绘制</span></span>
+<span id="cb1249-10"><a href="chap-numerical-optimization.html#cb1249-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)    <span class="co"># 优化问题和机器学习的关系</span></span></code></pre></div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">

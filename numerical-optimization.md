@@ -12,32 +12,17 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
 
 
 ```r
-# 安装 lpsolve 和 ROI.plugin.lpsolve
-# 安装 nloptr 和 ROI.plugin.nloptr
-library(lpSolve)    # 线性规划
-library(numDeriv)   # 计算数值梯度
-library(alabama)    # 用于非线性约束规划，可用 nloptr 替代
-library(ROI)        # 加载时自动注册相关求解器
+# 加载 ROI 时不要自动加载插件
+Sys.setenv(ROI_LOAD_PLUGINS = FALSE)
+library(lpSolve)    # 线性规划求解器
+library(ROI)        # 优化工具箱
+library(ROI.plugin.alabama)  # 注册 alabama 求解器
+library(ROI.plugin.nloptr)   # 注册 nloptr 求解器
+library(ROI.plugin.lpsolve)  # 注册 lpsolve 求解器
+library(ROI.plugin.quadprog) # 注册 quadprog 求解器
 library(lattice)    # 图形绘制
-library(quadprog)   # 用于二次规划，可用 nloptr 替代
 library(kernlab)    # 优化问题和机器学习的关系
 ```
-
-<!-- 
-TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
-
-```r
-library(GA)
-library(NMOF) # Numerical Methods and Optimization in Finance http://www.nmof.info/
-library(igraph)
-```
-
-网络优化问题
-
-[PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics)
-投资组合优化，均值-方差，收益和风险权衡 
-Rmetrics 提供系列时间序列数据分析和建模的 R 包，包括投资组合 fPortfolio、多元分析 fMultivar fGarch 自回归条件异方差模型、fCopulae 二元相依结构的 Copulae 分析、fBasics 市场和基础统计
--->
 
 
 
@@ -222,8 +207,6 @@ res$solution
 
 
 ```r
-# 还必须安装 ROI.plugin.lpsolve
-library(ROI)
 op <- OP(
   objective = L_objective(c(3, 7, -12)),
   # 指定变量类型：第1个变量是连续值，第2、3个变量是整数
@@ -257,7 +240,7 @@ op
 ```
 
 ```r
-res <- ROI_solve(op)
+res <- ROI_solve(op, solver = "lpsolve")
 res$solution
 ```
 
@@ -583,7 +566,7 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## NULL
 ```
 
-香蕉函数
+[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)
 $$f(x,y) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
 ```r
@@ -643,8 +626,6 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 
 
 ```r
-# 需要安装 nloptr 和 ROI.plugin.nloptr 才可调用 nloptr 提供的求解器
-library(ROI)
 op <- OP(
   objective = F_objective(fn, n = 2L, G = gr),
   bounds = V_bound(ld = -3, ud = 3, nobj = 2L)
@@ -845,6 +826,8 @@ R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可�
 \end{array}
 \end{equation*}
 
+::: {.rmdtip data-latex="{提示}"}
+
 
 ```r
 # 目标函数
@@ -922,51 +905,77 @@ ans <- constrOptim.nl(
 ans
 ```
 
-```
-## $par
-## [1] 7.390292e-04 4.497160e-12 9.992610e-01
-## 
-## $value
-## [1] 1.000002
-## 
-## $counts
-## function gradient 
-##     1230      163 
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## NULL
-## 
-## $hessian
-##           [,1]      [,2]      [,3]
-## [1,] 120517098 120517087 120517091
-## [2,] 120517087 120517115 120517095
-## [3,] 120517091 120517095 120517091
-## 
-## $outer.iterations
-## [1] 13
-## 
-## $lambda
-## [1] 4.481599
-## 
-## $sigma
-## [1] 120517089
-## 
-## $barrier.value
-## [1] 0.003472071
-## 
-## $K
-## [1] 4.269112e-08
-```
-
 ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。
 
 
 ```r
 # 不提供梯度函数，照样可以求解
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
+```
+:::
+
+实际上，可以用 ROI 调用 alabama 的方式，这种方式可以简化目标函数梯度和约束条件的表示
+
+
+```r
+# 目标函数
+fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
+# 目标函数的梯度
+gr <- function(x) {
+  c(
+    2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]),
+    6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2]),
+    2 * (x[1] + 3 * x[2] + x[3])
+  )
+}
+heq <- function(x) {
+  x[1] + x[2] + x[3]
+}
+heq.jac <- function(x) {
+  c(1, 1, 1)
+}
+hin <- function(x) {
+  6 * x[2] + 4 * x[3] - x[1]^3
+}
+hin.jac <- function(x) {
+   c(-3 * x[1]^2, 6, 4)
+}
+```
+
+通过 ROI 调用 alabama 求解器
+
+
+```r
+set.seed(2020)
+# 初始值
+p0 <- runif(3)
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 3L, G = gr), # 4 个目标变量
+  constraints = F_constraint(
+    F = list(heq = heq, hin = hin),
+    dir = c("==", ">"),
+    rhs = c(1, 3),
+    # 等式和不等式约束的雅可比
+    J = list(heq.jac = heq.jac, hin.jac = hin.jac)
+  ),
+  bounds = V_bound(ld = 0, ud = +Inf, nobj = 3L),
+  maximum = FALSE # 求最小
+)
+nlp <- ROI_solve(op, solver = "alabama", start = p0)
+nlp$solution
+```
+
+```
+## [1] 1.674812e-06 9.994336e-08 9.999982e-01
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 1
 ```
 
 与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于[Ipopt 官网](https://coin-or.github.io/Ipopt/INTERFACES.html)，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
@@ -1093,7 +1102,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.194289 4.140167 4.439813 1.312291
+## [1] 1.001794 4.772706 3.779602 1.395450
 ```
 
 ```r
@@ -1101,7 +1110,7 @@ nlp$objval
 ```
 
 ```
-## [1] 19.75858
+## [1] 17.13579
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
@@ -1202,7 +1211,6 @@ nlp$solution
 
 ```r
 library(Ternary)
-
 TernaryPlot(atip = "Top", btip = "Bottom", ctip = "Right", axis.col = "red", 
             col = rgb(0.8, 0.8, 0.8))
 HorizontalGrid(grid.lines = 2, grid.col = 'blue', grid.lty = 1) 
@@ -1348,7 +1356,13 @@ wireframe(
 ```r
 library(rootSolve)
 library(deSolve)
-library(bvpSolve)
+```
+
+
+
+```r
+library(bvpSolve) # ODE/DAE 问题
+# Solvers for Boundary Value Problems of Differential Equations 边值问题
 # 洛伦兹方程、人口模型、寿险精算模型、混沌
 library(nonlinearTseries)
 library(plot3D) # 可用 lattice 替代
@@ -1389,19 +1403,21 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kernlab_0.9-29      quadprog_1.5-8      lattice_0.20-44    
-## [4] ROI_1.0-0           alabama_2015.3-1    numDeriv_2016.8-1.1
-## [7] lpSolve_5.6.15     
+## [1] quadprog_1.5-8            kernlab_0.9-29           
+## [3] lattice_0.20-44           ROI.plugin.quadprog_1.0-0
+## [5] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
+## [7] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
+## [9] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lpSolveAPI_5.5.2.0-17.7  knitr_1.33               magrittr_2.0.1          
-##  [4] R6_2.5.0                 rlang_0.4.11             highr_0.9               
-##  [7] stringr_1.4.0            tools_4.1.0              grid_4.1.0              
-## [10] xfun_0.24                registry_0.5-1           ROI.plugin.nloptr_1.0-0 
-## [13] jquerylib_0.1.4          htmltools_0.5.1.1        yaml_2.2.1              
-## [16] digest_0.6.27            bookdown_0.22            nloptr_1.2.2.2          
-## [19] sass_0.4.0               ROI.plugin.lpsolve_1.0-1 evaluate_0.14           
-## [22] slam_0.1-48              rmarkdown_2.9            stringi_1.6.2           
-## [25] compiler_4.1.0           bslib_0.2.5.1            jsonlite_1.7.2
+##  [1] lpSolveAPI_5.5.2.0-17.7 knitr_1.33              magrittr_2.0.1         
+##  [4] R6_2.5.0                rlang_0.4.11            alabama_2015.3-1       
+##  [7] highr_0.9               stringr_1.4.0           tools_4.1.0            
+## [10] grid_4.1.0              xfun_0.24               registry_0.5-1         
+## [13] jquerylib_0.1.4         htmltools_0.5.1.1       yaml_2.2.1             
+## [16] digest_0.6.27           numDeriv_2016.8-1.1     bookdown_0.22          
+## [19] nloptr_1.2.2.2          sass_0.4.0              evaluate_0.14          
+## [22] slam_0.1-48             rmarkdown_2.9           stringi_1.6.2          
+## [25] compiler_4.1.0          bslib_0.2.5.1           jsonlite_1.7.2
 ```
 

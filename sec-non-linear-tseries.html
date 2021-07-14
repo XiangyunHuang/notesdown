@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-12" />
+<meta name="date" content="2021-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -901,19 +901,20 @@ div.csl-indent {
 <h2><span class="header-section-number">36.10</span> 微分方程</h2>
 <p><a href="https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/">ode45 求解偏微分方程</a></p>
 <p><strong>pracma</strong> 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，<strong>deSolve</strong> 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），<strong>bvpSolve</strong>包求解 ODE 方程的边值问题。</p>
-<div class="sourceCode" id="cb1343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1343-1"><a href="sec-non-linear-tseries.html#cb1343-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rootSolve)</span>
-<span id="cb1343-2"><a href="sec-non-linear-tseries.html#cb1343-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span>
-<span id="cb1343-3"><a href="sec-non-linear-tseries.html#cb1343-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bvpSolve)</span>
-<span id="cb1343-4"><a href="sec-non-linear-tseries.html#cb1343-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 洛伦兹方程、人口模型、寿险精算模型、混沌</span></span>
-<span id="cb1343-5"><a href="sec-non-linear-tseries.html#cb1343-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nonlinearTseries)</span>
-<span id="cb1343-6"><a href="sec-non-linear-tseries.html#cb1343-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plot3D) <span class="co"># 可用 lattice 替代</span></span>
-<span id="cb1343-7"><a href="sec-non-linear-tseries.html#cb1343-7" aria-hidden="true" tabindex="-1"></a>lor <span class="ot">&lt;-</span> <span class="fu">lorenz</span>(<span class="at">do.plot =</span> F)</span>
-<span id="cb1343-8"><a href="sec-non-linear-tseries.html#cb1343-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1343-9"><a href="sec-non-linear-tseries.html#cb1343-9" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter3D</span>(lor<span class="sc">$</span>x, lor<span class="sc">$</span>y, lor<span class="sc">$</span>z,</span>
-<span id="cb1343-10"><a href="sec-non-linear-tseries.html#cb1343-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">25</span>),</span>
-<span id="cb1343-11"><a href="sec-non-linear-tseries.html#cb1343-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
-<span id="cb1343-12"><a href="sec-non-linear-tseries.html#cb1343-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">colkey =</span> <span class="cn">FALSE</span>, <span class="at">box =</span> <span class="cn">FALSE</span></span>
-<span id="cb1343-13"><a href="sec-non-linear-tseries.html#cb1343-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1347-1"><a href="sec-non-linear-tseries.html#cb1347-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rootSolve)</span>
+<span id="cb1347-2"><a href="sec-non-linear-tseries.html#cb1347-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span></code></pre></div>
+<div class="sourceCode" id="cb1348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1348-1"><a href="sec-non-linear-tseries.html#cb1348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bvpSolve) <span class="co"># ODE/DAE 问题</span></span>
+<span id="cb1348-2"><a href="sec-non-linear-tseries.html#cb1348-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Solvers for Boundary Value Problems of Differential Equations 边值问题</span></span>
+<span id="cb1348-3"><a href="sec-non-linear-tseries.html#cb1348-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 洛伦兹方程、人口模型、寿险精算模型、混沌</span></span>
+<span id="cb1348-4"><a href="sec-non-linear-tseries.html#cb1348-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nonlinearTseries)</span>
+<span id="cb1348-5"><a href="sec-non-linear-tseries.html#cb1348-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plot3D) <span class="co"># 可用 lattice 替代</span></span>
+<span id="cb1348-6"><a href="sec-non-linear-tseries.html#cb1348-6" aria-hidden="true" tabindex="-1"></a>lor <span class="ot">&lt;-</span> <span class="fu">lorenz</span>(<span class="at">do.plot =</span> F)</span>
+<span id="cb1348-7"><a href="sec-non-linear-tseries.html#cb1348-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1348-8"><a href="sec-non-linear-tseries.html#cb1348-8" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter3D</span>(lor<span class="sc">$</span>x, lor<span class="sc">$</span>y, lor<span class="sc">$</span>z,</span>
+<span id="cb1348-9"><a href="sec-non-linear-tseries.html#cb1348-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">25</span>),</span>
+<span id="cb1348-10"><a href="sec-non-linear-tseries.html#cb1348-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
+<span id="cb1348-11"><a href="sec-non-linear-tseries.html#cb1348-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">colkey =</span> <span class="cn">FALSE</span>, <span class="at">box =</span> <span class="cn">FALSE</span></span>
+<span id="cb1348-12"><a href="sec-non-linear-tseries.html#cb1348-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
             </section>
 
