@@ -1102,7 +1102,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.001794 4.772706 3.779602 1.395450
+## [1] 1.208027 4.775870 3.794599 1.158054
 ```
 
 ```r
@@ -1110,7 +1110,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.13579
+## [1] 17.47432
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
