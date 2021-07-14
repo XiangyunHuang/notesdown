@@ -11,32 +11,17 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
 <!-- 尽量都用一个求解器来介绍 nloptr，花一个较大篇幅单独介绍各个优化器，给出推荐优化器求解器 -->
 
 ```{r optim-solvers,echo=TRUE}
-# 安装 lpsolve 和 ROI.plugin.lpsolve
-# 安装 nloptr 和 ROI.plugin.nloptr
-library(lpSolve)    # 线性规划
-library(numDeriv)   # 计算数值梯度
-library(alabama)    # 用于非线性约束规划，可用 nloptr 替代
-library(ROI)        # 加载时自动注册相关求解器
+# 加载 ROI 时不要自动加载插件
+Sys.setenv(ROI_LOAD_PLUGINS = FALSE)
+library(lpSolve)    # 线性规划求解器
+library(ROI)        # 优化工具箱
+library(ROI.plugin.alabama)  # 注册 alabama 求解器
+library(ROI.plugin.nloptr)   # 注册 nloptr 求解器
+library(ROI.plugin.lpsolve)  # 注册 lpsolve 求解器
+library(ROI.plugin.quadprog) # 注册 quadprog 求解器
 library(lattice)    # 图形绘制
-library(quadprog)   # 用于二次规划，可用 nloptr 替代
 library(kernlab)    # 优化问题和机器学习的关系
 ```
-
-<!-- 
-TODO: Global and Stochastic Optimization: 遗传算法、禁忌搜索、模拟退火、蚁群算法。需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
-
-```r
-library(GA)
-library(NMOF) # Numerical Methods and Optimization in Finance http://www.nmof.info/
-library(igraph)
-```
-
-网络优化问题
-
-[PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics)
-投资组合优化，均值-方差，收益和风险权衡 
-Rmetrics 提供系列时间序列数据分析和建模的 R 包，包括投资组合 fPortfolio、多元分析 fMultivar fGarch 自回归条件异方差模型、fCopulae 二元相依结构的 Copulae 分析、fBasics 市场和基础统计
--->
 
 
 
@@ -184,8 +169,6 @@ res$solution
 \end{equation*}
 
 ```{r}
-# 还必须安装 ROI.plugin.lpsolve
-library(ROI)
 op <- OP(
   objective = L_objective(c(3, 7, -12)),
   # 指定变量类型：第1个变量是连续值，第2、3个变量是整数
@@ -204,7 +187,7 @@ op <- OP(
   maximum = TRUE
 )
 op
-res <- ROI_solve(op)
+res <- ROI_solve(op, solver = "lpsolve")
 res$solution
 res$objval
 ```
@@ -427,7 +410,7 @@ gr <- function(x) {
 optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ```
 
-香蕉函数
+[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)
 $$f(x,y) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 ```{r rosenbrock,fig.cap="香蕉函数图像",fig.width=5.5,fig.height=5}
 fn <- function(x) {
@@ -461,8 +444,6 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ```
 
 ```{r}
-# 需要安装 nloptr 和 ROI.plugin.nloptr 才可调用 nloptr 提供的求解器
-library(ROI)
 op <- OP(
   objective = F_objective(fn, n = 2L, G = gr),
   bounds = V_bound(ld = -3, ud = 3, nobj = 2L)
@@ -591,7 +572,9 @@ R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可�
 \end{array}
 \end{equation*}
 
-```{r}
+::: {.rmdtip data-latex="{提示}"}
+
+```{r,eval=FALSE}
 # 目标函数
 fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
 # 目标函数的梯度
@@ -642,7 +625,7 @@ hin.jac <- function(x) {
 
 调用 **alabama** 包的求解器 
 
-```{r}
+```{r,eval=FALSE}
 library(numDeriv)
 library(alabama)
 set.seed(12)
@@ -671,6 +654,58 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 ```{r,eval=FALSE}
 # 不提供梯度函数，照样可以求解
 ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
+```
+:::
+
+实际上，可以用 ROI 调用 alabama 的方式，这种方式可以简化目标函数梯度和约束条件的表示
+
+```{r}
+# 目标函数
+fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
+# 目标函数的梯度
+gr <- function(x) {
+  c(
+    2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]),
+    6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2]),
+    2 * (x[1] + 3 * x[2] + x[3])
+  )
+}
+heq <- function(x) {
+  x[1] + x[2] + x[3]
+}
+heq.jac <- function(x) {
+  c(1, 1, 1)
+}
+hin <- function(x) {
+  6 * x[2] + 4 * x[3] - x[1]^3
+}
+hin.jac <- function(x) {
+   c(-3 * x[1]^2, 6, 4)
+}
+```
+
+通过 ROI 调用 alabama 求解器
+
+```{r}
+set.seed(2020)
+# 初始值
+p0 <- runif(3)
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 3L, G = gr), # 4 个目标变量
+  constraints = F_constraint(
+    F = list(heq = heq, hin = hin),
+    dir = c("==", ">"),
+    rhs = c(1, 3),
+    # 等式和不等式约束的雅可比
+    J = list(heq.jac = heq.jac, hin.jac = hin.jac)
+  ),
+  bounds = V_bound(ld = 0, ud = +Inf, nobj = 3L),
+  maximum = FALSE # 求最小
+)
+nlp <- ROI_solve(op, solver = "alabama", start = p0)
+nlp$solution
+nlp$objval
 ```
 
 与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于[Ipopt 官网](https://coin-or.github.io/Ipopt/INTERFACES.html)，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
@@ -849,7 +884,6 @@ nlp$solution
 
 ```{r,eval=FALSE}
 library(Ternary)
-
 TernaryPlot(atip = "Top", btip = "Bottom", ctip = "Right", axis.col = "red", 
             col = rgb(0.8, 0.8, 0.8))
 HorizontalGrid(grid.lines = 2, grid.col = 'blue', grid.lty = 1) 
@@ -984,7 +1018,12 @@ wireframe(
 ```{r,eval=FALSE}
 library(rootSolve)
 library(deSolve)
-library(bvpSolve)
+```
+
+
+```{r,eval=FALSE}
+library(bvpSolve) # ODE/DAE 问题
+# Solvers for Boundary Value Problems of Differential Equations 边值问题
 # 洛伦兹方程、人口模型、寿险精算模型、混沌
 library(nonlinearTseries)
 library(plot3D) # 可用 lattice 替代
