@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-14" />
+<meta name="date" content="2021-07-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -760,8 +760,8 @@ div.csl-indent {
 <li class="chapter" data-level="36.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>36.4</b> 非线性规划</a>
 <ul>
 <li class="chapter" data-level="36.4.1" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:one-dimensional-optimization"><i class="fa fa-check"></i><b>36.4.1</b> 一元非线性优化</a></li>
-<li class="chapter" data-level="36.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:unconstrained-nonlinear-optimization"><i class="fa fa-check"></i><b>36.4.2</b> 多元无约束非线性优化</a></li>
-<li class="chapter" data-level="36.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:constrained-nonlinear-optimization"><i class="fa fa-check"></i><b>36.4.3</b> 多元约束非线性优化</a></li>
+<li class="chapter" data-level="36.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:nonlinear-unconstrained-optimization"><i class="fa fa-check"></i><b>36.4.2</b> 非线性无约束优化</a></li>
+<li class="chapter" data-level="36.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:nonlinear-constrained-optimization"><i class="fa fa-check"></i><b>36.4.3</b> 非线性约束优化</a></li>
 </ul></li>
 <li class="chapter" data-level="36.5" data-path="sec-nonlinear-equations.html"><a href="sec-nonlinear-equations.html"><i class="fa fa-check"></i><b>36.5</b> 非线性方程</a>
 <ul>
@@ -992,12 +992,12 @@ a column separator --></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
 <pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.90      Fair     J     VS1  64.6    58  2964 6.12 6.06 3.93
-## 2  0.81     Ideal     I     VS1  61.8    56  3422 5.97 6.00 3.70
-## 3  1.00   Premium     F     SI2  60.4    58  3858 6.47 6.44 3.90
-## 4  0.90      Good     G     SI1  60.2    63  3921 6.16 6.20 3.72
-## 5  1.00   Premium     G     SI2  59.4    62  4172 6.50 6.47 3.85
-## 6  0.33 Very Good     G     VS2  62.6    56   579 4.38 4.41 2.75</code></pre>
+## 1  0.81 Very Good     E     SI1  60.3    60  2797 6.07 6.10 3.67
+## 2  0.76     Ideal     I      IF  61.6    55  2988 5.92 5.89 3.64
+## 3  0.81     Ideal     E     SI2  62.1    57  3050 5.97 5.91 3.69
+## 4  0.70 Very Good     G     VS1  61.9    57  3127 5.68 5.71 3.53
+## 5  0.70 Very Good     F    VVS1  63.3    56  3252 5.70 5.64 3.59
+## 6  0.71      Good     G      IF  57.8    62  3583 5.82 5.95 3.40</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -1007,12 +1007,12 @@ a column separator --></p>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
 <pre><code>##    cut price rank
-## 1 Fair  1166    1
-## 2 Fair  4656    2
-## 3 Good   746    1
-## 4 Good  1257    2
-## 5 Good  4381    3
-## 6 Good  4948    4</code></pre>
+## 1 Fair  1981    1
+## 2 Good   435    1
+## 3 Good  2738    2
+## 4 Good  4416    3
+## 5 Good  4948    4
+## 6 Good  7786    5</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -1032,10 +1032,10 @@ a column separator --></p>
 <p>查看数据集</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="sec-spark-with-r.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM person&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4</code></pre>
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sec-spark-with-r.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc,<span class="st">&quot;</span></span>
 <span id="cb166-2"><a href="sec-spark-with-r.html#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * FROM person</span></span>
@@ -1044,21 +1044,21 @@ a column separator --></p>
 <span id="cb166-5"><a href="sec-spark-with-r.html#cb166-5" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 6</span></span>
 <span id="cb166-6"><a href="sec-spark-with-r.html#cb166-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sec-spark-with-r.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 今天</span></span>
 <span id="cb168-2"><a href="sec-spark-with-r.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select current_date&quot;</span>)</span></code></pre></div>
 <pre><code>##   current_date()
-## 1     2021-07-14</code></pre>
+## 1     2021-07-16</code></pre>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="sec-spark-with-r.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 昨天</span></span>
 <span id="cb170-2"><a href="sec-spark-with-r.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select date_sub(current_date, 1)&quot;</span>)</span></code></pre></div>
 <pre><code>##   date_sub(current_date(), 1)
-## 1                  2021-07-13</code></pre>
+## 1                  2021-07-15</code></pre>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="sec-spark-with-r.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 本月最后一天 current_date 所属月份的最后一天</span></span>
 <span id="cb172-2"><a href="sec-spark-with-r.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select last_day(current_date)&quot;</span>)</span></code></pre></div>
 <pre><code>##   last_day(current_date())
@@ -1066,7 +1066,7 @@ a column separator --></p>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="sec-spark-with-r.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 星期几</span></span>
 <span id="cb174-2"><a href="sec-spark-with-r.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select dayofweek(current_date)&quot;</span>)</span></code></pre></div>
 <pre><code>##   dayofweek(current_date())
-## 1                         4</code></pre>
+## 1                         6</code></pre>
 <p>最后，使用完记得关闭 Spark 连接</p>
 <div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="sec-spark-with-r.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_disconnect</span>(sc)</span></code></pre></div>
 </div>

@@ -486,9 +486,11 @@ g(1)
 ## [1] -0.453392
 ```
 
-### 多元无约束非线性优化 {#sec:unconstrained-nonlinear-optimization}
+### 非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
 
 <!-- ?nlm -->
+
+#### Himmelblau 函数 {#himmelblau}
 
 Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。
 
@@ -566,8 +568,12 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## NULL
 ```
 
-[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)
+#### Rosenbrock 函数 {#rosenbrock}
+
+[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function) 定义如下：
+
 $$f(x,y) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
+
 
 ```r
 fn <- function(x) {
@@ -645,6 +651,9 @@ nlp$solution
 ```
 ## [1] 1 1
 ```
+
+#### Ackley 函数 {#ackley}
+
 
 Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $n$ 维形式如下：
 $$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$
@@ -744,6 +753,8 @@ fn(x = rep(2, 10))
 ## [1] 6.593599
 ```
 
+#### Radistrigin 函数 {#radistrigin}
+
 这里，还有另外一个例子，Radistrigin 函数也是多摸函数
 
 $$f(\mathsf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)$$
@@ -808,9 +819,138 @@ nlp$objval
 ## [1] 0
 ```
 
-### 多元约束非线性优化 {#sec:constrained-nonlinear-optimization}
+#### 超级复杂函数 {#super-complex-function}
+
+有如下复杂的目标函数
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad \cos(x_1)\cos(x_2) - \sum_{i=1}^{5}\Big( (-1)^i \cdot i \cdot 2 \cdot \exp\big(-500 \cdot ( (x_1 - i \cdot 2)^2 + (x_2 - i\cdot 2)^2 ) \big) \Big) \\
+    s.t. \quad -50 \leq x_1, x_2 \leq 50
+\end{array}
+\end{equation*}
+
+
+
+```r
+subfun <- function(i, m) {
+  (-1)^i * i * 2 * exp(-500 * ((m[1] - i * 2)^2 + (m[2] - i * 2)^2))
+}
+
+fn <- function(x) {
+  cos(x[1]) * cos(x[2]) - sum(mapply(FUN = subfun, i = 1:5, MoreArgs = list(m = x)))
+}
+```
+
+目标函数的图像见图 \@ref(fig:super-function)，搜索区域 $[-50, 50] \times [-50, 50]$ 内几乎没有变化的梯度，给寻优过程带来很大困难。
+
+
+```r
+df <- expand.grid(
+  x = seq(-50, 50, length.out = 101),
+  y = seq(-50, 50, length.out = 101)
+)
+
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -65, y = 0)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/super-function-1.png" alt="函数图像" width="528" />
+<p class="caption">(\#fig:super-function)函数图像</p>
+</div>
+将区域 $[0, 12] \times [0, 12]$ 的图像绘制出来，不难发现，有不少局部陷阱。
+
+
+```r
+df <- expand.grid(
+  x = seq(0, 12, length.out = 101),
+  y = seq(0, 12, length.out = 101)
+)
+
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -65, y = 0)
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/zoom-super-function-1.png" alt="局部放大函数图像" width="528" />
+<p class="caption">(\#fig:zoom-super-function)局部放大函数图像</p>
+</div>
+
+最优解在 $(7.999982, 7.999982)$ 取得，目标函数值为 -7.978832。
+
+
+```r
+fn(x = c(7.999982, 7.999982))
+```
+
+```
+## [1] -7.978832
+```
+
+面对如此复杂的函数，调用全局优化器
+
+
+```r
+op <- OP(
+  objective = F_objective(fn, n = 2L),
+  bounds = V_bound(ld = -50, ud = 50, nobj = 2L)
+)
+nlp <- ROI_solve(op, solver = "nloptr.directL")
+nlp$solution
+```
+
+```
+## [1]  0.00000 22.22222
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] -0.9734211
+```
+
+实际上，还是陷入局部最优解。
+
+```
+SETS:
+P/1..5/;
+Endsets
+Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^2 + (x2 - j * 2)^2)));
+@Bnd(-50, x1, 50);
+@Bnd(-50, x2, 50);
+```
+
+Lingo 18.0 启用全局优化求解器后，在 $(x_1 = 7.999982, x_2 = 7.999982)$ 取得最小值 -7.978832。而默认未启用全局优化求解器的情况下，在 $(x_1 = 18.84956, x_2 = -40.84070)$ 取得局部极小值 -1.000000。
+
+
+### 非线性约束优化 {#sec:nonlinear-constrained-optimization}
 
 R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可求解线性不等式约束优化，下面主要介绍非线性约束的非线性优化问题。
+
+#### 非线性严格不等式约束 {#strictly-inequality-constraints}
 
 第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。
 
@@ -978,6 +1118,8 @@ nlp$objval
 ## [1] 1
 ```
 
+#### 非线性和箱式约束 {#box-constrained}
+
 与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于[Ipopt 官网](https://coin-or.github.io/Ipopt/INTERFACES.html)，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
 
 \begin{equation*}
@@ -1102,7 +1244,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.208027 4.775870 3.794599 1.158054
+## [1] 1.078987 4.954947 3.537895 1.327220
 ```
 
 ```r
@@ -1110,10 +1252,85 @@ nlp$objval
 ```
 
 ```
-## [1] 17.47432
+## [1] 17.24525
 ```
 
-可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
+可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
+
+#### 含复杂目标函数 {#complex-object-function}
+
+下面这个目标函数比较复杂，约束条件也是非线性的
+
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad \frac{(\sin(2\pi x_1))^3 \sin(2\pi x_2)}{x_1^3 (x_1 + x_2)} \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     x_1^2 - x_2 + 1 \leq 0 \\
+     1 - x_1 + (x_2 - 4)^2 \geq 0 \\
+     1 \leq x_1, x_2 \leq 10
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+
+
+```r
+# 目标函数
+fn <- function(x) (sin(2*pi*x[1]))^3 * sin(2*pi*x[2])/(x[1]^3*(x[1] + x[2]))
+# 目标函数的梯度
+gr <- function(x) {
+  numDeriv::grad(fn, c(x[1], x[2]))
+}
+
+hin <- function(x) {
+  c(
+    x[1]^2 - x[2] + 1,
+    1 - x[1] + (x[2] - 4)^2
+  )
+}
+
+hin.jac <- function(x) {
+  matrix(c(
+    2 * x[1], -1,
+    -1, 2 * x[2]
+  ),
+  ncol = 2, byrow = TRUE
+  )
+}
+
+# 初始值
+p0 <- c(2, 5)
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 2L, G = gr), # 2 个目标变量
+  constraints = F_constraint(
+    F = list(hin = hin),
+    dir = c("<=", "<="),
+    rhs = c(0, 0),
+    # 不等式约束的雅可比
+    J = list(hin.jac = hin.jac)
+  ),
+  bounds = V_bound(ld = 0, ud = 10, nobj = 2L),
+  maximum = TRUE # 求最大
+)
+nlp <- ROI_solve(op, solver = "nloptr.isres", start = p0)
+nlp$solution
+```
+
+```
+## [1] 1.227974 4.245368
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] 0.09582504
+```
+
+下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
 
 \begin{equation*}
 \begin{array}{l}
@@ -1191,6 +1408,176 @@ nlp$solution
 ```
 
 计算结果和 Octave 的示例一致。
+
+#### 含复杂约束条件 {#complex-constrained-function}
+
+
+\begin{equation*}
+\begin{array}{l}
+  \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
+         \qquad + \sin(\sin(80\cdot y)) - \sin(10\cdot (x +y)) + \frac{(x^2 + y^2)^{\sin(y)}}{4} \\
+    s.t. \quad
+    \begin{array}{l}
+     x - \big((\cos(y))^x - x\big)^y = 0 \\
+    -50 \leq x_1,x_2 \leq 50
+    \end{array}
+\end{array}
+\end{equation*}
+
+Lingo 代码如下：
+
+```
+Min = @exp(@sin(50 * x)) + @sin(60 * @exp(y)) + @sin(70 * @sin(x)) 
+      + @sin(@sin(80 * y)) - @sin(10 * (x + y)) + (x^2 + y^2)^@sin(y) / 4;
+
+x - (( @cos(y) )^x - x)^y = 0;
+
+@bnd(-50, x, 50);
+@bnd(-50, y, 50);
+```
+
+启用全局优化求解器，求解 14 分钟，在 $(0.08256372, 24.56510)$ 取得极小值 -2.863497。不启用全局优化器就没法解，Lingo 会报错，找不到最优解，勉强找到一个可行解 $(0.06082750, 44.12793)$，目标值为 -1.29816。
+
+
+```r
+fn <- function(x) {
+  exp(sin(50 * x[1])) + sin(60 * exp(x[2])) + sin(70 * sin(x[1])) +
+    sin(sin(80 * x[2])) - sin(10 * (x[1] + x[2])) + (x[1]^2 + x[2]^2)^(sin(x[2])) / 4
+}
+gr <- function(x){
+  numDeriv::grad(fn, c(x[1], x[2]))
+}
+heq <- function(x){
+  x[1] - ( (cos(x[2]))^x[1] - x[1] )^x[2]
+}
+heq.jac <- function(x){
+  numDeriv::grad(heq, c(x[1], x[2]))
+}
+
+fn(x = c(0.06082750, 44.12793))
+```
+
+```
+## [1] -1.29816
+```
+
+```r
+fn(x = c(1, 0))
+```
+
+```
+## [1] 1.966877
+```
+
+```r
+heq(x = c(0.06082750, 44.12793))
+```
+
+```
+## [1] 1.923673e-08
+```
+
+```r
+heq(x = c(1, 0))
+```
+
+```
+## [1] 0
+```
+
+
+```r
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 2L, G = gr), # 2 个目标变量
+  constraints = F_constraint(
+    F = list(heq = heq),
+    dir = "==",
+    rhs = 0,
+    J = list(heq.jac = heq.jac)
+  ),
+  bounds = V_bound(ld = -50, ud = 50, nobj = 2L),
+  maximum = FALSE # 求最小
+)
+```
+
+nloptr.auglag 无法求解此优化问题
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.auglag", start = c(1, 0))
+nlp$solution
+```
+
+调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解
+
+
+```r
+nlp <- ROI_solve(op, solver = "nloptr.isres", start = c(1, 0))
+nlp$solution
+```
+
+```
+## [1]  3.748062 36.035219
+```
+
+```r
+nlp$objval
+```
+
+```
+## [1] -3.033235
+```
+比如下面三组
+
+
+```r
+fn(x = c(40.95941, 41.52914))
+```
+
+```
+## [1] -1.025926
+```
+
+```r
+heq(x = c(40.95941, 41.52914))
+```
+
+```
+## [1] NaN
+```
+
+```r
+fn(x = c(-21.88091, 28.96994))
+```
+
+```
+## [1] -1.467513
+```
+
+```r
+heq(x = c(-21.88091, 28.96994))
+```
+
+```
+## [1] NaN
+```
+
+```r
+fn(x = c(-49.921967437, 4.8499336803))
+```
+
+```
+## [1] -3.466596
+```
+
+```r
+heq(x = c(-49.921967437, 4.8499336803))
+```
+
+```
+## [1] -8.515447e+208
+```
 
 ## 非线性方程 {#sec:nonlinear-equations}
 

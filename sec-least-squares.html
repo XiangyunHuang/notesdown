@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-14" />
+<meta name="date" content="2021-07-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -760,8 +760,8 @@ div.csl-indent {
 <li class="chapter" data-level="36.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>36.4</b> 非线性规划</a>
 <ul>
 <li class="chapter" data-level="36.4.1" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:one-dimensional-optimization"><i class="fa fa-check"></i><b>36.4.1</b> 一元非线性优化</a></li>
-<li class="chapter" data-level="36.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:unconstrained-nonlinear-optimization"><i class="fa fa-check"></i><b>36.4.2</b> 多元无约束非线性优化</a></li>
-<li class="chapter" data-level="36.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:constrained-nonlinear-optimization"><i class="fa fa-check"></i><b>36.4.3</b> 多元约束非线性优化</a></li>
+<li class="chapter" data-level="36.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:nonlinear-unconstrained-optimization"><i class="fa fa-check"></i><b>36.4.2</b> 非线性无约束优化</a></li>
+<li class="chapter" data-level="36.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec:nonlinear-constrained-optimization"><i class="fa fa-check"></i><b>36.4.3</b> 非线性约束优化</a></li>
 </ul></li>
 <li class="chapter" data-level="36.5" data-path="sec-nonlinear-equations.html"><a href="sec-nonlinear-equations.html"><i class="fa fa-check"></i><b>36.5</b> 非线性方程</a>
 <ul>
@@ -904,41 +904,41 @@ div.csl-indent {
 <p><strong>glmnet</strong> 和 <strong>MASS</strong> 实现岭回归</p>
 <p><span class="math display">\[y = X\beta + \epsilon\]</span></p>
 <p><span class="math inline">\(\hat{\beta} = (X^{\top}X)^{-1}X^{\top}y, \quad \hat{Y} = X(X^{\top}X)^{-1}X^{\top}y\)</span></p>
-<div class="sourceCode" id="cb1342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1342-1"><a href="sec-least-squares.html#cb1342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1342-2"><a href="sec-least-squares.html#cb1342-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb1342-3"><a href="sec-least-squares.html#cb1342-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb1342-4"><a href="sec-least-squares.html#cb1342-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> p), n)</span>
-<span id="cb1342-5"><a href="sec-least-squares.html#cb1342-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1342-6"><a href="sec-least-squares.html#cb1342-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="dv">0</span>)</span>
-<span id="cb1342-7"><a href="sec-least-squares.html#cb1342-7" aria-hidden="true" tabindex="-1"></a><span class="co"># y 的估计</span></span>
-<span id="cb1342-8"><a href="sec-least-squares.html#cb1342-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 教科书版</span></span>
-<span id="cb1342-9"><a href="sec-least-squares.html#cb1342-9" aria-hidden="true" tabindex="-1"></a>fit_base <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1342-10"><a href="sec-least-squares.html#cb1342-10" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> y</span>
-<span id="cb1342-11"><a href="sec-least-squares.html#cb1342-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1342-12"><a href="sec-least-squares.html#cb1342-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 先向量计算，然后矩阵计算</span></span>
-<span id="cb1342-13"><a href="sec-least-squares.html#cb1342-13" aria-hidden="true" tabindex="-1"></a>fit_vector <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1342-14"><a href="sec-least-squares.html#cb1342-14" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> (<span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> (<span class="fu">t</span>(x) <span class="sc">%*%</span> y))</span>
-<span id="cb1342-15"><a href="sec-least-squares.html#cb1342-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1342-16"><a href="sec-least-squares.html#cb1342-16" aria-hidden="true" tabindex="-1"></a><span class="co"># X&#39;X 是对称的，防止求逆</span></span>
-<span id="cb1342-17"><a href="sec-least-squares.html#cb1342-17" aria-hidden="true" tabindex="-1"></a>fit_inv <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1342-18"><a href="sec-least-squares.html#cb1342-18" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(x), <span class="fu">crossprod</span>(x, y))</span>
-<span id="cb1342-19"><a href="sec-least-squares.html#cb1342-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1383-1"><a href="sec-least-squares.html#cb1383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1383-2"><a href="sec-least-squares.html#cb1383-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb1383-3"><a href="sec-least-squares.html#cb1383-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1383-4"><a href="sec-least-squares.html#cb1383-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> p), n)</span>
+<span id="cb1383-5"><a href="sec-least-squares.html#cb1383-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1383-6"><a href="sec-least-squares.html#cb1383-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="dv">0</span>)</span>
+<span id="cb1383-7"><a href="sec-least-squares.html#cb1383-7" aria-hidden="true" tabindex="-1"></a><span class="co"># y 的估计</span></span>
+<span id="cb1383-8"><a href="sec-least-squares.html#cb1383-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 教科书版</span></span>
+<span id="cb1383-9"><a href="sec-least-squares.html#cb1383-9" aria-hidden="true" tabindex="-1"></a>fit_base <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1383-10"><a href="sec-least-squares.html#cb1383-10" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> y</span>
+<span id="cb1383-11"><a href="sec-least-squares.html#cb1383-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1383-12"><a href="sec-least-squares.html#cb1383-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 先向量计算，然后矩阵计算</span></span>
+<span id="cb1383-13"><a href="sec-least-squares.html#cb1383-13" aria-hidden="true" tabindex="-1"></a>fit_vector <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1383-14"><a href="sec-least-squares.html#cb1383-14" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> (<span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> (<span class="fu">t</span>(x) <span class="sc">%*%</span> y))</span>
+<span id="cb1383-15"><a href="sec-least-squares.html#cb1383-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1383-16"><a href="sec-least-squares.html#cb1383-16" aria-hidden="true" tabindex="-1"></a><span class="co"># X&#39;X 是对称的，防止求逆</span></span>
+<span id="cb1383-17"><a href="sec-least-squares.html#cb1383-17" aria-hidden="true" tabindex="-1"></a>fit_inv <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1383-18"><a href="sec-least-squares.html#cb1383-18" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(x), <span class="fu">crossprod</span>(x, y))</span>
+<span id="cb1383-19"><a href="sec-least-squares.html#cb1383-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>QR 分解 <span class="math inline">\(X_{n\times p} = Q_{n\times p} R_{p\times p}\)</span>，<span class="math inline">\(n &gt; p\)</span>，<span class="math inline">\(Q^{\top}Q = I\)</span>，<span class="math inline">\(R\)</span> 是上三角矩阵，<span class="math inline">\(\hat{Y} = X(X^{\top}X)^{-1}X^{\top}y = QQ^{\top}y\)</span></p>
-<div class="sourceCode" id="cb1343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1343-1"><a href="sec-least-squares.html#cb1343-1" aria-hidden="true" tabindex="-1"></a>fit_qr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1343-2"><a href="sec-least-squares.html#cb1343-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">qr</span>(x)</span>
-<span id="cb1343-3"><a href="sec-least-squares.html#cb1343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qr.qy</span>(decomp, <span class="fu">qr.qty</span>(decomp, y))</span>
-<span id="cb1343-4"><a href="sec-least-squares.html#cb1343-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1343-5"><a href="sec-least-squares.html#cb1343-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.fit</span>(x, y)</span></code></pre></div>
+<div class="sourceCode" id="cb1384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1384-1"><a href="sec-least-squares.html#cb1384-1" aria-hidden="true" tabindex="-1"></a>fit_qr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1384-2"><a href="sec-least-squares.html#cb1384-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">qr</span>(x)</span>
+<span id="cb1384-3"><a href="sec-least-squares.html#cb1384-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qr.qy</span>(decomp, <span class="fu">qr.qty</span>(decomp, y))</span>
+<span id="cb1384-4"><a href="sec-least-squares.html#cb1384-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1384-5"><a href="sec-least-squares.html#cb1384-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.fit</span>(x, y)</span></code></pre></div>
 <p>若 <span class="math inline">\(A = X^{\top}X\)</span> 是正定矩阵，则 <span class="math inline">\(A = LL^{\top}\)</span>，<span class="math inline">\(L\)</span> 是下三角矩阵</p>
-<div class="sourceCode" id="cb1344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1344-1"><a href="sec-least-squares.html#cb1344-1" aria-hidden="true" tabindex="-1"></a>fit_chol <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1344-2"><a href="sec-least-squares.html#cb1344-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">chol</span>(<span class="fu">crossprod</span>(x))</span>
-<span id="cb1344-3"><a href="sec-least-squares.html#cb1344-3" aria-hidden="true" tabindex="-1"></a>  lxy <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, <span class="fu">crossprod</span>(x, y), <span class="at">transpose =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1344-4"><a href="sec-least-squares.html#cb1344-4" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, lxy)</span>
-<span id="cb1344-5"><a href="sec-least-squares.html#cb1344-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> b</span>
-<span id="cb1344-6"><a href="sec-least-squares.html#cb1344-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb1345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1345-1"><a href="sec-least-squares.html#cb1345-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RcppEigen) <span class="do">## Using C/C++</span></span>
-<span id="cb1345-2"><a href="sec-least-squares.html#cb1345-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
-<span id="cb1345-3"><a href="sec-least-squares.html#cb1345-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span></code></pre></div>
+<div class="sourceCode" id="cb1385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1385-1"><a href="sec-least-squares.html#cb1385-1" aria-hidden="true" tabindex="-1"></a>fit_chol <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1385-2"><a href="sec-least-squares.html#cb1385-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">chol</span>(<span class="fu">crossprod</span>(x))</span>
+<span id="cb1385-3"><a href="sec-least-squares.html#cb1385-3" aria-hidden="true" tabindex="-1"></a>  lxy <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, <span class="fu">crossprod</span>(x, y), <span class="at">transpose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1385-4"><a href="sec-least-squares.html#cb1385-4" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, lxy)</span>
+<span id="cb1385-5"><a href="sec-least-squares.html#cb1385-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> b</span>
+<span id="cb1385-6"><a href="sec-least-squares.html#cb1385-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1386-1"><a href="sec-least-squares.html#cb1386-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RcppEigen) <span class="do">## Using C/C++</span></span>
+<span id="cb1386-2"><a href="sec-least-squares.html#cb1386-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
+<span id="cb1386-3"><a href="sec-least-squares.html#cb1386-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span></code></pre></div>
 </div>
             </section>
 
