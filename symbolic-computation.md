@@ -138,9 +138,6 @@ solutions
 ```
 
 
-
-
-
 ```python
 from sympy import * 
 # 设置显示样式
@@ -151,18 +148,3 @@ integrate(x**2 + x + 1, x)
 # 因式分解
 factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
 ```
-
-
-
-```r
-library(Ryacas)
-
-x <- ysym("x")
-integrate(f = x^2 + x + 1, var = "x")
-
-yac_str(y_fn("5*x^4/2 + 3*x^3 - 108*x^2/5 - 27*x - 81/10", "Factor"))
-
-eq <- function(x) x^2 + x + 1
-integrate(f = eq, lower = 0, upper = 1)
-```
-

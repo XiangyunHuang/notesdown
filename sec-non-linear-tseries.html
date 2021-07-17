@@ -136,7 +136,7 @@
 <script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
 <script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
-<script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
+<script src="libs/echarts4r-binding-0.4.1/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
@@ -697,8 +697,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="32" data-path="chap-gradient-boosting-machine.html"><a href="chap-gradient-boosting-machine.html"><i class="fa fa-check"></i><b>32</b> 梯度提升机</a>
 <ul>
-<li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
-<li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
+<li class="chapter" data-level="32.1" data-path="sec-xgboost.html"><a href="sec-xgboost.html"><i class="fa fa-check"></i><b>32.1</b> XGBoost</a></li>
 </ul></li>
 <li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
@@ -899,22 +898,52 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec:non-linear-tseries" class="section level2" number="36.10">
 <h2><span class="header-section-number">36.10</span> 微分方程</h2>
+<!-- 介绍洛伦兹方程、人口模型、寿险精算模型、混沌 -->
 <p><a href="https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/">ode45 求解偏微分方程</a></p>
-<p><strong>pracma</strong> 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，<strong>deSolve</strong> 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），<strong>bvpSolve</strong>包求解 ODE 方程的边值问题。</p>
-<div class="sourceCode" id="cb1388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1388-1"><a href="sec-non-linear-tseries.html#cb1388-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rootSolve)</span>
-<span id="cb1388-2"><a href="sec-non-linear-tseries.html#cb1388-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span></code></pre></div>
-<div class="sourceCode" id="cb1389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1389-1"><a href="sec-non-linear-tseries.html#cb1389-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bvpSolve) <span class="co"># ODE/DAE 问题</span></span>
-<span id="cb1389-2"><a href="sec-non-linear-tseries.html#cb1389-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Solvers for Boundary Value Problems of Differential Equations 边值问题</span></span>
-<span id="cb1389-3"><a href="sec-non-linear-tseries.html#cb1389-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 洛伦兹方程、人口模型、寿险精算模型、混沌</span></span>
-<span id="cb1389-4"><a href="sec-non-linear-tseries.html#cb1389-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nonlinearTseries)</span>
-<span id="cb1389-5"><a href="sec-non-linear-tseries.html#cb1389-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plot3D) <span class="co"># 可用 lattice 替代</span></span>
-<span id="cb1389-6"><a href="sec-non-linear-tseries.html#cb1389-6" aria-hidden="true" tabindex="-1"></a>lor <span class="ot">&lt;-</span> <span class="fu">lorenz</span>(<span class="at">do.plot =</span> F)</span>
-<span id="cb1389-7"><a href="sec-non-linear-tseries.html#cb1389-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1389-8"><a href="sec-non-linear-tseries.html#cb1389-8" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter3D</span>(lor<span class="sc">$</span>x, lor<span class="sc">$</span>y, lor<span class="sc">$</span>z,</span>
-<span id="cb1389-9"><a href="sec-non-linear-tseries.html#cb1389-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ann =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">25</span>),</span>
-<span id="cb1389-10"><a href="sec-non-linear-tseries.html#cb1389-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;o&quot;</span>, <span class="at">cex =</span> <span class="fl">0.3</span>,</span>
-<span id="cb1389-11"><a href="sec-non-linear-tseries.html#cb1389-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">colkey =</span> <span class="cn">FALSE</span>, <span class="at">box =</span> <span class="cn">FALSE</span></span>
-<span id="cb1389-12"><a href="sec-non-linear-tseries.html#cb1389-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><strong>pracma</strong> 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，<strong>deSolve</strong> 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），<strong>bvpSolve</strong>包求解 DAE/ODE 方程的边值问题。</p>
+<p><a href="https://en.wikipedia.org/wiki/Lorenz_system">洛伦兹系统</a>是一个常微分方程组，系统参数的默认值为 <span class="math inline">\((\sigma = 10, \rho = 28, \beta = 8/3)\)</span>，初值为 <span class="math inline">\((-13, -14, 47)\)</span>。</p>
+<p><span class="math display">\[\begin{equation*}
+\begin{array}{l}
+\frac{\partial x}{\partial t} &amp;= \sigma (y - x) \\
+\frac{\partial y}{\partial t} &amp;= x(\rho -z) - y \\
+\frac{\partial x}{\partial t} &amp;= xy - \beta z
+\end{array}
+\end{equation*}\]</span></p>
+<div class="sourceCode" id="cb1384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1384-1"><a href="sec-non-linear-tseries.html#cb1384-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span>
+<span id="cb1384-2"><a href="sec-non-linear-tseries.html#cb1384-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 参数</span></span>
+<span id="cb1384-3"><a href="sec-non-linear-tseries.html#cb1384-3" aria-hidden="true" tabindex="-1"></a>pars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="sc">-</span><span class="dv">8</span> <span class="sc">/</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">c =</span> <span class="dv">28</span>)</span>
+<span id="cb1384-4"><a href="sec-non-linear-tseries.html#cb1384-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 初值</span></span>
+<span id="cb1384-5"><a href="sec-non-linear-tseries.html#cb1384-5" aria-hidden="true" tabindex="-1"></a>state <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">X =</span> <span class="dv">1</span>, <span class="at">Y =</span> <span class="dv">1</span>, <span class="at">Z =</span> <span class="dv">1</span>)</span>
+<span id="cb1384-6"><a href="sec-non-linear-tseries.html#cb1384-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 时间间隔</span></span>
+<span id="cb1384-7"><a href="sec-non-linear-tseries.html#cb1384-7" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb1384-8"><a href="sec-non-linear-tseries.html#cb1384-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义方程组</span></span>
+<span id="cb1384-9"><a href="sec-non-linear-tseries.html#cb1384-9" aria-hidden="true" tabindex="-1"></a>lorenz_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(t, state, parameters) {</span>
+<span id="cb1384-10"><a href="sec-non-linear-tseries.html#cb1384-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">as.list</span>(<span class="fu">c</span>(state, parameters)), {</span>
+<span id="cb1384-11"><a href="sec-non-linear-tseries.html#cb1384-11" aria-hidden="true" tabindex="-1"></a>    dX <span class="ot">&lt;-</span> a <span class="sc">*</span> X <span class="sc">+</span> Y <span class="sc">*</span> Z</span>
+<span id="cb1384-12"><a href="sec-non-linear-tseries.html#cb1384-12" aria-hidden="true" tabindex="-1"></a>    dY <span class="ot">&lt;-</span> b <span class="sc">*</span> (Y <span class="sc">-</span> Z)</span>
+<span id="cb1384-13"><a href="sec-non-linear-tseries.html#cb1384-13" aria-hidden="true" tabindex="-1"></a>    dZ <span class="ot">&lt;-</span> <span class="sc">-</span>X <span class="sc">*</span> Y <span class="sc">+</span> c <span class="sc">*</span> Y <span class="sc">-</span> Z</span>
+<span id="cb1384-14"><a href="sec-non-linear-tseries.html#cb1384-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="fu">c</span>(dX, dY, dZ))</span>
+<span id="cb1384-15"><a href="sec-non-linear-tseries.html#cb1384-15" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1384-16"><a href="sec-non-linear-tseries.html#cb1384-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1384-17"><a href="sec-non-linear-tseries.html#cb1384-17" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">ode</span>(</span>
+<span id="cb1384-18"><a href="sec-non-linear-tseries.html#cb1384-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> state, <span class="at">times =</span> times,</span>
+<span id="cb1384-19"><a href="sec-non-linear-tseries.html#cb1384-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> lorenz_fun, <span class="at">parms =</span> pars</span>
+<span id="cb1384-20"><a href="sec-non-linear-tseries.html#cb1384-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>调用 <strong>scatterplot3d</strong> 绘制三维曲线图，如图<a href="sec-non-linear-tseries.html#fig:ode-lorenz">36.11</a> 所示</p>
+<div class="sourceCode" id="cb1385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1385-1"><a href="sec-non-linear-tseries.html#cb1385-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scatterplot3d)</span>
+<span id="cb1385-2"><a href="sec-non-linear-tseries.html#cb1385-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1385-3"><a href="sec-non-linear-tseries.html#cb1385-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot3d</span>(</span>
+<span id="cb1385-4"><a href="sec-non-linear-tseries.html#cb1385-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> out[, <span class="st">&quot;X&quot;</span>], <span class="at">y =</span> out[, <span class="st">&quot;Y&quot;</span>], <span class="at">z =</span> out[, <span class="st">&quot;Z&quot;</span>],</span>
+<span id="cb1385-5"><a href="sec-non-linear-tseries.html#cb1385-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.axis =</span> <span class="st">&quot;black&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">color =</span> <span class="st">&quot;gray&quot;</span>,</span>
+<span id="cb1385-6"><a href="sec-non-linear-tseries.html#cb1385-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x), <span class="at">ylab =</span> <span class="fu">expression</span>(y), <span class="at">zlab =</span> <span class="fu">expression</span>(z),</span>
+<span id="cb1385-7"><a href="sec-non-linear-tseries.html#cb1385-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.grid =</span> <span class="st">&quot;gray&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Lorenz&quot;</span></span>
+<span id="cb1385-8"><a href="sec-non-linear-tseries.html#cb1385-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:ode-lorenz"></span>
+<img src="numerical-optimization_files/figure-html/ode-lorenz-1.png" alt="洛伦兹曲线" width="528" />
+<p class="caption">
+图 36.11: 洛伦兹曲线
+</p>
+</div>
 </div>
             </section>
 

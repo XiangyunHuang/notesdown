@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="sec-nlm-gp.html"/>
-<link rel="next" href="sec-catboost.html"/>
+<link rel="next" href="sec-xgboost.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -136,7 +136,7 @@
 <script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
 <script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
-<script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
+<script src="libs/echarts4r-binding-0.4.1/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
@@ -697,8 +697,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="32" data-path="chap-gradient-boosting-machine.html"><a href="chap-gradient-boosting-machine.html"><i class="fa fa-check"></i><b>32</b> 梯度提升机</a>
 <ul>
-<li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
-<li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
+<li class="chapter" data-level="32.1" data-path="sec-xgboost.html"><a href="sec-xgboost.html"><i class="fa fa-check"></i><b>32.1</b> XGBoost</a></li>
 </ul></li>
 <li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
@@ -908,16 +907,13 @@ useR!2018 Erin LeDell [Machine Learning Tutorial](https://koalaverse.github.io/m
 
 基于决策树的梯度提升算法
 
-要详细介绍 CatBoost 的例子，具体的参数
-
-https://catboost.ai/docs/concepts/r-quickstart.html
-
 模型接口，训练、测试数据集的描述、要求
 
 https://catboost.ai/docs/concepts/input-data_values-file.html
 
 -->
-<p>关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 <span class="citation">(<a href="#ref-Friedman2001" role="doc-biblioref">Friedman 2001</a>)</span>， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。<a href="https://github.com/gbm-developers/gbm">gbm</a> 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。<a href="https://github.com/h2oai/h2o-3/tree/master/h2o-r">h2o</a> 是基于 Java 平台的机器学习平台，学习材料 <a href="https://github.com/h2oai/h2o-tutorials">h2o-tutorials</a>。基于决策树的分类和回归方法 <a href="https://github.com/topepo/caret/">caret</a> 和基于模型的提升方法 <a href="https://github.com/boost-R" class="uri">https://github.com/boost-R</a> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。<a href="https://github.com/dmlc/xgboost/tree/master/R-package">xgboost</a> 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <a href="https://xgboost.apachecn.org/cn/latest/" class="uri">https://xgboost.apachecn.org/cn/latest/</a>，也提供多种语言接口。类似的还有 <a href="https://github.com/schalkdaniel/compboost">compboost</a>，其它比较小众的提升库还有 <a href="https://github.com/aksnzhy/xlearn">xLearn</a>。</p>
+<p>关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 <span class="citation">(<a href="#ref-Friedman2001" role="doc-biblioref">Friedman 2001</a>)</span>， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。<a href="https://github.com/gbm-developers/gbm">gbm</a> 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。<a href="https://github.com/h2oai/h2o-3/tree/master/h2o-r">h2o</a> 是基于 Java 平台的机器学习平台，学习材料 <a href="https://github.com/h2oai/h2o-tutorials">h2o-tutorials</a>。基于决策树的分类和回归方法 <a href="https://github.com/topepo/caret/">caret</a> 和基于模型的提升方法 <a href="https://github.com/boost-R" class="uri">https://github.com/boost-R</a> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。<a href="https://github.com/dmlc/xgboost/tree/master/R-package">xgboost</a> 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <a href="https://xgboost.apachecn.org/cn/latest/" class="uri">https://xgboost.apachecn.org/cn/latest/</a>，也提供多种语言接口。类似的还有 <a href="https://github.com/schalkdaniel/compboost">compboost</a>，其它比较小众的提升库还有 <a href="https://github.com/aksnzhy/xlearn">xLearn</a>。<a href="https://github.com/catboost/catboost">catboost</a> 开源的基于决策树的梯度提升库，支持分类特征，提供 R 和 Python 接口，详见官网 <a href="https://catboost.ai" class="uri">https://catboost.ai</a>。
+<a href="https://github.com/Microsoft/LightGBM/tree/master/R-package">LightGBM</a> 提供了 R 包，微软的工具主要支持 Windows 平台和 VS 编译工具。 Python 接口的中文文档 <a href="https://lightgbm.apachecn.org/" class="uri">https://lightgbm.apachecn.org/</a>， 顺便一提，袁进辉 等人开发的<a href="https://github.com/Microsoft/lightlda">LightLDA</a> 是大规模主题建模的框架。</p>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
@@ -931,7 +927,7 @@ Friedman, Jerome H. 2001. <span>“Greedy Function Approximation: A Gradient Boo
         </div>
       </div>
 <a href="sec-nlm-gp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-catboost.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sec-xgboost.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

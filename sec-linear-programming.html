@@ -136,7 +136,7 @@
 <script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
 <script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
-<script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
+<script src="libs/echarts4r-binding-0.4.1/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
@@ -697,8 +697,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="32" data-path="chap-gradient-boosting-machine.html"><a href="chap-gradient-boosting-machine.html"><i class="fa fa-check"></i><b>32</b> 梯度提升机</a>
 <ul>
-<li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
-<li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
+<li class="chapter" data-level="32.1" data-path="sec-xgboost.html"><a href="sec-xgboost.html"><i class="fa fa-check"></i><b>32.1</b> XGBoost</a></li>
 </ul></li>
 <li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
@@ -940,20 +939,20 @@ s.t.\left\{
 \end{array} 
 \end{equation*}\]</span></p>
 <p>对应成 R 代码如下</p>
-<div class="sourceCode" id="cb1250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1250-1"><a href="sec-linear-programming.html#cb1250-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lpSolve 添加约束条件</span></span>
-<span id="cb1250-2"><a href="sec-linear-programming.html#cb1250-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)</span>
-<span id="cb1250-3"><a href="sec-linear-programming.html#cb1250-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标</span></span>
-<span id="cb1250-4"><a href="sec-linear-programming.html#cb1250-4" aria-hidden="true" tabindex="-1"></a>f.obj <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>)</span>
-<span id="cb1250-5"><a href="sec-linear-programming.html#cb1250-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 约束</span></span>
-<span id="cb1250-6"><a href="sec-linear-programming.html#cb1250-6" aria-hidden="true" tabindex="-1"></a>f.con <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1250-7"><a href="sec-linear-programming.html#cb1250-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 方向</span></span>
-<span id="cb1250-8"><a href="sec-linear-programming.html#cb1250-8" aria-hidden="true" tabindex="-1"></a>f.dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>)</span>
-<span id="cb1250-9"><a href="sec-linear-programming.html#cb1250-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 右手边</span></span>
-<span id="cb1250-10"><a href="sec-linear-programming.html#cb1250-10" aria-hidden="true" tabindex="-1"></a>f.rhs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">6</span>)</span>
-<span id="cb1250-11"><a href="sec-linear-programming.html#cb1250-11" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lp</span>(<span class="st">&quot;min&quot;</span>, f.obj, f.con, f.dir, f.rhs)</span>
-<span id="cb1250-12"><a href="sec-linear-programming.html#cb1250-12" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1245-1"><a href="sec-linear-programming.html#cb1245-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lpSolve 添加约束条件</span></span>
+<span id="cb1245-2"><a href="sec-linear-programming.html#cb1245-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lpSolve)</span>
+<span id="cb1245-3"><a href="sec-linear-programming.html#cb1245-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标</span></span>
+<span id="cb1245-4"><a href="sec-linear-programming.html#cb1245-4" aria-hidden="true" tabindex="-1"></a>f.obj <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">5</span>)</span>
+<span id="cb1245-5"><a href="sec-linear-programming.html#cb1245-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 约束</span></span>
+<span id="cb1245-6"><a href="sec-linear-programming.html#cb1245-6" aria-hidden="true" tabindex="-1"></a>f.con <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1245-7"><a href="sec-linear-programming.html#cb1245-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 方向</span></span>
+<span id="cb1245-8"><a href="sec-linear-programming.html#cb1245-8" aria-hidden="true" tabindex="-1"></a>f.dir <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>)</span>
+<span id="cb1245-9"><a href="sec-linear-programming.html#cb1245-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 右手边</span></span>
+<span id="cb1245-10"><a href="sec-linear-programming.html#cb1245-10" aria-hidden="true" tabindex="-1"></a>f.rhs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">28</span>, <span class="dv">6</span>)</span>
+<span id="cb1245-11"><a href="sec-linear-programming.html#cb1245-11" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lp</span>(<span class="st">&quot;min&quot;</span>, f.obj, f.con, f.dir, f.rhs)</span>
+<span id="cb1245-12"><a href="sec-linear-programming.html#cb1245-12" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] -31.4</code></pre>
-<div class="sourceCode" id="cb1252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1252-1"><a href="sec-linear-programming.html#cb1252-1" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1247-1"><a href="sec-linear-programming.html#cb1247-1" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] 2.4 3.4</code></pre>
 </div>
             </section>

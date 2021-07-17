@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x561370a56f40>
+## <bytecode: 0x557899a7a980>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x561370a56f40>
+## <bytecode: 0x557899a7a980>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f2ffd0146d0>]
+## [<matplotlib.lines.Line2D object at 0x7ff5bba646d0>]
 plt.show()
 ```
 
@@ -190,8 +190,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c59a2577604b8.c -o c59a2577604b8.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c59a2577604b8.so c59a2577604b8.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c63bf71ff1889.c -o c63bf71ff1889.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c63bf71ff1889.so c63bf71ff1889.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -340,6 +340,6 @@ sessionInfo()
 ## [13] jquerylib_0.1.4   htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1       
 ## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4     
 ## [21] later_1.2.0       sass_0.4.0        promises_1.2.0.1  evaluate_0.14    
-## [25] mime_0.11         rmarkdown_2.9     stringi_1.6.2     compiler_4.1.0   
+## [25] mime_0.11         rmarkdown_2.9     stringi_1.7.3     compiler_4.1.0   
 ## [29] bslib_0.2.5.1     jsonlite_1.7.2    httpuv_1.6.1
 ```

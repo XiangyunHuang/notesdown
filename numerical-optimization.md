@@ -951,7 +951,7 @@ nlp$solution
 ```
 
 ```
-## [1] 22.22222  0.00000
+## [1] -21.99115   0.00000
 ```
 
 ```r
@@ -959,7 +959,7 @@ nlp$objval
 ```
 
 ```
-## [1] -0.9734211
+## [1] -1
 ```
 
 实际上，还是陷入局部最优解。
@@ -1274,7 +1274,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.056993 4.779767 3.778930 1.325703
+## [1] 1.126568 4.807844 3.745201 1.261913
 ```
 
 ```r
@@ -1282,7 +1282,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.253
+## [1] 17.50604
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1349,7 +1349,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245374
+## [1] 1.227972 4.245376
 ```
 
 ```r
@@ -1548,7 +1548,7 @@ nlp$solution
 ```
 
 ```
-## [1] -41.499760   4.618519
+## [1] -16.243550  -2.446872
 ```
 
 ```r
@@ -1556,7 +1556,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.283304
+## [1] -3.164539
 ```
 比如下面三组
 
@@ -1614,6 +1614,11 @@ heq(x = c(-49.921967437, 4.8499336803))
 ### 一元非线性方程 {#subsec:one-optimize}
 
 [牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
+
+
+```r
+library(rootSolve)
+```
 
 ## 多目标规划 {#sec:pareto-optimization}
 
@@ -1765,32 +1770,68 @@ wireframe(
 
 ## 微分方程 {#sec:non-linear-tseries}
 
+<!-- 介绍洛伦兹方程、人口模型、寿险精算模型、混沌 -->
+
 [ode45 求解偏微分方程](https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/)
 
-**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 ODE 方程的边值问题。
+**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 DAE/ODE 方程的边值问题。
+
+
+[洛伦兹系统](https://en.wikipedia.org/wiki/Lorenz_system)是一个常微分方程组，系统参数的默认值为 $(\sigma = 10, \rho = 28, \beta = 8/3)$，初值为 $(-13, -14, 47)$。
+
+
+\begin{equation*}
+\begin{array}{l}
+\frac{\partial x}{\partial t} &= \sigma (y - x) \\
+\frac{\partial y}{\partial t} &= x(\rho -z) - y \\
+\frac{\partial x}{\partial t} &= xy - \beta z
+\end{array}
+\end{equation*}
+
 
 
 ```r
-library(rootSolve)
 library(deSolve)
-```
-
-
-
-```r
-library(bvpSolve) # ODE/DAE 问题
-# Solvers for Boundary Value Problems of Differential Equations 边值问题
-# 洛伦兹方程、人口模型、寿险精算模型、混沌
-library(nonlinearTseries)
-library(plot3D) # 可用 lattice 替代
-lor <- lorenz(do.plot = F)
-
-scatter3D(lor$x, lor$y, lor$z,
-  ann = FALSE, col = terrain.colors(25),
-  type = "o", cex = 0.3,
-  colkey = FALSE, box = FALSE
+# 参数
+pars <- c(a = -8 / 3, b = -10, c = 28)
+# 初值
+state <- c(X = 1, Y = 1, Z = 1)
+# 时间间隔
+times <- seq(0, 100, by = 0.01)
+# 定义方程组
+lorenz_fun <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dX <- a * X + Y * Z
+    dY <- b * (Y - Z)
+    dZ <- -X * Y + c * Y - Z
+    list(c(dX, dY, dZ))
+  })
+}
+out <- ode(
+  y = state, times = times,
+  func = lorenz_fun, parms = pars
 )
 ```
+
+调用 **scatterplot3d** 绘制三维曲线图，如图\@ref(fig:ode-lorenz) 所示
+
+
+```r
+library(scatterplot3d)
+
+scatterplot3d(
+  x = out[, "X"], y = out[, "Y"], z = out[, "Z"],
+  col.axis = "black", type = "l", color = "gray",
+  xlab = expression(x), ylab = expression(y), zlab = expression(z),
+  col.grid = "gray", main = "Lorenz"
+)
+```
+
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/ode-lorenz-1.png" alt="洛伦兹曲线" width="528" />
+<p class="caption">(\#fig:ode-lorenz)洛伦兹曲线</p>
+</div>
+
 
 ## 运行环境 {#sec:numerical-optimization-session}
 
@@ -1820,21 +1861,22 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] quadprog_1.5-8            kernlab_0.9-29           
-## [3] lattice_0.20-44           ROI.plugin.quadprog_1.0-0
-## [5] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
-## [7] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
-## [9] lpSolve_5.6.15           
+##  [1] scatterplot3d_0.3-41      deSolve_1.28             
+##  [3] rootSolve_1.8.2.2         quadprog_1.5-8           
+##  [5] kernlab_0.9-29            lattice_0.20-44          
+##  [7] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
+##  [9] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
+## [11] ROI_1.0-0                 lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lpSolveAPI_5.5.2.0-17.7 knitr_1.33              magrittr_2.0.1         
-##  [4] R6_2.5.0                rlang_0.4.11            alabama_2015.3-1       
-##  [7] highr_0.9               stringr_1.4.0           tools_4.1.0            
-## [10] grid_4.1.0              xfun_0.24               registry_0.5-1         
-## [13] jquerylib_0.1.4         htmltools_0.5.1.1       yaml_2.2.1             
-## [16] digest_0.6.27           numDeriv_2016.8-1.1     bookdown_0.22          
-## [19] nloptr_1.2.2.2          sass_0.4.0              evaluate_0.14          
-## [22] slam_0.1-48             rmarkdown_2.9           stringi_1.6.2          
-## [25] compiler_4.1.0          bslib_0.2.5.1           jsonlite_1.7.2
+##  [1] bslib_0.2.5.1           compiler_4.1.0          nloptr_1.2.2.2         
+##  [4] jquerylib_0.1.4         highr_0.9               tools_4.1.0            
+##  [7] digest_0.6.27           jsonlite_1.7.2          evaluate_0.14          
+## [10] rlang_0.4.11            registry_0.5-1          yaml_2.2.1             
+## [13] xfun_0.24               stringr_1.4.0           knitr_1.33             
+## [16] sass_0.4.0              grid_4.1.0              R6_2.5.0               
+## [19] rmarkdown_2.9           bookdown_0.22           alabama_2015.3-1       
+## [22] magrittr_2.0.1          htmltools_0.5.1.1       numDeriv_2016.8-1.1    
+## [25] stringi_1.7.3           lpSolveAPI_5.5.2.0-17.7 slam_0.1-48
 ```
 

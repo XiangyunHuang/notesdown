@@ -136,7 +136,7 @@
 <script src="libs/echarts4r-4.8.0/echarts-en.min.js"></script>
 <script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
-<script src="libs/echarts4r-binding-0.4.0/echarts4r.js"></script>
+<script src="libs/echarts4r-binding-0.4.1/echarts4r.js"></script>
 <script src="libs/echarts-world-1.0.0/world.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="libs/datatables-binding-0.18/datatables.js"></script>
@@ -697,8 +697,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="32" data-path="chap-gradient-boosting-machine.html"><a href="chap-gradient-boosting-machine.html"><i class="fa fa-check"></i><b>32</b> 梯度提升机</a>
 <ul>
-<li class="chapter" data-level="32.1" data-path="sec-catboost.html"><a href="sec-catboost.html"><i class="fa fa-check"></i><b>32.1</b> CatBoost</a></li>
-<li class="chapter" data-level="32.2" data-path="sec-lightgbm.html"><a href="sec-lightgbm.html"><i class="fa fa-check"></i><b>32.2</b> LightGBM</a></li>
+<li class="chapter" data-level="32.1" data-path="sec-xgboost.html"><a href="sec-xgboost.html"><i class="fa fa-check"></i><b>32.1</b> XGBoost</a></li>
 </ul></li>
 <li class="chapter" data-level="33" data-path="chap-neural-network.html"><a href="chap-neural-network.html"><i class="fa fa-check"></i><b>33</b> 神经网络</a>
 <ul>
@@ -903,27 +902,27 @@ div.csl-indent {
 <p>mxnet 的 R 接口不太稳定好用，安装也比较麻烦，因此，通过 reticulate 包将 Python 模块 mxnet 导入 R 环境，然后调用其函数。</p>
 </div>
 <p>mxnet 框架包含很多子模块，详见<a href="https://mxnet.apache.org/versions/1.8.0/api">接口文档</a>，比如 ndarray，gluon，symbol 等等，下面具体以多维数组 ndarray 为例展开。</p>
-<div class="sourceCode" id="cb1030"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1030-1"><a href="sec-mxnet.html#cb1030-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入 mxnet 中的 ndarray</span></span>
-<span id="cb1030-2"><a href="sec-mxnet.html#cb1030-2" aria-hidden="true" tabindex="-1"></a>nd <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">import</span>(<span class="st">&quot;mxnet.ndarray&quot;</span>, <span class="at">convert =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1030-3"><a href="sec-mxnet.html#cb1030-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(nd)</span></code></pre></div>
+<div class="sourceCode" id="cb1026"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1026-1"><a href="sec-mxnet.html#cb1026-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入 mxnet 中的 ndarray</span></span>
+<span id="cb1026-2"><a href="sec-mxnet.html#cb1026-2" aria-hidden="true" tabindex="-1"></a>nd <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">import</span>(<span class="st">&quot;mxnet.ndarray&quot;</span>, <span class="at">convert =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1026-3"><a href="sec-mxnet.html#cb1026-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(nd)</span></code></pre></div>
 <pre><code>## [1] &quot;python.builtin.module&quot; &quot;python.builtin.object&quot;</code></pre>
 <p>zeros 是子模块 mxnet.ndarray 下的一个函数</p>
-<div class="sourceCode" id="cb1032"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1032-1"><a href="sec-mxnet.html#cb1032-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> nd<span class="sc">$</span><span class="fu">zeros</span>(<span class="fu">c</span>(3L, 4L)) <span class="co"># 得到 python 中的 mx.nd.array</span></span>
-<span id="cb1032-2"><a href="sec-mxnet.html#cb1032-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb1028"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1028-1"><a href="sec-mxnet.html#cb1028-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> nd<span class="sc">$</span><span class="fu">zeros</span>(<span class="fu">c</span>(3L, 4L)) <span class="co"># 得到 python 中的 mx.nd.array</span></span>
+<span id="cb1028-2"><a href="sec-mxnet.html#cb1028-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>## 
 ## [[0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]]
 ## &lt;NDArray 3x4 @cpu(0)&gt;</code></pre>
 <p>将 Python 中的数据对象 mx.nd.array 转化为 R 中的矩阵，而数据对象 mx.nd.array 有 <code>asnumpy()</code> 方法</p>
-<div class="sourceCode" id="cb1034"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1034-1"><a href="sec-mxnet.html#cb1034-1" aria-hidden="true" tabindex="-1"></a>(m1 <span class="ot">&lt;-</span> x<span class="sc">$</span><span class="fu">asnumpy</span>()) <span class="co"># 得到 R 中的 matrix</span></span></code></pre></div>
+<div class="sourceCode" id="cb1030"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1030-1"><a href="sec-mxnet.html#cb1030-1" aria-hidden="true" tabindex="-1"></a>(m1 <span class="ot">&lt;-</span> x<span class="sc">$</span><span class="fu">asnumpy</span>()) <span class="co"># 得到 R 中的 matrix</span></span></code></pre></div>
 <pre><code>## [[0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]
 ##  [0. 0. 0. 0.]]</code></pre>
-<div class="sourceCode" id="cb1036"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1036-1"><a href="sec-mxnet.html#cb1036-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb1032"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1032-1"><a href="sec-mxnet.html#cb1032-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m1)</span></code></pre></div>
 <pre><code>## [1] &quot;numpy.ndarray&quot;         &quot;python.builtin.object&quot;</code></pre>
-<div class="sourceCode" id="cb1038"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1038-1"><a href="sec-mxnet.html#cb1038-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1038-2"><a href="sec-mxnet.html#cb1038-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m2)</span></code></pre></div>
+<div class="sourceCode" id="cb1034"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1034-1"><a href="sec-mxnet.html#cb1034-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1034-2"><a href="sec-mxnet.html#cb1034-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(m2)</span></code></pre></div>
 <pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
 </div>
             </section>

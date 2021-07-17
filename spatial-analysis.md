@@ -262,7 +262,7 @@ sessionInfo()
 ## [33] bookdown_0.22      codetools_0.2-18   fansi_0.5.0        viridisLite_0.4.0 
 ## [37] crayon_1.4.1       dplyr_1.0.7        grid_4.1.0         jsonlite_1.7.2    
 ## [41] lifecycle_1.0.0    DBI_1.1.1          magrittr_2.0.1     units_0.7-2       
-## [45] rlist_0.4.6.1      KernSmooth_2.23-20 quantmod_0.4.18    stringi_1.6.2     
+## [45] rlist_0.4.6.1      KernSmooth_2.23-20 quantmod_0.4.18    stringi_1.7.3     
 ## [49] bslib_0.2.5.1      ellipsis_0.3.2     xts_0.12.1         generics_0.1.0    
 ## [53] vctrs_0.3.8        tools_4.1.0        glue_1.4.2         purrr_0.3.4       
 ## [57] jpeg_0.1-8.1       parallel_4.1.0     yaml_2.2.1         classInt_0.4-3    
