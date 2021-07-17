@@ -26,6 +26,73 @@ library(kernlab)    # 优化问题和机器学习的关系
 
 
 
+表 \@ref(tab:roi-plugin-html) 对目前的优化器按优化问题做了分类
+
+<table style="NAborder-bottom: 0;">
+<caption>(\#tab:roi-plugin-html)ROI 插件按优化问题分类</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Linear </th>
+   <th style="text-align:left;"> Quadratic </th>
+   <th style="text-align:left;"> Conic </th>
+   <th style="text-align:left;"> Functional </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Box </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> optimx </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Linear </td>
+   <td style="text-align:left;"> $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ </td>
+   <td style="text-align:left;"> ipop, $\mathrm{quadprog}^{\star}$, qpoases </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Quadratic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Conic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Functional </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> alabama, deoptim, nlminb, nloptr </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>*</sup> 求解器受限于凸优化问题</td></tr>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>+</sup> 求解器可以处理整型约束</td></tr>
+</tfoot>
+</table>
+
+
+
 ## 线性规划 {#sec:linear-programming}
 
 [clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
@@ -515,7 +582,7 @@ g(1)
 ## [1] -0.453392
 ```
 
-### 非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
+### 多元非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
 
 <!-- ?nlm -->
 
@@ -951,7 +1018,7 @@ nlp$solution
 ```
 
 ```
-## [1] -21.99115   0.00000
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -959,7 +1026,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -976,7 +1043,7 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 Lingo 18.0 启用全局优化求解器后，在 $(x_1 = 7.999982, x_2 = 7.999982)$ 取得最小值 -7.978832。而默认未启用全局优化求解器的情况下，在 $(x_1 = 18.84956, x_2 = -40.84070)$ 取得局部极小值 -1.000000。
 
 
-### 非线性约束优化 {#sec:nonlinear-constrained-optimization}
+### 多元非线性约束优化 {#sec:nonlinear-constrained-optimization}
 
 R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可求解线性不等式约束优化，下面主要介绍非线性约束的非线性优化问题。
 
@@ -1274,7 +1341,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.126568 4.807844 3.745201 1.261913
+## [1] 1.032680 4.785098 3.772041 1.345227
 ```
 
 ```r
@@ -1282,10 +1349,71 @@ nlp$objval
 ```
 
 ```
-## [1] 17.50604
+## [1] 17.09412
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
+
+
+#### 非线性混合整数优化 {#integer-constrained}
+
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 1.5(x_1 - \sin(x_1 - x_2))^2 + 0.5x_2^2 + x_3^2 - x_1 x_2 - 2x_1 + x_2 x_3 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     -20 < x_1 < 20 \\
+     -20 < x_2 < 20 \\
+     -10 < x_3 < 10 \\
+     x_1, x_2 \in \mathbb{R}, \quad x_3 \in \mathbb{Z}
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+
+
+```r
+fn <- function(x) {
+  1.5 * (x[1] - sin(x[1] - x[2]))^2 + 0.5 * x[2]^2 + x[3]^2
+  -x[1] * x[2] - 2 * x[1] + x[2] * x[3]
+}
+gr <- function(x) {
+  c(
+    3 * (x[1] - sin(x[1] - x[2])) * (1 - cos(x[1] - x[2])) - x[2] - 2,
+    3 * (x[1] - sin(x[1] - x[2])) * cos(x[1] - x[2]) - x[2] - x[1] + x[3],
+    2 * x[3] + x[2]
+  )
+}
+```
+
+目前 ROI 还解不了
+
+
+```r
+# 初始值
+p0 <- c(2.1, 5.1, 5)
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 3L, G = gr), # 3 个目标变量
+  types = c("C", "C", "I"), # 目标变量的类型
+  bounds = V_bound(lb = c(-20, -20, -10), ub = c(20, 20, 10), nobj = 3L),
+  maximum = FALSE # 求最小
+)
+nlp <- ROI_solve(op, solver = "auto", start = p0)
+nlp$solution
+```
+
+目标函数在 $(4.49712, 9.147501, -4)$ 取得最小值 -86.72165
+
+
+```r
+fn(x = c(4.49712, 9.147501, -4))
+```
+
+```
+## [1] -86.72165
+```
+
 
 #### 含复杂目标函数 {#complex-object-function}
 
@@ -1298,7 +1426,7 @@ nlp$objval
     \begin{array}{l}
      x_1^2 - x_2 + 1 \leq 0 \\
      1 - x_1 + (x_2 - 4)^2 \geq 0 \\
-     1 \leq x_1, x_2 \leq 10
+     0 \leq x_1, x_2 \leq 10
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -1349,7 +1477,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227972 4.245376
+## [1] 1.227968 4.245369
 ```
 
 ```r
@@ -1548,7 +1676,7 @@ nlp$solution
 ```
 
 ```
-## [1] -16.243550  -2.446872
+## [1]  4.123548 30.612457
 ```
 
 ```r
@@ -1556,7 +1684,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.164539
+## [1] -3.369462
 ```
 比如下面三组
 
@@ -1621,6 +1749,9 @@ library(rootSolve)
 ```
 
 ## 多目标规划 {#sec:pareto-optimization}
+
+
+
 
 [GPareto](https://github.com/mbinois/GPareto)
 
@@ -1703,9 +1834,11 @@ fit_chol <- function(x, y) {
 
 
 ```r
-library(RcppEigen) ## Using C/C++
-system.time(fastLmPure(x, y, method = 1)) ## QR
-system.time(fastLmPure(x, y, method = 2)) ## Cholesky
+## Using C/C++
+system.time(RcppEigen::fastLmPure(x, y, method = 1)) ## QR
+system.time(RcppEigen::fastLmPure(x, y, method = 2)) ## Cholesky
+system.time(RcppArmadillo::fastLmPure(x, y, method = 1)) ## QR
+system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
 ```
 
 ## 对数似然 {#sec:log-likelihood}
@@ -1863,20 +1996,28 @@ sessionInfo()
 ## other attached packages:
 ##  [1] scatterplot3d_0.3-41      deSolve_1.28             
 ##  [3] rootSolve_1.8.2.2         quadprog_1.5-8           
-##  [5] kernlab_0.9-29            lattice_0.20-44          
-##  [7] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
-##  [9] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
-## [11] ROI_1.0-0                 lpSolve_5.6.15           
+##  [5] kableExtra_1.3.4          tibble_3.1.2             
+##  [7] kernlab_0.9-29            lattice_0.20-44          
+##  [9] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
+## [11] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
+## [13] ROI_1.0-0                 lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] bslib_0.2.5.1           compiler_4.1.0          nloptr_1.2.2.2         
-##  [4] jquerylib_0.1.4         highr_0.9               tools_4.1.0            
-##  [7] digest_0.6.27           jsonlite_1.7.2          evaluate_0.14          
-## [10] rlang_0.4.11            registry_0.5-1          yaml_2.2.1             
-## [13] xfun_0.24               stringr_1.4.0           knitr_1.33             
-## [16] sass_0.4.0              grid_4.1.0              R6_2.5.0               
-## [19] rmarkdown_2.9           bookdown_0.22           alabama_2015.3-1       
-## [22] magrittr_2.0.1          htmltools_0.5.1.1       numDeriv_2016.8-1.1    
-## [25] stringi_1.7.3           lpSolveAPI_5.5.2.0-17.7 slam_0.1-48
+##  [1] xfun_0.24               bslib_0.2.5.1           slam_0.1-48            
+##  [4] colorspace_2.0-2        vctrs_0.3.8             htmltools_0.5.1.1      
+##  [7] viridisLite_0.4.0       yaml_2.2.1              utf8_1.2.1             
+## [10] rlang_0.4.11            jquerylib_0.1.4         nloptr_1.2.2.2         
+## [13] pillar_1.6.1            glue_1.4.2              registry_0.5-1         
+## [16] lifecycle_1.0.0         stringr_1.4.0           munsell_0.5.0          
+## [19] rvest_1.0.0             lpSolveAPI_5.5.2.0-17.7 evaluate_0.14          
+## [22] knitr_1.33              fansi_0.5.0             highr_0.9              
+## [25] scales_1.1.1            webshot_0.5.2           jsonlite_1.7.2         
+## [28] alabama_2015.3-1        systemfonts_1.0.2       digest_0.6.27          
+## [31] stringi_1.7.3           bookdown_0.22           numDeriv_2016.8-1.1    
+## [34] grid_4.1.0              tools_4.1.0             magrittr_2.0.1         
+## [37] sass_0.4.0              crayon_1.4.1            pkgconfig_2.0.3        
+## [40] ellipsis_0.3.2          xml2_1.3.2              rmarkdown_2.9          
+## [43] svglite_2.0.0           httr_1.4.2              rstudioapi_0.13        
+## [46] R6_2.5.0                compiler_4.1.0
 ```
 
