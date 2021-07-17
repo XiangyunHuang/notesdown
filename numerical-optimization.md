@@ -529,7 +529,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = -240, x = -70, y = 0)
@@ -591,7 +591,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = 120, x = -70, y = 0)
@@ -679,7 +679,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = 120, x = -70, y = 0)
@@ -777,7 +777,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = 120, x = -65, y = 0)
@@ -858,7 +858,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = 120, x = -65, y = 0)
@@ -869,13 +869,14 @@ wireframe(
 <img src="numerical-optimization_files/figure-html/super-function-1.png" alt="函数图像" width="528" />
 <p class="caption">(\#fig:super-function)函数图像</p>
 </div>
+
 将区域 $[0, 12] \times [0, 12]$ 的图像绘制出来，不难发现，有不少局部陷阱。
 
 
 ```r
 df <- expand.grid(
-  x = seq(0, 12, length.out = 101),
-  y = seq(0, 12, length.out = 101)
+  x = seq(0, 12, length.out = 201),
+  y = seq(0, 12, length.out = 201)
 )
 
 df$fnxy = apply(df, 1, fn)
@@ -885,7 +886,7 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(f(x[1],x[2])), rot = 90),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = 120, x = -65, y = 0)
@@ -921,7 +922,7 @@ nlp$solution
 ```
 
 ```
-## [1]  0.00000 22.22222
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -1244,7 +1245,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.078987 4.954947 3.537895 1.327220
+## [1] 1.162353 4.173873 4.448025 1.198616
 ```
 
 ```r
@@ -1252,7 +1253,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.24525
+## [1] 18.0796
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1319,7 +1320,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227974 4.245368
+## [1] 1.227969 4.245378
 ```
 
 ```r
@@ -1518,7 +1519,7 @@ nlp$solution
 ```
 
 ```
-## [1]  3.748062 36.035219
+## [1] 41.81834 42.54241
 ```
 
 ```r
@@ -1526,7 +1527,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.033235
+## [1] -3.199294
 ```
 比如下面三组
 
