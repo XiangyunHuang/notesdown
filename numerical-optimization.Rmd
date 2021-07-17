@@ -1312,29 +1312,61 @@ wireframe(
 
 ## 微分方程 {#sec:non-linear-tseries}
 
+<!-- 介绍洛伦兹方程、人口模型、寿险精算模型、混沌 -->
+
 [ode45 求解偏微分方程](https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/)
 
-**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 ODE 方程的边值问题。
+**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 DAE/ODE 方程的边值问题。
 
-```{r,eval=FALSE}
+
+[洛伦兹系统](https://en.wikipedia.org/wiki/Lorenz_system)是一个常微分方程组，系统参数的默认值为 $(\sigma = 10, \rho = 28, \beta = 8/3)$，初值为 $(-13, -14, 47)$。
+
+
+\begin{equation*}
+\begin{array}{l}
+\frac{\partial x}{\partial t} &= \sigma (y - x) \\
+\frac{\partial y}{\partial t} &= x(\rho -z) - y \\
+\frac{\partial x}{\partial t} &= xy - \beta z
+\end{array}
+\end{equation*}
+
+
+```{r}
 library(deSolve)
-```
-
-
-```{r,eval=FALSE}
-library(bvpSolve) # ODE/DAE 问题
-# Solvers for Boundary Value Problems of Differential Equations 边值问题
-# 洛伦兹方程、人口模型、寿险精算模型、混沌
-library(nonlinearTseries)
-library(plot3D) # 可用 lattice 替代
-lor <- lorenz(do.plot = F)
-
-scatter3D(lor$x, lor$y, lor$z,
-  ann = FALSE, col = terrain.colors(25),
-  type = "o", cex = 0.3,
-  colkey = FALSE, box = FALSE
+# 参数
+pars <- c(a = -8 / 3, b = -10, c = 28)
+# 初值
+state <- c(X = 1, Y = 1, Z = 1)
+# 时间间隔
+times <- seq(0, 100, by = 0.01)
+# 定义方程组
+lorenz_fun <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    dX <- a * X + Y * Z
+    dY <- b * (Y - Z)
+    dZ <- -X * Y + c * Y - Z
+    list(c(dX, dY, dZ))
+  })
+}
+out <- ode(
+  y = state, times = times,
+  func = lorenz_fun, parms = pars
 )
 ```
+
+调用 **scatterplot3d** 绘制三维曲线图，如图\@ref(fig:ode-lorenz) 所示
+
+```{r ode-lorenz,fig.cap="洛伦兹曲线", fig.width=5.5, fig.height=5}
+library(scatterplot3d)
+
+scatterplot3d(
+  x = out[, "X"], y = out[, "Y"], z = out[, "Z"],
+  col.axis = "black", type = "l", color = "gray",
+  xlab = expression(x), ylab = expression(y), zlab = expression(z),
+  col.grid = "gray", main = "Lorenz"
+)
+```
+
 
 ## 运行环境 {#sec:numerical-optimization-session}
 
