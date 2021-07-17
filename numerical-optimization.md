@@ -1341,7 +1341,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.032680 4.785098 3.772041 1.345227
+## [1] 1.314011 4.457324 4.107045 1.240198
 ```
 
 ```r
@@ -1349,7 +1349,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.09412
+## [1] 20.20519
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1477,7 +1477,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227968 4.245369
+## [1] 1.227974 4.245373
 ```
 
 ```r
@@ -1676,7 +1676,7 @@ nlp$solution
 ```
 
 ```
-## [1]  4.123548 30.612457
+## [1] 21.08812 10.51179
 ```
 
 ```r
@@ -1684,7 +1684,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.369462
+## [1] -3.178119
 ```
 比如下面三组
 
@@ -1748,25 +1748,40 @@ heq(x = c(-49.921967437, 4.8499336803))
 library(rootSolve)
 ```
 
-## 多目标规划 {#sec:pareto-optimization}
+## 多目标规划 {#sec:multi-objective-optimization}
+
+多目标规划的基本想法是将多目标问题转化为单目标问题，常见方法有理想点法、线性加权法、非劣解集法、极大极小法。理想点法是先在给定约束条件下分别求解单个目标的最优值，构造新的单目标函数。线性加权法是给每个目标函数赋予权重系数，各个权重系数之和等于1。非劣解集法是先求解其中一个单目标函数的最优值，然后将其设为等式约束，将其最优值从最小值开始递增，然后求解另一个目标函数的最小值。极大极小法是采用标准的简面体爬山法和通用全局优化法求解多目标优化问题。
+
+R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)
 
 
+\begin{equation*}
+\begin{array}{l}
+  \min_x \left\{
+      \begin{array}{l}  
+        f_1(x) = 0.5x_1 + 0.6x_2 + 0.7 \exp(\frac{x_1 + x_3}{10}) \\
+        f_2(x) = (x_1 - 2x_2)^2 + (2x_2 - 3x_3)^2 + (5x_3 -x_1)^2
+      \end{array} \right. \\
+    s.t. \quad x_1 \in [10, 80], x_2 \in [20, 90], x_3 \in [15, 100]
+\end{array}
+\end{equation*}
 
 
-[GPareto](https://github.com/mbinois/GPareto)
-
-[Experimental Design and Process Optimization with R](https://bookdown.org/gerhard_krennrich/doe_and_optimization/)
-
-<https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization>
-
-<https://www.stat.umn.edu/geyer/3701/notes/optimize.html>
+```r
+library(DiceKriging)
+library(emoa)
+library(GPareto)
+library(DiceDesign)
+```
 
 
 ```r
 library(Ternary)
-TernaryPlot(atip = "Top", btip = "Bottom", ctip = "Right", axis.col = "red", 
-            col = rgb(0.8, 0.8, 0.8))
-HorizontalGrid(grid.lines = 2, grid.col = 'blue', grid.lty = 1) 
+TernaryPlot(
+  atip = "Top", btip = "Bottom", ctip = "Right", 
+  axis.col = "red", col = rgb(0.8, 0.8, 0.8)
+)
+HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 ```
 
 ## 经典优化问题 {#sec:classic-optimization}
