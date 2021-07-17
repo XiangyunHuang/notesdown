@@ -23,6 +23,47 @@ library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
 ```
 
+```{r, echo=FALSE}
+library(tibble)
+
+dat = tribble(
+  ~Linear, ~Quadratic, ~Conic, ~Functional,
+  "", "", "", "",
+  "", "", "", "optimx",
+  "$\\mathrm{clp}^\\star$, $\\mathrm{cbc}^{\\star+}$, $\\mathrm{glpk}^{\\star+}$, $\\mathrm{lpsolve}^{\\star+}$, $\\mathrm{msbinlp}^{\\star+}$, $\\mathrm{symphony}^{\\star+}$", "ipop, $\\mathrm{quadprog}^{\\star}$, qpoases", "", "",
+  "", "$\\mathrm{cplex}^{+}$, $\\mathrm{gurobi}^{\\star+}$, $\\mathrm{mosek}^{\\star+}$, $\\mathrm{neos}^{+}$", "", "",
+  "", "", "$\\mathrm{ecos}^{\\star+}$, $\\mathrm{scs}^{\\star}$", "",
+  "", "", "", "alabama, deoptim, nlminb, nloptr"
+)
+dat = as.data.frame(dat)
+rownames(dat) <- c("No", "Box", "Linear", "Quadratic", "Conic", "Functional")
+```
+
+表 `r ifelse(knitr::is_html_output(), '\\@ref(tab:roi-plugin-html)', '\\@ref(tab:roi-plugin-latex)')` 对目前的优化器按优化问题做了分类
+
+```{r roi-plugin-html, echo=FALSE, eval=knitr::is_html_output()}
+library(kableExtra)
+kable(dat, format = "html",
+  escape = FALSE, booktabs = T, 
+  caption = "ROI 插件按优化问题分类"
+) %>%
+  footnote(
+    symbol = c("求解器受限于凸优化问题", "求解器可以处理整型约束"),
+    symbol_manual = c("*", "+")
+  )
+```
+```{r roi-plugin-latex, echo=FALSE, eval=knitr::is_latex_output()}
+library(kableExtra)
+kable(dat, format = "latex",
+  escape = FALSE, booktabs = T, 
+  caption = "ROI 插件按优化问题分类"
+) %>%
+  column_spec(1:5, width = "2cm") %>%
+  footnote(
+    symbol = c("求解器受限于凸优化问题", "求解器可以处理整型约束"),
+    symbol_manual = c("*", "+")
+  )
+```
 
 
 ## 线性规划 {#sec:linear-programming}
@@ -384,7 +425,7 @@ optimize(f, interval = c(10, 100), maximum = FALSE)
 g(1)
 ```
 
-### 非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
+### 多元非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
 
 <!-- ?nlm -->
 
@@ -692,7 +733,7 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 Lingo 18.0 启用全局优化求解器后，在 $(x_1 = 7.999982, x_2 = 7.999982)$ 取得最小值 -7.978832。而默认未启用全局优化求解器的情况下，在 $(x_1 = 18.84956, x_2 = -40.84070)$ 取得局部极小值 -1.000000。
 
 
-### 非线性约束优化 {#sec:nonlinear-constrained-optimization}
+### 多元非线性约束优化 {#sec:nonlinear-constrained-optimization}
 
 R 自带的函数 `nlminb()` 可求解箱式约束优化，`constrOptim()` 可求解线性不等式约束优化，下面主要介绍非线性约束的非线性优化问题。
 
@@ -938,6 +979,60 @@ nlp$objval
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
 
+
+#### 非线性混合整数优化 {#integer-constrained}
+
+\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 1.5(x_1 - \sin(x_1 - x_2))^2 + 0.5x_2^2 + x_3^2 - x_1 x_2 - 2x_1 + x_2 x_3 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     -20 < x_1 < 20 \\
+     -20 < x_2 < 20 \\
+     -10 < x_3 < 10 \\
+     x_1, x_2 \in \mathbb{R}, \quad x_3 \in \mathbb{Z}
+    \end{array} \right.
+\end{array}
+\end{equation*}
+
+
+```{r}
+fn <- function(x) {
+  1.5 * (x[1] - sin(x[1] - x[2]))^2 + 0.5 * x[2]^2 + x[3]^2
+  -x[1] * x[2] - 2 * x[1] + x[2] * x[3]
+}
+gr <- function(x) {
+  c(
+    3 * (x[1] - sin(x[1] - x[2])) * (1 - cos(x[1] - x[2])) - x[2] - 2,
+    3 * (x[1] - sin(x[1] - x[2])) * cos(x[1] - x[2]) - x[2] - x[1] + x[3],
+    2 * x[3] + x[2]
+  )
+}
+```
+
+目前 ROI 还解不了
+
+```{r,eval=FALSE}
+# 初始值
+p0 <- c(2.1, 5.1, 5)
+# 定义目标规划
+op <- OP(
+  objective = F_objective(F = fn, n = 3L, G = gr), # 3 个目标变量
+  types = c("C", "C", "I"), # 目标变量的类型
+  bounds = V_bound(lb = c(-20, -20, -10), ub = c(20, 20, 10), nobj = 3L),
+  maximum = FALSE # 求最小
+)
+nlp <- ROI_solve(op, solver = "auto", start = p0)
+nlp$solution
+```
+
+目标函数在 $(4.49712, 9.147501, -4)$ 取得最小值 -86.72165
+
+```{r}
+fn(x = c(4.49712, 9.147501, -4))
+```
+
+
 #### 含复杂目标函数 {#complex-object-function}
 
 下面这个目标函数比较复杂，约束条件也是非线性的
@@ -949,7 +1044,7 @@ nlp$objval
     \begin{array}{l}
      x_1^2 - x_2 + 1 \leq 0 \\
      1 - x_1 + (x_2 - 4)^2 \geq 0 \\
-     1 \leq x_1, x_2 \leq 10
+     0 \leq x_1, x_2 \leq 10
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -1175,6 +1270,9 @@ library(rootSolve)
 
 ## 多目标规划 {#sec:pareto-optimization}
 
+
+
+
 [GPareto](https://github.com/mbinois/GPareto)
 
 [Experimental Design and Process Optimization with R](https://bookdown.org/gerhard_krennrich/doe_and_optimization/)
@@ -1251,9 +1349,11 @@ fit_chol <- function(x, y) {
 ```
 
 ```{r,eval=FALSE}
-library(RcppEigen) ## Using C/C++
-system.time(fastLmPure(x, y, method = 1)) ## QR
-system.time(fastLmPure(x, y, method = 2)) ## Cholesky
+## Using C/C++
+system.time(RcppEigen::fastLmPure(x, y, method = 1)) ## QR
+system.time(RcppEigen::fastLmPure(x, y, method = 2)) ## Cholesky
+system.time(RcppArmadillo::fastLmPure(x, y, method = 1)) ## QR
+system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
 ```
 
 ## 对数似然 {#sec:log-likelihood}
