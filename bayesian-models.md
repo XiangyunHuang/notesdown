@@ -123,7 +123,7 @@ normal_fit <- mod$sample(
 ## Chain 1 finished in 0.1 seconds.
 ## Chain 2 finished in 0.1 seconds.
 ## Chain 3 finished in 0.1 seconds.
-## Chain 4 finished in 0.1 seconds.
+## Chain 4 finished in 0.0 seconds.
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
@@ -142,21 +142,21 @@ normal_fit$cmdstan_summary()
 ## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.014, 0.014, 0.014, 0.014) seconds, 0.056 seconds total
-## Sampling took (0.046, 0.042, 0.042, 0.040) seconds, 0.17 seconds total
+## Warmup took (0.013, 0.014, 0.013, 0.013) seconds, 0.053 seconds total
+## Sampling took (0.044, 0.041, 0.040, 0.037) seconds, 0.16 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    21125      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.2e+03  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22168      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.5e+03  1.0e+00
 ## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
-## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.2e+02  1.1e+00
-## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.4e+02  1.0e+00
+## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
+## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.5e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
-## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.9e+04  1.0e+00
+## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    33717     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    40499     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    35382     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42499     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -272,37 +272,37 @@ eight_schools_fit$cmdstan_summary()
 ## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.023, 0.027, 0.025, 0.028) seconds, 0.10 seconds total
-## Sampling took (0.073, 0.086, 0.096, 0.093) seconds, 0.35 seconds total
+## Warmup took (0.023, 0.026, 0.024, 0.027) seconds, 0.10 seconds total
+## Sampling took (0.070, 0.083, 0.084, 0.087) seconds, 0.32 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7032     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.2e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  5.8e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.4e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.8e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7553     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.6e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.2e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.6e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.0e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.0e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.5e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11167      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     8805      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    22172     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    24215     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    23907      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    23621      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    21135      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    24250      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    20846      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    21137     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    16287     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    25690      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    20002      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    24469      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    23614      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    24436     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    18784     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    16964      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11994      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9457      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23814     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    26009     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25677      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    25370      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22700      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    26046      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    22391      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22703     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17493     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27593      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21484      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    26281      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    25363      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    26246     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    20176     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    18221      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -515,13 +515,13 @@ rats_fit <- mod$sample(
 ## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.6 seconds.
-## Chain 2 finished in 0.7 seconds.
+## Chain 2 finished in 0.6 seconds.
 ## Chain 3 finished in 0.7 seconds.
 ## Chain 4 finished in 0.6 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 0.7 seconds.
-## Total execution time: 3.1 seconds.
+## Mean chain execution time: 0.6 seconds.
+## Total execution time: 2.7 seconds.
 ```
 
 ## 非线性模型 {#sec:nlm-gp}

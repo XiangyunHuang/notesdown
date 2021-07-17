@@ -966,20 +966,46 @@ div.csl-indent {
     5x_1 + 7x_2 + 2x_3 \leq 61\\
     3x_1 + 2x_2 - 9x_3 \leq 35\\
     x_1 + 3x_2 + x_3 \leq 31\\
-    x_1,x_2 \geq 0, \quad x_3 \in [-10, 10]
+    x_1,x_2 \geq 0, \quad x_2, x_3 \in \mathbb{Z}, \quad x_3 \in [-10, 10]
     \end{array} \right.
 \end{array}
+\end{equation*}\]</span></p>
+<p>矩阵形式如下</p>
+<p><span class="math display">\[\begin{equation*}
+\begin{array}{l}
+\min_x \quad
+  \begin{bmatrix}
+  3  \\
+  7  \\
+  -12
+  \end{bmatrix}
+  ^{T} x \\
+s.t.\left\{ 
+ \begin{array}{l}
+  \begin{bmatrix}
+  5 &amp; 7 &amp; 2 \\
+  3 &amp; 2 &amp; -9\\
+  1 &amp; 3 &amp; 1
+  \end{bmatrix}
+  x \leq
+  \begin{bmatrix}
+   61 \\
+   35 \\
+   31
+  \end{bmatrix}
+ \end{array} \right.
+\end{array} 
 \end{equation*}\]</span></p>
 <div class="sourceCode" id="cb1262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1262-1"><a href="sec-integer-programming.html#cb1262-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
 <span id="cb1262-2"><a href="sec-integer-programming.html#cb1262-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">L_objective</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="sc">-</span><span class="dv">12</span>)),</span>
 <span id="cb1262-3"><a href="sec-integer-programming.html#cb1262-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 指定变量类型：第1个变量是连续值，第2、3个变量是整数</span></span>
 <span id="cb1262-4"><a href="sec-integer-programming.html#cb1262-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;I&quot;</span>),</span>
 <span id="cb1262-5"><a href="sec-integer-programming.html#cb1262-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">L_constraint</span>(</span>
-<span id="cb1262-6"><a href="sec-integer-programming.html#cb1262-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">L =</span> <span class="fu">rbind</span>(</span>
-<span id="cb1262-7"><a href="sec-integer-programming.html#cb1262-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>),</span>
-<span id="cb1262-8"><a href="sec-integer-programming.html#cb1262-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">9</span>),</span>
-<span id="cb1262-9"><a href="sec-integer-programming.html#cb1262-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb1262-10"><a href="sec-integer-programming.html#cb1262-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1262-6"><a href="sec-integer-programming.html#cb1262-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">L =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb1262-7"><a href="sec-integer-programming.html#cb1262-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">2</span>,</span>
+<span id="cb1262-8"><a href="sec-integer-programming.html#cb1262-8" aria-hidden="true" tabindex="-1"></a>      <span class="dv">3</span>, <span class="dv">2</span>, <span class="sc">-</span><span class="dv">9</span>,</span>
+<span id="cb1262-9"><a href="sec-integer-programming.html#cb1262-9" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span></span>
+<span id="cb1262-10"><a href="sec-integer-programming.html#cb1262-10" aria-hidden="true" tabindex="-1"></a>    ), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb1262-11"><a href="sec-integer-programming.html#cb1262-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>),</span>
 <span id="cb1262-12"><a href="sec-integer-programming.html#cb1262-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">61</span>, <span class="dv">35</span>, <span class="dv">31</span>)</span>
 <span id="cb1262-13"><a href="sec-integer-programming.html#cb1262-13" aria-hidden="true" tabindex="-1"></a>  ),</span>

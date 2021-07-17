@@ -200,10 +200,39 @@ res$solution
     5x_1 + 7x_2 + 2x_3 \leq 61\\
     3x_1 + 2x_2 - 9x_3 \leq 35\\
     x_1 + 3x_2 + x_3 \leq 31\\
-    x_1,x_2 \geq 0, \quad x_3 \in [-10, 10]
+    x_1,x_2 \geq 0, \quad x_2, x_3 \in \mathbb{Z}, \quad x_3 \in [-10, 10]
     \end{array} \right.
 \end{array}
 \end{equation*}
+
+矩阵形式如下
+
+\begin{equation*}
+\begin{array}{l}
+\min_x \quad
+  \begin{bmatrix}
+  3  \\
+  7  \\
+  -12
+  \end{bmatrix}
+  ^{T} x \\
+s.t.\left\{ 
+ \begin{array}{l}
+  \begin{bmatrix}
+  5 & 7 & 2 \\
+  3 & 2 & -9\\
+  1 & 3 & 1
+  \end{bmatrix}
+  x \leq
+  \begin{bmatrix}
+   61 \\
+   35 \\
+   31
+  \end{bmatrix}
+ \end{array} \right.
+\end{array} 
+\end{equation*}
+
 
 
 ```r
@@ -212,11 +241,11 @@ op <- OP(
   # 指定变量类型：第1个变量是连续值，第2、3个变量是整数
   types = c("C", "I", "I"),
   constraints = L_constraint(
-    L = rbind(
-      c(5, 7, 2),
-      c(3, 2, -9),
-      c(1, 3, 1)
-    ),
+    L = matrix(c(
+      5, 7, 2,
+      3, 2, -9,
+      1, 3, 1
+    ), ncol = 3, byrow = TRUE),
     dir = c("<=", "<=", "<="),
     rhs = c(61, 35, 31)
   ),
@@ -1245,7 +1274,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.162353 4.173873 4.448025 1.198616
+## [1] 1.056993 4.779767 3.778930 1.325703
 ```
 
 ```r
@@ -1253,7 +1282,7 @@ nlp$objval
 ```
 
 ```
-## [1] 18.0796
+## [1] 17.253
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1320,7 +1349,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227969 4.245378
+## [1] 1.227971 4.245374
 ```
 
 ```r
@@ -1519,7 +1548,7 @@ nlp$solution
 ```
 
 ```
-## [1] 41.81834 42.54241
+## [1] -41.499760   4.618519
 ```
 
 ```r
@@ -1527,7 +1556,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.199294
+## [1] -3.283304
 ```
 比如下面三组
 
