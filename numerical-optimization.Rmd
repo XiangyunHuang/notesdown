@@ -826,6 +826,7 @@ constrOptim(
   ci = c(rep(2, 25), rep(-4, 25))
 )
 ```
+
 相比于 Nelder-Mead 方法，目标值 373 更大，可见已陷入局部最优解，下面通过 ROI 包，分别调用求解器 L-BFGS 和 directL，发现前者同样陷入局部最优解，而后者可以获得与 `nlminb()` 函数一致的结果。
 
 ```{r}
@@ -844,6 +845,7 @@ nlp <- ROI_solve(op, solver = "nloptr.directL")
 nlp$objval
 nlp$solution
 ```
+
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
 
 ```{r}
@@ -852,6 +854,7 @@ optim(
   lower = rep(2, 25), upper = rep(4, 25)
 )
 ```
+
 值得注意的是，当提供梯度信息的时候，虽然求解速度提升了，但是最优解变差了。
 
 ```{r}
@@ -860,7 +863,6 @@ optim(
   lower = rep(2, 25), upper = rep(4, 25)
 )
 ```
-
 
 #### 非线性严格不等式约束 {#nonlinear-strictly-inequality-constraints}
 
@@ -878,79 +880,63 @@ optim(
 \end{array}
 \end{equation*}
 
-::: {.rmdtip data-latex="{提示}"}
-
-```{r,eval=FALSE}
+```{r}
 # 目标函数
 fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
 # 目标函数的梯度
 gr <- function(x) {
-  g <- rep(NA, 3)
-  # 对 x[1] 求偏导
-  g[1] <- 2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]) 
-  # 对 x[2] 求偏导
-  g[2] <- 6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2])
-  # 对 x[3] 求偏导
-  g[3] <- 2 * (x[1] + 3 * x[2] + x[3])
-  g
+  c(
+    2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]), # 对 x[1] 求偏导
+    6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2]), # 对 x[2] 求偏导
+    2 * (x[1] + 3 * x[2] + x[3]) # 对 x[3] 求偏导
+  )
 }
 # 等式约束
 heq <- function(x) {
-  h <- rep(NA, 1)
-  h[1] <- x[1] + x[2] + x[3] - 1
-  h
+  x[1] + x[2] + x[3] - 1 
 }
 # 等式约束的雅可比矩阵
 # 这里只有一个等式约束，所以雅可比矩阵行数为 1
 heq.jac <- function(x) {
-  j <- matrix(NA, 1, length(x))
-  j[1, ] <- c(1, 1, 1)
-  j
+  matrix(c(1, 1, 1), ncol = 3, byrow = TRUE)
 }
 # 不等式约束
 # 要求必须是严格不等式，不能带等号，方向是 x > 0 
 hin <- function(x) {
-  h <- rep(NA, length(x))
-  h[1] <- 6 * x[2] + 4 * x[3] - x[1]^3 - 3
-  h[2] <- x[1]
-  h[3] <- x[2]
-  h[4] <- x[3]
-  h
+  c(6 * x[2] + 4 * x[3] - x[1]^3 - 3, x[1], x[2], x[3])
 }
 # 不等式约束的雅可比矩阵
-# 其实是有 4 个不等式约束，包括 3 个变量，雅可比矩阵行数是 4
+# 其实是有 4 个不等式约束，3 个目标变量约束，雅可比矩阵行数是 4
 hin.jac <- function(x) {
-  j <- matrix(NA, 4, length(x))
-  j[1, ] <- c(-3 * x[1]^2, 6, 4)
-  j[2, ] <- c(1, 0, 0)
-  j[3, ] <- c(0, 1, 0)
-  j[4, ] <- c(0, 0, 1)
-  j
+  matrix(c(
+    -3 * x[1]^2, 6, 4,
+    1, 0, 0,
+    0, 1, 0,
+    0, 0, 1
+  ), ncol = 3, byrow = TRUE)
 }
 ```
 
 调用 **alabama** 包的求解器 
 
-```{r,eval=FALSE}
-library(numDeriv)
-library(alabama)
+```{r}
 set.seed(12)
 # 初始值
 p0 <- runif(3)
 # 求目标函数的极小值
-ans <- constrOptim.nl(
-  par = p0, 
+ans <- alabama::constrOptim.nl(
+  par = p0,
   # 目标函数
-  fn = fn, 
-  gr = gr, 
+  fn = fn,
+  gr = gr,
   # 等式约束
   heq = heq,
-  heq.jac = heq.jac, 
+  heq.jac = heq.jac,
   # 不等式约束
-  hin = hin, 
+  hin = hin,
   hin.jac = hin.jac,
   # 不显示迭代过程
-  control.outer = list(trace = FALSE) 
+  control.outer = list(trace = FALSE)
 )
 ans
 ```
@@ -959,11 +945,14 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 
 ```{r,eval=FALSE}
 # 不提供梯度函数，照样可以求解
-ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
+ans <- alabama::constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
+
+::: {.rmdtip data-latex="{注意}"}
+等式和不等式约束的雅可比矩阵必须以 matrix 数据类型存储，而不能以 vector 类型存储。要注意和后面 ROI 包的调用形式区别。
 :::
 
-实际上，可以用 ROI 调用 alabama 的方式，这种方式可以简化目标函数梯度和约束条件的表示
+实际上，可以用 ROI 调用 alabama 求解器的方式，这种方式可以简化目标函数梯度和约束条件的表示
 
 ```{r}
 # 目标函数
@@ -1567,11 +1556,12 @@ wireframe(
 
 
 \begin{equation*}
-\begin{array}{l}
-\frac{\partial x}{\partial t} &= \sigma (y - x) \\
-\frac{\partial y}{\partial t} &= x(\rho -z) - y \\
-\frac{\partial x}{\partial t} &= xy - \beta z
-\end{array}
+\left\{ 
+  \begin{array}{l}
+    \frac{\partial x}{\partial t} = \sigma (y - x) \\
+    \frac{\partial y}{\partial t} = x(\rho -z) - y \\
+    \frac{\partial x}{\partial t} = xy - \beta z
+  \end{array} \right.
 \end{equation*}
 
 
