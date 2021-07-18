@@ -397,7 +397,7 @@ plot(svp, data = x)
 
 ### 一元非线性优化 {#sec:one-dimensional-optimization}
 
-复合函数求极值
+下面考虑一个稍微复杂的一元函数优化问题，求复合函数的极值
 
 $$
 g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g(s) \exp(-s) \mathrm{ds}
@@ -419,11 +419,19 @@ f <- function(y) {
 optimize(f, interval = c(10, 100), maximum = FALSE)
 ```
 
-计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，`g(c(1,2))` 则会报错
+::: {.rmdtip data-latex="{提示}"}
+计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，`g(c(1,2))` 会报错，因此上面对函数 `g()` 用了向量化函数 `Vectorize()` 操作。
 
 ```{r}
 g(1)
 ```
+
+类似地，同时计算多个目标函数 `f(y)` 的值，也需要`Vectorize()` 实现向量化操作。
+
+```{r}
+Vectorize(f, "y")(c(1, 2))
+```
+:::
 
 ### 多元非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
 
