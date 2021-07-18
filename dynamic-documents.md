@@ -48,8 +48,8 @@ rmarkdown 自 2014年09月17日在 CRAN 上发布第一个正式版本以来，�
 <div class="figure" style="text-align: center">
 
 ```{=html}
-<div id="htmlwidget-70dd9e736f56e68c758d" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-70dd9e736f56e68c758d">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[knitr]    -> [动态文档|rmarkdown]\n[Pandoc]   -> [动态文档|rmarkdown]\n[Markdown] -> [动态文档|rmarkdown]\n[动态文档] -> [书籍笔记|bookdown]\n[动态文档] -> [静态网站|blogdown]\n[动态文档] -> [幻灯片|xaringan]\n[幻灯片]   -> [PowerPoint|officedown]\n[书籍笔记] -> [毕业论文|thesisdown]\n[静态网站] -> [个人简历|pagedown]\n[动态文档] -> [数据面板|flexdashboard]\n[数据面板] --> [交互图形|plotly]","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9705e23a4dffeed340e3" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9705e23a4dffeed340e3">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[knitr]    -> [动态文档|rmarkdown]\n[Pandoc]   -> [动态文档|rmarkdown]\n[Markdown] -> [动态文档|rmarkdown]\n[动态文档] -> [书籍笔记|bookdown]\n[动态文档] -> [静态网站|blogdown]\n[动态文档] -> [幻灯片|xaringan]\n[幻灯片]   -> [PowerPoint|officedown]\n[书籍笔记] -> [毕业论文|thesisdown]\n[静态网站] -> [个人简历|pagedown]\n[动态文档] -> [数据面板|flexdashboard]\n[数据面板] --> [交互图形|plotly]","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 <p class="caption">(\#fig:rmarkdown-ecosystem)rmarkdown 生态系统</p>
@@ -147,8 +147,8 @@ nomnoml::nomnoml("
 ```
 
 ```{=html}
-<div id="htmlwidget-93d292a20184ad2599f6" style="width:768px;height:192px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-93d292a20184ad2599f6">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]\n[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]\n[Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]\n[Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]\n","svg":false},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-dd3ae6b6b80a09f97b01" style="width:768px;height:192px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dd3ae6b6b80a09f97b01">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]\n[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]\n[Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]\n[Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]\n","svg":false},"evals":[],"jsHooks":[]}</script>
 ```
 
 ## 便携式文档 {#sec:portable-document}
