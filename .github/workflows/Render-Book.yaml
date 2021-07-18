@@ -34,10 +34,11 @@ jobs:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.26.1"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.26.1"
+      CMDSTAN_VERSION: "2.27.0"
+      CMDSTAN: "/opt/cmdstan/cmdstan-2.27.0"
       SPARK_VERSION: "3.1.1"
       HADOOP_VERSION: "3.2"
+      PANDOC_VERSION: "2.14.0.3"
       SPARK_HOME: "/opt/spark/spark-3.1.1-bin-hadoop3.2"
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_VERSION: ${{ matrix.config.r }}
@@ -57,7 +58,7 @@ jobs:
       - name: Install Pandoc
         uses: r-lib/actions/setup-pandoc@v1
         with:
-          pandoc-version: '2.11.4'
+          pandoc-version: ${{ env.PANDOC_VERSION }}
 
       - name: Install ghostscript and Others
         run: |
@@ -127,7 +128,7 @@ jobs:
           if(!require('renv')) install.packages('renv')
           renv::restore()
           # TODO: use renv instead
-          if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
+          # if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
         shell: Rscript {0}
 
       - name: Install LaTeX packages
