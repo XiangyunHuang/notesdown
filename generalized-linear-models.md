@@ -169,10 +169,14 @@ plot_grid(p1, bottom_row, labels = c('A', ''), label_size = 12, ncol = 1)
 ## Warning: Removed 12 rows containing missing values (geom_point).
 ```
 
-<div class="figure" style="text-align: center">
-<img src="generalized-linear-models_files/figure-html/esoph-data-1.png" alt="吸烟喝酒和食道癌的关系" width="672" />
-<p class="caption">(\#fig:esoph-data)吸烟喝酒和食道癌的关系</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{generalized-linear-models_files/figure-latex/esoph-data-1} 
+
+}
+
+\caption{吸烟喝酒和食道癌的关系}(\#fig:esoph-data)
+\end{figure}
 
 
 
@@ -544,7 +548,9 @@ t.test(lwt ~ ui, data = birthwt)
 boxplot(lwt ~ ui, data = birthwt)
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
 
 ```r
@@ -894,14 +900,18 @@ head(beall.webworms)
 hist(beall.webworms$y, main = "Histogram of Worm Count", xlab = "Number of Worms")
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-22-1} \end{center}
 
 
 ```r
 boxplot(y ~ trt, data = beall.webworms)
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-23-1} \end{center}
 
 抖动图
 
@@ -910,7 +920,9 @@ boxplot(y ~ trt, data = beall.webworms)
 plot(y ~ trt, data = beall.webworms, xlab = "Types of Worms", ylab = "Worm Count")
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-24-1} \end{center}
 
 
 ```r
@@ -921,7 +933,9 @@ ggplot(beall.webworms, aes(trt, y)) +
   theme_minimal()
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-25-1} \end{center}
 
 
 
@@ -971,7 +985,9 @@ par(mfrow = c(2, 2))
 plot(pois.mod)
 ```
 
-<img src="generalized-linear-models_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{generalized-linear-models_files/figure-latex/unnamed-chunk-27-1} \end{center}
 
 
 

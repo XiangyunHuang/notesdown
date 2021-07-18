@@ -184,36 +184,50 @@ x
 
 第三方 R 包大大扩展了 Base R 函数 `plot()` 的功能，比如 **mgcv** ，**nlme** 包和 **lattice** 包等，表 \@ref(tab:generic-functions) 列出当前环境下， `plot()` 绘图方法。
 
+\begin{table}
 
-```
-## Warning in matrix(methods("plot"), ncol = 3): data length [52] is not a sub-
-## multiple or multiple of the number of rows [18]
-```
-
-
-
-Table: (\#tab:generic-functions)泛型函数
-
-|A                  |B                     |C                 |
-|:------------------|:---------------------|:-----------------|
-|plot.acf           |plot.intervals.lmList |plot.ranef.lme    |
-|plot.ACF           |plot.isoreg           |plot.ranef.lmList |
-|plot.augPred       |plot.jam              |plot.raster       |
-|plot.compareFits   |plot.lm               |plot.shingle      |
-|plot.data.frame    |plot.lme              |plot.simulate.lme |
-|plot.decomposed.ts |plot.lmList           |plot.spec         |
-|plot.default       |plot.medpolish        |plot.spline       |
-|plot.dendrogram    |plot.mlm              |plot.stepfun      |
-|plot.density       |plot.nffGroupedData   |plot.stl          |
-|plot.ecdf          |plot.nfnGroupedData   |plot.table        |
-|plot.factor        |plot.nls              |plot.trellis      |
-|plot.formula       |plot.nmGroupedData    |plot.ts           |
-|plot.function      |plot.pdMat            |plot.tskernel     |
-|plot.gam           |plot.ppr              |plot.TukeyHSD     |
-|plot.gls           |plot.prcomp           |plot.Variogram    |
-|plot.hclust        |plot.princomp         |plot.xyVector     |
-|plot.histogram     |plot.profile.nls      |plot.acf          |
-|plot.HoltWinters   |plot.R6               |plot.ACF          |
+\caption{(\#tab:generic-functions)泛型函数}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+A & B & C\\
+\hline
+plot.acf & plot.HoltWinters & plot.profile.nls\\
+\hline
+plot.ACF & plot.intervals.lmList & plot.ranef.lme\\
+\hline
+plot.augPred & plot.isoreg & plot.ranef.lmList\\
+\hline
+plot.compareFits & plot.jam & plot.raster\\
+\hline
+plot.data.frame & plot.lm & plot.shingle\\
+\hline
+plot.decomposed.ts & plot.lme & plot.simulate.lme\\
+\hline
+plot.default & plot.lmList & plot.spec\\
+\hline
+plot.dendrogram & plot.medpolish & plot.spline\\
+\hline
+plot.density & plot.mlm & plot.stepfun\\
+\hline
+plot.ecdf & plot.nffGroupedData & plot.stl\\
+\hline
+plot.factor & plot.nfnGroupedData & plot.table\\
+\hline
+plot.formula & plot.nls & plot.trellis\\
+\hline
+plot.function & plot.nmGroupedData & plot.ts\\
+\hline
+plot.gam & plot.pdMat & plot.tskernel\\
+\hline
+plot.gls & plot.ppr & plot.TukeyHSD\\
+\hline
+plot.hclust & plot.prcomp & plot.Variogram\\
+\hline
+plot.histogram & plot.princomp & plot.xyVector\\
+\hline
+\end{tabular}
+\end{table}
 
 ## 除虫 {#sec:code-debug}
 

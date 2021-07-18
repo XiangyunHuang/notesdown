@@ -10,10 +10,14 @@ library(magrittr)
 更多参考材料见[A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/)，
 [Big Data in Economics: Data cleaning and wrangling](https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html) 和 [DataCamp’s data.table cheatsheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
 
-<div class="figure" style="text-align: center">
-<img src="diagrams/tidyverse-vs-base-r.svg" alt="Tidyverse 和 Base R 的关系" width="75%" />
-<p class="caption">(\#fig:tidyverse-vs-base-r)Tidyverse 和 Base R 的关系</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{diagrams/tidyverse-vs-base-r} 
+
+}
+
+\caption{Tidyverse 和 Base R 的关系}(\#fig:tidyverse-vs-base-r)
+\end{figure}
 
 ## apply 族 {#sec:apply-family}
 
@@ -36,10 +40,14 @@ library(magrittr)
 spectrum(sunspot.year, kernel = kernel("daniell", c(11,7,3)), log = "no")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-manipulation_files/figure-html/spectrum-sunspot-year-1.png" alt="太阳黑子的频谱" width="672" />
-<p class="caption">(\#fig:spectrum-sunspot-year)太阳黑子的频谱</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-manipulation_files/figure-latex/spectrum-sunspot-year-1} 
+
+}
+
+\caption{太阳黑子的频谱}(\#fig:spectrum-sunspot-year)
+\end{figure}
 
 <!-- https://design.tidyverse.org/cs-mapply-pmap.html -->
 
@@ -111,10 +119,14 @@ invisible(lapply(samples, function(x) {
 }))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-manipulation_files/figure-html/mapply-lapply-1.png" alt=" lapply 函数" width="672" />
-<p class="caption">(\#fig:mapply-lapply) lapply 函数</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-manipulation_files/figure-latex/mapply-lapply-1} 
+
+}
+
+\caption{ lapply 函数}(\#fig:mapply-lapply)
+\end{figure}
 
 分别计算每个样本的平均值
 
@@ -188,10 +200,14 @@ vapply 和 sapply 类似，但是预先指定返回值类型，这样可以更�
 plot(presidents)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-manipulation_files/figure-html/usa-presidents-1.png" alt="1945-1974美国总统的支持率" width="672" />
-<p class="caption">(\#fig:usa-presidents)1945-1974美国总统的支持率</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-manipulation_files/figure-latex/usa-presidents-1} 
+
+}
+
+\caption{1945-1974美国总统的支持率}(\#fig:usa-presidents)
+\end{figure}
 
 计算这 30 年每个季度的平均支持率
 
@@ -668,15 +684,22 @@ knitr::kable(.,
 )
 ```
 
+\begin{table}
 
-
-Table: (\#tab:data-frame-PlantGrowth)不同生长环境下植物的干重
-
-| group |  1   |  2   |  3   |  4   |  5   |  6   |  7   |  8   |  9   |  10  |
-|:-----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
-| ctrl  | 4.17 | 5.58 | 5.18 | 6.11 | 4.50 | 4.61 | 5.17 | 4.53 | 5.33 | 5.14 |
-| trt1  | 4.81 | 4.17 | 4.41 | 3.59 | 5.87 | 3.83 | 6.03 | 4.89 | 4.32 | 4.69 |
-| trt2  | 6.31 | 5.12 | 5.54 | 5.50 | 5.37 | 5.29 | 4.92 | 6.15 | 5.80 | 5.26 |
+\caption{(\#tab:data-frame-PlantGrowth)不同生长环境下植物的干重}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c|c|c|c|c|c}
+\hline
+group & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\hline
+ctrl & 4.17 & 5.58 & 5.18 & 6.11 & 4.50 & 4.61 & 5.17 & 4.53 & 5.33 & 5.14\\
+\hline
+trt1 & 4.81 & 4.17 & 4.41 & 3.59 & 5.87 & 3.83 & 6.03 & 4.89 & 4.32 & 4.69\\
+\hline
+trt2 & 6.31 & 5.12 & 5.54 & 5.50 & 5.37 & 5.29 & 4.92 & 6.15 & 5.80 & 5.26\\
+\hline
+\end{tabular}
+\end{table}
 
 或者，我们也可以使用 **tidyr** 包提供的 `pivot_wider()` 函数
 
@@ -775,7 +798,9 @@ iris %>%
   geom_point()
 ```
 
-<img src="data-manipulation_files/figure-html/datatable-ggplot2-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{data-manipulation_files/figure-latex/datatable-ggplot2-1} \end{center}
 
 ## `CASE WHEN` 和 `fcase` {#sec:case-when}
 

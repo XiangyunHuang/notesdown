@@ -1417,5 +1417,7 @@ for (nu in nus) lines(x, besselI(x, nu = nu), col = nu + 2)
 legend(0, 6, legend = paste("nu=", nus), col = nus + 2, lwd = 1)
 ```
 
-<img src="matrix-operations_files/figure-html/modified-bessel-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{matrix-operations_files/figure-latex/modified-bessel-1} \end{center}
 

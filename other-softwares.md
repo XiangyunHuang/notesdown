@@ -27,10 +27,14 @@ sudo apt-get update
 sudo apt-get install typora
 ```
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/typora-theme-default.png" alt="Typora 主题" width="45%" /><img src="screenshots/typora-theme-vue.png" alt="Typora 主题" width="45%" />
-<p class="caption">(\#fig:typora-theme)Typora 主题</p>
-</div>
+\begin{figure}
+
+{\centering \subfloat[默认的主题(\#fig:typora-theme-1)]{\includegraphics[width=0.45\linewidth]{screenshots/typora-theme-default} }\subfloat[Vue 主题(\#fig:typora-theme-2)]{\includegraphics[width=0.45\linewidth]{screenshots/typora-theme-vue} }
+
+}
+
+\caption{Typora 主题}(\#fig:typora-theme)
+\end{figure}
 
 设置中文环境，并且将主题风格样式配置为 Vue，见图\@ref(fig:typora-theme)（右），Vue 主题可从 Typora 官网下载 <https://theme.typora.io/theme/Vue/>。
 
@@ -68,10 +72,14 @@ VS Code, Sublime Text 和 Atom
 
 ### RStudio 桌面版 {#rstudio-desktop-ide}
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/rstudio-desktop.png" alt="开源桌面版 RStudio 集成开发环境" width="75%" />
-<p class="caption">(\#fig:rstudio-desktop)开源桌面版 RStudio 集成开发环境</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/rstudio-desktop} 
+
+}
+
+\caption{开源桌面版 RStudio 集成开发环境}(\#fig:rstudio-desktop)
+\end{figure}
 
 
 ```bash
@@ -104,17 +112,25 @@ invisible(lapply(db$name, function(pkg) {
 
 RStudio Server 开源服务器版可以放在虚拟机里或者容器里，RStudio 桌面版装在服务器上，服务器为 Ubuntu/CentOS/Windows 系统，然后本地是 Windows 系统，可以通过远程桌面连接服务器，使用 RStudio；
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/rstudio-vbox.png" alt="虚拟机里的 RStudio" width="75%" />
-<p class="caption">(\#fig:vbox-rstudio)虚拟机里的 RStudio</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/rstudio-vbox} 
+
+}
+
+\caption{虚拟机里的 RStudio}(\#fig:vbox-rstudio)
+\end{figure}
 
 服务器上启动 Docker ，运行 RStudio 镜像，本地通过桌面浏览器，如谷歌浏览器登陆连接。
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/rstudio-docker.png" alt="容器里的 RStudio" width="75%" />
-<p class="caption">(\#fig:docker-rstudio)容器里的 RStudio</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/rstudio-docker} 
+
+}
+
+\caption{容器里的 RStudio}(\#fig:docker-rstudio)
+\end{figure}
 
 1. 下载 RStudio IDE
  
@@ -190,10 +206,14 @@ shiny 开源服务器版
 
 Eclipse 配合 StatET 插件 <http://www.walware.de/goto/statet> 提供R语言的集成开发环境 <https://projects.eclipse.org/projects/science.statet>
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/eclipse-statet.png" alt="基于 Eclipse 的 R 集成开发环境 StatET" width="75%" />
-<p class="caption">(\#fig:eclipse-statet)基于 Eclipse 的 R 集成开发环境 StatET</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/eclipse-statet} 
+
+}
+
+\caption{基于 Eclipse 的 R 集成开发环境 StatET}(\#fig:eclipse-statet)
+\end{figure}
 
 StatET 基于 Eclipse 首次建立索引很慢，估计半小时到一个小时，添加新的 R 包后，每次启动 StatET 也会建立索引缓存，此外，Eclipse 开发环境占用内存比较多，配置 StatET 的过程如下
 
@@ -227,7 +247,7 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [6d70571] 2021-06-05: 移除蛋壳股价趋势，蛋壳已碎
+## Head:     [d00acdd] 2021-07-18: build full pdf
 ## 
 ## Branches:         1
 ## Tags:             0
@@ -235,16 +255,16 @@ summary(git2r::repository())
 ## Contributors:     1
 ## Stashes:          0
 ## Ignored files:   13
-## Untracked files: 74
+## Untracked files: 80
 ## Unstaged files:   0
 ## Staged files:     0
 ## 
 ## Latest commits:
-## [6d70571] 2021-06-05: 移除蛋壳股价趋势，蛋壳已碎
-## [97e638f] 2021-06-05: make book
-## [fa24c76] 2021-06-05: update settings
-## [72ce1d8] 2021-06-05: add CMDSTAN repo
-## [765ea1a] 2021-06-05: upgrade to R 4.1.0
+## [d00acdd] 2021-07-18: build full pdf
+## [9bc7292] 2021-07-18: fix WARNING when build pdf
+## [a49be96] 2021-07-18: fix error when build pdf
+## [756c7c2] 2021-07-18: 简化优化问题的表达
+## [12b7346] 2021-07-18: 复合函数求极值添加一个提示
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -264,10 +284,14 @@ vapply(my_repos, "[[", "", "login")
 [26] "talegari"        "hao-shefer"      "zhouyisu"        "tsitong"         "liuyadong" 
 ```
 
-<div class="figure" style="text-align: center">
-<a href="https://www.ardata.fr/img/hexbin/git.svg" target="_blank"><img src="images/git.svg" alt="Git 代码版本管理" width="23%" /></a>
-<p class="caption">(\#fig:git)Git 代码版本管理</p>
-</div>
+\begin{figure}
+
+{\centering \href{https://www.ardata.fr/img/hexbin/git.svg}{\includegraphics[width=0.23\linewidth]{images/git} }
+
+}
+
+\caption{Git 代码版本管理}(\#fig:git)
+\end{figure}
 
 [Jeroen Ooms](https://github.com/jeroen) 开发的 [gert](https://github.com/r-lib/gert) 包实现在 R 环境中操作 Git，我们可以从幻灯片 --- [Gert: A minimal git client for R](https://jeroen.github.io/gert2019) 学习重点内容。
 
@@ -321,10 +345,14 @@ sudo yum install readline-devel ncurses-devel asciidoc docbook-utils xmlto
 
 tig 主要用于查看 git 提交的历史日志
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/git-tig.png" alt="Git 日志查看器" width="55%" />
-<p class="caption">(\#fig:tig)Git 日志查看器</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.55\linewidth]{screenshots/git-tig} 
+
+}
+
+\caption{Git 日志查看器}(\#fig:tig)
+\end{figure}
 
 ### 追踪文件 {#git-add}
 
@@ -774,10 +802,14 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/optipng-1.png" alt="没有优化" width="672" />
-<p class="caption">(\#fig:optipng)没有优化</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{other-softwares_files/figure-latex/optipng-1} 
+
+}
+
+\caption{没有优化}(\#fig:optipng)
+\end{figure}
 
 
 
@@ -787,10 +819,14 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/optimize-png-1.png" alt="优化" width="672" />
-<p class="caption">(\#fig:optimize-png)优化</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{other-softwares_files/figure-latex/optimize-png-1} 
+
+}
+
+\caption{优化}(\#fig:optimize-png)
+\end{figure}
 
 ```bash
 optipng -o5 filename.png
@@ -913,15 +949,14 @@ PDF 操作：价值数百美元的开源替代方案，参考 Adobe Acrobat 的�
 
 UML (Unified Modeling Language) 表示统一建模语言
 
-<div class="figure" style="text-align: center">
+\begin{figure}
 
-```{=html}
-<div id="htmlwidget-3bda842e897ab84e1540" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3bda842e897ab84e1540">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#stroke: black\n#.box: fill=#8f8 dashed visual=ellipse\n\n[Inkscape|制作转换]->[SVG]\n[Inkscape]->[PDF]\n[Inkscape]->[PNG]\n\n[LaTeX|编译生成|\n\n[TeX] --> [TinyTeX|XeLaTeX引擎]\n[TinyTeX] -:> [PDF]\n\n]  ->[PDF]\n\n\n[PNG] <- [OptiPNG|优化压缩]\n[PDF]  ->  [PNG]\n\n[GIFSKI|合成转换|\n  [PNG]导入-->[GIFSKI]\n  [GIFSKI]合成-:>[GIF]\n]  -> [GIF]\n\n[GIF] <- [ImageMagick|合成转换|\n  [PNG]导入-->[ImageMagick]\n  [ImageMagick]合成-:>[GIF]\n]\n\n[PNG] <- [GraphicsMagick|合成转换|\n  [PNG]导入-->[GraphicsMagick]\n  [GraphicsMagick]转换-:>[PNG]\n]\n\n[GhostScript|字体嵌入] ->[PDF]\n\n\n// [PNG] -> [GIF]\n[PNG] -> [PDF]\n\n[PNG] <- [Graphviz|编译生成] \n[SVG] <- [Graphviz] \n[PDF] <- [Graphviz] \n\n[PNG] <- [PhantomJS|转化生成|\n\n  [HTML]导入-->[PhantomJS]\n  [PhantomJS]转换-:>[PNG]\n  \n]","svg":false},"evals":[],"jsHooks":[]}</script>
-```
+{\centering \includegraphics{other-softwares_files/figure-latex/convert-figure-1} 
 
-<p class="caption">(\#fig:convert-figure)图片制作、合成、优化、转换等常用工具</p>
-</div>
+}
+
+\caption{图片制作、合成、优化、转换等常用工具}(\#fig:convert-figure)
+\end{figure}
 
 
 
@@ -958,10 +993,14 @@ nomnoml::nomnoml("
 
 Graphviz 官网 <http://www.graphviz.org/>，常用于绘制流程图，广泛用于 tensorflow 和 mxnet 的模型描述中
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/data-workflow-1.png" alt="数据分析流程图" width="672" />
-<p class="caption">(\#fig:data-workflow)数据分析流程图</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{other-softwares_files/figure-latex/data-workflow-1} 
+
+}
+
+\caption{数据分析流程图}(\#fig:data-workflow)
+\end{figure}
 
 [**DiagrammeR**](https://github.com/rich-iannone/DiagrammeR) 包将 Graphviz 引入 R 语言
 
@@ -1302,7 +1341,7 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7f38f43d74c0>]
+## [<matplotlib.lines.Line2D object at 0x7f7c1193fa60>]
 ```
 
 ```
@@ -1313,10 +1352,14 @@ tlmgr update --self --all
 ## Text(0, 0.5, 'Coord $y$')
 ```
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/matplotlib-1.svg" alt="matplotlib 示例" width="75%" />
-<p class="caption">(\#fig:matplotlib)matplotlib 示例</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/matplotlib-1} 
+
+}
+
+\caption{matplotlib 示例}(\#fig:matplotlib)
+\end{figure}
 
 ::: {.rmdtip data-latex="{提示}"}
 如果你的系统是 Windows/MacOS 可以添加 GPG 验证以增加安全性，最简单的方式就是：
@@ -1360,13 +1403,15 @@ ax.set_ylim(-5.12, 5.12)
 ax.set_zlim(0, 80)
 ## (0.0, 80.0)
 fig.colorbar(surf, aspect=30)
-## <matplotlib.colorbar.Colorbar object at 0x7f38eddb2c40>
+## <matplotlib.colorbar.Colorbar object at 0x7f7c0e37c130>
 plt.title(r'Rastrigin Function in Two Dimensions')
 ## Text(0.5, 0.92, 'Rastrigin Function in Two Dimensions')
 plt.show()
 ```
 
-<img src="other-softwares_files/figure-html/matplotlib-3.svg" width=".8\textwidth" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics[width=.8\textwidth]{other-softwares_files/figure-latex/matplotlib-3} \end{center}
 
 ## Python 基础操作 {#sec:basic-python}
 
@@ -1558,11 +1603,6 @@ px.scatter(px.data.iris(), x = "sepal_width", y = "sepal_length",
   )
 ```
 
-```{=html}
-<div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>                <div id="9c2a6a07-d988-4b4f-a24c-621393407d76" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("9c2a6a07-d988-4b4f-a24c-621393407d76")) {                    Plotly.newPlot(                        "9c2a6a07-d988-4b4f-a24c-621393407d76",                        [{"hovertemplate": "species=setosa<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>", "legendgroup": "setosa", "marker": {"color": "rgb(102,194,165)", "symbol": "circle"}, "mode": "markers", "name": "setosa", "orientation": "v", "showlegend": true, "type": "scatter", "x": [3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.4, 3.0, 3.0, 4.0, 4.4, 3.9, 3.5, 3.8, 3.8, 3.4, 3.7, 3.6, 3.3, 3.4, 3.0, 3.4, 3.5, 3.4, 3.2, 3.1, 3.4, 4.1, 4.2, 3.1, 3.2, 3.5, 3.1, 3.0, 3.4, 3.5, 2.3, 3.2, 3.5, 3.8, 3.0, 3.8, 3.2, 3.7, 3.3], "xaxis": "x", "y": [5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.8, 4.8, 4.3, 5.8, 5.7, 5.4, 5.1, 5.7, 5.1, 5.4, 5.1, 4.6, 5.1, 4.8, 5.0, 5.0, 5.2, 5.2, 4.7, 4.8, 5.4, 5.2, 5.5, 4.9, 5.0, 5.5, 4.9, 4.4, 5.1, 5.0, 4.5, 4.4, 5.0, 5.1, 4.8, 5.1, 4.6, 5.3, 5.0], "yaxis": "y"}, {"hovertemplate": "species=versicolor<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>", "legendgroup": "versicolor", "marker": {"color": "rgb(252,141,98)", "symbol": "circle"}, "mode": "markers", "name": "versicolor", "orientation": "v", "showlegend": true, "type": "scatter", "x": [3.2, 3.2, 3.1, 2.3, 2.8, 2.8, 3.3, 2.4, 2.9, 2.7, 2.0, 3.0, 2.2, 2.9, 2.9, 3.1, 3.0, 2.7, 2.2, 2.5, 3.2, 2.8, 2.5, 2.8, 2.9, 3.0, 2.8, 3.0, 2.9, 2.6, 2.4, 2.4, 2.7, 2.7, 3.0, 3.4, 3.1, 2.3, 3.0, 2.5, 2.6, 3.0, 2.6, 2.3, 2.7, 3.0, 2.9, 2.9, 2.5, 2.8], "xaxis": "x", "y": [7.0, 6.4, 6.9, 5.5, 6.5, 5.7, 6.3, 4.9, 6.6, 5.2, 5.0, 5.9, 6.0, 6.1, 5.6, 6.7, 5.6, 5.8, 6.2, 5.6, 5.9, 6.1, 6.3, 6.1, 6.4, 6.6, 6.8, 6.7, 6.0, 5.7, 5.5, 5.5, 5.8, 6.0, 5.4, 6.0, 6.7, 6.3, 5.6, 5.5, 5.5, 6.1, 5.8, 5.0, 5.6, 5.7, 5.7, 6.2, 5.1, 5.7], "yaxis": "y"}, {"hovertemplate": "species=virginica<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>", "legendgroup": "virginica", "marker": {"color": "rgb(141,160,203)", "symbol": "circle"}, "mode": "markers", "name": "virginica", "orientation": "v", "showlegend": true, "type": "scatter", "x": [3.3, 2.7, 3.0, 2.9, 3.0, 3.0, 2.5, 2.9, 2.5, 3.6, 3.2, 2.7, 3.0, 2.5, 2.8, 3.2, 3.0, 3.8, 2.6, 2.2, 3.2, 2.8, 2.8, 2.7, 3.3, 3.2, 2.8, 3.0, 2.8, 3.0, 2.8, 3.8, 2.8, 2.8, 2.6, 3.0, 3.4, 3.1, 3.0, 3.1, 3.1, 3.1, 2.7, 3.2, 3.3, 3.0, 2.5, 3.0, 3.4, 3.0], "xaxis": "x", "y": [6.3, 5.8, 7.1, 6.3, 6.5, 7.6, 4.9, 7.3, 6.7, 7.2, 6.5, 6.4, 6.8, 5.7, 5.8, 6.4, 6.5, 7.7, 7.7, 6.0, 6.9, 5.6, 7.7, 6.3, 6.7, 7.2, 6.2, 6.1, 6.4, 7.2, 7.4, 7.9, 6.4, 6.3, 6.1, 7.7, 6.3, 6.4, 6.0, 6.9, 6.7, 6.9, 5.8, 6.8, 6.7, 6.7, 6.3, 6.5, 6.2, 5.9], "yaxis": "y"}],                        {"legend": {"title": {"text": "species"}, "tracegroupgap": 0}, "template": {"data": {"bar": [{"error_x": {"color": "rgb(36,36,36)"}, "error_y": {"color": "rgb(36,36,36)"}, "marker": {"line": {"color": "white", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "white", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "rgb(36,36,36)", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "rgb(36,36,36)"}, "baxis": {"endlinecolor": "rgb(36,36,36)", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "rgb(36,36,36)"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "heatmapgl"}], "histogram": [{"marker": {"line": {"color": "white", "width": 0.6}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "parcoords"}], "pie": [{"automargin": true, "type": "pie"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}, "colorscale": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "rgb(237,237,237)"}, "line": {"color": "white"}}, "header": {"fill": {"color": "rgb(217,217,217)"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowhead": 0, "arrowwidth": 1}, "autotypenumbers": "strict", "coloraxis": {"colorbar": {"outlinewidth": 1, "tickcolor": "rgb(36,36,36)", "ticks": "outside"}}, "colorscale": {"diverging": [[0.0, "rgb(103,0,31)"], [0.1, "rgb(178,24,43)"], [0.2, "rgb(214,96,77)"], [0.3, "rgb(244,165,130)"], [0.4, "rgb(253,219,199)"], [0.5, "rgb(247,247,247)"], [0.6, "rgb(209,229,240)"], [0.7, "rgb(146,197,222)"], [0.8, "rgb(67,147,195)"], [0.9, "rgb(33,102,172)"], [1.0, "rgb(5,48,97)"]], "sequential": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]], "sequentialminus": [[0.0, "#440154"], [0.1111111111111111, "#482878"], [0.2222222222222222, "#3e4989"], [0.3333333333333333, "#31688e"], [0.4444444444444444, "#26828e"], [0.5555555555555556, "#1f9e89"], [0.6666666666666666, "#35b779"], [0.7777777777777778, "#6ece58"], [0.8888888888888888, "#b5de2b"], [1.0, "#fde725"]]}, "colorway": ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"], "font": {"color": "rgb(36,36,36)"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "white", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "white", "polar": {"angularaxis": {"gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside"}, "bgcolor": "white", "radialaxis": {"gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside"}}, "scene": {"xaxis": {"backgroundcolor": "white", "gridcolor": "rgb(232,232,232)", "gridwidth": 2, "linecolor": "rgb(36,36,36)", "showbackground": true, "showgrid": false, "showline": true, "ticks": "outside", "zeroline": false, "zerolinecolor": "rgb(36,36,36)"}, "yaxis": {"backgroundcolor": "white", "gridcolor": "rgb(232,232,232)", "gridwidth": 2, "linecolor": "rgb(36,36,36)", "showbackground": true, "showgrid": false, "showline": true, "ticks": "outside", "zeroline": false, "zerolinecolor": "rgb(36,36,36)"}, "zaxis": {"backgroundcolor": "white", "gridcolor": "rgb(232,232,232)", "gridwidth": 2, "linecolor": "rgb(36,36,36)", "showbackground": true, "showgrid": false, "showline": true, "ticks": "outside", "zeroline": false, "zerolinecolor": "rgb(36,36,36)"}}, "shapedefaults": {"fillcolor": "black", "line": {"width": 0}, "opacity": 0.3}, "ternary": {"aaxis": {"gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside"}, "baxis": {"gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside"}, "bgcolor": "white", "caxis": {"gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside"}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside", "title": {"standoff": 15}, "zeroline": false, "zerolinecolor": "rgb(36,36,36)"}, "yaxis": {"automargin": true, "gridcolor": "rgb(232,232,232)", "linecolor": "rgb(36,36,36)", "showgrid": false, "showline": true, "ticks": "outside", "title": {"standoff": 15}, "zeroline": false, "zerolinecolor": "rgb(36,36,36)"}}}, "title": {"text": "Edgar Anderson's Iris Data"}, "xaxis": {"anchor": "y", "domain": [0.0, 1.0], "title": {"text": "sepal_width"}}, "yaxis": {"anchor": "x", "domain": [0.0, 1.0], "title": {"text": "sepal_length"}}},                        {"responsive": true}                    )                };                            </script>        </div>
-```
-
 绘图函数 <https://plotly.com/python-api-reference/plotly.express.html>
 数据集 <https://plotly.com/python-api-reference/generated/plotly.express.data.html>
 
@@ -1605,21 +1645,21 @@ pip3 list --format=columns
 
 Package                 Version            
 ----------------------- -------------------
-absl-py                 0.12.0             
+absl-py                 0.13.0             
 astunparse              1.6.3              
 cachetools              4.2.2              
 certifi                 2021.5.30          
-chardet                 4.0.0              
+charset-normalizer      2.0.3              
 cycler                  0.10.0             
 flatbuffers             1.12               
 gast                    0.4.0              
-google-auth             1.30.1             
+google-auth             1.33.0             
 google-auth-oauthlib    0.4.4              
 google-pasta            0.2.0              
 graphviz                0.8.4              
 grpcio                  1.34.1             
 h5py                    3.1.0              
-idna                    2.10               
+idna                    3.2                
 joblib                  1.0.1              
 keras-nightly           2.5.0.dev2021032900
 Keras-Preprocessing     1.1.2              
@@ -1628,38 +1668,38 @@ Markdown                3.3.4
 matplotlib              3.4.2              
 mpmath                  1.2.1              
 mxnet                   1.8.0.post0        
-numpy                   1.20.3             
+numpy                   1.21.0             
 oauthlib                3.1.1              
 opt-einsum              3.3.0              
-pandas                  1.2.4              
-Pillow                  8.2.0              
+pandas                  1.3.0              
+Pillow                  8.3.1              
 pip                     20.0.2             
 pkg-resources           0.0.0              
-plotly                  4.14.3             
-protobuf                3.17.2             
+plotly                  5.1.0              
+protobuf                3.17.3             
 pyasn1                  0.4.8              
 pyasn1-modules          0.2.8              
 pyparsing               2.4.7              
-python-dateutil         2.8.1              
+python-dateutil         2.8.2              
 pytz                    2021.1             
-requests                2.25.1             
+requests                2.26.0             
 requests-oauthlib       1.3.0              
-retrying                1.3.3              
 rsa                     4.7.2              
 scikit-learn            0.24.2             
-scipy                   1.6.3              
+scipy                   1.7.0              
 setuptools              44.0.0             
 six                     1.15.0             
 sympy                   1.8                
+tenacity                8.0.1              
 tensorboard             2.5.0              
 tensorboard-data-server 0.6.1              
 tensorboard-plugin-wit  1.8.0              
 tensorflow              2.5.0              
 tensorflow-estimator    2.5.0              
 termcolor               1.1.0              
-threadpoolctl           2.1.0              
+threadpoolctl           2.2.0              
 typing-extensions       3.7.4.3            
-urllib3                 1.26.5             
+urllib3                 1.26.6             
 Werkzeug                2.0.1              
 wheel                   0.36.2             
 wrapt                   1.12.1             
@@ -1689,7 +1729,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['HEAD', 'hooks', 'refs', 'branches', 'config', 'shallow', 'description', 'info', 'FETCH_HEAD', 'logs', 'index', 'objects']
+## ['branches', 'description', 'info', 'shallow', 'FETCH_HEAD', 'hooks', 'objects', 'config', 'logs', 'HEAD', 'index', 'refs']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1720,7 +1760,7 @@ plt.plot([0, 2, 1, 4])
 ```
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7f38d5d56c10>]
+## [<matplotlib.lines.Line2D object at 0x7f7bf5665670>]
 ```
 
 ```python
@@ -1744,10 +1784,14 @@ plt.tight_layout()
 plt.show()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/matplotlib-1.svg" alt="matplotlib 复制示例"  />
-<p class="caption">(\#fig:matplotlib-copy)matplotlib 复制示例</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{other-softwares_files/figure-latex/matplotlib-1} 
+
+}
+
+\caption{matplotlib 复制示例}(\#fig:matplotlib-copy)
+\end{figure}
 
 有了 reticulate 包，我们可以把任意想要导入到 R 环境中的 Python 模块导进来，实现 R 与 Python 的数据交换和函数调用 [^gluon]
 
@@ -1759,9 +1803,9 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "HEAD"        "hooks"       "refs"        "branches"    "config"     
-##  [6] "shallow"     "description" "info"        "FETCH_HEAD"  "logs"       
-## [11] "index"       "objects"
+##  [1] "branches"    "description" "info"        "shallow"     "FETCH_HEAD" 
+##  [6] "hooks"       "objects"     "config"      "logs"        "HEAD"       
+## [11] "index"       "refs"
 ```
 
 
@@ -1825,10 +1869,14 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 p1 + p2
 ```
 
-<div class="figure" style="text-align: center">
-<img src="other-softwares_files/figure-html/plot-iris-1.png" alt="从 R 调用 Python 数据对象" width="672" />
-<p class="caption">(\#fig:plot-iris)从 R 调用 Python 数据对象</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{other-softwares_files/figure-latex/plot-iris-1} 
+
+}
+
+\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
+\end{figure}
 
 -->
 
@@ -2416,203 +2464,216 @@ sessionInfo(sort(.packages(T)))
 ## 
 ## other attached packages:
 ##   [1] abind_1.4-5                agridat_1.18              
-##   [3] arrow_4.0.1                arules_1.6-8              
-##   [5] askpass_1.1                assertive.base_0.0-9      
-##   [7] assertive.properties_0.0-4 assertive.types_0.0-3     
-##   [9] assertthat_0.2.1           autoplotly_0.1.4          
-##  [11] backports_1.2.1            base64enc_0.1-3           
-##  [13] bayesplot_1.8.0            beanplot_1.2              
-##  [15] beeswarm_0.4.0             BH_1.75.0-0               
-##  [17] BiocGenerics_0.38.0        BiocManager_1.30.15       
-##  [19] BiocVersion_3.13.1         bit_4.0.4                 
-##  [21] bit64_4.0.5                bitops_1.0-7              
-##  [23] blob_1.2.1                 bookdown_0.22             
-##  [25] boot_1.3-28                brew_1.0-6                
-##  [27] bridgesampling_1.1-2       brio_1.1.2                
-##  [29] brms_2.15.0                Brobdingnag_1.2-6         
-##  [31] broom_0.7.6                broom.mixed_0.2.6         
-##  [33] bslib_0.2.5.1              cachem_1.0.5              
-##  [35] Cairo_1.5-12.2             callr_3.7.0               
-##  [37] car_3.0-10                 carData_3.0-4             
-##  [39] catboost_0.26              caTools_1.18.2            
-##  [41] cellranger_1.1.0           checkmate_2.0.0           
-##  [43] circlize_0.4.12            class_7.3-19              
-##  [45] classInt_0.4-3             cli_2.5.0                 
-##  [47] clipr_0.7.1                clue_0.3-59               
-##  [49] cluster_2.1.2              cmdstanr_0.4.0            
-##  [51] coda_0.19-4                codetools_0.2-18          
-##  [53] colorspace_2.0-1           colourpicker_1.1.0        
-##  [55] commonmark_1.7             ComplexHeatmap_2.8.0      
-##  [57] config_0.3.1               conquer_1.0.2             
-##  [59] corrplot_0.88              countrycode_1.2.0         
-##  [61] cowplot_1.1.1              cpp11_0.2.7               
-##  [63] crayon_1.4.1               credentials_1.3.0         
-##  [65] crosstalk_1.1.1            cubelyr_1.0.1             
-##  [67] curl_4.3.1                 data.table_1.14.0         
-##  [69] DBI_1.1.1                  dbplyr_2.1.1              
-##  [71] dendextend_1.15.1          desc_1.3.0                
-##  [73] devtools_2.4.1             DiagrammeR_1.0.6.1        
-##  [75] diffobj_0.3.4              digest_0.6.27             
-##  [77] distributional_0.2.2       doParallel_1.0.16         
-##  [79] downloader_0.4             dplyr_1.0.6               
-##  [81] DT_0.18                    dtplyr_1.1.0              
-##  [83] dygraphs_1.1.1.6           e1071_1.7-7               
-##  [85] echarts4r_0.4.0            egg_0.4.5                 
-##  [87] ellipsis_0.3.2             emo_0.0.0.9000            
-##  [89] equatiomatic_0.2.0         evaluate_0.14             
-##  [91] extrafont_0.17             extrafontdb_1.0           
-##  [93] fansi_0.5.0                farver_2.1.0              
-##  [95] fastmap_1.1.0              filehash_2.4-2            
-##  [97] flexdashboard_0.5.2        fontcm_1.1                
-##  [99] forcats_0.5.1              foreach_1.5.1             
-## [101] foreign_0.8-81             forge_0.2.0               
-## [103] formatR_1.11               formattable_0.2.1         
-## [105] Formula_1.2-4              fresh_0.2.0               
-## [107] fs_1.5.0                   future_1.21.0             
-## [109] gamm4_0.2-6                gapminder_0.3.0           
-## [111] gargle_1.1.0               gclus_1.3.2               
-## [113] gdtools_0.2.3              generics_0.1.0            
-## [115] geoR_1.8-1                 gert_1.3.0                
-## [117] GetoptLong_1.0.5           gganimate_1.0.7           
-## [119] ggbeeswarm_0.6.0           ggdendro_0.1.22           
-## [121] ggfittext_0.9.1            ggfortify_0.4.11          
-## [123] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
-## [125] ggplot2_3.3.3              ggpubr_0.4.0              
-## [127] ggrepel_0.9.1              ggridges_0.5.3            
-## [129] ggsci_2.9                  ggsignif_0.6.1            
-## [131] ggstream_0.1.0             gh_1.3.0                  
-## [133] gifski_1.4.3-1             git2r_0.28.0              
-## [135] gitcreds_0.1.1             glmmTMB_1.0.2.1           
-## [137] glmnet_4.1-1               GlobalOptions_0.1.2       
-## [139] globals_0.14.0             glue_1.4.2                
-## [141] googledrive_1.0.1          googlesheets4_0.3.0       
-## [143] gplots_3.1.1               gridBase_0.4-7            
-## [145] gridExtra_2.3              gt_0.3.0                  
-## [147] gtable_0.3.0               gtools_3.8.2              
-## [149] haven_2.4.1                heatmaply_1.2.1           
-## [151] hexbin_1.28.2              highcharter_0.8.2         
-## [153] highr_0.9                  Hmisc_4.5-0               
-## [155] hms_1.1.0                  hrbrthemes_0.8.0          
-## [157] htmlTable_2.2.1            htmltools_0.5.1.1         
-## [159] htmlwidgets_1.5.3          httpuv_1.6.1              
-## [161] httr_1.4.2                 ids_1.0.1                 
-## [163] igraph_1.2.6               influenceR_0.1.0          
-## [165] ini_0.3.1                  INLA_21.02.23             
-## [167] inline_0.3.19              IRanges_2.26.0            
-## [169] isoband_0.2.4              iterators_1.0.13          
-## [171] jpeg_0.1-8.1               jquerylib_0.1.4           
-## [173] jsonlite_1.7.2             kableExtra_1.3.4          
-## [175] Kendall_2.2                KernSmooth_2.23-20        
-## [177] knitr_1.33                 labeling_0.4.2            
-## [179] later_1.2.0                lattice_0.20-44           
-## [181] latticeExtra_0.6-29        lazyeval_0.2.2            
-## [183] leaflet_2.0.4.1            leaflet.providers_1.9.0   
-## [185] lifecycle_1.0.0            lightgbm_3.2.1            
-## [187] listenv_0.8.0              lme4_1.1-27               
-## [189] loo_2.4.1                  lpSolve_5.6.15            
-## [191] lubridate_1.7.10           magick_2.7.2              
-## [193] magrittr_2.0.1             mapdata_2.3.0             
-## [195] mapproj_1.2.7              maps_3.3.0                
-## [197] maptools_1.1-1             markdown_1.1              
-## [199] MASS_7.3-54                Matrix_1.3-4              
-## [201] MatrixModels_0.5-0         matrixStats_0.59.0        
-## [203] maxLik_1.4-8               mcmc_0.9-7                
-## [205] memoise_2.0.0              mgcv_1.8-36               
-## [207] mime_0.10                  miniUI_0.1.1.1            
-## [209] minqa_1.2.4                miscTools_0.6-26          
-## [211] modelr_0.1.8               munsell_0.5.0             
-## [213] mvtnorm_1.1-1              networkD3_0.4             
-## [215] nleqslv_3.3.2              nlme_3.1-152              
-## [217] nloptr_1.2.2.2             nnet_7.3-16               
-## [219] nomnoml_0.2.3              numDeriv_2016.8-1.1       
-## [221] odbc_1.3.2                 openssl_1.4.4             
-## [223] openxlsx_4.2.3             optimx_2020-4.2           
-## [225] packrat_0.6.0              palmerpenguins_0.1.0      
-## [227] parallelly_1.25.0          patchwork_1.1.1           
-## [229] pbkrtest_0.5.1             pdftools_3.0.1            
-## [231] pdist_1.2                  pillar_1.6.1              
-## [233] pkgbuild_1.2.0             pkgconfig_2.0.3           
-## [235] pkgload_1.2.1              plogr_0.2.0               
-## [237] plotly_4.9.3               plyr_1.8.6                
-## [239] png_0.1-7                  polynom_1.4-0             
-## [241] posterior_0.1.5            praise_1.0.0              
-## [243] prettydoc_0.4.1            prettyunits_1.1.1         
-## [245] PrevMap_1.5.3              processx_3.5.2            
-## [247] productplots_0.1.1         progress_1.2.2            
-## [249] projpred_2.0.2             promises_1.2.0.1          
-## [251] proxy_0.4-25               ps_1.6.0                  
-## [253] pspearman_0.3-0            purrr_0.3.4               
-## [255] pwr_1.3-0                  qap_0.1-1                 
-## [257] qpdf_1.1                   quadprog_1.5-8            
-## [259] quantmod_0.4.18            quantreg_5.85             
-## [261] r2d3_0.2.5                 R6_2.5.0                  
-## [263] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
-## [265] rappdirs_0.3.3             raster_3.4-10             
-## [267] rasterly_0.2.0             rasterVis_0.50.2          
-## [269] rcmdcheck_1.3.3            RColorBrewer_1.1-2        
-## [271] Rcpp_1.0.6                 RcppArmadillo_0.10.5.0.0  
-## [273] RcppEigen_0.3.3.9.1        RcppParallel_5.1.4        
-## [275] reactable_0.2.3            reactR_0.4.4              
-## [277] readr_1.4.0                readxl_1.3.1              
-## [279] registry_0.5-1             rematch_1.0.1             
-## [281] rematch2_2.1.2             remotes_2.4.0             
-## [283] renv_0.13.2                reprex_2.0.0              
-## [285] reshape2_1.4.4             reticulate_1.20           
-## [287] rgdal_1.5-23               rio_0.5.26                
-## [289] rjson_0.2.20               rlang_0.4.11              
-## [291] rlist_0.4.6.1              rmarkdown_2.8             
-## [293] rngtools_1.5               rootSolve_1.8.2.1         
-## [295] roxygen2_7.1.1             rpart_4.1-15              
-## [297] rprojroot_2.0.2            rsconnect_0.8.18          
-## [299] RSQLite_2.2.7              rstan_2.21.2              
-## [301] rstantools_2.1.1           rstatix_0.7.0             
-## [303] rstudioapi_0.13            Rttf2pt1_1.3.8            
-## [305] rversions_2.1.1            rvest_1.0.0               
-## [307] Ryacas_1.1.3.1             S4Vectors_0.30.0          
-## [309] sandwich_3.0-1             sass_0.4.0                
-## [311] scales_1.1.1               selectr_0.4-2             
-## [313] seriation_1.2-9            sessioninfo_1.1.1         
-## [315] sf_0.9-8                   shades_1.4.0              
-## [317] shape_1.4.6                shiny_1.6.0               
-## [319] shinydashboard_0.7.1       shinydashboardPlus_2.0.1  
-## [321] shinyjs_2.0.0              shinystan_2.5.0           
-## [323] shinythemes_1.2.0          shinyWidgets_0.6.0        
-## [325] showtext_0.9-2             showtextdb_3.0            
-## [327] sm_2.2-5.6                 sourcetools_0.1.7         
-## [329] sp_1.4-5                   sparkline_2.0             
-## [331] sparklyr_1.6.3             SparseM_1.81              
-## [333] spatial_7.3-14             spDataLarge_0.5.2         
-## [335] splancs_2.01-42            StanHeaders_2.21.0-7      
-## [337] stringi_1.6.2              stringr_1.4.0             
-## [339] SuppDists_1.1-9.5          survival_3.2-11           
-## [341] svglite_2.0.0              sys_3.4                   
-## [343] sysfonts_0.8.3             systemfonts_1.0.2         
-## [345] tensorA_0.36.2             tensorflow_2.4.0          
-## [347] terra_1.2-10               testthat_3.0.2            
-## [349] tfruns_1.5.0               threejs_0.3.3             
-## [351] tibble_3.1.2               tidyr_1.1.3               
-## [353] tidyselect_1.1.1           tidyverse_1.3.1           
-## [355] tikzDevice_0.12.3.1        timeline_0.9              
-## [357] timelineS_0.1.1            tint_0.1.3                
-## [359] tinytex_0.32               TMB_1.7.20                
-## [361] transformr_0.1.3           treemap_2.4-2             
-## [363] treemapify_2.5.5           truncnorm_1.0-8           
-## [365] TSP_1.1-10                 TTR_0.24.2                
-## [367] tweenr_1.0.2               units_0.7-1               
-## [369] usethis_2.0.1              utf8_1.2.1                
-## [371] uuid_0.1-4                 V8_3.4.2                  
-## [373] vctrs_0.3.8                vioplot_0.3.6             
-## [375] vipor_0.4.5                viridis_0.6.1             
-## [377] viridisLite_0.4.0          visNetwork_2.0.9          
-## [379] vistime_1.2.1              waiter_0.2.1              
-## [381] waldo_0.2.5                webshot_0.5.2             
-## [383] whisker_0.4                withr_2.4.2               
-## [385] xfun_0.23                  xgboost_1.4.1.1           
-## [387] xkcd_0.0.6                 XML_3.99-0.6              
-## [389] xml2_1.3.2                 xopen_1.0.0               
-## [391] xtable_1.8-4               xts_0.12.1                
-## [393] yaml_2.2.1                 zip_2.2.0                 
-## [395] zoo_1.8-9
+##   [3] alabama_2015.3-1           arrow_4.0.1               
+##   [5] arules_1.6-8               askpass_1.1               
+##   [7] assertive.base_0.0-9       assertive.properties_0.0-4
+##   [9] assertive.types_0.0-3      assertthat_0.2.1          
+##  [11] autoplotly_0.1.4           backports_1.2.1           
+##  [13] base64enc_0.1-3            bayesplot_1.8.1           
+##  [15] beanplot_1.2               beeswarm_0.4.0            
+##  [17] BH_1.75.0-0                BiocGenerics_0.38.0       
+##  [19] BiocManager_1.30.16        BiocVersion_3.13.1        
+##  [21] bit_4.0.4                  bit64_4.0.5               
+##  [23] bitops_1.0-7               blob_1.2.1                
+##  [25] bookdown_0.22              boot_1.3-28               
+##  [27] brew_1.0-6                 bridgesampling_1.1-2      
+##  [29] brio_1.1.2                 brms_2.15.0               
+##  [31] Brobdingnag_1.2-6          broom_0.7.8               
+##  [33] broom.mixed_0.2.7          bslib_0.2.5.1             
+##  [35] cachem_1.0.5               Cairo_1.5-12.2            
+##  [37] callr_3.7.0                car_3.0-11                
+##  [39] carData_3.0-4              catboost_0.26             
+##  [41] caTools_1.18.2             cellranger_1.1.0          
+##  [43] checkmate_2.0.0            circlize_0.4.13           
+##  [45] class_7.3-19               classInt_0.4-3            
+##  [47] cli_3.0.0                  clipr_0.7.1               
+##  [49] clue_0.3-59                cluster_2.1.2             
+##  [51] cmdstanr_0.4.0             coda_0.19-4               
+##  [53] codetools_0.2-18           colorspace_2.0-2          
+##  [55] colourpicker_1.1.0         commonmark_1.7            
+##  [57] ComplexHeatmap_2.8.0       config_0.3.1              
+##  [59] conquer_1.0.2              corrplot_0.90             
+##  [61] countrycode_1.3.0          cowplot_1.1.1             
+##  [63] cpp11_0.3.1                crayon_1.4.1              
+##  [65] credentials_1.3.0          crosstalk_1.1.1           
+##  [67] cubelyr_1.0.1              curl_4.3.2                
+##  [69] data.table_1.14.0          DBI_1.1.1                 
+##  [71] dbplyr_2.1.1               dendextend_1.15.1         
+##  [73] Deriv_4.1.3                desc_1.3.0                
+##  [75] deSolve_1.28               devtools_2.4.2            
+##  [77] DiagrammeR_1.0.6.1         diffobj_0.3.4             
+##  [79] digest_0.6.27              distributional_0.2.2      
+##  [81] doParallel_1.0.16          downloader_0.4            
+##  [83] dplyr_1.0.7                DT_0.18                   
+##  [85] dtplyr_1.1.0               dygraphs_1.1.1.6          
+##  [87] e1071_1.7-7                echarts4r_0.4.1           
+##  [89] egg_0.4.5                  ellipsis_0.3.2            
+##  [91] emo_0.0.0.9000             equatiomatic_0.2.0        
+##  [93] evaluate_0.14              extrafont_0.17            
+##  [95] extrafontdb_1.0            fansi_0.5.0               
+##  [97] farver_2.1.0               fastmap_1.1.0             
+##  [99] filehash_2.4-2             flexdashboard_0.5.2       
+## [101] fontcm_1.1                 forcats_0.5.1             
+## [103] foreach_1.5.1              foreign_0.8-81            
+## [105] forge_0.2.0                formatR_1.11              
+## [107] formattable_0.2.1          Formula_1.2-4             
+## [109] fresh_0.2.0                fs_1.5.0                  
+## [111] future_1.21.0              GA_3.2.1                  
+## [113] gamm4_0.2-6                gapminder_0.3.0           
+## [115] gargle_1.2.0               gclus_1.3.2               
+## [117] gdtools_0.2.3              generics_0.1.0            
+## [119] geoR_1.8-1                 gert_1.3.1                
+## [121] GetoptLong_1.0.5           ggalluvial_0.12.3         
+## [123] gganimate_1.0.7            ggbeeswarm_0.6.0          
+## [125] ggbump_0.1.99999           ggdendro_0.1.22           
+## [127] ggfittext_0.9.1            ggfortify_0.4.12          
+## [129] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
+## [131] ggplot2_3.3.5              ggpubr_0.4.0              
+## [133] ggrepel_0.9.1              ggridges_0.5.3            
+## [135] ggsci_2.9                  ggsignif_0.6.2            
+## [137] ggstream_0.1.0             gh_1.3.0                  
+## [139] gifski_1.4.3-1             git2r_0.28.0              
+## [141] gitcreds_0.1.1             glmmTMB_1.1.1             
+## [143] glmnet_4.1-2               GlobalOptions_0.1.2       
+## [145] globals_0.14.0             glue_1.4.2                
+## [147] googledrive_2.0.0          googlesheets4_0.3.0       
+## [149] gplots_3.1.1               graph_1.70.0              
+## [151] gridBase_0.4-7             gridExtra_2.3             
+## [153] gt_0.3.0                   gtable_0.3.0              
+## [155] gtools_3.9.2               haven_2.4.1               
+## [157] heatmaply_1.2.1            hexbin_1.28.2             
+## [159] highcharter_0.8.2          highr_0.9                 
+## [161] Hmisc_4.5-0                hms_1.1.0                 
+## [163] hrbrthemes_0.8.0           htmlTable_2.2.1           
+## [165] htmltools_0.5.1.1          htmlwidgets_1.5.3         
+## [167] httpuv_1.6.1               httr_1.4.2                
+## [169] ids_1.0.1                  igraph_1.2.6              
+## [171] influenceR_0.1.0           ini_0.3.1                 
+## [173] INLA_21.02.23              inline_0.3.19             
+## [175] IRanges_2.26.0             isoband_0.2.5             
+## [177] iterators_1.0.13           jpeg_0.1-8.1              
+## [179] jquerylib_0.1.4            jsonlite_1.7.2            
+## [181] kableExtra_1.3.4           Kendall_2.2               
+## [183] kernlab_0.9-29             KernSmooth_2.23-20        
+## [185] knitr_1.33                 labeling_0.4.2            
+## [187] later_1.2.0                lattice_0.20-44           
+## [189] latticeExtra_0.6-29        lazyeval_0.2.2            
+## [191] leaflet_2.0.4.1            leaflet.providers_1.9.0   
+## [193] lifecycle_1.0.0            lightgbm_3.2.1            
+## [195] listenv_0.8.0              lme4_1.1-27.1             
+## [197] loo_2.4.1                  lpSolve_5.6.15            
+## [199] lpSolveAPI_5.5.2.0-17.7    lubridate_1.7.10          
+## [201] magick_2.7.2               magrittr_2.0.1            
+## [203] mapdata_2.3.0              mapproj_1.2.7             
+## [205] maps_3.3.0                 maptools_1.1-1            
+## [207] markdown_1.1               MASS_7.3-54               
+## [209] Matrix_1.3-4               MatrixModels_0.5-0        
+## [211] matrixStats_0.59.0         maxLik_1.4-8              
+## [213] mcmc_0.9-7                 memoise_2.0.0             
+## [215] mgcv_1.8-36                mime_0.11                 
+## [217] miniUI_0.1.1.1             minqa_1.2.4               
+## [219] miscTools_0.6-26           modelr_0.1.8              
+## [221] munsell_0.5.0              mvtnorm_1.1-2             
+## [223] networkD3_0.4              nleqslv_3.3.2             
+## [225] nlme_3.1-152               nloptr_1.2.2.2            
+## [227] NMOF_2.4-1                 nnet_7.3-16               
+## [229] nomnoml_0.2.3              numDeriv_2016.8-1.1       
+## [231] odbc_1.3.2                 openssl_1.4.4             
+## [233] openxlsx_4.2.4             optimx_2021-6.12          
+## [235] packrat_0.6.0              palmerpenguins_0.1.0      
+## [237] parallelly_1.26.1          patchwork_1.1.1           
+## [239] pbkrtest_0.5.1             pdftools_3.0.1            
+## [241] pdist_1.2                  pillar_1.6.1              
+## [243] pkgbuild_1.2.0             pkgconfig_2.0.3           
+## [245] pkgload_1.2.1              plogr_0.2.0               
+## [247] plotly_4.9.4.1             plyr_1.8.6                
+## [249] png_0.1-7                  polynom_1.4-0             
+## [251] posterior_1.0.1            praise_1.0.0              
+## [253] prettydoc_0.4.1            prettyunits_1.1.1         
+## [255] PrevMap_1.5.3              processx_3.5.2            
+## [257] productplots_0.1.1         progress_1.2.2            
+## [259] projpred_2.0.2             promises_1.2.0.1          
+## [261] proxy_0.4-26               ps_1.6.0                  
+## [263] pspearman_0.3-0            purrr_0.3.4               
+## [265] pwr_1.3-0                  qap_0.1-1                 
+## [267] qpdf_1.1                   quadprog_1.5-8            
+## [269] quantmod_0.4.18            quantreg_5.86             
+## [271] r2d3_0.2.5                 R6_2.5.0                  
+## [273] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
+## [275] randomForest_4.6-14        rappdirs_0.3.3            
+## [277] raster_3.4-13              rasterly_0.2.0            
+## [279] rasterVis_0.50.2           rcmdcheck_1.3.3           
+## [281] RColorBrewer_1.1-2         Rcpp_1.0.7                
+## [283] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
+## [285] RcppParallel_5.1.4         reactable_0.2.3           
+## [287] reactR_0.4.4               readr_1.4.0               
+## [289] readxl_1.3.1               registry_0.5-1            
+## [291] rematch_1.0.1              rematch2_2.1.2            
+## [293] remotes_2.4.0              renv_0.13.2               
+## [295] reprex_2.0.0               reshape2_1.4.4            
+## [297] reticulate_1.20            rgdal_1.5-23              
+## [299] Rgraphviz_2.36.0           rio_0.5.27                
+## [301] rJava_1.0-4                rjson_0.2.20              
+## [303] rlang_0.4.11               rlist_0.4.6.1             
+## [305] rmarkdown_2.9              rngtools_1.5              
+## [307] ROI_1.0-0                  ROI.plugin.alabama_1.0-0  
+## [309] ROI.plugin.lpsolve_1.0-1   ROI.plugin.nloptr_1.0-0   
+## [311] ROI.plugin.quadprog_1.0-0  rootSolve_1.8.2.2         
+## [313] roxygen2_7.1.1             rpart_4.1-15              
+## [315] rprojroot_2.0.2            rsconnect_0.8.18          
+## [317] RSQLite_2.2.7              rstan_2.26.2              
+## [319] rstantools_2.1.1           rstatix_0.7.0             
+## [321] rstudioapi_0.13            Rttf2pt1_1.3.8            
+## [323] rversions_2.1.1            rvest_1.0.0               
+## [325] Ryacas_1.1.3.1             s2_1.0.6                  
+## [327] S4Vectors_0.30.0           sandwich_3.0-1            
+## [329] sass_0.4.0                 scales_1.1.1              
+## [331] scatterplot3d_0.3-41       selectr_0.4-2             
+## [333] seriation_1.3.0            servr_0.22                
+## [335] sessioninfo_1.1.1          sf_1.0-0                  
+## [337] shades_1.4.0               shape_1.4.6               
+## [339] shiny_1.6.0                shinydashboard_0.7.1      
+## [341] shinydashboardPlus_2.0.2   shinyjs_2.0.0             
+## [343] shinystan_2.5.0            shinythemes_1.2.0         
+## [345] shinyWidgets_0.6.0         showtext_0.9-2            
+## [347] showtextdb_3.0             slam_0.1-48               
+## [349] sm_2.2-5.6                 sourcetools_0.1.7         
+## [351] sp_1.4-5                   sparkline_2.0             
+## [353] sparklyr_1.7.1             SparseM_1.81              
+## [355] spatial_7.3-14             spDataLarge_0.5.4         
+## [357] splancs_2.01-42            StanHeaders_2.26.2        
+## [359] stringi_1.7.3              stringr_1.4.0             
+## [361] SuppDists_1.1-9.5          survival_3.2-11           
+## [363] svglite_2.0.0              symengine_0.1.5           
+## [365] sys_3.4                    sysfonts_0.8.3            
+## [367] systemfonts_1.0.2          tensorA_0.36.2            
+## [369] tensorflow_2.5.0           terra_1.3-4               
+## [371] testthat_3.0.4             tfruns_1.5.0              
+## [373] threejs_0.3.3              tibble_3.1.2              
+## [375] tidyr_1.1.3                tidyselect_1.1.1          
+## [377] tidyverse_1.3.1            tikzDevice_0.12.3.1       
+## [379] timeline_0.9               timelineS_0.1.1           
+## [381] tint_0.1.3                 tinytex_0.32              
+## [383] TMB_1.7.20                 transformr_0.1.3          
+## [385] treemap_2.4-2              treemapify_2.5.5          
+## [387] truncnorm_1.0-8            TSP_1.1-10                
+## [389] TTR_0.24.2                 tweenr_1.0.2              
+## [391] units_0.7-2                usethis_2.0.1             
+## [393] utf8_1.2.1                 uuid_0.1-4                
+## [395] V8_3.4.2                   vctrs_0.3.8               
+## [397] vioplot_0.3.6              vipor_0.4.5               
+## [399] viridis_0.6.1              viridisLite_0.4.0         
+## [401] visNetwork_2.0.9           vistime_1.2.1             
+## [403] waiter_0.2.2               waldo_0.2.5               
+## [405] webshot_0.5.2              whisker_0.4               
+## [407] withr_2.4.2                wk_0.5.0                  
+## [409] xaringan_0.22              xaringanthemer_0.4.0      
+## [411] xfun_0.24                  xgboost_1.4.1.1           
+## [413] xkcd_0.0.6                 XML_3.99-0.6              
+## [415] xml2_1.3.2                 xopen_1.0.0               
+## [417] xtable_1.8-4               xts_0.12.1                
+## [419] yaml_2.2.1                 zip_2.2.0                 
+## [421] zoo_1.8-9
 ```
 
 
@@ -2657,276 +2718,306 @@ subset(pdb,
 
 Table: (\#tab:all-pkgs)依赖的 R 包
 
-Package                 Version      Title                                                                                                                       
-----------------------  -----------  ----------------------------------------------------------------------------------------------------------------------------
-**agridat**             1.18         Agricultural Datasets                                                                                                       
-**arrow**               4.0.1        Integration to 'Apache' 'Arrow'                                                                                             
-**arules**              1.6-8        Mining Association Rules and Frequent Itemsets                                                                              
-**assertive.types**     0.0-3        Assertions to Check Types of Variables                                                                                      
-**assertthat**          0.2.1        Easy Pre and Post Assertions                                                                                                
-**autoplotly**          0.1.4        Automatic Generation of Interactive Visualizations for Statistical Results                                                  
-**base64enc**           0.1-3        Tools for base64 encoding                                                                                                   
-**bayesplot**           1.8.0        Plotting for Bayesian Models                                                                                                
-**beanplot**            1.2          Visualization via Beanplots (like Boxplot/Stripchart/Violin Plot)                                                           
-**beeswarm**            0.4.0        The Bee Swarm Plot, an Alternative to Stripchart                                                                            
-**BiocManager**         1.30.15      Access the Bioconductor Project Package Repository                                                                          
-**bit64**               4.0.5        A S3 Class for Vectors of 64bit Integers                                                                                    
-**bitops**              1.0-7        Bitwise Operations                                                                                                          
-**blob**                1.2.1        A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
-**bookdown**            0.22         Authoring Books and Technical Documents with R Markdown                                                                     
-**boot**                1.3-28       Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
-**broom**               0.7.6        Convert Statistical Objects into Tidy Tibbles                                                                               
-**broom.mixed**         0.2.6        Tidying Methods for Mixed Models                                                                                            
-**bslib**               0.2.5.1      Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
-**cachem**              1.0.5        Cache R Objects with Automatic Pruning                                                                                      
-**callr**               3.7.0        Call R from R                                                                                                               
-**checkmate**           2.0.0        Fast and Versatile Argument Checks                                                                                          
-**classInt**            0.4-3        Choose Univariate Class Intervals                                                                                           
-**cli**                 2.5.0        Helpers for Developing Command Line Interfaces                                                                              
-**colorspace**          2.0-1        A Toolbox for Manipulating and Assessing Colors and Palettes                                                                
-**commonmark**          1.7          High Performance CommonMark and Github Markdown Rendering in R                                                              
-**config**              0.3.1        Manage Environment Specific Configuration Values                                                                            
-**conquer**             1.0.2        Convolution-Type Smoothed Quantile Regression                                                                               
-**corrplot**            0.88         Visualization of a Correlation Matrix                                                                                       
-**countrycode**         1.2.0        Convert Country Names and Country Codes                                                                                     
-**cowplot**             1.1.1        Streamlined Plot Theme and Plot Annotations for ggplot2                                                                     
-**cpp11**               0.2.7        A C++11 Interface for R's C Interface                                                                                       
-**crayon**              1.4.1        Colored Terminal Output                                                                                                     
-**crosstalk**           1.1.1        Inter-Widget Interactivity for HTML Widgets                                                                                 
-**curl**                4.3.1        A Modern and Flexible Web Client for R                                                                                      
-**data.table**          1.14.0       Extension of `data.frame`                                                                                                   
-**DBI**                 1.1.1        R Database Interface                                                                                                        
-**dbplyr**              2.1.1        A 'dplyr' Back End for Databases                                                                                            
-**dendextend**          1.15.1       Extending 'dendrogram' Functionality in R                                                                                   
-**desc**                1.3.0        Manipulate DESCRIPTION Files                                                                                                
-**devtools**            2.4.1        Tools to Make Developing R Packages Easier                                                                                  
-**DiagrammeR**          1.0.6.1      Graph/Network Visualization                                                                                                 
-**digest**              0.6.27       Create Compact Hash Digests of R Objects                                                                                    
-**downloader**          0.4          Download Files over HTTP and HTTPS                                                                                          
-**dplyr**               1.0.6        A Grammar of Data Manipulation                                                                                              
-**DT**                  0.18         A Wrapper of the JavaScript Library DataTables                                                                              
-**dtplyr**              1.1.0        Data Table Back-End for 'dplyr'                                                                                             
-**echarts4r**           0.4.0        Create Interactive Graphs with 'Echarts JavaScript' Version 5                                                               
-**egg**                 0.4.5        Extensions for ggplot2: Custom Geom, Custom Themes, Plot Alignment, Labelled Panels, Symmetric Scales, and Fixed Panel Size 
-**ellipsis**            0.3.2        Tools for Working with ...                                                                                                  
-**equatiomatic**        0.2.0        Transform Models into LaTeX Equations                                                                                       
-**evaluate**            0.14         Parsing and Evaluation Tools that Provide More Details than the Default                                                     
-**extrafont**           0.17         Tools for using fonts                                                                                                       
-**extrafontdb**         1.0          Package for holding the database for the extrafont package                                                                  
-**fastmap**             1.1.0        Fast Data Structures                                                                                                        
-**filehash**            2.4-2        Simple Key-Value Database                                                                                                   
-**fontcm**              1.1          Computer Modern font for use with extrafont package                                                                         
-**forcats**             0.5.1        Tools for Working with Categorical Variables (Factors)                                                                      
-**foreach**             1.5.1        Provides Foreach Looping Construct                                                                                          
-**forge**               0.2.0        Casting Values into Shape                                                                                                   
-**formatR**             1.11         Format R Code Automatically                                                                                                 
-**fs**                  1.5.0        Cross-Platform File System Operations Based on 'libuv'                                                                      
-**gapminder**           0.3.0        Data from Gapminder                                                                                                         
-**gdtools**             0.2.3        Utilities for Graphical Rendering                                                                                           
-**generics**            0.1.0        Common S3 Generics not Provided by Base R Methods Related to Model Fitting                                                  
-**geoR**                1.8-1        Analysis of Geostatistical Data                                                                                             
-**gganimate**           1.0.7        A Grammar of Animated Graphics                                                                                              
-**ggbeeswarm**          0.6.0        Categorical Scatter (Violin Point) Plots                                                                                    
-**ggdendro**            0.1.22       Create Dendrograms and Tree Diagrams Using ggplot2                                                                          
-**ggfittext**           0.9.1        Fit Text Inside a Box in ggplot2                                                                                            
-**ggfortify**           0.4.11       Data Visualization Tools for Statistical Analysis Results                                                                   
-**ggmosaic**            0.3.3        Mosaic Plots in the ggplot2 Framework                                                                                       
-**ggnormalviolin**      0.1.2        A ggplot2 Extension to Make Normal Violin Plots                                                                             
-**ggplot2**             3.3.3        Create Elegant Data Visualisations Using the Grammar of Graphics                                                            
-**ggpubr**              0.4.0        ggplot2 Based Publication Ready Plots                                                                                       
-**ggrepel**             0.9.1        Automatically Position Non-Overlapping Text Labels with ggplot2                                                             
-**ggridges**            0.5.3        Ridgeline Plots in ggplot2                                                                                                  
-**ggsci**               2.9          Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2                                                             
-**ggsignif**            0.6.1        Significance Brackets for ggplot2                                                                                           
-**ggstream**            0.1.0        Create Streamplots in ggplot2                                                                                               
-**gifski**              1.4.3-1      Highest Quality GIF Encoder                                                                                                 
-**git2r**               0.28.0       Provides Access to Git Repositories                                                                                         
-**glmmTMB**             1.0.2.1      Generalized Linear Mixed Models using Template Model Builder                                                                
-**glmnet**              4.1-1        Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
-**globals**             0.14.0       Identify Global Objects in R Expressions                                                                                    
-**glue**                1.4.2        Interpreted String Literals                                                                                                 
-**googledrive**         1.0.1        An Interface to Google Drive                                                                                                
-**googlesheets4**       0.3.0        Access Google Sheets using the Sheets API V4                                                                                
-**gridBase**            0.4-7        Integration of base and grid graphics                                                                                       
-**gridExtra**           2.3          Miscellaneous Functions for Grid Graphics                                                                                   
-**gt**                  0.3.0        Easily Create Presentation-Ready Display Tables                                                                             
-**gtable**              0.3.0        Arrange Grobs in Tables                                                                                                     
-**haven**               2.4.1        Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
-**heatmaply**           1.2.1        Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
-**hexbin**              1.28.2       Hexagonal Binning Routines                                                                                                  
-**highcharter**         0.8.2        A Wrapper for the Highcharts Library                                                                                        
-**highr**               0.9          Syntax Highlighting for R Source Code                                                                                       
-**Hmisc**               4.5-0        Harrell Miscellaneous                                                                                                       
-**hms**                 1.1.0        Pretty Time of Day                                                                                                          
-**hrbrthemes**          0.8.0        Additional Themes, Theme Components and Utilities for ggplot2                                                               
-**htmltools**           0.5.1.1      Tools for HTML                                                                                                              
-**htmlwidgets**         1.5.3        HTML Widgets for R                                                                                                          
-**httpuv**              1.6.1        HTTP and WebSocket Server Library                                                                                           
-**httr**                1.4.2        Tools for Working with URLs and HTTP                                                                                        
-**igraph**              1.2.6        Network Analysis and Visualization                                                                                          
-**influenceR**          0.1.0        Software Tools to Quantify Structural Importance of Nodes in a Network                                                      
-**isoband**             0.2.4        Generate Isolines and Isobands from Regularly Spaced Elevation Grids                                                        
-**jsonlite**            1.7.2        A Simple and Robust JSON Parser and Generator for R                                                                         
-**kableExtra**          1.3.4        Construct Complex Table with kable and Pipe Syntax                                                                          
-**Kendall**             2.2          Kendall rank correlation and Mann-Kendall trend test                                                                        
-**knitr**               1.33         A General-Purpose Package for Dynamic Report Generation in R                                                                
-**later**               1.2.0        Utilities for Scheduling Functions to Execute Later with Event Loops                                                        
-**lattice**             0.20-44      Trellis Graphics for R                                                                                                      
-**latticeExtra**        0.6-29       Extra Graphical Utilities Based on Lattice                                                                                  
-**lazyeval**            0.2.2        Lazy (Non-Standard) Evaluation                                                                                              
-**leaflet**             2.0.4.1      Create Interactive Web Maps with the JavaScript 'Leaflet' Library                                                           
-**leaflet.providers**   1.9.0        Leaflet Providers                                                                                                           
-**lifecycle**           1.0.0        Manage the Life Cycle of your Package Functions                                                                             
-**lightgbm**            3.2.1        Light Gradient Boosting Machine                                                                                             
-**lme4**                1.1-27       Linear Mixed-Effects Models using Eigen and S4                                                                              
-**lpSolve**             5.6.15       Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs                                                             
-**lubridate**           1.7.10       Make Dealing with Dates a Little Easier                                                                                     
-**magick**              2.7.2        Advanced Graphics and Image-Processing in R                                                                                 
-**magrittr**            2.0.1        A Forward-Pipe Operator for R                                                                                               
-**mapdata**             2.3.0        Extra Map Databases                                                                                                         
-**mapproj**             1.2.7        Map Projections                                                                                                             
-**maps**                3.3.0        Draw Geographical Maps                                                                                                      
-**markdown**            1.1          Render Markdown with the C Library Sundown                                                                                  
-**MASS**                7.3-54       Support Functions and Datasets for Venables and Ripley's MASS                                                               
-**Matrix**              1.3-4        Sparse and Dense Matrix Classes and Methods                                                                                 
-**MatrixModels**        0.5-0        Modelling with Sparse and Dense Matrices                                                                                    
-**maxLik**              1.4-8        Maximum Likelihood Estimation and Related Tools                                                                             
-**mcmc**                0.9-7        Markov Chain Monte Carlo                                                                                                    
-**memoise**             2.0.0        Memoisation of Functions                                                                                                    
-**mgcv**                1.8-36       Mixed GAM Computation Vehicle with Automatic Smoothness Estimation                                                          
-**mime**                0.10         Map Filenames to MIME Types                                                                                                 
-**minqa**               1.2.4        Derivative-free optimization algorithms by quadratic approximation                                                          
-**modelr**              0.1.8        Modelling Functions that Work with the Pipe                                                                                 
-**mvtnorm**             1.1-1        Multivariate Normal and t Distributions                                                                                     
-**networkD3**           0.4          D3 JavaScript Network Graphs from R                                                                                         
-**nlme**                3.1-152      Linear and Nonlinear Mixed Effects Models                                                                                   
-**nloptr**              1.2.2.2      R Interface to NLopt                                                                                                        
-**nomnoml**             0.2.3        Sassy 'UML' Diagrams                                                                                                        
-**numDeriv**            2016.8-1.1   Accurate Numerical Derivatives                                                                                              
-**odbc**                1.3.2        Connect to ODBC Compatible Databases (using the DBI Interface)                                                              
-**openssl**             1.4.4        Toolkit for Encryption, Signatures and Certificates Based on OpenSSL                                                        
-**palmerpenguins**      0.1.0        Palmer Archipelago (Antarctica) Penguin Data                                                                                
-**patchwork**           1.1.1        The Composer of Plots                                                                                                       
-**pdftools**            3.0.1        Text Extraction, Rendering and Converting of PDF Documents                                                                  
-**pdist**               1.2          Partitioned Distance Function                                                                                               
-**pillar**              1.6.1        Coloured Formatting for Columns                                                                                             
-**pkgbuild**            1.2.0        Find Tools Needed to Build R Packages                                                                                       
-**pkgconfig**           2.0.3        Private Configuration for R Packages                                                                                        
-**pkgload**             1.2.1        Simulate Package Installation and Attach                                                                                    
-**plogr**               0.2.0        The plog C++ Logging Library                                                                                                
-**plotly**              4.9.3        Create Interactive Web Graphics via plotly.js                                                                               
-**plyr**                1.8.6        Tools for Splitting, Applying and Combining Data                                                                            
-**png**                 0.1-7        Read and write PNG images                                                                                                   
-**polynom**             1.4-0        A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
-**prettydoc**           0.4.1        Creating Pretty Documents from R Markdown                                                                                   
-**PrevMap**             1.5.3        Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
-**processx**            3.5.2        Execute and Control System Processes                                                                                        
-**productplots**        0.1.1        Product Plots for R                                                                                                         
-**progress**            1.2.2        Terminal Progress Bars                                                                                                      
-**promises**            1.2.0.1      Abstractions for Promise-Based Asynchronous Programming                                                                     
-**pspearman**           0.3-0        Spearman's rank correlation test                                                                                            
-**purrr**               0.3.4        Functional Programming Tools                                                                                                
-**pwr**                 1.3-0        Basic Functions for Power Analysis                                                                                          
-**qpdf**                1.1          Split, Combine and Compress PDF Files                                                                                       
-**quadprog**            1.5-8        Functions to Solve Quadratic Programming Problems                                                                           
-**quantmod**            0.4.18       Quantitative Financial Modelling Framework                                                                                  
-**quantreg**            5.85         Quantile Regression                                                                                                         
-**r2d3**                0.2.5        Interface to 'D3' Visualizations                                                                                            
-**R6**                  2.5.0        Encapsulated Classes with Reference Semantics                                                                               
-**RandomFields**        3.3.8        Simulation and Analysis of Random Fields                                                                                    
-**rappdirs**            0.3.3        Application Directories: Determine Where to Save Data, Caches, and Logs                                                     
-**raster**              3.4-10       Geographic Data Analysis and Modeling                                                                                       
-**rasterly**            0.2.0        Easily and Rapidly Generate Raster Image Data with Support for 'Plotly.js'                                                  
-**rasterVis**           0.50.2       Visualization Methods for Raster Data                                                                                       
-**rcmdcheck**           1.3.3        Run 'R CMD check' from R and Capture Results                                                                                
-**RColorBrewer**        1.1-2        ColorBrewer Palettes                                                                                                        
-**Rcpp**                1.0.6        Seamless R and C++ Integration                                                                                              
-**RcppEigen**           0.3.3.9.1    Rcpp Integration for the Eigen Templated Linear Algebra Library                                                             
-**reactable**           0.2.3        Interactive Data Tables Based on 'React Table'                                                                              
-**reactR**              0.4.4        React Helpers                                                                                                               
-**readr**               1.4.0        Read Rectangular Text Data                                                                                                  
-**readxl**              1.3.1        Read Excel Files                                                                                                            
-**remotes**             2.4.0        R Package Installation from Remote Repositories, Including 'GitHub'                                                         
-**reprex**              2.0.0        Prepare Reproducible Example Code via the Clipboard                                                                         
-**reshape2**            1.4.4        Flexibly Reshape Data: A Reboot of the Reshape Package                                                                      
-**reticulate**          1.20         Interface to Python                                                                                                         
-**rgdal**               1.5-23       Bindings for the Geospatial Data Abstraction Library                                                                        
-**rjson**               0.2.20       JSON for R                                                                                                                  
-**rlang**               0.4.11       Functions for Base Types and Core R and Tidyverse Features                                                                  
-**rlist**               0.4.6.1      A Toolbox for Non-Tabular Data Manipulation                                                                                 
-**rmarkdown**           2.8          Dynamic Documents for R                                                                                                     
-**rootSolve**           1.8.2.1      Nonlinear Root Finding, Equilibrium and Steady-State Analysis of Ordinary Differential Equations                            
-**roxygen2**            7.1.1        In-Line Documentation for R                                                                                                 
-**rprojroot**           2.0.2        Finding Files in Project Subdirectories                                                                                     
-**RSQLite**             2.2.7        'SQLite' Interface for R                                                                                                    
-**rstatix**             0.7.0        Pipe-Friendly Framework for Basic Statistical Tests                                                                         
-**rstudioapi**          0.13         Safely Access the RStudio API                                                                                               
-**Rttf2pt1**            1.3.8        'ttf2pt1' Program                                                                                                           
-**rversions**           2.1.1        Query R Versions, Including 'r-release' and 'r-oldrel'                                                                      
-**rvest**               1.0.0        Easily Harvest (Scrape) Web Pages                                                                                           
-**Ryacas**              1.1.3.1      R Interface to the 'Yacas' Computer Algebra System                                                                          
-**sass**                0.4.0        Syntactically Awesome Style Sheets ('Sass')                                                                                 
-**scales**              1.1.1        Scale Functions for Visualization                                                                                           
-**seriation**           1.2-9        Infrastructure for Ordering Objects Using Seriation                                                                         
-**sessioninfo**         1.1.1        R Session Information                                                                                                       
-**sf**                  0.9-8        Simple Features for R                                                                                                       
-**shape**               1.4.6        Functions for Plotting Graphical Shapes, Colors                                                                             
-**shiny**               1.6.0        Web Application Framework for R                                                                                             
-**showtext**            0.9-2        Using Fonts More Easily in R Graphs                                                                                         
-**showtextdb**          3.0          Font Files for the 'showtext' Package                                                                                       
-**sm**                  2.2-5.6      Smoothing Methods for Nonparametric Regression and Density Estimation                                                       
-**sourcetools**         0.1.7        Tools for Reading, Tokenizing and Parsing R Code                                                                            
-**sp**                  1.4-5        Classes and Methods for Spatial Data                                                                                        
-**sparkline**           2.0          'jQuery' Sparkline 'htmlwidget'                                                                                             
-**sparklyr**            1.6.3        R Interface to Apache Spark                                                                                                 
-**SparseM**             1.81         Sparse Linear Algebra                                                                                                       
-**splancs**             2.01-42      Spatial and Space-Time Point Pattern Analysis                                                                               
-**stringi**             1.6.2        Character String Processing Facilities                                                                                      
-**stringr**             1.4.0        Simple, Consistent Wrappers for Common String Operations                                                                    
-**SuppDists**           1.1-9.5      Supplementary Distributions                                                                                                 
-**survival**            3.2-11       Survival Analysis                                                                                                           
-**svglite**             2.0.0        An 'SVG' Graphics Device                                                                                                    
-**sysfonts**            0.8.3        Loading Fonts into R                                                                                                        
-**tensorflow**          2.4.0        R Interface to 'TensorFlow'                                                                                                 
-**terra**               1.2-10       Spatial Data Analysis                                                                                                       
-**testthat**            3.0.2        Unit Testing for R                                                                                                          
-**tfruns**              1.5.0        Training Run Tools for 'TensorFlow'                                                                                         
-**tibble**              3.1.2        Simple Data Frames                                                                                                          
-**tidyr**               1.1.3        Tidy Messy Data                                                                                                             
-**tidyselect**          1.1.1        Select from a Set of Strings                                                                                                
-**tidyverse**           1.3.1        Easily Install and Load the Tidyverse                                                                                       
-**tikzDevice**          0.12.3.1     R Graphics Output in LaTeX Format                                                                                           
-**timeline**            0.9          Timelines for a Grammar of Graphics                                                                                         
-**timelineS**           0.1.1        Timeline and Time Duration-Related Tools                                                                                    
-**tint**                0.1.3        'tint' is not 'Tufte'                                                                                                       
-**tinytex**             0.32         Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents                                              
-**TMB**                 1.7.20       Template Model Builder: A General Random Effect Tool Inspired by ADMB                                                       
-**transformr**          0.1.3        Polygon and Path Transformations                                                                                            
-**treemap**             2.4-2        Treemap Visualization                                                                                                       
-**treemapify**          2.5.5        Draw Treemaps in ggplot2                                                                                                    
-**truncnorm**           1.0-8        Truncated Normal Distribution                                                                                               
-**tweenr**              1.0.2        Interpolate Data for Smooth Animations                                                                                      
-**units**               0.7-1        Measurement Units for R Vectors                                                                                             
-**usethis**             2.0.1        Automate Package and Project Setup                                                                                          
-**uuid**                0.1-4        Tools for Generating and Handling of UUIDs                                                                                  
-**V8**                  3.4.2        Embedded JavaScript and WebAssembly Engine for R                                                                            
-**vctrs**               0.3.8        Vector Helpers                                                                                                              
-**vioplot**             0.3.6        Violin Plot                                                                                                                 
-**vipor**               0.4.5        Plot Categorical Data Using Quasirandom Noise and Density Estimates                                                         
-**viridis**             0.6.1        Colorblind-Friendly Color Maps for R                                                                                        
-**viridisLite**         0.4.0        Colorblind-Friendly Color Maps (Lite Version)                                                                               
-**visNetwork**          2.0.9        Network Visualization using 'vis.js' Library                                                                                
-**vistime**             1.2.1        Pretty Timelines in R                                                                                                       
-**webshot**             0.5.2        Take Screenshots of Web Pages                                                                                               
-**withr**               2.4.2        Run Code With Temporarily Modified Global State                                                                             
-**xfun**                0.23         Supporting Functions for Packages Maintained by Yihui Xie                                                                   
-**xgboost**             1.4.1.1      Extreme Gradient Boosting                                                                                                   
-**xkcd**                0.0.6        Plotting ggplot2 Graphics in an XKCD Style                                                                                  
-**xml2**                1.3.2        Parse XML                                                                                                                   
-**xtable**              1.8-4        Export Tables to LaTeX or HTML                                                                                              
-**xts**                 0.12.1       eXtensible Time Series                                                                                                      
-**yaml**                2.2.1        Methods to Convert R Data to YAML and Back                                                                                  
-**zoo**                 1.8-9        S3 Infrastructure for Regular and Irregular Time Series (Z's Ordered Observations)                                          
+Package                   Version        Title                                                                                                                       
+------------------------  -------------  ----------------------------------------------------------------------------------------------------------------------------
+**abind**                 1.4-5          Combine Multidimensional Arrays                                                                                             
+**agridat**               1.18           Agricultural Datasets                                                                                                       
+**alabama**               2015.3-1       Constrained Nonlinear Optimization                                                                                          
+**arrow**                 4.0.1          Integration to 'Apache' 'Arrow'                                                                                             
+**arules**                1.6-8          Mining Association Rules and Frequent Itemsets                                                                              
+**assertive.types**       0.0-3          Assertions to Check Types of Variables                                                                                      
+**assertthat**            0.2.1          Easy Pre and Post Assertions                                                                                                
+**autoplotly**            0.1.4          Automatic Generation of Interactive Visualizations for Statistical Results                                                  
+**backports**             1.2.1          Reimplementations of Functions Introduced Since R-3.0.0                                                                     
+**base64enc**             0.1-3          Tools for base64 encoding                                                                                                   
+**bayesplot**             1.8.1          Plotting for Bayesian Models                                                                                                
+**beanplot**              1.2            Visualization via Beanplots (like Boxplot/Stripchart/Violin Plot)                                                           
+**beeswarm**              0.4.0          The Bee Swarm Plot, an Alternative to Stripchart                                                                            
+**BH**                    1.75.0-0       Boost C++ Header Files                                                                                                      
+**BiocManager**           1.30.16        Access the Bioconductor Project Package Repository                                                                          
+**bit64**                 4.0.5          A S3 Class for Vectors of 64bit Integers                                                                                    
+**bitops**                1.0-7          Bitwise Operations                                                                                                          
+**blob**                  1.2.1          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
+**bookdown**              0.22           Authoring Books and Technical Documents with R Markdown                                                                     
+**boot**                  1.3-28         Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
+**bridgesampling**        1.1-2          Bridge Sampling for Marginal Likelihoods and Bayes Factors                                                                  
+**brms**                  2.15.0         Bayesian Regression Models using Stan                                                                                       
+**broom**                 0.7.8          Convert Statistical Objects into Tidy Tibbles                                                                               
+**broom.mixed**           0.2.7          Tidying Methods for Mixed Models                                                                                            
+**bslib**                 0.2.5.1        Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
+**cachem**                1.0.5          Cache R Objects with Automatic Pruning                                                                                      
+**callr**                 3.7.0          Call R from R                                                                                                               
+**checkmate**             2.0.0          Fast and Versatile Argument Checks                                                                                          
+**classInt**              0.4-3          Choose Univariate Class Intervals                                                                                           
+**cli**                   3.0.1          Helpers for Developing Command Line Interfaces                                                                              
+**coda**                  0.19-4         Output Analysis and Diagnostics for MCMC                                                                                    
+**colorspace**            2.0-2          A Toolbox for Manipulating and Assessing Colors and Palettes                                                                
+**commonmark**            1.7            High Performance CommonMark and Github Markdown Rendering in R                                                              
+**config**                0.3.1          Manage Environment Specific Configuration Values                                                                            
+**conquer**               1.0.2          Convolution-Type Smoothed Quantile Regression                                                                               
+**corrplot**              0.90           Visualization of a Correlation Matrix                                                                                       
+**countrycode**           1.3.0          Convert Country Names and Country Codes                                                                                     
+**cowplot**               1.1.1          Streamlined Plot Theme and Plot Annotations for ggplot2                                                                     
+**cpp11**                 0.3.1          A C++11 Interface for R's C Interface                                                                                       
+**crayon**                1.4.1          Colored Terminal Output                                                                                                     
+**crosstalk**             1.1.1          Inter-Widget Interactivity for HTML Widgets                                                                                 
+**curl**                  4.3.2          A Modern and Flexible Web Client for R                                                                                      
+**data.table**            1.14.0         Extension of `data.frame`                                                                                                   
+**DBI**                   1.1.1          R Database Interface                                                                                                        
+**dbplyr**                2.1.1          A 'dplyr' Back End for Databases                                                                                            
+**dendextend**            1.15.1         Extending 'dendrogram' Functionality in R                                                                                   
+**Deriv**                 4.1.3          Symbolic Differentiation                                                                                                    
+**desc**                  1.3.0          Manipulate DESCRIPTION Files                                                                                                
+**deSolve**               1.28           Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')                                          
+**devtools**              2.4.2          Tools to Make Developing R Packages Easier                                                                                  
+**DiagrammeR**            1.0.6.1        Graph/Network Visualization                                                                                                 
+**digest**                0.6.27         Create Compact Hash Digests of R Objects                                                                                    
+**downloader**            0.4            Download Files over HTTP and HTTPS                                                                                          
+**dplyr**                 1.0.7          A Grammar of Data Manipulation                                                                                              
+**DT**                    0.18           A Wrapper of the JavaScript Library DataTables                                                                              
+**dtplyr**                1.1.0          Data Table Back-End for 'dplyr'                                                                                             
+**echarts4r**             0.4.1          Create Interactive Graphs with 'Echarts JavaScript' Version 5                                                               
+**egg**                   0.4.5          Extensions for ggplot2: Custom Geom, Custom Themes, Plot Alignment, Labelled Panels, Symmetric Scales, and Fixed Panel Size 
+**ellipsis**              0.3.2          Tools for Working with ...                                                                                                  
+**equatiomatic**          0.2.0          Transform Models into LaTeX Equations                                                                                       
+**evaluate**              0.14           Parsing and Evaluation Tools that Provide More Details than the Default                                                     
+**extrafont**             0.17           Tools for using fonts                                                                                                       
+**extrafontdb**           1.0            Package for holding the database for the extrafont package                                                                  
+**fastmap**               1.1.0          Fast Data Structures                                                                                                        
+**filehash**              2.4-2          Simple Key-Value Database                                                                                                   
+**fontcm**                1.1            Computer Modern font for use with extrafont package                                                                         
+**forcats**               0.5.1          Tools for Working with Categorical Variables (Factors)                                                                      
+**foreach**               1.5.1          Provides Foreach Looping Construct                                                                                          
+**forge**                 0.2.0          Casting Values into Shape                                                                                                   
+**formatR**               1.11           Format R Code Automatically                                                                                                 
+**fs**                    1.5.0          Cross-Platform File System Operations Based on 'libuv'                                                                      
+**future**                1.21.0         Unified Parallel and Distributed Processing in R for Everyone                                                               
+**gapminder**             0.3.0          Data from Gapminder                                                                                                         
+**gdtools**               0.2.3          Utilities for Graphical Rendering                                                                                           
+**generics**              0.1.0          Common S3 Generics not Provided by Base R Methods Related to Model Fitting                                                  
+**geoR**                  1.8-1          Analysis of Geostatistical Data                                                                                             
+**ggalluvial**            0.12.3         Alluvial Plots in ggplot2                                                                                                   
+**gganimate**             1.0.7          A Grammar of Animated Graphics                                                                                              
+**ggbeeswarm**            0.6.0          Categorical Scatter (Violin Point) Plots                                                                                    
+**ggbump**                0.1.0          Bump Chart and Sigmoid Curves                                                                                               
+**ggfittext**             0.9.1          Fit Text Inside a Box in ggplot2                                                                                            
+**ggfortify**             0.4.12         Data Visualization Tools for Statistical Analysis Results                                                                   
+**ggmosaic**              0.3.3          Mosaic Plots in the ggplot2 Framework                                                                                       
+**ggnormalviolin**        0.1.2          A ggplot2 Extension to Make Normal Violin Plots                                                                             
+**ggplot2**               3.3.5          Create Elegant Data Visualisations Using the Grammar of Graphics                                                            
+**ggpubr**                0.4.0          ggplot2 Based Publication Ready Plots                                                                                       
+**ggrepel**               0.9.1          Automatically Position Non-Overlapping Text Labels with ggplot2                                                             
+**ggridges**              0.5.3          Ridgeline Plots in ggplot2                                                                                                  
+**ggsci**                 2.9            Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2                                                             
+**ggsignif**              0.6.2          Significance Brackets for ggplot2                                                                                           
+**ggstream**              0.1.0          Create Streamplots in ggplot2                                                                                               
+**gifski**                1.4.3-1        Highest Quality GIF Encoder                                                                                                 
+**git2r**                 0.28.0         Provides Access to Git Repositories                                                                                         
+**glmnet**                4.1-2          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
+**globals**               0.14.0         Identify Global Objects in R Expressions                                                                                    
+**glue**                  1.4.2          Interpreted String Literals                                                                                                 
+**googledrive**           2.0.0          An Interface to Google Drive                                                                                                
+**googlesheets4**         0.3.0          Access Google Sheets using the Sheets API V4                                                                                
+**gridBase**              0.4-7          Integration of base and grid graphics                                                                                       
+**gridExtra**             2.3            Miscellaneous Functions for Grid Graphics                                                                                   
+**gt**                    0.3.0          Easily Create Presentation-Ready Display Tables                                                                             
+**gtable**                0.3.0          Arrange Grobs in Tables                                                                                                     
+**haven**                 2.4.1          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
+**heatmaply**             1.2.1          Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
+**hexbin**                1.28.2         Hexagonal Binning Routines                                                                                                  
+**highcharter**           0.8.2          A Wrapper for the Highcharts Library                                                                                        
+**highr**                 0.9            Syntax Highlighting for R Source Code                                                                                       
+**Hmisc**                 4.5-0          Harrell Miscellaneous                                                                                                       
+**hms**                   1.1.0          Pretty Time of Day                                                                                                          
+**hrbrthemes**            0.8.0          Additional Themes, Theme Components and Utilities for ggplot2                                                               
+**htmltools**             0.5.1.1        Tools for HTML                                                                                                              
+**htmlwidgets**           1.5.3          HTML Widgets for R                                                                                                          
+**httpuv**                1.6.1          HTTP and WebSocket Server Library                                                                                           
+**httr**                  1.4.2          Tools for Working with URLs and HTTP                                                                                        
+**igraph**                1.2.6          Network Analysis and Visualization                                                                                          
+**influenceR**            0.1.0          Software Tools to Quantify Structural Importance of Nodes in a Network                                                      
+**inline**                0.3.19         Functions to Inline C, C++, Fortran Function Calls from R                                                                   
+**isoband**               0.2.5          Generate Isolines and Isobands from Regularly Spaced Elevation Grids                                                        
+**jsonlite**              1.7.2          A Simple and Robust JSON Parser and Generator for R                                                                         
+**kableExtra**            1.3.4          Construct Complex Table with kable and Pipe Syntax                                                                          
+**Kendall**               2.2            Kendall rank correlation and Mann-Kendall trend test                                                                        
+**knitr**                 1.33           A General-Purpose Package for Dynamic Report Generation in R                                                                
+**later**                 1.2.0          Utilities for Scheduling Functions to Execute Later with Event Loops                                                        
+**lattice**               0.20-44        Trellis Graphics for R                                                                                                      
+**latticeExtra**          0.6-29         Extra Graphical Utilities Based on Lattice                                                                                  
+**lazyeval**              0.2.2          Lazy (Non-Standard) Evaluation                                                                                              
+**leaflet**               2.0.4.1        Create Interactive Web Maps with the JavaScript 'Leaflet' Library                                                           
+**leaflet.providers**     1.9.0          Leaflet Providers                                                                                                           
+**lifecycle**             1.0.0          Manage the Life Cycle of your Package Functions                                                                             
+**lightgbm**              3.2.1          Light Gradient Boosting Machine                                                                                             
+**lme4**                  1.1-27.1       Linear Mixed-Effects Models using Eigen and S4                                                                              
+**loo**                   2.4.1          Efficient Leave-One-Out Cross-Validation and WAIC for Bayesian Models                                                       
+**lpSolve**               5.6.15         Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs                                                             
+**lpSolveAPI**            5.5.2.0-17.7   R Interface to 'lp_solve' Version 5.5.2.0                                                                                   
+**lubridate**             1.7.10         Make Dealing with Dates a Little Easier                                                                                     
+**magick**                2.7.2          Advanced Graphics and Image-Processing in R                                                                                 
+**magrittr**              2.0.1          A Forward-Pipe Operator for R                                                                                               
+**mapdata**               2.3.0          Extra Map Databases                                                                                                         
+**mapproj**               1.2.7          Map Projections                                                                                                             
+**maps**                  3.3.0          Draw Geographical Maps                                                                                                      
+**markdown**              1.1            Render Markdown with the C Library Sundown                                                                                  
+**MASS**                  7.3-54         Support Functions and Datasets for Venables and Ripley's MASS                                                               
+**Matrix**                1.3-4          Sparse and Dense Matrix Classes and Methods                                                                                 
+**MatrixModels**          0.5-0          Modelling with Sparse and Dense Matrices                                                                                    
+**matrixStats**           0.59.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
+**maxLik**                1.4-8          Maximum Likelihood Estimation and Related Tools                                                                             
+**mcmc**                  0.9-7          Markov Chain Monte Carlo                                                                                                    
+**memoise**               2.0.0          Memoisation of Functions                                                                                                    
+**mgcv**                  1.8-36         Mixed GAM Computation Vehicle with Automatic Smoothness Estimation                                                          
+**mime**                  0.11           Map Filenames to MIME Types                                                                                                 
+**minqa**                 1.2.4          Derivative-free optimization algorithms by quadratic approximation                                                          
+**modelr**                0.1.8          Modelling Functions that Work with the Pipe                                                                                 
+**mvtnorm**               1.1-2          Multivariate Normal and t Distributions                                                                                     
+**networkD3**             0.4            D3 JavaScript Network Graphs from R                                                                                         
+**nleqslv**               3.3.2          Solve Systems of Nonlinear Equations                                                                                        
+**nlme**                  3.1-152        Linear and Nonlinear Mixed Effects Models                                                                                   
+**nloptr**                1.2.2.2        R Interface to NLopt                                                                                                        
+**nomnoml**               0.2.3          Sassy 'UML' Diagrams                                                                                                        
+**numDeriv**              2016.8-1.1     Accurate Numerical Derivatives                                                                                              
+**odbc**                  1.3.2          Connect to ODBC Compatible Databases (using the DBI Interface)                                                              
+**openssl**               1.4.4          Toolkit for Encryption, Signatures and Certificates Based on OpenSSL                                                        
+**palmerpenguins**        0.1.0          Palmer Archipelago (Antarctica) Penguin Data                                                                                
+**patchwork**             1.1.1          The Composer of Plots                                                                                                       
+**pdftools**              3.0.1          Text Extraction, Rendering and Converting of PDF Documents                                                                  
+**pdist**                 1.2            Partitioned Distance Function                                                                                               
+**pillar**                1.6.1          Coloured Formatting for Columns                                                                                             
+**pkgbuild**              1.2.0          Find Tools Needed to Build R Packages                                                                                       
+**pkgconfig**             2.0.3          Private Configuration for R Packages                                                                                        
+**pkgload**               1.2.1          Simulate Package Installation and Attach                                                                                    
+**plogr**                 0.2.0          The plog C++ Logging Library                                                                                                
+**plotly**                4.9.4.1        Create Interactive Web Graphics via plotly.js                                                                               
+**plyr**                  1.8.6          Tools for Splitting, Applying and Combining Data                                                                            
+**png**                   0.1-7          Read and write PNG images                                                                                                   
+**polynom**               1.4-0          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
+**prettydoc**             0.4.1          Creating Pretty Documents from R Markdown                                                                                   
+**PrevMap**               1.5.3          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
+**processx**              3.5.2          Execute and Control System Processes                                                                                        
+**productplots**          0.1.1          Product Plots for R                                                                                                         
+**progress**              1.2.2          Terminal Progress Bars                                                                                                      
+**projpred**              2.0.2          Projection Predictive Feature Selection                                                                                     
+**promises**              1.2.0.1        Abstractions for Promise-Based Asynchronous Programming                                                                     
+**pspearman**             0.3-0          Spearman's rank correlation test                                                                                            
+**purrr**                 0.3.4          Functional Programming Tools                                                                                                
+**pwr**                   1.3-0          Basic Functions for Power Analysis                                                                                          
+**qpdf**                  1.1            Split, Combine and Compress PDF Files                                                                                       
+**quadprog**              1.5-8          Functions to Solve Quadratic Programming Problems                                                                           
+**quantmod**              0.4.18         Quantitative Financial Modelling Framework                                                                                  
+**quantreg**              5.86           Quantile Regression                                                                                                         
+**r2d3**                  0.2.5          Interface to 'D3' Visualizations                                                                                            
+**R6**                    2.5.0          Encapsulated Classes with Reference Semantics                                                                               
+**RandomFields**          3.3.8          Simulation and Analysis of Random Fields                                                                                    
+**rappdirs**              0.3.3          Application Directories: Determine Where to Save Data, Caches, and Logs                                                     
+**raster**                3.4-13         Geographic Data Analysis and Modeling                                                                                       
+**rasterly**              0.2.0          Easily and Rapidly Generate Raster Image Data with Support for 'Plotly.js'                                                  
+**rasterVis**             0.50.2         Visualization Methods for Raster Data                                                                                       
+**rcmdcheck**             1.3.3          Run 'R CMD check' from R and Capture Results                                                                                
+**RColorBrewer**          1.1-2          ColorBrewer Palettes                                                                                                        
+**Rcpp**                  1.0.7          Seamless R and C++ Integration                                                                                              
+**RcppEigen**             0.3.3.9.1      Rcpp Integration for the Eigen Templated Linear Algebra Library                                                             
+**RcppParallel**          5.1.4          Parallel Programming Tools for Rcpp                                                                                         
+**reactable**             0.2.3          Interactive Data Tables Based on 'React Table'                                                                              
+**reactR**                0.4.4          React Helpers                                                                                                               
+**readr**                 1.4.0          Read Rectangular Text Data                                                                                                  
+**readxl**                1.3.1          Read Excel Files                                                                                                            
+**registry**              0.5-1          Infrastructure for R Package Registries                                                                                     
+**remotes**               2.4.0          R Package Installation from Remote Repositories, Including 'GitHub'                                                         
+**reprex**                2.0.0          Prepare Reproducible Example Code via the Clipboard                                                                         
+**reshape2**              1.4.4          Flexibly Reshape Data: A Reboot of the Reshape Package                                                                      
+**reticulate**            1.20           Interface to Python                                                                                                         
+**rgdal**                 1.5-23         Bindings for the Geospatial Data Abstraction Library                                                                        
+**rjson**                 0.2.20         JSON for R                                                                                                                  
+**rlang**                 0.4.11         Functions for Base Types and Core R and Tidyverse Features                                                                  
+**rlist**                 0.4.6.1        A Toolbox for Non-Tabular Data Manipulation                                                                                 
+**rmarkdown**             2.9            Dynamic Documents for R                                                                                                     
+**ROI**                   1.0-0          R Optimization Infrastructure                                                                                               
+**ROI.plugin.alabama**    1.0-0          'alabama' Plug-in for the R Optimization Infrastructure                                                                     
+**ROI.plugin.lpsolve**    1.0-1          'lp_solve' Plugin for the R Optimization Infrastructure                                                                     
+**ROI.plugin.nloptr**     1.0-0          'nloptr' Plug-in for the R Optimization Infrastructure                                                                      
+**ROI.plugin.quadprog**   1.0-0          'quadprog' Plug-in for the R Optimization Infrastructure                                                                    
+**rootSolve**             1.8.2.2        Nonlinear Root Finding, Equilibrium and Steady-State Analysis of Ordinary Differential Equations                            
+**roxygen2**              7.1.1          In-Line Documentation for R                                                                                                 
+**rprojroot**             2.0.2          Finding Files in Project Subdirectories                                                                                     
+**RSQLite**               2.2.7          'SQLite' Interface for R                                                                                                    
+**rstan**                 2.21.2         R Interface to Stan                                                                                                         
+**rstantools**            2.1.1          Tools for Developing R Packages Interfacing with Stan                                                                       
+**rstatix**               0.7.0          Pipe-Friendly Framework for Basic Statistical Tests                                                                         
+**rstudioapi**            0.13           Safely Access the RStudio API                                                                                               
+**Rttf2pt1**              1.3.8          'ttf2pt1' Program                                                                                                           
+**rversions**             2.1.1          Query R Versions, Including 'r-release' and 'r-oldrel'                                                                      
+**rvest**                 1.0.0          Easily Harvest (Scrape) Web Pages                                                                                           
+**s2**                    1.0.6          Spherical Geometry Operators Using the S2 Geometry Library                                                                  
+**sass**                  0.4.0          Syntactically Awesome Style Sheets ('Sass')                                                                                 
+**scales**                1.1.1          Scale Functions for Visualization                                                                                           
+**scatterplot3d**         0.3-41         3D Scatter Plot                                                                                                             
+**seriation**             1.3.0          Infrastructure for Ordering Objects Using Seriation                                                                         
+**sessioninfo**           1.1.1          R Session Information                                                                                                       
+**sf**                    1.0-1          Simple Features for R                                                                                                       
+**shape**                 1.4.6          Functions for Plotting Graphical Shapes, Colors                                                                             
+**shiny**                 1.6.0          Web Application Framework for R                                                                                             
+**shinystan**             2.5.0          Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models                                     
+**showtext**              0.9-2          Using Fonts More Easily in R Graphs                                                                                         
+**showtextdb**            3.0            Font Files for the 'showtext' Package                                                                                       
+**slam**                  0.1-48         Sparse Lightweight Arrays and Matrices                                                                                      
+**sm**                    2.2-5.6        Smoothing Methods for Nonparametric Regression and Density Estimation                                                       
+**sourcetools**           0.1.7          Tools for Reading, Tokenizing and Parsing R Code                                                                            
+**sp**                    1.4-5          Classes and Methods for Spatial Data                                                                                        
+**sparkline**             2.0            'jQuery' Sparkline 'htmlwidget'                                                                                             
+**sparklyr**              1.7.1          R Interface to Apache Spark                                                                                                 
+**SparseM**               1.81           Sparse Linear Algebra                                                                                                       
+**splancs**               2.01-42        Spatial and Space-Time Point Pattern Analysis                                                                               
+**StanHeaders**           2.21.0-7       C++ Header Files for Stan                                                                                                   
+**stringi**               1.7.3          Character String Processing Facilities                                                                                      
+**stringr**               1.4.0          Simple, Consistent Wrappers for Common String Operations                                                                    
+**SuppDists**             1.1-9.5        Supplementary Distributions                                                                                                 
+**survival**              3.2-11         Survival Analysis                                                                                                           
+**svglite**               2.0.0          An 'SVG' Graphics Device                                                                                                    
+**symengine**             0.1.5          Interface to the 'SymEngine' Library                                                                                        
+**sysfonts**              0.8.3          Loading Fonts into R                                                                                                        
+**tensorflow**            2.5.0          R Interface to 'TensorFlow'                                                                                                 
+**terra**                 1.3-4          Spatial Data Analysis                                                                                                       
+**testthat**              3.0.4          Unit Testing for R                                                                                                          
+**tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
+**tibble**                3.1.2          Simple Data Frames                                                                                                          
+**tidyr**                 1.1.3          Tidy Messy Data                                                                                                             
+**tidyselect**            1.1.1          Select from a Set of Strings                                                                                                
+**tidyverse**             1.3.1          Easily Install and Load the Tidyverse                                                                                       
+**tikzDevice**            0.12.3.1       R Graphics Output in LaTeX Format                                                                                           
+**timeline**              0.9            Timelines for a Grammar of Graphics                                                                                         
+**timelineS**             0.1.1          Timeline and Time Duration-Related Tools                                                                                    
+**tint**                  0.1.3          'tint' is not 'Tufte'                                                                                                       
+**tinytex**               0.32           Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents                                              
+**transformr**            0.1.3          Polygon and Path Transformations                                                                                            
+**treemap**               2.4-2          Treemap Visualization                                                                                                       
+**treemapify**            2.5.5          Draw Treemaps in ggplot2                                                                                                    
+**truncnorm**             1.0-8          Truncated Normal Distribution                                                                                               
+**TSP**                   1.1-10         Traveling Salesperson Problem (TSP)                                                                                         
+**tweenr**                1.0.2          Interpolate Data for Smooth Animations                                                                                      
+**units**                 0.7-2          Measurement Units for R Vectors                                                                                             
+**usethis**               2.0.1          Automate Package and Project Setup                                                                                          
+**uuid**                  0.1-4          Tools for Generating and Handling of UUIDs                                                                                  
+**V8**                    3.4.2          Embedded JavaScript and WebAssembly Engine for R                                                                            
+**vctrs**                 0.3.8          Vector Helpers                                                                                                              
+**vioplot**               0.3.6          Violin Plot                                                                                                                 
+**vipor**                 0.4.5          Plot Categorical Data Using Quasirandom Noise and Density Estimates                                                         
+**viridis**               0.6.1          Colorblind-Friendly Color Maps for R                                                                                        
+**viridisLite**           0.4.0          Colorblind-Friendly Color Maps (Lite Version)                                                                               
+**visNetwork**            2.0.9          Network Visualization using 'vis.js' Library                                                                                
+**vistime**               1.2.1          Pretty Timelines in R                                                                                                       
+**webshot**               0.5.2          Take Screenshots of Web Pages                                                                                               
+**withr**                 2.4.2          Run Code With Temporarily Modified Global State                                                                             
+**xfun**                  0.24           Supporting Functions for Packages Maintained by Yihui Xie                                                                   
+**xgboost**               1.4.1.1        Extreme Gradient Boosting                                                                                                   
+**xkcd**                  0.0.6          Plotting ggplot2 Graphics in an XKCD Style                                                                                  
+**xml2**                  1.3.2          Parse XML                                                                                                                   
+**xtable**                1.8-4          Export Tables to LaTeX or HTML                                                                                              
+**xts**                   0.12.1         eXtensible Time Series                                                                                                      
+**yaml**                  2.2.1          Methods to Convert R Data to YAML and Back                                                                                  
+**zoo**                   1.8-9          S3 Infrastructure for Regular and Irregular Time Series (Z's Ordered Observations)                                          
 
 ::: {.rmdtip data-latex="{提示}"}
 本书意欲覆盖的内容
@@ -3004,7 +3095,6 @@ Package             Title
 **glmmLasso**       Variable Selection for Generalized Linear Mixed Models by L1-Penalized Estimation               
 **glmmML**          Generalized Linear Models with Clustering                                                       
 **glmmsr**          Fit a Generalized Linear Mixed Model                                                            
-**glmmTMB**         Generalized Linear Mixed Models using Template Model Builder                                    
 **glmnet**          Lasso and Elastic-Net Regularized Generalized Linear Models                                     
 **greta**           Simple and Scalable Statistical Modelling in R                                                  
 **hglm**            Hierarchical Generalized Linear Models                                                          

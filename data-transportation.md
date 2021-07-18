@@ -163,7 +163,9 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
   theme_minimal()
 ```
 
-<img src="data-transportation_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{data-transportation_files/figure-latex/unnamed-chunk-7-1} \end{center}
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
@@ -175,12 +177,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.23 Very Good     H     VS1  61.0    57   353 3.94 3.96 2.41
-## 2  0.74     Ideal     I    VVS1  60.8    57  2822 5.85 5.89 3.57
-## 3  0.71      Fair     D     VS2  64.7    58  3077 5.61 5.58 3.62
-## 4  0.73     Ideal     G     VS1  60.7    57  3411 5.85 5.81 3.54
-## 5  1.02 Very Good     H     SI2  60.9    58  4039 6.41 6.53 3.94
-## 6  1.06   Premium     I     SI1  62.9    60  4155 6.47 6.43 4.06
+## 1  0.91 Very Good     J     VS2  61.6    59  3290 6.13 6.25 3.81
+## 2  0.91   Premium     D     SI2  62.7    59  3848 6.17 6.21 3.88
+## 3  0.90     Ideal     I     VS1  62.4    56  3867 6.14 6.19 3.85
+## 4  0.32   Premium     I     VS2  62.6    58   576 4.42 4.37 2.75
+## 5  1.01      Good     E     SI2  57.5    63  4171 6.56 6.58 3.78
+## 6  0.93 Very Good     G     SI1  61.7    56  4513 6.22 6.26 3.85
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -199,12 +201,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Fair  1402    1
-## 2 Fair  1733    2
-## 3 Fair  8387    3
-## 4 Fair 13587    4
-## 5 Fair 15888    5
-## 6 Good   449    1
+## 1 Fair  2384    1
+## 2 Fair  3084    2
+## 3 Good   622    1
+## 4 Good   675    2
+## 5 Good   975    3
+## 6 Good  4200    4
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -490,7 +492,7 @@ mtcars %>%
 ## 14  15.2     8  276.   180  3.07  3.78  18       0     0     3     3
 ## 15  10.4     8  472    205  2.93  5.25  18.0     0     0     3     4
 ## 16  10.4     8  460    215  3     5.42  17.8     0     0     3     4
-## # … with 16 more rows
+## # ... with 16 more rows
 ```
 
 
@@ -511,7 +513,7 @@ mtcars %>%
 ## 6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
 ## 7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
 ## 8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-## # … with 24 more rows
+## # ... with 24 more rows
 ```
 
 ## 批量导出 xlsx 文件 {#sec:batch-export-xlsx}

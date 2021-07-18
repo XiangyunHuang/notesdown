@@ -26,71 +26,29 @@ library(kernlab)    # 优化问题和机器学习的关系
 
 
 
-表 \@ref(tab:roi-plugin-html) 对目前的优化器按优化问题做了分类
+表 \@ref(tab:roi-plugin-latex) 对目前的优化器按优化问题做了分类
 
-<table style="NAborder-bottom: 0;">
-<caption>(\#tab:roi-plugin-html)ROI 插件按优化问题分类</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:left;"> Linear </th>
-   <th style="text-align:left;"> Quadratic </th>
-   <th style="text-align:left;"> Conic </th>
-   <th style="text-align:left;"> Functional </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> No </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Box </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> optimx </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Linear </td>
-   <td style="text-align:left;"> $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ </td>
-   <td style="text-align:left;"> ipop, $\mathrm{quadprog}^{\star}$, qpoases </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Quadratic </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Conic </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Functional </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> alabama, deoptim, nlminb, nloptr </td>
-  </tr>
-</tbody>
-<tfoot>
-<tr><td style="padding: 0; " colspan="100%">
-<sup>*</sup> 求解器受限于凸优化问题</td></tr>
-<tr><td style="padding: 0; " colspan="100%">
-<sup>+</sup> 求解器可以处理整型约束</td></tr>
-</tfoot>
-</table>
 
+\begin{table}
+
+\caption{(\#tab:roi-plugin-latex)ROI 插件按优化问题分类}
+\centering
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}}
+\toprule
+  & Linear & Quadratic & Conic & Functional\\
+\midrule
+No &  &  &  & \\
+Box &  &  &  & optimx\\
+Linear & $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ & ipop, $\mathrm{quadprog}^{\star}$, qpoases &  & \\
+Quadratic &  & $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ &  & \\
+Conic &  &  & $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ & \\
+\addlinespace
+Functional &  &  &  & alabama, deoptim, nlminb, nloptr\\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{*} 求解器受限于凸优化问题}\\
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{+} 求解器可以处理整型约束}\\
+\end{tabular}
+\end{table}
 
 
 ## 线性规划 {#sec:linear-programming}
@@ -392,10 +350,14 @@ plot(0, 0,
 polygon(c(2, 5, -1), c(0, 3, 3), border = TRUE, lwd = 2, col = "gray")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/feasible-region-1.png" alt="可行域" width="432" />
-<p class="caption">(\#fig:feasible-region)可行域</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/feasible-region-1} 
+
+}
+
+\caption{可行域}(\#fig:feasible-region)
+\end{figure}
 
 调用 **quadprog** 包的 `solve.QP()` 函数求解此二次规划问题
 
@@ -505,10 +467,14 @@ levelplot(z ~ x * y, grid,
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/quadprog-1.png" alt="无约束和有约束条件下的解" width="432" />
-<p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/quadprog-1} 
+
+}
+
+\caption{无约束和有约束条件下的解}(\#fig:quadprog)
+\end{figure}
 
 
 ### 半正定二次优化 {#subsec:semidefinite-optimization}
@@ -529,10 +495,14 @@ svp <- ksvm(x, y, type = "C-svc")
 plot(svp, data = x)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="528" />
-<p class="caption">(\#fig:toy-binary)二分类问题</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/toy-binary-1} 
+
+}
+
+\caption{二分类问题}(\#fig:toy-binary)
+\end{figure}
 
 ## 非线性规划 {#sec:nonlinear-programming}
 
@@ -645,10 +615,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
-<p class="caption">(\#fig:himmelblau)Himmelblau 函数图像</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/himmelblau-1} 
+
+}
+
+\caption{Himmelblau 函数图像}(\#fig:himmelblau)
+\end{figure}
 
 
 ```r
@@ -707,10 +681,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/rosenbrock-1.png" alt="香蕉函数图像" width="528" />
-<p class="caption">(\#fig:rosenbrock)香蕉函数图像</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/rosenbrock-1} 
+
+}
+
+\caption{香蕉函数图像}(\#fig:rosenbrock)
+\end{figure}
 
 
 ```r
@@ -795,10 +773,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/ackley-1.png" alt="二维 Ackley 函数图像" width="528" />
-<p class="caption">(\#fig:ackley)二维 Ackley 函数图像</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/ackley-1} 
+
+}
+
+\caption{二维 Ackley 函数图像}(\#fig:ackley)
+\end{figure}
 
 以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder–Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
@@ -893,10 +875,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/radistrigin-1.png" alt="Radistrigin 函数" width="528" />
-<p class="caption">(\#fig:radistrigin)Radistrigin 函数</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/radistrigin-1} 
+
+}
+
+\caption{Radistrigin 函数}(\#fig:radistrigin)
+\end{figure}
 
 设置 10 维 的优化
 
@@ -974,10 +960,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/super-function-1.png" alt="函数图像" width="528" />
-<p class="caption">(\#fig:super-function)函数图像</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/super-function-1} 
+
+}
+
+\caption{函数图像}(\#fig:super-function)
+\end{figure}
 
 将区域 $[0, 12] \times [0, 12]$ 的图像绘制出来，不难发现，有不少局部陷阱。
 
@@ -1002,10 +992,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/zoom-super-function-1.png" alt="局部放大函数图像" width="528" />
-<p class="caption">(\#fig:zoom-super-function)局部放大函数图像</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/zoom-super-function-1} 
+
+}
+
+\caption{局部放大函数图像}(\#fig:zoom-super-function)
+\end{figure}
 
 最优解在 $(7.999982, 7.999982)$ 取得，目标函数值为 -7.978832。
 
@@ -1284,7 +1278,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.106
+## [1] 368.1061
 ```
 
 ```r
@@ -1677,7 +1671,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.099018 4.988016 3.489954 1.314354
+## [1] 1.072000 3.916688 4.574964 1.607013
 ```
 
 ```r
@@ -1685,7 +1679,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.3239
+## [1] 21.05043
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1813,7 +1807,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227970 4.245367
+## [1] 1.227970 4.245378
 ```
 
 ```r
@@ -2012,7 +2006,7 @@ nlp$solution
 ```
 
 ```
-## [1] -29.04684  29.19908
+## [1] 49.110561  5.717969
 ```
 
 ```r
@@ -2020,7 +2014,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.370204
+## [1] -3.325039
 ```
 比如下面三组
 
@@ -2249,10 +2243,14 @@ wireframe(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/log-likelihood-1.png" alt="正态分布参数的负对数似然函数" width="528" />
-<p class="caption">(\#fig:log-likelihood)正态分布参数的负对数似然函数</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/log-likelihood-1} 
+
+}
+
+\caption{正态分布参数的负对数似然函数}(\#fig:log-likelihood)
+\end{figure}
 
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
@@ -2317,10 +2315,14 @@ scatterplot3d(
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/ode-lorenz-1.png" alt="洛伦兹曲线" width="528" />
-<p class="caption">(\#fig:ode-lorenz)洛伦兹曲线</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/ode-lorenz-1} 
+
+}
+
+\caption{洛伦兹曲线}(\#fig:ode-lorenz)
+\end{figure}
 
 
 ## 运行环境 {#sec:numerical-optimization-session}
@@ -2360,21 +2362,19 @@ sessionInfo()
 ## [13] ROI_1.0-0                 lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] xfun_0.24               bslib_0.2.5.1           slam_0.1-48            
-##  [4] colorspace_2.0-2        vctrs_0.3.8             htmltools_0.5.1.1      
-##  [7] viridisLite_0.4.0       yaml_2.2.1              utf8_1.2.1             
-## [10] rlang_0.4.11            jquerylib_0.1.4         nloptr_1.2.2.2         
-## [13] pillar_1.6.1            glue_1.4.2              registry_0.5-1         
-## [16] lifecycle_1.0.0         stringr_1.4.0           munsell_0.5.0          
-## [19] rvest_1.0.0             lpSolveAPI_5.5.2.0-17.7 evaluate_0.14          
-## [22] knitr_1.33              fansi_0.5.0             highr_0.9              
-## [25] scales_1.1.1            webshot_0.5.2           jsonlite_1.7.2         
-## [28] alabama_2015.3-1        systemfonts_1.0.2       digest_0.6.27          
-## [31] stringi_1.7.3           bookdown_0.22           numDeriv_2016.8-1.1    
-## [34] grid_4.1.0              tools_4.1.0             magrittr_2.0.1         
-## [37] sass_0.4.0              crayon_1.4.1            pkgconfig_2.0.3        
-## [40] ellipsis_0.3.2          xml2_1.3.2              rmarkdown_2.9          
-## [43] svglite_2.0.0           httr_1.4.2              rstudioapi_0.13        
-## [46] R6_2.5.0                compiler_4.1.0
+##  [1] xfun_0.24               slam_0.1-48             colorspace_2.0-2       
+##  [4] vctrs_0.3.8             htmltools_0.5.1.1       viridisLite_0.4.0      
+##  [7] yaml_2.2.1              utf8_1.2.1              rlang_0.4.11           
+## [10] nloptr_1.2.2.2          pillar_1.6.1            glue_1.4.2             
+## [13] registry_0.5-1          lifecycle_1.0.0         stringr_1.4.0          
+## [16] munsell_0.5.0           rvest_1.0.0             lpSolveAPI_5.5.2.0-17.7
+## [19] evaluate_0.14           knitr_1.33              fansi_0.5.0            
+## [22] scales_1.1.1            webshot_0.5.2           alabama_2015.3-1       
+## [25] systemfonts_1.0.2       digest_0.6.27           stringi_1.7.3          
+## [28] bookdown_0.22           numDeriv_2016.8-1.1     grid_4.1.0             
+## [31] tools_4.1.0             magrittr_2.0.1          crayon_1.4.1           
+## [34] pkgconfig_2.0.3         ellipsis_0.3.2          xml2_1.3.2             
+## [37] rmarkdown_2.9           svglite_2.0.0           httr_1.4.2             
+## [40] rstudioapi_0.13         R6_2.5.0                compiler_4.1.0
 ```
 

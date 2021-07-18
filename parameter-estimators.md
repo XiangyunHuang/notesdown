@@ -317,10 +317,14 @@ ggplot() +
   labs(x = "", y = "")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="parameter-estimators_files/figure-html/ci-1.png" alt="(ref:ci)" width="672" />
-<p class="caption">(\#fig:ci)(ref:ci)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{parameter-estimators_files/figure-latex/ci-1} 
+
+}
+
+\caption{(ref:ci)}(\#fig:ci)
+\end{figure}
 
 方差 $\sigma^2$ 已知的情况下，标准正态分布 $N(\mu, \sigma^2), \mu = 0, \sigma^2 = 1$ 的参数 $\mu$ 的区间估计和覆盖概率 <https://yihui.org/animation/example/conf-int/>
 
@@ -667,7 +671,9 @@ fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = F) - r
 plot(x = 1:10, y = p)
 ```
 
-<img src="parameter-estimators_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{parameter-estimators_files/figure-latex/unnamed-chunk-27-1} \end{center}
 
 
 
@@ -699,7 +705,9 @@ table(dat)
 hist(dat, probability = T, breaks = seq(from = -0.1, to = 1, by = 0.1))
 ```
 
-<img src="parameter-estimators_files/figure-html/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{parameter-estimators_files/figure-latex/unnamed-chunk-29-1} \end{center}
 
 ```r
 # 0.2^10 左闭右开区间
@@ -707,7 +715,9 @@ hist(dat, probability = T, breaks = seq(from = 0, to = 1.1, by = 0.1),
      right = FALSE, xlim = c(0, 1.1))
 ```
 
-<img src="parameter-estimators_files/figure-html/unnamed-chunk-29-2.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{parameter-estimators_files/figure-latex/unnamed-chunk-29-2} \end{center}
 
 
 
@@ -724,14 +734,18 @@ ggplot(data = dat1, aes(x = dat, y = Freq)) +
   geom_col()
 ```
 
-<img src="parameter-estimators_files/figure-html/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{parameter-estimators_files/figure-latex/unnamed-chunk-30-1} \end{center}
 
 ```r
 ggplot(as.data.frame(dat), aes(x = dat)) +
   geom_histogram(bins = 12)
 ```
 
-<img src="parameter-estimators_files/figure-html/unnamed-chunk-30-2.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{parameter-estimators_files/figure-latex/unnamed-chunk-30-2} \end{center}
 
 
 ## 最小角回归 {#sec:least-angle-regression}

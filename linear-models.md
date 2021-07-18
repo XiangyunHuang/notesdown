@@ -38,7 +38,9 @@ boxplot(weight ~ feed, data = chickwts, col = "lightgray",
 ## notches went outside hinges ('box'): maybe set notch=FALSE
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-2-1} \end{center}
 
 ```r
 anova(fm1 <- lm(weight ~ feed, data = chickwts))
@@ -61,7 +63,9 @@ opar <- par(mfrow = c(2, 2), oma = c(0, 0, 1.1, 0),
 plot(fm1)
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-2-2.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-2-2} \end{center}
 
 ```r
 par(opar)
@@ -112,7 +116,9 @@ boxplot(sleep1, horizontal = TRUE, add = TRUE,
         at = .6, pars = list(boxwex = 0.5, staplewex = 0.25))
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-4-1} \end{center}
 
 另一个关于测量光速的例子，带分类变量的
 
@@ -140,7 +146,9 @@ plot(Speed ~ Expt, data = michelson,
      main = "Speed of Light Data", xlab = "Experiment No.")
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-6-1} \end{center}
 
 
 ```r
@@ -181,7 +189,9 @@ coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
        xlab = "ToothGrowth data: length vs dose, given type of supplement")
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
 ## 双因素方差分析 {#sec:two-way-anova}
 
@@ -321,10 +331,14 @@ for (i in 1:4) {
 mtext("Anscombe's 4 Regression data sets", outer = TRUE, cex = 1.2)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/anscombe-base-1.svg" alt="模型诊断很重要" width="672" />
-<p class="caption">(\#fig:anscombe-base)模型诊断很重要</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/anscombe-base-1} 
+
+}
+
+\caption{模型诊断很重要}(\#fig:anscombe-base)
+\end{figure}
 
 ```r
 library(ggplot2)
@@ -351,10 +365,14 @@ plot_lm <- function(i) {
 Reduce("+", lapply(1:4, plot_lm))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/anscombe-1.png" alt="线性模型可能在欺骗你" width="672" />
-<p class="caption">(\#fig:anscombe)线性模型可能在欺骗你</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/anscombe-1} 
+
+}
+
+\caption{线性模型可能在欺骗你}(\#fig:anscombe)
+\end{figure}
 
 ## 1977 年美国人口普查 {#sec:states}
 
@@ -413,10 +431,14 @@ data(rock)
 1888 年瑞士生育率和社会经济指标数据，各个指标都是百分比的形式，探索性分析
 
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/swiss-1.png" alt="1888 年瑞士生育率和社会经济指标的关系" width="768" />
-<p class="caption">(\#fig:swiss)1888 年瑞士生育率和社会经济指标的关系</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/swiss-1} 
+
+}
+
+\caption{1888 年瑞士生育率和社会经济指标的关系}(\#fig:swiss)
+\end{figure}
 
 
 ```r
@@ -482,7 +504,9 @@ par(mar = c(4, 4, 2, 2))
 plot(fit_swiss, which = 4, sub.caption = "")
 ```
 
-<img src="linear-models_files/figure-html/fit-swiss-cook-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/fit-swiss-cook-1} \end{center}
 
 
 ```r
@@ -490,7 +514,9 @@ par(mar = c(4, 4, 2, 2))
 plot(fit_swiss, which = 5, sub.caption = "")
 ```
 
-<img src="linear-models_files/figure-html/fit-swiss-leverage-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/fit-swiss-leverage-1} \end{center}
 
 
 ```r
@@ -553,7 +579,9 @@ ggplot(data = Formaldehyde, aes(x = carb, y = optden)) +
   theme_minimal()
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-16-1} \end{center}
 
 
 ## 迈克尔逊光速数据分析 {#sec:morley}
@@ -575,17 +603,26 @@ reshape(
   )
 ```
 
+\begin{table}
 
-
-Table: (\#tab:morley-data)迈克尔逊光速数据
-
-| Expt |  1  |  2  |  3  |  4   |  5  |  6  |  7  |  8  |  9  | 10  |  11  | 12  | 13  | 14  | 15  | 16  |  17  |  18  | 19  | 20  |
-|:----:|:---:|:---:|:---:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:----:|:---:|:---:|:---:|:---:|:---:|:----:|:----:|:---:|:---:|
-|  1   | 850 | 740 | 900 | 1070 | 930 | 850 | 950 | 980 | 980 | 880 | 1000 | 980 | 930 | 650 | 760 | 810 | 1000 | 1000 | 960 | 960 |
-|  2   | 960 | 940 | 960 | 940  | 880 | 800 | 850 | 880 | 900 | 840 | 830  | 790 | 810 | 880 | 880 | 830 | 800  | 790  | 760 | 800 |
-|  3   | 880 | 880 | 880 | 860  | 720 | 720 | 620 | 860 | 970 | 950 | 880  | 910 | 850 | 870 | 840 | 840 | 850  | 840  | 840 | 840 |
-|  4   | 890 | 810 | 810 | 820  | 800 | 770 | 760 | 740 | 750 | 760 | 910  | 920 | 890 | 860 | 880 | 720 | 840  | 850  | 850 | 780 |
-|  5   | 890 | 840 | 780 | 810  | 760 | 810 | 790 | 810 | 820 | 850 | 870  | 870 | 810 | 740 | 810 | 940 | 950  | 800  | 810 | 870 |
+\caption{(\#tab:morley-data)迈克尔逊光速数据}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+\hline
+Expt & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20\\
+\hline
+1 & 850 & 740 & 900 & 1070 & 930 & 850 & 950 & 980 & 980 & 880 & 1000 & 980 & 930 & 650 & 760 & 810 & 1000 & 1000 & 960 & 960\\
+\hline
+2 & 960 & 940 & 960 & 940 & 880 & 800 & 850 & 880 & 900 & 840 & 830 & 790 & 810 & 880 & 880 & 830 & 800 & 790 & 760 & 800\\
+\hline
+3 & 880 & 880 & 880 & 860 & 720 & 720 & 620 & 860 & 970 & 950 & 880 & 910 & 850 & 870 & 840 & 840 & 850 & 840 & 840 & 840\\
+\hline
+4 & 890 & 810 & 810 & 820 & 800 & 770 & 760 & 740 & 750 & 760 & 910 & 920 & 890 & 860 & 880 & 720 & 840 & 850 & 850 & 780\\
+\hline
+5 & 890 & 840 & 780 & 810 & 760 & 810 & 790 & 810 & 820 & 850 & 870 & 870 & 810 & 740 & 810 & 940 & 950 & 800 & 810 & 870\\
+\hline
+\end{tabular}
+\end{table}
 
 数据集 morley 中光速 Speed 已经编码过了，原始观测速度减去了 299000 (km/sec)，为了展示方便
 
@@ -598,10 +635,14 @@ ggplot(data = morley, aes(x = Expt, y = Speed, group = Expt)) +
   labs(x = "Expt", y = "Speed (km/sec)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/morley-1.png" alt="1879 年迈克尔逊光速实验数据" width="672" />
-<p class="caption">(\#fig:morley)1879 年迈克尔逊光速实验数据</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/morley-1} 
+
+}
+
+\caption{1879 年迈克尔逊光速实验数据}(\#fig:morley)
+\end{figure}
 
 ## 不同喂食方式对小鸡体重的影响 I {#sec:chickwts}
 
@@ -615,10 +656,14 @@ ggplot(data = chickwts, aes(x = feed, y = weight, color = feed)) +
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/chickwts-1.png" alt="不同喂食方式对小鸡的影响" width="672" />
-<p class="caption">(\#fig:chickwts)不同喂食方式对小鸡的影响</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/chickwts-1} 
+
+}
+
+\caption{不同喂食方式对小鸡的影响}(\#fig:chickwts)
+\end{figure}
 
 ## 不同喂食方式对小鸡体重的影响 II {#sec:ChickWeight}
 
@@ -633,7 +678,9 @@ ggplot(data = ChickWeight, aes(x = Time, y = weight, group = Chick, color = Diet
   theme_minimal()
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-17-1} \end{center}
 
 添加趋势线
 
@@ -652,7 +699,9 @@ ggplot(data = ChickWeight,
   )
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-18-1} \end{center}
 
 ## 酶的酶联免疫吸附测定 {#sec:DNase}
 
@@ -663,14 +712,21 @@ ggplot(data = DNase, aes(x= conc,y= density, color = Run)) +
   theme_minimal()
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-19-1} \end{center}
 
 
 ## 婴儿的体重随年龄的变化情况 {#sec:BirthWeight}
 
 BirthWeight 数据集记录了婴儿的体重随年龄的变化情况，年龄以周为单位计，体重以克为单位计 
 
-<img src="linear-models_files/figure-html/Birth-Weight-1.png" width="672" style="display: block; margin: auto;" /><img src="linear-models_files/figure-html/Birth-Weight-2.png" width="672" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/Birth-Weight-1} \end{center}
+
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/Birth-Weight-2} \end{center}
 
 性别和年龄两个变量，分别是离散型的分类变量和连续型的变量
 
@@ -884,26 +940,44 @@ reshape(Loblolly, idvar = "Seed", timevar = "age",
   )
 ```
 
+\begin{table}
 
-
-Table: (\#tab:loblolly-data)火炬松树的高度（英尺）随时间（年）的变化
-
-| Seed |  3   |   5   |  10   |  15   |  20   |  25   |
-|:----:|:----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| 301  | 4.51 | 10.89 | 28.72 | 41.74 | 52.70 | 60.92 |
-| 303  | 4.55 | 10.92 | 29.07 | 42.83 | 53.88 | 63.39 |
-| 305  | 4.79 | 11.37 | 30.21 | 44.40 | 55.82 | 64.10 |
-| 307  | 3.91 | 9.48  | 25.66 | 39.07 | 50.78 | 59.07 |
-| 309  | 4.81 | 11.20 | 28.66 | 41.66 | 53.31 | 63.05 |
-| 311  | 3.88 | 9.40  | 25.99 | 39.55 | 51.46 | 59.64 |
-| 315  | 4.32 | 10.43 | 27.16 | 40.85 | 51.33 | 60.07 |
-| 319  | 4.57 | 10.57 | 27.90 | 41.13 | 52.43 | 60.69 |
-| 321  | 3.77 | 9.03  | 25.45 | 38.98 | 49.76 | 60.28 |
-| 323  | 4.33 | 10.79 | 28.97 | 42.44 | 53.17 | 61.62 |
-| 325  | 4.38 | 10.48 | 27.93 | 40.20 | 50.06 | 58.49 |
-| 327  | 4.12 | 9.92  | 26.54 | 37.82 | 48.43 | 56.81 |
-| 329  | 3.93 | 9.34  | 26.08 | 37.79 | 48.31 | 56.43 |
-| 331  | 3.46 | 9.05  | 25.85 | 39.15 | 49.12 | 59.49 |
+\caption{(\#tab:loblolly-data)火炬松树的高度（英尺）随时间（年）的变化}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c|c}
+\hline
+Seed & 3 & 5 & 10 & 15 & 20 & 25\\
+\hline
+301 & 4.51 & 10.89 & 28.72 & 41.74 & 52.70 & 60.92\\
+\hline
+303 & 4.55 & 10.92 & 29.07 & 42.83 & 53.88 & 63.39\\
+\hline
+305 & 4.79 & 11.37 & 30.21 & 44.40 & 55.82 & 64.10\\
+\hline
+307 & 3.91 & 9.48 & 25.66 & 39.07 & 50.78 & 59.07\\
+\hline
+309 & 4.81 & 11.20 & 28.66 & 41.66 & 53.31 & 63.05\\
+\hline
+311 & 3.88 & 9.40 & 25.99 & 39.55 & 51.46 & 59.64\\
+\hline
+315 & 4.32 & 10.43 & 27.16 & 40.85 & 51.33 & 60.07\\
+\hline
+319 & 4.57 & 10.57 & 27.90 & 41.13 & 52.43 & 60.69\\
+\hline
+321 & 3.77 & 9.03 & 25.45 & 38.98 & 49.76 & 60.28\\
+\hline
+323 & 4.33 & 10.79 & 28.97 & 42.44 & 53.17 & 61.62\\
+\hline
+325 & 4.38 & 10.48 & 27.93 & 40.20 & 50.06 & 58.49\\
+\hline
+327 & 4.12 & 9.92 & 26.54 & 37.82 & 48.43 & 56.81\\
+\hline
+329 & 3.93 & 9.34 & 26.08 & 37.79 & 48.31 & 56.43\\
+\hline
+331 & 3.46 & 9.05 & 25.85 & 39.15 & 49.12 & 59.49\\
+\hline
+\end{tabular}
+\end{table}
 
 图 \@ref(fig:loblolly-tree) 火炬树种子基本决定了树的长势，不同种子预示最后的高度，并且在生长期也是很稳定地生长
 
@@ -917,17 +991,25 @@ p <- ggplot(data = Loblolly, aes(x = age, y = height, color = Seed)) +
 p
 ```
 
-<div class="figure" style="text-align: center">
-<img src="linear-models_files/figure-html/loblolly-tree-1.png" alt="不同火炬树的生长情况" width="672" />
-<p class="caption">(\#fig:loblolly-tree)不同火炬树的生长情况</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{linear-models_files/figure-latex/loblolly-tree-1} 
+
+}
+
+\caption{不同火炬树的生长情况}(\#fig:loblolly-tree)
+\end{figure}
 
 
 ```r
 library(gganimate)
 p + transition_reveal(age)
 ```
-<img src="linear-models_files/figure-html/unnamed-chunk-20-1.gif" style="display: block; margin: auto;" />
+
+
+
+\begin{center}\animategraphics[,controls,loop]{10}{linear-models_files/figure-latex/loblolly-animate-}{1}{100}\end{center}
+
 
 ## 酶促反应的反应速率 {#sec:Puromycin}
 
@@ -946,7 +1028,9 @@ ggplot(data = Puromycin, aes(x = conc, y = rate, color = state)) +
   )
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-21-1} \end{center}
 
 ## 茶碱的药代动力学 {#sec:Theoph}
 
@@ -964,7 +1048,9 @@ ggplot(data = Theoph, aes(x = Time, y = conc, color = Subject)) +
   )
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-22-1} \end{center}
 
 
 ```r
@@ -981,7 +1067,9 @@ Theoph %>%
   )
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-23-1} \end{center}
 
 
 
@@ -997,7 +1085,9 @@ ggplot(data = Theoph, aes(x = Time, y = conc, color = Subject)) +
   )
 ```
 
-<img src="linear-models_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-24-1} \end{center}
 
 ## 本章总结 {#sec:linear-model-summary}
 
@@ -1041,19 +1131,18 @@ sessionInfo()
 ## [5] magrittr_2.0.1 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.24         bslib_0.2.5.1    
-##  [5] purrr_0.3.4       lattice_0.20-44   splines_4.1.0     colorspace_2.0-2 
-##  [9] vctrs_0.3.8       generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0
-## [13] mgcv_1.8-36       yaml_2.2.1        utf8_1.2.1        rlang_0.4.11     
-## [17] jquerylib_0.1.4   pillar_1.6.1      glue_1.4.2        withr_2.4.2      
-## [21] DBI_1.1.1         tweenr_1.0.2      lifecycle_1.0.0   stringr_1.4.0    
-## [25] munsell_0.5.0     gtable_0.3.0      evaluate_0.14     labeling_0.4.2   
+##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.24         purrr_0.3.4      
+##  [5] splines_4.1.0     lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8      
+##  [9] generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1       
+## [13] mgcv_1.8-36       utf8_1.2.1        rlang_0.4.11      pillar_1.6.1     
+## [17] glue_1.4.2        withr_2.4.2       DBI_1.1.1         tweenr_1.0.2     
+## [21] plyr_1.8.6        lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0    
+## [25] gtable_0.3.0      codetools_0.2-18  evaluate_0.14     labeling_0.4.2   
 ## [29] knitr_1.33        fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.8   
-## [33] highr_0.9         Rcpp_1.0.7        scales_1.1.1      jsonlite_1.7.2   
-## [37] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.7.3    
-## [41] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
-## [45] sass_0.4.0        tibble_3.1.2      crayon_1.4.1      extrafontdb_1.0  
-## [49] pkgconfig_2.0.3   Matrix_1.3-4      ellipsis_0.3.2    prettyunits_1.1.1
-## [53] assertthat_0.2.1  rmarkdown_2.9     R6_2.5.0          nlme_3.1-152     
-## [57] compiler_4.1.0
+## [33] Rcpp_1.0.7        scales_1.1.1      farver_2.1.0      hms_1.1.0        
+## [37] digest_0.6.27     stringi_1.7.3     bookdown_0.22     dplyr_1.0.7      
+## [41] grid_4.1.0        tools_4.1.0       tibble_3.1.2      crayon_1.4.1     
+## [45] extrafontdb_1.0   pkgconfig_2.0.3   ellipsis_0.3.2    Matrix_1.3-4     
+## [49] prettyunits_1.1.1 assertthat_0.2.1  rmarkdown_2.9     R6_2.5.0         
+## [53] nlme_3.1-152      compiler_4.1.0
 ```

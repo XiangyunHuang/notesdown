@@ -69,11 +69,6 @@ datatable(pkg_pdb[order(pkg_pdb$Maintainer, decreasing = T), ],
 )
 ```
 
-```{=html}
-<div id="htmlwidget-a114d22e9a20353a94cd" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a114d22e9a20353a94cd">{"x":{"filter":"none","extensions":["Buttons","RowGroup"],"caption":"<caption>谢大和哈神维护的 R 包<\/caption>","data":[["Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Yihui Xie &lt;xie@yihui.name&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;hadley@rstudio.com&gt;","Hadley Wickham &lt;h.wickham@gmail.com&gt;"],["bookdown","DT","evaluate","formatR","highr","knitr","markdown","mime","rmarkdown","servr","tinytex","xaringan","xfun","assertthat","cubelyr","dbplyr","dplyr","dtplyr","ellipsis","forcats","generics","gtable","haven","httr","lazyeval","modelr","plyr","productplots","rappdirs","roxygen2","rvest","scales","stringr","testthat","tidyr","tidyverse","waldo","reshape2"],["0.22","0.18","0.14","1.11","0.9","1.33","1.1","0.11","2.9","0.22","0.32","0.22","0.24","0.2.1","1.0.1","2.1.1","1.0.7","1.1.0","0.3.2","0.5.1","0.1.0","0.3.0","2.4.1","1.4.2","0.2.2","0.1.8","1.8.6","0.1.1","0.3.3","7.1.1","1.0.0","1.1.1","1.4.0","3.0.4","1.1.3","1.3.1","0.2.5","1.4.4"],["2021-04-22","2021-04-14","2019-05-28","2021-06-01","2021-04-16","2021-04-24","2019-08-07","2021-06-23","2021-06-15","2021-04-14","2021-05-29","2021-06-23","2021-06-15","2019-03-21","2020-11-24","2021-04-06","2021-06-18","2021-02-20","2021-04-29","2021-01-27","2020-10-31","2019-03-25","2021-04-23","2020-07-20","2019-03-15","2020-05-19","2020-03-03","2016-07-02","2021-01-31","2020-06-27","2021-03-09","2020-05-11","2019-02-10","2021-07-01","2021-03-03","2021-04-15","2021-03-08","2020-04-09"],["Authoring Books and Technical Documents with R Markdown","A Wrapper of the JavaScript Library 'DataTables'","Parsing and Evaluation Tools that Provide More Details than the Default","Format R Code Automatically","Syntax Highlighting for R Source Code","A General-Purpose Package for Dynamic Report Generation in R","Render Markdown with the C Library 'Sundown'","Map Filenames to MIME Types","Dynamic Documents for R","A Simple HTTP Server to Serve Static Files or Dynamic Documents","Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents","Presentation Ninja","Supporting Functions for Packages Maintained by 'Yihui Xie'","Easy Pre and Post Assertions","A Data Cube 'dplyr' Backend","A 'dplyr' Back End for Databases","A Grammar of Data Manipulation","Data Table Back-End for 'dplyr'","Tools for Working with ...","Tools for Working with Categorical Variables (Factors)","Common S3 Generics not Provided by Base R Methods Related to Model Fitting","Arrange 'Grobs' in Tables","Import and Export 'SPSS', 'Stata' and 'SAS' Files","Tools for Working with URLs and HTTP","Lazy (Non-Standard) Evaluation","Modelling Functions that Work with the Pipe","Tools for Splitting, Applying and Combining Data","Product Plots for R","Application Directories: Determine Where to Save Data, Caches, and Logs","In-Line Documentation for R","Easily Harvest (Scrape) Web Pages","Scale Functions for Visualization","Simple, Consistent Wrappers for Common String Operations","Unit Testing for R","Tidy Messy Data","Easily Install and Load the 'Tidyverse'","Find Differences Between R Objects","Flexibly Reshape Data: A Reboot of the Reshape Package"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Maintainer<\/th>\n      <th>Package<\/th>\n      <th>Version<\/th>\n      <th>Published<\/th>\n      <th>Title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Chinese.json"},"dom":"Brtp","ordering":false,"buttons":["copy","csv","excel","pdf","print"],"rowGroup":{"dataSrc":0},"columnDefs":[{"className":"dt-center","targets":0},{"visible":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-```
-
 
 
 
@@ -126,11 +121,6 @@ datatable(
     dom = "t"
   )
 )
-```
-
-```{=html}
-<div id="htmlwidget-dc4d5e10cd725b3e6896" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dc4d5e10cd725b3e6896">{"x":{"filter":"none","caption":"<caption style=\"caption-side: top; text-align: center;\">\n  表格 2: \n  <em>表格标题<\/em>\n<\/caption>","data":[["1","2","3"],["<b>加粗<\/b>","<em>强调<\/em>","<span style=\"color:red\">正常<\/span>"],["<a href=\"https://rstudio.com\">超链<\/a>","<a href=\"#\" onclick=\"alert('Hello World');\">Hello<\/a>","正常"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th><span style='color:red'>第1列<\/span><\/th>\n      <th><em>第2列<\/em><\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ```
 
 下面重点介绍 reactable 包，看看 React.js 和 Shiny 是如何集成的，这是比较高级的主题，主要参考 [Alan Dipert](https://github.com/alandipert) 的演讲材料 [Integrating React.js and Shiny](https://rstudio.com/resources/rstudioconf-2019/integrating-react-js-and-shiny/)。
@@ -200,90 +190,28 @@ iris[1:10, ] %>%
   )
 ```
 
-<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption>(\#tab:kable-styles)自定义表格样式</caption>
- <thead>
-  <tr>
-   <th style="text-align:center;"> Sepal.Length </th>
-   <th style="text-align:center;"> Sepal.Width </th>
-   <th style="text-align:center;"> Petal.Length </th>
-   <th style="text-align:center;"> Petal.Width </th>
-   <th style="text-align:center;"> Species </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(40, 174, 128, 1) !important;font-size: 14px;">5.1</span> </td>
-   <td style="text-align:center;"> 3.5 </td>
-   <td style="text-align:center;"> 1.4 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 206, 145, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;">4.9</span> </td>
-   <td style="text-align:center;"> 3.0 </td>
-   <td style="text-align:center;"> 1.4 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 160, 109, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(57, 87, 140, 1) !important;font-size: 10px;">4.7</span> </td>
-   <td style="text-align:center;"> 3.2 </td>
-   <td style="text-align:center;"> 1.3 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(246, 110, 92, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(67, 62, 133, 1) !important;font-size: 10px;">4.6</span> </td>
-   <td style="text-align:center;"> 3.1 </td>
-   <td style="text-align:center;"> 1.5 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(222, 73, 104, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(31, 154, 138, 1) !important;font-size: 13px;">5</span> </td>
-   <td style="text-align:center;"> 3.6 </td>
-   <td style="text-align:center;"> 1.4 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(183, 55, 121, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(187, 223, 39, 1) !important;font-size: 16px;">5.4</span> </td>
-   <td style="text-align:center;"> 3.9 </td>
-   <td style="text-align:center;"> 1.7 </td>
-   <td style="text-align:center;"> 0.4 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(140, 41, 129, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(67, 62, 133, 1) !important;font-size: 10px;">4.6</span> </td>
-   <td style="text-align:center;"> 3.4 </td>
-   <td style="text-align:center;"> 1.4 </td>
-   <td style="text-align:center;"> 0.3 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(100, 26, 128, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(31, 154, 138, 1) !important;font-size: 13px;">5</span> </td>
-   <td style="text-align:center;"> 3.4 </td>
-   <td style="text-align:center;"> 1.5 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(60, 15, 112, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(68, 1, 84, 1) !important;font-size: 8px;">4.4</span> </td>
-   <td style="text-align:center;"> 2.9 </td>
-   <td style="text-align:center;"> 1.4 </td>
-   <td style="text-align:center;"> 0.2 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(20, 14, 54, 1) !important;">setosa</span> </td>
-  </tr>
-  <tr>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: rgba(37, 131, 142, 1) !important;font-size: 12px;">4.9</span> </td>
-   <td style="text-align:center;"> 3.1 </td>
-   <td style="text-align:center;"> 1.5 </td>
-   <td style="text-align:center;"> 0.1 </td>
-   <td style="text-align:center;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(0, 0, 4, 1) !important;">setosa</span> </td>
-  </tr>
-</tbody>
-</table>
+\begin{table}
+
+\caption{(\#tab:kable-styles)自定义表格样式}
+\centering
+\begin{tabular}[t]{ccccc}
+\toprule
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\midrule
+\cellcolor{gray!6}{\bgroup\fontsize{14}{16}\selectfont \textcolor[HTML]{28AE80}{\textbf{5.1}}\egroup{}} & \cellcolor{gray!6}{3.5} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\bgroup\fontsize{12}{14}\selectfont \textcolor[HTML]{25838E}{\textbf{4.9}}\egroup{} & 3.0 & 1.4 & 0.2 & \cellcolor[HTML]{FEA06D}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{39578C}{\textbf{4.7}}\egroup{}} & \cellcolor{gray!6}{3.2} & \cellcolor{gray!6}{1.3} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{433E85}{\textbf{4.6}}\egroup{} & 3.1 & 1.5 & 0.2 & \cellcolor[HTML]{DE4968}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\bgroup\fontsize{13}{15}\selectfont \textcolor[HTML]{1F9A8A}{\textbf{5}}\egroup{}} & \cellcolor{gray!6}{3.6} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\addlinespace
+\bgroup\fontsize{16}{18}\selectfont \textcolor[HTML]{BBDF27}{\textbf{5.4}}\egroup{} & 3.9 & 1.7 & 0.4 & \cellcolor[HTML]{8C2981}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{433E85}{\textbf{4.6}}\egroup{}} & \cellcolor{gray!6}{3.4} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.3} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\bgroup\fontsize{13}{15}\selectfont \textcolor[HTML]{1F9A8A}{\textbf{5}}\egroup{} & 3.4 & 1.5 & 0.2 & \cellcolor[HTML]{3C0F70}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\bgroup\fontsize{8}{10}\selectfont \textcolor[HTML]{440154}{\textbf{4.4}}\egroup{}} & \cellcolor{gray!6}{2.9} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\bgroup\fontsize{12}{14}\selectfont \textcolor[HTML]{25838E}{\textbf{4.9}}\egroup{} & 3.1 & 1.5 & 0.1 & \cellcolor[HTML]{000004}{\textcolor{white}{\textbf{setosa}}}\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 一个非常基本的 gt 制作的表格
 
@@ -363,18 +291,14 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_1.3.4 reactable_0.2.3  tibble_3.1.2     DT_0.18         
-## [5] magrittr_2.0.1  
+## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.18          magrittr_2.0.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] pillar_1.6.1      bslib_0.2.5.1     compiler_4.1.0    jquerylib_0.1.4  
-##  [5] tools_4.1.0       digest_0.6.27     viridisLite_0.4.0 jsonlite_1.7.2   
-##  [9] evaluate_0.14     lifecycle_1.0.0   pkgconfig_2.0.3   rlang_0.4.11     
-## [13] rstudioapi_0.13   crosstalk_1.1.1   yaml_2.2.1        xfun_0.24        
-## [17] stringr_1.4.0     httr_1.4.2        knitr_1.33        xml2_1.3.2       
-## [21] systemfonts_1.0.2 htmlwidgets_1.5.3 sass_0.4.0        vctrs_0.3.8      
-## [25] webshot_0.5.2     svglite_2.0.0     glue_1.4.2        R6_2.5.0         
-## [29] fansi_0.5.0       rmarkdown_2.9     bookdown_0.22     scales_1.1.1     
-## [33] ellipsis_0.3.2    htmltools_0.5.1.1 rvest_1.0.0       colorspace_2.0-2 
-## [37] utf8_1.2.1        stringi_1.7.3     munsell_0.5.0     crayon_1.4.1
+##  [1] rstudioapi_0.13   knitr_1.33        xml2_1.3.2        rvest_1.0.0      
+##  [5] munsell_0.5.0     viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.0         
+##  [9] rlang_0.4.11      stringr_1.4.0     httr_1.4.2        tools_4.1.0      
+## [13] webshot_0.5.2     xfun_0.24         systemfonts_1.0.2 htmltools_0.5.1.1
+## [17] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   bookdown_0.22    
+## [21] htmlwidgets_1.5.3 glue_1.4.2        evaluate_0.14     rmarkdown_2.9    
+## [25] stringi_1.7.3     compiler_4.1.0    scales_1.1.1      svglite_2.0.0
 ```

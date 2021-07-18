@@ -32,7 +32,9 @@ ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
   theme_minimal()
 ```
 
-<img src="experimental-design_files/figure-html/sleep-data-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/sleep-data-1} \end{center}
 
 ## 驱虫喷雾的效果 {#sec:insect-sprays}
 
@@ -48,10 +50,14 @@ ggplot(data = InsectSprays, aes(x = spray, y = count, color = spray)) +
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="experimental-design_files/figure-html/insect-sprays-1.png" alt="不同杀虫剂的效果" width="672" />
-<p class="caption">(\#fig:insect-sprays)不同杀虫剂的效果</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{experimental-design_files/figure-latex/insect-sprays-1} 
+
+}
+
+\caption{不同杀虫剂的效果}(\#fig:insect-sprays)
+\end{figure}
 
 先创建一个 aov 对象，把它命名为 mod1，见下方
 
@@ -126,7 +132,9 @@ par(mar = c(4, 4, 2, 2), mfrow = c(2,2))
 plot(mod1)
 ```
 
-<img src="experimental-design_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/unnamed-chunk-7-1} \end{center}
 
 
 ```r
@@ -134,14 +142,18 @@ plot(mod1$fitted.values, mod1$residuals, main = "Residuals vs. Fitted", pch = 20
 abline(h = 0, lty = 2)
 ```
 
-<img src="experimental-design_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/unnamed-chunk-8-1} \end{center}
 
 
 ```r
 plot(mod1$model$spray, mod1$residuals, main = "Residuals vs. Levels" )
 ```
 
-<img src="experimental-design_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
 
 ```r
@@ -149,7 +161,9 @@ plot(1:72, mod1$residuals, main = "Residuals vs. Time Order")
 abline(h = 0, lty = 2)
 ```
 
-<img src="experimental-design_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
 
 ```r
@@ -157,7 +171,9 @@ qqnorm(mod1$residuals, pch = 20)
 qqline(mod1$residuals)
 ```
 
-<img src="experimental-design_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{experimental-design_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
 如果上面的假设显著失效，我们要采用非参数检验
 
@@ -309,10 +325,14 @@ hsd
 plot(mod3)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="experimental-design_files/figure-html/tukey-hsd-1.png" alt="成对显著性水平" width="75%" />
-<p class="caption">(\#fig:tukey-hsd)成对显著性水平</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{experimental-design_files/figure-latex/tukey-hsd-1} 
+
+}
+
+\caption{成对显著性水平}(\#fig:tukey-hsd)
+\end{figure}
 
 关于多重比较请见 Frank Bretz, Torsten Hothorn, Peter Westfall 的书《Multiple Comparisons Using R》及配套 R 包 [multcomp](https://cran.r-project.org/package=multcomp)，该 R 包现由 Torsten Hothorn 维护，他还维护了一个由数据集构成的 R 包 [TH.data](https://cran.r-project.org/package=TH.data)，我们后续章节也会用到。
 
@@ -356,10 +376,14 @@ ggplot(data = CO2, aes(x = conc, y = uptake, color = Type, shape = Treatment)) +
   labs(x = "conc (mL/L)", y = "uptake (umol/m^2 sec)")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="experimental-design_files/figure-html/co2-1.png" alt="草类植物吸收二氧化碳的量" width="672" />
-<p class="caption">(\#fig:co2)草类植物吸收二氧化碳的量</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{experimental-design_files/figure-latex/co2-1} 
+
+}
+
+\caption{草类植物吸收二氧化碳的量}(\#fig:co2)
+\end{figure}
 
 ## 果园喷雾剂的效力 {#sec:orchard-sprays}
 

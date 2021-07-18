@@ -88,10 +88,10 @@ Tn
 
 ```
 ## $quantile
-## [1] 2.561232
+## [1] 2.560398
 ## 
 ## $f.quantile
-## [1] 2.017302e-07
+## [1] 2.036187e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -130,10 +130,14 @@ plot(X,
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="sampling-distributions_files/figure-html/two-normal-dist-1.png" alt="二维正态分布" width="85%" />
-<p class="caption">(\#fig:two-normal-dist)二维正态分布</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-dist-1} 
+
+}
+
+\caption{二维正态分布}(\#fig:two-normal-dist)
+\end{figure}
 
 
 
@@ -143,10 +147,14 @@ image(f1, col = hcl.colors(100), xlab = expression(X[1]), ylab = expression(X[2]
 contour(f1, add = T)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="sampling-distributions_files/figure-html/two-normal-contour-1.png" alt="二维正态分布" width="85%" />
-<p class="caption">(\#fig:two-normal-contour)二维正态分布</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-contour-1} 
+
+}
+
+\caption{二维正态分布}(\#fig:two-normal-contour)
+\end{figure}
 
 
 
@@ -168,9 +176,13 @@ persp(f1,
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="sampling-distributions_files/figure-html/two-normal-persp-1.png" alt="二维正态分布" width="85%" />
-<p class="caption">(\#fig:two-normal-persp)二维正态分布</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-persp-1} 
+
+}
+
+\caption{二维正态分布}(\#fig:two-normal-persp)
+\end{figure}
 
 Wishart 分布 文献 [@Eaton_2007_MultiStat] 第八章

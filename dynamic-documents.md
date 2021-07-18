@@ -4,10 +4,14 @@
 
 <!-- 第一节介绍通用的 R Markdown 语法，本章的组织最好按照使用场景来分 -->
 
-<div class="figure" style="text-align: center">
-<img src="images/rmarkdown.png" alt="R Markdown 极其周边生态" width="75%" />
-<p class="caption">(\#fig:rmarkdown-hex)R Markdown 极其周边生态</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/rmarkdown} 
+
+}
+
+\caption{R Markdown 极其周边生态}(\#fig:rmarkdown-hex)
+\end{figure}
 
 [WrapRmd](https://github.com/tjmahr/WrapRmd) 将 R Markdown 里很长的文本自动断行，但不产生空行。 [regexplain](https://github.com/gadenbuie/regexplain) 帮助检查正则表达式，[rdoc](https://github.com/mdequeljoe/rdoc) 支持 R 帮助文档的语法高亮。[shinyComponents](https://github.com/gadenbuie/shinyComponents) 实现在 R Markdown 中写 shiny 。[wordcountaddin](https://github.com/benmarwick/wordcountaddin) 统计 R Markdown 文档中的单词数量。[styler](https://github.com/r-lib/styler) 格式化 R Markdown 文档中的代码块。[reprex](https://github.com/tidyverse/reprex) 添加代码执行的软件环境，提供可重复的例子，方便在论坛/Github上发问。[carbonate](https://github.com/yonicd/carbonate) 将源代码截图。[downloadthis](https://github.com/fmmattioni/downloadthis) 在 R Markdown 文档中添加下载按钮。[icon](https://github.com/ropenscilabs/icon) 添加各种各样的图标，[thematic](https://github.com/rstudio/thematic/) 定制 R Markdown 主题。 [datadrivencv](https://github.com/nstrayer/datadrivencv)、[vitae](https://github.com/mitchelloharawild/vitae) 制作基于 R Markdown 文档的简历。[addinslist](https://github.com/daattali/addinslist) 收集了一系列 RStudio 插件，提高写作和编码的效率。[posterdown](https://github.com/brentthorne/posterdown) 写宣传海报，[redoc](https://github.com/noamross/redoc) 实现 R Markdown 和 Microsoft Word 两种文档格式之间互相转化，[rrtools](https://github.com/benmarwick/rrtools) 写可重复性的研究论文和报告，提供一套自动化的软件环境的配置，节省科研人员的时间。[butteRfly](https://github.com/jonocarroll/butteRfly) 快速获取 Github 等社交网络上活动记录，以日历图的形式展现出来。[flow](https://github.com/moodymudskipper/flow) 可以非常方便地制作函数内部调用执行的流程图。
 
@@ -38,28 +42,35 @@
 
 knitr 将 R Markdown 文件转化为 Markdown 文件， Pandoc 可以将 Markdown 文件转化为 HTML5、Word、PowerPoint 和 PDF 等文档格式。
 
-<div class="figure" style="text-align: center">
-<a href="https://www.ardata.fr/img/illustrations" target="_blank"><img src="images/html5.svg" alt="rmarkdown 支持的输出格式" width="15%" height="15%" /></a><a href="https://www.ardata.fr/img/illustrations" target="_blank"><img src="images/word.svg" alt="rmarkdown 支持的输出格式" width="15%" height="15%" /></a><a href="https://www.ardata.fr/img/illustrations" target="_blank"><img src="images/powerpoint.svg" alt="rmarkdown 支持的输出格式" width="15%" height="15%" /></a><a href="https://www.ardata.fr/img/illustrations" target="_blank"><img src="images/pdf.svg" alt="rmarkdown 支持的输出格式" width="15%" height="15%" /></a>
-<p class="caption">(\#fig:rmarkdown-output)rmarkdown 支持的输出格式</p>
-</div>
+\begin{figure}
+
+{\centering \href{https://www.ardata.fr/img/illustrations}{\includegraphics[width=0.15\linewidth,height=0.15\textheight]{images/html5} }\href{https://www.ardata.fr/img/illustrations}{\includegraphics[width=0.15\linewidth,height=0.15\textheight]{images/word} }\href{https://www.ardata.fr/img/illustrations}{\includegraphics[width=0.15\linewidth,height=0.15\textheight]{images/powerpoint} }\href{https://www.ardata.fr/img/illustrations}{\includegraphics[width=0.15\linewidth,height=0.15\textheight]{images/pdf} }
+
+}
+
+\caption{rmarkdown 支持的输出格式}(\#fig:rmarkdown-output)
+\end{figure}
 
 rmarkdown 自 2014年09月17日在 CRAN 上发布第一个正式版本以来，逐渐形成了一个强大的生态系统，世界各地的开发者贡献各种各样的扩展功能，见图 \@ref(fig:rmarkdown-ecosystem)
 
-<div class="figure" style="text-align: center">
+\begin{figure}
 
-```{=html}
-<div id="htmlwidget-6e611873ad8cbeea57f7" style="width:768px;height:384px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6e611873ad8cbeea57f7">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[knitr]    -> [动态文档|rmarkdown]\n[Pandoc]   -> [动态文档|rmarkdown]\n[Markdown] -> [动态文档|rmarkdown]\n[动态文档] -> [书籍笔记|bookdown]\n[动态文档] -> [静态网站|blogdown]\n[动态文档] -> [幻灯片|xaringan]\n[幻灯片]   -> [PowerPoint|officedown]\n[书籍笔记] -> [毕业论文|thesisdown]\n[静态网站] -> [个人简历|pagedown]\n[动态文档] -> [数据面板|flexdashboard]\n[数据面板] --> [交互图形|plotly]","svg":false},"evals":[],"jsHooks":[]}</script>
-```
+{\centering \includegraphics{dynamic-documents_files/figure-latex/rmarkdown-ecosystem-1} 
 
-<p class="caption">(\#fig:rmarkdown-ecosystem)rmarkdown 生态系统</p>
-</div>
+}
+
+\caption{rmarkdown 生态系统}(\#fig:rmarkdown-ecosystem)
+\end{figure}
 
 
-<div class="figure" style="text-align: center">
-<img src="diagrams/rmarkdown.svg" alt="R Markdown 概念图" width="75%" />
-<p class="caption">(\#fig:rmarkdown-concept-map)R Markdown 概念图</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{diagrams/rmarkdown} 
+
+}
+
+\caption{R Markdown 概念图}(\#fig:rmarkdown-concept-map)
+\end{figure}
 
 ### 控制选项 {#subsec:sql-engine}
 
@@ -146,10 +157,9 @@ nomnoml::nomnoml("
 ")
 ```
 
-```{=html}
-<div id="htmlwidget-b6ae6d2793c61818d86a" style="width:768px;height:192px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b6ae6d2793c61818d86a">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n \n#stroke: orange\n#.box: fill=#8f8 dashed visual=note\n#direction: down\n\n[Sweave-test-1.Rnw] -> utils::Sweave() [Sweave-test-1.tex|Sweave-test-1-006.pdf|Sweave-test-1-007.pdf]\n[Sweave-test-1.Rnw] -> utils::Stangle() [Sweave-test-1.R]\n[Sweave-test-1.tex] -> tools::texi2pdf() [Sweave-test-1.pdf]\n[Sweave-test-1.tex] -> tools::texi2dvi() [Sweave-test-1.dvi]\n","svg":false},"evals":[],"jsHooks":[]}</script>
-```
+
+
+\begin{center}\includegraphics{dynamic-documents_files/figure-latex/unnamed-chunk-6-1} \end{center}
 
 ## 便携式文档 {#sec:portable-document}
 
@@ -489,11 +499,12 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.7        knitr_1.33        bit_4.0.4         R6_2.5.0         
-##  [5] rlang_0.4.11      fastmap_1.1.0     blob_1.2.1        stringr_1.4.0    
-##  [9] highr_0.9         tools_4.1.0       nomnoml_0.2.3     xfun_0.24        
-## [13] jquerylib_0.1.4   htmltools_0.5.1.1 yaml_2.2.1        bit64_4.0.5      
-## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     vctrs_0.3.8      
-## [21] sass_0.4.0        htmlwidgets_1.5.3 cachem_1.0.5      memoise_2.0.0    
-## [25] evaluate_0.14     RSQLite_2.2.7     rmarkdown_2.9     stringi_1.7.3    
-## [29] compiler_4.1.0    bslib_0.2.5.1     jsonlite_1.7.2    pkgconfig_2.0.3
+##  [5] rlang_0.4.11      fastmap_1.1.0     highr_0.9         blob_1.2.1       
+##  [9] stringr_1.4.0     tools_4.1.0       webshot_0.5.2     nomnoml_0.2.3    
+## [13] xfun_0.24         htmltools_0.5.1.1 yaml_2.2.1        bit64_4.0.5      
+## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     processx_3.5.2   
+## [21] callr_3.7.0       vctrs_0.3.8       htmlwidgets_1.5.3 ps_1.6.0         
+## [25] cachem_1.0.5      memoise_2.0.0     evaluate_0.14     RSQLite_2.2.7    
+## [29] rmarkdown_2.9     stringi_1.7.3     compiler_4.1.0    jsonlite_1.7.2   
+## [33] pkgconfig_2.0.3
 ```

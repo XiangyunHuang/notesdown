@@ -104,14 +104,13 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] tensorflow_2.5.0 nnet_7.3-16      reticulate_1.20 
+## [1] reticulate_1.20
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.6        whisker_0.4       knitr_1.33        magrittr_2.0.1   
-##  [5] lattice_0.20-44   R6_2.5.0          rlang_0.4.11      stringr_1.4.0    
-##  [9] tools_4.1.0       grid_4.1.0        xfun_0.24         png_0.1-7        
-## [13] jquerylib_0.1.4   tfruns_1.5.0      htmltools_0.5.1.1 yaml_2.2.1       
-## [17] digest_0.6.27     bookdown_0.22     Matrix_1.3-4      codetools_0.2-18 
-## [21] base64enc_0.1-3   sass_0.4.0        evaluate_0.14     rmarkdown_2.9    
-## [25] stringi_1.6.2     compiler_4.1.0    bslib_0.2.5.1     jsonlite_1.7.2
+##  [1] Rcpp_1.0.7        bookdown_0.22     codetools_0.2-18  lattice_0.20-44  
+##  [5] png_0.1-7         digest_0.6.27     grid_4.1.0        jsonlite_1.7.2   
+##  [9] magrittr_2.0.1    evaluate_0.14     rlang_0.4.11      stringi_1.7.3    
+## [13] Matrix_1.3-4      rmarkdown_2.9     tools_4.1.0       stringr_1.4.0    
+## [17] xfun_0.24         yaml_2.2.1        compiler_4.1.0    htmltools_0.5.1.1
+## [21] knitr_1.33
 ```

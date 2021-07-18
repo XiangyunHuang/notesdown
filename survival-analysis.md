@@ -25,7 +25,11 @@ autoplot(leukemia.surv, data = aml) +
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="survival-analysis_files/figure-html/aml-1.png" alt="急性粒细胞白血病生存数据" width="672" />
-<p class="caption">(\#fig:aml)急性粒细胞白血病生存数据</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{survival-analysis_files/figure-latex/aml-1} 
+
+}
+
+\caption{急性粒细胞白血病生存数据}(\#fig:aml)
+\end{figure}

@@ -17,15 +17,14 @@
 
 [R for Data Science Online Learning Community](https://github.com/rfordatascience) 在线学习社区以 [tidytuesday](https://github.com/rfordatascience/tidytuesday) 闻名遐迩。
 
-<div class="figure" style="text-align: center">
+\begin{figure}
 
-```{=html}
-<div id="htmlwidget-d32c2b4923552beb7cae" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d32c2b4923552beb7cae">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script>
-```
+{\centering \includegraphics{case-study_files/figure-latex/workflow-1} 
 
-<p class="caption">(\#fig:workflow)模型</p>
-</div>
+}
+
+\caption{模型}(\#fig:workflow)
+\end{figure}
 
 统计建模：两种文化 [@Breiman_2001_Modeling]
 
@@ -65,15 +64,22 @@ split(PlantGrowth, f = PlantGrowth$group) %>% # 分组
   )
 ```
 
+\begin{table}
 
-
-Table: (\#tab:PlantGrowth-data)不同生长环境下植物的干重
-
-|     |  1   |  2   |  3   |  4   |  5   |  6   |  7   |  8   |  9   |  10  |
-|:----|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
-|ctrl | 4.17 | 5.58 | 5.18 | 6.11 | 4.50 | 4.61 | 5.17 | 4.53 | 5.33 | 5.14 |
-|trt1 | 4.81 | 4.17 | 4.41 | 3.59 | 5.87 | 3.83 | 6.03 | 4.89 | 4.32 | 4.69 |
-|trt2 | 6.31 | 5.12 | 5.54 | 5.50 | 5.37 | 5.29 | 4.92 | 6.15 | 5.80 | 5.26 |
+\caption{(\#tab:PlantGrowth-data)不同生长环境下植物的干重}
+\centering
+\begin{tabular}[t]{l|c|c|c|c|c|c|c|c|c|c}
+\hline
+  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\hline
+ctrl & 4.17 & 5.58 & 5.18 & 6.11 & 4.50 & 4.61 & 5.17 & 4.53 & 5.33 & 5.14\\
+\hline
+trt1 & 4.81 & 4.17 & 4.41 & 3.59 & 5.87 & 3.83 & 6.03 & 4.89 & 4.32 & 4.69\\
+\hline
+trt2 & 6.31 & 5.12 & 5.54 & 5.50 & 5.37 & 5.29 & 4.92 & 6.15 & 5.80 & 5.26\\
+\hline
+\end{tabular}
+\end{table}
 
 设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响
 
@@ -94,10 +100,14 @@ summary(PlantGrowth)
 
 每个组都有10颗植物，生长情况如图\@ref(fig:plant-growth-fig)所示
 
-<div class="figure" style="text-align: center">
-<img src="case-study_files/figure-html/plant-growth-fig-1.png" alt="植物干重" width="45%" /><img src="case-study_files/figure-html/plant-growth-fig-2.png" alt="植物干重" width="45%" />
-<p class="caption">(\#fig:plant-growth-fig)植物干重</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.45\linewidth]{case-study_files/figure-latex/plant-growth-fig-1} \includegraphics[width=0.45\linewidth]{case-study_files/figure-latex/plant-growth-fig-2} 
+
+}
+
+\caption{植物干重}(\#fig:plant-growth-fig)
+\end{figure}
 
 实验条件 trt1 和 trt2 对植物生长状况有显著的影响，为了量化这种影响，建立线性回归模型
 
@@ -249,14 +259,22 @@ coef(summary(fit_lm))
 
 模型输出整理成表 \@ref(tab:lm-plant-growth-output) 所示
 
+\begin{table}
 
-Table: (\#tab:lm-plant-growth-output)线性回归的输出
-
-|          | 估计值| 标准差| t 统计量|   P 值|
-|:---------|------:|------:|--------:|------:|
-|$\alpha$  |  5.032| 0.1971|  25.5265| 0.0000|
-|$\beta_1$ | -0.371| 0.2788|  -1.3308| 0.1944|
-|$\beta_2$ |  0.494| 0.2788|   1.7720| 0.0877|
+\caption{(\#tab:lm-plant-growth-output)线性回归的输出}
+\centering
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & 估计值 & 标准差 & t 统计量 & P 值\\
+\hline
+$\alpha$ & 5.032 & 0.1971 & 25.5265 & 0.0000\\
+\hline
+$\beta_1$ & -0.371 & 0.2788 & -1.3308 & 0.1944\\
+\hline
+$\beta_2$ & 0.494 & 0.2788 & 1.7720 & 0.0877\\
+\hline
+\end{tabular}
+\end{table}
 
 还可以将模型转化为数学公式
 
@@ -584,17 +602,26 @@ reshape(
   )
 ```
 
+\begin{table}
 
-
-Table: (\#tab:orange-data)躯干周长（毫米）随时间（天）的变化
-
-| Tree | 118 | 484 | 664 | 1004 | 1231 | 1372 | 1582 |
-|:----:|:---:|:---:|:---:|:----:|:----:|:----:|:----:|
-|  1   | 30  | 58  | 87  | 115  | 120  | 142  | 145  |
-|  2   | 33  | 69  | 111 | 156  | 172  | 203  | 203  |
-|  3   | 30  | 51  | 75  | 108  | 115  | 139  | 140  |
-|  4   | 32  | 62  | 112 | 167  | 179  | 209  | 214  |
-|  5   | 30  | 49  | 81  | 125  | 142  | 174  | 177  |
+\caption{(\#tab:orange-data)躯干周长（毫米）随时间（天）的变化}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c|c|c}
+\hline
+Tree & 118 & 484 & 664 & 1004 & 1231 & 1372 & 1582\\
+\hline
+1 & 30 & 58 & 87 & 115 & 120 & 142 & 145\\
+\hline
+2 & 33 & 69 & 111 & 156 & 172 & 203 & 203\\
+\hline
+3 & 30 & 51 & 75 & 108 & 115 & 139 & 140\\
+\hline
+4 & 32 & 62 & 112 & 167 & 179 & 209 & 214\\
+\hline
+5 & 30 & 49 & 81 & 125 & 142 & 174 & 177\\
+\hline
+\end{tabular}
+\end{table}
 
 图 \@ref(fig:orange-tree) 以直观的方式展示 5 颗橘树的生长变化，相比于表 \@ref(tab:orange-data) 我们能更加明确读取数据中的变化
 
@@ -609,10 +636,14 @@ p <- ggplot(data = Orange, aes(x = age, y = circumference, color = Tree)) +
 p
 ```
 
-<div class="figure" style="text-align: center">
-<img src="case-study_files/figure-html/orange-tree-1.png" alt="橘树生长模型" width="672" />
-<p class="caption">(\#fig:orange-tree)橘树生长模型</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{case-study_files/figure-latex/orange-tree-1} 
+
+}
+
+\caption{橘树生长模型}(\#fig:orange-tree)
+\end{figure}
 
 
 ```r
@@ -620,4 +651,8 @@ library(gganimate)
 p + transition_reveal(age)
 ```
 
-<img src="case-study_files/figure-html/unnamed-chunk-7-1.gif" style="display: block; margin: auto;" />
+
+
+\begin{center}\animategraphics[,controls,loop]{10}{case-study_files/figure-latex/orange-animate-}{1}{100}\end{center}
+
+

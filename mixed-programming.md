@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55ad439641d0>
+## <bytecode: 0x559a02598528>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55ad439641d0>
+## <bytecode: 0x559a02598528>
 ## <environment: namespace:stats>
 ```
 
@@ -167,14 +167,18 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f2d49cce730>]
+## [<matplotlib.lines.Line2D object at 0x7f4ea5cff490>]
 plt.show()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="mixed-programming_files/figure-html/reticulate-matplotlib-1.svg" alt="Python 图形" width=".8\textwidth" />
-<p class="caption">(\#fig:reticulate-matplotlib)Python 图形</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{mixed-programming_files/figure-latex/reticulate-matplotlib-1} 
+
+}
+
+\caption{Python 图形}(\#fig:reticulate-matplotlib)
+\end{figure}
 
 
 ## R 与 C {#sec:r-c}
@@ -190,8 +194,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c56ae4bdf418b.c -o c56ae4bdf418b.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c56ae4bdf418b.so c56ae4bdf418b.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c616d2859e400.c -o c616d2859e400.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c616d2859e400.so c616d2859e400.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -296,10 +300,14 @@ library(Rcpp)
 ```
 
 
-<div class="figure" style="text-align: center">
-<img src="mixed-programming_files/figure-html/tex-system-1.png" alt="TeX 系统" width="672" />
-<p class="caption">(\#fig:tex-system)TeX 系统</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{mixed-programming_files/figure-latex/tex-system-1} 
+
+}
+
+\caption{TeX 系统}(\#fig:tex-system)
+\end{figure}
 
 
 ## 运行环境 {#sec:mixed-programming-session-info}
@@ -335,11 +343,10 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
-##  [5] rlang_0.4.11      fastmap_1.1.0     highr_0.9         stringr_1.4.0    
-##  [9] tools_4.1.0       grid_4.1.0        xfun_0.24         png_0.1-7        
-## [13] jquerylib_0.1.4   htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1       
-## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4     
-## [21] later_1.2.0       sass_0.4.0        promises_1.2.0.1  evaluate_0.14    
-## [25] mime_0.11         rmarkdown_2.9     stringi_1.7.3     compiler_4.1.0   
-## [29] bslib_0.2.5.1     jsonlite_1.7.2    httpuv_1.6.1
+##  [5] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     tools_4.1.0      
+##  [9] grid_4.1.0        xfun_0.24         png_0.1-7         tinytex_0.32     
+## [13] htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27    
+## [17] lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4      later_1.2.0      
+## [21] promises_1.2.0.1  evaluate_0.14     mime_0.11         rmarkdown_2.9    
+## [25] stringi_1.7.3     compiler_4.1.0    jsonlite_1.7.2    httpuv_1.6.1
 ```

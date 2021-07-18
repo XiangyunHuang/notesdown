@@ -6,9 +6,9 @@
 >
 > So: why do you want to do this?
 >
-> --- Fabio Mulazzani and Ted Harding [^1]
+> --- Fabio Mulazzani and Ted Harding [^fabio-note]
 
-[^1]: <https://stat.ethz.ch/pipermail/r-help/2008-November/180820.html>
+[^fabio-note]: <https://stat.ethz.ch/pipermail/r-help/2008-November/180820.html>
 
 数学符号约定参考花书 <https://github.com/goodfeli/dlbook_notation>
 

@@ -28,10 +28,14 @@ ggplot(mpg, aes(displ, hwy)) +
   )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/awesome-ggplot2-1.png" alt="简洁美观" width="672" />
-<p class="caption">(\#fig:awesome-ggplot2)简洁美观</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/awesome-ggplot2-1} 
+
+}
+
+\caption{简洁美观}(\#fig:awesome-ggplot2)
+\end{figure}
 
 故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
 
@@ -91,10 +95,14 @@ data.frame(
   theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/approval-ratings-1.png" alt="美国总统支持率：自1945年第一季度至1974年第四季度" width="672" />
-<p class="caption">(\#fig:approval-ratings)美国总统支持率：自1945年第一季度至1974年第四季度</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/approval-ratings-1} 
+
+}
+
+\caption{美国总统支持率：自1945年第一季度至1974年第四季度}(\#fig:approval-ratings)
+\end{figure}
 
 <!-- 每个点给出总统的人名，部分给出图片
 数据来源 help(presidents) The Gallup Organisation. McNeil, D. R. (1977) Interactive Data Analysis. New York: Wiley.
@@ -126,10 +134,14 @@ dat %>%
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/text-annotation-1.png" alt="文本注释" width="672" />
-<p class="caption">(\#fig:text-annotation)文本注释</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/text-annotation-1} 
+
+}
+
+\caption{文本注释}(\#fig:text-annotation)
+\end{figure}
 
 **ggrepel** 包的图层 `geom_text_repel()` 支持所有数据点的注释，并且自动调整文本的位置，防止重叠，增加辨识度，如图 \@ref(fig:mtcars-annotation)。当然，数据点如果过于密集也不适合全部注释，高亮其中的关键点即可。
 
@@ -143,10 +155,14 @@ mtcars %>%
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/mtcars-annotation-1.png" alt="少量点的情况下可以全部注释，且可以解决注释重叠的问题" width="672" />
-<p class="caption">(\#fig:mtcars-annotation)少量点的情况下可以全部注释，且可以解决注释重叠的问题</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/mtcars-annotation-1} 
+
+}
+
+\caption{少量点的情况下可以全部注释，且可以解决注释重叠的问题}(\#fig:mtcars-annotation)
+\end{figure}
 
 Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
 
@@ -218,10 +234,14 @@ title(sub = "Data Source: Weast, R. C",
       family = "DejaVu Sans Mono", font.sub = 1)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/system-dejavu-fonts-1.png" alt="调用系统字体绘图" width="75%" />
-<p class="caption">(\#fig:system-dejavu-fonts)调用系统字体绘图</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/system-dejavu-fonts-1} 
+
+}
+
+\caption{调用系统字体绘图}(\#fig:system-dejavu-fonts)
+\end{figure}
 
 添加网络字体，供 showtext 调用
 
@@ -276,10 +296,14 @@ p4 <- p1 + labs(
 (p1 + p2) / (p3 + p4)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/font-in-ggplot-1.png" alt="在 ggplot2 绘图系统中设置中英文字体" width="672" />
-<p class="caption">(\#fig:font-in-ggplot)在 ggplot2 绘图系统中设置中英文字体</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/font-in-ggplot-1} 
+
+}
+
+\caption{在 ggplot2 绘图系统中设置中英文字体}(\#fig:font-in-ggplot)
+\end{figure}
 
 另外值得一提的是 [hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 包，除了定制了很多 ggplot2 主题，它还打包了很多的字体主题。比如默认主题 `theme_ipsum()` 使用 Arial Narrow 字体，如果没有该字体就自动寻找系统中的替代品，如图 \@ref(fig:hrbrthemes) 实际使用的是 Nimbus Sans Narrow 字体，因为在 GitHub Action 中，我实际使用的测试环境是 Ubuntu 20.04，该系统自带 Nimbus Sans Narrow 字体，Arial Narrow 毕竟是 Windows 上的闭源字体。
 
@@ -305,10 +329,14 @@ ggplot(mtcars, aes(mpg, wt)) +
   theme_ipsum()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/hrbrthemes-1.png" alt="调用 hrbrthemes 包设置字体主题" width="75%" />
-<p class="caption">(\#fig:hrbrthemes)调用 hrbrthemes 包设置字体主题</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/hrbrthemes-1} 
+
+}
+
+\caption{调用 hrbrthemes 包设置字体主题}(\#fig:hrbrthemes)
+\end{figure}
 
 如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:liberation-sans-narrow) 使用了 Liberation Sans Narrow ( MacOS 上没有 Liberation Sans Narrow 字体，用 Liberation Sans 替代了) 字体替换 `theme_ipsum()` 中的 Arial Narrow 字体。
 
@@ -325,10 +353,14 @@ ggplot(mtcars, aes(mpg, wt)) +
   theme_ipsum(base_family = "Liberation Sans")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/liberation-sans-narrow-1.png" alt="用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow" width="75%" />
-<p class="caption">(\#fig:liberation-sans-narrow)用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/liberation-sans-narrow-1} 
+
+}
+
+\caption{用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow}(\#fig:liberation-sans-narrow)
+\end{figure}
 
 ::: {.rmdtip data-latex="{提示}"}
 **hrbrthemes** 包提供了一个全局字体加载选项 `hrbrthemes.loadfonts` ，如果设置为 TRUE，即 `options(hrbrthemes.loadfonts = TRUE)` 会先调用函数 `extrafont::loadfonts()` 预加载系统字体，就不用一次次手动加载字体了。后续在第 \@ref(subsec:fontcm) 节还会提及 extrafont 包的其它功能。
@@ -365,10 +397,14 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
   )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/showtext-1.png" alt="showtext 包处理图里的中文" width="75%" />
-<p class="caption">(\#fig:showtext)showtext 包处理图里的中文</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/showtext-1} 
+
+}
+
+\caption{showtext 包处理图里的中文}(\#fig:showtext)
+\end{figure}
 
 斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
 
@@ -394,10 +430,14 @@ ggplot(FijiMap, aes(x = long, y = lat)) +
   )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/fiji-earthquake-1.png" alt="斐济地震带" width="75%" />
-<p class="caption">(\#fig:fiji-earthquake)斐济地震带</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/fiji-earthquake-1} 
+
+}
+
+\caption{斐济地震带}(\#fig:fiji-earthquake)
+\end{figure}
 
 ### 数学字体 {#subsec:fontcm}
 
@@ -463,10 +503,14 @@ p2 <- p + annotate("text",
 p1 + p2
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/fontcm-1.svg" alt="fontcm 处理数学公式" width="768" />
-<p class="caption">(\#fig:fontcm)fontcm 处理数学公式</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/fontcm-1} 
+
+}
+
+\caption{fontcm 处理数学公式}(\#fig:fontcm)
+\end{figure}
 
 为实现图 \@ref(fig:fontcm) 的最终效果，需要启用一个有超级牛力的 [fig.process](https://yihui.org/knitr/options/#plots) 选项，主要是传递一个函数给它，对用 R 语言生成的图形再操作。
 
@@ -506,10 +550,14 @@ axis(1,
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/embed-math-fonts-1.svg" alt="嵌入数学字体" width="336" />
-<p class="caption">(\#fig:embed-math-fonts)嵌入数学字体</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/embed-math-fonts-1} 
+
+}
+
+\caption{嵌入数学字体}(\#fig:embed-math-fonts)
+\end{figure}
 
 ### TikZ 设备 {#subsec:tikz-device}
 
@@ -559,10 +607,14 @@ legend("bottomright",
 )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/tikz-regression-1.png" alt="线性回归模型" width="75%" />
-<p class="caption">(\#fig:tikz-regression)线性回归模型</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/tikz-regression-1} 
+
+}
+
+\caption{线性回归模型}(\#fig:tikz-regression)
+\end{figure}
 
 推荐的全局 LaTeX 环境配置如下：
 
@@ -620,10 +672,14 @@ ggplot(aes(mpg, wt), data = mtcars) +
   theme_xkcd()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/xkcd-graph-1.svg" alt="漫画风格的字体方案" width="75%" />
-<p class="caption">(\#fig:xkcd-graph)漫画风格的字体方案</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/xkcd-graph-1} 
+
+}
+
+\caption{漫画风格的字体方案}(\#fig:xkcd-graph)
+\end{figure}
 
 ### 表情字体 {#subsec:emoji-fonts}
 
@@ -642,10 +698,14 @@ data.frame(
   theme_minimal()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/emoji-fonts-1.png" alt="表情字体" width="75%" />
-<p class="caption">(\#fig:emoji-fonts)表情字体</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/emoji-fonts-1} 
+
+}
+
+\caption{表情字体}(\#fig:emoji-fonts)
+\end{figure}
 
 除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
 
@@ -670,10 +730,14 @@ filled.contour(volcano, nlevels = 10, color.palette = topo.colors)
 filled.contour(volcano, nlevels = 10, color.palette = cm.colors)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/old-color-palette-1.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-2.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-3.png" alt="R 3.6.0 以前的调色板" width="45%" /><img src="data-visualization_files/figure-html/old-color-palette-4.png" alt="R 3.6.0 以前的调色板" width="45%" />
-<p class="caption">(\#fig:old-color-palette)R 3.6.0 以前的调色板</p>
-</div>
+\begin{figure}
+
+{\centering \subfloat[terrain.colors 调色板(\#fig:old-color-palette-1)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/old-color-palette-1} }\subfloat[heat.colors 调色板(\#fig:old-color-palette-2)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/old-color-palette-2} }\newline\subfloat[topo.colors 调色板(\#fig:old-color-palette-3)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/old-color-palette-3} }\subfloat[cm.colors 调色板(\#fig:old-color-palette-4)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/old-color-palette-4} }
+
+}
+
+\caption{R 3.6.0 以前的调色板}(\#fig:old-color-palette)
+\end{figure}
 
 
 ```r
@@ -687,10 +751,14 @@ filled.contour(volcano, nlevels = 10,
                color.palette = function(n, ...) hcl.colors(n, "viridis", rev = FALSE, ...))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/new-color-palette-1.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-2.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-3.png" alt="R 3.6.0 以后的调色板" width="45%" /><img src="data-visualization_files/figure-html/new-color-palette-4.png" alt="R 3.6.0 以后的调色板" width="45%" />
-<p class="caption">(\#fig:new-color-palette)R 3.6.0 以后的调色板</p>
-</div>
+\begin{figure}
+
+{\centering \subfloat[Grays 调色板(\#fig:new-color-palette-1)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/new-color-palette-1} }\subfloat[YlOrRd 调色板(\#fig:new-color-palette-2)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/new-color-palette-2} }\newline\subfloat[Purples 3 调色板(\#fig:new-color-palette-3)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/new-color-palette-3} }\subfloat[Viridis 调色板(\#fig:new-color-palette-4)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/new-color-palette-4} }
+
+}
+
+\caption{R 3.6.0 以后的调色板}(\#fig:new-color-palette)
+\end{figure}
 
 ::: {.rmdnote data-latex="{注意}"}
 `hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
@@ -727,10 +795,14 @@ gray_colors <- paste0(rep(c("slategray", "darkslategray"), each = 4), seq(4))
 barplot(1:8, col = gray_colors, border = NA)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/gray-palettes-1.png" alt="灰度调色板" width="672" />
-<p class="caption">(\#fig:gray-palettes)灰度调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/gray-palettes-1} 
+
+}
+
+\caption{灰度调色板}(\#fig:gray-palettes)
+\end{figure}
 
 gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式的差别，且看
 
@@ -751,10 +823,14 @@ barplot(1:8, col = gray.colors(8, start = .3, end = .9),
         main = "gray.colors function", border = NA)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/gray-colors-1.png" alt="提取 10 种灰色做调色板" width="672" />
-<p class="caption">(\#fig:gray-colors)提取 10 种灰色做调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/gray-colors-1} 
+
+}
+
+\caption{提取 10 种灰色做调色板}(\#fig:gray-colors)
+\end{figure}
 
 首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
 
@@ -776,10 +852,14 @@ par(mar = rep(0, 4))
 pal(n = 20, colors = colors_vec, xlab = "Colors from Peach to Pear", ylab = "")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/peach-pear-palette-1.png" alt="桃色至梨色的渐变" width="768" />
-<p class="caption">(\#fig:peach-pear-palette)桃色至梨色的渐变</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/peach-pear-palette-1} 
+
+}
+
+\caption{桃色至梨色的渐变}(\#fig:peach-pear-palette)
+\end{figure}
 
 `colorRampPalette()` 自制调色板
 
@@ -796,10 +876,14 @@ create_palette(n = 1000, colors = c("darkgreen", "yellow", "orangered"))
 create_palette(n = 1000, colors = c("blue", "white", "orangered"))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/custom-palettes-1.png" alt="colorRampPalette 自制调色板" width="768" />
-<p class="caption">(\#fig:custom-palettes)colorRampPalette 自制调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/custom-palettes-1} 
+
+}
+
+\caption{colorRampPalette 自制调色板}(\#fig:custom-palettes)
+\end{figure}
 
 
 ```r
@@ -807,10 +891,14 @@ par(mar = c(0, 4, 0, 0))
 RColorBrewer::display.brewer.all()
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/rcolorbrewer-palette-1.png" alt="RColorBrewer 调色板" width="672" />
-<p class="caption">(\#fig:rcolorbrewer-palette)RColorBrewer 调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/rcolorbrewer-palette-1} 
+
+}
+
+\caption{RColorBrewer 调色板}(\#fig:rcolorbrewer-palette)
+\end{figure}
 
 
 ```r
@@ -842,10 +930,14 @@ par(mar = c(0, 0, 2, 0))
 demo.pal(n)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/builtin-palettes-1.png" alt="grDevices 调色板 " width="576" />
-<p class="caption">(\#fig:builtin-palettes)grDevices 调色板 </p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/builtin-palettes-1} 
+
+}
+
+\caption{grDevices 调色板 }(\#fig:builtin-palettes)
+\end{figure}
 
 
 ```r
@@ -856,10 +948,14 @@ for (i in seq(32)) {
 pal(n = 17, colors()[641:657], main = "641 to 657")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/demo-colors-1.png" alt="grDevices 调色板" width="100%" />
-<p class="caption">(\#fig:demo-colors)grDevices 调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{data-visualization_files/figure-latex/demo-colors-1} 
+
+}
+
+\caption{grDevices 调色板}(\#fig:demo-colors)
+\end{figure}
 
 
 ```r
@@ -915,10 +1011,14 @@ pal(n = 16, rainbow_hcl(16, start = 270, end = 150), main = "cold")
 pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/colorspace-palette-1.png" alt="colorspace 调色板" width="768" />
-<p class="caption">(\#fig:colorspace-palette)colorspace 调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/colorspace-palette-1} 
+
+}
+
+\caption{colorspace 调色板}(\#fig:colorspace-palette)
+\end{figure}
 
 除之前提到的 **grDevices** 包， [**colorspace**](https://colorspace.r-forge.r-project.org/) (<https://hclwizard.org/>) 包 [@colorspace_2009_rainbow; @colorspace_2009_rgb; @colorspace_2019]，[RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <https://colorbrewer2.org/>，[viridis](https://github.com/sjmgarnier/viridis) 包、[colourvalues](https://github.com/SymbolixAU/colourvalues)、[wesanderson](https://github.com/karthik/wesanderson)、[dichromat](https://CRAN.R-project.org/package=dichromat) 包、[pals](https://github.com/kwstat/pals) 包，[palr](https://github.com/AustralianAntarcticDivision/palr) 包，[colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
 
@@ -955,10 +1055,14 @@ barplot(x, col = colorspace::diverge_hcl(8,
 ), border = "white")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/select-color-1.png" alt="源起" width="672" />
-<p class="caption">(\#fig:select-color)源起</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/select-color-1} 
+
+}
+
+\caption{源起}(\#fig:select-color)
+\end{figure}
 
 与图 \@ref(fig:geom-tile) 对比，图\@ref(fig:palette-spectral) 的层次更加丰富，识别性更高
 
@@ -981,10 +1085,14 @@ expand.grid(months = month.abb, years = 1949:1960) %>%
   labs(x = "年", y = "月", fill = "人数")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/palette-spectral-1.png" alt="Spectral 调色板" width="672" />
-<p class="caption">(\#fig:palette-spectral)Spectral 调色板</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/palette-spectral-1} 
+
+}
+
+\caption{Spectral 调色板}(\#fig:palette-spectral)
+\end{figure}
 
 再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
 
@@ -1002,10 +1110,14 @@ p4 <- erupt + scale_fill_continuous(type = 'viridis')
 (p1 + p2) / (p3 + p4)
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/faithfuld-1.png" alt="美国黄石国家公园的老忠实泉" width="672" />
-<p class="caption">(\#fig:faithfuld)美国黄石国家公园的老忠实泉</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/faithfuld-1} 
+
+}
+
+\caption{美国黄石国家公园的老忠实泉}(\#fig:faithfuld)
+\end{figure}
 
 RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging) 三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
 
@@ -1338,7 +1450,11 @@ ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
   scale_fill_manual(values = c("#4285f4", "#34A853", "#FBBC05", "#EA4335"))
 ```
 
-<div class="figure" style="text-align: center">
-<img src="data-visualization_files/figure-html/colorize-boxplot-1.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-2.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-3.png" alt="几种不同的箱线图" width="45%" /><img src="data-visualization_files/figure-html/colorize-boxplot-4.png" alt="几种不同的箱线图" width="45%" />
-<p class="caption">(\#fig:colorize-boxplot)几种不同的箱线图</p>
-</div>
+\begin{figure}
+
+{\centering \subfloat[简单箱线图(\#fig:colorize-boxplot-1)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/colorize-boxplot-1} }\subfloat[ggplot2 绘制的箱线图(\#fig:colorize-boxplot-2)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/colorize-boxplot-2} }\newline\subfloat[ggplot2 调用默认调色板(\#fig:colorize-boxplot-3)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/colorize-boxplot-3} }\subfloat[ggplot2 调用 Google 调色板(\#fig:colorize-boxplot-4)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/colorize-boxplot-4} }
+
+}
+
+\caption{几种不同的箱线图}(\#fig:colorize-boxplot)
+\end{figure}
