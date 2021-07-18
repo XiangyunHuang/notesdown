@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>36.8 最小二乘 | 现代应用统计与 R 语言</title>
+  <title>36.8 回归与优化 | 现代应用统计与 R 语言</title>
   <meta name="description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="36.8 最小二乘 | 现代应用统计与 R 语言" />
+  <meta property="og:title" content="36.8 回归与优化 | 现代应用统计与 R 语言" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="36.8 最小二乘 | 现代应用统计与 R 语言" />
+  <meta name="twitter:title" content="36.8 回归与优化 | 现代应用统计与 R 语言" />
   
   <meta name="twitter:description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。" />
   
@@ -768,7 +768,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="36.6" data-path="sec-multi-objective-optimization.html"><a href="sec-multi-objective-optimization.html"><i class="fa fa-check"></i><b>36.6</b> 多目标规划</a></li>
 <li class="chapter" data-level="36.7" data-path="sec-classic-optimization.html"><a href="sec-classic-optimization.html"><i class="fa fa-check"></i><b>36.7</b> 经典优化问题</a></li>
-<li class="chapter" data-level="36.8" data-path="sec-least-squares.html"><a href="sec-least-squares.html"><i class="fa fa-check"></i><b>36.8</b> 最小二乘</a></li>
+<li class="chapter" data-level="36.8" data-path="sec-regression-optimization.html"><a href="sec-regression-optimization.html"><i class="fa fa-check"></i><b>36.8</b> 回归与优化</a></li>
 <li class="chapter" data-level="36.9" data-path="sec-log-likelihood.html"><a href="sec-log-likelihood.html"><i class="fa fa-check"></i><b>36.9</b> 对数似然</a></li>
 <li class="chapter" data-level="36.10" data-path="sec-non-linear-tseries.html"><a href="sec-non-linear-tseries.html"><i class="fa fa-check"></i><b>36.10</b> 微分方程</a></li>
 <li class="chapter" data-level="36.11" data-path="sec-numerical-optimization-session.html"><a href="sec-numerical-optimization-session.html"><i class="fa fa-check"></i><b>36.11</b> 运行环境</a></li>
@@ -896,50 +896,53 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sec:least-squares" class="section level2" number="36.8">
-<h2><span class="header-section-number">36.8</span> 最小二乘</h2>
-<p>经典的岭回归、Lasso 回归、最优子集回归都包含优化问题，可调 nloptr 包求解。
-<!-- 广义最小二乘 gls --></p>
-<p><strong>glmnet</strong> 和 <strong>MASS</strong> 实现岭回归</p>
+<div id="sec:regression-optimization" class="section level2" number="36.8">
+<h2><span class="header-section-number">36.8</span> 回归与优化</h2>
+<p>经典的普通最小二乘、广义最小二乘、岭回归、逐步回归、Lasso 回归、最优子集回归都可转化为优化问题，一般形式如下</p>
+<p><span class="math display">\[
+\underbrace{\hat{\theta}_{\lambda_n}}_{待估参数} \in \arg \min_{\theta \in \Omega} \left\{ \underbrace{\mathcal{L}(\theta;Z_{1}^{n})}_{损失函数} + \lambda_n \underbrace{\mathcal{R}(\theta)}_{正则化项} \right\}.
+\]</span></p>
+<p>下面尝试以 nloptr 包的优化器来展示求解过程，并与 Base R、<strong>glmnet</strong> 和 <strong>MASS</strong> 实现的回归模型比较。</p>
+<!-- 广义最小二乘 gls -->
 <p><span class="math display">\[y = X\beta + \epsilon\]</span></p>
 <p><span class="math inline">\(\hat{\beta} = (X^{\top}X)^{-1}X^{\top}y, \quad \hat{Y} = X(X^{\top}X)^{-1}X^{\top}y\)</span></p>
-<div class="sourceCode" id="cb1405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1405-1"><a href="sec-least-squares.html#cb1405-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1405-2"><a href="sec-least-squares.html#cb1405-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
-<span id="cb1405-3"><a href="sec-least-squares.html#cb1405-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb1405-4"><a href="sec-least-squares.html#cb1405-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> p), n)</span>
-<span id="cb1405-5"><a href="sec-least-squares.html#cb1405-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1405-6"><a href="sec-least-squares.html#cb1405-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="dv">0</span>)</span>
-<span id="cb1405-7"><a href="sec-least-squares.html#cb1405-7" aria-hidden="true" tabindex="-1"></a><span class="co"># y 的估计</span></span>
-<span id="cb1405-8"><a href="sec-least-squares.html#cb1405-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 教科书版</span></span>
-<span id="cb1405-9"><a href="sec-least-squares.html#cb1405-9" aria-hidden="true" tabindex="-1"></a>fit_base <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1405-10"><a href="sec-least-squares.html#cb1405-10" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> y</span>
-<span id="cb1405-11"><a href="sec-least-squares.html#cb1405-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1405-12"><a href="sec-least-squares.html#cb1405-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 先向量计算，然后矩阵计算</span></span>
-<span id="cb1405-13"><a href="sec-least-squares.html#cb1405-13" aria-hidden="true" tabindex="-1"></a>fit_vector <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1405-14"><a href="sec-least-squares.html#cb1405-14" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> (<span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> (<span class="fu">t</span>(x) <span class="sc">%*%</span> y))</span>
-<span id="cb1405-15"><a href="sec-least-squares.html#cb1405-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1405-16"><a href="sec-least-squares.html#cb1405-16" aria-hidden="true" tabindex="-1"></a><span class="co"># X&#39;X 是对称的，防止求逆</span></span>
-<span id="cb1405-17"><a href="sec-least-squares.html#cb1405-17" aria-hidden="true" tabindex="-1"></a>fit_inv <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1405-18"><a href="sec-least-squares.html#cb1405-18" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(x), <span class="fu">crossprod</span>(x, y))</span>
-<span id="cb1405-19"><a href="sec-least-squares.html#cb1405-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1405-1"><a href="sec-regression-optimization.html#cb1405-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1405-2"><a href="sec-regression-optimization.html#cb1405-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb1405-3"><a href="sec-regression-optimization.html#cb1405-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1405-4"><a href="sec-regression-optimization.html#cb1405-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> p), n)</span>
+<span id="cb1405-5"><a href="sec-regression-optimization.html#cb1405-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb1405-6"><a href="sec-regression-optimization.html#cb1405-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="dv">0</span>)</span>
+<span id="cb1405-7"><a href="sec-regression-optimization.html#cb1405-7" aria-hidden="true" tabindex="-1"></a><span class="co"># y 的估计</span></span>
+<span id="cb1405-8"><a href="sec-regression-optimization.html#cb1405-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 教科书版</span></span>
+<span id="cb1405-9"><a href="sec-regression-optimization.html#cb1405-9" aria-hidden="true" tabindex="-1"></a>fit_base <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1405-10"><a href="sec-regression-optimization.html#cb1405-10" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> y</span>
+<span id="cb1405-11"><a href="sec-regression-optimization.html#cb1405-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1405-12"><a href="sec-regression-optimization.html#cb1405-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 先向量计算，然后矩阵计算</span></span>
+<span id="cb1405-13"><a href="sec-regression-optimization.html#cb1405-13" aria-hidden="true" tabindex="-1"></a>fit_vector <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1405-14"><a href="sec-regression-optimization.html#cb1405-14" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> (<span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> (<span class="fu">t</span>(x) <span class="sc">%*%</span> y))</span>
+<span id="cb1405-15"><a href="sec-regression-optimization.html#cb1405-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1405-16"><a href="sec-regression-optimization.html#cb1405-16" aria-hidden="true" tabindex="-1"></a><span class="co"># X&#39;X 是对称的，防止求逆</span></span>
+<span id="cb1405-17"><a href="sec-regression-optimization.html#cb1405-17" aria-hidden="true" tabindex="-1"></a>fit_inv <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1405-18"><a href="sec-regression-optimization.html#cb1405-18" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">crossprod</span>(x), <span class="fu">crossprod</span>(x, y))</span>
+<span id="cb1405-19"><a href="sec-regression-optimization.html#cb1405-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>QR 分解 <span class="math inline">\(X_{n\times p} = Q_{n\times p} R_{p\times p}\)</span>，<span class="math inline">\(n &gt; p\)</span>，<span class="math inline">\(Q^{\top}Q = I\)</span>，<span class="math inline">\(R\)</span> 是上三角矩阵，<span class="math inline">\(\hat{Y} = X(X^{\top}X)^{-1}X^{\top}y = QQ^{\top}y\)</span></p>
-<div class="sourceCode" id="cb1406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1406-1"><a href="sec-least-squares.html#cb1406-1" aria-hidden="true" tabindex="-1"></a>fit_qr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1406-2"><a href="sec-least-squares.html#cb1406-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">qr</span>(x)</span>
-<span id="cb1406-3"><a href="sec-least-squares.html#cb1406-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qr.qy</span>(decomp, <span class="fu">qr.qty</span>(decomp, y))</span>
-<span id="cb1406-4"><a href="sec-least-squares.html#cb1406-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1406-5"><a href="sec-least-squares.html#cb1406-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.fit</span>(x, y)</span></code></pre></div>
+<div class="sourceCode" id="cb1406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1406-1"><a href="sec-regression-optimization.html#cb1406-1" aria-hidden="true" tabindex="-1"></a>fit_qr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1406-2"><a href="sec-regression-optimization.html#cb1406-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">qr</span>(x)</span>
+<span id="cb1406-3"><a href="sec-regression-optimization.html#cb1406-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qr.qy</span>(decomp, <span class="fu">qr.qty</span>(decomp, y))</span>
+<span id="cb1406-4"><a href="sec-regression-optimization.html#cb1406-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1406-5"><a href="sec-regression-optimization.html#cb1406-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.fit</span>(x, y)</span></code></pre></div>
 <p>若 <span class="math inline">\(A = X^{\top}X\)</span> 是正定矩阵，则 <span class="math inline">\(A = LL^{\top}\)</span>，<span class="math inline">\(L\)</span> 是下三角矩阵</p>
-<div class="sourceCode" id="cb1407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1407-1"><a href="sec-least-squares.html#cb1407-1" aria-hidden="true" tabindex="-1"></a>fit_chol <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1407-2"><a href="sec-least-squares.html#cb1407-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">chol</span>(<span class="fu">crossprod</span>(x))</span>
-<span id="cb1407-3"><a href="sec-least-squares.html#cb1407-3" aria-hidden="true" tabindex="-1"></a>  lxy <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, <span class="fu">crossprod</span>(x, y), <span class="at">transpose =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1407-4"><a href="sec-least-squares.html#cb1407-4" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, lxy)</span>
-<span id="cb1407-5"><a href="sec-least-squares.html#cb1407-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> b</span>
-<span id="cb1407-6"><a href="sec-least-squares.html#cb1407-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb1408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1408-1"><a href="sec-least-squares.html#cb1408-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Using C/C++</span></span>
-<span id="cb1408-2"><a href="sec-least-squares.html#cb1408-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppEigen<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
-<span id="cb1408-3"><a href="sec-least-squares.html#cb1408-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppEigen<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span>
-<span id="cb1408-4"><a href="sec-least-squares.html#cb1408-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppArmadillo<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
-<span id="cb1408-5"><a href="sec-least-squares.html#cb1408-5" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppArmadillo<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span></code></pre></div>
+<div class="sourceCode" id="cb1407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1407-1"><a href="sec-regression-optimization.html#cb1407-1" aria-hidden="true" tabindex="-1"></a>fit_chol <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1407-2"><a href="sec-regression-optimization.html#cb1407-2" aria-hidden="true" tabindex="-1"></a>  decomp <span class="ot">&lt;-</span> <span class="fu">chol</span>(<span class="fu">crossprod</span>(x))</span>
+<span id="cb1407-3"><a href="sec-regression-optimization.html#cb1407-3" aria-hidden="true" tabindex="-1"></a>  lxy <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, <span class="fu">crossprod</span>(x, y), <span class="at">transpose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1407-4"><a href="sec-regression-optimization.html#cb1407-4" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">backsolve</span>(decomp, lxy)</span>
+<span id="cb1407-5"><a href="sec-regression-optimization.html#cb1407-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%*%</span> b</span>
+<span id="cb1407-6"><a href="sec-regression-optimization.html#cb1407-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1408-1"><a href="sec-regression-optimization.html#cb1408-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Using C/C++</span></span>
+<span id="cb1408-2"><a href="sec-regression-optimization.html#cb1408-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppEigen<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
+<span id="cb1408-3"><a href="sec-regression-optimization.html#cb1408-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppEigen<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span>
+<span id="cb1408-4"><a href="sec-regression-optimization.html#cb1408-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppArmadillo<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">1</span>)) <span class="do">## QR</span></span>
+<span id="cb1408-5"><a href="sec-regression-optimization.html#cb1408-5" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(RcppArmadillo<span class="sc">::</span><span class="fu">fastLmPure</span>(x, y, <span class="at">method =</span> <span class="dv">2</span>)) <span class="do">## Cholesky</span></span></code></pre></div>
 </div>
             </section>
 

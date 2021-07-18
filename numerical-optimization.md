@@ -1018,7 +1018,7 @@ nlp$solution
 ```
 
 ```
-## [1] 22.22222  0.00000
+## [1]  0.00000 22.22222
 ```
 
 ```r
@@ -1049,7 +1049,7 @@ R 自带的函数 `nlminb()` 可求解无约束、箱式约束优化问题，`co
 
 #### 普通箱式约束 {#box-constrained-optimization}
 
-有如下箱式约束优化问题，目标函数和[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)有些相识。
+有如下箱式约束优化问题，目标函数和[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)有些相似。
 
 \begin{equation*}
 \begin{array}{l}
@@ -1098,7 +1098,7 @@ nlminb(start = rep(3, 25), objective = fn, lower = rep(2, 25), upper = rep(4, 25
 ## [1] "relative convergence (4)"
 ```
 
-`nlminb()` 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 `constrOptim()` 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 $Ax \geq b$ 的形式，参数 ui 是 $k \times n$ 的约束矩阵 $A$，ci 是右侧 $k$ 维约束向量 $b$。以上面的优化问题为例，将箱式约束 $2 \leq x_1,x_2 \leq 4$ 转化为矩阵形式，即
+`nlminb()` 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 `constrOptim()` 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 $Ax \geq b$ 的形式，参数 ui 是 $k \times n$ 的约束矩阵 $A$，ci 是右侧 $k$ 维约束向量 $b$。以上面的优化问题为例，将箱式约束 $2 \leq x_1,x_2 \leq 4$ 转化为矩阵形式，约束矩阵和向量分别为：
 
 $$
 A = \begin{bmatrix}
@@ -1148,7 +1148,7 @@ constrOptim(
 ## [1] -0.003278963
 ```
 
-从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 `nlminb()` 函数的求解结果来看，实际上还没有收敛。没有提供梯度，则必须用 Nelder-Mead 方法，且增加迭代次数到 1000。
+从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 `nlminb()` 函数的求解结果来看，实际上还没有收敛。如果没有提供梯度，则必须用 Nelder-Mead 方法，下面增加迭代次数到 1000。
 
 
 ```r
@@ -1270,7 +1270,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1059
+## [1] 368.1061
 ```
 
 ```r
@@ -1636,7 +1636,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.005330 4.938265 3.433632 1.677254
+## [1] 1.380355 4.065599 4.496031 1.162862
 ```
 
 ```r
@@ -1644,7 +1644,7 @@ nlp$objval
 ```
 
 ```
-## [1] 19.24545
+## [1] 20.45453
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1772,7 +1772,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227972 4.245373
+## [1] 1.227972 4.245372
 ```
 
 ```r
@@ -1869,11 +1869,11 @@ nlp$solution
 \begin{array}{l}
   \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
          \qquad + \sin(\sin(80\cdot y)) - \sin(10\cdot (x +y)) + \frac{(x^2 + y^2)^{\sin(y)}}{4} \\
-    s.t. \quad
+    s.t. \quad \left\{ 
     \begin{array}{l}
      x - \big((\cos(y))^x - x\big)^y = 0 \\
     -50 \leq x_1,x_2 \leq 50
-    \end{array}
+    \end{array} \right.
 \end{array}
 \end{equation*}
 
@@ -1971,7 +1971,7 @@ nlp$solution
 ```
 
 ```
-## [1]  8.640377 18.506508
+## [1] 27.63213 49.86246
 ```
 
 ```r
@@ -1979,7 +1979,7 @@ nlp$objval
 ```
 
 ```
-## [1] -2.78683
+## [1] -2.87037
 ```
 比如下面三组
 
@@ -2085,12 +2085,17 @@ HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 
 规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
 
-## 最小二乘 {#sec:least-squares}
+## 回归与优化 {#sec:regression-optimization}
 
-经典的岭回归、Lasso 回归、最优子集回归都包含优化问题，可调 nloptr 包求解。
+经典的普通最小二乘、广义最小二乘、岭回归、逐步回归、Lasso 回归、最优子集回归都可转化为优化问题，一般形式如下
+
+$$
+\underbrace{\hat{\theta}_{\lambda_n}}_{待估参数} \in \arg \min_{\theta \in \Omega} \left\{ \underbrace{\mathcal{L}(\theta;Z_{1}^{n})}_{损失函数} + \lambda_n \underbrace{\mathcal{R}(\theta)}_{正则化项} \right\}.
+$$
+
+下面尝试以 nloptr 包的优化器来展示求解过程，并与 Base R、**glmnet** 和 **MASS** 实现的回归模型比较。
+
 <!-- 广义最小二乘 gls -->
-
-**glmnet** 和 **MASS** 实现岭回归
 
 $$y = X\beta + \epsilon$$
 

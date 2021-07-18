@@ -768,7 +768,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="36.6" data-path="sec-multi-objective-optimization.html"><a href="sec-multi-objective-optimization.html"><i class="fa fa-check"></i><b>36.6</b> 多目标规划</a></li>
 <li class="chapter" data-level="36.7" data-path="sec-classic-optimization.html"><a href="sec-classic-optimization.html"><i class="fa fa-check"></i><b>36.7</b> 经典优化问题</a></li>
-<li class="chapter" data-level="36.8" data-path="sec-least-squares.html"><a href="sec-least-squares.html"><i class="fa fa-check"></i><b>36.8</b> 最小二乘</a></li>
+<li class="chapter" data-level="36.8" data-path="sec-regression-optimization.html"><a href="sec-regression-optimization.html"><i class="fa fa-check"></i><b>36.8</b> 回归与优化</a></li>
 <li class="chapter" data-level="36.9" data-path="sec-log-likelihood.html"><a href="sec-log-likelihood.html"><i class="fa fa-check"></i><b>36.9</b> 对数似然</a></li>
 <li class="chapter" data-level="36.10" data-path="sec-non-linear-tseries.html"><a href="sec-non-linear-tseries.html"><i class="fa fa-check"></i><b>36.10</b> 微分方程</a></li>
 <li class="chapter" data-level="36.11" data-path="sec-numerical-optimization-session.html"><a href="sec-numerical-optimization-session.html"><i class="fa fa-check"></i><b>36.11</b> 运行环境</a></li>
@@ -1231,7 +1231,7 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g
 <span id="cb1312-4"><a href="sec-nonlinear-programming.html#cb1312-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1312-5"><a href="sec-nonlinear-programming.html#cb1312-5" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.directL&quot;</span>)</span>
 <span id="cb1312-6"><a href="sec-nonlinear-programming.html#cb1312-6" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 22.22222  0.00000</code></pre>
+<pre><code>## [1]  0.00000 22.22222</code></pre>
 <div class="sourceCode" id="cb1314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1314-1"><a href="sec-nonlinear-programming.html#cb1314-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] -0.9734211</code></pre>
 <p>实际上，还是陷入局部最优解。</p>
@@ -1249,7 +1249,7 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 <p>R 自带的函数 <code>nlminb()</code> 可求解无约束、箱式约束优化问题，<code>constrOptim()</code> 还可求解线性不等式约束优化，其中包括带线性约束的二次规划。<code>optim()</code> 提供一大类优化算法，且包含随机优化算法—模拟退火算法，可求解无约束、箱式约束优化问题。</p>
 <div id="box-constrained-optimization" class="section level4" number="36.4.3.1">
 <h4><span class="header-section-number">36.4.3.1</span> 普通箱式约束</h4>
-<p>有如下箱式约束优化问题，目标函数和<a href="https://en.wikipedia.org/wiki/Rosenbrock_function">香蕉函数</a>有些相识。</p>
+<p>有如下箱式约束优化问题，目标函数和<a href="https://en.wikipedia.org/wiki/Rosenbrock_function">香蕉函数</a>有些相似。</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
   \min_x \quad (x_1 - 1)^2 + 4\sum_{i =1}^{n -1}(x_{i+1} -x_i^2)^2  \\
@@ -1283,7 +1283,7 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 ## 
 ## $message
 ## [1] &quot;relative convergence (4)&quot;</code></pre>
-<p><code>nlminb()</code> 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 <code>constrOptim()</code> 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 <span class="math inline">\(Ax \geq b\)</span> 的形式，参数 ui 是 <span class="math inline">\(k \times n\)</span> 的约束矩阵 <span class="math inline">\(A\)</span>，ci 是右侧 <span class="math inline">\(k\)</span> 维约束向量 <span class="math inline">\(b\)</span>。以上面的优化问题为例，将箱式约束 <span class="math inline">\(2 \leq x_1,x_2 \leq 4\)</span> 转化为矩阵形式，即</p>
+<p><code>nlminb()</code> 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 <code>constrOptim()</code> 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 <span class="math inline">\(Ax \geq b\)</span> 的形式，参数 ui 是 <span class="math inline">\(k \times n\)</span> 的约束矩阵 <span class="math inline">\(A\)</span>，ci 是右侧 <span class="math inline">\(k\)</span> 维约束向量 <span class="math inline">\(b\)</span>。以上面的优化问题为例，将箱式约束 <span class="math inline">\(2 \leq x_1,x_2 \leq 4\)</span> 转化为矩阵形式，约束矩阵和向量分别为：</p>
 <p><span class="math display">\[
 A = \begin{bmatrix}
 1  &amp; 0  \\
@@ -1324,7 +1324,7 @@ b = (2, 2, -4, -4)
 ## 
 ## $barrier.value
 ## [1] -0.003278963</code></pre>
-<p>从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 <code>nlminb()</code> 函数的求解结果来看，实际上还没有收敛。没有提供梯度，则必须用 Nelder-Mead 方法，且增加迭代次数到 1000。</p>
+<p>从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 <code>nlminb()</code> 函数的求解结果来看，实际上还没有收敛。如果没有提供梯度，则必须用 Nelder-Mead 方法，下面增加迭代次数到 1000。</p>
 <div class="sourceCode" id="cb1322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1322-1"><a href="sec-nonlinear-programming.html#cb1322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">constrOptim</span>(</span>
 <span id="cb1322-2"><a href="sec-nonlinear-programming.html#cb1322-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="co"># 初始值</span></span>
 <span id="cb1322-3"><a href="sec-nonlinear-programming.html#cb1322-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> fn, <span class="co"># 目标函数</span></span>
@@ -1413,7 +1413,7 @@ b = (2, 2, -4, -4)
 <div class="sourceCode" id="cb1330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1330-1"><a href="sec-nonlinear-programming.html#cb1330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 调全局优化算法</span></span>
 <span id="cb1330-2"><a href="sec-nonlinear-programming.html#cb1330-2" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.directL&quot;</span>)</span>
 <span id="cb1330-3"><a href="sec-nonlinear-programming.html#cb1330-3" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] 368.1059</code></pre>
+<pre><code>## [1] 368.1061</code></pre>
 <div class="sourceCode" id="cb1332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1332-1"><a href="sec-nonlinear-programming.html#cb1332-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
 ##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
@@ -1670,9 +1670,9 @@ b = (2, 2, -4, -4)
 <pre><code>## [1] 17.01402</code></pre>
 <div class="sourceCode" id="cb1359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1359-1"><a href="sec-nonlinear-programming.html#cb1359-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
 <span id="cb1359-2"><a href="sec-nonlinear-programming.html#cb1359-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.005330 4.938265 3.433632 1.677254</code></pre>
+<pre><code>## [1] 1.380355 4.065599 4.496031 1.162862</code></pre>
 <div class="sourceCode" id="cb1361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1361-1"><a href="sec-nonlinear-programming.html#cb1361-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] 19.24545</code></pre>
+<pre><code>## [1] 20.45453</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>，推荐使用 nloptr.slsqp 求解器。</p>
 </div>
 <div id="nonlinear-mixed-integer-constrained" class="section level4" number="36.4.3.4">
@@ -1770,7 +1770,7 @@ b = (2, 2, -4, -4)
 <span id="cb1367-38"><a href="sec-nonlinear-programming.html#cb1367-38" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1367-39"><a href="sec-nonlinear-programming.html#cb1367-39" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> p0)</span>
 <span id="cb1367-40"><a href="sec-nonlinear-programming.html#cb1367-40" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.227972 4.245373</code></pre>
+<pre><code>## [1] 1.227972 4.245372</code></pre>
 <div class="sourceCode" id="cb1369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1369-1"><a href="sec-nonlinear-programming.html#cb1369-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
 <p>下面再给一个来自 <a href="https://octave.org/doc/v6.2.0/Nonlinear-Programming.html">Octave 优化文档</a> 的示例，该优化问题包含多个非线性的等式约束。</p>
@@ -1840,11 +1840,11 @@ b = (2, 2, -4, -4)
 \begin{array}{l}
   \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
          \qquad + \sin(\sin(80\cdot y)) - \sin(10\cdot (x +y)) + \frac{(x^2 + y^2)^{\sin(y)}}{4} \\
-    s.t. \quad
+    s.t. \quad \left\{ 
     \begin{array}{l}
      x - \big((\cos(y))^x - x\big)^y = 0 \\
     -50 \leq x_1,x_2 \leq 50
-    \end{array}
+    \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
 <p>Lingo 代码如下：</p>
@@ -1896,9 +1896,9 @@ x - (( @cos(y) )^x - x)^y = 0;
 <p>调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解</p>
 <div class="sourceCode" id="cb1386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1386-1"><a href="sec-nonlinear-programming.html#cb1386-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
 <span id="cb1386-2"><a href="sec-nonlinear-programming.html#cb1386-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1]  8.640377 18.506508</code></pre>
+<pre><code>## [1] 27.63213 49.86246</code></pre>
 <div class="sourceCode" id="cb1388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1388-1"><a href="sec-nonlinear-programming.html#cb1388-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] -2.78683</code></pre>
+<pre><code>## [1] -2.87037</code></pre>
 <p>比如下面三组</p>
 <div class="sourceCode" id="cb1390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1390-1"><a href="sec-nonlinear-programming.html#cb1390-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
 <pre><code>## [1] -1.025926</code></pre>
