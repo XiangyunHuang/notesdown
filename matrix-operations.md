@@ -954,7 +954,7 @@ i <- c(1,3:8); j <- c(2,9,6:10); x <- 7 * (1:7)
 
 ## Schur 分解 {#subsec:schur-decomposition}
 
-## Cholesky 分解 {#subsec:Choleski-Decomposition}
+## Cholesky 分解 {#subsec:choleski-decomposition}
 
 实对称正定矩阵的 Choleski 分解
 
@@ -985,7 +985,7 @@ Matrix::chol2inv(A + diag(rep(1,2)))
 
 
 
-## 特征值分解 {#subsec:Eigenvalues-Decomposition}
+## 特征值分解 {#subsec:eigenvalues-decomposition}
 
 特征值分解（Eigenvalues Decomposition）也叫谱分解（Spectral Decomposition）
 

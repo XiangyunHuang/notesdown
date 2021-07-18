@@ -106,9 +106,9 @@ library(kernlab)    # 优化问题和机器学习的关系
   \min_x \quad -6x_1 -5x_2 \\
     s.t.\left\{ 
     \begin{array}{l}
-    x_1  + 4x_2 & \leq 16\\
-    6x_1 + 4x_2 & \leq 28\\
-    2x_1 - 5x_2 & \leq 6
+    x_1  + 4x_2 \leq 16\\
+    6x_1 + 4x_2 \leq 28\\
+    2x_1 - 5x_2 \leq 6
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -1031,7 +1031,7 @@ nlp$solution
 ```
 
 ```
-## [1] -21.99115   0.00000
+## [1]  0.00000 22.22222
 ```
 
 ```r
@@ -1039,7 +1039,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -1284,7 +1284,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1061
+## [1] 368.106
 ```
 
 ```r
@@ -1366,8 +1366,8 @@ optim(
   \min_x \quad (x_1 + 3x_2 + x_3)^2 + 4(x_1 - x_2)^2 \\
     s.t.\left\{ 
     \begin{array}{l}
-     x_1 + x_2 + x_3 &= 1 \\
-     6 x_2 + 4 x_3 - x_1^3 &> 3 \\
+     x_1 + x_2 + x_3 = 1 \\
+     6 x_2 + 4 x_3 - x_1^3 > 3 \\
      x_1, x_2, x_3 > 0
     \end{array} \right.
 \end{array}
@@ -1677,7 +1677,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.236796 4.757724 3.798796 1.183922
+## [1] 1.099018 4.988016 3.489954 1.314354
 ```
 
 ```r
@@ -1685,7 +1685,7 @@ nlp$objval
 ```
 
 ```
-## [1] 18.13885
+## [1] 17.3239
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1813,7 +1813,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227948 4.245350
+## [1] 1.227970 4.245367
 ```
 
 ```r
@@ -1831,9 +1831,9 @@ nlp$objval
   \min_x \quad \mathrm{e}^{\prod_{i=1}^{5} x_i} - \frac{1}{2}(x_1^3 + x_2^3 + 1)^2 \\
     s.t.\left\{ 
     \begin{array}{l}
-     \sum_{i=1}^{5}x_i^2 - 10 &= 0 \\
-     x_2 x_3 - 5x_4 x_5 &= 0 \\
-     x_1^3 + x_2^3 + 1 &= 0
+     \sum_{i=1}^{5}x_i^2 - 10 = 0 \\
+     x_2 x_3 - 5x_4 x_5 = 0 \\
+     x_1^3 + x_2^3 + 1 = 0
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -2012,7 +2012,7 @@ nlp$solution
 ```
 
 ```
-## [1] 20.18872 10.10485
+## [1] -29.04684  29.19908
 ```
 
 ```r
@@ -2020,7 +2020,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.0532
+## [1] -3.370204
 ```
 比如下面三组
 
@@ -2205,8 +2205,8 @@ system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
 \begin{array}{l}
  p(x) = \left\{ 
     \begin{array}{l}
-    \lambda\mathrm{e}^{-\lambda x}, & x \geq 0\\
-    0, & x < 0
+    \lambda\mathrm{e}^{-\lambda x},  x \geq 0\\
+    0,  x < 0
     \end{array} \right.
 \end{array}
 \end{equation*}

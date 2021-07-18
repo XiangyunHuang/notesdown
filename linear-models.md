@@ -22,7 +22,7 @@
 > 方差分析、 A/B Test 和多重比较多用于互联网数据
 > lme 的特例
 
-## 单因素方差分析 {#One-Way-ANOVA}
+## 单因素方差分析 {#sec:one-way-anova}
 
 chickwts 不同的喂食方式对体重的影响
 
