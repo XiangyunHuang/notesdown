@@ -909,8 +909,8 @@ div.csl-indent {
 <span id="cb147-3"><a href="sec-spark-with-r.html#cb147-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 全局设置 JDK 11</span></span>
 <span id="cb147-4"><a href="sec-spark-with-r.html#cb147-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ln <span class="at">-sfn</span> /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk</span>
 <span id="cb147-5"><a href="sec-spark-with-r.html#cb147-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Java 11 JDK 添加到 .zshrc </span></span>
-<span id="cb147-6"><a href="sec-spark-with-r.html#cb147-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CPPFLAGS=</span><span class="st">&quot;-I/usr/local/opt/openjdk@11/include&quot;</span></span>
-<span id="cb147-7"><a href="sec-spark-with-r.html#cb147-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH=</span><span class="st">&quot;/usr/local/opt/openjdk@11/bin:</span><span class="va">$PATH</span><span class="st">&quot;</span></span></code></pre></div>
+<span id="cb147-6"><a href="sec-spark-with-r.html#cb147-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CPPFLAGS</span><span class="op">=</span><span class="st">&quot;-I/usr/local/opt/openjdk@11/include&quot;</span></span>
+<span id="cb147-7"><a href="sec-spark-with-r.html#cb147-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">&quot;/usr/local/opt/openjdk@11/bin:</span><span class="va">$PATH</span><span class="st">&quot;</span></span></code></pre></div>
 <p>配置 R 环境，让 R 能够识别 Java 环境，再安装 <strong>rJava</strong> 包</p>
 <div class="sourceCode" id="cb148"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb148-1"><a href="sec-spark-with-r.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置</span></span>
 <span id="cb148-2"><a href="sec-spark-with-r.html#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R CMD javareconf</span>
@@ -991,12 +991,12 @@ a column separator --></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
 <pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.71     Ideal     G     VS1  62.2    56  2962 5.69 5.72 3.55
-## 2  0.32     Ideal     G     VS1  62.3    55   559 4.39 4.41 2.74
-## 3  0.32 Very Good     H     VS1  63.0    57   561 4.32 4.35 2.73
-## 4  0.90 Very Good     G     SI1  62.0    58  3841 6.14 6.18 3.82
-## 5  1.01   Premium     F     SI2  62.0    59  4072 6.49 6.43 4.01
-## 6  0.33   Premium     H     VS1  61.9    58   579 4.43 4.45 2.75</code></pre>
+## 1  0.86   Premium     F     SI2  59.3    62  2818 6.36 6.22 3.73
+## 2  0.73 Very Good     E     SI1  63.2    58  2821 5.76 5.70 3.62
+## 3  0.72 Very Good     E     SI1  63.3    56  3183 5.67 5.71 3.60
+## 4  0.31 Very Good     F     SI2  63.0    58   408 4.34 4.36 2.74
+## 5  1.07   Premium     G     SI2  62.2    58  3545 6.56 6.49 4.06
+## 6  0.90   Premium     F     SI2  61.4    58  3619 6.13 6.19 3.78</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -1006,12 +1006,12 @@ a column separator --></p>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
 <pre><code>##    cut price rank
-## 1 Fair  1995    1
-## 2 Fair  2203    2
-## 3 Fair  2763    3
-## 4 Fair  6976    4
-## 5 Good  3418    1
-## 6 Good  3755    2</code></pre>
+## 1 Fair  3511    1
+## 2 Fair  5292    2
+## 3 Good   629    1
+## 4 Good   990    2
+## 5 Good  1333    3
+## 6 Good  2872    4</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -1031,10 +1031,10 @@ a column separator --></p>
 <p>查看数据集</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="sec-spark-with-r.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM person&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4</code></pre>
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="sec-spark-with-r.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc,<span class="st">&quot;</span></span>
 <span id="cb166-2"><a href="sec-spark-with-r.html#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * FROM person</span></span>
@@ -1043,12 +1043,12 @@ a column separator --></p>
 <span id="cb166-5"><a href="sec-spark-with-r.html#cb166-5" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 6</span></span>
 <span id="cb166-6"><a href="sec-spark-with-r.html#cb166-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sec-spark-with-r.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 今天</span></span>
 <span id="cb168-2"><a href="sec-spark-with-r.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select current_date&quot;</span>)</span></code></pre></div>
