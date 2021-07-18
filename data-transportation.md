@@ -174,13 +174,13 @@ diamonds_sample
 ```
 
 ```
-##   carat       cut color clarity depth table price    x    y    z
-## 1  0.71      Good     F     VS2  57.8    60  2801 5.90 5.87 3.40
-## 2  0.77 Very Good     G     VS2  58.3    63  2896 6.00 6.05 3.51
-## 3  0.73     Ideal     E     SI1  62.2    56  3038 5.76 5.79 3.59
-## 4  0.73     Ideal     G     VS1  61.8    57  3041 5.78 5.81 3.58
-## 5  0.75     Ideal     F     SI1  61.8    56  3336 5.84 5.87 3.62
-## 6  0.36   Premium     I     VS1  62.0    59   568 4.53 4.60 2.83
+##   carat     cut color clarity depth table price    x    y    z
+## 1  1.03 Premium     J     SI2  62.2    59  3149 6.42 6.40 3.99
+## 2  1.02   Ideal     I     SI2  60.7    57  3856 6.57 6.54 3.98
+## 3  0.72   Ideal     E    VVS2  62.0    56  3874 5.74 5.77 3.57
+## 4  1.04   Ideal     H     SI1  61.3    55  3984 6.49 6.44 3.96
+## 5  0.92 Premium     F     SI1  62.2    59  4194 6.21 6.14 3.84
+## 6  1.01   Ideal     F     SI2  60.6    57  4239 6.49 6.55 3.95
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -199,12 +199,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Good   487    1
-## 2 Good  2680    2
-## 3 Good  3506    3
-## 4 Good  3976    4
-## 5 Good  4213    5
-## 6 Good  4460    6
+## 1 Good   646    1
+## 2 Good  1299    2
+## 3 Good  2699    3
+## 4 Good  4053    4
+## 5 Good  4150    5
+## 6 Good  9898    6
 ```
 
 LATERAL VIEW 把一列拆成多行
