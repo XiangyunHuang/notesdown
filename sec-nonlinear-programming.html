@@ -1246,9 +1246,225 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 </div>
 <div id="sec:nonlinear-constrained-optimization" class="section level3" number="36.4.3">
 <h3><span class="header-section-number">36.4.3</span> 多元非线性约束优化</h3>
-<p>R 自带的函数 <code>nlminb()</code> 可求解箱式约束优化，<code>constrOptim()</code> 可求解线性不等式约束优化，下面主要介绍非线性约束的非线性优化问题。</p>
-<div id="strictly-inequality-constraints" class="section level4" number="36.4.3.1">
-<h4><span class="header-section-number">36.4.3.1</span> 非线性严格不等式约束</h4>
+<p>R 自带的函数 <code>nlminb()</code> 可求解无约束、箱式约束优化问题，<code>constrOptim()</code> 还可求解线性不等式约束优化，其中包括带线性约束的二次规划。<code>optim()</code> 提供一大类优化算法，且包含随机优化算法—模拟退火算法，可求解无约束、箱式约束优化问题。</p>
+<div id="box-constrained-optimization" class="section level4" number="36.4.3.1">
+<h4><span class="header-section-number">36.4.3.1</span> 普通箱式约束</h4>
+<p>有如下箱式约束优化问题，目标函数和<a href="https://en.wikipedia.org/wiki/Rosenbrock_function">香蕉函数</a>有些相识。</p>
+<p><span class="math display">\[\begin{equation*}
+\begin{array}{l}
+  \min_x \quad (x_1 - 1)^2 + 4\sum_{i =1}^{n -1}(x_{i+1} -x_i^2)^2  \\
+    s.t. \quad 2 \leq x_1,x_2,\cdots,x_n \leq 4
+\end{array}
+\end{equation*}\]</span></p>
+<div class="sourceCode" id="cb1317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1317-1"><a href="sec-nonlinear-programming.html#cb1317-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1317-2"><a href="sec-nonlinear-programming.html#cb1317-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb1317-3"><a href="sec-nonlinear-programming.html#cb1317-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">4</span>, n <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> (x <span class="sc">-</span> <span class="fu">c</span>(<span class="dv">1</span>, x[<span class="sc">-</span>n])<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1317-4"><a href="sec-nonlinear-programming.html#cb1317-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><span class="math inline">\(n\)</span> 维目标函数是非线性的，给定初值 <span class="math inline">\((3, 3, \cdots, 3)\)</span>，下面求解 25 维的箱式约束，</p>
+<div class="sourceCode" id="cb1318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1318-1"><a href="sec-nonlinear-programming.html#cb1318-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nlminb</span>(<span class="at">start =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="at">objective =</span> fn, <span class="at">lower =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">4</span>, <span class="dv">25</span>))</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
+## 
+## $objective
+## [1] 368.1059
+## 
+## $convergence
+## [1] 0
+## 
+## $iterations
+## [1] 6
+## 
+## $evaluations
+## function gradient 
+##       10      177 
+## 
+## $message
+## [1] &quot;relative convergence (4)&quot;</code></pre>
+<p><code>nlminb()</code> 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 <code>constrOptim()</code> 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 <span class="math inline">\(Ax \geq b\)</span> 的形式，参数 ui 是 <span class="math inline">\(k \times n\)</span> 的约束矩阵 <span class="math inline">\(A\)</span>，ci 是右侧 <span class="math inline">\(k\)</span> 维约束向量 <span class="math inline">\(b\)</span>。以上面的优化问题为例，将箱式约束 <span class="math inline">\(2 \leq x_1,x_2 \leq 4\)</span> 转化为矩阵形式，即</p>
+<p><span class="math display">\[
+A = \begin{bmatrix}
+1  &amp; 0  \\
+0  &amp; 1 \\
+-1 &amp; 0 \\
+0  &amp; -1
+\end{bmatrix}, \quad
+b = (2, 2, -4, -4)
+\]</span></p>
+<div class="sourceCode" id="cb1320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1320-1"><a href="sec-nonlinear-programming.html#cb1320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">constrOptim</span>(</span>
+<span id="cb1320-2"><a href="sec-nonlinear-programming.html#cb1320-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="co"># 初始值</span></span>
+<span id="cb1320-3"><a href="sec-nonlinear-programming.html#cb1320-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> fn, <span class="co"># 目标函数</span></span>
+<span id="cb1320-4"><a href="sec-nonlinear-programming.html#cb1320-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;Nelder-Mead&quot;</span>, <span class="co"># 没有提供梯度，则必须用 Nelder-Mead 方法</span></span>
+<span id="cb1320-5"><a href="sec-nonlinear-programming.html#cb1320-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">rbind</span>(<span class="fu">diag</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">25</span>)), <span class="fu">diag</span>(<span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">25</span>))),</span>
+<span id="cb1320-6"><a href="sec-nonlinear-programming.html#cb1320-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">25</span>))</span>
+<span id="cb1320-7"><a href="sec-nonlinear-programming.html#cb1320-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2.006142 2.002260 2.003971 2.003967 2.004143 2.004255 2.001178 2.002990
+##  [9] 2.003883 2.006029 2.017345 2.009236 2.000949 2.007793 2.025831 2.007896
+## [17] 2.004514 2.004381 2.008771 2.015695 2.005803 2.009127 2.017988 2.257782
+## [25] 3.999846
+## 
+## $value
+## [1] 378.4208
+## 
+## $counts
+## function gradient 
+##    12048       NA 
+## 
+## $convergence
+## [1] 1
+## 
+## $message
+## NULL
+## 
+## $outer.iterations
+## [1] 25
+## 
+## $barrier.value
+## [1] -0.003278963</code></pre>
+<p>从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 <code>nlminb()</code> 函数的求解结果来看，实际上还没有收敛。没有提供梯度，则必须用 Nelder-Mead 方法，且增加迭代次数到 1000。</p>
+<div class="sourceCode" id="cb1322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1322-1"><a href="sec-nonlinear-programming.html#cb1322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">constrOptim</span>(</span>
+<span id="cb1322-2"><a href="sec-nonlinear-programming.html#cb1322-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="co"># 初始值</span></span>
+<span id="cb1322-3"><a href="sec-nonlinear-programming.html#cb1322-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> fn, <span class="co"># 目标函数</span></span>
+<span id="cb1322-4"><a href="sec-nonlinear-programming.html#cb1322-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;Nelder-Mead&quot;</span>, </span>
+<span id="cb1322-5"><a href="sec-nonlinear-programming.html#cb1322-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">maxit =</span> <span class="dv">1000</span>),</span>
+<span id="cb1322-6"><a href="sec-nonlinear-programming.html#cb1322-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">rbind</span>(<span class="fu">diag</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">25</span>)), <span class="fu">diag</span>(<span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">25</span>))),</span>
+<span id="cb1322-7"><a href="sec-nonlinear-programming.html#cb1322-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">25</span>))</span>
+<span id="cb1322-8"><a href="sec-nonlinear-programming.html#cb1322-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2.000081 2.000142 2.001919 2.000584 2.000007 2.000003 2.001097 2.001600
+##  [9] 2.000207 2.000042 2.000250 2.000295 2.000580 2.002165 2.000453 2.000932
+## [17] 2.000456 2.000363 2.000418 2.000474 2.009483 2.001156 2.003173 2.241046
+## [25] 3.990754
+## 
+## $value
+## [1] 370.8601
+## 
+## $counts
+## function gradient 
+##    18036       NA 
+## 
+## $convergence
+## [1] 1
+## 
+## $message
+## NULL
+## 
+## $outer.iterations
+## [1] 19
+## 
+## $barrier.value
+## [1] -0.003366467</code></pre>
+<p>还是没有收敛，可见 Nelder-Mead 方法在这个优化问题上收敛速度比较慢。下面考虑调用基于梯度的优化算法 — BFGS 方法。</p>
+<div class="sourceCode" id="cb1324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1324-1"><a href="sec-nonlinear-programming.html#cb1324-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 输入 n 维向量，输出 n 维向量</span></span>
+<span id="cb1324-2"><a href="sec-nonlinear-programming.html#cb1324-2" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1324-3"><a href="sec-nonlinear-programming.html#cb1324-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb1324-4"><a href="sec-nonlinear-programming.html#cb1324-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">2</span>), <span class="fu">rep</span>(<span class="dv">0</span>, n <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb1324-5"><a href="sec-nonlinear-programming.html#cb1324-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">+</span><span class="dv">8</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">0</span>, x[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> x[<span class="sc">-</span>n]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1324-6"><a href="sec-nonlinear-programming.html#cb1324-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">16</span> <span class="sc">*</span> <span class="fu">c</span>(x[<span class="sc">-</span>n], <span class="dv">0</span>) <span class="sc">*</span> <span class="fu">c</span>(x[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> x[<span class="sc">-</span>n]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">0</span>)</span>
+<span id="cb1324-7"><a href="sec-nonlinear-programming.html#cb1324-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1324-8"><a href="sec-nonlinear-programming.html#cb1324-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1324-9"><a href="sec-nonlinear-programming.html#cb1324-9" aria-hidden="true" tabindex="-1"></a><span class="fu">constrOptim</span>(</span>
+<span id="cb1324-10"><a href="sec-nonlinear-programming.html#cb1324-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="co"># 初始值</span></span>
+<span id="cb1324-11"><a href="sec-nonlinear-programming.html#cb1324-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> fn, <span class="co"># 目标函数</span></span>
+<span id="cb1324-12"><a href="sec-nonlinear-programming.html#cb1324-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">grad =</span> gr,</span>
+<span id="cb1324-13"><a href="sec-nonlinear-programming.html#cb1324-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;BFGS&quot;</span>, </span>
+<span id="cb1324-14"><a href="sec-nonlinear-programming.html#cb1324-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">maxit =</span> <span class="dv">1000</span>),</span>
+<span id="cb1324-15"><a href="sec-nonlinear-programming.html#cb1324-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">rbind</span>(<span class="fu">diag</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">25</span>)), <span class="fu">diag</span>(<span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">25</span>))),</span>
+<span id="cb1324-16"><a href="sec-nonlinear-programming.html#cb1324-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">25</span>))</span>
+<span id="cb1324-17"><a href="sec-nonlinear-programming.html#cb1324-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000001
+## [25] 3.000000
+## 
+## $value
+## [1] 373
+## 
+## $counts
+## function gradient 
+##     3721      464 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+## 
+## $outer.iterations
+## [1] 3
+## 
+## $barrier.value
+## [1] -0.003327104</code></pre>
+<p>相比于 Nelder-Mead 方法，目标值 373 更大，可见已陷入局部最优解，下面通过 ROI 包，分别调用求解器 L-BFGS 和 directL，发现前者同样陷入局部最优解，而后者可以获得与 <code>nlminb()</code> 函数一致的结果。</p>
+<div class="sourceCode" id="cb1326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1326-1"><a href="sec-nonlinear-programming.html#cb1326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 调用改进的 BFGS 算法</span></span>
+<span id="cb1326-2"><a href="sec-nonlinear-programming.html#cb1326-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1326-3"><a href="sec-nonlinear-programming.html#cb1326-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(fn, <span class="at">n =</span> 25L, <span class="at">G =</span> gr),</span>
+<span id="cb1326-4"><a href="sec-nonlinear-programming.html#cb1326-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">2</span>, <span class="at">ud =</span> <span class="dv">4</span>, <span class="at">nobj =</span> 25L)</span>
+<span id="cb1326-5"><a href="sec-nonlinear-programming.html#cb1326-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1326-6"><a href="sec-nonlinear-programming.html#cb1326-6" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.lbfgs&quot;</span>, <span class="at">start =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>))</span>
+<span id="cb1326-7"><a href="sec-nonlinear-programming.html#cb1326-7" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 373</code></pre>
+<div class="sourceCode" id="cb1328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1328-1"><a href="sec-nonlinear-programming.html#cb1328-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3</code></pre>
+<div class="sourceCode" id="cb1330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1330-1"><a href="sec-nonlinear-programming.html#cb1330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 调全局优化算法</span></span>
+<span id="cb1330-2"><a href="sec-nonlinear-programming.html#cb1330-2" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.directL&quot;</span>)</span>
+<span id="cb1330-3"><a href="sec-nonlinear-programming.html#cb1330-3" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 368.1059</code></pre>
+<div class="sourceCode" id="cb1332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1332-1"><a href="sec-nonlinear-programming.html#cb1332-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000</code></pre>
+<p>下面再与函数 <code>optim()</code> 提供的 L-BFGS-B 算法比较</p>
+<div class="sourceCode" id="cb1334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1334-1"><a href="sec-nonlinear-programming.html#cb1334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(</span>
+<span id="cb1334-2"><a href="sec-nonlinear-programming.html#cb1334-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="at">fn =</span> fn, <span class="at">gr =</span> <span class="cn">NULL</span>, <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb1334-3"><a href="sec-nonlinear-programming.html#cb1334-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">4</span>, <span class="dv">25</span>)</span>
+<span id="cb1334-4"><a href="sec-nonlinear-programming.html#cb1334-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
+## 
+## $value
+## [1] 368.1059
+## 
+## $counts
+## function gradient 
+##        6        6 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## [1] &quot;CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH&quot;</code></pre>
+<p>值得注意的是，当提供梯度信息的时候，虽然求解速度提升了，但是最优解变差了。</p>
+<div class="sourceCode" id="cb1336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1336-1"><a href="sec-nonlinear-programming.html#cb1336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(</span>
+<span id="cb1336-2"><a href="sec-nonlinear-programming.html#cb1336-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">25</span>), <span class="at">fn =</span> fn, <span class="at">gr =</span> gr, <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
+<span id="cb1336-3"><a href="sec-nonlinear-programming.html#cb1336-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">25</span>), <span class="at">upper =</span> <span class="fu">rep</span>(<span class="dv">4</span>, <span class="dv">25</span>)</span>
+<span id="cb1336-4"><a href="sec-nonlinear-programming.html#cb1336-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## $par
+##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3
+## 
+## $value
+## [1] 373
+## 
+## $counts
+## function gradient 
+##        2        2 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## [1] &quot;CONVERGENCE: NORM OF PROJECTED GRADIENT &lt;= PGTOL&quot;</code></pre>
+</div>
+<div id="nonlinear-strictly-inequality-constraints" class="section level4" number="36.4.3.2">
+<h4><span class="header-section-number">36.4.3.2</span> 非线性严格不等式约束</h4>
 <p>第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
@@ -1262,126 +1478,126 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 \end{array}
 \end{equation*}\]</span></p>
 <div class="rmdtip">
-<div class="sourceCode" id="cb1317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1317-1"><a href="sec-nonlinear-programming.html#cb1317-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
-<span id="cb1317-2"><a href="sec-nonlinear-programming.html#cb1317-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1317-3"><a href="sec-nonlinear-programming.html#cb1317-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
-<span id="cb1317-4"><a href="sec-nonlinear-programming.html#cb1317-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1317-5"><a href="sec-nonlinear-programming.html#cb1317-5" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">3</span>)</span>
-<span id="cb1317-6"><a href="sec-nonlinear-programming.html#cb1317-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[1] 求偏导</span></span>
-<span id="cb1317-7"><a href="sec-nonlinear-programming.html#cb1317-7" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]) </span>
-<span id="cb1317-8"><a href="sec-nonlinear-programming.html#cb1317-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[2] 求偏导</span></span>
-<span id="cb1317-9"><a href="sec-nonlinear-programming.html#cb1317-9" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])</span>
-<span id="cb1317-10"><a href="sec-nonlinear-programming.html#cb1317-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[3] 求偏导</span></span>
-<span id="cb1317-11"><a href="sec-nonlinear-programming.html#cb1317-11" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
-<span id="cb1317-12"><a href="sec-nonlinear-programming.html#cb1317-12" aria-hidden="true" tabindex="-1"></a>  g</span>
-<span id="cb1317-13"><a href="sec-nonlinear-programming.html#cb1317-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1317-14"><a href="sec-nonlinear-programming.html#cb1317-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
-<span id="cb1317-15"><a href="sec-nonlinear-programming.html#cb1317-15" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1317-16"><a href="sec-nonlinear-programming.html#cb1317-16" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1</span>)</span>
-<span id="cb1317-17"><a href="sec-nonlinear-programming.html#cb1317-17" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">1</span>] <span class="ot">&lt;-</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>] <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb1317-18"><a href="sec-nonlinear-programming.html#cb1317-18" aria-hidden="true" tabindex="-1"></a>  h</span>
-<span id="cb1317-19"><a href="sec-nonlinear-programming.html#cb1317-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1317-20"><a href="sec-nonlinear-programming.html#cb1317-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比矩阵</span></span>
-<span id="cb1317-21"><a href="sec-nonlinear-programming.html#cb1317-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 这里只有一个等式约束，所以雅可比矩阵行数为 1</span></span>
-<span id="cb1317-22"><a href="sec-nonlinear-programming.html#cb1317-22" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1317-23"><a href="sec-nonlinear-programming.html#cb1317-23" aria-hidden="true" tabindex="-1"></a>  j <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">1</span>, <span class="fu">length</span>(x))</span>
-<span id="cb1317-24"><a href="sec-nonlinear-programming.html#cb1317-24" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb1317-25"><a href="sec-nonlinear-programming.html#cb1317-25" aria-hidden="true" tabindex="-1"></a>  j</span>
-<span id="cb1317-26"><a href="sec-nonlinear-programming.html#cb1317-26" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1317-27"><a href="sec-nonlinear-programming.html#cb1317-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束</span></span>
-<span id="cb1317-28"><a href="sec-nonlinear-programming.html#cb1317-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 要求必须是严格不等式，不能带等号，方向是 x &gt; 0 </span></span>
-<span id="cb1317-29"><a href="sec-nonlinear-programming.html#cb1317-29" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1317-30"><a href="sec-nonlinear-programming.html#cb1317-30" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(x))</span>
-<span id="cb1317-31"><a href="sec-nonlinear-programming.html#cb1317-31" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> <span class="dv">3</span></span>
-<span id="cb1317-32"><a href="sec-nonlinear-programming.html#cb1317-32" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">2</span>] <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
-<span id="cb1317-33"><a href="sec-nonlinear-programming.html#cb1317-33" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">3</span>] <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
-<span id="cb1317-34"><a href="sec-nonlinear-programming.html#cb1317-34" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">4</span>] <span class="ot">&lt;-</span> x[<span class="dv">3</span>]</span>
-<span id="cb1317-35"><a href="sec-nonlinear-programming.html#cb1317-35" aria-hidden="true" tabindex="-1"></a>  h</span>
-<span id="cb1317-36"><a href="sec-nonlinear-programming.html#cb1317-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1317-37"><a href="sec-nonlinear-programming.html#cb1317-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束的雅可比矩阵</span></span>
-<span id="cb1317-38"><a href="sec-nonlinear-programming.html#cb1317-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 其实是有 4 个不等式约束，包括 3 个变量，雅可比矩阵行数是 4</span></span>
-<span id="cb1317-39"><a href="sec-nonlinear-programming.html#cb1317-39" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1317-40"><a href="sec-nonlinear-programming.html#cb1317-40" aria-hidden="true" tabindex="-1"></a>  j <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">4</span>, <span class="fu">length</span>(x))</span>
-<span id="cb1317-41"><a href="sec-nonlinear-programming.html#cb1317-41" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>)</span>
-<span id="cb1317-42"><a href="sec-nonlinear-programming.html#cb1317-42" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">2</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb1317-43"><a href="sec-nonlinear-programming.html#cb1317-43" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">3</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb1317-44"><a href="sec-nonlinear-programming.html#cb1317-44" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">4</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb1317-45"><a href="sec-nonlinear-programming.html#cb1317-45" aria-hidden="true" tabindex="-1"></a>  j</span>
-<span id="cb1317-46"><a href="sec-nonlinear-programming.html#cb1317-46" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1338-1"><a href="sec-nonlinear-programming.html#cb1338-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1338-2"><a href="sec-nonlinear-programming.html#cb1338-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1338-3"><a href="sec-nonlinear-programming.html#cb1338-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1338-4"><a href="sec-nonlinear-programming.html#cb1338-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1338-5"><a href="sec-nonlinear-programming.html#cb1338-5" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">3</span>)</span>
+<span id="cb1338-6"><a href="sec-nonlinear-programming.html#cb1338-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[1] 求偏导</span></span>
+<span id="cb1338-7"><a href="sec-nonlinear-programming.html#cb1338-7" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]) </span>
+<span id="cb1338-8"><a href="sec-nonlinear-programming.html#cb1338-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[2] 求偏导</span></span>
+<span id="cb1338-9"><a href="sec-nonlinear-programming.html#cb1338-9" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])</span>
+<span id="cb1338-10"><a href="sec-nonlinear-programming.html#cb1338-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 对 x[3] 求偏导</span></span>
+<span id="cb1338-11"><a href="sec-nonlinear-programming.html#cb1338-11" aria-hidden="true" tabindex="-1"></a>  g[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
+<span id="cb1338-12"><a href="sec-nonlinear-programming.html#cb1338-12" aria-hidden="true" tabindex="-1"></a>  g</span>
+<span id="cb1338-13"><a href="sec-nonlinear-programming.html#cb1338-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1338-14"><a href="sec-nonlinear-programming.html#cb1338-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
+<span id="cb1338-15"><a href="sec-nonlinear-programming.html#cb1338-15" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1338-16"><a href="sec-nonlinear-programming.html#cb1338-16" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1</span>)</span>
+<span id="cb1338-17"><a href="sec-nonlinear-programming.html#cb1338-17" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">1</span>] <span class="ot">&lt;-</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb1338-18"><a href="sec-nonlinear-programming.html#cb1338-18" aria-hidden="true" tabindex="-1"></a>  h</span>
+<span id="cb1338-19"><a href="sec-nonlinear-programming.html#cb1338-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1338-20"><a href="sec-nonlinear-programming.html#cb1338-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比矩阵</span></span>
+<span id="cb1338-21"><a href="sec-nonlinear-programming.html#cb1338-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 这里只有一个等式约束，所以雅可比矩阵行数为 1</span></span>
+<span id="cb1338-22"><a href="sec-nonlinear-programming.html#cb1338-22" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1338-23"><a href="sec-nonlinear-programming.html#cb1338-23" aria-hidden="true" tabindex="-1"></a>  j <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">1</span>, <span class="fu">length</span>(x))</span>
+<span id="cb1338-24"><a href="sec-nonlinear-programming.html#cb1338-24" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1338-25"><a href="sec-nonlinear-programming.html#cb1338-25" aria-hidden="true" tabindex="-1"></a>  j</span>
+<span id="cb1338-26"><a href="sec-nonlinear-programming.html#cb1338-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1338-27"><a href="sec-nonlinear-programming.html#cb1338-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束</span></span>
+<span id="cb1338-28"><a href="sec-nonlinear-programming.html#cb1338-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 要求必须是严格不等式，不能带等号，方向是 x &gt; 0 </span></span>
+<span id="cb1338-29"><a href="sec-nonlinear-programming.html#cb1338-29" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1338-30"><a href="sec-nonlinear-programming.html#cb1338-30" aria-hidden="true" tabindex="-1"></a>  h <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(x))</span>
+<span id="cb1338-31"><a href="sec-nonlinear-programming.html#cb1338-31" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> <span class="dv">3</span></span>
+<span id="cb1338-32"><a href="sec-nonlinear-programming.html#cb1338-32" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">2</span>] <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
+<span id="cb1338-33"><a href="sec-nonlinear-programming.html#cb1338-33" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">3</span>] <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
+<span id="cb1338-34"><a href="sec-nonlinear-programming.html#cb1338-34" aria-hidden="true" tabindex="-1"></a>  h[<span class="dv">4</span>] <span class="ot">&lt;-</span> x[<span class="dv">3</span>]</span>
+<span id="cb1338-35"><a href="sec-nonlinear-programming.html#cb1338-35" aria-hidden="true" tabindex="-1"></a>  h</span>
+<span id="cb1338-36"><a href="sec-nonlinear-programming.html#cb1338-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1338-37"><a href="sec-nonlinear-programming.html#cb1338-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束的雅可比矩阵</span></span>
+<span id="cb1338-38"><a href="sec-nonlinear-programming.html#cb1338-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 其实是有 4 个不等式约束，包括 3 个变量，雅可比矩阵行数是 4</span></span>
+<span id="cb1338-39"><a href="sec-nonlinear-programming.html#cb1338-39" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1338-40"><a href="sec-nonlinear-programming.html#cb1338-40" aria-hidden="true" tabindex="-1"></a>  j <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">4</span>, <span class="fu">length</span>(x))</span>
+<span id="cb1338-41"><a href="sec-nonlinear-programming.html#cb1338-41" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>)</span>
+<span id="cb1338-42"><a href="sec-nonlinear-programming.html#cb1338-42" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">2</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb1338-43"><a href="sec-nonlinear-programming.html#cb1338-43" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">3</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1338-44"><a href="sec-nonlinear-programming.html#cb1338-44" aria-hidden="true" tabindex="-1"></a>  j[<span class="dv">4</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1338-45"><a href="sec-nonlinear-programming.html#cb1338-45" aria-hidden="true" tabindex="-1"></a>  j</span>
+<span id="cb1338-46"><a href="sec-nonlinear-programming.html#cb1338-46" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>调用 <strong>alabama</strong> 包的求解器</p>
-<div class="sourceCode" id="cb1318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1318-1"><a href="sec-nonlinear-programming.html#cb1318-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)</span>
-<span id="cb1318-2"><a href="sec-nonlinear-programming.html#cb1318-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(alabama)</span>
-<span id="cb1318-3"><a href="sec-nonlinear-programming.html#cb1318-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
-<span id="cb1318-4"><a href="sec-nonlinear-programming.html#cb1318-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
-<span id="cb1318-5"><a href="sec-nonlinear-programming.html#cb1318-5" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
-<span id="cb1318-6"><a href="sec-nonlinear-programming.html#cb1318-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 求目标函数的极小值</span></span>
-<span id="cb1318-7"><a href="sec-nonlinear-programming.html#cb1318-7" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">constrOptim.nl</span>(</span>
-<span id="cb1318-8"><a href="sec-nonlinear-programming.html#cb1318-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> p0, </span>
-<span id="cb1318-9"><a href="sec-nonlinear-programming.html#cb1318-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 目标函数</span></span>
-<span id="cb1318-10"><a href="sec-nonlinear-programming.html#cb1318-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> fn, </span>
-<span id="cb1318-11"><a href="sec-nonlinear-programming.html#cb1318-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">gr =</span> gr, </span>
-<span id="cb1318-12"><a href="sec-nonlinear-programming.html#cb1318-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 等式约束</span></span>
-<span id="cb1318-13"><a href="sec-nonlinear-programming.html#cb1318-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq =</span> heq,</span>
-<span id="cb1318-14"><a href="sec-nonlinear-programming.html#cb1318-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq.jac =</span> heq.jac, </span>
-<span id="cb1318-15"><a href="sec-nonlinear-programming.html#cb1318-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不等式约束</span></span>
-<span id="cb1318-16"><a href="sec-nonlinear-programming.html#cb1318-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin =</span> hin, </span>
-<span id="cb1318-17"><a href="sec-nonlinear-programming.html#cb1318-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin.jac =</span> hin.jac,</span>
-<span id="cb1318-18"><a href="sec-nonlinear-programming.html#cb1318-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不显示迭代过程</span></span>
-<span id="cb1318-19"><a href="sec-nonlinear-programming.html#cb1318-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">control.outer =</span> <span class="fu">list</span>(<span class="at">trace =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb1318-20"><a href="sec-nonlinear-programming.html#cb1318-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1318-21"><a href="sec-nonlinear-programming.html#cb1318-21" aria-hidden="true" tabindex="-1"></a>ans</span></code></pre></div>
+<div class="sourceCode" id="cb1339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1339-1"><a href="sec-nonlinear-programming.html#cb1339-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(numDeriv)</span>
+<span id="cb1339-2"><a href="sec-nonlinear-programming.html#cb1339-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(alabama)</span>
+<span id="cb1339-3"><a href="sec-nonlinear-programming.html#cb1339-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb1339-4"><a href="sec-nonlinear-programming.html#cb1339-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1339-5"><a href="sec-nonlinear-programming.html#cb1339-5" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
+<span id="cb1339-6"><a href="sec-nonlinear-programming.html#cb1339-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 求目标函数的极小值</span></span>
+<span id="cb1339-7"><a href="sec-nonlinear-programming.html#cb1339-7" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">constrOptim.nl</span>(</span>
+<span id="cb1339-8"><a href="sec-nonlinear-programming.html#cb1339-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> p0, </span>
+<span id="cb1339-9"><a href="sec-nonlinear-programming.html#cb1339-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 目标函数</span></span>
+<span id="cb1339-10"><a href="sec-nonlinear-programming.html#cb1339-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> fn, </span>
+<span id="cb1339-11"><a href="sec-nonlinear-programming.html#cb1339-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">gr =</span> gr, </span>
+<span id="cb1339-12"><a href="sec-nonlinear-programming.html#cb1339-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 等式约束</span></span>
+<span id="cb1339-13"><a href="sec-nonlinear-programming.html#cb1339-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq =</span> heq,</span>
+<span id="cb1339-14"><a href="sec-nonlinear-programming.html#cb1339-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq.jac =</span> heq.jac, </span>
+<span id="cb1339-15"><a href="sec-nonlinear-programming.html#cb1339-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不等式约束</span></span>
+<span id="cb1339-16"><a href="sec-nonlinear-programming.html#cb1339-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin =</span> hin, </span>
+<span id="cb1339-17"><a href="sec-nonlinear-programming.html#cb1339-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin.jac =</span> hin.jac,</span>
+<span id="cb1339-18"><a href="sec-nonlinear-programming.html#cb1339-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不显示迭代过程</span></span>
+<span id="cb1339-19"><a href="sec-nonlinear-programming.html#cb1339-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">control.outer =</span> <span class="fu">list</span>(<span class="at">trace =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb1339-20"><a href="sec-nonlinear-programming.html#cb1339-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1339-21"><a href="sec-nonlinear-programming.html#cb1339-21" aria-hidden="true" tabindex="-1"></a>ans</span></code></pre></div>
 <p>ans 是 <code>constrOptim.nl()</code> 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。</p>
-<div class="sourceCode" id="cb1319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1319-1"><a href="sec-nonlinear-programming.html#cb1319-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 不提供梯度函数，照样可以求解</span></span>
-<span id="cb1319-2"><a href="sec-nonlinear-programming.html#cb1319-2" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">constrOptim.nl</span>(<span class="at">par =</span> p0, <span class="at">fn =</span> fn, <span class="at">heq =</span> heq, <span class="at">hin =</span> hin)</span></code></pre></div>
+<div class="sourceCode" id="cb1340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1340-1"><a href="sec-nonlinear-programming.html#cb1340-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 不提供梯度函数，照样可以求解</span></span>
+<span id="cb1340-2"><a href="sec-nonlinear-programming.html#cb1340-2" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">constrOptim.nl</span>(<span class="at">par =</span> p0, <span class="at">fn =</span> fn, <span class="at">heq =</span> heq, <span class="at">hin =</span> hin)</span></code></pre></div>
 </div>
 <p>实际上，可以用 ROI 调用 alabama 的方式，这种方式可以简化目标函数梯度和约束条件的表示</p>
-<div class="sourceCode" id="cb1320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1320-1"><a href="sec-nonlinear-programming.html#cb1320-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
-<span id="cb1320-2"><a href="sec-nonlinear-programming.html#cb1320-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1320-3"><a href="sec-nonlinear-programming.html#cb1320-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
-<span id="cb1320-4"><a href="sec-nonlinear-programming.html#cb1320-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1320-5"><a href="sec-nonlinear-programming.html#cb1320-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1320-6"><a href="sec-nonlinear-programming.html#cb1320-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
-<span id="cb1320-7"><a href="sec-nonlinear-programming.html#cb1320-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
-<span id="cb1320-8"><a href="sec-nonlinear-programming.html#cb1320-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
-<span id="cb1320-9"><a href="sec-nonlinear-programming.html#cb1320-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1320-10"><a href="sec-nonlinear-programming.html#cb1320-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1320-11"><a href="sec-nonlinear-programming.html#cb1320-11" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1320-12"><a href="sec-nonlinear-programming.html#cb1320-12" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]</span>
-<span id="cb1320-13"><a href="sec-nonlinear-programming.html#cb1320-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1320-14"><a href="sec-nonlinear-programming.html#cb1320-14" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1320-15"><a href="sec-nonlinear-programming.html#cb1320-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb1320-16"><a href="sec-nonlinear-programming.html#cb1320-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1320-17"><a href="sec-nonlinear-programming.html#cb1320-17" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1320-18"><a href="sec-nonlinear-programming.html#cb1320-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span></span>
-<span id="cb1320-19"><a href="sec-nonlinear-programming.html#cb1320-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1320-20"><a href="sec-nonlinear-programming.html#cb1320-20" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1320-21"><a href="sec-nonlinear-programming.html#cb1320-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>)</span>
-<span id="cb1320-22"><a href="sec-nonlinear-programming.html#cb1320-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1341-1"><a href="sec-nonlinear-programming.html#cb1341-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1341-2"><a href="sec-nonlinear-programming.html#cb1341-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1341-3"><a href="sec-nonlinear-programming.html#cb1341-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1341-4"><a href="sec-nonlinear-programming.html#cb1341-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1341-5"><a href="sec-nonlinear-programming.html#cb1341-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1341-6"><a href="sec-nonlinear-programming.html#cb1341-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
+<span id="cb1341-7"><a href="sec-nonlinear-programming.html#cb1341-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
+<span id="cb1341-8"><a href="sec-nonlinear-programming.html#cb1341-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
+<span id="cb1341-9"><a href="sec-nonlinear-programming.html#cb1341-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1341-10"><a href="sec-nonlinear-programming.html#cb1341-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1341-11"><a href="sec-nonlinear-programming.html#cb1341-11" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1341-12"><a href="sec-nonlinear-programming.html#cb1341-12" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]</span>
+<span id="cb1341-13"><a href="sec-nonlinear-programming.html#cb1341-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1341-14"><a href="sec-nonlinear-programming.html#cb1341-14" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1341-15"><a href="sec-nonlinear-programming.html#cb1341-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1341-16"><a href="sec-nonlinear-programming.html#cb1341-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1341-17"><a href="sec-nonlinear-programming.html#cb1341-17" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1341-18"><a href="sec-nonlinear-programming.html#cb1341-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb1341-19"><a href="sec-nonlinear-programming.html#cb1341-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1341-20"><a href="sec-nonlinear-programming.html#cb1341-20" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1341-21"><a href="sec-nonlinear-programming.html#cb1341-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>)</span>
+<span id="cb1341-22"><a href="sec-nonlinear-programming.html#cb1341-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>通过 ROI 调用 alabama 求解器</p>
-<div class="sourceCode" id="cb1321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1321-1"><a href="sec-nonlinear-programming.html#cb1321-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span>
-<span id="cb1321-2"><a href="sec-nonlinear-programming.html#cb1321-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
-<span id="cb1321-3"><a href="sec-nonlinear-programming.html#cb1321-3" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
-<span id="cb1321-4"><a href="sec-nonlinear-programming.html#cb1321-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1321-5"><a href="sec-nonlinear-programming.html#cb1321-5" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1321-6"><a href="sec-nonlinear-programming.html#cb1321-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 4 个目标变量</span></span>
-<span id="cb1321-7"><a href="sec-nonlinear-programming.html#cb1321-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1321-8"><a href="sec-nonlinear-programming.html#cb1321-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq, <span class="at">hin =</span> hin),</span>
-<span id="cb1321-9"><a href="sec-nonlinear-programming.html#cb1321-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;==&quot;</span>, <span class="st">&quot;&gt;&quot;</span>),</span>
-<span id="cb1321-10"><a href="sec-nonlinear-programming.html#cb1321-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>),</span>
-<span id="cb1321-11"><a href="sec-nonlinear-programming.html#cb1321-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式和不等式约束的雅可比</span></span>
-<span id="cb1321-12"><a href="sec-nonlinear-programming.html#cb1321-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac, <span class="at">hin.jac =</span> hin.jac)</span>
-<span id="cb1321-13"><a href="sec-nonlinear-programming.html#cb1321-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1321-14"><a href="sec-nonlinear-programming.html#cb1321-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="sc">+</span><span class="cn">Inf</span>, <span class="at">nobj =</span> 3L),</span>
-<span id="cb1321-15"><a href="sec-nonlinear-programming.html#cb1321-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1321-16"><a href="sec-nonlinear-programming.html#cb1321-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1321-17"><a href="sec-nonlinear-programming.html#cb1321-17" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;alabama&quot;</span>, <span class="at">start =</span> p0)</span>
-<span id="cb1321-18"><a href="sec-nonlinear-programming.html#cb1321-18" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1342-1"><a href="sec-nonlinear-programming.html#cb1342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span>
+<span id="cb1342-2"><a href="sec-nonlinear-programming.html#cb1342-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1342-3"><a href="sec-nonlinear-programming.html#cb1342-3" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
+<span id="cb1342-4"><a href="sec-nonlinear-programming.html#cb1342-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1342-5"><a href="sec-nonlinear-programming.html#cb1342-5" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1342-6"><a href="sec-nonlinear-programming.html#cb1342-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 4 个目标变量</span></span>
+<span id="cb1342-7"><a href="sec-nonlinear-programming.html#cb1342-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1342-8"><a href="sec-nonlinear-programming.html#cb1342-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq, <span class="at">hin =</span> hin),</span>
+<span id="cb1342-9"><a href="sec-nonlinear-programming.html#cb1342-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;==&quot;</span>, <span class="st">&quot;&gt;&quot;</span>),</span>
+<span id="cb1342-10"><a href="sec-nonlinear-programming.html#cb1342-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>),</span>
+<span id="cb1342-11"><a href="sec-nonlinear-programming.html#cb1342-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式和不等式约束的雅可比</span></span>
+<span id="cb1342-12"><a href="sec-nonlinear-programming.html#cb1342-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac, <span class="at">hin.jac =</span> hin.jac)</span>
+<span id="cb1342-13"><a href="sec-nonlinear-programming.html#cb1342-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1342-14"><a href="sec-nonlinear-programming.html#cb1342-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="sc">+</span><span class="cn">Inf</span>, <span class="at">nobj =</span> 3L),</span>
+<span id="cb1342-15"><a href="sec-nonlinear-programming.html#cb1342-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1342-16"><a href="sec-nonlinear-programming.html#cb1342-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1342-17"><a href="sec-nonlinear-programming.html#cb1342-17" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;alabama&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1342-18"><a href="sec-nonlinear-programming.html#cb1342-18" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] 1.674812e-06 9.994336e-08 9.999982e-01</code></pre>
-<div class="sourceCode" id="cb1323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1323-1"><a href="sec-nonlinear-programming.html#cb1323-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1344-1"><a href="sec-nonlinear-programming.html#cb1344-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 </div>
-<div id="box-constrained" class="section level4" number="36.4.3.2">
-<h4><span class="header-section-number">36.4.3.2</span> 非线性和箱式约束</h4>
+<div id="nonlinear-and-box-constrained" class="section level4" number="36.4.3.3">
+<h4><span class="header-section-number">36.4.3.3</span> 非线性和箱式约束</h4>
 <p>与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于<a href="https://coin-or.github.io/Ipopt/INTERFACES.html">Ipopt 官网</a>，提供的初始值为 <span class="math inline">\(x_0 = (1,5,5,1)\)</span>，最优解为 <span class="math inline">\(x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)\)</span>。优化问题的具体内容如下：</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
@@ -1395,72 +1611,72 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 \end{array}
 \end{equation*}\]</span></p>
 <p>考虑用 ROI 调 nloptr 实现，看结果是否和例子一致，nloptr 支持不等式约束包含等号，支持箱式约束。</p>
-<div class="sourceCode" id="cb1325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1325-1"><a href="sec-nonlinear-programming.html#cb1325-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 一个 4 维的目标函数</span></span>
-<span id="cb1325-2"><a href="sec-nonlinear-programming.html#cb1325-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-3"><a href="sec-nonlinear-programming.html#cb1325-3" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> x[<span class="dv">3</span>]</span>
-<span id="cb1325-4"><a href="sec-nonlinear-programming.html#cb1325-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-5"><a href="sec-nonlinear-programming.html#cb1325-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
-<span id="cb1325-6"><a href="sec-nonlinear-programming.html#cb1325-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-7"><a href="sec-nonlinear-programming.html#cb1325-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1325-8"><a href="sec-nonlinear-programming.html#cb1325-8" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">4</span>] <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]), x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>],</span>
-<span id="cb1325-9"><a href="sec-nonlinear-programming.html#cb1325-9" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">+</span> <span class="dv">1</span>, x[<span class="dv">1</span>] <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
-<span id="cb1325-10"><a href="sec-nonlinear-programming.html#cb1325-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1325-11"><a href="sec-nonlinear-programming.html#cb1325-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-12"><a href="sec-nonlinear-programming.html#cb1325-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
-<span id="cb1325-13"><a href="sec-nonlinear-programming.html#cb1325-13" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-14"><a href="sec-nonlinear-programming.html#cb1325-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1325-15"><a href="sec-nonlinear-programming.html#cb1325-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-16"><a href="sec-nonlinear-programming.html#cb1325-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比</span></span>
-<span id="cb1325-17"><a href="sec-nonlinear-programming.html#cb1325-17" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-18"><a href="sec-nonlinear-programming.html#cb1325-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> <span class="sc">*</span> <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], x[<span class="dv">3</span>], x[<span class="dv">4</span>])</span>
-<span id="cb1325-19"><a href="sec-nonlinear-programming.html#cb1325-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-20"><a href="sec-nonlinear-programming.html#cb1325-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束</span></span>
-<span id="cb1325-21"><a href="sec-nonlinear-programming.html#cb1325-21" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-22"><a href="sec-nonlinear-programming.html#cb1325-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prod</span>(x)</span>
-<span id="cb1325-23"><a href="sec-nonlinear-programming.html#cb1325-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-24"><a href="sec-nonlinear-programming.html#cb1325-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束的雅可比</span></span>
-<span id="cb1325-25"><a href="sec-nonlinear-programming.html#cb1325-25" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1325-26"><a href="sec-nonlinear-programming.html#cb1325-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">1</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">2</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">3</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">4</span>]))</span>
-<span id="cb1325-27"><a href="sec-nonlinear-programming.html#cb1325-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1325-28"><a href="sec-nonlinear-programming.html#cb1325-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1325-29"><a href="sec-nonlinear-programming.html#cb1325-29" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1325-30"><a href="sec-nonlinear-programming.html#cb1325-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 4L, <span class="at">G =</span> gr), <span class="co"># 4 个目标变量</span></span>
-<span id="cb1325-31"><a href="sec-nonlinear-programming.html#cb1325-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1325-32"><a href="sec-nonlinear-programming.html#cb1325-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq, <span class="at">hin =</span> hin),</span>
-<span id="cb1325-33"><a href="sec-nonlinear-programming.html#cb1325-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;==&quot;</span>, <span class="st">&quot;&gt;=&quot;</span>),</span>
-<span id="cb1325-34"><a href="sec-nonlinear-programming.html#cb1325-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">25</span>),</span>
-<span id="cb1325-35"><a href="sec-nonlinear-programming.html#cb1325-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式和不等式约束的雅可比</span></span>
-<span id="cb1325-36"><a href="sec-nonlinear-programming.html#cb1325-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac, <span class="at">hin.jac =</span> hin.jac)</span>
-<span id="cb1325-37"><a href="sec-nonlinear-programming.html#cb1325-37" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1325-38"><a href="sec-nonlinear-programming.html#cb1325-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">1</span>, <span class="at">ud =</span> <span class="dv">5</span>, <span class="at">nobj =</span> 4L),</span>
-<span id="cb1325-39"><a href="sec-nonlinear-programming.html#cb1325-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1325-40"><a href="sec-nonlinear-programming.html#cb1325-40" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb1326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1326-1"><a href="sec-nonlinear-programming.html#cb1326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数初始值</span></span>
-<span id="cb1326-2"><a href="sec-nonlinear-programming.html#cb1326-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1346-1"><a href="sec-nonlinear-programming.html#cb1346-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 一个 4 维的目标函数</span></span>
+<span id="cb1346-2"><a href="sec-nonlinear-programming.html#cb1346-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-3"><a href="sec-nonlinear-programming.html#cb1346-3" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> x[<span class="dv">3</span>]</span>
+<span id="cb1346-4"><a href="sec-nonlinear-programming.html#cb1346-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-5"><a href="sec-nonlinear-programming.html#cb1346-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1346-6"><a href="sec-nonlinear-programming.html#cb1346-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-7"><a href="sec-nonlinear-programming.html#cb1346-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1346-8"><a href="sec-nonlinear-programming.html#cb1346-8" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">4</span>] <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]), x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>],</span>
+<span id="cb1346-9"><a href="sec-nonlinear-programming.html#cb1346-9" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">+</span> <span class="dv">1</span>, x[<span class="dv">1</span>] <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
+<span id="cb1346-10"><a href="sec-nonlinear-programming.html#cb1346-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1346-11"><a href="sec-nonlinear-programming.html#cb1346-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-12"><a href="sec-nonlinear-programming.html#cb1346-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
+<span id="cb1346-13"><a href="sec-nonlinear-programming.html#cb1346-13" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-14"><a href="sec-nonlinear-programming.html#cb1346-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1346-15"><a href="sec-nonlinear-programming.html#cb1346-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-16"><a href="sec-nonlinear-programming.html#cb1346-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比</span></span>
+<span id="cb1346-17"><a href="sec-nonlinear-programming.html#cb1346-17" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-18"><a href="sec-nonlinear-programming.html#cb1346-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> <span class="sc">*</span> <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>], x[<span class="dv">3</span>], x[<span class="dv">4</span>])</span>
+<span id="cb1346-19"><a href="sec-nonlinear-programming.html#cb1346-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-20"><a href="sec-nonlinear-programming.html#cb1346-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束</span></span>
+<span id="cb1346-21"><a href="sec-nonlinear-programming.html#cb1346-21" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-22"><a href="sec-nonlinear-programming.html#cb1346-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prod</span>(x)</span>
+<span id="cb1346-23"><a href="sec-nonlinear-programming.html#cb1346-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-24"><a href="sec-nonlinear-programming.html#cb1346-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束的雅可比</span></span>
+<span id="cb1346-25"><a href="sec-nonlinear-programming.html#cb1346-25" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1346-26"><a href="sec-nonlinear-programming.html#cb1346-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">1</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">2</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">3</span>]), <span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">4</span>]))</span>
+<span id="cb1346-27"><a href="sec-nonlinear-programming.html#cb1346-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1346-28"><a href="sec-nonlinear-programming.html#cb1346-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1346-29"><a href="sec-nonlinear-programming.html#cb1346-29" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1346-30"><a href="sec-nonlinear-programming.html#cb1346-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 4L, <span class="at">G =</span> gr), <span class="co"># 4 个目标变量</span></span>
+<span id="cb1346-31"><a href="sec-nonlinear-programming.html#cb1346-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1346-32"><a href="sec-nonlinear-programming.html#cb1346-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq, <span class="at">hin =</span> hin),</span>
+<span id="cb1346-33"><a href="sec-nonlinear-programming.html#cb1346-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;==&quot;</span>, <span class="st">&quot;&gt;=&quot;</span>),</span>
+<span id="cb1346-34"><a href="sec-nonlinear-programming.html#cb1346-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">25</span>),</span>
+<span id="cb1346-35"><a href="sec-nonlinear-programming.html#cb1346-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式和不等式约束的雅可比</span></span>
+<span id="cb1346-36"><a href="sec-nonlinear-programming.html#cb1346-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac, <span class="at">hin.jac =</span> hin.jac)</span>
+<span id="cb1346-37"><a href="sec-nonlinear-programming.html#cb1346-37" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1346-38"><a href="sec-nonlinear-programming.html#cb1346-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">1</span>, <span class="at">ud =</span> <span class="dv">5</span>, <span class="at">nobj =</span> 4L),</span>
+<span id="cb1346-39"><a href="sec-nonlinear-programming.html#cb1346-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1346-40"><a href="sec-nonlinear-programming.html#cb1346-40" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1347-1"><a href="sec-nonlinear-programming.html#cb1347-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数初始值</span></span>
+<span id="cb1347-2"><a href="sec-nonlinear-programming.html#cb1347-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
 <pre><code>## [1] 16</code></pre>
-<div class="sourceCode" id="cb1328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1328-1"><a href="sec-nonlinear-programming.html#cb1328-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数最优值</span></span>
-<span id="cb1328-2"><a href="sec-nonlinear-programming.html#cb1328-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="fu">c</span>(<span class="fl">1.00000000</span>, <span class="fl">4.74299963</span>, <span class="fl">3.82114998</span>, <span class="fl">1.37940829</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1349-1"><a href="sec-nonlinear-programming.html#cb1349-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数最优值</span></span>
+<span id="cb1349-2"><a href="sec-nonlinear-programming.html#cb1349-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="fu">c</span>(<span class="fl">1.00000000</span>, <span class="fl">4.74299963</span>, <span class="fl">3.82114998</span>, <span class="fl">1.37940829</span>))</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
 <p>求解一般的非线性约束问题，求解器 nloptr.mma / nloptr.cobyla 仅支持非线性不等式约束，不支持等式约束，而 nlminb 只支持等式约束，因此，下面分别调用 nloptr.auglag、nloptr.slsqp 和 nloptr.isres 来求解上述优化问题。</p>
-<div class="sourceCode" id="cb1330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1330-1"><a href="sec-nonlinear-programming.html#cb1330-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
-<span id="cb1330-2"><a href="sec-nonlinear-programming.html#cb1330-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1351-1"><a href="sec-nonlinear-programming.html#cb1351-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
+<span id="cb1351-2"><a href="sec-nonlinear-programming.html#cb1351-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] 1.000000 4.743025 3.821117 1.379413</code></pre>
-<div class="sourceCode" id="cb1332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1332-1"><a href="sec-nonlinear-programming.html#cb1332-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1353-1"><a href="sec-nonlinear-programming.html#cb1353-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
-<div class="sourceCode" id="cb1334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1334-1"><a href="sec-nonlinear-programming.html#cb1334-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.slsqp&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
-<span id="cb1334-2"><a href="sec-nonlinear-programming.html#cb1334-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1355-1"><a href="sec-nonlinear-programming.html#cb1355-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.slsqp&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
+<span id="cb1355-2"><a href="sec-nonlinear-programming.html#cb1355-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] 1.000000 4.742996 3.821155 1.379408</code></pre>
-<div class="sourceCode" id="cb1336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1336-1"><a href="sec-nonlinear-programming.html#cb1336-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1357-1"><a href="sec-nonlinear-programming.html#cb1357-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
-<div class="sourceCode" id="cb1338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1338-1"><a href="sec-nonlinear-programming.html#cb1338-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
-<span id="cb1338-2"><a href="sec-nonlinear-programming.html#cb1338-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.252145 4.796365 3.748451 1.170524</code></pre>
-<div class="sourceCode" id="cb1340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1340-1"><a href="sec-nonlinear-programming.html#cb1340-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] 18.10752</code></pre>
+<div class="sourceCode" id="cb1359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1359-1"><a href="sec-nonlinear-programming.html#cb1359-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>))</span>
+<span id="cb1359-2"><a href="sec-nonlinear-programming.html#cb1359-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1] 1.005330 4.938265 3.433632 1.677254</code></pre>
+<div class="sourceCode" id="cb1361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1361-1"><a href="sec-nonlinear-programming.html#cb1361-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 19.24545</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>，推荐使用 nloptr.slsqp 求解器。</p>
 </div>
-<div id="integer-constrained" class="section level4" number="36.4.3.3">
-<h4><span class="header-section-number">36.4.3.3</span> 非线性混合整数优化</h4>
+<div id="nonlinear-mixed-integer-constrained" class="section level4" number="36.4.3.4">
+<h4><span class="header-section-number">36.4.3.4</span> 非线性混合整数约束</h4>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
   \max_x \quad 1.5(x_1 - \sin(x_1 - x_2))^2 + 0.5x_2^2 + x_3^2 - x_1 x_2 - 2x_1 + x_2 x_3 \\
@@ -1473,35 +1689,35 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1342-1"><a href="sec-nonlinear-programming.html#cb1342-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1342-2"><a href="sec-nonlinear-programming.html#cb1342-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.5</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1342-3"><a href="sec-nonlinear-programming.html#cb1342-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span>x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">*</span> x[<span class="dv">3</span>]</span>
-<span id="cb1342-4"><a href="sec-nonlinear-programming.html#cb1342-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1342-5"><a href="sec-nonlinear-programming.html#cb1342-5" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1342-6"><a href="sec-nonlinear-programming.html#cb1342-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1342-7"><a href="sec-nonlinear-programming.html#cb1342-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span>,</span>
-<span id="cb1342-8"><a href="sec-nonlinear-programming.html#cb1342-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">3</span>],</span>
-<span id="cb1342-9"><a href="sec-nonlinear-programming.html#cb1342-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">+</span> x[<span class="dv">2</span>]</span>
-<span id="cb1342-10"><a href="sec-nonlinear-programming.html#cb1342-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1342-11"><a href="sec-nonlinear-programming.html#cb1342-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1363-1"><a href="sec-nonlinear-programming.html#cb1363-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1363-2"><a href="sec-nonlinear-programming.html#cb1363-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.5</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1363-3"><a href="sec-nonlinear-programming.html#cb1363-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span>x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">*</span> x[<span class="dv">3</span>]</span>
+<span id="cb1363-4"><a href="sec-nonlinear-programming.html#cb1363-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1363-5"><a href="sec-nonlinear-programming.html#cb1363-5" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1363-6"><a href="sec-nonlinear-programming.html#cb1363-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1363-7"><a href="sec-nonlinear-programming.html#cb1363-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span>,</span>
+<span id="cb1363-8"><a href="sec-nonlinear-programming.html#cb1363-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">3</span>],</span>
+<span id="cb1363-9"><a href="sec-nonlinear-programming.html#cb1363-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">+</span> x[<span class="dv">2</span>]</span>
+<span id="cb1363-10"><a href="sec-nonlinear-programming.html#cb1363-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1363-11"><a href="sec-nonlinear-programming.html#cb1363-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>目前 ROI 还解不了</p>
-<div class="sourceCode" id="cb1343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1343-1"><a href="sec-nonlinear-programming.html#cb1343-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
-<span id="cb1343-2"><a href="sec-nonlinear-programming.html#cb1343-2" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.1</span>, <span class="fl">5.1</span>, <span class="dv">5</span>)</span>
-<span id="cb1343-3"><a href="sec-nonlinear-programming.html#cb1343-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1343-4"><a href="sec-nonlinear-programming.html#cb1343-4" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1343-5"><a href="sec-nonlinear-programming.html#cb1343-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 3 个目标变量</span></span>
-<span id="cb1343-6"><a href="sec-nonlinear-programming.html#cb1343-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>), <span class="co"># 目标变量的类型</span></span>
-<span id="cb1343-7"><a href="sec-nonlinear-programming.html#cb1343-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">lb =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">10</span>), <span class="at">ub =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">10</span>), <span class="at">nobj =</span> 3L),</span>
-<span id="cb1343-8"><a href="sec-nonlinear-programming.html#cb1343-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1343-9"><a href="sec-nonlinear-programming.html#cb1343-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1343-10"><a href="sec-nonlinear-programming.html#cb1343-10" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;auto&quot;</span>, <span class="at">start =</span> p0)</span>
-<span id="cb1343-11"><a href="sec-nonlinear-programming.html#cb1343-11" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1364-1"><a href="sec-nonlinear-programming.html#cb1364-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1364-2"><a href="sec-nonlinear-programming.html#cb1364-2" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.1</span>, <span class="fl">5.1</span>, <span class="dv">5</span>)</span>
+<span id="cb1364-3"><a href="sec-nonlinear-programming.html#cb1364-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1364-4"><a href="sec-nonlinear-programming.html#cb1364-4" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1364-5"><a href="sec-nonlinear-programming.html#cb1364-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 3 个目标变量</span></span>
+<span id="cb1364-6"><a href="sec-nonlinear-programming.html#cb1364-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>), <span class="co"># 目标变量的类型</span></span>
+<span id="cb1364-7"><a href="sec-nonlinear-programming.html#cb1364-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">lb =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">10</span>), <span class="at">ub =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">10</span>), <span class="at">nobj =</span> 3L),</span>
+<span id="cb1364-8"><a href="sec-nonlinear-programming.html#cb1364-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1364-9"><a href="sec-nonlinear-programming.html#cb1364-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1364-10"><a href="sec-nonlinear-programming.html#cb1364-10" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;auto&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1364-11"><a href="sec-nonlinear-programming.html#cb1364-11" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <p>目标函数在 <span class="math inline">\((4.49712, 9.147501, -4)\)</span> 取得最小值 -86.72165</p>
-<div class="sourceCode" id="cb1344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1344-1"><a href="sec-nonlinear-programming.html#cb1344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">4.49712</span>, <span class="fl">9.147501</span>, <span class="sc">-</span><span class="dv">4</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1365-1"><a href="sec-nonlinear-programming.html#cb1365-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">4.49712</span>, <span class="fl">9.147501</span>, <span class="sc">-</span><span class="dv">4</span>))</span></code></pre></div>
 <pre><code>## [1] -86.72165</code></pre>
 </div>
-<div id="complex-object-function" class="section level4" number="36.4.3.4">
-<h4><span class="header-section-number">36.4.3.4</span> 含复杂目标函数</h4>
+<div id="complex-object-function" class="section level4" number="36.4.3.5">
+<h4><span class="header-section-number">36.4.3.5</span> 含复杂目标函数</h4>
 <p>下面这个目标函数比较复杂，约束条件也是非线性的</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
@@ -1514,48 +1730,48 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1346-1"><a href="sec-nonlinear-programming.html#cb1346-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
-<span id="cb1346-2"><a href="sec-nonlinear-programming.html#cb1346-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">1</span>]))<span class="sc">^</span><span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">2</span>])<span class="sc">/</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>]))</span>
-<span id="cb1346-3"><a href="sec-nonlinear-programming.html#cb1346-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
-<span id="cb1346-4"><a href="sec-nonlinear-programming.html#cb1346-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1346-5"><a href="sec-nonlinear-programming.html#cb1346-5" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
-<span id="cb1346-6"><a href="sec-nonlinear-programming.html#cb1346-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1346-7"><a href="sec-nonlinear-programming.html#cb1346-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1346-8"><a href="sec-nonlinear-programming.html#cb1346-8" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1346-9"><a href="sec-nonlinear-programming.html#cb1346-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1346-10"><a href="sec-nonlinear-programming.html#cb1346-10" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb1346-11"><a href="sec-nonlinear-programming.html#cb1346-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> (x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">4</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1346-12"><a href="sec-nonlinear-programming.html#cb1346-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1346-13"><a href="sec-nonlinear-programming.html#cb1346-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1346-14"><a href="sec-nonlinear-programming.html#cb1346-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1346-15"><a href="sec-nonlinear-programming.html#cb1346-15" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1346-16"><a href="sec-nonlinear-programming.html#cb1346-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb1346-17"><a href="sec-nonlinear-programming.html#cb1346-17" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>], <span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb1346-18"><a href="sec-nonlinear-programming.html#cb1346-18" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">2</span>]</span>
-<span id="cb1346-19"><a href="sec-nonlinear-programming.html#cb1346-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1346-20"><a href="sec-nonlinear-programming.html#cb1346-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb1346-21"><a href="sec-nonlinear-programming.html#cb1346-21" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1346-22"><a href="sec-nonlinear-programming.html#cb1346-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1346-23"><a href="sec-nonlinear-programming.html#cb1346-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1346-24"><a href="sec-nonlinear-programming.html#cb1346-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
-<span id="cb1346-25"><a href="sec-nonlinear-programming.html#cb1346-25" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)</span>
-<span id="cb1346-26"><a href="sec-nonlinear-programming.html#cb1346-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1346-27"><a href="sec-nonlinear-programming.html#cb1346-27" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1346-28"><a href="sec-nonlinear-programming.html#cb1346-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
-<span id="cb1346-29"><a href="sec-nonlinear-programming.html#cb1346-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1346-30"><a href="sec-nonlinear-programming.html#cb1346-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">hin =</span> hin),</span>
-<span id="cb1346-31"><a href="sec-nonlinear-programming.html#cb1346-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>),</span>
-<span id="cb1346-32"><a href="sec-nonlinear-programming.html#cb1346-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb1346-33"><a href="sec-nonlinear-programming.html#cb1346-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 不等式约束的雅可比</span></span>
-<span id="cb1346-34"><a href="sec-nonlinear-programming.html#cb1346-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">hin.jac =</span> hin.jac)</span>
-<span id="cb1346-35"><a href="sec-nonlinear-programming.html#cb1346-35" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1346-36"><a href="sec-nonlinear-programming.html#cb1346-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="dv">10</span>, <span class="at">nobj =</span> 2L),</span>
-<span id="cb1346-37"><a href="sec-nonlinear-programming.html#cb1346-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">TRUE</span> <span class="co"># 求最大</span></span>
-<span id="cb1346-38"><a href="sec-nonlinear-programming.html#cb1346-38" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1346-39"><a href="sec-nonlinear-programming.html#cb1346-39" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> p0)</span>
-<span id="cb1346-40"><a href="sec-nonlinear-programming.html#cb1346-40" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.227970 4.245373</code></pre>
-<div class="sourceCode" id="cb1348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1348-1"><a href="sec-nonlinear-programming.html#cb1348-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<div class="sourceCode" id="cb1367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1367-1"><a href="sec-nonlinear-programming.html#cb1367-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1367-2"><a href="sec-nonlinear-programming.html#cb1367-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">1</span>]))<span class="sc">^</span><span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">2</span>])<span class="sc">/</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>]))</span>
+<span id="cb1367-3"><a href="sec-nonlinear-programming.html#cb1367-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1367-4"><a href="sec-nonlinear-programming.html#cb1367-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1367-5"><a href="sec-nonlinear-programming.html#cb1367-5" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1367-6"><a href="sec-nonlinear-programming.html#cb1367-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1367-7"><a href="sec-nonlinear-programming.html#cb1367-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1367-8"><a href="sec-nonlinear-programming.html#cb1367-8" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1367-9"><a href="sec-nonlinear-programming.html#cb1367-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1367-10"><a href="sec-nonlinear-programming.html#cb1367-10" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb1367-11"><a href="sec-nonlinear-programming.html#cb1367-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> (x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">4</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1367-12"><a href="sec-nonlinear-programming.html#cb1367-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1367-13"><a href="sec-nonlinear-programming.html#cb1367-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1367-14"><a href="sec-nonlinear-programming.html#cb1367-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1367-15"><a href="sec-nonlinear-programming.html#cb1367-15" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1367-16"><a href="sec-nonlinear-programming.html#cb1367-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb1367-17"><a href="sec-nonlinear-programming.html#cb1367-17" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>], <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb1367-18"><a href="sec-nonlinear-programming.html#cb1367-18" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">2</span>]</span>
+<span id="cb1367-19"><a href="sec-nonlinear-programming.html#cb1367-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1367-20"><a href="sec-nonlinear-programming.html#cb1367-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb1367-21"><a href="sec-nonlinear-programming.html#cb1367-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1367-22"><a href="sec-nonlinear-programming.html#cb1367-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1367-23"><a href="sec-nonlinear-programming.html#cb1367-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1367-24"><a href="sec-nonlinear-programming.html#cb1367-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1367-25"><a href="sec-nonlinear-programming.html#cb1367-25" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb1367-26"><a href="sec-nonlinear-programming.html#cb1367-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1367-27"><a href="sec-nonlinear-programming.html#cb1367-27" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1367-28"><a href="sec-nonlinear-programming.html#cb1367-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
+<span id="cb1367-29"><a href="sec-nonlinear-programming.html#cb1367-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1367-30"><a href="sec-nonlinear-programming.html#cb1367-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">hin =</span> hin),</span>
+<span id="cb1367-31"><a href="sec-nonlinear-programming.html#cb1367-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>),</span>
+<span id="cb1367-32"><a href="sec-nonlinear-programming.html#cb1367-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1367-33"><a href="sec-nonlinear-programming.html#cb1367-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 不等式约束的雅可比</span></span>
+<span id="cb1367-34"><a href="sec-nonlinear-programming.html#cb1367-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">hin.jac =</span> hin.jac)</span>
+<span id="cb1367-35"><a href="sec-nonlinear-programming.html#cb1367-35" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1367-36"><a href="sec-nonlinear-programming.html#cb1367-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="dv">10</span>, <span class="at">nobj =</span> 2L),</span>
+<span id="cb1367-37"><a href="sec-nonlinear-programming.html#cb1367-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">TRUE</span> <span class="co"># 求最大</span></span>
+<span id="cb1367-38"><a href="sec-nonlinear-programming.html#cb1367-38" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1367-39"><a href="sec-nonlinear-programming.html#cb1367-39" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1367-40"><a href="sec-nonlinear-programming.html#cb1367-40" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1] 1.227972 4.245373</code></pre>
+<div class="sourceCode" id="cb1369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1369-1"><a href="sec-nonlinear-programming.html#cb1369-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
 <p>下面再给一个来自 <a href="https://octave.org/doc/v6.2.0/Nonlinear-Programming.html">Octave 优化文档</a> 的示例，该优化问题包含多个非线性的等式约束。</p>
 <p><span class="math display">\[\begin{equation*}
@@ -1569,57 +1785,57 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1350-1"><a href="sec-nonlinear-programming.html#cb1350-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 一个 5 维的目标函数</span></span>
-<span id="cb1350-2"><a href="sec-nonlinear-programming.html#cb1350-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1350-3"><a href="sec-nonlinear-programming.html#cb1350-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">prod</span>(x)) <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1350-4"><a href="sec-nonlinear-programming.html#cb1350-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1350-5"><a href="sec-nonlinear-programming.html#cb1350-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
-<span id="cb1350-6"><a href="sec-nonlinear-programming.html#cb1350-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1350-7"><a href="sec-nonlinear-programming.html#cb1350-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1350-8"><a href="sec-nonlinear-programming.html#cb1350-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb1350-9"><a href="sec-nonlinear-programming.html#cb1350-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">2</span>]) <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">*</span>x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb1350-10"><a href="sec-nonlinear-programming.html#cb1350-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">3</span>]), </span>
-<span id="cb1350-11"><a href="sec-nonlinear-programming.html#cb1350-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">4</span>]),</span>
-<span id="cb1350-12"><a href="sec-nonlinear-programming.html#cb1350-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">5</span>])</span>
-<span id="cb1350-13"><a href="sec-nonlinear-programming.html#cb1350-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1350-14"><a href="sec-nonlinear-programming.html#cb1350-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1350-15"><a href="sec-nonlinear-programming.html#cb1350-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
-<span id="cb1350-16"><a href="sec-nonlinear-programming.html#cb1350-16" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1350-17"><a href="sec-nonlinear-programming.html#cb1350-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb1350-18"><a href="sec-nonlinear-programming.html#cb1350-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> <span class="dv">10</span>,</span>
-<span id="cb1350-19"><a href="sec-nonlinear-programming.html#cb1350-19" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">2</span>] <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> <span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">*</span> x[<span class="dv">5</span>],</span>
-<span id="cb1350-20"><a href="sec-nonlinear-programming.html#cb1350-20" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb1350-21"><a href="sec-nonlinear-programming.html#cb1350-21" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1350-22"><a href="sec-nonlinear-programming.html#cb1350-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1350-23"><a href="sec-nonlinear-programming.html#cb1350-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比</span></span>
-<span id="cb1350-24"><a href="sec-nonlinear-programming.html#cb1350-24" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1350-25"><a href="sec-nonlinear-programming.html#cb1350-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">2</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">3</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">4</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">5</span>],</span>
-<span id="cb1350-26"><a href="sec-nonlinear-programming.html#cb1350-26" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, x[<span class="dv">3</span>], x[<span class="dv">2</span>], <span class="sc">-</span><span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">5</span>], <span class="sc">-</span><span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">4</span>],</span>
-<span id="cb1350-27"><a href="sec-nonlinear-programming.html#cb1350-27" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb1350-28"><a href="sec-nonlinear-programming.html#cb1350-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb1350-29"><a href="sec-nonlinear-programming.html#cb1350-29" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1350-30"><a href="sec-nonlinear-programming.html#cb1350-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb1351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1351-1"><a href="sec-nonlinear-programming.html#cb1351-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1351-2"><a href="sec-nonlinear-programming.html#cb1351-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1351-3"><a href="sec-nonlinear-programming.html#cb1351-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 5L, <span class="at">G =</span> gr), <span class="co"># 5 个目标变量</span></span>
-<span id="cb1351-4"><a href="sec-nonlinear-programming.html#cb1351-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1351-5"><a href="sec-nonlinear-programming.html#cb1351-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
-<span id="cb1351-6"><a href="sec-nonlinear-programming.html#cb1351-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
-<span id="cb1351-7"><a href="sec-nonlinear-programming.html#cb1351-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
-<span id="cb1351-8"><a href="sec-nonlinear-programming.html#cb1351-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式的雅可比</span></span>
-<span id="cb1351-9"><a href="sec-nonlinear-programming.html#cb1351-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
-<span id="cb1351-10"><a href="sec-nonlinear-programming.html#cb1351-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1351-11"><a href="sec-nonlinear-programming.html#cb1351-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ud =</span> <span class="cn">Inf</span>, <span class="at">nobj =</span> 5L),</span>
-<span id="cb1351-12"><a href="sec-nonlinear-programming.html#cb1351-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1351-13"><a href="sec-nonlinear-programming.html#cb1351-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1371-1"><a href="sec-nonlinear-programming.html#cb1371-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 一个 5 维的目标函数</span></span>
+<span id="cb1371-2"><a href="sec-nonlinear-programming.html#cb1371-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1371-3"><a href="sec-nonlinear-programming.html#cb1371-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">prod</span>(x)) <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1371-4"><a href="sec-nonlinear-programming.html#cb1371-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1371-5"><a href="sec-nonlinear-programming.html#cb1371-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1371-6"><a href="sec-nonlinear-programming.html#cb1371-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1371-7"><a href="sec-nonlinear-programming.html#cb1371-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1371-8"><a href="sec-nonlinear-programming.html#cb1371-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">1</span>]) <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb1371-9"><a href="sec-nonlinear-programming.html#cb1371-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">2</span>]) <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">*</span>x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb1371-10"><a href="sec-nonlinear-programming.html#cb1371-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">3</span>]), </span>
+<span id="cb1371-11"><a href="sec-nonlinear-programming.html#cb1371-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">4</span>]),</span>
+<span id="cb1371-12"><a href="sec-nonlinear-programming.html#cb1371-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">exp</span>(<span class="fu">prod</span>(x))<span class="sc">*</span><span class="fu">prod</span>(x[<span class="sc">-</span><span class="dv">5</span>])</span>
+<span id="cb1371-13"><a href="sec-nonlinear-programming.html#cb1371-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1371-14"><a href="sec-nonlinear-programming.html#cb1371-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1371-15"><a href="sec-nonlinear-programming.html#cb1371-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
+<span id="cb1371-16"><a href="sec-nonlinear-programming.html#cb1371-16" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1371-17"><a href="sec-nonlinear-programming.html#cb1371-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1371-18"><a href="sec-nonlinear-programming.html#cb1371-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> <span class="dv">10</span>,</span>
+<span id="cb1371-19"><a href="sec-nonlinear-programming.html#cb1371-19" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">2</span>] <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> <span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">4</span>] <span class="sc">*</span> x[<span class="dv">5</span>],</span>
+<span id="cb1371-20"><a href="sec-nonlinear-programming.html#cb1371-20" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1371-21"><a href="sec-nonlinear-programming.html#cb1371-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1371-22"><a href="sec-nonlinear-programming.html#cb1371-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1371-23"><a href="sec-nonlinear-programming.html#cb1371-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比</span></span>
+<span id="cb1371-24"><a href="sec-nonlinear-programming.html#cb1371-24" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1371-25"><a href="sec-nonlinear-programming.html#cb1371-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">2</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">3</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">4</span>], <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">5</span>],</span>
+<span id="cb1371-26"><a href="sec-nonlinear-programming.html#cb1371-26" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, x[<span class="dv">3</span>], x[<span class="dv">2</span>], <span class="sc">-</span><span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">5</span>], <span class="sc">-</span><span class="dv">5</span> <span class="sc">*</span> x[<span class="dv">4</span>],</span>
+<span id="cb1371-27"><a href="sec-nonlinear-programming.html#cb1371-27" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1371-28"><a href="sec-nonlinear-programming.html#cb1371-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb1371-29"><a href="sec-nonlinear-programming.html#cb1371-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1371-30"><a href="sec-nonlinear-programming.html#cb1371-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1372-1"><a href="sec-nonlinear-programming.html#cb1372-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1372-2"><a href="sec-nonlinear-programming.html#cb1372-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1372-3"><a href="sec-nonlinear-programming.html#cb1372-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 5L, <span class="at">G =</span> gr), <span class="co"># 5 个目标变量</span></span>
+<span id="cb1372-4"><a href="sec-nonlinear-programming.html#cb1372-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1372-5"><a href="sec-nonlinear-programming.html#cb1372-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
+<span id="cb1372-6"><a href="sec-nonlinear-programming.html#cb1372-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb1372-7"><a href="sec-nonlinear-programming.html#cb1372-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
+<span id="cb1372-8"><a href="sec-nonlinear-programming.html#cb1372-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式的雅可比</span></span>
+<span id="cb1372-9"><a href="sec-nonlinear-programming.html#cb1372-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
+<span id="cb1372-10"><a href="sec-nonlinear-programming.html#cb1372-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1372-11"><a href="sec-nonlinear-programming.html#cb1372-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ud =</span> <span class="cn">Inf</span>, <span class="at">nobj =</span> 5L),</span>
+<span id="cb1372-12"><a href="sec-nonlinear-programming.html#cb1372-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1372-13"><a href="sec-nonlinear-programming.html#cb1372-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>调用 SQP（序列二次规划） 求解器</p>
-<div class="sourceCode" id="cb1352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1352-1"><a href="sec-nonlinear-programming.html#cb1352-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.slsqp&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.8</span>, <span class="fl">1.7</span>, <span class="fl">1.9</span>, <span class="sc">-</span><span class="fl">0.8</span>,<span class="sc">-</span><span class="fl">0.8</span>))</span>
-<span id="cb1352-2"><a href="sec-nonlinear-programming.html#cb1352-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1373-1"><a href="sec-nonlinear-programming.html#cb1373-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.slsqp&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.8</span>, <span class="fl">1.7</span>, <span class="fl">1.9</span>, <span class="sc">-</span><span class="fl">0.8</span>,<span class="sc">-</span><span class="fl">0.8</span>))</span>
+<span id="cb1373-2"><a href="sec-nonlinear-programming.html#cb1373-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <pre><code>## [1] -1.7171435  1.5957096  1.8272458 -0.7636431 -0.7636431</code></pre>
 <p>计算结果和 Octave 的示例一致。</p>
 </div>
-<div id="complex-constrained-function" class="section level4" number="36.4.3.5">
-<h4><span class="header-section-number">36.4.3.5</span> 含复杂约束条件</h4>
+<div id="complex-constrained-function" class="section level4" number="36.4.3.6">
+<h4><span class="header-section-number">36.4.3.6</span> 含复杂约束条件</h4>
 <p><span class="math display">\[\begin{equation*}
 \begin{array}{l}
   \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
@@ -1640,61 +1856,61 @@ x - (( @cos(y) )^x - x)^y = 0;
 @bnd(-50, x, 50);
 @bnd(-50, y, 50);</code></pre>
 <p>启用全局优化求解器，求解 14 分钟，在 <span class="math inline">\((0.08256372, 24.56510)\)</span> 取得极小值 -2.863497。不启用全局优化器就没法解，Lingo 会报错，找不到最优解，勉强找到一个可行解 <span class="math inline">\((0.06082750, 44.12793)\)</span>，目标值为 -1.29816。</p>
-<div class="sourceCode" id="cb1355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1355-1"><a href="sec-nonlinear-programming.html#cb1355-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1355-2"><a href="sec-nonlinear-programming.html#cb1355-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">sin</span>(<span class="dv">50</span> <span class="sc">*</span> x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">60</span> <span class="sc">*</span> <span class="fu">exp</span>(x[<span class="dv">2</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">70</span> <span class="sc">*</span> <span class="fu">sin</span>(x[<span class="dv">1</span>])) <span class="sc">+</span></span>
-<span id="cb1355-3"><a href="sec-nonlinear-programming.html#cb1355-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="fu">sin</span>(<span class="dv">80</span> <span class="sc">*</span> x[<span class="dv">2</span>])) <span class="sc">-</span> <span class="fu">sin</span>(<span class="dv">10</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>])) <span class="sc">+</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="fu">sin</span>(x[<span class="dv">2</span>])) <span class="sc">/</span> <span class="dv">4</span></span>
-<span id="cb1355-4"><a href="sec-nonlinear-programming.html#cb1355-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1355-5"><a href="sec-nonlinear-programming.html#cb1355-5" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1355-6"><a href="sec-nonlinear-programming.html#cb1355-6" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
-<span id="cb1355-7"><a href="sec-nonlinear-programming.html#cb1355-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1355-8"><a href="sec-nonlinear-programming.html#cb1355-8" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1355-9"><a href="sec-nonlinear-programming.html#cb1355-9" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">-</span> ( (<span class="fu">cos</span>(x[<span class="dv">2</span>]))<span class="sc">^</span>x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">1</span>] )<span class="sc">^</span>x[<span class="dv">2</span>]</span>
-<span id="cb1355-10"><a href="sec-nonlinear-programming.html#cb1355-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1355-11"><a href="sec-nonlinear-programming.html#cb1355-11" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1355-12"><a href="sec-nonlinear-programming.html#cb1355-12" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(heq, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
-<span id="cb1355-13"><a href="sec-nonlinear-programming.html#cb1355-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1355-14"><a href="sec-nonlinear-programming.html#cb1355-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1355-15"><a href="sec-nonlinear-programming.html#cb1355-15" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1376-1"><a href="sec-nonlinear-programming.html#cb1376-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1376-2"><a href="sec-nonlinear-programming.html#cb1376-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">sin</span>(<span class="dv">50</span> <span class="sc">*</span> x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">60</span> <span class="sc">*</span> <span class="fu">exp</span>(x[<span class="dv">2</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">70</span> <span class="sc">*</span> <span class="fu">sin</span>(x[<span class="dv">1</span>])) <span class="sc">+</span></span>
+<span id="cb1376-3"><a href="sec-nonlinear-programming.html#cb1376-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="fu">sin</span>(<span class="dv">80</span> <span class="sc">*</span> x[<span class="dv">2</span>])) <span class="sc">-</span> <span class="fu">sin</span>(<span class="dv">10</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>])) <span class="sc">+</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="fu">sin</span>(x[<span class="dv">2</span>])) <span class="sc">/</span> <span class="dv">4</span></span>
+<span id="cb1376-4"><a href="sec-nonlinear-programming.html#cb1376-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1376-5"><a href="sec-nonlinear-programming.html#cb1376-5" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1376-6"><a href="sec-nonlinear-programming.html#cb1376-6" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1376-7"><a href="sec-nonlinear-programming.html#cb1376-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1376-8"><a href="sec-nonlinear-programming.html#cb1376-8" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1376-9"><a href="sec-nonlinear-programming.html#cb1376-9" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">-</span> ( (<span class="fu">cos</span>(x[<span class="dv">2</span>]))<span class="sc">^</span>x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">1</span>] )<span class="sc">^</span>x[<span class="dv">2</span>]</span>
+<span id="cb1376-10"><a href="sec-nonlinear-programming.html#cb1376-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1376-11"><a href="sec-nonlinear-programming.html#cb1376-11" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1376-12"><a href="sec-nonlinear-programming.html#cb1376-12" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(heq, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1376-13"><a href="sec-nonlinear-programming.html#cb1376-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1376-14"><a href="sec-nonlinear-programming.html#cb1376-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1376-15"><a href="sec-nonlinear-programming.html#cb1376-15" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
 <pre><code>## [1] -1.29816</code></pre>
-<div class="sourceCode" id="cb1357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1357-1"><a href="sec-nonlinear-programming.html#cb1357-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1378-1"><a href="sec-nonlinear-programming.html#cb1378-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
 <pre><code>## [1] 1.966877</code></pre>
-<div class="sourceCode" id="cb1359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1359-1"><a href="sec-nonlinear-programming.html#cb1359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1380-1"><a href="sec-nonlinear-programming.html#cb1380-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
 <pre><code>## [1] 1.923673e-08</code></pre>
-<div class="sourceCode" id="cb1361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1361-1"><a href="sec-nonlinear-programming.html#cb1361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1382-1"><a href="sec-nonlinear-programming.html#cb1382-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb1363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1363-1"><a href="sec-nonlinear-programming.html#cb1363-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1363-2"><a href="sec-nonlinear-programming.html#cb1363-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1363-3"><a href="sec-nonlinear-programming.html#cb1363-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
-<span id="cb1363-4"><a href="sec-nonlinear-programming.html#cb1363-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1363-5"><a href="sec-nonlinear-programming.html#cb1363-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
-<span id="cb1363-6"><a href="sec-nonlinear-programming.html#cb1363-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
-<span id="cb1363-7"><a href="sec-nonlinear-programming.html#cb1363-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
-<span id="cb1363-8"><a href="sec-nonlinear-programming.html#cb1363-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
-<span id="cb1363-9"><a href="sec-nonlinear-programming.html#cb1363-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1363-10"><a href="sec-nonlinear-programming.html#cb1363-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">50</span>, <span class="at">ud =</span> <span class="dv">50</span>, <span class="at">nobj =</span> 2L),</span>
-<span id="cb1363-11"><a href="sec-nonlinear-programming.html#cb1363-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1363-12"><a href="sec-nonlinear-programming.html#cb1363-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1384-1"><a href="sec-nonlinear-programming.html#cb1384-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1384-2"><a href="sec-nonlinear-programming.html#cb1384-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1384-3"><a href="sec-nonlinear-programming.html#cb1384-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
+<span id="cb1384-4"><a href="sec-nonlinear-programming.html#cb1384-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1384-5"><a href="sec-nonlinear-programming.html#cb1384-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
+<span id="cb1384-6"><a href="sec-nonlinear-programming.html#cb1384-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb1384-7"><a href="sec-nonlinear-programming.html#cb1384-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
+<span id="cb1384-8"><a href="sec-nonlinear-programming.html#cb1384-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
+<span id="cb1384-9"><a href="sec-nonlinear-programming.html#cb1384-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1384-10"><a href="sec-nonlinear-programming.html#cb1384-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">50</span>, <span class="at">ud =</span> <span class="dv">50</span>, <span class="at">nobj =</span> 2L),</span>
+<span id="cb1384-11"><a href="sec-nonlinear-programming.html#cb1384-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1384-12"><a href="sec-nonlinear-programming.html#cb1384-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>nloptr.auglag 无法求解此优化问题</p>
-<div class="sourceCode" id="cb1364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1364-1"><a href="sec-nonlinear-programming.html#cb1364-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb1364-2"><a href="sec-nonlinear-programming.html#cb1364-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<div class="sourceCode" id="cb1385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1385-1"><a href="sec-nonlinear-programming.html#cb1385-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1385-2"><a href="sec-nonlinear-programming.html#cb1385-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
 <p>调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解</p>
-<div class="sourceCode" id="cb1365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1365-1"><a href="sec-nonlinear-programming.html#cb1365-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb1365-2"><a href="sec-nonlinear-programming.html#cb1365-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] -12.958920   9.955467</code></pre>
-<div class="sourceCode" id="cb1367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1367-1"><a href="sec-nonlinear-programming.html#cb1367-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] -3.299703</code></pre>
+<div class="sourceCode" id="cb1386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1386-1"><a href="sec-nonlinear-programming.html#cb1386-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1386-2"><a href="sec-nonlinear-programming.html#cb1386-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1]  8.640377 18.506508</code></pre>
+<div class="sourceCode" id="cb1388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1388-1"><a href="sec-nonlinear-programming.html#cb1388-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] -2.78683</code></pre>
 <p>比如下面三组</p>
-<div class="sourceCode" id="cb1369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1369-1"><a href="sec-nonlinear-programming.html#cb1369-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1390-1"><a href="sec-nonlinear-programming.html#cb1390-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
 <pre><code>## [1] -1.025926</code></pre>
-<div class="sourceCode" id="cb1371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1371-1"><a href="sec-nonlinear-programming.html#cb1371-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1392-1"><a href="sec-nonlinear-programming.html#cb1392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
 <pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1373-1"><a href="sec-nonlinear-programming.html#cb1373-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1394-1"><a href="sec-nonlinear-programming.html#cb1394-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
 <pre><code>## [1] -1.467513</code></pre>
-<div class="sourceCode" id="cb1375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1375-1"><a href="sec-nonlinear-programming.html#cb1375-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1396-1"><a href="sec-nonlinear-programming.html#cb1396-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
 <pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1377-1"><a href="sec-nonlinear-programming.html#cb1377-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1398-1"><a href="sec-nonlinear-programming.html#cb1398-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
 <pre><code>## [1] -3.466596</code></pre>
-<div class="sourceCode" id="cb1379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1379-1"><a href="sec-nonlinear-programming.html#cb1379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1400-1"><a href="sec-nonlinear-programming.html#cb1400-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
 <pre><code>## [1] -8.515447e+208</code></pre>
 </div>
 </div>

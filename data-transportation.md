@@ -175,12 +175,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.86   Premium     F     SI2  59.3    62  2818 6.36 6.22 3.73
-## 2  0.73 Very Good     E     SI1  63.2    58  2821 5.76 5.70 3.62
-## 3  0.72 Very Good     E     SI1  63.3    56  3183 5.67 5.71 3.60
-## 4  0.31 Very Good     F     SI2  63.0    58   408 4.34 4.36 2.74
-## 5  1.07   Premium     G     SI2  62.2    58  3545 6.56 6.49 4.06
-## 6  0.90   Premium     F     SI2  61.4    58  3619 6.13 6.19 3.78
+## 1  0.70 Very Good     F     VS1  64.5    58  2925 5.55 5.59 3.59
+## 2  0.70     Ideal     F     VS1  61.6    57  2998 5.70 5.73 3.52
+## 3  0.85     Ideal     G     SI1  62.0    54  3084 6.08 6.11 3.78
+## 4  0.71     Ideal     D     VS1  62.5    57  3090 5.71 5.68 3.56
+## 5  0.32     Ideal     F     SI2  61.7    56   561 4.41 4.44 2.73
+## 6  1.10   Premium     H     SI2  59.2    59  3388 6.80 6.74 4.01
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -198,13 +198,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  3511    1
-## 2 Fair  5292    2
-## 3 Good   629    1
-## 4 Good   990    2
-## 5 Good  1333    3
-## 6 Good  2872    4
+##     cut price rank
+## 1  Good  4133    1
+## 2  Good  4440    2
+## 3  Good  8973    3
+## 4 Ideal   446    1
+## 5 Ideal   601    2
+## 6 Ideal   608    3
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -239,10 +239,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -259,12 +259,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
