@@ -1031,7 +1031,7 @@ nlp$solution
 ```
 
 ```
-## [1] 22.22222  0.00000
+## [1] -21.99115   0.00000
 ```
 
 ```r
@@ -1039,7 +1039,7 @@ nlp$objval
 ```
 
 ```
-## [1] -0.9734211
+## [1] -1
 ```
 
 实际上，还是陷入局部最优解。
@@ -1251,6 +1251,7 @@ constrOptim(
 ## $barrier.value
 ## [1] -0.003327104
 ```
+
 相比于 Nelder-Mead 方法，目标值 373 更大，可见已陷入局部最优解，下面通过 ROI 包，分别调用求解器 L-BFGS 和 directL，发现前者同样陷入局部最优解，而后者可以获得与 `nlminb()` 函数一致的结果。
 
 
@@ -1296,6 +1297,7 @@ nlp$solution
 ## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
 ## [25] 4.000000
 ```
+
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
 
 
@@ -1326,6 +1328,7 @@ optim(
 ## $message
 ## [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
 ```
+
 值得注意的是，当提供梯度信息的时候，虽然求解速度提升了，但是最优解变差了。
 
 
@@ -1354,7 +1357,6 @@ optim(
 ## [1] "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL"
 ```
 
-
 #### 非线性严格不等式约束 {#nonlinear-strictly-inequality-constraints}
 
 第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。
@@ -1371,55 +1373,41 @@ optim(
 \end{array}
 \end{equation*}
 
-::: {.rmdtip data-latex="{提示}"}
-
 
 ```r
 # 目标函数
 fn <- function(x) (x[1] + 3 * x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
 # 目标函数的梯度
 gr <- function(x) {
-  g <- rep(NA, 3)
-  # 对 x[1] 求偏导
-  g[1] <- 2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]) 
-  # 对 x[2] 求偏导
-  g[2] <- 6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2])
-  # 对 x[3] 求偏导
-  g[3] <- 2 * (x[1] + 3 * x[2] + x[3])
-  g
+  c(
+    2 * (x[1] + 3 * x[2] + x[3]) + 8 * (x[1] - x[2]), # 对 x[1] 求偏导
+    6 * (x[1] + 3 * x[2] + x[3]) - 8 * (x[1] - x[2]), # 对 x[2] 求偏导
+    2 * (x[1] + 3 * x[2] + x[3]) # 对 x[3] 求偏导
+  )
 }
 # 等式约束
 heq <- function(x) {
-  h <- rep(NA, 1)
-  h[1] <- x[1] + x[2] + x[3] - 1
-  h
+  x[1] + x[2] + x[3] - 1 
 }
 # 等式约束的雅可比矩阵
 # 这里只有一个等式约束，所以雅可比矩阵行数为 1
 heq.jac <- function(x) {
-  j <- matrix(NA, 1, length(x))
-  j[1, ] <- c(1, 1, 1)
-  j
+  matrix(c(1, 1, 1), ncol = 3, byrow = TRUE)
 }
 # 不等式约束
 # 要求必须是严格不等式，不能带等号，方向是 x > 0 
 hin <- function(x) {
-  h <- rep(NA, length(x))
-  h[1] <- 6 * x[2] + 4 * x[3] - x[1]^3 - 3
-  h[2] <- x[1]
-  h[3] <- x[2]
-  h[4] <- x[3]
-  h
+  c(6 * x[2] + 4 * x[3] - x[1]^3 - 3, x[1], x[2], x[3])
 }
 # 不等式约束的雅可比矩阵
-# 其实是有 4 个不等式约束，包括 3 个变量，雅可比矩阵行数是 4
+# 其实是有 4 个不等式约束，3 个目标变量约束，雅可比矩阵行数是 4
 hin.jac <- function(x) {
-  j <- matrix(NA, 4, length(x))
-  j[1, ] <- c(-3 * x[1]^2, 6, 4)
-  j[2, ] <- c(1, 0, 0)
-  j[3, ] <- c(0, 1, 0)
-  j[4, ] <- c(0, 0, 1)
-  j
+  matrix(c(
+    -3 * x[1]^2, 6, 4,
+    1, 0, 0,
+    0, 1, 0,
+    0, 0, 1
+  ), ncol = 3, byrow = TRUE)
 }
 ```
 
@@ -1427,27 +1415,64 @@ hin.jac <- function(x) {
 
 
 ```r
-library(numDeriv)
-library(alabama)
 set.seed(12)
 # 初始值
 p0 <- runif(3)
 # 求目标函数的极小值
-ans <- constrOptim.nl(
-  par = p0, 
+ans <- alabama::constrOptim.nl(
+  par = p0,
   # 目标函数
-  fn = fn, 
-  gr = gr, 
+  fn = fn,
+  gr = gr,
   # 等式约束
   heq = heq,
-  heq.jac = heq.jac, 
+  heq.jac = heq.jac,
   # 不等式约束
-  hin = hin, 
+  hin = hin,
   hin.jac = hin.jac,
   # 不显示迭代过程
-  control.outer = list(trace = FALSE) 
+  control.outer = list(trace = FALSE)
 )
 ans
+```
+
+```
+## $par
+## [1] 7.390292e-04 4.497160e-12 9.992610e-01
+## 
+## $value
+## [1] 1.000002
+## 
+## $counts
+## function gradient 
+##     1230      163 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+## 
+## $hessian
+##           [,1]      [,2]      [,3]
+## [1,] 120517098 120517087 120517091
+## [2,] 120517087 120517115 120517095
+## [3,] 120517091 120517095 120517091
+## 
+## $outer.iterations
+## [1] 13
+## 
+## $lambda
+## [1] 4.481599
+## 
+## $sigma
+## [1] 120517089
+## 
+## $barrier.value
+## [1] 0.003472071
+## 
+## $K
+## [1] 4.269112e-08
 ```
 
 ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。
@@ -1455,11 +1480,14 @@ ans 是 `constrOptim.nl()` 返回的一个 list， convergence = 0 表示迭代�
 
 ```r
 # 不提供梯度函数，照样可以求解
-ans <- constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
+ans <- alabama::constrOptim.nl(par = p0, fn = fn, heq = heq, hin = hin)
 ```
+
+::: {.rmdtip data-latex="{注意}"}
+等式和不等式约束的雅可比矩阵必须以 matrix 数据类型存储，而不能以 vector 类型存储。要注意和后面 ROI 包的调用形式区别。
 :::
 
-实际上，可以用 ROI 调用 alabama 的方式，这种方式可以简化目标函数梯度和约束条件的表示
+实际上，可以用 ROI 调用 alabama 求解器的方式，这种方式可以简化目标函数梯度和约束条件的表示
 
 
 ```r
@@ -1649,7 +1677,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.120373 4.835582 3.709758 1.260885
+## [1] 1.236796 4.757724 3.798796 1.183922
 ```
 
 ```r
@@ -1657,7 +1685,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.36415
+## [1] 18.13885
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1785,7 +1813,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245373
+## [1] 1.227948 4.245350
 ```
 
 ```r
@@ -1984,7 +2012,7 @@ nlp$solution
 ```
 
 ```
-## [1] 36.51739 35.24311
+## [1] 20.18872 10.10485
 ```
 
 ```r
@@ -1992,7 +2020,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.087967
+## [1] -3.0532
 ```
 比如下面三组
 
@@ -2242,11 +2270,12 @@ wireframe(
 
 
 \begin{equation*}
-\begin{array}{l}
-\frac{\partial x}{\partial t} &= \sigma (y - x) \\
-\frac{\partial y}{\partial t} &= x(\rho -z) - y \\
-\frac{\partial x}{\partial t} &= xy - \beta z
-\end{array}
+\left\{ 
+  \begin{array}{l}
+    \frac{\partial x}{\partial t} = \sigma (y - x) \\
+    \frac{\partial y}{\partial t} = x(\rho -z) - y \\
+    \frac{\partial x}{\partial t} = xy - \beta z
+  \end{array} \right.
 \end{equation*}
 
 
