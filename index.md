@@ -1,7 +1,7 @@
 --- 
 title: "现代应用统计与 R 语言"
 author: "黄湘云"
-date: "2021-07-18"
+date: "2021-07-19"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -59,7 +59,7 @@ description: "线性模型理论及其应用，注意模型的适用范围、参
 Book in early development. Planned release in 202X. [^build-note]
 :::
 
-[^build-note]: 最新一次编译发生在 2021-07-18 10:25:52。
+[^build-note]: 最新一次编译发生在 2021-07-19 15:43:36。
 
 
 
@@ -366,6 +366,6 @@ xfun::session_info(packages = c(
 ##   patchwork_1.1.1    plotly_4.9.4.1     reactable_0.2.3    rmarkdown_2.9     
 ##   shiny_1.6.0        tidyverse_1.3.1   
 ## 
-## Pandoc version: 2.14.0.3
+## Pandoc version: 2.14.1
 ```
 

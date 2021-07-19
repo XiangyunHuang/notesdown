@@ -24,7 +24,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2021-07-18" />
+<meta name="date" content="2021-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -990,13 +990,13 @@ a column separator --></p>
 <p>diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html</a></p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-spark-with-r.html#cb159-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb159-2"><a href="sec-spark-with-r.html#cb159-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
-<pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.71   Premium     F     VS2  62.1    58  2801 5.70 5.67 3.53
-## 2  0.77 Very Good     H     SI1  61.7    56  2830 5.84 5.89 3.62
-## 3  0.68   Premium     F    VVS2  61.7    57  2854 5.67 5.64 3.49
-## 4  0.90 Very Good     J     VS1  62.5    56  3188 6.11 6.21 3.85
-## 5  0.91     Ideal     G     SI2  62.7    57  3557 6.15 6.19 3.87
-## 6  0.83 Very Good     I    VVS1  61.8    56  3774 6.00 6.03 3.72</code></pre>
+<pre><code>##   carat     cut color clarity depth table price    x    y    z
+## 1  0.73 Premium     E     SI1  62.2    59  2821 5.77 5.68 3.56
+## 2  0.52   Ideal     F    VVS1  61.2    56  2867 5.21 5.19 3.18
+## 3  0.54   Ideal     F    VVS1  61.8    56  2882 5.23 5.26 3.24
+## 4  0.81    Good     G     VS2  62.9    58  3250 5.88 5.94 3.72
+## 5  0.90 Premium     E     SI2  59.2    60  3701 6.31 6.23 3.71
+## 6  1.05    Good     H     SI2  63.9    56  3822 6.44 6.37 4.09</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="sec-spark-with-r.html#cb161-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -1005,13 +1005,13 @@ a column separator --></p>
 <span id="cb161-4"><a href="sec-spark-with-r.html#cb161-4" aria-hidden="true" tabindex="-1"></a><span class="st">  LIMIT 6</span></span>
 <span id="cb161-5"><a href="sec-spark-with-r.html#cb161-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb161-6"><a href="sec-spark-with-r.html#cb161-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
-<pre><code>##     cut price rank
-## 1  Fair  1059    1
-## 2  Good  1316    1
-## 3  Good  3195    2
-## 4  Good  4778    3
-## 5 Ideal   507    1
-## 6 Ideal   734    2</code></pre>
+<pre><code>##    cut price rank
+## 1 Fair  1156    1
+## 2 Fair  3801    2
+## 3 Fair  7333    3
+## 4 Good  3063    1
+## 5 Good  7096    2
+## 6 Good  7738    3</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -1053,11 +1053,11 @@ a column separator --></p>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="sec-spark-with-r.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 今天</span></span>
 <span id="cb168-2"><a href="sec-spark-with-r.html#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select current_date&quot;</span>)</span></code></pre></div>
 <pre><code>##   current_date()
-## 1     2021-07-18</code></pre>
+## 1     2021-07-19</code></pre>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="sec-spark-with-r.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 昨天</span></span>
 <span id="cb170-2"><a href="sec-spark-with-r.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select date_sub(current_date, 1)&quot;</span>)</span></code></pre></div>
 <pre><code>##   date_sub(current_date(), 1)
-## 1                  2021-07-17</code></pre>
+## 1                  2021-07-18</code></pre>
 <div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="sec-spark-with-r.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 本月最后一天 current_date 所属月份的最后一天</span></span>
 <span id="cb172-2"><a href="sec-spark-with-r.html#cb172-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select last_day(current_date)&quot;</span>)</span></code></pre></div>
 <pre><code>##   last_day(current_date())
@@ -1065,7 +1065,7 @@ a column separator --></p>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="sec-spark-with-r.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 星期几</span></span>
 <span id="cb174-2"><a href="sec-spark-with-r.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select dayofweek(current_date)&quot;</span>)</span></code></pre></div>
 <pre><code>##   dayofweek(current_date())
-## 1                         1</code></pre>
+## 1                         2</code></pre>
 <p>最后，使用完记得关闭 Spark 连接</p>
 <div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="sec-spark-with-r.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_disconnect</span>(sc)</span></code></pre></div>
 </div>

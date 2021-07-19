@@ -1136,13 +1136,12 @@ sessionInfo()
 ##  [9] generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1       
 ## [13] mgcv_1.8-36       utf8_1.2.1        rlang_0.4.11      pillar_1.6.1     
 ## [17] glue_1.4.2        withr_2.4.2       DBI_1.1.1         tweenr_1.0.2     
-## [21] plyr_1.8.6        lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0    
-## [25] gtable_0.3.0      codetools_0.2-18  evaluate_0.14     labeling_0.4.2   
-## [29] knitr_1.33        fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.8   
-## [33] Rcpp_1.0.7        scales_1.1.1      farver_2.1.0      hms_1.1.0        
-## [37] digest_0.6.27     stringi_1.7.3     bookdown_0.22     dplyr_1.0.7      
-## [41] grid_4.1.0        tools_4.1.0       tibble_3.1.2      crayon_1.4.1     
-## [45] extrafontdb_1.0   pkgconfig_2.0.3   ellipsis_0.3.2    Matrix_1.3-4     
-## [49] prettyunits_1.1.1 assertthat_0.2.1  rmarkdown_2.9     R6_2.5.0         
-## [53] nlme_3.1-152      compiler_4.1.0
+## [21] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
+## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        fansi_0.5.0      
+## [29] gifski_1.4.3-1    Rttf2pt1_1.3.8    Rcpp_1.0.7        scales_1.1.1     
+## [33] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.7.3    
+## [37] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
+## [41] tibble_3.1.2      crayon_1.4.1      extrafontdb_1.0   pkgconfig_2.0.3  
+## [45] ellipsis_0.3.2    Matrix_1.3-4      prettyunits_1.1.1 assertthat_0.2.1 
+## [49] rmarkdown_2.9     R6_2.5.0          nlme_3.1-152      compiler_4.1.0
 ```

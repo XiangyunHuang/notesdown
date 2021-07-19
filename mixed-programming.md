@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x559a02598528>
+## <bytecode: 0x5612e2c536b8>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x559a02598528>
+## <bytecode: 0x5612e2c536b8>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f4ea5cff490>]
+## [<matplotlib.lines.Line2D object at 0x7fdc1c735490>]
 plt.show()
 ```
 
@@ -194,8 +194,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c616d2859e400.c -o c616d2859e400.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c616d2859e400.so c616d2859e400.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c60fa6daba498.c -o c60fa6daba498.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c60fa6daba498.so c60fa6daba498.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -344,9 +344,9 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
 ##  [5] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     tools_4.1.0      
-##  [9] grid_4.1.0        xfun_0.24         png_0.1-7         tinytex_0.32     
-## [13] htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27    
-## [17] lifecycle_1.0.0   bookdown_0.22     Matrix_1.3-4      later_1.2.0      
-## [21] promises_1.2.0.1  evaluate_0.14     mime_0.11         rmarkdown_2.9    
-## [25] stringi_1.7.3     compiler_4.1.0    jsonlite_1.7.2    httpuv_1.6.1
+##  [9] grid_4.1.0        xfun_0.24         png_0.1-7         htmltools_0.5.1.1
+## [13] ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
+## [17] bookdown_0.22     Matrix_1.3-4      later_1.2.0       promises_1.2.0.1 
+## [21] evaluate_0.14     mime_0.11         rmarkdown_2.9     stringi_1.7.3    
+## [25] compiler_4.1.0    jsonlite_1.7.2    httpuv_1.6.1
 ```
