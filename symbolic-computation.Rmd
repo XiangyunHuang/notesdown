@@ -1,11 +1,4 @@
-# 符号计算 {#chap:symbolic-computation}
-
-```{r setup, include=FALSE}
-library(reticulate)
-knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
-# 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
-reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-```
+# 符号计算 {#chap-symbolic-computation}
 
 相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 `deriv()`、`D()` 等可以做一些简单的微分运算，扩展包 [Ryacas](https://github.com/r-cas/ryacas) 提供 [Yacas](https://github.com/grzegorzmazur/yacas/) 核心计算引擎，[symengine](https://github.com/symengine/symengine.R) 引入 C++ 符号计算库[SymEngine](https://github.com/symengine/)，相比于 **Ryacas**，**symengine** 不会和 Base R 函数冲突。Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/>。
 
@@ -87,13 +80,3 @@ solutions <- solve(d1_expr, "x")
 solutions
 ```
 
-```{python, eval=FALSE}
-from sympy import * 
-# 设置显示样式
-init_printing(use_unicode=False, wrap_line=False)
-x = Symbol('x')
-# 积分
-integrate(x**2 + x + 1, x)
-# 因式分解
-factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
-```
