@@ -1,4 +1,4 @@
-# 数据探索 {#chap:data-explorer}
+# 数据探索 {#chap-data-explorer}
 
 [DataExplorer](https://github.com/boxuancui/DataExplorer)
 

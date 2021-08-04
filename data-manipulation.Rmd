@@ -1,38 +1,39 @@
-# 数据操作 {#chap:data-manipulation}
-
-```{r}
-library(magrittr)
-```
+# 数据操作 {#chap-data-manipulation}
 
 [data.table](https://github.com/Rdatatable/data.table) 大大加强了 [Base R](https://github.com/wch/r-source) 提供的数据操作，[poorman](https://github.com/nathaneastwood/poorman) 提供最常用的数据操作，但是不依赖 dplyr，[openxlsx](https://github.com/ycphs/openxlsx) 可以读写 XLSX 文档，[fst](https://github.com/fstpackage/fst)，[arrow](https://github.com/apache/arrow/tree/master/r) 和 [feather](https://github.com/wesm/feather/tree/master/R) 提供更加高效的数据读写性能。
+
+[collapse](https://github.com/SebKrantz/collapse) 提供一系列高级和快速的数据操作，支持 Base R、dplyr、tibble、data.table、plm 和 sf 数据框结构类型。关键的特点有：1. 高级的统计编程，提供一系列统计函数支持在向量、矩阵和数据框上做分组和带权计算。
 
 更多参考材料见[A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/)，
 [Big Data in Economics: Data cleaning and wrangling](https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html) 和 [DataCamp’s data.table cheatsheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
 
-```{r tidyverse-vs-base-r,fig.cap="Tidyverse 和 Base R 的关系",echo=FALSE,out.width="75%"}
-knitr::include_graphics(path = paste0("diagrams/tidyverse-vs-base-r",
+```{r tidyverse-vs-base-r, fig.cap="Tidyverse 和 Base R 的关系", echo=FALSE, out.width="55%"}
+knitr::include_graphics(path = paste0(
+  "diagrams/tidyverse-vs-base-r",
   ifelse(knitr::is_latex_output(), ".pdf", ".svg")
 ))
 ```
 
-## apply 族 {#sec:apply-family}
+## apply 族 {#sec-apply-family}
 
-| 函数 |  输入 |  输出 |
+Table: (\#tab:apply-functions) apply 函数
+
+| 函数   |       输入         |         输出       |
 |:------ |:------------------ |:------------------ |
-| apply  |  矩阵、数据框      | 向量               |
-| lapply |  向量、列表        | 列表               |
-| sapply |  向量、列表        | 向量、矩阵         |
-| mapply |  多个向量          | 列表               |
-| tapply |  数据框、数组      | 向量               |
-| vapply |  列表              | 矩阵               |
-| eapply |   列表             | 列表               |
-| rapply |  嵌套列表          | 嵌套列表           |
+| `apply()`  |  矩阵、数据框      | 向量               |
+| `lapply()` |  向量、列表        | 列表               |
+| `sapply()` |  向量、列表        | 向量、矩阵         |
+| `mapply()` |  多个向量          | 列表               |
+| `tapply()` |  数据框、数组      | 向量               |
+| `vapply()` |  列表              | 矩阵               |
+| `eapply()` |   列表             | 列表               |
+| `rapply()` |  嵌套列表          | 嵌套列表           |
 
 除此之外，还有 `dendrapply()` 专门处理层次聚类或分类回归树型结构， 而函数 `kernapply()` 用于时间序列的平滑处理
 
 ```{r spectrum-sunspot-year, fig.cap="太阳黑子的频谱"}
 # Reproduce example 10.4.3 from Brockwell and Davis (1991) [@Brockwell_1991_Time]
-spectrum(sunspot.year, kernel = kernel("daniell", c(11,7,3)), log = "no")
+spectrum(sunspot.year, kernel = kernel("daniell", c(11, 7, 3)), log = "no")
 ```
 
 <!-- https://design.tidyverse.org/cs-mapply-pmap.html -->
@@ -43,7 +44,10 @@ spectrum(sunspot.year, kernel = kernel("daniell", c(11,7,3)), log = "no")
 means <- 1:4
 sds <- 1:4
 set.seed(2020)
-samples <- mapply(rnorm, mean = means, sd = sds, MoreArgs = list(n = 50), SIMPLIFY = FALSE)
+samples <- mapply(rnorm,
+  mean = means, sd = sds,
+  MoreArgs = list(n = 10), SIMPLIFY = FALSE
+)
 samples
 ```
 
@@ -66,13 +70,13 @@ sapply(samples, mean)
 分别计算每个样本的1，2，3 分位点
 
 ```{r}
-lapply(samples, quantile, probs = 1:3/4)
+lapply(samples, quantile, probs = 1:3 / 4)
 ```
 
 仅用 `sapply()` 函数替换上面的 `lapply()`，我们可以得到一个矩阵，值得注意的是函数 `quantile()` 和 `fivenum()` 算出来的结果有一些差异
 
 ```{r}
-sapply(samples, quantile, probs = 1:3/4)
+sapply(samples, quantile, probs = 1:3 / 4)
 vapply(samples, fivenum, c(Min. = 0, "1st Qu." = 0, Median = 0, "3rd Qu." = 0, Max. = 0))
 ```
 
@@ -80,7 +84,7 @@ vapply 和 sapply 类似，但是预先指定返回值类型，这样可以更�
 
 以数据集 presidents 为例，它是一个 ts 对象类型的时间序列数据，记录了 1945 年至 1974 年每个季度美国总统的支持率，这组数据中存在缺失值，以 NA 表示。支持率的变化趋势见图 \@ref(fig:usa-presidents)。
 
-```{r usa-presidents,fig.cap="1945-1974美国总统的支持率"}
+```{r usa-presidents, fig.cap="1945-1974美国总统的支持率"}
 plot(presidents)
 ```
 
@@ -92,15 +96,6 @@ tapply(presidents, cycle(presidents), mean, na.rm = TRUE)
 
 `cycle()` 函数计算序列中每个观察值在周期中的位置，presidents 的周期为 `r frequency(presidents)`，根据位置划分组，然后分组求平均，也可以化作如下计算步骤，虽然看起来复杂，但是数据操作的过程很清晰，不再看起来像是一个黑箱。
 
-```{r}
-# Base R
-cbind(expand.grid(quarter = c("Qtr1", "Qtr2", "Qtr3", "Qtr4"), year = 1945:1974), rate = as.vector(presidents)) %>%
-  reshape(., v.names = "rate", idvar = "year", timevar = "quarter", direction = "wide", sep = "") %>%
-  `colnames<-`(., gsub(pattern = "(rate)", x = colnames(.), replacement =  "")) %>% 
-  `[`(., -1) %>% 
-  apply(., 2, mean, na.rm = TRUE)
-```
-
 tapply 函数来做分组求和
 
 ```{r}
@@ -109,19 +104,23 @@ tapply(warpbreaks$breaks, warpbreaks[, 3, drop = FALSE], sum)
 # 两个变量分组计数
 with(warpbreaks, table(wool, tension))
 # 两个变量分组求和
-aggregate(breaks ~ wool + tension, data = warpbreaks,  sum) %>% 
-  reshape(., v.names = "breaks", idvar = "wool", timevar = "tension", direction = "wide", sep = "") %>% 
-  `colnames<-`(., gsub(pattern = "(breaks)", x = colnames(.), replacement =  ""))
+dat <- aggregate(breaks ~ wool + tension, data = warpbreaks, sum) |>
+  reshape(v.names = "breaks", idvar = "wool", timevar = "tension", direction = "wide", sep = "")
+
+`colnames<-`(dat, gsub(pattern = "(breaks)", x = colnames(dat), replacement = ""))
 ```
 
-## 子集过滤 {#sec:subset}
+## 子集过滤 {#sec-subset}
 
 ```{r}
-iris[iris$Species == 'setosa' & iris$Sepal.Length > 5.5, grepl('Sepal', colnames(iris))]
-subset(iris, subset = Species == 'setosa' & Sepal.Length > 5.5, select = grepl('Sepal', colnames(iris)))
+iris[iris$Species == "setosa" & iris$Sepal.Length > 5.5, grepl("Sepal", colnames(iris))]
+subset(iris,
+  subset = Species == "setosa" & Sepal.Length > 5.5,
+  select = grepl("Sepal", colnames(iris))
+)
 ```
 
-## with 选项 {#sec:option-with}
+## with 选项 {#sec-option-with}
 
 注意 data.table 与 Base R 不同的地方
 
@@ -139,36 +138,45 @@ iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris))]
 需要使用 `with = FALSE` 选项
 
 ```{r}
-iris[Species == "setosa" & Sepal.Length > 5.5, grepl("Sepal", colnames(iris)), with = FALSE]
+iris[Species == "setosa" & Sepal.Length > 5.5,
+  grepl("Sepal", colnames(iris)),
+  with = FALSE
+]
 ```
 
 不使用 with 选项，用函数 `mget()` 将字符串转变量
 
 ```{r}
-iris[Species == "setosa" & Sepal.Length > 5.5, mget(grep("Sepal", colnames(iris), value = TRUE))]
+iris[
+  Species == "setosa" & Sepal.Length > 5.5,
+  mget(grep("Sepal", colnames(iris), value = TRUE))
+]
 ```
 
 更加 data.table 风格的方式见
 
 ```{r}
-iris[Species == 'setosa' & Sepal.Length > 5.5, .SD, .SDcols = patterns('Sepal')]
+iris[Species == "setosa" & Sepal.Length > 5.5, .SD, .SDcols = patterns("Sepal")]
 ```
 
 with 还可以这样用，直接修改、添加一列
 
-```{r,eval=FALSE}
+```{r}
 df <- expand.grid(x = 1:10, y = 1:10)
 df$z <- with(df, x^2 + y^2)
 df <- subset(df, z < 100)
 df <- df[sample(nrow(df)), ]
 head(df)
+```
 
+
+```{r with-op, fig.cap="with 操作"}
 library(ggplot2)
 ggplot(df, aes(x, y, z = z)) +
   geom_contour()
 ```
 
-## 分组聚合 {#sec:aggregate}
+## 分组聚合 {#sec-aggregate}
 
 ```{r}
 methods("aggregate")
@@ -227,7 +235,7 @@ dt <- data.table(
 server <- function(input, output, session) {
   output$output_table <- DT::renderDataTable(
     {
-      dt[, .(x_sum = sum(x), y_sum = sum(y)), by = mget(input$input_vars)] %>%
+      dt[, .(x_sum = sum(x), y_sum = sum(y)), by = mget(input$input_vars)] |>
         DT::datatable()
     },
     server = FALSE
@@ -238,104 +246,8 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
-reactable 制作表格
 
-```{r,eval=FALSE}
-library(shiny)
-library(reactable)
-
-ui <- fluidPage(
-  reactableOutput("table")
-)
-
-server <- function(input, output) {
-  output$table <- renderReactable({
-    reactable(iris,
-      filterable = TRUE, # 过滤
-      searchable = TRUE, # 搜索
-      showPageSizeOptions = TRUE, # 页面大小
-      pageSizeOptions = c(5, 10, 15), # 页面大小可选项
-      defaultPageSize = 10, # 默认显示10行
-      highlight = TRUE, # 高亮选择
-      striped = TRUE, # 隔行高亮
-      fullWidth = FALSE, # 默认不要全宽填充，适应数据框的宽度
-      defaultSorted = list(
-        Sepal.Length = "asc", # 由小到大排序
-        Petal.Length = "desc" # 由大到小
-      ),
-      columns = list(
-        Sepal.Width = colDef(style = function(value) { # Sepal.Width 添加颜色标记
-          if (value > 3.5) {
-            color <- "#008000"
-          } else if (value > 2) {
-            color <- "#e00000"
-          } else {
-            color <- "#777"
-          }
-          list(color = color, fontWeight = "bold")
-        })
-
-      )
-    )
-  })
-}
-
-shinyApp(ui, server)
-```
-
-```{r,eval=FALSE}
-# 修改自 Code: https://gist.github.com/jthomasmock/f085dce3e70e42ca49b052bbe25de49f
-library(magrittr)
-library(reactable)
-library(htmltools)
-
-# barchart function from: https://glin.github.io/reactable/articles/building-twitter-followers.html
-bar_chart <- function(label, width = "100%", height = "14px", fill = "#00bfc4", background = NULL) {
-  bar <- div(style = list(background = fill, width = width, height = height))
-  chart <- div(style = list(flexGrow = 1, marginLeft = "6px", background = background), bar)
-  div(style = list(display = "flex", alignItems = "center"), label, chart)
-}
-
-data <- mtcars %>% 
-  subset(select = c("cyl", "mpg")) %>%
-  subset(subset = sample(x = c(TRUE, FALSE), size = 6, replace = T))
-
-
-reactable(
-  data,
-  defaultPageSize = 20,
-  columns = list(
-    cyl = colDef(align = "center"),
-    mpg = colDef(
-      name = "mpg",
-      defaultSortOrder = "desc",
-      minWidth = 250,
-      cell = function(value, index) {
-        width <- paste0(value * 100 / max(mtcars$mpg), "%")
-        value <- format(value, width = 9, justify = "right", nsmall = 1)
-        
-        # output the value of another column 
-        # that aligns with current value
-        cyl_val <- data$cyl[index]
-
-        # Color based on the row's cyl value
-        color_fill <- if (cyl_val == 4) {
-          "#3686d3" # blue
-        } else if (cyl_val == 6) {
-          "#88398a" # purple
-        } else {
-          "#fcab27" # orange
-        }
-        bar_chart(value, width = width, fill = color_fill, background = "#e1e1e1")
-      },
-      align = "left",
-      style = list(fontFamily = "monospace", whiteSpace = "pre")
-    )
-  )
-)
-```
-
-## 合并操作 {#sec:merge-two-tables}
+## 合并操作 {#sec-merge-two-tables}
 
 ```{r}
 dat1 <- data.frame(x = c(0, 0, 10, 10, 20, 20, 30, 30), y = c(1, 1, 2, 2, 3, 3, 4, 4))
@@ -348,7 +260,7 @@ merge(dat1, dat2)
 
 保留两个数据集中的所有行
 
-## 长宽转换 {#sec:reshape}
+## 长宽转换 {#sec-reshape}
 
 ```{r}
 args("reshape")
@@ -358,21 +270,21 @@ PlantGrowth 数据集的重塑操作也可以使用内置的函数 `reshape()` �
 
 ```{r data-frame-PlantGrowth}
 PlantGrowth$id <- rep(1:10, 3)
-reshape(
+dat <- reshape(
   data = PlantGrowth, idvar = "group", v.names = "weight",
   timevar = "id", direction = "wide",
   sep = ""
-) %>% 
-knitr::kable(.,
+)
+knitr::kable(dat,
   caption = "不同生长环境下植物的干重", row.names = FALSE,
-  col.names = gsub("(weight)", "", names(.)),
+  col.names = gsub("(weight)", "", names(dat)),
   align = "c"
 )
 ```
 
 或者，我们也可以使用 **tidyr** 包提供的 `pivot_wider()` 函数
 
-```{r data-tibble-PlantGrowth,eval=FALSE}
+```{r data-tibble-PlantGrowth}
 tidyr::pivot_wider(
   data = PlantGrowth, id_cols = id,
   names_from = group, values_from = weight
@@ -389,7 +301,7 @@ dcast(PlantGrowth_DT, id ~ group, value.var = "weight")
 dcast(PlantGrowth_DT, group ~ id, value.var = "weight")
 ```
 
-## 对符合条件的列操作 {#sec:filter-columns}
+## 对符合条件的列操作 {#sec-filter-columns}
 
 ```{r}
 # 数值型变量的列的位置
@@ -397,28 +309,27 @@ which(sapply(iris, is.numeric))
 ```
 
 ```{r}
-iris[,sapply(iris, is.numeric), with = F][Sepal.Length > 7.5]
+iris[, sapply(iris, is.numeric), with = F][Sepal.Length > 7.5]
 ```
 
 ```{r}
 class(iris)
 ```
 
-用 magrittr 提供的管道符号连接 data.table 的数据操作与 ggplot2 的数据可视化
+用 Base R 提供的管道符号 |> 将 data.table 数据操作与 ggplot2 数据可视化连接起来
 
-```{r datatable-ggplot2}
+```{r pipe-dataframe-ggplot2, fig.cap="管道连接数据操作和可视化"}
 library(ggplot2)
-iris %>%
-  as.data.table(.) %>%
-  .[Species == "setosa"] %>% # 行过滤
-  .[Sepal.Length > 5.5] %>% # 行过滤
-  .[, mget(grep("Sepal", colnames(.), value = TRUE))] %>% # 列过滤
-  # .[, grepl("Sepal", colnames(.)), with = FALSE] %>%
+iris |>
+  subset(Species == "setosa" & Sepal.Length > 5.5) |>
+  # 行过滤
+  # subset(select = grep("Sepal", colnames(iris), value = TRUE)) |> # 列过滤
+  subset(select = grepl("Sepal", colnames(iris))) |>
   ggplot(aes(x = Sepal.Length, y = Sepal.Width)) + # 绘图
   geom_point()
 ```
 
-## `CASE WHEN` 和 `fcase` {#sec:case-when}
+## `CASE WHEN` 和 `fcase` {#sec-case-when}
 
 `CASE WHEN` 是 SQL 中的条件判断语句，**data.table** 中的函数 `fcase()` 可与之等价。值得注意的是，`fcase()` 需要 **data.table** 版本 1.13.0 及以上。
 
@@ -435,42 +346,43 @@ transform(dat, gender_cn = fcase(
 ))
 ```
 
-## 数据操作实战 {#sec:datatable-in-action}
+## 数据操作实战 {#sec-datatable-in-action}
 
 [Toby Dylan Hocking](https://tdhock.github.io/) 在 useR! 2020 大会上分享的幻灯片 <https://github.com/tdhock/r-devel-emails>
 
-## 高频数据操作 {#sec:faq-operations}
+## 高频数据操作 {#sec-faq-operations}
 
 以数据集 dat 为例介绍常用的数据操作
 
 ```{r}
 set.seed(2020)
-dat = data.frame(num_a = rep(seq(4), each = 4), num_b = rep(seq(4), times = 4), 
-                 group_a = sample(x = letters[1:3], size = 16, replace = T), 
-                 group_b = sample(x = LETTERS[1:3], size = 16, replace = T))
-dat = as.data.table(dat)
+dat <- data.frame(
+  num_a = rep(seq(4), each = 4), num_b = rep(seq(4), times = 4),
+  group_a = sample(x = letters[1:3], size = 16, replace = T),
+  group_b = sample(x = LETTERS[1:3], size = 16, replace = T)
+)
+dat <- as.data.table(dat)
 dat
 ```
 
-### 循环合并 {#subsec:reduce-merge}
+### 循环合并 {#subsec-reduce-merge}
 
 - 问题来源 [Faster version of Reduce(merge, list(DT1,DT2,DT3,...)) called mergelist (a la rbindlist)](https://github.com/Rdatatable/data.table/issues/599)
 
 ```{r}
 
-
 ```
 
-### 分组计数 {#subsec:count-by-group}
+### 分组计数 {#subsec-count-by-group}
 
 ```{r}
-dat[, .(length(num_a)) , by = .(group_a)] # dat[, .N , by = .(group_a)]
-dat[, .(length(num_a)) , by = .(group_b)]
+dat[, .(length(num_a)), by = .(group_a)] # dat[, .N , by = .(group_a)]
+dat[, .(length(num_a)), by = .(group_b)]
 
 dat[, .(length(num_a)), by = .(group_a, group_b)]
 ```
 
-### 分组抽样 {#subsec:sample-by-group}
+### 分组抽样 {#subsec-sample-by-group}
 
 以 `group_a` 为组别， a、 b、 c 分别有 6、 8、 2 条记录
 
@@ -491,7 +403,7 @@ dat[, .SD[sample(x = .N, size = min(4, .N))], by = group_a]
 
 [^sample-by-group]: https://stackoverflow.com/questions/18258690/take-randomly-sample-based-on-groups
 
-### 分组排序 {#subsec:order-by-group}
+### 分组排序 {#subsec-order-by-group}
 
 data.table 包的分组排序问题 <https://d.cosx.org/d/421650-datatable/3>
 
@@ -518,16 +430,32 @@ setorder(dat, -num_a, group_a)
 如果数据集 dat 包含缺失值，考虑去掉缺失值
 
 ```{r}
-dat[, .(length(!is.na(num_a))) , by = .(group_a)]
+dat[, .(length(!is.na(num_a))), by = .(group_a)]
 ```
 
 如果数据集 dat 包含重复值，考虑去掉重复值
 
 ```{r}
-dat[, .(length(unique(num_a))) , by = .(group_a)]
+dat[, .(length(unique(num_a))), by = .(group_a)]
 ```
 
 :::
+
+按 Species 分组，对 Sepal.Length 降序排列，取 Top 3
+
+```{r}
+iris <- as.data.table(iris)
+iris[order(-Sepal.Length), .SD[1:3], by = "Species"]
+```
+
+对 iris 各个列排序
+
+```{r}
+dat <- head(iris)
+ind <- do.call(what = "order", args = dat[, c(5, 1, 2, 3)])
+dat[ind, ]
+```
+
 
 按 Species 分组，对 Sepal.Length 降序排列，取 Top 3
 
@@ -536,11 +464,17 @@ iris = as.data.table(iris)
 iris[order(-Sepal.Length), .SD[1:3], by="Species"]
 ```
 
-对 iris 各个列排序
+对 iris 各个列排序，依次对第 5、1、2、3 列升序排列
 
 ```{r}
 ind <- do.call(what = "order", args = iris[,c(5,1,2,3)])
-iris[ind, ]
+head(iris[ind, ])
 ```
-
+```{r column-order, echo=FALSE}
+knitr::kable(
+  list(head(iris), head(iris[ind, ])),
+  caption = "iris 数据集原顺序（左）和新顺序（右）",
+  booktabs = TRUE, valign = "t"
+)
+```
 

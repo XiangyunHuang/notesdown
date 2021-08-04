@@ -1,4 +1,4 @@
-# 符号说明 {#chap:notations}
+# 符号说明 {#chap-notations}
 
 > Fabio Mulazzani: I need to obtain all the 9.somethingExp157 permutations that can be given from the numbers from 1 to 100.
 >
