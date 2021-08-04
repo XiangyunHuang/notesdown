@@ -1,4 +1,4 @@
-# 交互式数据表格 {#chap:interactive-data-tables}
+# 交互表格 {#chap-interactive-data-tables}
 
 Greg Lin 开发的 [reactable](https://github.com/glin/reactable) 包覆盖测试达到惊人的 99\%，它基于 JavaScript 库 [react-table](https://github.com/tannerlinsley/react-table)， 是 [react](https://github.com/facebook/react) 框架的衍生品，Nick Raienko 整理了一份超棒的 [react 模块合集](https://github.com/enaqx/awesome-react) 也许机智如你，可以引入更多优秀的 react 模块到 R 语言社区。[reactablefmtr](https://github.com/kcuilla/reactablefmtr) 提供一些函数简化 reactable 定制表格的复杂性
 
@@ -16,7 +16,7 @@ Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78
 
 [^dt-vs-reactable]: <https://bookdown.org/yihui/rmarkdown-cookbook/table-other.html>
 
-## DT 和 reactable {#sec:dt-reactable}
+## DT 和 reactable {#sec-dt-reactable}
 
 [DT](https://github.com/rstudio/DT) 基于 jQuery 的 JS 库 [DataTables](https://datatables.net/) 提供了一个 R 的封装，封装工具和许多其他基于 JS 库的 R 包一样，比如即将介绍的 **reactable** 包，都依赖于 [htmlwidgets](https://github.com/ramnathv/htmlwidgets)。
 
@@ -147,7 +147,105 @@ ReactDOM.render(
 
 更多细节定制见 Thomas Mock 的博文 [reactable - An Interactive Tables Guide](https://themockup.blog/posts/2020-05-13-reactable-tables-the-rest-of-the-owl/)  
 
-## gt 和 kableExtra {#sec:gt-kableExtra}
+reactable 制作表格
+
+```{r,eval=FALSE}
+library(shiny)
+library(reactable)
+
+ui <- fluidPage(
+  reactableOutput("table")
+)
+
+server <- function(input, output) {
+  output$table <- renderReactable({
+    reactable(iris,
+      filterable = TRUE, # 过滤
+      searchable = TRUE, # 搜索
+      showPageSizeOptions = TRUE, # 页面大小
+      pageSizeOptions = c(5, 10, 15), # 页面大小可选项
+      defaultPageSize = 10, # 默认显示10行
+      highlight = TRUE, # 高亮选择
+      striped = TRUE, # 隔行高亮
+      fullWidth = FALSE, # 默认不要全宽填充，适应数据框的宽度
+      defaultSorted = list(
+        Sepal.Length = "asc", # 由小到大排序
+        Petal.Length = "desc" # 由大到小
+      ),
+      columns = list(
+        Sepal.Width = colDef(style = function(value) { # Sepal.Width 添加颜色标记
+          if (value > 3.5) {
+            color <- "#008000"
+          } else if (value > 2) {
+            color <- "#e00000"
+          } else {
+            color <- "#777"
+          }
+          list(color = color, fontWeight = "bold")
+        })
+
+      )
+    )
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+```{r,eval=FALSE}
+# 修改自 Code: https://gist.github.com/jthomasmock/f085dce3e70e42ca49b052bbe25de49f
+library(reactable)
+library(htmltools)
+
+# barchart function from: https://glin.github.io/reactable/articles/building-twitter-followers.html
+bar_chart <- function(label, width = "100%", height = "14px", fill = "#00bfc4", background = NULL) {
+  bar <- div(style = list(background = fill, width = width, height = height))
+  chart <- div(style = list(flexGrow = 1, marginLeft = "6px", background = background), bar)
+  div(style = list(display = "flex", alignItems = "center"), label, chart)
+}
+
+data <- mtcars |> 
+  subset(select = c("cyl", "mpg")) |>
+  subset(subset = sample(x = c(TRUE, FALSE), size = 6, replace = T))
+
+
+reactable(
+  data,
+  defaultPageSize = 20,
+  columns = list(
+    cyl = colDef(align = "center"),
+    mpg = colDef(
+      name = "mpg",
+      defaultSortOrder = "desc",
+      minWidth = 250,
+      cell = function(value, index) {
+        width <- paste0(value * 100 / max(mtcars$mpg), "%")
+        value <- format(value, width = 9, justify = "right", nsmall = 1)
+        
+        # output the value of another column 
+        # that aligns with current value
+        cyl_val <- data$cyl[index]
+
+        # Color based on the row's cyl value
+        color_fill <- if (cyl_val == 4) {
+          "#3686d3" # blue
+        } else if (cyl_val == 6) {
+          "#88398a" # purple
+        } else {
+          "#fcab27" # orange
+        }
+        bar_chart(value, width = width, fill = color_fill, background = "#e1e1e1")
+      },
+      align = "left",
+      style = list(fontFamily = "monospace", whiteSpace = "pre")
+    )
+  )
+)
+```
+
+
+## gt 和 kableExtra {#sec-gt-kableExtra}
 
 如表 \@ref(tab:kable-styles) 所示，我们可以自定义表格样式，比如配色，例子修改自 kableExtra 帮助文档 <https://haozhu233.github.io/kableExtra/bookdown/cross-format-tables-in-bookdown.html>，同时支持 HTML 和 LaTeX 输出， 但是 LaTeX 输出需要在文档类选项中增加 table 选项，即 `classoption: "table"`，这样就可以加载 colortbl 宏包，进而提供 `\rowcolor` 等 LaTeX 命令，在表格中给每个格子定制颜色。我们推荐在 classoption 中添加 table 选项，而不是再次加载 xcolor 包，比如像这样 `\usepackage[table]{xcolor}`，这会在 R Markdown 中引起冲突 [^table-rmd]。
 
@@ -231,7 +329,7 @@ iris %>%
 当前 gt 包对 LaTeX 的支持比较弱，上述表格在 HTML 网页环境中可以看到的效果并不能一一对应到 LaTeX 输出中。且 gt 包生成 LaTeX 表格会自动加载宏包 amsmath、booktabs、caption 和 longtable， `gt_latex_dependencies()` 且不能控制
 :::
 
-## 运行环境 {#sec:table-session}
+## 运行环境 {#sec-table-session}
 
 ```{r}
 sessionInfo()

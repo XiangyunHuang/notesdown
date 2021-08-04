@@ -1,8 +1,33 @@
-# 空间分析  {#chap:spatial-analysis}
+# 空间分析  {#chap-spatial-analysis}
 
+<!-- 
+1. 静态可视化和动态可视化
+1. Google 地图和开源地图服务需要介绍，国内的地图服务也需要介绍
+1. 介绍空间基础对象，及其数据操作和分析
+
+开源组织
+Timothée Giraud 等创建的 [riatelab](https://github.com/riatelab/) 和 Edzer Pebesma 等创建的 [r-spatial](https://github.com/r-spatial/)
+
+
+Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，新的R包更加简洁、速度更快、功能更强。
+
+mapedit
+mapview
+leaflet
+
+Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
+-->
+
+[mapsf](https://github.com/riatelab/mapsf) 是 [cartography](https://github.com/riatelab/cartography/) 的继任者，它更加友好、轻量和稳健。
+
+[choroplethr](https://github.com/trulia/choroplethr) 简化创建 thematic maps 的过程。
+
+[ggmap](https://github.com/dkahle/ggmap) 依赖 [RgoogleMaps](https://github.com/markusloecher/rgooglemaps) 就不介绍了
 
 [mapdeck](https://github.com/SymbolixAU/mapdeck) 支持调用 GPU 渲染
 [deck.gl](https://github.com/visgl/deck.gl) MIT 协议
+
+[googleway](https://github.com/SymbolixAU/googleway)
 
 
 Edzer Pebesma
@@ -18,14 +43,24 @@ library(RColorBrewer)
 library(raster)
 library(lattice)
 library(latticeExtra)
+library(terra) # 
 library(rasterVis) # https://oscarperpinan.github.io/rastervis/
 # https://oscarperpinan.github.io/rastervis/FAQ.html
 library(sf)
-library(rgdal)
-library(highcharter)
+library(sfarrow) # https://github.com/wcjochem/sfarrow
+# library(arrow) # 列式存储
+# library(rgdal) # 要替换掉
+# library(highcharter) # 要替换掉
 ```
 
-## 冈比亚儿童疟疾 {#sec:gambia-malaria}
+
+```{r,eval=FALSE}
+library(RgoogleMaps)
+library(mapdeck)
+library(mapsf)
+```
+
+## 冈比亚儿童疟疾 {#sec-gambia-malaria}
 
 冈比亚地形
 
@@ -61,7 +96,7 @@ rasterVis::levelplot(gambia_alt,
 # 加载数据
 data(gambia, package = "geoR")
 # 坐标变换
-library(rgdal)
+library(sp)
 sps <- SpatialPoints(gambia[, c("x", "y")],
   proj4string = CRS("+proj=utm +zone=28")
 )
@@ -150,34 +185,11 @@ mapdeck( location = c(145, -37.8), zoom = 10) %>%
   )
 ```
 
-[googleway](https://github.com/SymbolixAU/googleway)、[ggmap](https://github.com/dkahle/ggmap)、[RgoogleMaps](https://github.com/markusloecher/rgooglemaps)
-
-```{r,eval=FALSE}
-library(RgoogleMaps)
-lat <- c(40.702147, 40.718217, 40.711614)
-lon <- c(-74.012318, -74.015794, -73.998284)
-center <- c(mean(lat), mean(lon))
-zoom <- min(MaxZoom(range(lat), range(lon)))
-bb <- qbbox(lat, lon)
-par(pty = "s")
-# OSM
-myMap <- GetMap(center, zoom = 15)
-PlotOnStaticMap(myMap,
-  lat = lat, lon = lon, pch = 20,
-  col = c("red", "blue", "green"), cex = 2
-)
-```
 
 
-```{r,eval=FALSE}
-library(ggmap)
 
-us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
-get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>%
-  ggmap()
-```
 
-## 运行环境 {#sec:spatial-analysis-session}
+## 运行环境 {#sec-spatial-analysis-session}
 
 ```{r}
 sessionInfo()
