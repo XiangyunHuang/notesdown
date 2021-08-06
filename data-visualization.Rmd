@@ -28,7 +28,6 @@ library(timelineS)         # 时间线
 library(ggdendro)          # 聚类图
 library(ggfortify)         # 统计分析结果可视化：主成分图
 library(gganimate)         # 动态图
-showtext::showtext_auto()  # 加载系统字体
 ```
 
 David Robinson 给出为何使用 ggplot2 [^why-ggplot2] 当然也有 Jeff Leek 指出在某些重要场合不适合 ggplot2 [^why-not-ggplot2] 并且给出强有力的 [证据](http://motioninsocial.com/tufte/)，其实不管怎么样，适合自己的才是好的。也不枉费 Garrick Aden-Buie 花费 160 页幻灯片逐步分解介绍 [优雅的ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2)，[Malcolm Barrett](https://malco.io/) 也介绍了 [ggplot2 基础用法](https://malco.io/slides/hs_ggplot2)，还有 Selva Prabhakaran 精心总结给出了 50 个 ggplot2 数据可视化的 [例子](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) 以及 Victor Perrier 为小白用 ggplot2 操碎了心地开发 RStudio 插件 [esquisse](https://github.com/dreamRs/esquisse) 包，Claus O. Wilke 教你一步步创建出版级的图形 <https://github.com/clauswilke/practical_ggplot2>。
@@ -202,6 +201,7 @@ Hello, \faGithub
 而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "DejaVu Sans"` 来调用系统无衬线 DejaVu 字体，效果见图 \@ref(fig:system-dejavu-fonts)。
 
 ```{r system-dejavu-fonts, fig.asp=.8, fig.cap="调用系统字体绘图", out.width="75%"}
+library(extrafont)
 plot(data = pressure, pressure ~ temperature, 
      xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
      col.lab = "red", col.axis = "blue",
@@ -283,8 +283,8 @@ p4 <- p1 + labs(
 ```{r}
 # brew install font-roboto
 # 导入字体
-hrbrthemes::import_roboto_condensed()
-# sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
+# hrbrthemes::import_roboto_condensed()
+sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
 ```
 
 ```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", out.width="75%"}
@@ -297,12 +297,12 @@ ggplot(mtcars, aes(mpg, wt)) +
     subtitle = "A plot that is only useful for demonstration purposes",
     caption = "Brought to you by the letter 'g'"
   ) +
-  theme_ipsum()
+  theme_ipsum(base_family = "Roboto Condensed")
 ```
 
-如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:liberation-sans-narrow) 使用了 Liberation Sans Narrow ( MacOS 上没有 Liberation Sans Narrow 字体，用 Liberation Sans 替代了) 字体替换 `theme_ipsum()` 中的 Arial Narrow 字体。
+如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:noto-sans) 使用了 Liberation Sans Narrow ( MacOS 上没有 Liberation Sans Narrow 字体，用 Liberation Sans 替代了) 字体替换 `theme_ipsum()` 中的 Arial Narrow 字体。
 
-```{r liberation-sans-narrow,fig.cap="用 Liberation Sans Narrow 字体替换默认字体 Arial Narrow",out.width="75%"}
+```{r noto-sans, fig.cap="用 Noto Sans 字体替换默认字体 Arial Narrow", out.width="75%",fig.showtext=TRUE}
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
   labs(
@@ -311,7 +311,7 @@ ggplot(mtcars, aes(mpg, wt)) +
     subtitle = "A plot that is only useful for demonstration purposes",
     caption = "Brought to you by the letter 'g'"
   ) +
-  theme_ipsum(base_family = "Liberation Sans")
+  theme_ipsum(base_family = "Noto Sans")
 ```
 
 ::: {.rmdtip data-latex="{提示}"}
@@ -469,7 +469,7 @@ tikzDevice::tikzTest()
 
 确认没有问题后，下面图 \@ref(fig:tikz-regression) 的坐标轴标签，标题，图例等位置都支持数学公式，使用 **tikzDevice** 打造出版级的效果图。更多功能的介绍见 <https://www.daqana.org/tikzDevice/>。
 
-```{r tikz-regression, dev = 'tikz', fig.cap="线性回归模型", out.width="75%", fig.process=to_png,cache=TRUE,fig.width=4,fig.height=4}
+```{r tikz-regression, dev='tikz', fig.cap="线性回归模型", out.width="75%", fig.process=to_png, cache=TRUE, fig.width=4, fig.height=4}
 x <- rnorm(10)
 y <- x + rnorm(5, sd = 0.25)
 model <- lm(y ~ x)
@@ -480,7 +480,7 @@ plot(x, y,
   sub = "$\\mathcal{N}(x;\\mu,\\Sigma)$"
 )
 abline(model, col = "red")
-mtext(paste("Linear model: $R^{2}=", rsq, "$"), line = 0.5)
+mtext(paste0("Linear model: $R^{2}=", rsq, "$"), line = 0.5)
 legend("bottomright",
   legend = paste0(
     "$y = ",
