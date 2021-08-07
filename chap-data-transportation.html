@@ -100,6 +100,7 @@
 <h1>
 <span class="header-section-number">第 6 章</span> 数据搬运<a class="anchor" aria-label="anchor" href="#chap-data-transportation"><i class="fas fa-link"></i></a>
 </h1>
+<p><a href="https://github.com/ycphs/openxlsx">openxlsx</a> 可以读写 XLSX 文档</p>
 <p>美团使用的大数据工具有很多，最常用的 Hive、Spark、Kylin、Impala、Presto 等，详见 <a href="https://tech.meituan.com/2018/08/02/mt-r-practice.html" class="uri">https://tech.meituan.com/2018/08/02/mt-r-practice.html</a>。下面主要介绍如何在 R 中连接 MySQL、Presto 和 Spark。</p>
 <p><a href="https://github.com/r-spark/sparklyr.flint">sparklyr.flint</a> 支持 Spark 的时间序列库 <a href="https://github.com/twosigma/flint">flint</a>，<a href="https://github.com/rstudio/sparkxgb">sparkxgb</a> 为 Spark 上的 XGBoost 提供 R 接口，<a href="https://github.com/r-spark/sparkwarc">sparkwarc</a> 支持加载 Web ARChive 文件到 Spark 里
 <a href="https://github.com/chezou/sparkavro">sparkavro</a> 支持从 Apache Avro (<a href="https://avro.apache.org/" class="uri">https://avro.apache.org/</a>) 读取文件到 Spark 里，<a href="https://github.com/miraisolutions/sparkbq">sparkbq</a> 是一个 sparkly 扩展包，集成 Google BigQuery 服务，<a href="https://github.com/harryprince/geospark">geospark</a> 提供 GeoSpark 库的 R 接口，并且以 sf 的数据操作方式，<a href="https://github.com/h2oai/sparkling-water/tree/master/r">rsparkling</a> H2O Sparkling Water 机器学习库的 R 接口。</p>
@@ -129,27 +130,27 @@
 <p>Spark 依赖特定版本的 Java、Hadoop，三者之间的版本应该要相融。</p>
 </div>
 <p>在 MacOS 上配置 Java 环境，注意 Spark 仅支持 Java 8 至 11，所以安装指定版本的 Java 开发环境</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb149-1"><a href="chap-data-transportation.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 openjdk 11</span></span>
-<span id="cb149-2"><a href="chap-data-transportation.html#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install openjdk@11</span>
-<span id="cb149-3"><a href="chap-data-transportation.html#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 全局设置 JDK 11</span></span>
-<span id="cb149-4"><a href="chap-data-transportation.html#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ln <span class="at">-sfn</span> /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk</span>
-<span id="cb149-5"><a href="chap-data-transportation.html#cb149-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Java 11 JDK 添加到 .zshrc </span></span>
-<span id="cb149-6"><a href="chap-data-transportation.html#cb149-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CPPFLAGS</span><span class="op">=</span><span class="st">"-I/usr/local/opt/openjdk@11/include"</span></span>
-<span id="cb149-7"><a href="chap-data-transportation.html#cb149-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/usr/local/opt/openjdk@11/bin:</span><span class="va">$PATH</span><span class="st">"</span></span></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb438-1"><a href="chap-data-transportation.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 openjdk 11</span></span>
+<span id="cb438-2"><a href="chap-data-transportation.html#cb438-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install openjdk@11</span>
+<span id="cb438-3"><a href="chap-data-transportation.html#cb438-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 全局设置 JDK 11</span></span>
+<span id="cb438-4"><a href="chap-data-transportation.html#cb438-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ln <span class="at">-sfn</span> /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk</span>
+<span id="cb438-5"><a href="chap-data-transportation.html#cb438-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Java 11 JDK 添加到 .zshrc </span></span>
+<span id="cb438-6"><a href="chap-data-transportation.html#cb438-6" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CPPFLAGS</span><span class="op">=</span><span class="st">"-I/usr/local/opt/openjdk@11/include"</span></span>
+<span id="cb438-7"><a href="chap-data-transportation.html#cb438-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/usr/local/opt/openjdk@11/bin:</span><span class="va">$PATH</span><span class="st">"</span></span></code></pre></div>
 <p>配置 R 环境，让 R 能够识别 Java 环境，再安装 <strong>rJava</strong> 包</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb150-1"><a href="chap-data-transportation.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置</span></span>
-<span id="cb150-2"><a href="chap-data-transportation.html#cb150-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R CMD javareconf</span>
-<span id="cb150-3"><a href="chap-data-transportation.html#cb150-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 系统软件依赖</span></span>
-<span id="cb150-4"><a href="chap-data-transportation.html#cb150-4" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install pcre2</span>
-<span id="cb150-5"><a href="chap-data-transportation.html#cb150-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 rJava</span></span>
-<span id="cb150-6"><a href="chap-data-transportation.html#cb150-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("rJava", type="source")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb439"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb439-1"><a href="chap-data-transportation.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置</span></span>
+<span id="cb439-2"><a href="chap-data-transportation.html#cb439-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> R CMD javareconf</span>
+<span id="cb439-3"><a href="chap-data-transportation.html#cb439-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 系统软件依赖</span></span>
+<span id="cb439-4"><a href="chap-data-transportation.html#cb439-4" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install pcre2</span>
+<span id="cb439-5"><a href="chap-data-transportation.html#cb439-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 rJava</span></span>
+<span id="cb439-6"><a href="chap-data-transportation.html#cb439-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages("rJava", type="source")'</span></span></code></pre></div>
 <p>最后安装 <strong>sparklyr</strong> 包，以及 Spark 环境，可以借助 <code><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">spark_install()</a></code> 安装 Spark，比如下面 Spark 3.0 连同 hadoop 2.7 一起安装。</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'sparklyr'</span><span class="op">)</span>
 <span class="fu">sparklyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark_install.html">spark_install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">'3.0'</span>, hadoop_version <span class="op">=</span> <span class="st">'2.7'</span><span class="op">)</span></code></pre></div>
 <p>也可以先手动下载 Spark 软件环境，建议选择就近镜像站点下载，比如在北京选择清华站点
 <a href="https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz" class="uri">https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.0.1/spark-3.0.1-bin-hadoop2.7.tgz</a>，此环境自带 R 和 Python 接口。为了供 sparklyr 调用，先设置 <code>SPARK_HOME</code> 环境变量指向 Spark 安装位置，再连接单机版 Spark。</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb441"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 排错 https://github.com/sparklyr/sparklyr/issues/2827</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>sparklyr.log.console <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co"># 连接 Spark </span>
@@ -163,7 +164,7 @@
 <span class="co"># diamonds 数据集导入 Spark</span>
 <span class="va">diamonds_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/diamonds.html">diamonds</a></span>, <span class="st">"diamonds"</span><span class="op">)</span></code></pre></div>
 <p>做数据的聚合统计，有两种方式。一种是使用用 R 包 dplyr 提供的数据操作语法，下面以按 cut 分组统计钻石的数量为例，说明 dplyr 提供的数据操作方式。</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb442"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="co"># 列出数据源下所有的表 tbls</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/src_tbls.html">src_tbls</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span>
@@ -173,7 +174,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>cnt <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="va">collect</span></code></pre></div>
 <p>另一种是使用结构化查询语言 SQL，这自不必说，大多数情况下，使用和一般的 SQL 没什么两样。</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb443"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org">DBI</a></span><span class="op">)</span>
 <span class="va">diamonds_preview</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT count(*) as cnt, cut FROM diamonds GROUP BY cut"</span><span class="op">)</span>
 <span class="va">diamonds_preview</span></code></pre></div>
@@ -185,7 +186,7 @@
 ## 5 12082 Very Good</code></pre>
 <div class="columns">
 <div class="column" style="width:47.5%;">
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb445"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># SQL 中的 AVG 和 R 中的 mean 函数是类似的</span>
 <span class="va">diamonds_price</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT AVG(price) as mean_price, cut FROM diamonds GROUP BY cut"</span><span class="op">)</span>
 <span class="va">diamonds_price</span></code></pre></div>
@@ -202,7 +203,7 @@
 a column separator --></p>
 </div>
 <div class="column" style="width:47.5%;">
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb447"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="va">diamonds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span>
@@ -216,43 +217,43 @@ a column separator --></p>
 </div>
 </div>
 <p>将结果数据用 ggplot2 呈现出来</p>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">diamonds_preview</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">cnt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="data-transportation_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html</a></p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">diamonds_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6"</span><span class="op">)</span>
 <span class="va">diamonds_sample</span></code></pre></div>
-<pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  1.02     Ideal     I      I1  61.7    56  2872 6.44 6.49 3.99
-## 2  0.80     Ideal     E     SI2  61.0    55  2978 6.00 6.03 3.67
-## 3  0.36     Ideal     H     VS2  62.1    55   568 4.57 4.58 2.84
-## 4  1.51      Good     G      I1  64.0    59  3497 7.29 7.17 4.63
-## 5  1.00      Good     H     SI2  63.9    55  3878 6.25 6.33 4.02
-## 6  0.91 Very Good     H     VS1  62.7    63  3881 6.10 6.03 3.80</code></pre>
+<pre><code>##   carat     cut color clarity depth table price    x    y    z
+## 1  1.02 Premium     J     SI2  62.3    58  3119 6.42 6.37 3.98
+## 2  0.70   Ideal     H     VS2  61.2    56  3145 5.72 5.75 3.51
+## 3  0.75 Premium     E     VS2  61.8    58  3206 5.83 5.85 3.61
+## 4  0.80 Premium     F     VS2  59.7    58  3285 6.02 5.97 3.58
+## 5  0.72   Ideal     E     VS2  61.1    56  3601 5.78 5.81 3.54
+## 6  0.40   Ideal     G     SI2  62.1    53   573 4.75 4.78 2.96</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">diamonds_rank</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"
   SELECT cut, price, RANK() OVER (PARTITION BY cut ORDER BY price) AS rank 
   FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000)
   LIMIT 6
 "</span><span class="op">)</span>
 <span class="va">diamonds_rank</span></code></pre></div>
-<pre><code>##    cut price rank
-## 1 Fair  2359    1
-## 2 Fair  5624    2
-## 3 Good   447    1
-## 4 Good  1119    2
-## 5 Good  2401    3
-## 6 Good  2516    4</code></pre>
+<pre><code>##     cut price rank
+## 1  Fair  4368    1
+## 2  Good   631    1
+## 3  Good  3129    2
+## 4  Good  3733    3
+## 5  Good  5855    4
+## 6 Ideal   537    1</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
 <p>创建数据集</p>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 先删除存在的表 person</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"DROP TABLE IF EXISTS person"</span><span class="op">)</span>
 <span class="co"># 创建表 person</span>
@@ -266,15 +267,15 @@ INSERT INTO person VALUES
     (400, 'Dan', 50, 4, 'Street 4')
 "</span><span class="op">)</span></code></pre></div>
 <p>查看数据集</p>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM person"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4</code></pre>
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>,<span class="st">"
 SELECT * FROM person
     LATERAL VIEW EXPLODE(ARRAY(30, 60)) tabelName AS c_age
@@ -282,35 +283,35 @@ SELECT * FROM person
 LIMIT 6
 "</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 今天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select current_date"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   current_date()
 ## 1     2021-08-07</code></pre>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb461"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 昨天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select date_sub(current_date, 1)"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   date_sub(current_date(), 1)
 ## 1                  2021-08-06</code></pre>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 本月最后一天 current_date 所属月份的最后一天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select last_day(current_date)"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   last_day(current_date())
 ## 1               2021-08-31</code></pre>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb465"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 星期几</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select dayofweek(current_date)"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   dayofweek(current_date())
 ## 1                         7</code></pre>
 <p>最后，使用完记得关闭 Spark 连接</p>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb467"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_disconnect</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="subsec-sparkr" class="section level3" number="6.1.2">
@@ -320,7 +321,7 @@ LIMIT 6
 <div class="rmdnote">
 <p>考虑到和第<a href="chap-data-transportation.html#subsec-sparklyr">6.1.1</a>节的重合性，以及 sparklyr 的优势，本节代码都不会执行，仅作为补充信息予以描述。完整的介绍见 <a href="https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr">SparkR 包</a></p>
 </div>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>SPARK_HOME <span class="op">=</span> <span class="st">"/opt/spark/spark-3.0.1-bin-hadoop2.7"</span><span class="op">)</span>
 <span class="op">}</span>
@@ -379,13 +380,13 @@ Error in checkJavaVersion() :
 </tbody>
 </table></div>
 <p>将 data.frame 转化为 SparkDataFrame</p>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb470"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">faithful_sdf</span> <span class="op">&lt;-</span> <span class="fu">as.DataFrame</span><span class="op">(</span><span class="va">faithful</span><span class="op">)</span></code></pre></div>
 <p>SparkDataFrame</p>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">faithful_sdf</span><span class="op">)</span></code></pre></div>
 <p>查看结构</p>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">faithful_sdf</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -394,17 +395,17 @@ Error in checkJavaVersion() :
 <span class="header-section-number">6.2</span> 数据库与 R 语言<a class="anchor" aria-label="anchor" href="#sec-database-with-r"><i class="fas fa-link"></i></a>
 </h2>
 <p><a href="https://github.com/prestodb/presto">Presto</a> 的 R 接口 <a href="https://github.com/prestodb/RPresto" class="uri">https://github.com/prestodb/RPresto</a> 和文档 <a href="https://prestodb.io/docs/current/index.html" class="uri">https://prestodb.io/docs/current/index.html</a>，Presto 数据库</p>
-<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb473"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'RPresto'</span><span class="op">)</span></code></pre></div>
 <p>MySQL 为例介绍 odbc 的连接和使用，详见 <a href="https://cosx.org/2020/06/connect-mysql-from-r/">从 R 连接 MySQL</a></p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb185-1"><a href="chap-data-transportation.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- !preview conn=DBI::dbConnect(odbc::odbc(),  driver = "MariaDB", database = "demo", </span></span>
-<span id="cb185-2"><a href="chap-data-transportation.html#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="co">--                              uid = "root", pwd = "cloud", host = "localhost", port = 3306)</span></span>
-<span id="cb185-3"><a href="chap-data-transportation.html#cb185-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb185-4"><a href="chap-data-transportation.html#cb185-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> mtcars</span>
-<span id="cb185-5"><a href="chap-data-transportation.html#cb185-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span></span></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb474-1"><a href="chap-data-transportation.html#cb474-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- !preview conn=DBI::dbConnect(odbc::odbc(),  driver = "MariaDB", database = "demo", </span></span>
+<span id="cb474-2"><a href="chap-data-transportation.html#cb474-2" aria-hidden="true" tabindex="-1"></a><span class="co">--                              uid = "root", pwd = "cloud", host = "localhost", port = 3306)</span></span>
+<span id="cb474-3"><a href="chap-data-transportation.html#cb474-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb474-4"><a href="chap-data-transportation.html#cb474-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> mtcars</span>
+<span id="cb474-5"><a href="chap-data-transportation.html#cb474-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span></span></code></pre></div>
 <p>我的系统已经安装了多款数据库的 ODBC 驱动</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb186-1"><a href="chap-data-transportation.html#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dnf</span> install <span class="at">-y</span> unixODBC unixODBC-devel mariadb mariadb-server mariadb-devel mariadb-connector-odbc</span></code></pre></div>
-<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb475"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb475-1"><a href="chap-data-transportation.html#cb475-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dnf</span> install <span class="at">-y</span> unixODBC unixODBC-devel mariadb mariadb-server mariadb-devel mariadb-connector-odbc</span></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">odbc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/odbc/man/odbcListDrivers.html">odbcListDrivers</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code># Driver from the mariadb-connector-odbc package
 # Setup from the unixODBC package
@@ -419,17 +420,17 @@ FileUsage       = 1</code></pre>
 <span class="header-section-number">6.3</span> 批量读取 csv 文件<a class="anchor" aria-label="anchor" href="#sec-batch-import-csv"><i class="fas fa-link"></i></a>
 </h2>
 <p>iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示</p>
-<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 批量分组导出</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html">fwrite</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/user_"</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span>, <span class="st">".csv"</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">Species</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <p>读取文件夹 <code>data/</code> 所有 csv 数据文件</p>
-<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="va">merged_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">'rbind'</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"*.csv"</span>, path <span class="op">=</span> <span class="st">"data/"</span><span class="op">)</span>, <span class="va">fread</span> <span class="op">)</span> <span class="op">)</span>
 <span class="co"># 或者</span>
 <span class="va">merged_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbindlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"*.csv"</span>, path <span class="op">=</span> <span class="st">"data/"</span><span class="op">)</span>, <span class="va">fread</span> <span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">xdf</span><span class="op">$</span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">xdf</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>
 <span class="va">xdf</span><span class="op">$</span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">xdf</span><span class="op">$</span><span class="va">ts</span><span class="op">)</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/split.html">split</a></span><span class="op">(</span><span class="va">xdf</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">xdf</span><span class="op">$</span><span class="va">ts</span><span class="op">)</span>, <span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">xdf</span><span class="op">$</span><span class="va">study</span>, <span class="va">xdf</span><span class="op">$</span><span class="va">port</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -452,7 +453,7 @@ FileUsage       = 1</code></pre>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">study</span>, <span class="va">port</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/">tibble</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 
@@ -480,7 +481,7 @@ FileUsage       = 1</code></pre>
 ## 15  10.4     8  472    205  2.93  5.25  18.0     0     0     3     4
 ## 16  10.4     8  460    215  3     5.42  17.8     0     0     3     4
 ## # … with 16 more rows</code></pre>
-<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">.</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 32 × 11
@@ -501,7 +502,7 @@ FileUsage       = 1</code></pre>
 <span class="header-section-number">6.4</span> 批量导出 xlsx 文件<a class="anchor" aria-label="anchor" href="#sec-batch-export-xlsx"><i class="fas fa-link"></i></a>
 </h2>
 <p>将 R 环境中的数据集导出为 xlsx 表格</p>
-<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 加载 openxlsx 包</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ycphs.github.io/openxlsx/index.html">openxlsx</a></span><span class="op">)</span>
 <span class="co">## 创建空白的工作薄，标题为鸢尾花数据集</span>
@@ -512,7 +513,7 @@ FileUsage       = 1</code></pre>
 <span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/writeData.html">writeData</a></span><span class="op">(</span><span class="va">wb</span>, sheet <span class="op">=</span> <span class="st">"iris"</span>, x <span class="op">=</span> <span class="va">iris</span>, colNames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># 导出数据到本地</span>
 <span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/saveWorkbook.html">saveWorkbook</a></span><span class="op">(</span><span class="va">wb</span>, file <span class="op">=</span> <span class="st">"iris.xlsx"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ycphs.github.io/openxlsx/index.html">openxlsx</a></span><span class="op">)</span>
 <span class="va">xlsxFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"readTest.xlsx"</span>, package <span class="op">=</span> <span class="st">"openxlsx"</span><span class="op">)</span>
 <span class="co"># 导入</span>

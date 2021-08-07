@@ -21,11 +21,9 @@ bibliography:
   - book.bib
   - packages.bib
 link-citations: yes
-biblio-style: plainnat
-natbiboptions: "authoryear,round"
+csl: ieee.csl
 hyperrefoptions:
   - linktoc=all
-  - pdfpagemode=FullScreen # 全屏显示
   - pdfstartview=FitH # 适合宽度
   - bookmarksnumbered=true # 书签带编号
 keywords: 
@@ -339,7 +337,7 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-07 07:07:08。
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-07 15:36:57。
 
 
 ```r

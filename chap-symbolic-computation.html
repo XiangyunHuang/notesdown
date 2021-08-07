@@ -100,9 +100,9 @@
 <h1>
 <span class="header-section-number">第 32 章</span> 符号计算<a class="anchor" aria-label="anchor" href="#chap-symbolic-computation"><i class="fas fa-link"></i></a>
 </h1>
-<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation">(<a href="references.html#ref-SymPy" role="doc-biblioref">Meurer et al. 2017</a>)</span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
+<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation"><a href="references.html#ref-SymPy" role="doc-biblioref">[93]</a></span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
 <p>16年在统计之都灌水<a href="https://cosx.org/2016/07/r-symbol-calculate">符号计算与R语言</a>，相应的 Rmd 源文件放在<a href="https://github.com/XiangyunHuang/Symbolic-Computing">Github</a>上。</p>
-<div class="sourceCode" id="cb1245"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1534"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 多元函数求偏导</span>
 <span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">deriv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x1</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x2</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,
   namevec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x1"</span>, <span class="st">"x2"</span><span class="op">)</span>, function.arg <span class="op">=</span> <span class="cn">TRUE</span>
@@ -123,7 +123,7 @@
 ##     .value
 ## }</code></pre>
 <p>下面以标准正态分布的密度函数为例，</p>
-<div class="sourceCode" id="cb1247"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1536"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">NormDensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># 递归的方法求高阶倒数</span>
 <span class="va">DD</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">name</span>, <span class="va">order</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
@@ -142,13 +142,13 @@
 ##     (2/2) - exp(-x^2/2) * (2 * x/2) * (2 * x/2)) * (2 * x/2) + 
 ##     exp(-x^2/2) * (2 * x/2) * (2/2)))</code></pre>
 <p>Deriv 可以将 R 表达式简化</p>
-<div class="sourceCode" id="cb1249"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1538"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Deriv</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## x * (3 - x^2) * exp(-(x^2/2))/sqrt(2 * pi)</code></pre>
 <p>即 <span class="math inline">\(x (3 - x^2) \mathrm{e}^{-x^2/2}/\sqrt{2 \pi}\)</span>，<code><a href="https://rdrr.io/r/base/eval.html">eval()</a></code> 将表达式转为函数，代入数值运算。</p>
 <p><span class="math display">\[\tau(x) = \frac{(-1)^{j-1}}{\sqrt{j!}}\phi^{(j)}(x)\]</span></p>
-<div class="sourceCode" id="cb1251"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1540"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Tetrachoric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">j</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html">factorial</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="va">j</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
@@ -161,32 +161,32 @@
 </p>
 </div>
 <p>表达式转函数</p>
-<div class="sourceCode" id="cb1253"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1542"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ExpToFun</span><span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">ExpToFun</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.2699548</code></pre>
 <p>函数求积分</p>
-<div class="sourceCode" id="cb1255"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1544"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/integrate.html">integrate</a></span><span class="op">(</span><span class="va">ExpToFun</span>, <span class="fl">0</span>, <span class="va">pi</span><span class="op">)</span></code></pre></div>
 <pre><code>## -0.06192048 with absolute error &lt; 5.8e-12</code></pre>
 <p>对函数求微分</p>
-<div class="sourceCode" id="cb1257"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1546"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co"># D(body(fun),'x')</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 0.5 * pi/sqrt(x)</code></pre>
-<div class="sourceCode" id="cb1259"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1548"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Dfun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
 <span class="op">}</span>
 <span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">Dfun</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">Dfun</span></code></pre></div>
 <pre><code>## function (x) 
 ## 0.5 * pi/sqrt(x)</code></pre>
-<div class="sourceCode" id="cb1261"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1550"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">Dfun</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.7853982</code></pre>
 <p>下面简单介绍 symengine 的符号计算能力</p>
-<div class="sourceCode" id="cb1263"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1552"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/symengine/symengine.R">symengine</a></span><span class="op">)</span>
 <span class="co"># 声明几个符号变量</span>
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/use_vars.html">use_vars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span><span class="op">)</span>
@@ -195,7 +195,7 @@
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/expand.html">expand</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre></div>
 <pre><code>## (Add)    -42 + 2*x*y + 2*x*z + 2*y*z + x^2 + y^2 + z^2</code></pre>
 <p>变量替换</p>
-<div class="sourceCode" id="cb1265"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1554"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/S.html">S</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>
 <span class="co"># z 用 a 替换</span>
 <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/subs.html">subs</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">z</span>, <span class="va">a</span><span class="op">)</span>
@@ -204,12 +204,12 @@
 <span class="va">expr</span></code></pre></div>
 <pre><code>## (Add)    -42 + (a + x + x^2)^2</code></pre>
 <p>表达式求 2 阶偏导</p>
-<div class="sourceCode" id="cb1267"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1556"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d1_expr</span> <span class="op">&lt;-</span> <span class="fu">DD</span><span class="op">(</span><span class="va">expr</span>, <span class="st">"x"</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/expand.html">expand</a></span><span class="op">(</span><span class="va">d1_expr</span><span class="op">)</span></code></pre></div>
 <pre><code>## (Add)    2 + 4*a + 12*x + 12*x^2</code></pre>
 <p>求解带参数 <span class="math inline">\(a\)</span> 的一元二次方程</p>
-<div class="sourceCode" id="cb1269"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1558"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solutions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/solve.html">solve</a></span><span class="op">(</span><span class="va">d1_expr</span>, <span class="st">"x"</span><span class="op">)</span>
 <span class="va">solutions</span></code></pre></div>
 <pre><code>## VecBasic of length 2

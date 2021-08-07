@@ -1,5 +1,7 @@
 # 数据搬运 {#chap-data-transportation}
 
+[openxlsx](https://github.com/ycphs/openxlsx) 可以读写 XLSX 文档
+
 美团使用的大数据工具有很多，最常用的 Hive、Spark、Kylin、Impala、Presto 等，详见 <https://tech.meituan.com/2018/08/02/mt-r-practice.html>。下面主要介绍如何在 R 中连接 MySQL、Presto 和 Spark。
 
 [sparklyr.flint](https://github.com/r-spark/sparklyr.flint) 支持 Spark 的时间序列库 [flint](https://github.com/twosigma/flint)，[sparkxgb](https://github.com/rstudio/sparkxgb) 为 Spark 上的 XGBoost 提供 R 接口，[sparkwarc](https://github.com/r-spark/sparkwarc) 支持加载 Web ARChive 文件到 Spark 里
@@ -176,13 +178,13 @@ diamonds_sample
 ```
 
 ```
-##   carat     cut color clarity depth table price    x    y    z
-## 1  0.71   Ideal     D     SI1  61.9    59  2764 5.69 5.72 3.53
-## 2  0.72 Premium     D     SI1  62.7    59  2782 5.73 5.69 3.58
-## 3  0.71 Premium     D     SI1  61.3    58  2797 5.73 5.75 3.52
-## 4  0.71   Ideal     D     SI1  61.7    57  2863 5.75 5.70 3.53
-## 5  0.71   Ideal     E     VS2  60.9    56  3053 5.77 5.83 3.53
-## 6  0.70   Ideal     D     VS1  62.5    57  3287 5.64 5.68 3.54
+##   carat       cut color clarity depth table price    x    y    z
+## 1  0.72 Very Good     F     VS1  62.2    58  2804 5.75 5.70 3.56
+## 2  0.71     Ideal     D     SI2  62.0    54  2934 5.77 5.74 3.57
+## 3  0.76     Ideal     H     VS2  61.9    55  3016 5.85 5.88 3.64
+## 4  0.78     Ideal     G     VS2  62.0    57  3590 5.90 5.86 3.65
+## 5  0.31   Premium     D     SI1  60.9    60   571 4.38 4.39 2.67
+## 6  0.91 Very Good     G     VS2  62.7    63  3776 6.05 6.00 3.78
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -200,13 +202,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  6268    1
-## 2 Good   490    1
-## 3 Good  1706    2
-## 4 Good  2964    3
-## 5 Good  3723    4
-## 6 Good  4899    5
+##     cut price rank
+## 1  Fair  6596    1
+## 2  Good   830    1
+## 3  Good  3391    2
+## 4  Good  4257    3
+## 5  Good  4320    4
+## 6 Ideal   596    1
 ```
 
 LATERAL VIEW 把一列拆成多行

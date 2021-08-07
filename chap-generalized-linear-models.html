@@ -102,13 +102,13 @@
 </h1>
 <blockquote>
 <p>It’s not meant for sampling weights. It’s meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the wrong answer if you just use the <code>weights =</code> argument.</p>
-<p>— Thomas Lumley <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html" class="uri"&gt;https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html&lt;/a&gt;&lt;/p&gt;'><sup>42</sup></a></p>
+<p>— Thomas Lumley <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html" class="uri"&gt;https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html&lt;/a&gt;&lt;/p&gt;'><sup>43</sup></a></p>
 </blockquote>
 <!-- 每个模型都给出 rstan/rstanarm 中的实现方式，或者另起一章在贝叶斯模型中 -->
-<p>一般广义线性模型理论参考文献 An Introduction to Generalized Linear Models <span class="citation">(<a href="references.html#ref-Dobson_2018_Generalized" role="doc-biblioref">Dobson and Barnett 2018</a>)</span> 和 Generalized Linear Models <span class="citation">(<a href="references.html#ref-McCullagh_1989_Generalized" role="doc-biblioref">McCullagh and Nelder 1989</a>)</span>，逻辑回归模型主要参考 Applied Logistic Regression <span class="citation">(<a href="references.html#ref-David_2000_Logistic" role="doc-biblioref">Hosmer and Lemeshow 2000</a>)</span> 和 Discrete Choice Methods with Simulation <span class="citation">(<a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">Train 2009</a>)</span>。</p>
+<p>一般广义线性模型理论参考文献 An Introduction to Generalized Linear Models <span class="citation"><a href="references.html#ref-Dobson_2018_Generalized" role="doc-biblioref">[60]</a></span> 和 Generalized Linear Models <span class="citation"><a href="references.html#ref-McCullagh_1989_Generalized" role="doc-biblioref">[61]</a></span>，逻辑回归模型主要参考 Applied Logistic Regression <span class="citation"><a href="references.html#ref-David_2000_Logistic" role="doc-biblioref">[62]</a></span> 和 Discrete Choice Methods with Simulation <span class="citation"><a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">[63]</a></span>。</p>
 <p>简单线性模型（Linear Models，简称 LM），<code><a href="https://rdrr.io/r/stats/lm.html">stats::lm()</a></code> 函数可以拟合线性模型，而一般线性模型（General Linear Models，简称 GLM）允许线性模型方差非齐性、存在相关关系，甚至可以扩展到线性混合效应模型，将线性回归模型，方差分析模型，协方差分析模型统一地看待，一般要采用广义最小二乘（Generalized Least Squares，简称 GLS）拟合， <code><a href="https://rdrr.io/pkg/nlme/man/gls.html">nlme::gls()</a></code> 函数实现广义最小二乘拟合线性模型，类似地，<code><a href="https://rdrr.io/pkg/nlme/man/gnls.html">nlme::gnls()</a></code> 函数实现广义最小二乘拟合非线性模型。<code>glm2::glm2()</code> 补充 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>，提供更加稳定的拟合方法，适应于 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 不收敛的情况，而 <code>fastglm::fastglm()</code> 主要是加快 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 求解效率，收敛效果也比 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 和 <code>glm2()</code> 好。</p>
-<p><a href="https://CRAN.R-project.org/package=glmnet">glmnet</a> 包是处理广义线性模型的事实标准。 其官网见 <a href="https://glmnet.stanford.edu/" class="uri">https://glmnet.stanford.edu/</a>，而 <a href="https://github.com/hongooi73/glmnetUtils">glmnetUtils</a> 补充公式接口，适用于弹性网络回归，交叉验证筛选 <span class="math inline">\(\alpha\)</span> 参数等。 <a href="https://CRAN.R-project.org/package=glmpath">glmpath</a> 包实现 path-following 算法用于带 L1 正则项的广义线性模型和 Cox 比例风险模型。<a href="https://github.com/steve-the-bayesian/BOOM">Boom</a> 和 <strong>BoomSpikeSlab</strong> 包实现 MCMC 算法用于 Spike 和 Slab 回归，而 <strong>spikeslab</strong> 包进一步实现预测和变量选择 <span class="citation">(<a href="references.html#ref-spikeslab_2005_Ishwaran" role="doc-biblioref">Ishwaran and Rao 2005</a>)</span>。<a href="https://github.com/OHDSI/Cyclops">Cyclops</a> 包实现 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间。<a href="https://github.com/fbertran/plsRglm">plsRglm</a> 包实现偏最小二乘回归方法用于广义线性模型。<strong>biglm</strong>、<a href="https://cran.r-project.org/package=speedglm">speedglm</a> 和 <a href="https://CRAN.R-project.org/package=bigReg">bigReg</a> 用于处理大数据集的回归，求解限制内存的 GLM <a href="https://CRAN.R-project.org/package=biglmm">biglmm</a>。<a href="https://CRAN.R-project.org/package=cglm">cglm</a> 估计带聚类数据的条件 GLM 的回归系数和发散参数。<a href="https://CRAN.R-project.org/package=MGLM">MGLM</a> 拟合多个响应变量的广义线性回归模型（多重 GLM ）。<a href="https://CRAN.R-project.org/package=robmixglm">robmixglm</a> 响应变量扩展到混合分布的情形，实现稳健 GLM 回归估计。<a href="https://CRAN.R-project.org/package=ClusterBootstrap">ClusterBootstrap</a> 实现自主法估计带聚类数据的 GLM。<a href="https://CRAN.R-project.org/package=lcpm">lcpm</a> 和 <a href="https://CRAN.R-project.org/package=oglmx">oglmx</a> 处理有序输出的回归。
-<a href="https://cran.r-project.org/package=gmnl">gmnl</a>、 <a href="https://CRAN.R-project.org/package=mlogit">mlogit</a> <span class="citation">(<a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">Train 2009</a>)</span> 和 <strong>mnlogit</strong> <span class="citation">(<a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">Hasan, Wang, and Mahani 2016</a>)</span> 处理多项逻辑回归。<a href="https://github.com/atahk/pscl">pscl</a> 包（Political Science Computational Laboratory）可以处理贝叶斯 IRT 模型，zero-inflated 零膨胀模型，广义线性模型的拟合优度度量。</p>
+<p><a href="https://CRAN.R-project.org/package=glmnet">glmnet</a> 包是处理广义线性模型的事实标准。 其官网见 <a href="https://glmnet.stanford.edu/" class="uri">https://glmnet.stanford.edu/</a>，而 <a href="https://github.com/hongooi73/glmnetUtils">glmnetUtils</a> 补充公式接口，适用于弹性网络回归，交叉验证筛选 <span class="math inline">\(\alpha\)</span> 参数等。 <a href="https://CRAN.R-project.org/package=glmpath">glmpath</a> 包实现 path-following 算法用于带 L1 正则项的广义线性模型和 Cox 比例风险模型。<a href="https://github.com/steve-the-bayesian/BOOM">Boom</a> 和 <strong>BoomSpikeSlab</strong> 包实现 MCMC 算法用于 Spike 和 Slab 回归，而 <strong>spikeslab</strong> 包进一步实现预测和变量选择 <span class="citation"><a href="references.html#ref-spikeslab_2005_Ishwaran" role="doc-biblioref">[64]</a></span>。<a href="https://github.com/OHDSI/Cyclops">Cyclops</a> 包实现 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间。<a href="https://github.com/fbertran/plsRglm">plsRglm</a> 包实现偏最小二乘回归方法用于广义线性模型。<strong>biglm</strong>、<a href="https://cran.r-project.org/package=speedglm">speedglm</a> 和 <a href="https://CRAN.R-project.org/package=bigReg">bigReg</a> 用于处理大数据集的回归，求解限制内存的 GLM <a href="https://CRAN.R-project.org/package=biglmm">biglmm</a>。<a href="https://CRAN.R-project.org/package=cglm">cglm</a> 估计带聚类数据的条件 GLM 的回归系数和发散参数。<a href="https://CRAN.R-project.org/package=MGLM">MGLM</a> 拟合多个响应变量的广义线性回归模型（多重 GLM ）。<a href="https://CRAN.R-project.org/package=robmixglm">robmixglm</a> 响应变量扩展到混合分布的情形，实现稳健 GLM 回归估计。<a href="https://CRAN.R-project.org/package=ClusterBootstrap">ClusterBootstrap</a> 实现自主法估计带聚类数据的 GLM。<a href="https://CRAN.R-project.org/package=lcpm">lcpm</a> 和 <a href="https://CRAN.R-project.org/package=oglmx">oglmx</a> 处理有序输出的回归。
+<a href="https://cran.r-project.org/package=gmnl">gmnl</a>、 <a href="https://CRAN.R-project.org/package=mlogit">mlogit</a> <span class="citation"><a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">[63]</a></span> 和 <strong>mnlogit</strong> <span class="citation"><a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">[65]</a></span> 处理多项逻辑回归。<a href="https://github.com/atahk/pscl">pscl</a> 包（Political Science Computational Laboratory）可以处理贝叶斯 IRT 模型，zero-inflated 零膨胀模型，广义线性模型的拟合优度度量。</p>
 <!--
 https://github.com/jolars/SLOPE 
 Sorted L1 Penalized Estimation
@@ -166,7 +166,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h3>
 <span class="header-section-number">21.2.4</span> 偏最小二乘回归<a class="anchor" aria-label="anchor" href="#subsec-glm-pls"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://github.com/bhmevik/pls">pls</a> 包 <span class="citation">(<a href="references.html#ref-JSS_2007_pls" role="doc-biblioref">Mevik and Wehrens 2007</a>)</span> 实现了偏最小二乘回归（partial least squares regression， PLS）和主成分回归 （principal component regression， PCR），详见主页 <a href="https://mevik.net/work/software/pls.html" class="uri">https://mevik.net/work/software/pls.html</a>
+<p><a href="https://github.com/bhmevik/pls">pls</a> 包 <span class="citation"><a href="references.html#ref-JSS_2007_pls" role="doc-biblioref">[66]</a></span> 实现了偏最小二乘回归（partial least squares regression， PLS）和主成分回归 （principal component regression， PCR），详见主页 <a href="https://mevik.net/work/software/pls.html" class="uri">https://mevik.net/work/software/pls.html</a>
 帮助文档的质量较高，是比较完整全面的。</p>
 <ul>
 <li>several algorithms: the traditional orthogonal scores (NIPALS) PLS algorithm, kernel PLS, wide kernel PLS, Simpls and PCR through svd</li>
@@ -188,7 +188,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <p>存在有序分类数据</p>
 <p>酒精的作用 effects of alcohol, tobacco and interaction, age-adjusted
 数据集描述见 <code><a href="https://rdrr.io/r/datasets/esoph.html">help(esoph)</a></code></p>
-<div class="sourceCode" id="cb802"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1091"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">esoph</span><span class="op">)</span></code></pre></div>
 <pre><code>##   agegp     alcgp    tobgp ncases ncontrols
 ## 1 25-34 0-39g/day 0-9g/day      0        40
@@ -197,7 +197,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 4 25-34 0-39g/day      30+      0         5
 ## 5 25-34     40-79 0-9g/day      0        27
 ## 6 25-34     40-79    10-19      0         7</code></pre>
-<div class="sourceCode" id="cb804"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1093"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">esoph</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    88 obs. of  5 variables:
 ##  $ agegp    : Ord.factor w/ 6 levels "25-34"&lt;"35-44"&lt;..: 1 1 1 1 1 1 1 1 1 1 ...
@@ -205,7 +205,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##  $ tobgp    : Ord.factor w/ 4 levels "0-9g/day"&lt;"10-19"&lt;..: 1 2 3 4 1 2 3 4 1 2 ...
 ##  $ ncases   : num  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ ncontrols: num  40 10 6 5 27 7 4 7 2 1 ...</code></pre>
-<div class="sourceCode" id="cb806"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1095"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">esoph</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">agegp</span>, y <span class="op">=</span> <span class="va">ncases</span> <span class="op">/</span> <span class="va">ncontrols</span>, color <span class="op">=</span> <span class="va">agegp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
@@ -226,7 +226,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <pre><code>## Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
 <pre><code>## Warning: Removed 12 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
-<div class="sourceCode" id="cb811"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">plot_grid</span><span class="op">(</span><span class="va">p1</span>, <span class="va">bottom_row</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">''</span><span class="op">)</span>, label_size <span class="op">=</span> <span class="fl">12</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
 
@@ -237,11 +237,11 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 图 21.1: 吸烟喝酒和食道癌的关系
 </p>
 </div>
-<div class="sourceCode" id="cb813"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_esoph_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ncases</span>, <span class="va">ncontrols</span><span class="op">)</span> <span class="op">~</span> <span class="va">agegp</span> <span class="op">+</span> <span class="va">tobgp</span> <span class="op">*</span> <span class="va">alcgp</span>,
   data <span class="op">=</span> <span class="va">esoph</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb814"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rcpp.org">Rcpp</a></span><span class="op">)</span>
 <span class="va">fit_esoph_brm</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span><span class="va">ncases</span> <span class="op">|</span> <span class="fu">trials</span><span class="op">(</span><span class="va">ncases</span> <span class="op">+</span> <span class="va">ncontrols</span><span class="op">)</span> <span class="op">~</span> <span class="va">agegp</span> <span class="op">+</span> <span class="va">tobgp</span> <span class="op">*</span> <span class="va">alcgp</span>,
   data <span class="op">=</span> <span class="va">esoph</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span>, refresh <span class="op">=</span> <span class="fl">0</span>
@@ -252,7 +252,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <span class="header-section-number">21.4</span> 自然流产和人工流产后的不育<a class="anchor" aria-label="anchor" href="#sec-infert"><i class="fas fa-link"></i></a>
 </h2>
 <p><code><a href="https://rdrr.io/r/datasets/infert.html">help(infert)</a></code></p>
-<div class="sourceCode" id="cb815"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">infert</span><span class="op">)</span></code></pre></div>
 <pre><code>##   education age parity induced case spontaneous stratum pooled.stratum
 ## 1    0-5yrs  26      6       1    1           2       1              3
@@ -261,7 +261,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 4    0-5yrs  34      4       2    1           0       4              2
 ## 5   6-11yrs  35      3       1    1           1       5             32
 ## 6   6-11yrs  36      4       2    1           1       6             36</code></pre>
-<div class="sourceCode" id="cb817"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">infert</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    248 obs. of  8 variables:
 ##  $ education     : Factor w/ 3 levels "0-5yrs","6-11yrs",..: 1 1 1 1 2 2 2 2 2 2 ...
@@ -273,7 +273,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##  $ stratum       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ pooled.stratum: num  3 1 4 2 32 36 6 22 5 19 ...</code></pre>
 <p>存在无序分类变量</p>
-<div class="sourceCode" id="cb819"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">infert_glm_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">spontaneous</span> <span class="op">+</span> <span class="va">induced</span>,
   data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
@@ -303,7 +303,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>考虑其他潜在的因素</p>
-<div class="sourceCode" id="cb821"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">infert_glm_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">parity</span> <span class="op">+</span> <span class="va">education</span> <span class="op">+</span> <span class="va">spontaneous</span> <span class="op">+</span> <span class="va">induced</span>,
   data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
@@ -337,7 +337,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>实际上应该使用条件逻辑回归， 调用 <strong>survival</strong> 包</p>
-<div class="sourceCode" id="cb823"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
 <span class="va">infert_glm_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/clogit.html">clogit</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">spontaneous</span> <span class="op">+</span> <span class="va">induced</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">stratum</span><span class="op">)</span>,
   data <span class="op">=</span> <span class="va">infert</span>
@@ -369,9 +369,9 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <span class="header-section-number">21.5</span> 细菌数据集<a class="anchor" aria-label="anchor" href="#sec-australia-bacteria"><i class="fas fa-link"></i></a>
 </h2>
 <p>流感嗜血杆菌的细菌与中耳炎患儿</p>
-<div class="sourceCode" id="cb825"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">bacteria</span>, package <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb826"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 惩罚拟似然</span>
 <span class="va">fit_glmmpql</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glmmPQL.html">glmmPQL</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">week</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span>,
   random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">ID</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -409,7 +409,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Number of Observations: 220
 ## Number of Groups: 50</code></pre>
-<div class="sourceCode" id="cb828"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 拉普拉斯近似</span>
 <span class="va">fit_glmer</span> <span class="op">&lt;-</span> <span class="fu">lme4</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/glmer.html">glmer</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">week</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ID</span><span class="op">)</span>,
   family <span class="op">=</span> <span class="va">binomial</span>, data <span class="op">=</span> <span class="va">bacteria</span>
@@ -453,9 +453,9 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <span class="header-section-number">21.6</span> 研究婴儿出生体重低的相关危险因素<a class="anchor" aria-label="anchor" href="#sec-birthwt"><i class="fas fa-link"></i></a>
 </h2>
 <!-- 多项逻辑回归模型 Multinomial-Logistic-Regression-Models -->
-<p>在线性回归的基础上，响应变量是离散的类别，且无序 <span class="citation">(<a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">Hasan, Wang, and Mahani 2016</a>)</span></p>
+<p>在线性回归的基础上，响应变量是离散的类别，且无序 <span class="citation"><a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">[65]</a></span></p>
 <p>birthwt 数据是 1986 年在马萨诸塞州斯普林菲尔德的 Baystate 医疗中心收集的，用于研究婴儿出生体重低的相关危险因素</p>
-<div class="sourceCode" id="cb830"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 加载数据</span>
 <span class="co"># library(MASS)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">birthwt</span>, package <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span>
@@ -468,7 +468,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 88   0  21 108    1     1   0  0  1   2 2594
 ## 89   0  18 107    1     1   0  0  1   0 2600
 ## 91   0  21 124    3     0   0  0  0   0 2622</code></pre>
-<div class="sourceCode" id="cb832"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">birthwt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    189 obs. of  10 variables:
 ##  $ low  : int  0 0 0 0 0 0 0 0 0 0 ...
@@ -482,11 +482,11 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##  $ ftv  : int  0 3 1 2 0 0 1 1 1 0 ...
 ##  $ bwt  : int  2523 2551 2557 2594 2600 2622 2637 2637 2663 2665 ...</code></pre>
 <p><code>low</code> 表示婴儿出生体重小于 2.5kg，<code>age</code> 表示母亲的年龄（年），<code>lwt</code> 母亲最后一次月经期间的体重(磅)，<code>race</code> 母亲的种族(1 =白人，2 =黑人，3 =其他)。，<code>smoke</code> 怀孕期间的吸烟状况，<code>ptl</code> 以前早产的次数，<code>ht</code> 高血压病史，<code>ui</code> 子宫过敏，<code>ftv</code> 妊娠头三个月的医生就诊次数，<code>bwt</code> 出生体重（克）</p>
-<div class="sourceCode" id="cb834"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">birthwt</span>, <span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">lwt</span>, <span class="va">ui</span>, <span class="va">var</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##        0        1 
 ## 940.8472 783.7196</code></pre>
-<div class="sourceCode" id="cb836"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">lwt</span> <span class="op">~</span> <span class="va">ui</span>, data <span class="op">=</span> <span class="va">birthwt</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Two Sample t-test
@@ -499,7 +499,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        131.7578        118.6429</code></pre>
-<div class="sourceCode" id="cb838"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">lwt</span> <span class="op">~</span> <span class="va">ui</span>, data <span class="op">=</span> <span class="va">birthwt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -512,14 +512,14 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        131.7578        118.6429</code></pre>
-<div class="sourceCode" id="cb840"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># birthwt$ui &lt;- as.factor(birthwt$ui)</span>
 <span class="co"># library(lattice)</span>
 <span class="co"># bwplot(lwt ~ ui, data = birthwt, pch = "|")</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">lwt</span> <span class="op">~</span> <span class="va">ui</span>, data <span class="op">=</span> <span class="va">birthwt</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb841"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 重新编码，数据预处理，方便代入模型</span>
 <span class="va">bwt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">birthwt</span>, <span class="op">{</span>
   <span class="va">race</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">race</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"black"</span>, <span class="st">"other"</span><span class="op">)</span><span class="op">)</span>
@@ -531,7 +531,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
     <span class="va">ptd</span>, ht <span class="op">=</span> <span class="op">(</span><span class="va">ht</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, ui <span class="op">=</span> <span class="op">(</span><span class="va">ui</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="va">ftv</span>
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb842"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1131"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 查看编码后的数据</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bwt</span><span class="op">)</span></code></pre></div>
 <pre><code>##   low age lwt  race smoke   ptd    ht    ui ftv
@@ -541,7 +541,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 4   0  21 108 white  TRUE FALSE FALSE  TRUE  2+
 ## 5   0  18 107 white  TRUE FALSE FALSE  TRUE   0
 ## 6   0  21 124 other FALSE FALSE FALSE FALSE   0</code></pre>
-<div class="sourceCode" id="cb844"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">bwt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    189 obs. of  9 variables:
 ##  $ low  : Factor w/ 2 levels "0","1": 1 1 1 1 1 1 1 1 1 1 ...
@@ -554,7 +554,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##  $ ui   : logi  TRUE FALSE FALSE TRUE TRUE FALSE ...
 ##  $ ftv  : Factor w/ 3 levels "0","1","2+": 1 3 2 3 1 1 2 2 2 1 ...</code></pre>
 <p>广义线性模型拟合，二项逻辑回归，响应变量为婴儿出生的体重，以2.5kg为界，它被编码成二分类变量 0或1</p>
-<div class="sourceCode" id="cb846"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"contr.treatment"</span>, <span class="st">"contr.poly"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">low</span> <span class="op">~</span> <span class="va">.</span>, family <span class="op">=</span> <span class="va">binomial</span>, data <span class="op">=</span> <span class="va">bwt</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -570,7 +570,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## Null Deviance:       234.7 
 ## Residual Deviance: 195.5     AIC: 217.5</code></pre>
 <p>多项逻辑回归</p>
-<div class="sourceCode" id="cb848"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
 <span class="op">(</span><span class="va">bwt.mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">low</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">bwt</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # weights:  12 (11 variable)
@@ -589,7 +589,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Residual Deviance: 195.4755 
 ## AIC: 217.4755</code></pre>
-<div class="sourceCode" id="cb851"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">bwt.mu</span><span class="op">)</span></code></pre></div>
 <pre><code>## Call:
 ## multinom(formula = low ~ ., data = bwt)
@@ -611,14 +611,14 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## Residual Deviance: 195.4755 
 ## AIC: 217.4755</code></pre>
 <p>计算 Z 分数和 P 值</p>
-<div class="sourceCode" id="cb853"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">bwt.mu</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">bwt.mu</span><span class="op">)</span><span class="op">$</span><span class="va">standard.errors</span>
 <span class="va">z</span></code></pre></div>
 <pre><code>## (Intercept)         age         lwt   raceblack   raceother   smokeTRUE 
 ##   0.6613291  -0.9621210  -2.2107121   2.2247140   1.6039635   1.7775069 
 ##     ptdTRUE      htTRUE      uiTRUE        ftv1       ftv2+ 
 ##   2.7958023   2.6544170   1.4648486  -0.9102516   0.3922159</code></pre>
-<div class="sourceCode" id="cb855"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>
 <span class="va">p</span></code></pre></div>
 <pre><code>## (Intercept)         age         lwt   raceblack   raceother   smokeTRUE 
@@ -637,7 +637,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <p>响应变量是离散类别，且存在强弱，等级，大小之分</p>
 <p>调用函数 <code><a href="https://rdrr.io/pkg/MASS/man/polr.html">MASS::polr()</a></code></p>
 <p>数据集 housing 哥本哈根住房状况调查中的次数分布表，<code>Sat</code> 住户对目前居住环境的满意程度，是一个有序的因子变量，<code>Infl</code> 住户对物业管理的感知影响程度，<code>Type</code> 租赁住宿类型，如塔楼、中庭、公寓、露台，<code>Cont</code> 联系居民可与其他居民联系(低、高)，<code>Freq</code> 每个类中的居民人数，调查的人数</p>
-<div class="sourceCode" id="cb857"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"housing"</span>, package <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span>
 <span class="co"># 查看数据 help(housing)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">housing</span><span class="op">)</span></code></pre></div>
@@ -648,7 +648,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 4    Low Medium Tower  Low   34
 ## 5 Medium Medium Tower  Low   22
 ## 6   High Medium Tower  Low   36</code></pre>
-<div class="sourceCode" id="cb859"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">housing</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    72 obs. of  5 variables:
 ##  $ Sat : Ord.factor w/ 3 levels "Low"&lt;"Medium"&lt;..: 1 2 3 1 2 3 1 2 3 1 ...
@@ -657,7 +657,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##  $ Cont: Factor w/ 2 levels "Low","High": 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Freq: int  21 21 28 34 22 36 10 11 36 61 ...</code></pre>
 <p>居民对居住环境满意度 Sat 三个等级的有序回归</p>
-<div class="sourceCode" id="cb861"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"contr.treatment"</span>, <span class="st">"contr.poly"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">house.plr</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html">polr</a></span><span class="op">(</span><span class="va">Sat</span> <span class="op">~</span> <span class="va">Infl</span> <span class="op">+</span> <span class="va">Type</span> <span class="op">+</span> <span class="va">Cont</span>, weights <span class="op">=</span> <span class="va">Freq</span>, data <span class="op">=</span> <span class="va">housing</span><span class="op">)</span>
 <span class="va">house.plr</span></code></pre></div>
@@ -678,7 +678,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## Residual Deviance: 3479.149 
 ## AIC: 3495.149</code></pre>
 <p>再计算一下 P 值，置信区间</p>
-<div class="sourceCode" id="cb863"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ctable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">house.plr</span><span class="op">)</span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">ctable</span><span class="op">[</span>, <span class="st">"t value"</span><span class="op">]</span><span class="op">)</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>
 <span class="va">ctable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ctable</span>, <span class="st">"p value"</span> <span class="op">=</span> <span class="va">p</span><span class="op">)</span>
@@ -689,7 +689,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ##     1.7619017     3.6284990     0.5641979     0.6933734     0.3358754 
 ##      ContHigh 
 ##     1.4337368</code></pre>
-<div class="sourceCode" id="cb865"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## OR and CI</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>OR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">house.plr</span><span class="op">)</span>, <span class="va">ci</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                      OR     2.5 %    97.5 %
@@ -714,9 +714,9 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h2>
 <span class="header-section-number">21.8</span> 癫痫病发作次数<a class="anchor" aria-label="anchor" href="#sec-epileptics-counts"><i class="fas fa-link"></i></a>
 </h2>
-<p>纵向数据 <span class="citation">(<a href="references.html#ref-Peter_1990_epil" role="doc-biblioref">Thall and Vail 1990</a>)</span>，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立</p>
+<p>纵向数据 <span class="citation"><a href="references.html#ref-Peter_1990_epil" role="doc-biblioref">[67]</a></span>，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立</p>
 <p>数据集 epil 记录癫痫发作的次数及病人的特征，下面是数据建模分析过程</p>
-<div class="sourceCode" id="cb867"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">epil</span>, package <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span>
 <span class="va">fit_glm_epil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">lbase</span> <span class="op">*</span> <span class="va">trt</span> <span class="op">+</span> <span class="va">lage</span> <span class="op">+</span> <span class="va">V4</span>,
   family <span class="op">=</span> <span class="va">poisson</span>,
@@ -754,17 +754,17 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h2>
 <span class="header-section-number">21.9</span> 对数线性模型<a class="anchor" aria-label="anchor" href="#sec-generalized-log-linear-model"><i class="fas fa-link"></i></a>
 </h2>
-<p>当响应变量 <span class="math inline">\(Y\)</span> 服从对数正态分布的时候，广义线性模型具化为对数线性模型，<strong>gllm</strong> 包 <span class="citation">(<a href="references.html#ref-gllm" role="doc-biblioref">Espeland and Hui 1987</a>)</span></p>
+<p>当响应变量 <span class="math inline">\(Y\)</span> 服从对数正态分布的时候，广义线性模型具化为对数线性模型，<strong>gllm</strong> 包 <span class="citation"><a href="references.html#ref-gllm" role="doc-biblioref">[68]</a></span></p>
 </div>
 <div id="sec-generalized-possion-linear-model" class="section level2" number="21.10">
 <h2>
 <span class="header-section-number">21.10</span> 泊松回归模型<a class="anchor" aria-label="anchor" href="#sec-generalized-possion-linear-model"><i class="fas fa-link"></i></a>
 </h2>
 <p>加载数据</p>
-<div class="sourceCode" id="cb868"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">beall.webworms</span>, package <span class="op">=</span> <span class="st">"agridat"</span><span class="op">)</span></code></pre></div>
 <p>查看数据</p>
-<div class="sourceCode" id="cb869"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">beall.webworms</span><span class="op">)</span></code></pre></div>
 <pre><code>##   row col y block trt spray lead
 ## 1   1   1 1    B1  T1     N    N
@@ -774,24 +774,24 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 5   5   1 6    B1  T1     N    N
 ## 6   6   1 0    B2  T1     N    N</code></pre>
 <p>描述响应变量的分布</p>
-<div class="sourceCode" id="cb871"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">beall.webworms</span><span class="op">$</span><span class="va">y</span>, main <span class="op">=</span> <span class="st">"Histogram of Worm Count"</span>, xlab <span class="op">=</span> <span class="st">"Number of Worms"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb872"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>抖动图</p>
-<div class="sourceCode" id="cb873"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span>, xlab <span class="op">=</span> <span class="st">"Types of Worms"</span>, ylab <span class="op">=</span> <span class="st">"Worm Count"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb874"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">beall.webworms</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">trt</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Types of Worms"</span>, y <span class="op">=</span> <span class="st">"Worm Count"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb875"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pois.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span>, family <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">pois.mod</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -821,36 +821,36 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <p>模型系数 T2 的解释，这里 GLM 使用了对数联系函数(log link function) ，因此 -1.02 是对数变换后的值，T2的系数实际是 0.3605949 ，实际意义是相对于T1，T2 类型的蠕虫数量是 T1 的 0.3605949 倍</p>
 <p>The first valuable information is related to the residuals of the model, which should be symmetrical as for any normal linear model. From this output we can see that minimum and maximum, as well as the first and third quartiles, are similar, so this assumption is confirmed. Then we can see that the variable trt (i.e. treatment factor) is highly significant for the model, with very low p-values. The statistical test in this case is not a t-test, as in the output of the function lm, but a Wald Test (<a href="http://www.blackwellpublishing.com/specialarticles/jcn_10_774.pdf">Wald Test</a>). This test computes the probability that the coefficient is 0, if the p is significant it means the chances the coefficient is zero are very low so the variable should be included in the model since it has an effect on y.</p>
 <p>Another important information is the deviance, particularly the residual deviance. As a general rule, this value should be lower or in line than the residuals degrees of freedom for the model to be good. In this case the fact that the residual deviance is high (even though not dramatically) may suggests the explanatory power of the model is low. We will see below how to obtain p-value for the significance of the model.</p>
-<div class="sourceCode" id="cb877"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pois.mod</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="generalized-linear-models_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb878"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">pois.mod</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>trt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"T1"</span>, <span class="st">"T2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##          1          2 
 ##  0.3364722 -0.6839588</code></pre>
 <p>模型的P值</p>
-<div class="sourceCode" id="cb880"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deviance.html">deviance</a></span><span class="op">(</span><span class="va">pois.mod</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">pois.mod</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1.709743e-14</code></pre>
 <p>模型选择</p>
-<div class="sourceCode" id="cb882"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pois.mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">block</span> <span class="op">+</span> <span class="va">spray</span> <span class="op">*</span> <span class="va">lead</span>, data <span class="op">=</span> <span class="va">beall.webworms</span>, family <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></code></pre></div>
 <p>两模型的 AIC 比较</p>
-<div class="sourceCode" id="cb883"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">pois.mod</span>, <span class="va">pois.mod2</span><span class="op">)</span></code></pre></div>
 <pre><code>##           df      AIC
 ## pois.mod   4 3125.478
 ## pois.mod2 16 3027.438</code></pre>
 <p>假设响应变量 Y 服从泊松分布，意味着随机变量 Y 的期望和方差相等</p>
-<div class="sourceCode" id="cb885"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">beall.webworms</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.7923077</code></pre>
-<div class="sourceCode" id="cb887"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">beall.webworms</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1.290164</code></pre>
 <p>实际上方差比均值大，这种情况称之为过度发散 (overdispersed)，分布应该修正为拟（似然）泊松分布</p>
-<div class="sourceCode" id="cb889"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pois.mod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"quasipoisson"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">pois.mod3</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -878,11 +878,11 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>计算得知发散参数(dispersion parameter) 是 1.35472，可见数据Y并不是发散得离谱，泊松分布可能仍然是对这个数据的合理假设</p>
-<p>AER 包是书籍 Applied Econometrics with R 的配套材料 <span class="citation">(<a href="references.html#ref-AER_2008_Kleiber" role="doc-biblioref">Kleiber and Zeileis 2008</a>)</span>，可用于直接检验发散参数是否大于1</p>
-<div class="sourceCode" id="cb891"><pre class="downlit sourceCode r">
+<p>AER 包是书籍 Applied Econometrics with R 的配套材料 <span class="citation"><a href="references.html#ref-AER_2008_Kleiber" role="doc-biblioref">[69]</a></span>，可用于直接检验发散参数是否大于1</p>
+<div class="sourceCode" id="cb1180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># AER::dispersiontest(pois.mod, alternative="greater")</span></code></pre></div>
-<p>如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 <span class="citation">(<a href="references.html#ref-MASS_2002_Venables" role="doc-biblioref">Venables and Ripley 2002</a>)</span> 提供的 <code>glm.nb</code>函数</p>
-<div class="sourceCode" id="cb892"><pre class="downlit sourceCode r">
+<p>如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 <span class="citation"><a href="references.html#ref-MASS_2002_Venables" role="doc-biblioref">[70]</a></span> 提供的 <code>glm.nb</code>函数</p>
+<div class="sourceCode" id="cb1181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">NB.mod1</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">NB.mod1</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -917,7 +917,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ##  2 x log-likelihood:  -3042.969</code></pre>
 <p>两个模型的方差分析</p>
-<div class="sourceCode" id="cb894"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">pois.mod</span>, <span class="va">pois.mod2</span>, test <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
