@@ -198,21 +198,21 @@ Hello, \faGithub
 \end{document}
 ```
 
-而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "DejaVu Sans"` 来调用系统无衬线 DejaVu 字体，效果见图 \@ref(fig:system-dejavu-fonts)。
+而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "Liberation Sans"` 来调用系统无衬线 Liberation 字体，效果见图 \@ref(fig:system-fonts-liberation)。
 
-```{r system-dejavu-fonts, fig.asp=.8, fig.cap="调用系统字体绘图", out.width="75%"}
+```{r system-fonts-liberation, fig.width=6.5, fig.height=6, fig.cap="调用系统字体绘图", out.width="75%"}
 library(extrafont)
 plot(data = pressure, pressure ~ temperature, 
      xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
      col.lab = "red", col.axis = "blue",
-     font.lab = 3, font.axis = 2, family = "DejaVu Sans")
+     font.lab = 3, font.axis = 2, family = "Liberation Sans")
 title(main = "Vapor Pressure of Mercury as a Function of Temperature", 
-      family = "DejaVu Serif", font.main = 3)
+      family = "Liberation Serif", font.main = 3)
 title(sub = "Data Source: Weast, R. C", 
-      family = "DejaVu Sans Mono", font.sub = 1)
+      family = "Liberation Mono", font.sub = 1)
 ```
 
-为了符合出版的要求，需要在 \@ref(fig:system-dejavu-fonts) 中嵌入字体，
+为了符合出版的要求，需要在 \@ref(fig:system-fonts-liberation) 中嵌入字体，
 
 ```r
 # embed fonts to pdf
@@ -227,18 +227,20 @@ embed_fonts <- function(fig_path) {
 }
 ```
 
-设置代码块选项 `fig.process=embed_fonts`，这样生成 PDF 格式图形的时候，会调用此函数处理 PDF 图形。此外，除了调用系统字体，还可以添加网络字体，供 showtext 调用
+设置代码块选项 `fig.process=embed_fonts`，这样生成 PDF 格式图形的时候，会调用此函数处理 PDF 图形。在 ggplot2 绘图中的调用方式是类似的，便不再赘述了。值得注意的是，extrafont 和 showtext 有些不一样，前者只能处理系统字体，后者还能获取网络字体和使用 OTF 字体，下面从 Google 开源的字体库获取 Noto 系列的四款字体，如图 \@ref(fig:font-in-ggplot)。
 
-```{r add-google-fonts}
+```{r add-noto-font}
 sysfonts::font_add_google(name = "Noto Sans", family = "Noto Sans")
 sysfonts::font_add_google(name = "Noto Serif", family = "Noto Serif")
 sysfonts::font_add_google(name = "Noto Serif SC", family = "Noto Serif SC")
 sysfonts::font_add_google(name = "Noto Sans SC", family = "Noto Sans SC")
 ```
 
-在 ggplot2 绘图中的调用方式是类似的，如图 \@ref(fig:font-in-ggplot)。
+::: {.rmdwarn data-latex="{警告}"}
+在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。
+:::
 
-```{r font-in-ggplot, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体"}
+```{r font-in-ggplot, fig.width=4, fig.height=4, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体"}
 p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
   geom_point() +
   ggtitle(label = "默认字体设置")
@@ -247,11 +249,14 @@ p2 <- p1 + theme(
   axis.title = element_text(family = "Noto Sans"),
   axis.text = element_text(family = "Noto Serif")
 ) +
+  theme(
+    title = element_text(family = "Noto Serif SC")
+  ) +
   ggtitle(label = "英文字体设置")
 
 p3 <- p1 + labs(x = "温度", y = "压力") +
   theme(
-    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.title = element_text(family = "Noto Serif SC"),
     axis.text = element_text(family = "Noto Serif")
   ) +
   ggtitle(label = "中文字体设置")
@@ -266,10 +271,10 @@ p4 <- p1 + labs(
   )
 ) +
   theme(
-    axis.title = element_text(family = "source-han-serif-cn"),
+    axis.title = element_text(family = "Noto Serif SC"),
     axis.text.x = element_text(family = "Noto Serif"),
     axis.text.y = element_text(family = "Noto Sans"),
-    title = element_text(family = "source-han-serif-cn"),
+    title = element_text(family = "Noto Serif SC"),
     plot.subtitle = element_text(family = "Noto Sans", size = rel(0.7)),
     plot.caption = element_text(family = "Noto Sans", size = rel(0.6))
   ) +
@@ -287,7 +292,7 @@ p4 <- p1 + labs(
 sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed")
 ```
 
-```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", out.width="75%"}
+```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", fig.width=4, fig.height=4, out.width="75%"}
 library(hrbrthemes)
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
@@ -300,9 +305,9 @@ ggplot(mtcars, aes(mpg, wt)) +
   theme_ipsum(base_family = "Roboto Condensed")
 ```
 
-如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:noto-sans) 使用了 Liberation Sans Narrow ( MacOS 上没有 Liberation Sans Narrow 字体，用 Liberation Sans 替代了) 字体替换 `theme_ipsum()` 中的 Arial Narrow 字体。
+如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:arial-narrow) 使用了 `theme_ipsum()` 中的 Arial Narrow 字体。
 
-```{r noto-sans, fig.cap="用 Noto Sans 字体替换默认字体 Arial Narrow", out.width="75%",fig.showtext=TRUE}
+```{r arial-narrow, fig.cap="默认字体 Arial Narrow", out.width="75%", fig.width=4, fig.height=4}
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
   labs(
@@ -311,7 +316,7 @@ ggplot(mtcars, aes(mpg, wt)) +
     subtitle = "A plot that is only useful for demonstration purposes",
     caption = "Brought to you by the letter 'g'"
   ) +
-  theme_ipsum(base_family = "Noto Sans")
+  theme_ipsum()
 ```
 
 ::: {.rmdtip data-latex="{提示}"}
@@ -392,15 +397,20 @@ fonts()
 
 fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
 
-```{r fontcm, fig.cap="fontcm 处理数学公式", fig.process=embed_math_fonts, dev=ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=8, fig.height=4}
+```{r fontcm, fig.cap="fontcm 处理数学公式", fig.process=embed_math_fonts, dev=ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=6, fig.height=3}
 library(fontcm)
 library(ggplot2)
 library(extrafont)
 library(patchwork)
-p <- ggplot(data = data.frame(x = c(1, 5), y = c(1, 5)), aes(x = x, y = y)) +
+p <- ggplot(
+  data = data.frame(x = c(1, 5), y = c(1, 5)),
+  aes(x = x, y = y)
+) +
   geom_point() +
-  labs(x = "Made with CM fonts", y = "Made with CM fonts", 
-       title = "Made with CM fonts")
+  labs(
+    x = "Made with CM fonts", y = "Made with CM fonts",
+    title = "Made with CM fonts"
+  )
 # 公式
 eq <- "italic(sum(frac(1, n*'!'), n==0, infinity) ==
        lim(bgroup('(', 1 + frac(1, n), ')')^n, n %->% infinity))"
@@ -415,7 +425,7 @@ p2 <- p + annotate("text",
   parse = TRUE, label = eq, family = "CM Roman"
 ) +
   theme(
-    text = element_text(size = 16, family = "CM Roman"),
+    text = element_text(size = 10, family = "CM Roman"),
     axis.title.x = element_text(face = "italic"),
     axis.title.y = element_text(face = "bold")
   )
@@ -439,7 +449,7 @@ embed_math_fonts <- function(fig_path) {
 
 代码块选项中设置 `fig.process=embed_math_fonts` 可在绘图后，立即插入字体，此操作仅限于以 pdf 格式保存的图形设备，也适用于 Base R 绘制的图形，见图 \@ref(fig:embed-math-fonts)。
 
-```{r embed-math-fonts, fig.cap="嵌入数学字体", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=3.5,fig.height=3.5}
+```{r embed-math-fonts, fig.cap="嵌入数学字体", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=4, fig.height=3.5}
 par(mar = c(4.1, 4.1, 1.5, 0.5), family = "CM Roman")
 x <- seq(-4, 4, len = 101)
 y <- cbind(sin(x), cos(x))
@@ -538,7 +548,7 @@ R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 
 图 \@ref(fig:xkcd-graph) 是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
 
-```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png", out.width="75%"}
+```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png", out.width="75%", fig.width=4, fig.height=4}
 library(extrafont)
 library(xkcd)
 ggplot(aes(mpg, wt), data = mtcars) +
@@ -548,28 +558,46 @@ ggplot(aes(mpg, wt), data = mtcars) +
 
 ### 表情字体 {#subsec-emoji-fonts}
 
-余光创开发的 [emojifont](https://github.com/GuangchuangYu/emojifont) 包和 Hadley 开发的 [emo](https://github.com/hadley/emo) 包，下面给出一个示例 \@ref(fig:emoji-fonts)
+余光创开发的 [emojifont](https://github.com/GuangchuangYu/emojifont) 包和 Hadley 开发的 [emo](https://github.com/hadley/emo) 包，下面使用 Noto Emoji 字体，支持的表情图见 <https://www.google.com/get/noto/help/emoji/food-drink/>，下面给出一个示例。先从 GitHub 安装
+**emo** 包，目前它还未正式发布到 CRAN 上。
 
-```{r emoji-fonts,fig.cap="表情字体", out.width="75%"}
-# remotes::install_github("hadley/emo")
-data.frame(
-  category = c("pineapple", "apple", "watermelon", "mango", "pear"),
-  value = c(5, 4, 3, 7, 2)
-) |> 
-  transform(category = sapply(category, emo::ji))  |> 
-  ggplot(aes(x = category, y = value)) +
-  geom_text(aes(label = category), size = 12, vjust = -0.5) +
-  theme_minimal()
+```{r hadley-emo, eval=FALSE}
+remotes::install_github("hadley/emo")
 ```
 
 除了安装 emo 包，系统需要先安装好 emoji 字体，图形才会正确地渲染出来，想调用更多 emoji 图标请参考 [Emoji 速查手册](https://github.com/ikatyang/emoji-cheat-sheet)，给出 emoji 对应的名字。
 
 ```bash
+# CentOS
 sudo dnf install -y google-noto-emoji-color-fonts \
   google-noto-emoji-fonts
 # MacOS
 brew cask install font-noto-color-emoji font-noto-emoji
 ```
+
+```{r emoji-fonts-local, echo=is.na(Sys.getenv('CI', NA)), eval=is.na(Sys.getenv('CI', NA)), fig.cap="表情字体", out.width="75%", fig.width=4, fig.height=4}
+data.frame(
+  category = c("pineapple", "apple", "watermelon", "grapes", "pear", "banana"),
+  value = c(5, 4, 3, 2, 3, 5)
+) |> 
+  transform(category = sapply(category, emo::ji))  |> 
+  ggplot(aes(x = category, y = value)) +
+  scale_y_continuous(limits = c(1.5, 5.5)) +
+  geom_text(aes(label = category), family = "Noto Emoji", size = 12) +
+  theme_void()
+```
+```{r emoji-fonts-online, echo=!is.na(Sys.getenv('CI', NA)), eval=!is.na(Sys.getenv('CI', NA)), fig.cap="表情字体", out.width="75%", fig.width=4, fig.height=4}
+data.frame(
+  category = c("pineapple", "apple", "watermelon", "mango", "pear"),
+  value = c(5, 4, 3, 7, 2)
+) |> 
+  transform(category = sapply(category, emo::ji)) |> 
+  ggplot(aes(x = category, y = value)) +
+  geom_text(aes(label = category), size = 12, vjust = -0.5) +
+  theme_minimal()
+```
+
+
 
 ## 配色 {#sec-colors}
 
