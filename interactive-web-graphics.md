@@ -1,4 +1,6 @@
-# 交互式网页图形 {#chap:interactive-web-graphics}
+# 交互图形 {#chap-interactive-web-graphics}
+
+
 
 
 
@@ -151,7 +153,7 @@ ggplotly(gg, dynamicTicks = "y") %>%
 
 
 
-## 散点图 {#sec:plotly-scatter}
+## 散点图 {#sec-plotly-scatter}
 
 
 Table: (\#tab:plotly-scatter-functions) 散点图类型
@@ -171,7 +173,7 @@ Table: (\#tab:plotly-scatter-functions) 散点图类型
 plotly.js 提供很多图层用于绘制各类图形 <https://github.com/plotly/plotly.js/tree/master/src/traces>
 
 
-## 条形图 {#sec:plotly-barplot}
+## 条形图 {#sec-plotly-barplot}
 
 日常使用最多的图形无外乎散点图、柱形图（分组、堆积、百分比堆积等）
 
@@ -217,7 +219,7 @@ htmltools::tagList(p11, p12, p13, p14)
 ```
 
 
-## 折线图 {#sec:plotly-lineplot}
+## 折线图 {#sec-plotly-lineplot}
 
 其它常见的图形还要折线图、直方图、箱线图和提琴图
 
@@ -231,7 +233,7 @@ p21 <- plot_ly(Orange,
 ```
 
 
-## 双轴图 {#sec:multiple-y-axes}
+## 双轴图 {#sec-multiple-y-axes}
 
 [双轴图](https://plotly.com/r/multiple-axes/)
 
@@ -302,7 +304,7 @@ plot_ly(data = dat) %>%
 ```
 
 
-## 直方图 {#sec:plotly-histogram}
+## 直方图 {#sec-plotly-histogram}
 
 
 ```r
@@ -313,7 +315,7 @@ p22 <- plot_ly(iris,
 )
 ```
 
-## 箱线图 {#sec:plotly-boxplot}
+## 箱线图 {#sec-plotly-boxplot}
 
 
 ```r
@@ -382,7 +384,7 @@ plot_ly(diamonds,
   )
 ```
 
-## 提琴图 {#sec:plotly-violin}
+## 提琴图 {#sec-plotly-violin}
 
 
 ```r
@@ -429,7 +431,7 @@ add\_heatmap & add\_pie & add\_trace\\
 
 
 
-## 气泡图 {#sec:plotly-bubble}
+## 气泡图 {#sec-plotly-bubble}
 
 简单图形 scatter，分布图几类，其中 scatter、heatmap、scatterpolar 支持 WebGL 绘图引擎
 
@@ -467,7 +469,7 @@ plot_ly(
   config(displayModeBar = F)
 ```
 
-## 曲线图 {#sec:plotly-spline}
+## 曲线图 {#sec-plotly-spline}
 
 
 ```r
@@ -487,7 +489,7 @@ plot_ly(
 ```
 
 
-## 堆积图 {#sec:plotly-tozeroy}
+## 堆积图 {#sec-plotly-tozeroy}
 
 
 ```r
@@ -500,7 +502,7 @@ plot_ly(
 ```
 
 
-## 热力图 {#sec:plotly-heatmap}
+## 热力图 {#sec-plotly-heatmap}
 
 其他基础图形
 
@@ -513,7 +515,7 @@ plot_ly(z = volcano, type = 'heatmap')
 
 
 
-## 地图 {#sec:plotly-map}
+## 地图 I {#sec-plotly-map}
 
 `plot_mapbox()` 使用 Mapbox 提供的地图服务，因此，需要注册一个账户，获取 MAPBOX_TOKEN
 
@@ -602,7 +604,7 @@ plot_ly(data = dat,
 
 
 
-## 拟合图 {#sec:plotly-fitted}
+## 拟合图 {#sec-plotly-fitted}
 
 
 ```r
@@ -649,7 +651,7 @@ plot_ly(economics,
 ```
 
 
-## 轨迹图 {#sec:plotly-rasterly}
+## 轨迹图 {#sec-plotly-rasterly}
 
 [rasterly](https://github.com/plotly/rasterly) 百万量级的散点图
 
@@ -685,7 +687,7 @@ ridesDf %>%
 \end{figure}
 
 
-## 三维图 {#sec:plotly-3d}
+## 三维图 {#sec-plotly-3d}
 
 
 
@@ -708,7 +710,7 @@ transform(mtcars, am = ifelse(am == 0, "Automatic", "Manual")) %>%
   ))
 ```
 
-## 甘特图 {#sec:plotly-gantt-charts}
+## 甘特图 {#sec-plotly-gantt-charts}
 
 项目管理必备，如图所示，本项目拆分成7个任务，一共使用3种项目资源
 
@@ -790,7 +792,7 @@ plot_ly(data = df) %>%
   )
 ```
 
-## 帕雷托图 {#sec:plotly-pareto-charts}
+## 帕雷托图 {#sec-plotly-pareto-charts}
 
 [帕雷托图](https://en.wikipedia.org/wiki/Pareto_chart) 20/80 法则
 
@@ -836,7 +838,7 @@ plot_ly(data = dat) %>%
 :::
 
 
-## 时间线 {#sec:plotly-vistime}
+## 时间线 {#sec-plotly-vistime}
 
 
 
@@ -858,7 +860,7 @@ vistime(pres, col.event = "Position", col.group = "Name") %>%
   )
 ```
 
-## 漏斗图 {#sec:plotly-funnel}
+## 漏斗图 {#sec-plotly-funnel}
 
 
 ```r
@@ -903,7 +905,7 @@ plotly::plot_ly(data = dat) %>%
   plotly::config(displayModeBar = FALSE)
 ```
 
-## 雷达图 {#sec:plotly-radar}
+## 雷达图 {#sec-plotly-radar}
 
 
 ```r
@@ -931,7 +933,7 @@ plot_ly(
 ```
 
 
-## 瀑布图 {#sec:plotly-waterfall}
+## 瀑布图 {#sec-plotly-waterfall}
 
 盈亏图
 
@@ -983,17 +985,17 @@ plotly::plot_ly(dat,
   plotly::config(displayModeBar = FALSE)
 ```
 
-## treemap 图 {#sec:plotly-treemap}
+## 树状图 {#sec-plotly-treemap}
 
 plotly 绘制 treemap 和 sunburst 图比较复杂，接口不友好， [plotme](https://github.com/yogevherz/plotme) 正好弥补不足。
 
 
-## 旭日图 {#sec:plotly-sunburst}
+## 旭日图 {#sec-plotly-sunburst}
 
 [plotme](https://github.com/yogevherz/plotme)
 
 
-## 调色板 {#sec:plotly-color-palette}
+## 调色板 {#sec-plotly-color-palette}
 
 
 ```r
@@ -1032,7 +1034,7 @@ plot_ly(dat,
 ```
 
 
-## 面积图 {#sec:highcharter}
+## 面积图 {#sec-highcharter}
 
 Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可视化案例，另一个关键的参考资料是 [highcharts API 文档](https://api.highcharts.com/highcharts/)，文档主要分两部分全局选项 `Highcharts.setOptions` 和绘图函数 `Highcharts.chart`。下面以 `data_to_boxplot()` 为例解析 R 中的数据结构是如何和 highcharts 的 JSON 以及绘图函数对应的。
 
@@ -1070,9 +1072,8 @@ columnpyramid     histogram         pyramid        timeline      NA
 
 ```r
 library(highcharter)
-library(palmerpenguins)
-hchart(penguins, "scatter", 
-       hcaes(x = flipper_length_mm, y = bill_length_mm, group = species))
+hchart(iris, "scatter", 
+       hcaes(x = Sepal.Length, y = Sepal.Width, group = Species))
 ```
 
 
@@ -1291,7 +1292,7 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 :::
 
 
-## 动画 {#sec:highcharter-animation}
+## 动画 I {#sec-highcharter-animation}
 
 动态条形图
 
@@ -1483,7 +1484,7 @@ highchart() %>%
 ```
 
 
-## 时序图 {#sec:dygraphs}
+## 时序图 {#sec-dygraphs}
 
 [dygraphs](https://github.com/rstudio/dygraphs) 专门用来绘制交互式时间序列图形，下面以美团股价为例，展示时间窗口筛选、坐标轴名称、刻度标签、注释、事件标注、缩放等功能
 
@@ -1491,7 +1492,6 @@ highchart() %>%
 
 ```r
 meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
-library(magrittr)
 library(dygraphs)
 # 缩放
 dyUnzoom <- function(dygraph) {
@@ -1510,22 +1510,22 @@ getYearMonth <- '
     return date.getFullYear() + "-" + monthNames[date.getMonth()]; 
   }'
 
-dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") %>%
-  dyRangeSelector(dateWindow = c(format(Sys.Date(), "%Y-01-01"), as.character(Sys.Date()))) %>%
-  dyAxis(name = "x", axisLabelFormatter = getYearMonth) %>%
-  dyAxis("y", valueRange = c(0, 500), label = "美团股价") %>%
-  dyEvent("2020-01-23", "武汉封城", labelLoc = "bottom") %>%
-  dyShading(from = "2020-01-23", to = "2020-04-08", color = "#FFE6E6") %>%
-  dyAnnotation("2020-01-23", text = "武汉封城", tooltip = "武汉封城", width = 60) %>%
-  dyAnnotation("2020-04-08", text = "武汉解封", tooltip = "武汉解封", width = 60) %>%
-  dyHighlight(highlightSeriesOpts = list(strokeWidth = 2)) %>%
-  dySeries(label = "调整股价") %>%
-  dyLegend(show = "follow", hideOnMouseOut = FALSE) %>%
-  dyOptions(fillGraph = TRUE, drawGrid = FALSE, gridLineColor = "lightblue") %>%
+dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") |> 
+  dyRangeSelector(dateWindow = c(format(Sys.Date(), "%Y-01-01"), as.character(Sys.Date())))  |> 
+  dyAxis(name = "x", axisLabelFormatter = getYearMonth)  |> 
+  dyAxis("y", valueRange = c(0, 500), label = "美团股价")  |> 
+  dyEvent("2020-01-23", "武汉封城", labelLoc = "bottom")  |> 
+  dyShading(from = "2020-01-23", to = "2020-04-08", color = "#FFE6E6")  |> 
+  dyAnnotation("2020-01-23", text = "武汉封城", tooltip = "武汉封城", width = 60)  |> 
+  dyAnnotation("2020-04-08", text = "武汉解封", tooltip = "武汉解封", width = 60)  |> 
+  dyHighlight(highlightSeriesOpts = list(strokeWidth = 2))  |> 
+  dySeries(label = "调整股价")  |> 
+  dyLegend(show = "follow", hideOnMouseOut = FALSE)  |> 
+  dyOptions(fillGraph = TRUE, drawGrid = FALSE, gridLineColor = "lightblue")  |> 
   dyUnzoom()
 ```
 
-## 图形导出 {#sec:export}
+## 图形导出 {#sec-export}
 
 orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形具有很强的导出功能，[安装 orca](https://github.com/plotly/orca#installation) 后，`plotly::orca()` 函数可以将基于 htmlwidgets 的 plotly 图形对象导出为 PNG、PDF 和 SVG 等格式的高质量静态图片。
 
@@ -1535,7 +1535,334 @@ p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
 orca(p, "plot.svg")
 ```
 
-## 其他 JS 库 {#sec:r2d3}
+
+## 地图 II {#sec-echarts4r-map}
+
+
+
+相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 [Apache ECharts](https://github.com/apache/echarts)。
+前者 MIT 协议，后者采用  Apache-2.0 协议，都可以商用。Apache ECharts 是 Apache 旗下顶级开源项目，由百度前端技术团队贡献，中文文档也比较全，学习起来门槛会低一些。
+
+
+```r
+library(echarts4r)
+quakes |> 
+  e_charts(long) |> 
+  e_geo(
+    roam = TRUE,
+    boundingCoords = list(
+      c(185, - 10),
+      c(165, -40)
+    )
+  )  |>  
+  e_scatter(
+    lat, mag, 
+    coord_system = "geo"
+  ) |> 
+  e_visual_map(mag, scale = e_scale)
+```
+
+**leaflet** 包制作地图，斐济是太平洋上的一个岛国，处于板块交界处，经常发生地震，如下图所示，展示 1964 年来 1000 次震级大于 4 级的地震活动。
+
+
+```r
+library(leaflet)
+data(quakes)
+# Pop 提示
+quakes$popup_text <- lapply(paste(
+  "编号:", "<strong>", quakes$stations, "</strong>", "<br>",
+  "震深:", quakes$depth, "<br>",
+  "震级:", quakes$mag
+), htmltools::HTML)
+# 构造调色板
+pal <- colorBin("Spectral", bins = pretty(quakes$mag), reverse = TRUE)
+p <- leaflet(quakes) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  addCircles(lng = ~long, lat = ~lat, color = ~ pal(mag), label = ~popup_text) |>
+  addLegend("bottomright",
+    pal = pal, values = ~mag,
+    title = "地震震级"
+  ) |>
+  addScaleBar(position = c("bottomleft"))
+p
+```
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/leaflet-fiji} 
+
+}
+
+\caption{斐济地震带}(\#fig:fiji-quakes-latex)
+\end{figure}
+
+将上面的绘图部分保存为独立的 HTML 网页文件
+
+
+```r
+library(htmlwidgets)
+# p 就是绘图部分的数据对象
+saveWidget(p, "fiji-map.html", selfcontained = T)
+```
+
+
+
+```r
+library(leaflet)
+library(leaflet.extras)
+
+quakes |>
+  leaflet() |>
+  addTiles() |>
+  addProviderTiles(providers$OpenStreetMap.DE) |>
+  addHeatmap(
+    lng = ~long, lat = ~lat, intensity = ~mag,
+    max = 100, radius = 20, blur = 10
+  )
+```
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{screenshots/leaflet-heatmap} 
+
+}
+
+\caption{斐济地震带热力图}(\#fig:fiji-heatmap-latex)
+\end{figure}
+
+**leafletCN** 提供汉化
+
+
+```r
+# 地图默认放大倍数
+zoom         <- 4
+# 地图可以放大的倍数区间
+minZoom      <- 1
+maxZoom      <- 18
+
+library(leaflet)
+library(leafletCN)
+library(maptools)
+library(leaflet.extras)
+
+# 热力图 heatmap
+leaflet(res, options = leafletOptions(minZoom = minZoom, maxZoom = maxZoom)) |>
+  amap() |>
+  # setView(lng = mean(data$long), lat = mean(data$lat), zoom = zoom) |>
+  setView(lng = 109, lat = 38, zoom = 4) |>
+  addHeatmap(
+    lng = ~long2, lat = ~lat2, intensity = ~uv, max = max(res$uv),
+    blur = blur, minOpacity = minOpacity, radius = radius
+  )
+
+quakes$popup_text <- lapply(paste(
+  "编号:", "<strong>", quakes$stations, "</strong>", "<br>",
+  "震深:", quakes$depth, "<br>",
+  "震级:", quakes$mag
+), htmltools::HTML)
+# 构造调色板
+pal <- colorBin("Spectral", bins = pretty(quakes$mag), reverse = TRUE)
+
+leaflet(quakes) |>
+  addProviderTiles(providers$CartoDB.Positron) |>
+  addCircles(
+    lng = ~long, lat = ~lat,
+    color = ~ pal(mag), label = ~popup_text
+  ) |>
+  setView(178, -20, 5) |>
+  addHeatmap(
+    lng = ~long, lat = ~lat, intensity = ~mag,
+    blur = 20, max = 0.05, radius = 15
+  ) |>
+  addLegend("bottomright",
+    pal = pal, values = ~mag,
+    title = "地震震级"
+  ) |>
+  addScaleBar(position = c("bottomleft"))
+```
+
+
+## 动画 II {#sec-echarts4r-animation}
+
+
+
+```r
+# https://d.cosx.org/d/422311
+library(purrr)
+library(echarts4r)
+
+data("gapminder", package = "gapminder")
+
+titles <- map(unique(gapminder$year), function(x) {
+  list(
+    text = "Gapminder",
+    left = "center"
+  )
+})
+
+years <- map(unique(gapminder$year), function(x) {
+  list(
+    subtext = x,
+    left = "center",
+    top = "center",
+    z = 0,
+    subtextStyle = list(
+      fontSize = 100,
+      color = "rgb(170, 170, 170, 0.5)",
+      fontWeight = "bolder"
+    )
+  )
+})
+
+# 添加一列颜色，各大洲和颜色的对应关系可自定义，调整 levels 或 labels 里面的顺序即可，也可不指定 levels ，调用其它调色板
+gapminder <- gapminder |>
+  transform(
+    color = factor(
+      continent,
+      levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
+      labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
+    )
+  )
+
+gapminder |>
+  group_by(year) |>
+  e_charts(x = gdpPercap, timeline = TRUE) |>
+  e_scatter(
+    serie = lifeExp, size = pop, bind = country,
+    symbol_size = 5, name = ""
+  ) |>
+  e_add("itemStyle", color) |>
+  e_y_axis(
+    min = 20, max = 85, nameGap = 30,
+    name = "Life Exp", nameLocation = "center"
+  ) |>
+  e_x_axis(
+    type = "log", min = 100, max = 100000,
+    nameGap = 30, name = "GDP / Cap", nameLocation = "center"
+  ) |>
+  e_timeline_serie(title = titles) |>
+  e_timeline_serie(title = years, index = 2) |>
+  e_timeline_opts(playInterval = 1000) |>
+  e_grid(bottom = 100) |>
+  e_tooltip()
+```
+
+
+```r
+# params.name 对应 bind
+# params.value[0] 对应 x
+# params.value[1] 对应 serie
+# params.value[2] 对应 size
+# tooltips 自定义
+# https://stackoverflow.com/questions/50554304/displaying-extra-variables-in-tooltips-echarts4r
+# 百分数处理
+# https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+mtcars |>
+  tibble::rownames_to_column("model") |>
+  e_charts(x = wt) |>
+  e_scatter(serie = mpg, size = qsec, bind = model) |>
+  e_tooltip(formatter = htmlwidgets::JS("
+          function(params) {
+              return (
+                  '<strong>' + params.name + '</strong>' +
+                  '<br />wt: ' + params.value[0] +
+                  '<br />mpg: ' + params.value[1] +
+                  '<br />qsec- ' + params.value[2]
+              )
+          }
+          "))
+```
+
+
+
+## 网络图 {#sec-network-analysis}
+
+[gephi](https://github.com/gephi/gephi) 探索和可视化网络图 GraphViz
+
+
+```r
+library(igraph)
+```
+
+### networkD3 {#subsec-networkD3}
+
+[networkD3](https://github.com/christophergandrud/networkD3) [D3](https://github.com/d3/d3) 非常适合绘制网络图，如网络、树状、桑基图
+
+
+```r
+library(networkD3)
+data(MisLinks, MisNodes) # 加载数据
+head(MisLinks) # 边
+```
+
+```
+##   source target value
+## 1      1      0     1
+## 2      2      0     8
+## 3      3      0    10
+## 4      3      2     6
+## 5      4      0     1
+## 6      5      0     1
+```
+
+```r
+head(MisNodes) # 节点
+```
+
+```
+##              name group size
+## 1          Myriel     1   15
+## 2        Napoleon     1   20
+## 3 Mlle.Baptistine     1   23
+## 4    Mme.Magloire     1   30
+## 5    CountessdeLo     1   11
+## 6        Geborand     1    9
+```
+
+构造网络图
+
+
+```r
+forceNetwork(
+  Links = MisLinks, Nodes = MisNodes, Source = "source",
+  Target = "target", Value = "value", NodeID = "name",
+  Group = "group", opacity = 0.4
+)
+```
+
+### visNetwork {#subsec-visNetwork}
+
+[visNetwork](https://github.com/datastorm-open/visNetwork) 使用 [vis-network.js](https://github.com/visjs/vis-network) 库绘制网络关系图 <https://datastorm-open.github.io/visNetwork>
+
+
+```r
+library(visNetwork)
+```
+
+调用函数 `visTree()` 可视化分类模型结果
+
+
+```r
+library(rpart)
+library(sparkline) # 函数 visTree 需要导入 sparkline 包
+res <- rpart(Species~., data=iris)
+visTree(res, main = "鸢尾花分类树", width = "100%")
+```
+
+
+
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-26-1} \end{center}
+
+节点、边的属性都可以映射数据指标
+
+### r2d3 {#subsec-r2d3}
+
+[D3](https://d3js.org/) 是非常流行的 JavaScript 库，[r2d3](https://github.com/rstudio/r2d3) 提供了 R 接口
+
+<!-- 介绍网络图的做法 -->
+
+
+```r
+library(r2d3)
+```
 
 更加具体的使用介绍，一个复杂的案例，如何从简单配置过来，以条形图为例， D3 是一个相当强大且成熟的库，提供的案例功能要覆盖 plotly
 
@@ -1572,7 +1899,42 @@ r2d3(
 [提供一个 R 包和 HTML Widgets 小练习：给 roughViz.js 写个 R 包装 <https://d.cosx.org/d/421030-r-html-widgets-roughviz-js-r>
 <https://github.com/XiangyunHuang/roughviz>]{.todo}
 
-## 运行环境 {#sec:session-web}
+## Python 交互图形 {#sec-python-plotly}
+
+[Plotly](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/express/_chart_types.py) 的图形库
+
+
+```python
+import plotly.express as px
+
+px.scatter(
+    px.data.iris(),
+    x="sepal_width",
+    y="sepal_length",
+    color="species",
+    trendline="ols",
+    template="simple_white",
+    labels={
+        "sepal_length": "Sepal Length (cm)",
+        "sepal_width": "Sepal Width (cm)",
+        "species": "Species of Iris",
+    },
+    title="Edgar Anderson's Iris Data",
+    color_discrete_sequence=px.colors.qualitative.Set2
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/iris} 
+
+}
+
+\caption{插入图片}(\#fig:plotly-python-iris)
+\end{figure}
+
+
+## 运行环境 {#sec-web-graphics}
 
 
 ```r
@@ -1600,23 +1962,31 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] highcharter_0.8.2 plotly_4.9.4.1    ggplot2_3.3.5    
+##  [1] sparkline_2.0        rpart_4.1-15         visNetwork_2.0.9    
+##  [4] networkD3_0.4        igraph_1.2.6         leaflet.extras_1.0.0
+##  [7] maptools_1.1-1       sp_1.4-5             leafletCN_0.2.1     
+## [10] leaflet_2.0.4.1      echarts4r_0.4.1      r2d3_0.2.5          
+## [13] dygraphs_1.1.1.6     highcharter_0.8.2    plotly_4.9.4.1      
+## [16] ggplot2_3.3.5        reticulate_1.20     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.24         purrr_0.3.4      
-##  [5] lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
-##  [9] htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1        utf8_1.2.1       
-## [13] rlang_0.4.11      isoband_0.2.5     pillar_1.6.1      glue_1.4.2       
-## [17] withr_2.4.2       DBI_1.1.1         TTR_0.24.2        lifecycle_1.0.0  
-## [21] quantmod_0.4.18   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
-## [25] htmlwidgets_1.5.3 evaluate_0.14     labeling_0.4.2    knitr_1.33       
-## [29] curl_4.3.2        fansi_0.5.0       highr_0.9         xts_0.12.1       
-## [33] Rcpp_1.0.7        broom_0.7.8       scales_1.1.1      backports_1.2.1  
-## [37] jsonlite_1.7.2    farver_2.1.0      png_0.1-7         digest_0.6.27    
-## [41] stringi_1.7.3     rlist_0.4.6.1     bookdown_0.22     dplyr_1.0.7      
-## [45] grid_4.1.0        tools_4.1.0       magrittr_2.0.1    lazyeval_0.2.2   
-## [49] tibble_3.1.2      crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3  
-## [53] ellipsis_0.3.2    MASS_7.3-54       data.table_1.14.0 lubridate_1.7.10 
-## [57] assertthat_0.2.1  rmarkdown_2.9     httr_1.4.2        R6_2.5.0         
-## [61] igraph_1.2.6      compiler_4.1.0
+##  [1] xts_0.12.1        lubridate_1.7.10  webshot_0.5.2     httr_1.4.2       
+##  [5] tools_4.1.0       backports_1.2.1   utf8_1.2.2        R6_2.5.0         
+##  [9] DBI_1.1.1         lazyeval_0.2.2    colorspace_2.0-2  withr_2.4.2      
+## [13] tidyselect_1.1.1  processx_3.5.2    curl_4.3.2        compiler_4.1.0   
+## [17] isoband_0.2.5     labeling_0.4.2    bookdown_0.22     scales_1.1.1     
+## [21] callr_3.7.0       stringr_1.4.0     digest_0.6.27     foreign_0.8-81   
+## [25] rmarkdown_2.9     pkgconfig_2.0.3   htmltools_0.5.1.1 fastmap_1.1.0    
+## [29] highr_0.9         htmlwidgets_1.5.3 rlang_0.4.11      TTR_0.24.2       
+## [33] rstudioapi_0.13   quantmod_0.4.18   shiny_1.6.0       farver_2.1.0     
+## [37] generics_0.1.0    zoo_1.8-9         jsonlite_1.7.2    crosstalk_1.1.1  
+## [41] dplyr_1.0.7       magrittr_2.0.1    rlist_0.4.6.1     Matrix_1.3-4     
+## [45] Rcpp_1.0.7        munsell_0.5.0     fansi_0.5.0       lifecycle_1.0.0  
+## [49] stringi_1.7.3     yaml_2.2.1        MASS_7.3-54       grid_4.1.0       
+## [53] promises_1.2.0.1  crayon_1.4.1      lattice_0.20-44   knitr_1.33       
+## [57] ps_1.6.0          pillar_1.6.2      glue_1.4.2        evaluate_0.14    
+## [61] data.table_1.14.0 png_0.1-7         vctrs_0.3.8       httpuv_1.6.1     
+## [65] gtable_0.3.0      purrr_0.3.4       tidyr_1.1.3       assertthat_0.2.1 
+## [69] xfun_0.24         mime_0.11         xtable_1.8-4      broom_0.7.9      
+## [73] later_1.2.0       viridisLite_0.4.0 tibble_3.1.3      ellipsis_0.3.2
 ```

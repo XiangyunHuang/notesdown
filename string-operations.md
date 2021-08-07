@@ -1,5 +1,10 @@
-# 字符串操作 {#chap:string-operations}
+# 字符串操作 {#chap-string-operations}
 
+[stringdist](https://github.com/markvanderloo/stringdist)
+[stringfish](https://github.com/traversc/stringfish)
+[stringb](https://github.com/hadley/stringb)
+[stringi](https://github.com/gagolews/stringi)
+[stringr](https://github.com/tidyverse/stringr)
 
 
 ```r
@@ -11,8 +16,6 @@ stringr::str_replace(string = shopping_list, pattern = "\\d", replacement = "aa"
 ```
 ## [1] "apples xaa"   "bag of flour" "bag of sugar" "milk xaa"
 ```
-
-
 
 
 
@@ -47,7 +50,7 @@ str_replace(shopping_list, pattern = "\\\\d", replace = "aa")
 ```
 
 
-## 字符串加密 {#sec:encode-string}
+## 字符串加密 {#sec-encode-string}
 
 字符串编码加密， **openssl** 包提供了 sha1 函数 [^encode]
 

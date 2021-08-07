@@ -1,4 +1,4 @@
-# 生存分析 {#chap:survival-analysis}
+# 生存分析 {#chap-survival-analysis}
 
 
 
@@ -13,7 +13,7 @@ R 软件内置了 [**survival**包](https://github.com/therneau/survival) 它是
 
 [survminer](https://github.com/kassambara/survminer) 竟然严重依赖 [**ggpubr** 包](https://github.com/kassambara/ggpubr)，ggpubr 包曾被 [ggtree](https://github.com/YuLab-SMU/ggtree) 的作者[余光创](https://guangchuangyu.github.io/)严重[吐槽过](https://guangchuangyu.github.io/2019/12/why-hate-ggpubr/)。[**ggfortify**包](https://github.com/sinhrks/ggfortify) 大大扩展了 **ggplot2** 包的 `autoplot()` 函数，使得它适应各种模型对象的自动绘图。
 
-## 急性粒细胞白血病生存数据 {#sec:aml}
+## 急性粒细胞白血病生存数据 {#sec-aml}
 
 
 

@@ -1,4 +1,4 @@
-# 试验设计 {#chap:experimental-design}
+# 试验设计 {#chap-experimental-design}
 
 
 ```r
@@ -20,7 +20,7 @@ Bill Venables 开发的 [conf.design](https://cran.r-project.org/package=conf.de
 
 另一个和试验设计紧密相关的话题是敏感性分析，推荐 Devin Incerti 的敏感性分析系列博客 <https://devinincerti.com/blog.html>，R 包 [sensitivity](https://CRAN.R-project.org/package=sensitivity) 提供140+ 页的手册，功能非常强，模型的全局敏感性分析， [SWATplusR](https://github.com/chrisschuerz/SWATplusR) SWAT 分析法和 R 语言结合。
 
-## 学生睡眠质量 {#sec:sleep}
+## 学生睡眠质量 {#sec-sleep}
 
 <!-- 单因素两水平方差分析 -->
 
@@ -36,7 +36,7 @@ ggplot(data = sleep, aes(x = group, y = extra, color = group)) +
 
 \begin{center}\includegraphics{experimental-design_files/figure-latex/sleep-data-1} \end{center}
 
-## 驱虫喷雾的效果 {#sec:insect-sprays}
+## 驱虫喷雾的效果 {#sec-insect-sprays}
 
 <!-- 单因素多水平方差分析，多重比较 -->
 
@@ -336,7 +336,7 @@ plot(mod3)
 
 关于多重比较请见 Frank Bretz, Torsten Hothorn, Peter Westfall 的书《Multiple Comparisons Using R》及配套 R 包 [multcomp](https://cran.r-project.org/package=multcomp)，该 R 包现由 Torsten Hothorn 维护，他还维护了一个由数据集构成的 R 包 [TH.data](https://cran.r-project.org/package=TH.data)，我们后续章节也会用到。
 
-## 重复数不等的多重比较 {#sec:multiple-comparison}
+## 重复数不等的多重比较 {#sec-multiple-comparison}
 
 <!-- 这个方法由谁提出来的呢？ [数理统计讲义](https://bookdown.org/hezhijian/book/) 和 [Advanced Statistical Computing](https://bookdown.org/rdpeng/advstatcomp/) -->
 
@@ -360,7 +360,7 @@ $$
 
 $f_e = n - r, S_e = \sum_{i=1}^{r}\sum_{j=1}^{m_{i}}(y_{ij} - \bar{y}_{i\cdot})^2 = S_T - S_A$
 
-## 不同地区的草类植物吸收二氧化碳的情况 {#sec:co2}
+## 不同地区的草类植物吸收二氧化碳的情况 {#sec-co2}
 
 <!-- 多因素多水平方差分析：绘图表示5个变量 -->
 
@@ -385,7 +385,7 @@ ggplot(data = CO2, aes(x = conc, y = uptake, color = Type, shape = Treatment)) +
 \caption{草类植物吸收二氧化碳的量}(\#fig:co2)
 \end{figure}
 
-## 果园喷雾剂的效力 {#sec:orchard-sprays}
+## 果园喷雾剂的效力 {#sec-orchard-sprays}
 
 <!-- 拉丁方设计 -->
 
@@ -396,7 +396,7 @@ ggplot(data = CO2, aes(x = conc, y = uptake, color = Type, shape = Treatment)) +
 data("OrchardSprays")
 ```
 
-## 验证孟德尔的豌豆实验结果 {#sec:npk}
+## 验证孟德尔的豌豆实验结果 {#sec-npk}
 
 <!-- 试验设计：正交设计 -->
 R. A. Fisher 在农业站做实验验证孟德尔的豌豆实验结果

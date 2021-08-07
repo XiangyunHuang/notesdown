@@ -1,4 +1,4 @@
-# 广义线性模型 {#chap:generalized-linear-models}
+# 广义线性模型 {#chap-generalized-linear-models}
 
 
 
@@ -22,17 +22,22 @@
 
 
 <!--
+https://github.com/jolars/SLOPE 
+Sorted L1 Penalized Estimation
+
+L1 Lasso 回归的综述及其 R 包实现，未来可以写个 R 包整合一下
+
 贝叶斯变量选择方法的综述 <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A7n26.pdf>，17 种分类算法应用于信用评分 <https://www.datascience-zing.com/blog/implemetation-of-17-classification-algorithms-in-r-using-car-evaluation-data> 数据和代码 <https://github.com/surajvv12/17_Classification> 数据集来源于  [UCI Machine learning repository](https://archive.ics.uci.edu/ml)
 -->
 
-## 介绍 {#sec:glm-introduction}
+## 介绍 {#sec-glm-introduction}
 
 模型结构，模型种类，参数估计办法，相当于综述
 
 响应变量分别服从二项分布、多项分布、对数正态分布、泊松分布、伽马分布
 
 
-## 理论基础 {#sec:glm-theory}
+## 理论基础 {#sec-glm-theory}
 
 分两个段落分别介绍指数族和 GLM 
 
@@ -56,14 +61,14 @@ f(y,\theta) & = \exp(-\theta) \theta^y/(y!) \\
 
 <!-- 如果能以非常直观的几何展示方式表现高深的高维模型和算法理论，将是非常有意义的 -->
 
-### 岭回归 {#subsec:glm-ridge}
+### 岭回归 {#subsec-glm-ridge}
 
 Geometry and properties of generalized ridge regression in high dimensions <http://web.ccs.miami.edu/~hishwaran/papers/IR.conmath2014.pdf>
 
 这篇文章借助三维几何图形展示高维情形下的广义岭回归
 
 
-### Lasso {#subsec:glm-lasso}
+### Lasso {#subsec-glm-lasso}
 
 glmnet: Lasso and Elastic-Net Regularized Generalized Linear Models <https://glmnet.stanford.edu>
 
@@ -71,7 +76,7 @@ glmnet: Lasso and Elastic-Net Regularized Generalized Linear Models <https://glm
 
 bestglm: Best Subset GLM and Regression Utilities
 
-### 偏最小二乘回归 {#subsec:glm-pls}
+### 偏最小二乘回归 {#subsec-glm-pls}
 
 [pls](https://github.com/bhmevik/pls) 包 [@JSS_2007_pls] 实现了偏最小二乘回归（partial least squares regression， PLS）和主成分回归 （principal component regression， PCR），详见主页 <https://mevik.net/work/software/pls.html>
 帮助文档的质量较高，是比较完整全面的。
@@ -88,7 +93,7 @@ bestglm: Best Subset GLM and Regression Utilities
 
 
 
-## 吸烟喝酒和食道癌的关系 {#sec:alcohol}
+## 吸烟喝酒和食道癌的关系 {#sec-alcohol}
 
 存在有序分类数据
 
@@ -195,7 +200,7 @@ fit_esoph_brm <- brms::brm(ncases | trials(ncases + ncontrols) ~ agegp + tobgp *
 )
 ```
 
-## 自然流产和人工流产后的不育 {#sec:infert}
+## 自然流产和人工流产后的不育 {#sec-infert}
 
 `help(infert)`
 
@@ -343,7 +348,7 @@ summary(infert_glm_3)
 ## Score (logrank) test = 48.44  on 2 df,   p=3e-11
 ```
 
-## 细菌数据集 {#sec:australia-bacteria}
+## 细菌数据集 {#sec-australia-bacteria}
 
 流感嗜血杆菌的细菌与中耳炎患儿
 
@@ -443,7 +448,7 @@ summary(fit_glmer)
 ```
 
 
-## 研究婴儿出生体重低的相关危险因素 {#sec:birthwt}
+## 研究婴儿出生体重低的相关危险因素 {#sec-birthwt}
 
 <!-- 多项逻辑回归模型 Multinomial-Logistic-Regression-Models -->
 
@@ -709,7 +714,7 @@ p
 
 > 模型解释
 
-## 哥本哈根住房状况调查 {#sec:housing}
+## 哥本哈根住房状况调查 {#sec-housing}
 
 <!-- 有序逻辑回归模型 Ordinal-Logistic-Regression-Models -->
 
@@ -821,7 +826,7 @@ exp(cbind(OR = coef(house.plr), ci))
 
 
 
-## 癫痫病发作次数 {#sec:epileptics-counts}
+## 癫痫病发作次数 {#sec-epileptics-counts}
 
 纵向数据 [@Peter_1990_epil]，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立
 
@@ -863,11 +868,11 @@ fit_glmm_glmmadaptive <- GLMMadaptive::mixed_model(
 summary(fit_glmm_glmmadaptive)
 ```
 
-## 对数线性模型 {#sec:generalized-log-linear-model}
+## 对数线性模型 {#sec-generalized-log-linear-model}
 
 当响应变量 $Y$ 服从对数正态分布的时候，广义线性模型具化为对数线性模型，**gllm** 包 [@gllm]
 
-## 泊松回归模型 {#sec:generalized-possion-linear-model}
+## 泊松回归模型 {#sec-generalized-possion-linear-model}
 
 加载数据
 

@@ -1,4 +1,4 @@
-# 时序分析 {#chap:time-series-analysis}
+# 时序分析 {#chap-time-series-analysis}
 
 
 ```r
@@ -21,7 +21,9 @@ library(dygraphs)
 
 [forecastML](https://github.com/nredell/forecastML/) 自回归模型结合机器学习方法。
 
-[CausalImpact](https://github.com/google/CausalImpact) 时间序列中的因果关系，比如广告促销带来的点击效果。
+[CausalImpact](https://github.com/google/CausalImpact) 借助贝叶斯分析方法推断时间序列中的因果关系，比如广告促销带来的点击效果。
+
+
 [robustbase](https://r-forge.r-project.org/projects/robustbase/) [@robustbase2006] 提供稳健统计方法。
 
 [prophet](https://github.com/facebook/prophet) 基于可加模型的时间序列预测
@@ -32,7 +34,7 @@ library(dygraphs)
 都用 dygraphs 这个 R 包来绘制时间序列图像，highcharter 是依赖商业软件，而且依赖的 R 包很多，另外提供的接口不太友好，没有设计好。
 -->
 
-## 时序数据 {#sec:ts-data}
+## 时序数据 {#sec-ts-data}
 
 以数据集 AirPassengers 为例说明一下 R 内置的存储时间序列数据的数据结构 --- ts 数据对象。函数 `class()` 、 `mode()` 和 `str()` 分别可以查看其数据类型、存储类型和数据结构。
 
@@ -188,7 +190,7 @@ diff(AirPassengers, lag = 1, differences = 2)
 ## 1960  -31  -38   54   14  -31   52   24 -103  -82   51  -24  113
 ```
 
-## 时序图 {#sec:ts-plot}
+## 时序图 {#sec-ts-plot}
 
 美国纽黑文自1912年至1971年的年平均气温变化见图 \@ref(fig:new-haven-temp)。
 
@@ -207,7 +209,137 @@ plot(nhtemp, main = "美国纽黑文的年平均气温", family = "source-han-sa
 \end{figure}
 
 
-## 时序检验 {#sec:ts-tests}
+
+
+```r
+# 构造多个 ts 序列
+tmp <- ts(
+  data = data.frame(
+    pay_one = rnorm(20),
+    pay_two = rnorm(20),
+    pay_three = rnorm(20)
+  ),
+  start = c(1961, 1), frequency = 12
+)
+
+plot(tmp, main = "pay cnt")
+```
+
+
+
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-7-1} \end{center}
+
+```r
+plot(tmp, plot.type = "single", col = 1:3, ylab = "pay cnt")
+```
+
+
+
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-7-2} \end{center}
+
+## 基本概念 {#sec:frequency}
+
+
+```r
+# 从某个完整的一天开始统计数据
+# 分钟级 ts 数据
+time_min <- format(seq.POSIXt(
+  from = as.POSIXct("2020-01-01 00:00"),
+  to = as.POSIXct("2020-01-01 23:59"), by = "1 min"
+),
+format = "%H:%M"
+)
+tmp = ts(data = rnorm(1440 * 3), start = c(2020, 12),
+         frequency = 24*60*365.25, names = "访问量")
+plot(tmp)
+```
+
+
+
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-8-1} \end{center}
+
+frequency: the number of observations per unit of time.
+
+frequency 里面乘以 365.25 而不是 365 是因为每隔 4 年出现一次 366 天，多出的这一天分摊到每一年。
+frequency 表示单位时间内发生的次数，ts 对象的时间基准为 1 年，所以，frequency = 4 表示一年出现四次，依此类推。关于季节性周期的说明 <https://robjhyndman.com/hyndsight/seasonal-periods/>。
+
+序列长度一样，但是周期不一样，这里的单位时间指的是1年
+
+
+```r
+# 季数据
+op = par(mfrow = c(2,2), mar = c(4,4,4,1))
+tmp = ts(rnorm(20), start = c(1961, 1), frequency = 4)
+plot(tmp, main = "Quarterly", type = "b")
+# 月数据
+tmp = ts(rnorm(20), start = c(1961, 1), frequency = 12) # 自然时间周期是一年，每月采样
+plot(tmp, main = "Monthly", type = "b")
+# 日数据
+tmp = ts(rnorm(20), start = c(1961, 1), frequency = 365.25)
+plot(tmp, main = "Daily", type = "b")
+# 分钟数据
+tmp = ts(rnorm(20), start = c(1961, 1), frequency = 24*60*365.25)
+plot(tmp, main = "Minutely", type = "b")
+```
+
+
+
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-9-1} \end{center}
+
+```r
+par(op)
+```
+
+默认情况下，自然时间周期是一年，每月采样。那可不可以设置自然时间周期是一周，每天采样呢？
+当然可以，只是 Base R 暂不支持，其实表达数据粒度的能力没有变化，以年或周为基准，都可以表达上面的季、月、日、分钟数据。
+
+deltat 和 frequency 只需提供一个参数值即可 deltat = 1/12 和 frequency = 12 表示同样的含义。
+
+R 4.0.0 开始，frequency 不必是整数，还可以是小数，frequency = .2 表示每 5 个时间单位抽样一次，根据周期 T 和频率 f 的关系 T = 1/f
+
+
+```r
+tmp = ts(rnorm(20), start = c(1961, 1), frequency = .2)
+plot(tmp, type = "b")
+```
+
+
+
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-10-1} \end{center}
+
+ts 和 seq 构造时间向量的关系是什么？
+
+
+```r
+seq(from = 1961, to = 2056, by = 5)
+```
+
+```
+##  [1] 1961 1966 1971 1976 1981 1986 1991 1996 2001 2006 2011 2016 2021 2026 2031
+## [16] 2036 2041 2046 2051 2056
+```
+
+即每隔5年抽样一次，采一个数据点
+
+
+```r
+ts(rnorm(20), start = c(1961, 1), frequency = 365.25/7)
+```
+
+```
+## Time Series:
+## Start = 1961 
+## End = 1961.36413415469 
+## Frequency = 52.1785714285714 
+##  [1]  0.70304147 -0.23185126 -0.46805388  0.52923523 -1.61579904 -0.72188702
+##  [7]  0.43976404  0.38825681  1.69402443  0.56172130 -0.54839813 -1.10357581
+## [13]  1.44912751 -1.07166600 -1.32122770 -0.81689470  0.07597288  0.63417017
+## [19] -0.29421762  0.90200534
+```
+
+周数据，一周采一个点，采了 20 个点
+
+## 时序检验 {#sec-ts-tests}
 
 
 
@@ -246,10 +378,10 @@ usage(stats::filter)
 - `fft()` 快速离散傅里叶变换
 
 
-## 指数平滑 {#sec:exponential-smoothing}
+## 指数平滑 {#sec-exponential-smoothing}
 
 
-## Holt-Winters {#sec:holt-winters}
+## Holt-Winters {#sec-holt-winters}
 
 **可加** Holt-Winters [@Winters_1960_Forecasting;@Holt_2004_Forecasting] 预测函数，周期长度为 p
 
@@ -301,7 +433,7 @@ m2 <- HoltWinters(x, gamma = FALSE, beta = FALSE)
 lines(fitted(m2)[,1], col = 3)
 ```
 
-## 1749-2013 年太阳黑子数据 {#sec:sunspots}
+## 1749-2013 年太阳黑子数据 {#sec-sunspots}
 
 再从官网拿到最近的数据
 
@@ -333,7 +465,7 @@ autoplot(sunspots)
 
 
 
-\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-9-1} \end{center}
+\begin{center}\includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-15-1} \end{center}
 
 
 ```r
@@ -382,7 +514,7 @@ legend("topright", legend = c("1749 至今", "1749-1983"), col = c("black", "red
 \end{figure}
 
 
-## 1991-1998 年欧洲主要股票市场日闭市价格指数 {#sec:EuStockMarkets}
+## 1991-1998 年欧洲主要股票市场日闭市价格指数 {#sec-EuStockMarkets}
 
 
 ```r
@@ -396,12 +528,12 @@ legend("topleft", colnames(EuStockMarkets), pch = 17, lty = 1, col = 1:4)
 
 \begin{figure}
 
-{\centering \includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-10-1} 
+{\centering \includegraphics{time-series-analysis_files/figure-latex/unnamed-chunk-16-1} 
 
 }
 
 \caption{1991-1998年间欧洲主要股票市场日闭市价格指数图 
- 德国 DAX (Ibis), Switzerland SMI, 法国 CAC 和 英国 FTSE}(\#fig:unnamed-chunk-10)
+ 德国 DAX (Ibis), Switzerland SMI, 法国 CAC 和 英国 FTSE}(\#fig:unnamed-chunk-16)
 \end{figure}
 
 
@@ -418,28 +550,28 @@ legend("topleft", colnames(EuStockMarkets),
 
 \begin{center}\includegraphics{time-series-analysis_files/figure-latex/EuStockMarkets-1} \end{center}
 
-## 自回归模型 {#sec:autoregressive}
+## 自回归模型 {#sec-autoregressive}
 
 `ar()` 
 
-## 移动平均模型 {#sec:moving-average}
+## 移动平均模型 {#sec-moving-average}
 
 `arima()`
 
-## 自回归移动平均模型 {#sec:autoregressive-movement-average}
+## 自回归移动平均模型 {#sec-autoregressive-movement-average}
 
 `arima()` ARIMA 
 
-## 自回归条件异方差模型 {#sec:autoregressive-conditional-heteroskedasticity}
+## 自回归条件异方差模型 {#sec-autoregressive-conditional-heteroskedasticity}
 
 自回归条件异方差模型 ARCH
 
-## 广义自回归条件异方差模型 {#sec:generalized-autoregressive-conditional-heteroskedasticity}
+## 广义自回归条件异方差模型 {#sec-generalized-autoregressive-conditional-heteroskedasticity}
 
 广义自回归条件异方差模型 （Generalized Autoregressive Conditional Heteroskedasticity，简称 GARCH ）
 
 
-## 其它特征的时间序列 {#sec:other-ts}
+## 其它特征的时间序列 {#sec-other-ts}
 
 
 
@@ -460,7 +592,7 @@ plot(lynx)
 \end{figure}
 
 
-## 港股走势 {#sec:hk-stock}
+## 港股走势 {#sec-hk-stock}
 
 美团、阿里巴巴在香港上市
 
@@ -487,7 +619,7 @@ legend("topright", col = c("Orange", "springgreen4", "purple4", "lightsteelblue4
        lty = 1, legend = c("美团", "阿里", "京东", "腾讯") )
 ```
 
-## 美股走势 {#sec:us-stock}
+## 美股走势 {#sec-us-stock}
 
 拼多多、京东、阿里巴巴、51Talk 在美股上市
 
@@ -506,7 +638,7 @@ coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2
 
 
 
-## 51Talk 股价走势 {#sec:coe-stock}
+## 51Talk 股价走势 {#sec-coe-stock}
 
 Joshua M. Ulrich 开发维护的 [quantmod](https://github.com/joshuaulrich/quantmod) 包可以下载国内外股票市场的数据
 
@@ -553,7 +685,7 @@ autoplot(coe)
 \end{figure}
 
 
-## 运行环境 {#sec:tsa-sessioninfo}
+## 运行环境 {#sec-tsa-sessioninfo}
 
 
 ```r
@@ -587,16 +719,16 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.24         purrr_0.3.4      
 ##  [5] lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
-##  [9] htmltools_0.5.1.1 yaml_2.2.1        utf8_1.2.1        rlang_0.4.11     
-## [13] pillar_1.6.1      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
+##  [9] htmltools_0.5.1.1 yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
+## [13] pillar_1.6.2      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
 ## [17] TTR_0.24.2        lifecycle_1.0.0   quantmod_0.4.18   stringr_1.4.0    
 ## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.3 evaluate_0.14    
 ## [25] labeling_0.4.2    knitr_1.33        curl_4.3.2        fansi_0.5.0      
-## [29] broom_0.7.8       xts_0.12.1        Rcpp_1.0.7        scales_1.1.1     
-## [33] backports_1.2.1   showtext_0.9-2    jsonlite_1.7.2    sysfonts_0.8.3   
+## [29] broom_0.7.9       xts_0.12.1        Rcpp_1.0.7        scales_1.1.1     
+## [33] backports_1.2.1   showtext_0.9-3    jsonlite_1.7.2    sysfonts_0.8.4   
 ## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.27     stringi_1.7.3    
 ## [41] showtextdb_3.0    rlist_0.4.6.1     bookdown_0.22     dplyr_1.0.7      
-## [45] grid_4.1.0        tools_4.1.0       magrittr_2.0.1    tibble_3.1.2     
+## [45] grid_4.1.0        tools_4.1.0       magrittr_2.0.1    tibble_3.1.3     
 ## [49] crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3   ellipsis_0.3.2   
 ## [53] data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1  rmarkdown_2.9    
 ## [57] R6_2.5.0          igraph_1.2.6      compiler_4.1.0

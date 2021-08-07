@@ -1,4 +1,4 @@
-# R Markdown 动态文档 {#chap:dynamic-documents}
+# 动态文档 {#chap-dynamic-documents}
 
 <!-- 本章组织形式要参考书籍 <https://bookdown.org/yihui/rmarkdown-cookbook/> -->
 
@@ -38,7 +38,7 @@
 - 借助 flipbookr 在 xaringan 制作的幻灯片里逐行展示代码执行的效果，特别适合用于 ggplot2 的教学 <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
 - 制作 note/tips 等自定义块 <https://desiree.rbind.io/post/2019/making-tip-boxes-with-bookdown-and-rmarkdown/>
 
-## 文档元素 {#sec:rmarkdown}
+## 文档元素 {#sec-rmarkdown}
 
 knitr 将 R Markdown 文件转化为 Markdown 文件， Pandoc 可以将 Markdown 文件转化为 HTML5、Word、PowerPoint 和 PDF 等文档格式。
 
@@ -72,7 +72,7 @@ rmarkdown 自 2014年09月17日在 CRAN 上发布第一个正式版本以来，�
 \caption{R Markdown 概念图}(\#fig:rmarkdown-concept-map)
 \end{figure}
 
-### 控制选项 {#subsec:sql-engine}
+### 控制选项 {#subsec-sql-engine}
 
 [Using SQL in RStudio](https://irene.rbind.io/post/using-sql-in-rstudio/)
 
@@ -135,18 +135,18 @@ iris_preview
 dbDisconnect(conn = conn)
 ```
 
-### 表格 {#subsec:rmarkdown-table}
+### 表格 {#subsec-rmarkdown-table}
 
 **knitr** 的 `kable()` 函数提供了制作表格的基本功能 <https://bookdown.org/yihui/rmarkdown-cookbook/tables.html>，[flextable](https://github.com/davidgohel/flextable) 支持更加细粒度的表格定制功能。[beautifyR](https://github.com/mwip/beautifyR) 整理 Markdown 表格非常方便，[datapasta](https://github.com/MilesMcBain/datapasta) 快速复制粘贴 data.frame 和 tibble 类型的数据表格。[rpivotTable](https://github.com/smartinsightsfromdata/rpivotTable) 不更新了，[pivottabler](https://github.com/cbailiss/pivottabler) 在更新，内容似乎更好。[remedy](https://github.com/ThinkR-open/remedy) 提供了更加通用的 Markdown 写作功能，简化创作的技术难度。
 
-### 流程图 {#subsec:rmarkdown-uml}
+### 流程图 {#subsec-rmarkdown-uml}
 
 [nomnoml](https://github.com/rstudio/nomnoml) 流程图、思维导图
 
 
 ```r
 nomnoml::nomnoml(" 
-#stroke: orange
+#stroke: #26A63A
 #.box: fill=#8f8 dashed visual=note
 #direction: down
 
@@ -161,9 +161,9 @@ nomnoml::nomnoml("
 
 \begin{center}\includegraphics{dynamic-documents_files/figure-latex/unnamed-chunk-6-1} \end{center}
 
-## 便携式文档 {#sec:portable-document}
+## 便携式文档 {#sec-portable-document}
 
-### 文档汉化 {#subsec:chinese-document}
+### 文档汉化 {#subsec-chinese-document}
 
 从 R Markdown 到 beamer 幻灯片，如何迁移 LaTeX 模版
 
@@ -171,11 +171,11 @@ nomnoml::nomnoml("
 
 详见[PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/pdf-document.Rmd)
 
-### 添加水印 {#subsec:draft-watermark}
+### 添加水印 {#subsec-draft-watermark}
 
 [draftwatermark](https://github.com/callegar/LaTeX-draftwatermark)
 
-### 双栏排版 {#subsec:two-column}
+### 双栏排版 {#subsec-two-column}
 
 普通单栏排版改为双栏排版，只需添加文档类选项 `"twocolumn"`，将 YAML 元数据中的
 
@@ -191,7 +191,7 @@ classoption: "UTF8,a4paper,fontset=adobe,zihao=false,twocolumn"
 
 其中，参数 `UTF8` 设定文档编码类型， `a4paper` 设置版面为 A4 纸大小，`fontset=adobe` 指定中文字体为 Adobe 字体，`zihao=false` 不指定字体大小，使用文档类 ctexart 默认的字号,
 
-### 参数化报告 {#subsec:parameterized-reports}
+### 参数化报告 {#subsec-parameterized-reports}
 
 [参数化文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/parameterized-document.Rmd)
 
@@ -213,7 +213,7 @@ rmarkdown::render(
 )
 ```
 
-### 学术幻灯片 {#sec:beamer-slides}
+### 学术幻灯片 {#sec-beamer-slides}
 
 beamer 幻灯片也是一种 PDF 文档 [PDF 文档案例](https://github.com/XiangyunHuang/masr/blob/master/examples/beamer-verona.Rmd)
 
@@ -231,7 +231,7 @@ Dirk Eddelbuettel 将几个大学的 beamer 幻灯片转化成 R Markdown 模板
 tlmgr install pgfornament pgfornament-han needspace xpatch
 ```
 
-### 文档模版 {#subsec:document-template}
+### 文档模版 {#subsec-document-template}
 
 字体设置
 
@@ -277,7 +277,7 @@ output:
 :::
 ::::::
 
-### 引用文献 {#subsec:cite-doi}
+### 引用文献 {#subsec-cite-doi}
 
 [Getting started with Zotero, Better BibTeX, and RMarkdown](https://fishandwhistle.net/post/2020/getting-started-zotero-better-bibtex-rmarkdown/)
 
@@ -300,23 +300,23 @@ citep(x ='10.1145/3313831.3376466')
 
 ```r
 data.frame(
-  author = c("Yihui Xie", "Yihui Xie", "Hadley Wickham"),
-  citation = c("[@xie2019]", "[@xie2015]", "[@Hadley_2019_tidyverse]")
-) %>%
-  knitr::kable(., format = "pandoc")
+  author = c("Yihui Xie", "Yihui Xie", "Yihui Xie"),
+  citation = c("[@xie2019]", "[@xie2015]", "[@xie2016]")
+) |> 
+  knitr::kable(format = "pandoc")
 ```
 
 
 
-author           citation                 
----------------  -------------------------
-Yihui Xie        [@xie2019]               
-Yihui Xie        [@xie2015]               
-Hadley Wickham   [@Hadley_2019_tidyverse] 
+author      citation   
+----------  -----------
+Yihui Xie   [@xie2019] 
+Yihui Xie   [@xie2015] 
+Yihui Xie   [@xie2016] 
 
 [citr](https://github.com/crsh/citr) 包提供了快速查找参考文献的 RStudio 插件，不用去原始文献库 `*.bib` 搜索查找，也会自动生成引用，非常方便，极大地提高了工作效率。 **citr** 还支持集成 [Zotero](https://www.zotero.org/) 文献管理软件，可以直接从 Zotero 中导入参考文献数据库。[rbbt](https://github.com/paleolimbot/rbbt) 包也提供了类似的功能，只要系统安装 Zotero 软件及其插件 [Better Bibtex for Zotero connector](https://retorque.re/zotero-better-bibtex/)。
 
-### 自定义块 {#subsec:custom-blocks}
+### 自定义块 {#subsec-custom-blocks}
 
 ```r
 tinytex::tlmgr_install(c('awesomebox', 'fontawesome5'))
@@ -340,7 +340,7 @@ tinytex::tlmgr_install(c('awesomebox', 'fontawesome5'))
 这是重要信息
 :::
 
-## 网页文档 {#sec:web-document}
+## 网页文档 {#sec-web-document}
 
 丘怡轩开发的 [prettydoc](https://github.com/yixuan/prettydoc) 包提供了一系列模版，方便快速提高网页逼格。另有 Atsushi Yasumoto 开发的 [minidown](https://github.com/atusy/minidown) 包非常轻量，但是常用功能都覆盖了。
 
@@ -352,13 +352,13 @@ tinytex::tlmgr_install(c('awesomebox', 'fontawesome5'))
 [xaringanBuilder](https://github.com/jhelvy/xaringanBuilder) 为 xaringan 提供多种输出格式。
 
 
-## 编写书籍 {#sec:bookdown}
+## 编写书籍 {#sec-bookdown}
 
 此外， [ElegantTufteBookdown](https://github.com/XiangyunHuang/ElegantTufteBookdown) 项目提供了 tufte 风格的书籍模板，本书配套的仓库目录 `examples/` 下准备了一系列常用模板。
 
-## 个人网站 {#sec:blogdown}
+## 个人网站 {#sec-blogdown}
 
-## 微软文档 {#sec:office-document}
+## 微软文档 {#sec-office-document}
 
 [docxtools](https://github.com/graphdr/docxtools)、[officer](https://github.com/davidgohel/officer) 和 [officedown](https://github.com/davidgohel/officedown) 大大扩展了 rmarkdown 在制作 Word/PPT 方面的功能。
 
@@ -379,15 +379,15 @@ pandoc -o custom-reference.pptx --print-default-data-file reference.pptx
 R Markdown 文档支持带编号的 Word 文档格式输出要求 Pandoc 版本 2.10.1 及以上， rmarkdown 版本 2.4 及以上。
 :::
 
-## 发送邮件 {#sec:send-emails}
+## 发送邮件 {#sec-send-emails}
 
 [^blastula-group-emails]: <https://thecoatlessprofessor.com/programming/r/sending-an-email-from-r-with-blastula-to-groups-of-students/>
 
 [emayili](https://github.com/datawookie/emayili) 是非常轻量的实现邮件发送的 R 包，其它功能类似的 R 包有 [blastula](https://github.com/rich-iannone/blastula) [mailR](https://github.com/rpremraj/mailR)。Rahul Premraj 基于 rJava 开发的 [mailR](https://github.com/rpremraj/mailR) 虽然还未在 CRAN 上正式发布，但是已得到很多人的关注，也被广泛的使用，目前作者已经不维护了，继续使用有一定风险。 RStudio 公司 Richard Iannone 新开发的 [blastula](https://github.com/rich-iannone/blastula) 扔掉了 Java 的重依赖，更加轻量化、现代化，支持发送群组邮件[^blastula-group-emails]。 [curl](https://github.com/jeroen/curl) 包提供的函数 `send_mail()` 本质上是在利用 [curl](https://curl.haxx.se/) 软件发送邮件，举个例子，邮件内容如下：
 
 ```
-From: "黄湘云" <公司邮箱地址>
-To: "黄湘云" <公司邮箱地址>
+From: "黄湘云" <邮箱地址>
+To: "黄湘云" <邮箱地址>
 Subject: 测试邮件
 
 你好：
@@ -400,43 +400,51 @@ Subject: 测试邮件
 
 ```bash
 curl --url 'smtp://公司邮件服务器地址:开放的端口号' \
-  --ssl-reqd --mail-from '本人公司邮箱地址' \
-  --mail-rcpt '他人公司邮箱地址' \
+  --ssl-reqd --mail-from '发件人邮箱地址' \
+  --mail-rcpt '收件人邮箱地址' \
   --upload-file data/mail.txt \
-  --user '本人公司邮箱地址:邮箱登陆密码'
+  --user '发件人邮箱地址:邮箱登陆密码'
 ```
 
-注意 Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。 下面以 blastula 包为例怎么支持 Gmail/Outlook/QQ 等邮件发送，过程分两步，第一步配置密钥
+::: {.rmdnote data-latex="{注意}"}
+Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。 
+:::
+
+下面以 blastula 包为例怎么支持 Gmail/Outlook/QQ 等邮件发送，先安装系统软件依赖，CentOS 8 上安装依赖
 
 ```bash
-# CentOS 8 上安装依赖
 sudo dnf install -y libsecret-devel libsodium-devel
 ```
 
+然后安装 [**keyring**]() 和 [**blastula**]()
+
 
 ```r
-# 安装 R 包 keyring
-install.packages("keyring")
-# 配置密钥证书，到底如何在 Linux 服务器上配置还不知道
-library(keyring)
+install.packages(c("keyring", "blastula"))
+```
 
-# creds_envvar(
-#   user = Sys.getenv("SMTP_USER"),
-#   pass_envvar = Sys.getenv("SMTP_PASSWORD"),
-#   provider = "outlook",
-#   use_ssl = TRUE
-# )
+接着配置邮件帐户，这一步需要邮件账户名和登陆密码，配置一次就够了，不需要每次发送邮件的时候都配置一次
 
+
+```r
 library(blastula)
-# 运行一次就可以了
 create_smtp_creds_key(
   id = "outlook", 
-  user = "xxx@outlook.com", # 邮件地址
+  user = "xiangyunfaith@outlook.com",
   provider = "outlook"
 )
 ```
 
-第二步，准备邮件内容，包括邮件主题、发/收件人、抄送人、邮件主体和附件
+
+
+
+
+
+
+
+
+
+第二步，准备邮件内容，包括邮件主题、发件人、收件人、抄送人、密送人、邮件主体和附件等。
 
 
 ```r
@@ -445,11 +453,16 @@ library(blastula)
 attachment <- "data/mail.txt" # 如果没有附件，引号内留空即可。
 # 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用
 body <- "examples/html-document.Rmd" 
-
-email <- render_email(body) %>%
+# 渲染邮件内容，生成预览
+email <- render_email(body) |> 
   add_attachment(file = attachment)
+email
+```
 
-# 发送邮件
+最后，发送邮件
+
+
+```r
 smtp_send(
   from = c("张三" = "xxx@outlook.com"), # 发件人
   to = c("李四" = "xxx@foxmail.com",
@@ -461,13 +474,16 @@ smtp_send(
 )
 ```
 
-## 工作流 {#sec:drake}
+密送人实现群发单显，即一封邮件同时发送给多个人，每个收件人只能看到发件人地址而看不到其它收件人地址。
+
+
+## 工作流 {#sec-drake}
 
 [drake](https://github.com/ropensci/drake) 一站式可重复性研究工作空间打造者，用户手册 <https://books.ropensci.org/drake/> 和学习材料 <https://github.com/wlandau/learndrake>
 
 <!-- 统计之都论坛提供了一个简单介绍 <https://d.cosx.org/d/421312-package-drake> -->
 
-## 运行环境 {#sec:dynamic-documents-session-info}
+## 运行环境 {#session-dynamic-documents}
 
 
 ```r
@@ -495,16 +511,16 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] DBI_1.1.1      magrittr_2.0.1
+## [1] DBI_1.1.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        knitr_1.33        bit_4.0.4         R6_2.5.0         
-##  [5] rlang_0.4.11      fastmap_1.1.0     highr_0.9         blob_1.2.1       
-##  [9] stringr_1.4.0     tools_4.1.0       webshot_0.5.2     nomnoml_0.2.3    
-## [13] xfun_0.24         htmltools_0.5.1.1 yaml_2.2.1        bit64_4.0.5      
-## [17] digest_0.6.27     lifecycle_1.0.0   bookdown_0.22     processx_3.5.2   
-## [21] callr_3.7.0       vctrs_0.3.8       htmlwidgets_1.5.3 ps_1.6.0         
-## [25] cachem_1.0.5      memoise_2.0.0     evaluate_0.14     RSQLite_2.2.7    
-## [29] rmarkdown_2.9     stringi_1.7.3     compiler_4.1.0    jsonlite_1.7.2   
-## [33] pkgconfig_2.0.3
+##  [1] Rcpp_1.0.7        knitr_1.33        magrittr_2.0.1    bit_4.0.4        
+##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     highr_0.9        
+##  [9] blob_1.2.2        stringr_1.4.0     tools_4.1.0       webshot_0.5.2    
+## [13] nomnoml_0.2.3     xfun_0.24         htmltools_0.5.1.1 yaml_2.2.1       
+## [17] bit64_4.0.5       digest_0.6.27     lifecycle_1.0.0   bookdown_0.22    
+## [21] processx_3.5.2    callr_3.7.0       vctrs_0.3.8       htmlwidgets_1.5.3
+## [25] ps_1.6.0          cachem_1.0.5      memoise_2.0.0     evaluate_0.14    
+## [29] RSQLite_2.2.7     rmarkdown_2.9     stringi_1.7.3     compiler_4.1.0   
+## [33] jsonlite_1.7.2    pkgconfig_2.0.3
 ```

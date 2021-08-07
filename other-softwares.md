@@ -1,4 +1,4 @@
-# 其它软件 {#chap:other-softwares}
+# 其它软件 {#chap-other-softwares}
 
 
 
@@ -10,7 +10,7 @@
 [^William-King]: https://ww2.coastal.edu/kingw/statistics/R-tutorials/
 
 
-## 文本编辑器 {#sec:text-editor}
+## 文本编辑器 {#sec-text-editor}
 
 代码文件也是纯文本，RStudio 集成了编辑器，支持语法高亮。Windows 系统上优秀的代码编辑器有 Notepad++ 非常轻量。Markdown 文本编辑器我们推荐 Typora 编辑器，它是跨平台的，下面以 Ubuntu 环境为例，介绍安装和使用过程：
 
@@ -61,11 +61,11 @@ sudo apt-get install typora
 1. Typora Markdown 编辑器，支持自定义 CSS 样式
 
 
-## 代码编辑器 {#sec:code-editor}
+## 代码编辑器 {#sec-code-editor}
 
 VS Code, Sublime Text 和 Atom
 
-## 集成开发环境 {#sec:rstudio-ide}
+## 集成开发环境 {#sec-rstudio-ide}
 
 [RStudio 公司的愿景](https://rstudio.com/slides/rstudio-pbc/)，介绍 RStudio 开发环境提供的效率提升工具或功能
 
@@ -228,7 +228,9 @@ Emacs 配合 ESS 插件 <https://ess.r-project.org/>
 Nvim-R 是一个基于 Vim 的集成开发环境 <https://github.com/jalvesaq/Nvim-R>
 
 
-## Git 版本控制 {#sec:version-control}
+## Git 版本控制 {#sec-version-control}
+
+Git 操作
 
 MacOS 上用 Homebrew 安装 [git-delta](https://github.com/dandavison/delta)
 
@@ -236,6 +238,7 @@ MacOS 上用 Homebrew 安装 [git-delta](https://github.com/dandavison/delta)
 brew install git-delta
 ```
 
+[gitdown](https://github.com/Thinkr-open/gitdown)
 
 只考虑 Ubuntu 18.04 环境下的三剑客 Git & Github & Gitlab
 
@@ -247,24 +250,24 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [d00acdd] 2021-07-18: build full pdf
+## Head:     [4a4bc4f] 2021-07-19: update pandoc
 ## 
 ## Branches:         1
 ## Tags:             0
 ## Commits:          5
 ## Contributors:     1
 ## Stashes:          0
-## Ignored files:   13
+## Ignored files:   14
 ## Untracked files: 80
 ## Unstaged files:   0
 ## Staged files:     0
 ## 
 ## Latest commits:
+## [4a4bc4f] 2021-07-19: update pandoc
+## [ec490cb] 2021-07-19: use https in references
 ## [d00acdd] 2021-07-18: build full pdf
 ## [9bc7292] 2021-07-18: fix WARNING when build pdf
 ## [a49be96] 2021-07-18: fix error when build pdf
-## [756c7c2] 2021-07-18: 简化优化问题的表达
-## [12b7346] 2021-07-18: 复合函数求极值添加一个提示
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -298,16 +301,9 @@ vapply(my_repos, "[[", "", "login")
 
 ```r
 library(gert)
-```
-```
-Linking to libgit2 v1.0.0, ssh support: YES, https support: YES
-Default user: Xiangyun Huang <xiangyunfaith@outlook.com>
-```
-
-```r
 library(magrittr)
 git_log(max = 10) %>% 
-  subset(grepl("Yihui Xie", x = author), select = c("author", "message"))
+  subset(subset = grepl("Yihui Xie", x = author), select = c("author", "message"))
 ```
 
 提供了 `git_rm()`、 `git_status()`、 `git_add()` 和 `git_commit()` 等函数，其中包含 `git_reset()` 高级的 Git 操作。此外， 还有 `git_branch_*()` 系列分支操作函数
@@ -716,7 +712,7 @@ git push --set-upstream LalZzy patch-2
 1. 最佳搭档：利用 SSH 及其配置文件节省你的生命 <https://liam.page/2017/09/12/rescue-your-life-with-SSH-config-file/> 
 
 
-## Pandoc 文档处理 {#sec:pandoc}
+## Pandoc 文档处理 {#sec-pandoc}
 
 Pandoc 是一个万能文档转化器，安装 pandoc，下载网址 <https://github.com/jgm/pandoc/releases/latest>
 
@@ -729,7 +725,7 @@ sudo gdebi pandoc-2.9.2-1-amd64.deb
 
 rmarkdown 包裹了 Pandoc 工具，使用 `rmarkdown::render()` 函数即可将 R Markdown 文档转化为 HTML、LaTeX 和 Markdown 等格式。
 
-## Calibre 书籍管理 {#sec:calibre}
+## Calibre 书籍管理 {#sec-calibre}
 
 [Calibre](https://calibre-ebook.com) 是一款电子书转化和管理软件，首先安装 calibre
 
@@ -740,7 +736,7 @@ sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | 
 calibre 可以将 epub 格式电子书文档转化为 mobi 格式，bookdown 已经给这个工具穿上了一件马甲，用户只需调用 `bookdown::calibre()` 函数即可实现电子书格式的转换。
 
 
-## ImageMagick 图像处理 {#sec:ImageMagick}
+## ImageMagick 图像处理 {#sec-ImageMagick}
 
 图像的各种操作，包括合成、转换、旋转等等
 
@@ -784,7 +780,7 @@ convert -delay 60 -density 300x300 -background white -alpha remove \
 
 
 
-## OptiPNG 图片优化 {#sec:optipng}
+## OptiPNG 图片优化 {#sec-optipng}
 
 [OptiPNG](http://optipng.sourceforge.net/) 是一个非常好的图片压缩、优化工具
 
@@ -833,12 +829,12 @@ optipng -o5 filename.png
 ```
 
 
-## PDFCrop 裁剪边空 {#sec:pdfcrop}
+## PDFCrop 裁剪边空 {#sec-pdfcrop}
 
 [PDFCrop](http://pdfcrop.sourceforge.net/) 可将 PDF 图片中留白的部分裁去，再也不用纠结 par 了
 
 
-## PhantomJS 网页截图 {#sec:phantomjs}
+## PhantomJS 网页截图 {#sec-phantomjs}
 
 Winston Chang 开发了 [webshot](https://github.com/wch/webshot) 包网页截图，它依赖 [PhantomJS](https://github.com/ariya/phantomjs/)，所以首先需要安装
 
@@ -897,7 +893,7 @@ Output IDAT size = 59441 bytes (11129 bytes decrease)
 Output file size = 59714 bytes (11153 bytes = 15.74% decrease)
 ```
 
-## Inkscape 矢量绘图 {#sec:inkscape}
+## Inkscape 矢量绘图 {#sec-inkscape}
 
 [Inkscape](https://inkscape.org/) 是一款开源、免费、跨平台的矢量绘图软件。是替代 Adobe Illustrator（简称 AI） 最佳工具，没有之一
 
@@ -932,7 +928,7 @@ for (svg in svg_paths) {
 ```
 
 
-## QPDF PDF 文件操作 {#sec:qpdf}
+## QPDF PDF 文件操作 {#sec-qpdf}
 
 Jeroen Ooms 开发的另一个 [qpdf](https://github.com/ropensci/qpdf) 包将 C++ 库 [qpdf](https://github.com/qpdf/qpdf) 搬运到 R 环境中，用于 PDF 文件的拆分 `pdf_split()`，组合 `pdf_combine()`，加密（ 传递 `password` 参数值即可加密），提取 `pdf_subset()` 和压缩 `pdf_compress()` 等。下面以组合为例，就是将多个 PDF 文件合成一个 PDF 文件。
 
@@ -945,7 +941,7 @@ pdf_combine(input = pdf_paths, output = "images/all.pdf", password = "")
 
 PDF 操作：价值数百美元的开源替代方案，参考 Adobe Acrobat 的功能
 
-## UML 标准建模图 {#sec:nomnoml}
+## UML 标准建模图 {#sec-nomnoml}
 
 UML (Unified Modeling Language) 表示统一建模语言
 
@@ -959,37 +955,50 @@ UML (Unified Modeling Language) 表示统一建模语言
 \end{figure}
 
 
-
-
 [Javier Luraschi](https://github.com/javierluraschi) 将 UML 绘图库 [nomnoml](https://github.com/skanaar/nomnoml) 引入 R 社区，开发了 [nomnoml](https://github.com/rstudio/nomnoml) 包，相比于 DiagrammeR 包，它显得非常轻量，网站 <https://www.nomnoml.com/> 还可以在线编辑、预览、下载 UML 图。 **webshot** 包可以将网页截图并插入 PDF 文档中。其它制作图形的工具见 \@ref(fig:convert-figure)。
 
 nomnoml 调 webshot 包对网页截图生成 PNG 格式的图片，其中 webshot 调 phantomjs 软件。
 nomnoml 制作 R Markdown 生态图，导出为 PNG 格式
 
+安装 nomnoml 
 
 ```r
-nomnoml::nomnoml(" 
-#stroke: #34A853
-#fill: white
-#fillArrows: false
-#direction: down
+install.packages("nomnoml")
+```
 
-[knitr]    -> [动态文档|rmarkdown]
-[Pandoc]   -> [动态文档|rmarkdown]
-[Markdown] -> [动态文档|rmarkdown]
-[动态文档] -> [书籍笔记|bookdown]
-[动态文档] -> [静态网站|blogdown]
-[动态文档] -> [幻灯片|xaringan]
-[幻灯片]   -> [PowerPoint|officedown]
-[书籍笔记] -> [毕业论文|thesisdown]
-[静态网站] -> [个人简历|pagedown]
-[动态文档] -> [数据面板|flexdashboard]
-[数据面板] --> [交互图形|plotly]
-", png = 'rmarkdown-ecology.png')
+安装 PhantomJS
+
+```bash
+brew install --cask phantomjs 
 ```
 
 
-## Graphviz 流程图 {#sec:graphviz}
+```r
+nomnoml::nomnoml(" 
+#stroke: #26A63A
+#.box: dashed visual=ellipse
+#direction: down
+
+[<box>HTML]       -> [网页三剑客]
+[<box>JavaScript] -> [网页三剑客]
+[<box>CSS]        -> [<table>网页三剑客|htmlwidgets|htmltools||sass|bslib||thematic|jquerylib]
+
+[设计布局|bs4Dash|flexdashboard|shinydashboard] -> [<actor>开发应用|R Shiny]
+[设计交互|waiter|shinyFeedback|shinyToastify] -> [<actor>开发应用|R Shiny]
+[权限代理|shinyproxy|shinyauthr|shinymanager] -> [<actor>开发应用|R Shiny]
+
+[网页三剑客]  -> [<actor>开发应用|R Shiny]
+[网页三剑客]  -> [<actor>开发应用|R Shiny]
+[网页三剑客]  -> [<actor>开发应用|R Shiny]
+
+[开发应用] <- [<table>处理数据|Base R|SQL||data.table|dplyr||tidyr|purrr]
+[开发应用] <- [<table>制作表格|DT|gt||reactable|formattable||kableExtra|sparkline]
+[开发应用] <- [<table>制作图形|ggplot2|plotly||echarts4r|leaflet||dygraphs|visNetwork]
+", png = "shiny-app.png")
+```
+
+
+## Graphviz 流程图 {#sec-graphviz}
 
 Graphviz 官网 <http://www.graphviz.org/>，常用于绘制流程图，广泛用于 tensorflow 和 mxnet 的模型描述中
 
@@ -1046,7 +1055,7 @@ grViz(graph) %>%
 ```
 
 
-## LaTeX 排版工具 {#sec:latex}
+## LaTeX 排版工具 {#sec-latex}
 
 另外值得一提的是 TikZ 和 PGF（Portable Graphic Format）宏包，支持强大的绘图功能，图形质量达到出版级别，详细的使用说明见宏包手册 <https://pgf-tikz.github.io/pgf/pgfmanual.pdf>。
 
@@ -1086,7 +1095,7 @@ upgrade_tinytex <- function(repos = NULL) {
 
 
 
-### 安装和更新 {#subsec:tlmgr-setup}
+### 安装和更新 {#subsec-tlmgr-setup}
 
 tlmgr (TeXLive Manager) 是 LaTeX 包管理器
 
@@ -1111,7 +1120,7 @@ tlmgr list --only-installed
 tlmgr --repository http://www.preining.info/tlgpg/ install tlgpg
 ```
 
-### 查询和搜索 {#subsec:tlmgr-search}
+### 查询和搜索 {#subsec-tlmgr-search}
 
 ```bash
 tlmgr search *what*
@@ -1161,7 +1170,7 @@ tlmgr info --list --only-installed --data name,size
 更多命令详见[tlmgr 管理器手册](https://www.tug.org/texlive/doc/tlmgr.html#install-option-...-pkg)
 
 
-### TikZ 绘图工具 {#subsec:latex-tikz}
+### TikZ 绘图工具 {#subsec-latex-tikz}
 
 TikZ 绘制书籍封面 <https://latexdraw.com/how-to-create-a-beautiful-cover-page-in-latex-using-tikz/>
 
@@ -1170,7 +1179,7 @@ TikZ 绘制知识清单，书籍章节结构等 <https://www.latexstudio.net/ind
 更多例子参考 <https://github.com/FriendlyUser/LatexDiagrams>
 
 
-## Octave 科学计算 {#sec:octave}
+## Octave 科学计算 {#sec-octave}
 
 
 ```octave
@@ -1233,7 +1242,7 @@ print (hf, "peaks-more.eps", "-color"," -deps");
 print (hf, "peaks-more.svg", "-color"," -dsvg");
 ```
 
-## Python 环境配置 {#sec:setup-python}
+## Python 环境配置 {#sec-setup-python}
 
 首先创建一个 Python 虚拟环境，环境隔离可以减少对系统的侵入，方便迭代更新和项目管理。创建一个虚拟环境，步骤非常简单，下面以 CentOS 8 为例：
 
@@ -1299,7 +1308,7 @@ conda create -n tensorflow python=3.8
 conda activate tensorflow
 ```
 
-## Python 基础绘图 {#sec:plot-python}
+## Python 基础绘图 {#sec-plot-python}
 
 Python 的 matplotlib 模块支持保存的图片格式有 eps, pdf, pgf, png, ps, raw, rgba, svg, svgz，不支持 cairo\_pdf 绘图设备，所以这里使用 pdf 设备，但是这样会导致图形没有字体嵌入，从而不符合出版要求。一个解决办法是在后期嵌入字体，图形默认使用数学字体 [STIX](http://www.stixfonts.org/) 和英文字体 [DejaVu Sans](https://dejavu-fonts.github.io/)，所以需要预先安装这些字体。
 
@@ -1341,7 +1350,7 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7f7c1193fa60>]
+## [<matplotlib.lines.Line2D object at 0x7fcf5febba90>]
 ```
 
 ```
@@ -1403,7 +1412,7 @@ ax.set_ylim(-5.12, 5.12)
 ax.set_zlim(0, 80)
 ## (0.0, 80.0)
 fig.colorbar(surf, aspect=30)
-## <matplotlib.colorbar.Colorbar object at 0x7f7c0e37c130>
+## <matplotlib.colorbar.Colorbar object at 0x7fcf5c8f70a0>
 plt.title(r'Rastrigin Function in Two Dimensions')
 ## Text(0.5, 0.92, 'Rastrigin Function in Two Dimensions')
 plt.show()
@@ -1413,7 +1422,7 @@ plt.show()
 
 \begin{center}\includegraphics[width=.8\textwidth]{other-softwares_files/figure-latex/matplotlib-3} \end{center}
 
-## Python 基础操作 {#sec:basic-python}
+## Python 基础操作 {#sec-basic-python}
 
 
 - 张量操作 [numpy](https://github.com/numpy/numpy) <https://numpy.org/> 向量、矩阵操作
@@ -1591,7 +1600,7 @@ source /opt/virtualenv/tensorflow/bin/activate
 ```
 
 <!--
-## Python 交互图形 {#sec:plotly-python}
+## Python 交互图形 {#sec-plotly-python}
 
 
 ```python
@@ -1649,18 +1658,19 @@ absl-py                 0.13.0
 astunparse              1.6.3              
 cachetools              4.2.2              
 certifi                 2021.5.30          
-charset-normalizer      2.0.3              
+charset-normalizer      2.0.4              
 cycler                  0.10.0             
 flatbuffers             1.12               
 gast                    0.4.0              
-google-auth             1.33.0             
-google-auth-oauthlib    0.4.4              
+google-auth             1.34.0             
+google-auth-oauthlib    0.4.5              
 google-pasta            0.2.0              
 graphviz                0.8.4              
 grpcio                  1.34.1             
 h5py                    3.1.0              
 idna                    3.2                
 joblib                  1.0.1              
+kaleido                 0.2.1              
 keras-nightly           2.5.0.dev2021032900
 Keras-Preprocessing     1.1.2              
 kiwisolver              1.3.1              
@@ -1668,10 +1678,11 @@ Markdown                3.3.4
 matplotlib              3.4.2              
 mpmath                  1.2.1              
 mxnet                   1.8.0.post0        
-numpy                   1.21.0             
+numpy                   1.21.1             
 oauthlib                3.1.1              
 opt-einsum              3.3.0              
-pandas                  1.3.0              
+pandas                  1.3.1              
+patsy                   0.5.1              
 Pillow                  8.3.1              
 pip                     20.0.2             
 pkg-resources           0.0.0              
@@ -1686,12 +1697,13 @@ requests                2.26.0
 requests-oauthlib       1.3.0              
 rsa                     4.7.2              
 scikit-learn            0.24.2             
-scipy                   1.7.0              
+scipy                   1.7.1              
 setuptools              44.0.0             
 six                     1.15.0             
+statsmodels             0.12.2             
 sympy                   1.8                
 tenacity                8.0.1              
-tensorboard             2.5.0              
+tensorboard             2.6.0              
 tensorboard-data-server 0.6.1              
 tensorboard-plugin-wit  1.8.0              
 tensorflow              2.5.0              
@@ -1729,7 +1741,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['branches', 'description', 'info', 'shallow', 'FETCH_HEAD', 'hooks', 'objects', 'config', 'logs', 'HEAD', 'index', 'refs']
+## ['FETCH_HEAD', 'branches', 'HEAD', 'index', 'config', 'info', 'refs', 'shallow', 'objects', 'description', 'logs', 'hooks']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1760,7 +1772,7 @@ plt.plot([0, 2, 1, 4])
 ```
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7f7bf5665670>]
+## [<matplotlib.lines.Line2D object at 0x7fcf42bd9f70>]
 ```
 
 ```python
@@ -1803,14 +1815,14 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "branches"    "description" "info"        "shallow"     "FETCH_HEAD" 
-##  [6] "hooks"       "objects"     "config"      "logs"        "HEAD"       
-## [11] "index"       "refs"
+##  [1] "FETCH_HEAD"  "branches"    "HEAD"        "index"       "config"     
+##  [6] "info"        "refs"        "shallow"     "objects"     "description"
+## [11] "logs"        "hooks"
 ```
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年07月19日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月07日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
 
 
 
@@ -1846,21 +1858,18 @@ R Markdown 文档 [@xie2018] 中的 Python 代码块是由 knitr 包 [@xie2015] 
 
 pandas 读取数据，整理后由 reticulate 包传递给 R 环境中的 data.frame 对象，加载 ggplot2 绘图
 
-<!--
 
 
 ```python
 import pandas as pd
-iris = pd.read_csv('iris.csv')
+iris2 = pd.read_csv('iris.csv')
 ```
 
-
 ```r
-library(reticulate)
 library(ggplot2)
 theme_set(theme_minimal())
 library(patchwork)
-p1 <- ggplot(py$iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+p1 <- ggplot(py$iris2, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point(aes(color = Species)) +
   labs(title = "Call iris from Python")
 p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
@@ -1871,16 +1880,12 @@ p1 + p2
 
 \begin{figure}
 
-{\centering \includegraphics{other-softwares_files/figure-latex/plot-iris-1} 
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
 
 }
 
 \caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
 \end{figure}
-
--->
-
-<!--pandas 抛出的警告 sys:1: FutureWarning: RangeIndex._start is deprecated and will be removed in a future version. Use RangeIndex.start instead -->
 
 以 NumPy 为例
 
@@ -2147,9 +2152,9 @@ py_to_r(b)
 ## [5,]   10
 ```
 
-## VBox 虚拟机 {#sec:virtual-vbox}
+## VBox 虚拟机 {#sec-virtual-vbox}
 
-### 从命令行启动虚拟机 {#subsec:cmd-start-vbox}
+### 从命令行启动虚拟机 {#subsec-cmd-start-vbox}
 
 当前我的虚拟机里安装了两个系统 Fedora 29 和 CentOS 8.2
 
@@ -2182,7 +2187,7 @@ VBoxManage controlvm "CentOS 8.2" savestate # 保存当前虚拟机的运行状�
 
 更多细节解释见 [VBox 官方文档](https://www.virtualbox.org/manual/ch07.html#man_vboxheadless)
 
-## Docker 虚拟环境 {#sec:virtual-docker}
+## Docker 虚拟环境 {#sec-virtual-docker}
 
 docker 创建云实例 rstudio [DigitalOcean](https://cerebralmastication.com/2019/07/10/starting-a-digital-ocean-instance-from-docker-machine/)，docker 支持的驱动类型 <https://docs.docker.com/machine/drivers/>。Rocker 项目组提供的 shiny 容器 <https://github.com/rocker-org/shiny> 和构建过程 <https://hub.docker.com/r/rocker/shiny/dockerfile>
 
@@ -2463,217 +2468,223 @@ sessionInfo(sort(.packages(T)))
 ##  [8] parallel  splines   stats     stats4    tcltk     tools     utils    
 ## 
 ## other attached packages:
-##   [1] abind_1.4-5                agridat_1.18              
-##   [3] alabama_2015.3-1           arrow_4.0.1               
-##   [5] arules_1.6-8               askpass_1.1               
-##   [7] assertive.base_0.0-9       assertive.properties_0.0-4
-##   [9] assertive.types_0.0-3      assertthat_0.2.1          
-##  [11] autoplotly_0.1.4           backports_1.2.1           
-##  [13] base64enc_0.1-3            bayesplot_1.8.1           
-##  [15] beanplot_1.2               beeswarm_0.4.0            
-##  [17] BH_1.75.0-0                BiocGenerics_0.38.0       
-##  [19] BiocManager_1.30.16        BiocVersion_3.13.1        
-##  [21] bit_4.0.4                  bit64_4.0.5               
-##  [23] bitops_1.0-7               blob_1.2.1                
-##  [25] bookdown_0.22              boot_1.3-28               
-##  [27] brew_1.0-6                 bridgesampling_1.1-2      
-##  [29] brio_1.1.2                 brms_2.15.0               
-##  [31] Brobdingnag_1.2-6          broom_0.7.8               
-##  [33] broom.mixed_0.2.7          bslib_0.2.5.1             
-##  [35] cachem_1.0.5               Cairo_1.5-12.2            
-##  [37] callr_3.7.0                car_3.0-11                
-##  [39] carData_3.0-4              catboost_0.26             
-##  [41] caTools_1.18.2             cellranger_1.1.0          
-##  [43] checkmate_2.0.0            circlize_0.4.13           
-##  [45] class_7.3-19               classInt_0.4-3            
-##  [47] cli_3.0.0                  clipr_0.7.1               
-##  [49] clue_0.3-59                cluster_2.1.2             
-##  [51] cmdstanr_0.4.0             coda_0.19-4               
-##  [53] codetools_0.2-18           colorspace_2.0-2          
-##  [55] colourpicker_1.1.0         commonmark_1.7            
-##  [57] ComplexHeatmap_2.8.0       config_0.3.1              
-##  [59] conquer_1.0.2              corrplot_0.90             
-##  [61] countrycode_1.3.0          cowplot_1.1.1             
-##  [63] cpp11_0.3.1                crayon_1.4.1              
-##  [65] credentials_1.3.0          crosstalk_1.1.1           
-##  [67] cubelyr_1.0.1              curl_4.3.2                
-##  [69] data.table_1.14.0          DBI_1.1.1                 
-##  [71] dbplyr_2.1.1               dendextend_1.15.1         
-##  [73] Deriv_4.1.3                desc_1.3.0                
-##  [75] deSolve_1.28               devtools_2.4.2            
-##  [77] DiagrammeR_1.0.6.1         diffobj_0.3.4             
-##  [79] digest_0.6.27              distributional_0.2.2      
-##  [81] doParallel_1.0.16          downloader_0.4            
-##  [83] dplyr_1.0.7                DT_0.18                   
-##  [85] dtplyr_1.1.0               dygraphs_1.1.1.6          
-##  [87] e1071_1.7-7                echarts4r_0.4.1           
-##  [89] egg_0.4.5                  ellipsis_0.3.2            
-##  [91] emo_0.0.0.9000             equatiomatic_0.2.0        
-##  [93] evaluate_0.14              extrafont_0.17            
-##  [95] extrafontdb_1.0            fansi_0.5.0               
-##  [97] farver_2.1.0               fastmap_1.1.0             
-##  [99] filehash_2.4-2             flexdashboard_0.5.2       
-## [101] fontcm_1.1                 forcats_0.5.1             
-## [103] foreach_1.5.1              foreign_0.8-81            
-## [105] forge_0.2.0                formatR_1.11              
-## [107] formattable_0.2.1          Formula_1.2-4             
-## [109] fresh_0.2.0                fs_1.5.0                  
-## [111] future_1.21.0              GA_3.2.1                  
-## [113] gamm4_0.2-6                gapminder_0.3.0           
-## [115] gargle_1.2.0               gclus_1.3.2               
-## [117] gdtools_0.2.3              generics_0.1.0            
-## [119] geoR_1.8-1                 gert_1.3.1                
-## [121] GetoptLong_1.0.5           ggalluvial_0.12.3         
-## [123] gganimate_1.0.7            ggbeeswarm_0.6.0          
-## [125] ggbump_0.1.99999           ggdendro_0.1.22           
-## [127] ggfittext_0.9.1            ggfortify_0.4.12          
-## [129] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
-## [131] ggplot2_3.3.5              ggpubr_0.4.0              
-## [133] ggrepel_0.9.1              ggridges_0.5.3            
-## [135] ggsci_2.9                  ggsignif_0.6.2            
-## [137] ggstream_0.1.0             gh_1.3.0                  
-## [139] gifski_1.4.3-1             git2r_0.28.0              
-## [141] gitcreds_0.1.1             glmmTMB_1.1.1             
-## [143] glmnet_4.1-2               GlobalOptions_0.1.2       
-## [145] globals_0.14.0             glue_1.4.2                
-## [147] googledrive_2.0.0          googlesheets4_0.3.0       
-## [149] gplots_3.1.1               graph_1.70.0              
-## [151] gridBase_0.4-7             gridExtra_2.3             
-## [153] gt_0.3.0                   gtable_0.3.0              
-## [155] gtools_3.9.2               haven_2.4.1               
-## [157] heatmaply_1.2.1            hexbin_1.28.2             
-## [159] highcharter_0.8.2          highr_0.9                 
-## [161] Hmisc_4.5-0                hms_1.1.0                 
-## [163] hrbrthemes_0.8.0           htmlTable_2.2.1           
-## [165] htmltools_0.5.1.1          htmlwidgets_1.5.3         
-## [167] httpuv_1.6.1               httr_1.4.2                
-## [169] ids_1.0.1                  igraph_1.2.6              
-## [171] influenceR_0.1.0           ini_0.3.1                 
-## [173] INLA_21.02.23              inline_0.3.19             
-## [175] IRanges_2.26.0             isoband_0.2.5             
-## [177] iterators_1.0.13           jpeg_0.1-8.1              
-## [179] jquerylib_0.1.4            jsonlite_1.7.2            
-## [181] kableExtra_1.3.4           Kendall_2.2               
-## [183] kernlab_0.9-29             KernSmooth_2.23-20        
-## [185] knitr_1.33                 labeling_0.4.2            
-## [187] later_1.2.0                lattice_0.20-44           
-## [189] latticeExtra_0.6-29        lazyeval_0.2.2            
-## [191] leaflet_2.0.4.1            leaflet.providers_1.9.0   
-## [193] lifecycle_1.0.0            lightgbm_3.2.1            
-## [195] listenv_0.8.0              lme4_1.1-27.1             
-## [197] loo_2.4.1                  lpSolve_5.6.15            
-## [199] lpSolveAPI_5.5.2.0-17.7    lubridate_1.7.10          
-## [201] magick_2.7.2               magrittr_2.0.1            
-## [203] mapdata_2.3.0              mapproj_1.2.7             
-## [205] maps_3.3.0                 maptools_1.1-1            
-## [207] markdown_1.1               MASS_7.3-54               
-## [209] Matrix_1.3-4               MatrixModels_0.5-0        
-## [211] matrixStats_0.59.0         maxLik_1.4-8              
-## [213] mcmc_0.9-7                 memoise_2.0.0             
-## [215] mgcv_1.8-36                mime_0.11                 
-## [217] miniUI_0.1.1.1             minqa_1.2.4               
-## [219] miscTools_0.6-26           modelr_0.1.8              
-## [221] munsell_0.5.0              mvtnorm_1.1-2             
-## [223] networkD3_0.4              nleqslv_3.3.2             
-## [225] nlme_3.1-152               nloptr_1.2.2.2            
-## [227] NMOF_2.4-1                 nnet_7.3-16               
-## [229] nomnoml_0.2.3              numDeriv_2016.8-1.1       
-## [231] odbc_1.3.2                 openssl_1.4.4             
-## [233] openxlsx_4.2.4             optimx_2021-6.12          
-## [235] packrat_0.6.0              palmerpenguins_0.1.0      
-## [237] parallelly_1.26.1          patchwork_1.1.1           
-## [239] pbkrtest_0.5.1             pdftools_3.0.1            
-## [241] pdist_1.2                  pillar_1.6.1              
-## [243] pkgbuild_1.2.0             pkgconfig_2.0.3           
-## [245] pkgload_1.2.1              plogr_0.2.0               
-## [247] plotly_4.9.4.1             plyr_1.8.6                
-## [249] png_0.1-7                  polynom_1.4-0             
-## [251] posterior_1.0.1            praise_1.0.0              
-## [253] prettydoc_0.4.1            prettyunits_1.1.1         
-## [255] PrevMap_1.5.3              processx_3.5.2            
-## [257] productplots_0.1.1         progress_1.2.2            
-## [259] projpred_2.0.2             promises_1.2.0.1          
-## [261] proxy_0.4-26               ps_1.6.0                  
-## [263] pspearman_0.3-0            purrr_0.3.4               
-## [265] pwr_1.3-0                  qap_0.1-1                 
-## [267] qpdf_1.1                   quadprog_1.5-8            
-## [269] quantmod_0.4.18            quantreg_5.86             
-## [271] r2d3_0.2.5                 R6_2.5.0                  
-## [273] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
-## [275] randomForest_4.6-14        rappdirs_0.3.3            
-## [277] raster_3.4-13              rasterly_0.2.0            
-## [279] rasterVis_0.50.2           rcmdcheck_1.3.3           
-## [281] RColorBrewer_1.1-2         Rcpp_1.0.7                
-## [283] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
-## [285] RcppParallel_5.1.4         reactable_0.2.3           
-## [287] reactR_0.4.4               readr_1.4.0               
-## [289] readxl_1.3.1               registry_0.5-1            
-## [291] rematch_1.0.1              rematch2_2.1.2            
-## [293] remotes_2.4.0              renv_0.13.2               
-## [295] reprex_2.0.0               reshape2_1.4.4            
-## [297] reticulate_1.20            rgdal_1.5-23              
-## [299] Rgraphviz_2.36.0           rio_0.5.27                
-## [301] rJava_1.0-4                rjson_0.2.20              
-## [303] rlang_0.4.11               rlist_0.4.6.1             
-## [305] rmarkdown_2.9              rngtools_1.5              
-## [307] ROI_1.0-0                  ROI.plugin.alabama_1.0-0  
-## [309] ROI.plugin.lpsolve_1.0-1   ROI.plugin.nloptr_1.0-0   
-## [311] ROI.plugin.quadprog_1.0-0  rootSolve_1.8.2.2         
-## [313] roxygen2_7.1.1             rpart_4.1-15              
-## [315] rprojroot_2.0.2            rsconnect_0.8.18          
-## [317] RSQLite_2.2.7              rstan_2.26.2              
-## [319] rstantools_2.1.1           rstatix_0.7.0             
-## [321] rstudioapi_0.13            Rttf2pt1_1.3.8            
-## [323] rversions_2.1.1            rvest_1.0.0               
-## [325] Ryacas_1.1.3.1             s2_1.0.6                  
-## [327] S4Vectors_0.30.0           sandwich_3.0-1            
-## [329] sass_0.4.0                 scales_1.1.1              
-## [331] scatterplot3d_0.3-41       selectr_0.4-2             
-## [333] seriation_1.3.0            servr_0.22                
-## [335] sessioninfo_1.1.1          sf_1.0-0                  
-## [337] shades_1.4.0               shape_1.4.6               
-## [339] shiny_1.6.0                shinydashboard_0.7.1      
-## [341] shinydashboardPlus_2.0.2   shinyjs_2.0.0             
-## [343] shinystan_2.5.0            shinythemes_1.2.0         
-## [345] shinyWidgets_0.6.0         showtext_0.9-2            
-## [347] showtextdb_3.0             slam_0.1-48               
-## [349] sm_2.2-5.6                 sourcetools_0.1.7         
-## [351] sp_1.4-5                   sparkline_2.0             
-## [353] sparklyr_1.7.1             SparseM_1.81              
-## [355] spatial_7.3-14             spDataLarge_0.5.4         
-## [357] splancs_2.01-42            StanHeaders_2.26.2        
-## [359] stringi_1.7.3              stringr_1.4.0             
-## [361] SuppDists_1.1-9.5          survival_3.2-11           
-## [363] svglite_2.0.0              symengine_0.1.5           
-## [365] sys_3.4                    sysfonts_0.8.3            
-## [367] systemfonts_1.0.2          tensorA_0.36.2            
-## [369] tensorflow_2.5.0           terra_1.3-4               
-## [371] testthat_3.0.4             tfruns_1.5.0              
-## [373] threejs_0.3.3              tibble_3.1.2              
-## [375] tidyr_1.1.3                tidyselect_1.1.1          
-## [377] tidyverse_1.3.1            tikzDevice_0.12.3.1       
-## [379] timeline_0.9               timelineS_0.1.1           
-## [381] tint_0.1.3                 tinytex_0.32              
-## [383] TMB_1.7.20                 transformr_0.1.3          
-## [385] treemap_2.4-2              treemapify_2.5.5          
-## [387] truncnorm_1.0-8            TSP_1.1-10                
-## [389] TTR_0.24.2                 tweenr_1.0.2              
-## [391] units_0.7-2                usethis_2.0.1             
-## [393] utf8_1.2.1                 uuid_0.1-4                
-## [395] V8_3.4.2                   vctrs_0.3.8               
-## [397] vioplot_0.3.6              vipor_0.4.5               
-## [399] viridis_0.6.1              viridisLite_0.4.0         
-## [401] visNetwork_2.0.9           vistime_1.2.1             
-## [403] waiter_0.2.2               waldo_0.2.5               
-## [405] webshot_0.5.2              whisker_0.4               
-## [407] withr_2.4.2                wk_0.5.0                  
-## [409] xaringan_0.22              xaringanthemer_0.4.0      
-## [411] xfun_0.24                  xgboost_1.4.1.1           
-## [413] xkcd_0.0.6                 XML_3.99-0.6              
-## [415] xml2_1.3.2                 xopen_1.0.0               
-## [417] xtable_1.8-4               xts_0.12.1                
-## [419] yaml_2.2.1                 zip_2.2.0                 
-## [421] zoo_1.8-9
+##   [1] ABCoptim_0.15.0            abind_1.4-5               
+##   [3] agridat_1.18               alabama_2015.3-1          
+##   [5] arrow_5.0.0                arules_1.6-8              
+##   [7] askpass_1.1                assertive.base_0.0-9      
+##   [9] assertive.properties_0.0-4 assertive.types_0.0-3     
+##  [11] assertthat_0.2.1           autoplotly_0.1.4          
+##  [13] backports_1.2.1            base64enc_0.1-3           
+##  [15] bayesplot_1.8.1            BB_2019.10-1              
+##  [17] bbmle_1.0.24               bdsmatrix_1.3-4           
+##  [19] beanplot_1.2               beeswarm_0.4.0            
+##  [21] BH_1.75.0-0                BiocGenerics_0.38.0       
+##  [23] BiocManager_1.30.16        BiocVersion_3.13.1        
+##  [25] bit_4.0.4                  bit64_4.0.5               
+##  [27] bitops_1.0-7               blob_1.2.2                
+##  [29] bookdown_0.22              boot_1.3-28               
+##  [31] brew_1.0-6                 bridgesampling_1.1-2      
+##  [33] brio_1.1.2                 brms_2.15.0               
+##  [35] Brobdingnag_1.2-6          broom_0.7.9               
+##  [37] broom.mixed_0.2.7          bslib_0.2.5.1             
+##  [39] cachem_1.0.5               Cairo_1.5-12.2            
+##  [41] callr_3.7.0                car_3.0-11                
+##  [43] carData_3.0-4              cellranger_1.1.0          
+##  [45] checkmate_2.0.0            circlize_0.4.13           
+##  [47] class_7.3-19               classInt_0.4-3            
+##  [49] cli_3.0.1                  clipr_0.7.1               
+##  [51] clue_0.3-59                cluster_2.1.2             
+##  [53] cmdstanr_0.4.0             coda_0.19-4               
+##  [55] codetools_0.2-18           colorspace_2.0-2          
+##  [57] colourpicker_1.1.0         commonmark_1.7            
+##  [59] ComplexHeatmap_2.8.0       config_0.3.1              
+##  [61] conquer_1.0.2              corrplot_0.90             
+##  [63] countrycode_1.3.0          cowplot_1.1.1             
+##  [65] cpp11_0.3.1                crayon_1.4.1              
+##  [67] credentials_1.3.1          crosstalk_1.1.1           
+##  [69] curl_4.3.2                 data.table_1.14.0         
+##  [71] DBI_1.1.1                  dbplyr_2.1.1              
+##  [73] dendextend_1.15.1          Deriv_4.1.3               
+##  [75] desc_1.3.0                 deSolve_1.28              
+##  [77] devtools_2.4.2             DiagrammeR_1.0.6.1        
+##  [79] diffobj_0.3.4              digest_0.6.27             
+##  [81] distributional_0.2.2       doParallel_1.0.16         
+##  [83] downlit_0.2.1              downloader_0.4            
+##  [85] dplyr_1.0.7                DT_0.18                   
+##  [87] dtplyr_1.1.0               dygraphs_1.1.1.6          
+##  [89] e1071_1.7-8                echarts4r_0.4.1           
+##  [91] egg_0.4.5                  ellipsis_0.3.2            
+##  [93] emo_0.0.0.9000             equatiomatic_0.2.0        
+##  [95] evaluate_0.14              extrafont_0.17            
+##  [97] extrafontdb_1.0            fansi_0.5.0               
+##  [99] farver_2.1.0               fastmap_1.1.0             
+## [101] filehash_2.4-2             flexdashboard_0.5.2       
+## [103] fontcm_1.1                 forcats_0.5.1             
+## [105] foreach_1.5.1              foreign_0.8-81            
+## [107] forge_0.2.0                formatR_1.11              
+## [109] formattable_0.2.1          Formula_1.2-4             
+## [111] fresh_0.2.0                fs_1.5.0                  
+## [113] future_1.21.0              GA_3.2.1                  
+## [115] gamm4_0.2-6                gapminder_0.3.0           
+## [117] gargle_1.2.0               gclus_1.3.2               
+## [119] gdtools_0.2.3              generics_0.1.0            
+## [121] geoR_1.8-1                 gert_1.3.1                
+## [123] GetoptLong_1.0.5           ggalluvial_0.12.3         
+## [125] gganimate_1.0.7            ggbeeswarm_0.6.0          
+## [127] ggbump_0.1.99999           ggdendro_0.1.22           
+## [129] ggfittext_0.9.1            ggfortify_0.4.12          
+## [131] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
+## [133] ggplot2_3.3.5              ggpubr_0.4.0              
+## [135] ggrepel_0.9.1              ggridges_0.5.3            
+## [137] ggsci_2.9                  ggsignif_0.6.2            
+## [139] ggstream_0.1.0             gh_1.3.0                  
+## [141] gifski_1.4.3-1             git2r_0.28.0              
+## [143] gitcreds_0.1.1             glmmTMB_1.1.2             
+## [145] glmnet_4.1-2               GlobalOptions_0.1.2       
+## [147] globals_0.14.0             glue_1.4.2                
+## [149] googledrive_2.0.0          googlesheets4_1.0.0       
+## [151] graph_1.70.0               gridBase_0.4-7            
+## [153] gridExtra_2.3              gt_0.3.0                  
+## [155] gtable_0.3.0               gtools_3.9.2              
+## [157] haven_2.4.3                heatmaply_1.2.1           
+## [159] hexbin_1.28.2              highcharter_0.8.2         
+## [161] highr_0.9                  Hmisc_4.5-0               
+## [163] hms_1.1.0                  hrbrthemes_0.8.0          
+## [165] htmlTable_2.2.1            htmltools_0.5.1.1         
+## [167] htmlwidgets_1.5.3          httpuv_1.6.1              
+## [169] httr_1.4.2                 ids_1.0.1                 
+## [171] igraph_1.2.6               influenceR_0.1.0          
+## [173] ini_0.3.1                  INLA_21.02.23             
+## [175] inline_0.3.19              IRanges_2.26.0            
+## [177] isoband_0.2.5              iterators_1.0.13          
+## [179] jpeg_0.1-9                 jquerylib_0.1.4           
+## [181] jsonlite_1.7.2             kableExtra_1.3.4          
+## [183] Kendall_2.2                kernlab_0.9-29            
+## [185] KernSmooth_2.23-20         knitr_1.33                
+## [187] labeling_0.4.2             later_1.2.0               
+## [189] lattice_0.20-44            latticeExtra_0.6-29       
+## [191] lazyeval_0.2.2             leaflet_2.0.4.1           
+## [193] leaflet.extras_1.0.0       leaflet.providers_1.9.0   
+## [195] leafletCN_0.2.1            lifecycle_1.0.0           
+## [197] lightgbm_3.2.1             listenv_0.8.0             
+## [199] lme4_1.1-27.1              loo_2.4.1                 
+## [201] lpSolve_5.6.15             lpSolveAPI_5.5.2.0-17.7   
+## [203] lubridate_1.7.10           magick_2.7.2              
+## [205] magrittr_2.0.1             mapdata_2.3.0             
+## [207] mapproj_1.2.7              maps_3.3.0                
+## [209] maptools_1.1-1             markdown_1.1              
+## [211] MASS_7.3-54                Matrix_1.3-4              
+## [213] MatrixModels_0.5-0         matrixStats_0.60.0        
+## [215] maxLik_1.5-2               mcmc_0.9-7                
+## [217] memoise_2.0.0              mgcv_1.8-36               
+## [219] mime_0.11                  miniUI_0.1.1.1            
+## [221] minqa_1.2.4                miscTools_0.6-26          
+## [223] modelr_0.1.8               munsell_0.5.0             
+## [225] mvtnorm_1.1-2              networkD3_0.4             
+## [227] nleqslv_3.3.2              nlme_3.1-152              
+## [229] nlmeODE_1.1                nloptr_1.2.2.2            
+## [231] NMOF_2.4-1                 nnet_7.3-16               
+## [233] nomnoml_0.2.3              numDeriv_2016.8-1.1       
+## [235] odbc_1.3.2                 openssl_1.4.4             
+## [237] openxlsx_4.2.4             optimx_2021-6.12          
+## [239] packrat_0.6.0              palmerpenguins_0.1.0      
+## [241] parallelly_1.27.0          patchwork_1.1.1           
+## [243] pbkrtest_0.5.1             PBSddesolve_1.12.6        
+## [245] pdftools_3.0.1             pdist_1.2                 
+## [247] pillar_1.6.2               pkgbuild_1.2.0            
+## [249] pkgconfig_2.0.3            pkgload_1.2.1             
+## [251] plogr_0.2.0                plotly_4.9.4.1            
+## [253] plyr_1.8.6                 png_0.1-7                 
+## [255] polynom_1.4-0              posterior_1.0.1           
+## [257] praise_1.0.0               prettydoc_0.4.1           
+## [259] prettyunits_1.1.1          PrevMap_1.5.3             
+## [261] processx_3.5.2             productplots_0.1.1        
+## [263] progress_1.2.2             projpred_2.0.2            
+## [265] promises_1.2.0.1           proxy_0.4-26              
+## [267] ps_1.6.0                   pso_1.0.3                 
+## [269] pspearman_0.3-0            purrr_0.3.4               
+## [271] pwr_1.3-0                  qap_0.1-1                 
+## [273] qpdf_1.1                   quadprog_1.5-8            
+## [275] quantmod_0.4.18            quantreg_5.86             
+## [277] r2d3_0.2.5                 R6_2.5.0                  
+## [279] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
+## [281] randomForest_4.6-14        rappdirs_0.3.3            
+## [283] raster_3.4-13              rasterly_0.2.0            
+## [285] rasterVis_0.50.3           rcmdcheck_1.3.3           
+## [287] RColorBrewer_1.1-2         Rcpp_1.0.7                
+## [289] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
+## [291] RcppParallel_5.1.4         reactable_0.2.3           
+## [293] reactR_0.4.4               ReacTran_1.4.3.1          
+## [295] readr_2.0.0                readxl_1.3.1              
+## [297] registry_0.5-1             rematch_1.0.1             
+## [299] rematch2_2.1.2             remotes_2.4.0             
+## [301] renv_0.14.0                reprex_2.0.0              
+## [303] reshape2_1.4.4             reticulate_1.20           
+## [305] rgdal_1.5-23               rgeos_0.5-5               
+## [307] RgoogleMaps_1.4.5.3        Rgraphviz_2.36.0          
+## [309] rio_0.5.27                 rJava_1.0-4               
+## [311] rjson_0.2.20               rlang_0.4.11              
+## [313] rlist_0.4.6.1              rmarkdown_2.9             
+## [315] rngtools_1.5               ROI_1.0-0                 
+## [317] ROI.plugin.alabama_1.0-0   ROI.plugin.lpsolve_1.0-1  
+## [319] ROI.plugin.nloptr_1.0-0    ROI.plugin.quadprog_1.0-0 
+## [321] rootSolve_1.8.2.2          roxygen2_7.1.1            
+## [323] rpart_4.1-15               rprojroot_2.0.2           
+## [325] rsconnect_0.8.18           RSQLite_2.2.7             
+## [327] rstan_2.26.2               rstantools_2.1.1          
+## [329] rstatix_0.7.0              rstudioapi_0.13           
+## [331] Rttf2pt1_1.3.9             rversions_2.1.1           
+## [333] rvest_1.0.1                s2_1.0.6                  
+## [335] S4Vectors_0.30.0           sandwich_3.0-1            
+## [337] sass_0.4.0                 scales_1.1.1              
+## [339] scatterplot3d_0.3-41       selectr_0.4-2             
+## [341] seriation_1.3.0            servr_0.22                
+## [343] sessioninfo_1.1.1          sf_1.0-2                  
+## [345] sfarrow_0.4.0              shades_1.4.0              
+## [347] shape_1.4.6                shiny_1.6.0               
+## [349] shinydashboard_0.7.1       shinydashboardPlus_2.0.2  
+## [351] shinyjs_2.0.0              shinystan_2.5.0           
+## [353] shinythemes_1.2.0          shinyWidgets_0.6.0        
+## [355] showtext_0.9-3             showtextdb_3.0            
+## [357] Sim.DiffProc_4.8           slam_0.1-48               
+## [359] sm_2.2-5.6                 sourcetools_0.1.7         
+## [361] sp_1.4-5                   sparkline_2.0             
+## [363] sparklyr_1.7.1             SparseM_1.81              
+## [365] spatial_7.3-14             spDataLarge_0.5.4         
+## [367] splancs_2.01-42            splines2_0.4.3            
+## [369] StanHeaders_2.26.2         stringi_1.7.3             
+## [371] stringr_1.4.0              SuppDists_1.1-9.5         
+## [373] survival_3.2-11            svglite_2.0.0             
+## [375] symengine_0.1.5            sys_3.4                   
+## [377] sysfonts_0.8.4             systemfonts_1.0.2         
+## [379] tensorA_0.36.2             tensorflow_2.5.0          
+## [381] terra_1.3-4                testthat_3.0.4            
+## [383] tfruns_1.5.0               threejs_0.3.3             
+## [385] tibble_3.1.3               tidyr_1.1.3               
+## [387] tidyselect_1.1.1           tidyverse_1.3.1           
+## [389] tikzDevice_0.12.3.1        timeline_0.9              
+## [391] timelineS_0.1.1            tint_0.1.3                
+## [393] tinytex_0.32               TMB_1.7.20                
+## [395] transformr_0.1.3           treemap_2.4-2             
+## [397] treemapify_2.5.5           truncnorm_1.0-8           
+## [399] TSP_1.1-10                 TTR_0.24.2                
+## [401] tweenr_1.0.2               tzdb_0.1.2                
+## [403] units_0.7-2                usethis_2.0.1             
+## [405] utf8_1.2.2                 uuid_0.1-4                
+## [407] V8_3.4.2                   vctrs_0.3.8               
+## [409] vioplot_0.3.7              vipor_0.4.5               
+## [411] viridis_0.6.1              viridisLite_0.4.0         
+## [413] visNetwork_2.0.9           vistime_1.2.1             
+## [415] vroom_1.5.3                waiter_0.2.3              
+## [417] waldo_0.2.5                webshot_0.5.2             
+## [419] whisker_0.4                withr_2.4.2               
+## [421] wk_0.5.0                   xaringan_0.22             
+## [423] xaringanthemer_0.4.0       xfun_0.24                 
+## [425] xgboost_1.4.1.1            xkcd_0.0.6                
+## [427] XML_3.99-0.6               xml2_1.3.2                
+## [429] xopen_1.0.0                xtable_1.8-4              
+## [431] xts_0.12.1                 yaml_2.2.1                
+## [433] zip_2.2.0                  zoo_1.8-9
 ```
 
 

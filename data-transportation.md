@@ -1,4 +1,4 @@
-# 数据搬运 {#chap:data-transportation}
+# 数据搬运 {#chap-data-transportation}
 
 美团使用的大数据工具有很多，最常用的 Hive、Spark、Kylin、Impala、Presto 等，详见 <https://tech.meituan.com/2018/08/02/mt-r-practice.html>。下面主要介绍如何在 R 中连接 MySQL、Presto 和 Spark。
 
@@ -17,9 +17,9 @@ Spark 性能优化，参考三篇博文
 - Spark 与 R 语言 <https://docs.microsoft.com/en-us/azure/databricks/spark/latest/sparkr/>
 - Mastering Spark with R <https://therinspark.com/>
 
-## Spark 与 R 语言 {#sec:spark-with-r}
+## Spark 与 R 语言 {#sec-spark-with-r}
 
-### sparklyr {#subsec:sparklyr}
+### sparklyr {#subsec-sparklyr}
 
 ::: {.rmdwarn data-latex="{警告}"}
 Spark 依赖特定版本的 Java、Hadoop，三者之间的版本应该要相融。
@@ -176,13 +176,13 @@ diamonds_sample
 ```
 
 ```
-##   carat     cut color clarity depth table price    x    y    z
-## 1  0.79 Premium     G     VS2  59.3    62  2839 6.09 6.01 3.59
-## 2  0.70 Premium     G    VVS2  62.9    59  2874 5.68 5.61 3.55
-## 3  0.70   Ideal     E     VS1  60.5    56  2973 5.74 5.79 3.49
-## 4  0.96   Ideal     I     VS2  59.8    57  3462 6.42 6.39 3.83
-## 5  0.90 Premium     H     VS2  62.1    58  3989 6.16 6.20 3.84
-## 6  0.96 Premium     D     SI2  60.0    60  3989 6.47 6.43 3.87
+##   carat       cut color clarity depth table price    x    y    z
+## 1  0.31   Premium     I     VS2  60.8    58   558 4.37 4.34 2.65
+## 2  0.71 Very Good     E     VS2  62.9    57  2964 5.68 5.70 3.58
+## 3  0.70      Good     E     VS1  59.4    61  3063 5.79 5.83 3.45
+## 4  1.01     Ideal     J     SI1  60.5    56  3599 6.49 6.53 3.94
+## 5  1.12     Ideal     I     SI2  62.4    57  3688 6.69 6.62 4.15
+## 6  0.92      Good     D     SI2  63.3    59  3891 6.12 6.18 3.89
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -200,13 +200,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  3477    1
-## 2 Fair  5292    2
-## 3 Good   472    1
-## 4 Good   561    2
-## 5 Good   682    3
-## 6 Good  3816    4
+##     cut price rank
+## 1  Fair  3511    1
+## 2  Fair  4717    2
+## 3  Good  1660    1
+## 4  Good  4805    2
+## 5 Ideal   537    1
+## 6 Ideal   573    2
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -241,10 +241,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -261,12 +261,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -279,7 +279,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-07-19
+## 1     2021-08-07
 ```
 
 ```r
@@ -289,7 +289,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-07-18
+## 1                  2021-08-06
 ```
 
 ```r
@@ -299,7 +299,7 @@ dbGetQuery(sc, "select last_day(current_date)")
 
 ```
 ##   last_day(current_date())
-## 1               2021-07-31
+## 1               2021-08-31
 ```
 
 ```r
@@ -309,7 +309,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         2
+## 1                         7
 ```
 
 最后，使用完记得关闭 Spark 连接
@@ -319,10 +319,10 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 spark_disconnect(sc)
 ```
 
-### SparkR {#subsec:sparkr}
+### SparkR {#subsec-sparkr}
 
 ::: {.rmdnote data-latex="{注意}"}
-考虑到和第\@ref(subsec:sparklyr)节的重合性，以及 sparklyr 的优势，本节代码都不会执行，仅作为补充信息予以描述。完整的介绍见 [SparkR 包](https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr)
+考虑到和第\@ref(subsec-sparklyr)节的重合性，以及 sparklyr 的优势，本节代码都不会执行，仅作为补充信息予以描述。完整的介绍见 [SparkR 包](https://spark.apache.org/docs/latest/sparkr.html#running-sql-queries-from-sparkr)
 :::
 
 ```r
@@ -374,7 +374,7 @@ head(faithful_sdf)
 str(faithful_sdf)
 ```
 
-## 数据库与 R 语言 {#sec:database-with-r}
+## 数据库与 R 语言 {#sec-database-with-r}
 
 [Presto](https://github.com/prestodb/presto) 的 R 接口 <https://github.com/prestodb/RPresto> 和文档 <https://prestodb.io/docs/current/index.html>，Presto 数据库
 
@@ -414,7 +414,7 @@ Driver64        = /usr/lib64/libmaodbc.so
 FileUsage       = 1
 ```
 
-## 批量读取 csv 文件 {#sec:batch-import-csv}
+## 批量读取 csv 文件 {#sec-batch-import-csv}
 
 iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 csv 文件，各个文件的文件名用鸢尾花的类别名表示
 
@@ -516,7 +516,7 @@ mtcars %>%
 ## # ... with 24 more rows
 ```
 
-## 批量导出 xlsx 文件 {#sec:batch-export-xlsx}
+## 批量导出 xlsx 文件 {#sec-batch-export-xlsx}
 
 将 R 环境中的数据集导出为 xlsx 表格
 

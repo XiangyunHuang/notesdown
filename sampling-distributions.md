@@ -1,10 +1,10 @@
-# 抽样分布 {#chap:sampling-distributions}
+# 抽样分布 {#chap-sampling-distributions}
 
 分布我们已经听说过很多了，可是它们都是凭空臆测的吗？肯定不是，那它们是怎么产生的呢？谁提出了正态分布，他/她是怎么提出的？一定有故事背景，一定有数据记录，即观察值，我们的样本数据
 
 抽样分布其中抽样二字更加贴近生活，说明它源于实际生产场景，而不是光靠大脑思维理论推导出来的东西，它是最本质的
 
-## 正态分布 {#sec:normal-distribution}
+## 正态分布 {#sec-normal-distribution}
 
 分三块介绍
 
@@ -32,7 +32,7 @@
 图来自 [@Lawrence_1986_Dist]
 
 
-## 指数族 {#sec:exponential-family}
+## 指数族 {#sec-exponential-family}
 
 谁提出的指数族，有哪些性质，指数族 quasi-poisson 是什么含义，拟族
 
@@ -88,10 +88,10 @@ Tn
 
 ```
 ## $quantile
-## [1] 2.560885
+## [1] 2.561139
 ## 
 ## $f.quantile
-## [1] 2.22493e-07
+## [1] 1.990618e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -120,57 +120,37 @@ Fn
 
 ```r
 library(MASS)
-set.seed(2018)
 n <- 1000 # 样本量
-X <- mvrnorm(n, mu = rep(0, 2), Sigma = matrix(c(1, 0.8, 0.8, 1), 2))
+X <- mvrnorm(n, mu = rep(0, 2), Sigma = matrix(c(1, 0.8, 0.8, 1), ncol = 2, byrow = TRUE))
 plot(X,
   pch = 20, panel.first = grid(), cex = 1,
-  col = densCols(X, colramp = hcl.colors),
+  col = densCols(X, colramp = terrain.colors),
   xlab = expression(X[1]), ylab = expression(X[2])
 )
+points(x =0, y = 0, pch = 3, cex = 2)
 ```
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-dist-1} 
+{\centering \includegraphics[width=0.75\linewidth]{sampling-distributions_files/figure-latex/bivariate-scatter-1} 
 
 }
 
-\caption{二维正态分布}(\#fig:two-normal-dist)
+\caption{二维正态分布}(\#fig:bivariate-scatter)
 \end{figure}
 
 
 
 ```r
 f1 <- kde2d(X[, 1], X[, 2], n = 25)
-image(f1, col = hcl.colors(100), xlab = expression(X[1]), ylab = expression(X[2]))
-contour(f1, add = T)
-```
+filled.contour(f1, color.palette = terrain.colors)
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-contour-1} 
-
-}
-
-\caption{二维正态分布}(\#fig:two-normal-contour)
-\end{figure}
-
-
-
-```r
-nrz <- nrow(f1$z)
-ncz <- ncol(f1$z)
-nbcol <- 100
-color <- hcl.colors(100)
-# Compute the z-value at the facet centres
-zfacet <- f1$z[-1, -1] + f1$z[-1, -ncz] + f1$z[-nrz, -1] + f1$z[-nrz, -ncz]
-# Recode facet z-values into color indices
-facetcol <- cut(zfacet, nbcol)
-
-persp(f1,
-  xlab = "X[1]", ylab = "X[2]", zlab = "\n Z",
-  theta = 30, phi = 20, col = color[facetcol],
+library(shape)
+persp(f1$z, 
+  xlab = expression(X[1]), ylab = expression(X[2]),
+  zlab = expression(Z),
+  col = drapecol(f1$z, col = terrain.colors(20)),
+  theta = 30, phi = 20, 
   r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
   shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE
 )
@@ -178,11 +158,11 @@ persp(f1,
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.85\linewidth]{sampling-distributions_files/figure-latex/two-normal-persp-1} 
+{\centering \subfloat[等高线图(\#fig:bivariate-persp-1)]{\includegraphics[width=0.45\linewidth]{sampling-distributions_files/figure-latex/bivariate-persp-1} }\subfloat[透视图(\#fig:bivariate-persp-2)]{\includegraphics[width=0.45\linewidth]{sampling-distributions_files/figure-latex/bivariate-persp-2} }
 
 }
 
-\caption{二维正态分布}(\#fig:two-normal-persp)
+\caption{二维正态分布}(\#fig:bivariate-persp)
 \end{figure}
 
 Wishart 分布 文献 [@Eaton_2007_MultiStat] 第八章

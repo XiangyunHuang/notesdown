@@ -1,4 +1,4 @@
-# 线性模型 {#chap:linear-models}
+# 线性模型 {#chap-linear-models}
 
 
 
@@ -10,7 +10,7 @@
 
 
 
-## 方差分析 {#sec:anova}
+## 方差分析 {#sec-anova}
 
 > I was profoundly disappointed when I saw that S-PLUS 4.5 now provides "Type III" sums of squares as a routine option for the summary method for aov objects. I note that it is not yet available for multistratum models, although this has all the hallmarks of an oversight (that is, a bug) rather than common sense seeing the light of day. When the decision was being taken of whether to include this feature, "because the FDA requires it" a few of my colleagues and I were consulted and our reply was unhesitatingly a clear and unequivocal "No", but it seems the FDA and SAS speak louder and we were clearly outvoted.
 > 
@@ -22,7 +22,7 @@
 > 方差分析、 A/B Test 和多重比较多用于互联网数据
 > lme 的特例
 
-## 单因素方差分析 {#sec:one-way-anova}
+## 单因素方差分析 {#sec-one-way-anova}
 
 chickwts 不同的喂食方式对体重的影响
 
@@ -193,16 +193,16 @@ coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
 
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
-## 双因素方差分析 {#sec:two-way-anova}
+## 双因素方差分析 {#sec-two-way-anova}
 
 `?lm` mlm
 
-## 多因素方差分析 {#sec:manova}
+## 多因素方差分析 {#sec-manova}
 
 [MANOVA.RM](https://github.com/smn74/MANOVA.RM) 和 [ffmanova](https://github.com/olangsrud/ffmanova) 包处理多因素方差分析
 
 
-## 核学习 {#sec:kernal-smooth}
+## 核学习 {#sec-kernal-smooth}
 
 基于核的机器学习算法 [kernlab](https://CRAN.R-project.org/package=kernlab) 
 
@@ -210,7 +210,7 @@ David Meyer 基于 [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) 开发�
 
 > 线性模型、逻辑回归模型、多项逻辑回归模型、神经网络、朴素贝叶斯、分类回归树等模型和算法借助 Shiny 整合在一起 <https://radiant-rstats.github.io/docs/> 和 <http://radiant-rstats.github.io/radiant.model/>
 
-## 通用机器学习 {#sec:unify-machine-learning}
+## 通用机器学习 {#sec-unify-machine-learning}
 
 
 Table: (\#tab:predict-functions) R 包之间的不一致性，计算预测分类的概率的语法
@@ -231,7 +231,7 @@ Table: (\#tab:predict-functions) R 包之间的不一致性，计算预测分类
 
 <!-- 以这些数据样本为线索介绍数理统计概念 -->
 
-## 理论基础 {#sec:linear-model-theory}
+## 理论基础 {#sec-linear-model-theory}
 
 \begin{align}
 Y &= X \beta + \epsilon \\
@@ -243,7 +243,7 @@ X^{\top}Y &= X^{\top}X\beta \\
   & = \frac{Y^{\top}(I - X(X^{\top}X)^{-1}X^{\top})Y}{n - rk(X)}
 \end{align}
 
-## 多重多元线性回归 {#sec:multivariate-multiple-linear-regression}
+## 多重多元线性回归 {#sec-multivariate-multiple-linear-regression}
 
 > 参考 John Fox 和 Sanford Weisberg 的著作[@car_2019_Fox] 附录[^car-appendix]
 
@@ -302,7 +302,7 @@ summary(fit_mtcars)
 
 
 
-## 回归诊断 {#sec:regression-diagnostics}
+## 回归诊断 {#sec-regression-diagnostics}
 
 包括线性模型和广义线性模型
 
@@ -374,7 +374,7 @@ Reduce("+", lapply(1:4, plot_lm))
 \caption{线性模型可能在欺骗你}(\#fig:anscombe)
 \end{figure}
 
-## 1977 年美国人口普查 {#sec:states}
+## 1977 年美国人口普查 {#sec-states}
 
 
 ```r
@@ -415,7 +415,7 @@ summary(fit_state)
 ```
 
 
-## 石油岩石样品的测量 {#sec:rock}
+## 石油岩石样品的测量 {#sec-rock}
 
 
 ```r
@@ -426,7 +426,7 @@ data(rock)
 
 多元线性回归
 
-## 1888 年瑞士生育率分析 {#sec:swiss}
+## 1888 年瑞士生育率分析 {#sec-swiss}
 
 1888 年瑞士生育率和社会经济指标数据，各个指标都是百分比的形式，探索性分析
 
@@ -549,7 +549,7 @@ sqrt(sigma2_hat)
 
 <!-- https://github.com/graysonwhite/gglm 基于 ggplot2 的回归结果绘图 -->
 
-## Intercountry Life-Cycle Savings Data 1960-1970 {#sec:life-cycle-savings}
+## Intercountry Life-Cycle Savings Data 1960-1970 {#sec-life-cycle-savings}
 
 <!-- 线性模型 -->
 
@@ -558,7 +558,7 @@ sqrt(sigma2_hat)
 data("LifeCycleSavings")
 ```
 
-## Longley's Economic Regression Data 1947-1962 {#sec:longley}
+## Longley's Economic Regression Data 1947-1962 {#sec-longley}
 
 <!-- 多重共线性问题 1947-1962 -->
 
@@ -570,7 +570,7 @@ data("longley")
 
 
 
-## 甲醛的测定 {#sec:Formaldehyde}
+## 甲醛的测定 {#sec-Formaldehyde}
 
 
 ```r
@@ -584,7 +584,7 @@ ggplot(data = Formaldehyde, aes(x = carb, y = optden)) +
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-16-1} \end{center}
 
 
-## 迈克尔逊光速数据分析 {#sec:morley}
+## 迈克尔逊光速数据分析 {#sec-morley}
 
 <!-- 重复测量数据：试验设计的巧妙 -->
 
@@ -644,7 +644,7 @@ ggplot(data = morley, aes(x = Expt, y = Speed, group = Expt)) +
 \caption{1879 年迈克尔逊光速实验数据}(\#fig:morley)
 \end{figure}
 
-## 不同喂食方式对小鸡体重的影响 I {#sec:chickwts}
+## 不同喂食方式对小鸡体重的影响 I {#sec-chickwts}
 
 <!-- 6 种喂食方式对小鸡体重的影响 -->
 
@@ -665,7 +665,7 @@ ggplot(data = chickwts, aes(x = feed, y = weight, color = feed)) +
 \caption{不同喂食方式对小鸡的影响}(\#fig:chickwts)
 \end{figure}
 
-## 不同喂食方式对小鸡体重的影响 II {#sec:ChickWeight}
+## 不同喂食方式对小鸡体重的影响 II {#sec-ChickWeight}
 
 <!-- 4 种喂食方式，喂食方式会对小鸡体重有影响，每个小鸡本身对喂食方式的接受、吸收程度不一样、它们本身的素质不一样（个体差异），要考察喂食的方式的影响，应该剔除掉个体差异，才是喂食方式的真正的影响 -->
 
@@ -703,7 +703,7 @@ ggplot(data = ChickWeight,
 
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-18-1} \end{center}
 
-## 酶的酶联免疫吸附测定 {#sec:DNase}
+## 酶的酶联免疫吸附测定 {#sec-DNase}
 
 
 ```r
@@ -717,7 +717,7 @@ ggplot(data = DNase, aes(x= conc,y= density, color = Run)) +
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-19-1} \end{center}
 
 
-## 婴儿的体重随年龄的变化情况 {#sec:BirthWeight}
+## 婴儿的体重随年龄的变化情况 {#sec-BirthWeight}
 
 BirthWeight 数据集记录了婴儿的体重随年龄的变化情况，年龄以周为单位计，体重以克为单位计 
 
@@ -925,7 +925,7 @@ anova(zi, zz)
 ```
 
 
-## 火炬松树的生长情况 {#sec:loblolly}
+## 火炬松树的生长情况 {#sec-loblolly}
 
 表 \@ref(tab:loblolly-data) 记录了 14 颗火炬树种子的生长情况
 
@@ -1011,7 +1011,7 @@ p + transition_reveal(age)
 \begin{center}\animategraphics[,controls,loop]{10}{linear-models_files/figure-latex/loblolly-animate-}{1}{100}\end{center}
 
 
-## 酶促反应的反应速率 {#sec:Puromycin}
+## 酶促反应的反应速率 {#sec-Puromycin}
 
 Puromycin 酶促反应的反应速度，模型拟合 `?SSmicmen`
 
@@ -1032,7 +1032,7 @@ ggplot(data = Puromycin, aes(x = conc, y = rate, color = state)) +
 
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-21-1} \end{center}
 
-## 茶碱的药代动力学 {#sec:Theoph}
+## 茶碱的药代动力学 {#sec-Theoph}
 
 
 ```r
@@ -1089,7 +1089,7 @@ ggplot(data = Theoph, aes(x = Time, y = conc, color = Subject)) +
 
 \begin{center}\includegraphics{linear-models_files/figure-latex/unnamed-chunk-24-1} \end{center}
 
-## 本章总结 {#sec:linear-model-summary}
+## 本章总结 {#sec-linear-model-summary}
 
 模型永远没完，总是需要自己去构造符合自己需求的模型及其实现，只有自己能够实现，才能在海洋中遨游
 
@@ -1099,7 +1099,7 @@ ggplot(data = Theoph, aes(x = Time, y = conc, color = Subject)) +
 
 [^RK-help-2013]: <https://stat.ethz.ch/pipermail/r-help/2013-May/354311.html>
 
-## 运行环境 {#sec:linear-model-sessioninfo}
+## 运行环境 {#sec-linear-model-sessioninfo}
 
 
 ```r
@@ -1134,14 +1134,14 @@ sessionInfo()
 ##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.24         purrr_0.3.4      
 ##  [5] splines_4.1.0     lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8      
 ##  [9] generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1       
-## [13] mgcv_1.8-36       utf8_1.2.1        rlang_0.4.11      pillar_1.6.1     
+## [13] mgcv_1.8-36       utf8_1.2.2        rlang_0.4.11      pillar_1.6.2     
 ## [17] glue_1.4.2        withr_2.4.2       DBI_1.1.1         tweenr_1.0.2     
 ## [21] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
 ## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        fansi_0.5.0      
-## [29] gifski_1.4.3-1    Rttf2pt1_1.3.8    Rcpp_1.0.7        scales_1.1.1     
+## [29] gifski_1.4.3-1    Rttf2pt1_1.3.9    Rcpp_1.0.7        scales_1.1.1     
 ## [33] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.7.3    
 ## [37] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
-## [41] tibble_3.1.2      crayon_1.4.1      extrafontdb_1.0   pkgconfig_2.0.3  
+## [41] tibble_3.1.3      crayon_1.4.1      extrafontdb_1.0   pkgconfig_2.0.3  
 ## [45] ellipsis_0.3.2    Matrix_1.3-4      prettyunits_1.1.1 assertthat_0.2.1 
 ## [49] rmarkdown_2.9     R6_2.5.0          nlme_3.1-152      compiler_4.1.0
 ```

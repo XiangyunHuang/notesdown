@@ -1,4 +1,4 @@
-# 前言 {#chap:preface}
+# 前言 {#chap-preface}
 
 
 > 荃者所以在鱼，得鱼而忘荃；蹄者所以在兔；得兔而忘蹄；言者所以在意，得意而忘言。吾安得夫忘言之人而与之言哉！
@@ -13,7 +13,7 @@
 
 [^notes]: 译文摘自 [Eric D. Kolaczyk](http://math.bu.edu/people/kolaczyk/teach.html)
 
-## 语言抉择 {#sec:r-or-python}
+## 语言抉择 {#sec-r-or-python}
 
 \index{Octave}
 \index{Python}
@@ -79,18 +79,18 @@ JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管�
 
 总之，编程语言到一定境界都是殊途同归的，对美的认识也是趋同的，道理更是相通的，Python 社区的 Pandas <https://github.com/pandas-dev/pandas> 和 Matplotlib <https://github.com/matplotlib/matplotlib> 也有数据框和图形语法的影子。Pandas <https://github.com/pandas-dev/pandas> 明确说了要提供与 data.frame 类似的数据结构和对应统计函数等，而  Matplotlib 偷了 ggplot2 绘图样式 <https://matplotlib.org/3.2.2/gallery/style_sheets/ggplot.html>。
 
-## 数据科学 {#sec:data-science}
+## 数据科学 {#sec-data-science}
 
 John M. Chambers 谈了数据科学的源起以及和 S、R 语言的渊源 [@RS_2020_John]。
 
 
 
-## 获取帮助 {#sec:r-help}
+## 获取帮助 {#sec-r-help}
 
 R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题 <https://cran.r-project.org/faqs.html> 中查找，也可在线搜索 <https://cran.r-project.org/search.html> 或 <https://rseek.org/> ，更多获取帮助方式见 <https://www.r-project.org/help.html>。爆栈网问题以标签分类，比如 [r-plotly](https://stackoverflow.com/questions/tagged/r-plotly)、[r-markdown](https://stackoverflow.com/questions/tagged/r-markdown)、 [data.table](https://stackoverflow.com/questions/tagged/data.table) 和 [ggplot2](https://stackoverflow.com/questions/tagged/ggplot2)，还可以关注一些活跃的社区大佬，比如 [谢益辉](https://stackoverflow.com/users/559676/yihui-xie)。
 
 
-## 写作环境 {#sec:writing-details}
+## 写作环境 {#sec-writing-details}
 
 \index{bookdown}
 \index{Pandoc}
@@ -104,7 +104,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}(\#fig:book-workflow)
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年07月19日15时43分39秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月07日06时03分30秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
 
 
 ```r
@@ -138,7 +138,7 @@ xfun::session_info(packages = c(
 最后，本书在三个位置提供网页版， 网站 [Github Pages](https://pages.github.com/) 发布最近一次在 Travis 构建成功的版本 <https://xiangyunhuang.github.io/masr/>，网站 [Bookdown](https://bookdown.org) 发布本地手动创建的版本 <https://bookdown.org/xiangyun/masr/> ，网站 [Netlify](https://netlify.com/) 发布最新的开发版 <https://masr.netlify.app/>。
 
 
-## 记号约定 {#sec:conventions}
+## 记号约定 {#sec-conventions}
 
 正文中的代码、函数、参数及参数值以等宽正体表示，如 `data(list = c('iris', 'BOD'))`{.R}，
 其中函数名称 `data()`，参数及参数值 `list = c('iris', 'BOD')`{.R} ，R 程序包用粗体表示，如 **graphics**。
@@ -154,7 +154,7 @@ ruler()
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 ```
 
-## 复现环境 {#sec:contribute}
+## 复现环境 {#sec-contribute}
 
 > 构建容器
 
@@ -208,7 +208,7 @@ docker inspect --format='{{.NetworkSettings.IPAddress}}' masr-book
 
 [^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
 
-## 如何发问 {#sec:help-me}
+## 如何发问 {#sec-help-me}
 
 > The phrase "does not work" is not very helpful, it can mean quite a few things including:
 > 
@@ -233,6 +233,6 @@ docker inspect --format='{{.NetworkSettings.IPAddress}}' masr-book
 [^GS-help-2012]: 来自 R 社区论坛收集的智语 `fortunes::fortune(324)`。
 
 
-## 作者简介 {#sec:about-author}
+## 作者简介 {#sec-about-author}
 
 热心开源事业，统计之都副主编，经常混迹于统计之都论坛、Github 和爆栈网。个人主页 <https://xiangyun.rbind.io/>

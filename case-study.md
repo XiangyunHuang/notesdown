@@ -1,4 +1,4 @@
-# 案例研究 {#chap:case-study}
+# 案例研究 {#chap-case-study}
 
 
 
@@ -30,7 +30,7 @@
 
 > 这些案例来自 Kaggle、 Tudesday 或者自己找的数据集，而不是论文里，或者 R 包里的小数据集，应该更加真实，贴近实际问题，考虑更多细节
 
-## 统计学家生平 {#sec:life-of-statisticians}
+## 统计学家生平 {#sec-life-of-statisticians}
 
 <!-- 定位：不用任何数据建模的手段，我只是呈现数据本身，但是给人的感觉要达到，一眼就能获得一个直接的感觉，读者立马就能有个感觉，这个感觉就是知道影响统计学家寿命的重大因素有哪些，后续的检验只是帮助我们更加准确地知道影响的大小 -->
 
@@ -40,11 +40,11 @@
 
 注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力，参考文献 [@Statisticians_1997_Johnson]
 
-## R 语言发展历史 {#sec:history-of-r}
+## R 语言发展历史 {#sec-history-of-r}
 
 R 语言发展历史和现状，用图来表达
 
-## 不同实验条件下植物生长情况 {#sec:PlantGrowth}
+## 不同实验条件下植物生长情况 {#sec-PlantGrowth}
 
 PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》[@Dobson_1983_Modelling] 第 2 章第 2 节的案例 --- 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 \@ref(tab:PlantGrowth-data) 所示
 
@@ -524,9 +524,9 @@ fit_lme_brm <- brms::brm(weight ~ 1 + (1 | group),
 summary(fit_lme_brm)
 ```
 
-## 橘树生长情况 {#sec:orange}
+## 橘树生长情况 {#sec-orange}
 
-<!-- 非线性混合效应模型 {#chap:nonlinear-mixed-models} -->
+<!-- 非线性混合效应模型 {#chap-nonlinear-mixed-models} -->
 
 Orange 数据集包含三个变量，记录了加利福尼亚南部的一个小树林中的五棵橘树的生长情况，在 **datasets** 包里，数据集保存为 `c("nfnGroupedData", "nfGroupedData", "groupedData", "data.frame")` 类型的数据，同时具有着四个类的特点。
 

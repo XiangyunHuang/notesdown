@@ -1,4 +1,4 @@
-# 假设检验 {#chap:hypothesis-test}
+# 假设检验 {#chap-hypothesis-test}
 
 
 
@@ -133,7 +133,12 @@ Jacob Cohen 实际谈的是更加深刻的问题。开篇介绍为什么需要�
 [rstatix](https://github.com/kassambara/rstatix) 包提供了一个简明的管道友好的框架，和 tidyverse 的设计哲学保持一致，支持常见的统计检验，如 T 检验，Wilcoxon 检验，方差分析，Kruskal-Wallis 检验，相关性分析，并将结果整理成干净的数据框形式，以方便可视化。
 
 
-## Ansari-Bradley 检验 `ansari.test` {#sec:ansari-test}
+
+<https://github.com/pieces201020/AB-Test-Sample-Size-Calculator> 又一个样本量计算器
+
+
+
+## Ansari-Bradley 检验 `ansari.test` {#sec-ansari-test}
 
 Ansari-Bradley 检验目的是检验两样本的尺度参数是否有显著性差异
 
@@ -155,7 +160,7 @@ ansari.test(formula, data, subset, na.action, ...)
 ```
 
 
-## Bartlett 检验 `bartlett.test` {#sec:bartlett-test}
+## Bartlett 检验 `bartlett.test` {#sec-bartlett-test}
 
 `ansari.test` 和 `mood.test` 是基于秩的两样本尺度参数显著性差异检验，是非参数检验
 
@@ -175,7 +180,7 @@ usage("bartlett.test.formula")
 bartlett.test(formula, data, subset, na.action, ...)
 ```
 
-## 二项检验 `binom.test` {#sec:binom-test}
+## 二项检验 `binom.test` {#sec-binom-test}
 
 比例 $p$ 的检验， 做 $n$ 次独立试验，样本 $X_1,\ldots,X_n \sim b(1, p)$，事件发生的总次数  $\sum_{i=1}^{n}X_i$   
 
@@ -202,13 +207,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 21, number of trials = 100, p-value = 4.337e-09
+## number of successes = 22, number of trials = 100, p-value = 1.591e-08
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1349437 0.3029154
+##  0.1433036 0.3139197
 ## sample estimates:
 ## probability of success 
-##                   0.21
+##                   0.22
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -223,13 +228,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 21, number of trials = 100, p-value = 0.8026
+## number of successes = 22, number of trials = 100, p-value = 0.6172
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1349437 0.3029154
+##  0.1433036 0.3139197
 ## sample estimates:
 ## probability of success 
-##                   0.21
+##                   0.22
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -247,7 +252,7 @@ binom.test(x, n, p = 0.5, alternative = c("two.sided", "less", "greater"),
     conf.level = 0.95)
 ```
 
-## 时间序列独立性检验 `Box.test` {#sec:Box-test}
+## 时间序列独立性检验 `Box.test` {#sec-Box-test}
 
 计算 Box-Pierce 或 Ljung-Box 检验统计量来检查给定时间序列的独立性假设。
 
@@ -260,7 +265,7 @@ usage(Box.test)
 Box.test(x, lag = 1, type = c("Box-Pierce", "Ljung-Box"), fitdf = 0)
 ```
 
-## 皮尔逊卡方检验 `chisq.test` {#sec:chisq-test}
+## 皮尔逊卡方检验 `chisq.test` {#sec-chisq-test}
 
 用于计数数据的皮尔逊卡方检验：列联表独立性检验和拟合优度检验
 
@@ -277,7 +282,7 @@ chisq.test(x, y = NULL, correct = TRUE, p = rep(1/length(x), length(x)),
 ```
 
 
-## 费舍尔精确检验 `fisher.test` {#sec:fisher-test}
+## 费舍尔精确检验 `fisher.test` {#sec-fisher-test}
 
 固定边际的情况下，检验列联表行和列之间的独立性
 
@@ -293,7 +298,7 @@ fisher.test(x, y = NULL, workspace = 2e+05, hybrid = FALSE,
     simulate.p.value = FALSE, B = 2000)
 ```
 
-## 方差齐性检验 `fligner.test` {#sec:fligner-test}
+## 方差齐性检验 `fligner.test` {#sec-fligner-test}
 
 Fligner-Killeen (中位数) 检验各个组的样本方差是不是一致的，也是方差齐性检验
 
@@ -310,7 +315,7 @@ usage("fligner.test.formula")
 fligner.test(formula, data, subset, na.action, ...)
 ```
 
-## Friedman 秩和检验 `friedman.test` {#sec:friedman-test}
+## Friedman 秩和检验 `friedman.test` {#sec-friedman-test}
 
 Friedman 秩和检验
 
@@ -328,7 +333,7 @@ usage("friedman.test.formula")
 friedman.test(formula, data, subset, na.action, ...)
 ```
 
-## Kruskal-Wallis 秩和检验 `kruskal.test` {#sec:kruskal-test}
+## Kruskal-Wallis 秩和检验 `kruskal.test` {#sec-kruskal-test}
 
 Kruskal-Wallis 秩和检验
 
@@ -345,7 +350,7 @@ kruskal.test(formula, data, subset, na.action, ...)
 ```
 
 
-## 同分布检验 `ks.test` {#sec:ks-test}
+## 同分布检验 `ks.test` {#sec-ks-test}
 
 Lilliefors 检验 [^Lilliefors-test] 和单样本的 ks 检验的关系
 
@@ -369,7 +374,7 @@ ks.test(x, y, ..., alternative = c("two.sided", "less", "greater"),
     exact = NULL)
 ```
 
-## Cochran-Mantel-Haenszel 卡方检验 `mantelhaen.test` {#sec:mantelhaen-test}
+## Cochran-Mantel-Haenszel 卡方检验 `mantelhaen.test` {#sec-mantelhaen-test}
 
 用于计数数据的 Cochran-Mantel-Haenszel 卡方检验
 
@@ -386,7 +391,7 @@ mantelhaen.test(x, y = NULL, z = NULL,
     exact = FALSE, conf.level = 0.95)
 ```
 
-## Mauchly 球形检验 `mauchly.test` {#sec:mauchly-test}
+## Mauchly 球形检验 `mauchly.test` {#sec-mauchly-test}
 
 检验：Wishart 分布的协方差矩阵是否正比于给定的矩阵
 
@@ -407,7 +412,7 @@ mauchly.test(object, Sigma = diag(nrow = p), T = Thin.row(proj(M) - proj(X)),
     M = diag(nrow = p), X = ~0, idata = data.frame(index = seq_len(p)), ...)
 ```
 
-## McNemar 卡方检验 `mcnemar.test` {#sec:mcnemar-test}
+## McNemar 卡方检验 `mcnemar.test` {#sec-mcnemar-test}
 
 两种统计量的比较 参看谢益辉的博文 [渐近理想国：McNemar 检验的两种统计量](https://yihui.org/cn/2010/05/asymptotia-mcnemar-test-statistics/)
 
@@ -426,7 +431,7 @@ usage(mcnemar.test)
 mcnemar.test(x, y = NULL, correct = TRUE)
 ```
 
-## Mood 方差检验 `mood.test` {#sec:mood-test}
+## Mood 方差检验 `mood.test` {#sec-mood-test}
 
 检验方差
 
@@ -445,7 +450,7 @@ usage("mood.test.formula")
 mood.test(formula, data, subset, na.action, ...)
 ```
 
-## 单因素多重比较 `oneway.test` {#sec:oneway-test}
+## 单因素多重比较 `oneway.test` {#sec-oneway-test}
 
 单因素方差分析，各个组的方差不一定相同，检验两个及以上来自正态分布的样本是否有相同的均值？
 
@@ -530,11 +535,11 @@ p1 / p2
 \caption{草类植物吸收 CO2}(\#fig:CO2)
 \end{figure}
 
-## 配对样本的检验 {#sec:pairwise-test}
+## 配对样本的检验 {#sec-pairwise-test}
 
 配对样本和单样本的等价转化
 
-### 配对比例检验 `pairwise.prop.test` {#subsec:pairwise-prop-test}
+### 配对比例检验 `pairwise.prop.test` {#subsec-pairwise-prop-test}
 
 配对数据的比例检验
 
@@ -551,7 +556,7 @@ usage(pairwise.prop.test)
 pairwise.prop.test(x, n, p.adjust.method = p.adjust.methods, ...)
 ```
 
-### 配对 t 检验 `pairwise.t.test` {#subsec:pairwise-t-test}
+### 配对 t 检验 `pairwise.t.test` {#subsec-pairwise-t-test}
 
 Calculate pairwise comparisons between group levels with corrections for multiple testing
 
@@ -586,7 +591,7 @@ pairwise.t.test(x = sleep$extra, g = sleep$group, paired = T)
 
 成对的 t 检验
 
-### 配对 Wilcoxon 检验 `pairwise.wilcox.test` {#subsec:pairwise-wilcox-test}
+### 配对 Wilcoxon 检验 `pairwise.wilcox.test` {#subsec-pairwise-wilcox-test}
 
 Pairwise Wilcoxon Rank Sum Tests 配对的 Wilcoxon 秩和检验
 
@@ -602,7 +607,7 @@ pairwise.wilcox.test(x, g, p.adjust.method = p.adjust.methods, paired = FALSE,
     ...)
 ```
 
-### 配对样本相关性检验 `cor.test` {#subsec:cor-test}
+### 配对样本相关性检验 `cor.test` {#subsec-cor-test}
 
 配对样本的相关性检验：Pearson's 相关系数
 
@@ -624,7 +629,7 @@ cor.test(x, ...)
 - `pspearman::spearman.test` [@pspearman]
 
 
-## 精确泊松检验 `poisson.test` {#sec:poisson-test}
+## 精确泊松检验 `poisson.test` {#sec-poisson-test}
 
 泊松分布是 1837年由法国数学家泊松 (Poisson, 1781-1840) 首次提出
 
@@ -645,7 +650,7 @@ poisson.test(x, T = 1, r = 1, alternative = c("two.sided", "less", "greater"),
 ```
 
 
-## 单位根检验 `PP.test` {#sec:PP-test}
+## 单位根检验 `PP.test` {#sec-PP-test}
 
 时间序列平稳性检验
 
@@ -663,7 +668,7 @@ PP.test(x, lshort = TRUE)
 ```
 
 
-## 比例检验 `prop.test` {#sec:prop-test}
+## 比例检验 `prop.test` {#sec-prop-test}
 
 函数 `prop.test` 用来检验两组或多组二项分布的成功概率（比例）是否相等，或等于给定的值。近似检验
 
@@ -729,7 +734,7 @@ $$
 两个二项总体成功概率的比较 [@Prop_2011_Song]
 
 
-### 两个独立二项总体等价性检验 {#subsec:equivalent-test}
+### 两个独立二项总体等价性检验 {#subsec-equivalent-test}
 
 关于比例的检验问题
 
@@ -745,7 +750,7 @@ $H_0$ 成立的情况下，暗示着两个样本来自同一总体。在这种�
 2009 年东南大学韦博成教授将两个独立二项总体的等价性检验应用于《红楼梦》前80回与后40回某些文风差异的统计分析 [@Stone_2009_Wei]
 
 
-### 不同页面的点击率问题 {#subsec:ctr}
+### 不同页面的点击率问题 {#subsec-ctr}
 
 CTR：点击率 Click Ratio
 
@@ -861,7 +866,7 @@ $$
 默认启用 Yates' 连续性校正 (continuity correction, 简称 CC) 
 :::
 
-### 比例齐性检验 {#subsec:prop-home}
+### 比例齐性检验 {#subsec-prop-home}
 
 原假设四个组里面病人中吸烟的比例是相同的，备择假设是四个组里面至少有一个组的吸烟比例是不同的
 
@@ -943,7 +948,7 @@ P(|X - EX| \leq \epsilon) & \geq 1 - \frac{Var(X)}{\epsilon^2}
 :::
 
 
-## 比例趋势检验 `prop.trend.test` {#sec:prop-trend-test}
+## 比例趋势检验 `prop.trend.test` {#sec-prop-trend-test}
 
 Performs $\chi^2$ test for trend in proportions, i.e., a test asymptotically optimal for local alternatives where the log odds vary in proportion with score. By default, score is chosen as the group numbers.
 
@@ -956,7 +961,7 @@ usage(prop.trend.test)
 prop.trend.test(x, n, score = seq_along(x))
 ```
 
-## Quade 检验 `quade.test` {#sec:quade-test}
+## Quade 检验 `quade.test` {#sec-quade-test}
 
 Quade Test
 
@@ -974,7 +979,7 @@ usage("quade.test.formula")
 quade.test(formula, data, subset, na.action, ...)
 ```
 
-## 正态性检验 `shapiro.test` {#sec:shapiro-test}
+## 正态性检验 `shapiro.test` {#sec-shapiro-test}
 
 > Usually (but not always) doing tests of normality reflect a lack of understanding of the power of rank tests, and an assumption of high power for the tests (qq plots don't always help with that because of their subjectivity). When possible it's good to choose a robust method. Also, doing pre-testing for normality can affect the type I error of the overall analysis.  
 >
@@ -999,7 +1004,7 @@ usage(shapiro.test)
 shapiro.test(x)
 ```
 
-## 正态性检验 Epps-Pully 检验 {#sec:ep-test}
+## 正态性检验 Epps-Pully 检验 {#sec-ep-test}
 
 > The issue really comes down to the fact that the questions: "exactly normal?", and "normal enough?" are 2 very different questions (with the difference becoming greater with increased sample size) and while the first is the easier to answer, the second is generally the more useful one.
 >
@@ -1028,7 +1033,7 @@ $$
 几个正态性检验的功效比较 <https://arxiv.org/ftp/arxiv/papers/1605/1605.06293.pdf> 和 PoweR 包 [@JSS_2016_PoweR]
 :::
 
-## 学生 t 检验 `t.test` {#sec:t-test}
+## 学生 t 检验 `t.test` {#sec-t-test}
 
 <!-- 大写字母 X 表示随机变量，小写字母 x 表示样本，即随机变量的取值 -->
 <!-- t 检验只考虑两样本的情况 -->
@@ -1036,7 +1041,7 @@ $$
 > 两样本的均值检验到 Behrens-Fisher 问题到大规模推荐系统中的 A/B 检验
 
 
-### 正态总体两样本的均值之差的检验 {#subsec:two-samples}
+### 正态总体两样本的均值之差的检验 {#subsec-two-samples}
 
 常见检验问题
 
@@ -1302,9 +1307,43 @@ t.test(Pair(extra.1, extra.2) ~ 1, data = sleep2)
 :::
 
 
+### 办公软件里的 T 检验 {#office-ttest}
+
+以 MacOS 上的 Numbers 表格软件为例，如图\@ref(fig:numbers-ttest)所示，首先打开 Numbers 软件，新建工作表，输入两组数值，然后点击空白处，再从顶部导航栏找到「插入」菜单，「公式」选项，点击扩展选项「新建公式」，在弹出的会话条里输入 TTEST，依次选择第一组，第二组值，检验类型和样本类型，最后点击确认，即可得到两样本 T 检验的 P 值结果。
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{screenshots/number-ttest} 
+
+}
+
+\caption{MacOS 的办公软件 Numbers 做两样本 T 检验}(\#fig:numbers-ttest)
+\end{figure}
+
+微软 Excel 办公软件也提供 T 检验计算器，和 MacOS 系统上的 Numbers 办公软件类似，它提供 `T.TEST` 函数，计算结果也一样，此处从略。R 软件自带 `t.test()` 函数，也是用于做 T 检验，如下：
 
 
-## 方差比检验 `var.test` {#sec:var-test}
+```r
+t.test(x = c(3, 4, 5, 8, 9, 1, 2, 4, 5), y = c(6, 19, 3, 2, 14, 4, 5, 17, 1))
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  c(3, 4, 5, 8, 9, 1, 2, 4, 5) and c(6, 19, 3, 2, 14, 4, 5, 17, 1)
+## t = -1.3622, df = 10.255, p-value = 0.2023
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -8.767183  2.100516
+## sample estimates:
+## mean of x mean of y 
+##  4.555556  7.888889
+```
+
+
+
+## 方差比检验 `var.test` {#sec-var-test}
 
 **TeachingDemos** 的 `sigma.test()` 方差检验，适用于正态总体，它对非正态性很敏感。
 
@@ -1323,7 +1362,7 @@ usage("var.test.formula")
 var.test(formula, data, subset, na.action, ...)
 ```
 
-## Wilcoxon 秩和检验 `wilcox.test` {#sec:wilcox-test}
+## Wilcoxon 秩和检验 `wilcox.test` {#sec-wilcox-test}
 
 单样本 Wilcoxon 秩和检验，两样本 Wilcoxon 符号秩检验，也叫 Mann-Whitney 检验
 
@@ -1472,7 +1511,7 @@ trap.rule <- function(x, y) sum(diff(x) * (y[-1] + y[-length(y)])) / 2
 
 
 
-## 3 + 1 统计检验 {#sec:three-plus-one-tests}
+## 3 + 1 统计检验 {#sec-three-plus-one-tests}
 
 <!-- https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval -->
 
@@ -1484,9 +1523,9 @@ Wald 检验，似然比检验/ Wilks 检验，得分检验/Rao 检验，梯度�
 
 [^BB-help-2011]: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q4/017392.html>
 
-## 经典案例 {#sec:classical-case-study}
+## 经典案例 {#sec-classical-case-study}
 
-### 1973 年加州大学伯克利分校的学生招生 {#subsec:ucb-admissions}
+### 1973 年加州大学伯克利分校的学生招生 {#subsec-ucb-admissions}
 
 录取人数按院系和性别分类统计，研究目标是各个院系在录取学生的时候是否有性别歧视？统计数据见表 \@ref(tab:ucb-admissions-data)
 
@@ -1544,7 +1583,7 @@ ggplot(data = as.data.frame(UCBAdmissions)) +
 \caption{UCBAdmissions 马赛克图}(\#fig:ucb-admissions-img)
 \end{figure}
 
-### 1976~1977年美国佛罗里达州的凶杀案件中被告肤色和死刑判决的关系 {#subsec:ethnicity}
+### 1976~1977年美国佛罗里达州的凶杀案件中被告肤色和死刑判决的关系 {#subsec-ethnicity}
 
 <!-- 高维列联表，独立性检验 -->
 
@@ -1557,7 +1596,7 @@ ggplot(data = as.data.frame(UCBAdmissions)) +
 
 
 
-### 统计专业学生的头发和眼睛的颜色 {#subsec:HairEyeColor}
+### 统计专业学生的头发和眼睛的颜色 {#subsec-HairEyeColor}
 
 <!-- 用来描述标准 $\chi^2$ 检验和对数线性模型 -->
 
@@ -1618,7 +1657,7 @@ ggplot(data = as.data.frame(HairEyeColor)) +
 
 
 
-## 运行环境 {#sec:hypothesis-test-session}
+## 运行环境 {#sec-hypothesis-test-session}
 
 
 ```r
@@ -1650,9 +1689,9 @@ sessionInfo()
 ## [5] formatR_1.11   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7         plyr_1.8.6         pillar_1.6.1       compiler_4.1.0    
+##  [1] Rcpp_1.0.7         plyr_1.8.6         pillar_1.6.2       compiler_4.1.0    
 ##  [5] tools_4.1.0        digest_0.6.27      viridisLite_0.4.0  jsonlite_1.7.2    
-##  [9] evaluate_0.14      lifecycle_1.0.0    tibble_3.1.2       gtable_0.3.0      
+##  [9] evaluate_0.14      lifecycle_1.0.0    tibble_3.1.3       gtable_0.3.0      
 ## [13] pkgconfig_2.0.3    rlang_0.4.11       DBI_1.1.1          ggrepel_0.9.1     
 ## [17] yaml_2.2.1         xfun_0.24          httr_1.4.2         withr_2.4.2       
 ## [21] stringr_1.4.0      dplyr_1.0.7        knitr_1.33         htmlwidgets_1.5.3 
@@ -1661,7 +1700,7 @@ sessionInfo()
 ## [33] fansi_0.5.0        rmarkdown_2.9      bookdown_0.22      tidyr_1.1.3       
 ## [37] farver_2.1.0       purrr_0.3.4        productplots_0.1.1 scales_1.1.1      
 ## [41] ellipsis_0.3.2     htmltools_0.5.1.1  assertthat_0.2.1   colorspace_2.0-2  
-## [45] labeling_0.4.2     utf8_1.2.1         stringi_1.7.3      lazyeval_0.2.2    
+## [45] labeling_0.4.2     utf8_1.2.2         stringi_1.7.3      lazyeval_0.2.2    
 ## [49] munsell_0.5.0      crayon_1.4.1
 ```
 

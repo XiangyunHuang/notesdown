@@ -1,16 +1,16 @@
-# 数据结构 {#chap:data-structure}
+# 数据结构 {#chap-data-structure}
 
 网站 <https://r-coder.com/> 主要介绍 Base R，特点是全面细致，排版精美
 
-## 字符 {#sec:character}
+## 字符 {#sec-character}
 
-## 向量 {#sec:vector}
+## 向量 {#sec-vector}
 
-## 矩阵 {#sec:matrix}
+## 矩阵 {#sec-matrix}
 
-## 数组 {#sec:array}
+## 数组 {#sec-array}
 
-## 列表 {#sec:list}
+## 列表 {#sec-list}
 
 
 ```r
@@ -47,7 +47,7 @@ base::print.simple.list(x)
 ## c.e  hello
 ```
 
-## 日期 {#sec:date}
+## 日期 {#sec-date}
 
 上个季度最后一天
 
@@ -128,7 +128,7 @@ formatC(round(runif(1, 1e8, 1e9)), digits = 10, big.mark = ",")
 ```
 
 ```
-## [1] "959,023,139"
+## [1] "319,153,887"
 ```
 
 
@@ -149,7 +149,7 @@ format(as.POSIXlt(Sys.Date()), "%Y-%m-%d %H:%M:%S")
 ```
 
 ```
-## [1] "2021-07-19 00:00:00"
+## [1] "2021-08-07 00:00:00"
 ```
 
 从 POSIXt 数据对象中，抽取小时和分钟部分，返回字符串
@@ -160,7 +160,7 @@ strftime(x = Sys.time(), format = "%H:%M")
 ```
 
 ```
-## [1] "15:43"
+## [1] "06:03"
 ```
 
 Table: (\#tab:table-of-date) 日期表格
@@ -179,4 +179,4 @@ Table: (\#tab:table-of-date) 日期表格
 | `%y` | 2-digit year                  | `%Y` | 4-digit year                                  |
 | `%z` | Offset from GMT               | `%Z` | Time zone (character)                         |
 
-本节介绍了 R 本身提供的基础日期操作，第\@ref(chap:time-series-analysis)章着重介绍一般的时间序列类型的数据对象及其操作。
+本节介绍了 R 本身提供的基础日期操作，第\@ref(chap-time-series-analysis)章着重介绍一般的时间序列类型的数据对象及其操作。

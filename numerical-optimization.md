@@ -1,14 +1,23 @@
-# 数值优化 {#chap:numerical-optimization}
+# 数值优化 {#chap-numerical-optimization}
 
-R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。商业的优化求解器的介绍见 [MOSEK 优化材料](https://docs.mosek.com/9.2/rmosek/optimization-tutorials.html)、
-Matlab 优化工具箱 [Optimization Toolbox User’s Guide](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)。
+R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
+
+商业优化求解器的能力都覆盖非线性规划（NLP），线性（LP）、二次（QP）和锥规划（SOCP），混合整数线性规划（MILP），多目标优化，最小二乘和方程求解。此外，还有很多文档介绍，
+[LINGO](https://www.lindo.com/)提供[用户手册](https://www.lindo.com/downloads/PDF/LINGO.pdf)，
+[Matlab 优化工具箱](https://ww2.mathworks.cn/products/optimization.html) 提供 [Optimization 工具箱使用指南](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)，
+[MOSEK](https://github.com/MOSEK) (<https://www.mosek.com/>) 提供 [MOSEK 建模食谱](https://docs.mosek.com/modeling-cookbook/index.html)，[LocalSolver](https://www.localsolver.com/) 提供[基本使用手册](https://www.localsolver.com/docs/last/index.html)，
+[Gurobi](https://www.gurobi.com/) 提供 [Gurobi 参考手册](https://www.gurobi.com/documentation/9.1/refman/index.html)，[CPLEX Optimization Studio](https://www.ibm.com/cn-zh/products/ilog-cplex-optimization-studio)。
+
+开源社区有不少工具，也能求解常见的优化问题，如 Julia 的 [JuMP](https://github.com/jump-dev) (<https://jump.dev/>)，Octave (<https://www.gnu.org/software/octave/>) 内置的优化函数，Python 模块 [SciPy](https://github.com/scipy/scipy) 提供 [Optimization 优化求解器](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)，[cvxopt](https://github.com/cvxopt/cvxopt) 凸优化求解器，主要基于内点法，提供 Julia、Python、Matlab 接口，算法介绍见
+[锥优化](http://www.seas.ucla.edu/~vandenbe/publications/coneprog.pdf)
+[机器学习优化](http://www.seas.ucla.edu/~vandenbe/publications/mlbook.pdf)。
+课程见 [Optimization for Machine Learning](https://github.com/epfml/OptML_course)，书籍见[Convex Optimization](https://stanford.edu/~boyd/cvxbook/)，相关综述见[Convex Optimization: Algorithms and Complexity](https://arxiv.org/pdf/1405.4980.pdf)。
+
 
 Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题 [@nloptr]，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html> 提供了一般的求解器介绍。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013;@GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。@Nash2014 总结了 R 语言环境下最优化问题的最佳实践。[RcppEnsmallen](https://github.com/coatless/rcppensmallen) 数值优化
 通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。[RcppNumerical](https://github.com/yixuan/RcppNumerical) 无约束数值优化，一维/多维数值积分。
 
 谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
-
-<!-- 尽量都用一个求解器来介绍 nloptr，花一个较大篇幅单独介绍各个优化器，给出推荐优化器求解器 -->
 
 
 ```r
@@ -22,6 +31,22 @@ library(ROI.plugin.lpsolve)  # 注册 lpsolve 求解器
 library(ROI.plugin.quadprog) # 注册 quadprog 求解器
 library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
+
+library(rootSolve)       # 非线性方程
+library(BB)              # 非线性方程组
+library(deSolve)         # ODE 常微分方程
+library(scatterplot3d)   # 三维曲线图
+
+library(shape)
+library(ReacTran)        # PDE 偏微分方程
+library(PBSddesolve)     # DAE 延迟微分方程
+
+library(nlme)            # 混合效应模型
+library(nlmeODE)         # ODE 应用于混合效应模型
+
+library(Sim.DiffProc)    # SDE 随机微分方程
+
+# library(nlmixr)          # Population ODE modeling
 ```
 
 
@@ -51,7 +76,7 @@ Functional &  &  &  & alabama, deoptim, nlminb, nloptr\\
 \end{table}
 
 
-## 线性规划 {#sec:linear-programming}
+## 线性规划 {#sec-linear-programming}
 
 [clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
 [Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。[lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 --
@@ -128,7 +153,7 @@ res$solution
 ## [1] 2.4 3.4
 ```
 
-## 整数规划 {#sec:integer-programming}
+## 整数规划 {#sec-integer-programming}
 
 ### 一般整数规划 {#common-integer-programming}
 
@@ -310,9 +335,9 @@ res$objval
 ## [1] 81
 ```
 
-## 二次规划 {#sec:quadratic-programming}
+## 二次规划 {#sec-quadratic-programming}
 
-### 凸二次规划 {#sec:strictly-convex-quadratic-program}
+### 凸二次规划 {#sec-strictly-convex-quadratic-program}
 
 [^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
 
@@ -477,7 +502,7 @@ levelplot(z ~ x * y, grid,
 \end{figure}
 
 
-### 半正定二次优化 {#subsec:semidefinite-optimization}
+### 半正定二次优化 {#subsec-semidefinite-optimization}
 
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
 
@@ -504,11 +529,11 @@ plot(svp, data = x)
 \caption{二分类问题}(\#fig:toy-binary)
 \end{figure}
 
-## 非线性规划 {#sec:nonlinear-programming}
+## 非线性规划 {#sec-nonlinear-programming}
 
 开源的非线性优化求解器，推荐使用 nloptr，它支持全局优化，同时推荐 ROI，它有统一的接口函数。
 
-### 一元非线性优化 {#sec:one-dimensional-optimization}
+### 一元非线性优化 {#sec-one-dimensional-optimization}
 
 下面考虑一个稍微复杂的一元函数优化问题，求复合函数的极值
 
@@ -565,15 +590,17 @@ Vectorize(f, "y")(c(1, 2))
 ```
 :::
 
-### 多元非线性无约束优化 {#sec:nonlinear-unconstrained-optimization}
+### 多元非线性无约束优化 {#sec-nonlinear-unconstrained-optimization}
 
 <!-- ?nlm -->
+
+下面这些用来测试优化算法的函数来自[维基百科](https://en.wikipedia.org/wiki/Test_functions_for_optimization)
 
 #### Himmelblau 函数 {#himmelblau}
 
 Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。
 
-$$f(x,y) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
+$$f(x_1,x_2) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
 它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$，$f(-2.8051, 3.1313) = 0$，$f(3, 2) = 0$，$f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
 
 
@@ -655,7 +682,7 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 
 [香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function) 定义如下：
 
-$$f(x,y) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
+$$f(x_1,x_2) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
 
 ```r
@@ -743,8 +770,8 @@ nlp$solution
 
 
 Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $n$ 维形式如下：
-$$f(x) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$
-其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots, n$，$x_i \in [-10, 10]$，$f(x)$ 在 $x^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(x^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
+$$f(\mathbf{x}) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$
+其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots, n$，$x_i \in [-10, 10]$，$f(\mathbf{x})$ 在 $\mathbf{x}^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(\mathbf{x}^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
 
 
 ```r
@@ -848,7 +875,7 @@ fn(x = rep(2, 10))
 
 这里，还有另外一个例子，Radistrigin 函数也是多摸函数
 
-$$f(\mathsf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)$$
+$$f(\mathbf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)$$
 
 
 ```r
@@ -914,6 +941,170 @@ nlp$objval
 ## [1] 0
 ```
 
+#### Schaffer 函数 {#schaffer}
+
+$$
+f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
+$$
+在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
+
+
+```r
+fn <- function(x) {
+  0.5 + ((sin(x[1]^2 - x[2]^2))^2 - 0.5) / (1 + 0.001*(x[1]^2 + x[2]^2))^2
+}
+
+df <- expand.grid(
+  x = seq(-50, 50, length = 201),
+  y = seq(-50, 50, length = 201)
+)
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -70, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-01-1} 
+
+}
+
+\caption{Schaffer 函数}(\#fig:schaffer-01)
+\end{figure}
+
+
+
+```r
+df <- expand.grid(
+  x = seq(-2, 2, length = 101),
+  y = seq(-2, 2, length = 101)
+)
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -70, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-02-1} 
+
+}
+
+\caption{Schaffer 函数}(\#fig:schaffer-02)
+\end{figure}
+
+#### Hölder 函数 {#holder}
+
+Hölder 桌面函数
+
+$$
+f(x_1,x_2) = - | \sin(x_1)\cos(x_2)\exp\big(| 1 - \frac{\sqrt{x_1^2 + x_2^2}}{\pi}|\big) |
+$$
+
+在 $(8.05502, 9.66459)$、$(-8.05502, 9.66459)$、$(8.05502, -9.66459)$、$(-8.05502, -9.66459)$ 同时取得最小值 $-19.2085$。
+
+(ref:holder) Hölder 函数
+
+
+```r
+fn <- function(x) {
+  -abs(sin(x[1]) * cos(x[2])) * exp(abs(1 - sqrt(x[1]^2 + x[2]^2) / pi))
+}
+
+df <- expand.grid(
+  x = seq(-10, 10, length = 101),
+  y = seq(-10, 10, length = 101)
+)
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = 120, x = -60, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/holder-1} 
+
+}
+
+\caption{(ref:holder)}(\#fig:holder)
+\end{figure}
+
+
+
+
+#### Trid 函数 {#trid}
+
+<!-- 碗状函数 -->
+
+$n \geq 2$ 维 Trid 函数
+
+$$
+f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
+$$
+$\forall i = 1,2,\cdots, n$，$f(x)$ 在 $x_i = i(n+1-i)$ 处取得全局极小值 $f(\mathbf{x}^\star)=-n(n+4)(n-1)/6$，取值区间 $x \in [-n^2, n^2], \forall i = 1,2,\cdots,n$
+
+
+```r
+fn <- function(x) {
+  n <- length(x)
+  sum((x - 1)^2) - sum(x[-1] * x[-n])
+}
+
+df <- expand.grid(
+  x = seq(-4, 4, length = 101),
+  y = seq(-4, 4, length = 101)
+)
+df$fnxy = apply(df, 1, fn)
+
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]), 
+  ylab = expression(x[2]), 
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = -60, x = -70, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/trid-1} 
+
+}
+
+\caption{Trid 函数}(\#fig:trid)
+\end{figure}
+
+
 #### 超级复杂函数 {#super-complex-function}
 
 有如下复杂的目标函数
@@ -933,7 +1124,8 @@ subfun <- function(i, m) {
 }
 
 fn <- function(x) {
-  cos(x[1]) * cos(x[2]) - sum(mapply(FUN = subfun, i = 1:5, MoreArgs = list(m = x)))
+  cos(x[1]) * cos(x[2]) -
+    sum(mapply(FUN = subfun, i = 1:5, MoreArgs = list(m = x)))
 }
 ```
 
@@ -1050,7 +1242,7 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
 Lingo 18.0 启用全局优化求解器后，在 $(x_1 = 7.999982, x_2 = 7.999982)$ 取得最小值 -7.978832。而默认未启用全局优化求解器的情况下，在 $(x_1 = 18.84956, x_2 = -40.84070)$ 取得局部极小值 -1.000000。
 
 
-### 多元非线性约束优化 {#sec:nonlinear-constrained-optimization}
+### 多元非线性约束优化 {#sec-nonlinear-constrained-optimization}
 
 R 自带的函数 `nlminb()` 可求解无约束、箱式约束优化问题，`constrOptim()` 还可求解线性不等式约束优化，其中包括带线性约束的二次规划。`optim()` 提供一大类优化算法，且包含随机优化算法---模拟退火算法，可求解无约束、箱式约束优化问题。
 
@@ -1278,7 +1470,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1059
+## [1] 368.106
 ```
 
 ```r
@@ -1286,9 +1478,10 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -1670,7 +1863,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.212934 4.804640 3.741348 1.202681
+## [1] 1.176202 4.802194 3.471355 1.872255
 ```
 
 ```r
@@ -1678,7 +1871,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.97739
+## [1] 24.28113
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1806,7 +1999,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245376
+## [1] 1.227972 4.245372
 ```
 
 ```r
@@ -1928,8 +2121,9 @@ x - (( @cos(y) )^x - x)^y = 0;
 
 ```r
 fn <- function(x) {
-  exp(sin(50 * x[1])) + sin(60 * exp(x[2])) + sin(70 * sin(x[1])) +
-    sin(sin(80 * x[2])) - sin(10 * (x[1] + x[2])) + (x[1]^2 + x[2]^2)^(sin(x[2])) / 4
+  exp(sin(50 * x[1])) + sin(60 * exp(x[2])) +
+    sin(70 * sin(x[1])) + sin(sin(80 * x[2])) -
+    sin(10 * (x[1] + x[2])) + (x[1]^2 + x[2]^2)^(sin(x[2])) / 4
 }
 gr <- function(x){
   numDeriv::grad(fn, c(x[1], x[2]))
@@ -2005,7 +2199,7 @@ nlp$solution
 ```
 
 ```
-## [1] 35.15650 24.08828
+## [1] -35.602609  -2.524963
 ```
 
 ```r
@@ -2013,7 +2207,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.377805
+## [1] -2.977602
 ```
 比如下面三组
 
@@ -2066,9 +2260,9 @@ heq(x = c(-49.921967437, 4.8499336803))
 ## [1] -8.515447e+208
 ```
 
-## 非线性方程 {#sec:nonlinear-equations}
+## 非线性方程 {#sec-nonlinear-equations}
 
-### 一元非线性方程 {#subsec:one-optimize}
+### 一元非线性方程 {#subsec-equation}
 
 [牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
 
@@ -2077,7 +2271,228 @@ heq(x = c(-49.921967437, 4.8499336803))
 library(rootSolve)
 ```
 
-## 多目标规划 {#sec:multi-objective-optimization}
+### 非线性方程组 {#subsec-equations}
+
+
+```r
+library(BB)
+```
+
+二项混合泊松分布的参数最大似然估计
+
+
+```r
+poissmix.loglik <- function(p, y) {
+  # Log-likelihood for a binary Poisson mixture distribution
+  i <- 0:(length(y) - 1)
+  
+  loglik <- y * log(p[1] * exp(-p[2]) * p[2]^i / exp(lgamma(i + 1)) +
+    (1 - p[1]) * exp(-p[3]) * p[3]^i / exp(lgamma(i + 1)))
+
+  sum(loglik)
+}
+# Data from Hasselblad (JASA 1969)
+# 介绍实际应用场景
+poissmix.dat <- data.frame(death = 0:9, 
+                           freq = c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1))
+lo <- c(0, 0, 0) # lower limits for parameters
+hi <- c(1, Inf, Inf) # upper limits for parameters
+p0 <- runif(3, c(0.2, 1, 1), c(0.8, 5, 8)) 
+# a randomly generated vector of length 3
+y <- c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1)
+
+ans1 <- spg(
+  par = p0, fn = poissmix.loglik, y = y, lower = lo, upper = hi,
+  control = list(maximize = TRUE, trace = FALSE)
+)
+ans2 <- BBoptim(
+  par = p0, fn = poissmix.loglik, y = y,
+  lower = lo, upper = hi, control = list(maximize = TRUE)
+)
+```
+
+```
+## iter:  0  f-value:  -2136.431  pgrad:  236.9752 
+## iter:  10  f-value:  -1995.89  pgrad:  2.961353 
+## iter:  20  f-value:  -2041.139  pgrad:  2.57697 
+## iter:  30  f-value:  -1989.974  pgrad:  0.4742151 
+## iter:  40  f-value:  -1989.949  pgrad:  0.2614752 
+## iter:  50  f-value:  -1989.946  pgrad:  0.01959506 
+## iter:  60  f-value:  -1989.946  pgrad:  0.002494289 
+##   Successful convergence.
+```
+
+```r
+ans2
+```
+
+```
+## $par
+## [1] 0.3598829 1.2560906 2.6634011
+## 
+## $value
+## [1] -1989.946
+## 
+## $gradient
+## [1] 0.0001000444
+## 
+## $fn.reduction
+## [1] -146.4848
+## 
+## $iter
+## [1] 68
+## 
+## $feval
+## [1] 170
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## [1] "Successful convergence"
+## 
+## $cpar
+## method      M 
+##      2     50
+```
+
+计算最大似然处的黑塞矩阵以及参数的标准差
+
+
+```r
+hess <- numDeriv::hessian(x = ans2$par, func = poissmix.loglik, y = y)
+# Note that we have to supplied data vector 'y'
+hess
+```
+
+```
+##           [,1]      [,2]      [,3]
+## [1,] -907.1105  270.2287  341.2543
+## [2,]  270.2287 -113.4794  -61.6819
+## [3,]  341.2543  -61.6819 -192.7822
+```
+
+```r
+se <- sqrt(diag(solve(-hess)))
+se
+```
+
+```
+## [1] 0.1946836 0.3500308 0.2504769
+```
+
+从不同初始值出发尝试寻找全局最大值，实际找的是一系列局部最大值
+
+
+```r
+# 3 randomly generated starting values
+p0 <- matrix(runif(30, c(0.2, 1, 1), c(0.8, 8, 8)), 10, 3, byrow = TRUE)
+ans <- multiStart(
+  par = p0, fn = poissmix.loglik, action = "optimize",
+  y = y, lower = lo, upper = hi, control = list(maximize = TRUE)
+)
+```
+
+```
+## Parameter set :  1 ... 
+## iter:  0  f-value:  -2076.377  pgrad:  266.5811 
+## iter:  10  f-value:  -1991.788  pgrad:  3.394882 
+## iter:  20  f-value:  -1990.932  pgrad:  8.266675 
+## iter:  30  f-value:  -1989.958  pgrad:  0.2441652 
+## iter:  40  f-value:  -1989.946  pgrad:  0.001411991 
+##   Successful convergence.
+## Parameter set :  2 ... 
+## iter:  0  f-value:  -3999.343  pgrad:  6.350898 
+## iter:  10  f-value:  -2015.457  pgrad:  2.400803 
+##   Successful convergence.
+## Parameter set :  3 ... 
+## iter:  0  f-value:  -2526.385  pgrad:  3.959104 
+## iter:  10  f-value:  -1997.785  pgrad:  4.651176 
+## iter:  20  f-value:  -2041.124  pgrad:  130.6335 
+## iter:  30  f-value:  -1989.979  pgrad:  0.4133676 
+## iter:  40  f-value:  -1989.953  pgrad:  0.2001525 
+## iter:  50  f-value:  -1989.946  pgrad:  0.02953584 
+##   Successful convergence.
+## Parameter set :  4 ... 
+## iter:  0  f-value:  -4036.966  pgrad:  7.725057 
+## iter:  10  f-value:  -1993.146  pgrad:  3.356279 
+## iter:  20  f-value:  -1992.445  pgrad:  3.162911 
+## iter:  30  f-value:  -1999.964  pgrad:  3.124857 
+## iter:  40  f-value:  -1990.201  pgrad:  0.9762675 
+## iter:  50  f-value:  -1989.962  pgrad:  0.3950169 
+## iter:  60  f-value:  -1989.946  pgrad:  0.0507498 
+## iter:  70  f-value:  -1989.946  pgrad:  0.0001978151 
+##   Successful convergence.
+## Parameter set :  5 ... 
+## iter:  0  f-value:  -2048.809  pgrad:  2.862445 
+## iter:  10  f-value:  -1992.344  pgrad:  2.68979 
+## iter:  20  f-value:  -1990.604  pgrad:  7.2791 
+## iter:  30  f-value:  -1989.978  pgrad:  0.3772993 
+## iter:  40  f-value:  -1989.946  pgrad:  0.004172307 
+## iter:  50  f-value:  -1989.946  pgrad:  0.004260983 
+##   Successful convergence.
+## Parameter set :  6 ... 
+## iter:  0  f-value:  -4777.283  pgrad:  7.596832 
+## iter:  10  f-value:  -1991.838  pgrad:  11.02078 
+## iter:  20  f-value:  -1990.272  pgrad:  0.5307333 
+## iter:  30  f-value:  -1989.963  pgrad:  2.230793 
+## iter:  40  f-value:  -1989.946  pgrad:  0.008421921 
+## iter:  50  f-value:  -1989.946  pgrad:  0.0001841727 
+##   Successful convergence.
+## Parameter set :  7 ... 
+## iter:  0  f-value:  -2019.928  pgrad:  3.485709 
+## iter:  10  f-value:  -1990.626  pgrad:  1.833378 
+## iter:  20  f-value:  -1989.999  pgrad:  1.098717 
+## iter:  30  f-value:  -1989.947  pgrad:  0.3092782 
+## iter:  40  f-value:  -1989.946  pgrad:  0.007039489 
+##   Successful convergence.
+## Parameter set :  8 ... 
+## iter:  0  f-value:  -2764.625  pgrad:  4.891128 
+## iter:  10  f-value:  -2001.398  pgrad:  2.273737e-06 
+##   Successful convergence.
+## Parameter set :  9 ... 
+## iter:  0  f-value:  -2167.165  pgrad:  195.5499 
+## iter:  10  f-value:  -2001.54  pgrad:  2.194864 
+## iter:  20  f-value:  -2000.825  pgrad:  0.6559458 
+## iter:  30  f-value:  -1992.777  pgrad:  7.064828 
+## iter:  40  f-value:  -1991.747  pgrad:  3.357115 
+## iter:  50  f-value:  -1989.983  pgrad:  2.772795 
+## iter:  60  f-value:  -1989.946  pgrad:  0.03392643 
+## iter:  70  f-value:  -1989.946  pgrad:  0.0003728928 
+##   Successful convergence.
+## Parameter set :  10 ... 
+## iter:  0  f-value:  -2100.94  pgrad:  317.5313 
+## iter:  10  f-value:  -1991.327  pgrad:  2.7843 
+## iter:  20  f-value:  -1990.415  pgrad:  1.435174 
+## iter:  30  f-value:  -1990.046  pgrad:  3.248585 
+## iter:  40  f-value:  -1989.946  pgrad:  0.06813025 
+## iter:  50  f-value:  -1989.946  pgrad:  0.001450644 
+##   Successful convergence.
+```
+
+```r
+# selecting only converged solutions
+pmat <- round(cbind(ans$fvalue[ans$conv], ans$par[ans$conv, ]), 4)
+dimnames(pmat) <- list(NULL, c("fvalue", "parameter 1", "parameter 2", "parameter 3"))
+pmat[!duplicated(pmat), ]
+```
+
+```
+##         fvalue parameter 1 parameter 2 parameter 3
+## [1,] -1989.946      0.6401      2.6634      1.2561
+## [2,] -1997.263      0.4922      2.4559      1.8567
+## [3,] -1989.946      0.3599      1.2561      2.6634
+## [4,] -2000.039      0.7931      2.0681      2.4778
+## [5,] -1989.946      0.3599      1.2560      2.6634
+```
+
+用一个具体的参数估计问题，求极大似然点，混合正态分布
+隐函数方程组
+求解非线性方程组 [@BB2019]
+
+
+
+## 多目标规划 {#sec-multi-objective-optimization}
 
 多目标规划的基本想法是将多目标问题转化为单目标问题，常见方法有理想点法、线性加权法、非劣解集法、极大极小法。理想点法是先在给定约束条件下分别求解单个目标的最优值，构造新的单目标函数。线性加权法是给每个目标函数赋予权重系数，各个权重系数之和等于1。非劣解集法是先求解其中一个单目标函数的最优值，然后将其设为等式约束，将其最优值从最小值开始递增，然后求解另一个目标函数的最小值。极大极小法是采用标准的简面体爬山法和通用全局优化法求解多目标优化问题。
 
@@ -2113,13 +2528,30 @@ TernaryPlot(
 HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 ```
 
-## 经典优化问题 {#sec:classic-optimization}
+## 经典优化问题 {#sec-classic-optimization}
 
 旅行商问题、背包问题、指派问题、选址问题、网络流量问题
 
 规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
 
-## 回归与优化 {#sec:regression-optimization}
+## 回归与优化 {#sec-regression-optimization}
+
+简单线性回归
+
+
+是否能给大家提供一些思路？
+
+Lasso [@lasso1996]
+
+Least Angle Regression [@lar2004]
+
+为了解决Lasso的有偏估计问题，自适应 Lasso、松弛 Lasso 
+SCAD (Smoothly Clipped Absolute Deviation)[@scad2008]
+MCP (Minimax Concave Penalty)[@mcp2010]
+
+由于缺少高效的求解算法，Lasso 在高维小样本特征选择研究中没有广泛流行，最小角回归(Least Angle Regression, LAR)算法 [@lar2004] 的出现有力促进了Lasso在高维小样本数据中的应用
+
+[bestsubset](https://github.com/ryantibs/best-subset/) 最优子集回归
 
 经典的普通最小二乘、广义最小二乘、岭回归、逐步回归、Lasso 回归、最优子集回归都可转化为优化问题，一般形式如下
 
@@ -2129,7 +2561,18 @@ $$
 
 下面尝试以 nloptr 包的优化器来展示求解过程，并与 Base R、**glmnet** 和 **MASS** 实现的回归模型比较。
 
-<!-- 广义最小二乘 gls -->
+<!-- 向量用小写，矩阵用大写 -->
+
+$$
+\arg \min_{\beta,\lambda} ~~ \frac{1}{2} || \mathbf{y} - \mathbf{X} \beta ||_2^2 +  \lambda ||\beta||_1
+$$
+其中，$X \in \mathbb{R}^{m\times n}$， $y \in \mathbb{R}^m$，$\beta \in \mathbb{R}^n$， $0 < \lambda \in \mathbb{R}$
+
+<!-- 
+广义最小二乘拟合 nlme::gls  预测 nlme::predict.gls
+用广义最小二乘拟合线性模型 MASS::lm.gls	
+用广义最小二乘拟合趋势面 spatial::surf.gls
+-->
 
 $$y = X\beta + \epsilon$$
 
@@ -2190,7 +2633,7 @@ system.time(RcppArmadillo::fastLmPure(x, y, method = 1)) ## QR
 system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
 ```
 
-## 对数似然 {#sec:log-likelihood}
+## 对数似然 {#sec-log-likelihood}
 
 随机变量 X 服从参数为 $\lambda > 0$ 的指数分布，密度函数 $p(x)$ 为
 
@@ -2199,7 +2642,7 @@ system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
  p(x) = \left\{ 
     \begin{array}{l}
     \lambda\mathrm{e}^{-\lambda x},  x \geq 0\\
-    0,  x < 0
+    0, \quad x < 0
     \end{array} \right.
 \end{array}
 \end{equation*}
@@ -2254,14 +2697,15 @@ wireframe(
 
 <!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
-## 微分方程 {#sec:non-linear-tseries}
+## 微分方程 {#sec-non-linear-tseries}
 
 <!-- 介绍洛伦兹方程、人口模型、寿险精算模型、混沌 -->
 
 [ode45 求解偏微分方程](https://blog.hamaluik.ca/posts/solving-systems-of-partial-differential-equations/)
 
-**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 DAE/ODE 方程的边值问题。
+**pracma** 实现了 ode23, ode23s, ode45 等几个自适应的 Runge-Kutta 求解器，**deSolve** 包求解 ODE（常微分方程）, DAE（微分代数方程）, DDE（延迟微分方程，包含刚性和非刚性方程）和 PDE（偏微分方程），**bvpSolve**包求解 DAE/ODE 方程的边值问题。**ReacTran** [@ReacTran2012] 可将偏微分方程转为常微分方程组，解决反应运输问题，在笛卡尔、极坐标、圆柱形和球形网格上离散偏微分方程。 [sundials](https://github.com/LLNL/sundials) 提供一系列非线性方程、常微分方程、微分代数方程求解器，Satyaprakash Nayak 开发了相应的 [**sundialr**](https://github.com/sn248/sundialr) 包。
 
+### 常微分方程 {#subsec-ordinary-differential-equations}
 
 [洛伦兹系统](https://en.wikipedia.org/wiki/Lorenz_system)是一个常微分方程组，系统参数的默认值为 $(\sigma = 10, \rho = 28, \beta = 8/3)$，初值为 $(-13, -14, 47)$。
 
@@ -2323,8 +2767,223 @@ scatterplot3d(
 \caption{洛伦兹曲线}(\#fig:ode-lorenz)
 \end{figure}
 
+### 偏微分方程 {#subsec-partial-differential-equations}
 
-## 运行环境 {#sec:numerical-optimization-session}
+ReacTran 的几个关键函数介绍
+
+一维热传导方程
+
+\begin{equation*}
+\left\{ 
+  \begin{array}{l}
+    \frac{\partial y}{\partial t} = D \frac{\partial^2 y}{\partial x^2}
+  \end{array} \right.
+\end{equation*}
+
+参数 $D = 0.01$，边界条件 $y_{t,x=0} = 0, y_{t, x = 1} = 1$，初始条件 $y_{t=0,x} = \sin(\pi x)$。
+
+
+
+```r
+library(shape)
+persp(volcano, 
+  theta = 30, phi = 20, 
+  r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
+  shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
+  col = drapecol(volcano, col = terrain.colors(100)),
+  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent",
+  main = "Topographic Information \n on Auckland's Maunga Whau Volcano"
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/volcano-topo-1} 
+
+}
+
+\caption{(ref:volcano-topo)}(\#fig:volcano-topo)
+\end{figure}
+
+(ref:volcano-topo) Auckland Maunga Whau 火山地形图 $10m\times 10m$。火山的实况地形图 <https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden>。
+
+
+```r
+library(ReacTran)
+
+N <- 100
+xgrid <- setup.grid.1D(x.up = 0, x.down = 1, N = N)
+x <- xgrid$x.mid
+D.coeff <- 0.01
+Diffusion <- function(t, Y, parms) {
+  tran <- tran.1D(
+    C = Y, C.up = 0, C.down = 1,
+    D = D.coeff, dx = xgrid
+  )
+  list(
+    dY = tran$dC, 
+    flux.up = tran$flux.up,
+    flux.down = tran$flux.down
+  )
+}
+yini <- sin(pi * x)
+times <- seq(from = 0, to = 5, by = 0.01)
+out <- ode.1D(
+  y = yini, times = times, func = Diffusion,
+  parms = NULL, dimens = N
+)
+```
+
+
+```r
+image(out,
+  grid = xgrid$x.mid, xlab = "times",
+  ylab = "Distance", main = "PDE", add.contour = TRUE
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/pde-1d-1} 
+
+}
+
+\caption{一维热传导方程的数值解热力图}(\#fig:pde-1d)
+\end{figure}
+
+二维拉普拉斯方程
+
+\begin{equation*}
+\left\{ 
+  \begin{array}{l}
+    \frac{\partial^2 u}{\partial^2 x} + \frac{\partial^2 u}{\partial y^2} = 0
+  \end{array} \right.
+\end{equation*}
+
+边界条件
+
+\begin{equation*}
+\left\{ 
+  \begin{array}{l}
+    u_{x=0,y} = u_{x=1,y} = 0 \\
+    \frac{\partial u_{x, y=0}}{\partial y} = 0 \\
+    \frac{\partial u_{x,y=1}}{\partial y} = \pi\sinh(\pi)\sin(\pi x)
+  \end{array} \right.
+\end{equation*}
+
+它有解析解
+
+$$
+u(x,y) = \sin(\pi x)\cosh(\pi y)
+$$
+
+其中 $x \in [0,1], y\in [0,1]$
+
+
+```r
+fn <- function(x, y) {
+  sin(pi * x) * cosh(pi * y)
+}
+x <- seq(0, 1, length.out = 101)
+y <- seq(0, 1, length.out = 101)
+z <- outer(x, y, fn)
+```
+
+
+
+```r
+image(z, col = terrain.colors(20))
+contour(z, method = "flattest", add = TRUE, lty = 1)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/laplace-eq-image-1} 
+
+}
+
+\caption{解析解的二维图像}(\#fig:laplace-eq-image)
+\end{figure}
+
+
+```r
+persp(z, 
+  theta = 30, phi = 20, 
+  r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
+  shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
+  col = drapecol(z, col = terrain.colors(20)),
+  border = "transparent",
+  xlab = "X", ylab = "Y", zlab = "Z", 
+  main = ""
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/laplace-eq-persp-1} 
+
+}
+
+\caption{解析解的三维透视图像}(\#fig:laplace-eq-persp)
+\end{figure}
+
+求解 PDE
+
+
+```r
+dx <- 0.2
+xgrid <- setup.grid.1D(-100, 100, dx.1 = dx)
+x <- xgrid$x.mid
+N <- xgrid$N
+
+uini <- exp(-0.05 * x^2)
+vini <- rep(0, N)
+yini <- c(uini, vini)
+times <- seq(from = 0, to = 50, by = 1)
+
+wave <- function(t, y, parms) {
+  u1 <- y[1:N]
+  u2 <- y[-(1:N)]
+  du1 <- u2
+  du2 <- tran.1D(C = u1, C.up = 0, C.down = 0, D = 1, dx = xgrid)$dC
+  return(list(c(du1, du2)))
+}
+
+out <- ode.1D(
+  func = wave, y = yini, times = times, parms = NULL,
+  nspec = 2, method = "ode45", dimens = N, names = c("u", "v")
+)
+```
+
+### 延迟微分方程 {#subsec-delay-differential-equations}
+
+
+```r
+library(PBSddesolve)    # DAE 延迟微分方程
+```
+
+[**PBSddesolve**](https://github.com/pbs-software/pbs-ddesolve) [@PBSddesolve]
+**PBSmodelling**
+**PBSmapping**
+
+**nlmeODE** 通过微分方程整合用于混合效应模型的 odesolve 和 nlme 包。
+
+### 随机微分方程 {#subsec-stochastic-differential-equations}
+
+[Sim.DiffProc](https://github.com/acguidoum/Sim.DiffProc)
+
+
+```r
+library(Sim.DiffProc)
+```
+
+
+
+种群 ODE 建模，
+
+[nlmixr](https://github.com/nlmixrdevelopment/nlmixr) 借助 [RxODE](https://github.com/nlmixrdevelopment/RxODE/) 求解基于常微分方程的非线性混合效应模型
+
+## 运行环境 {#sec-numerical-optimization-session}
 
 
 ```r
@@ -2352,28 +3011,33 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] scatterplot3d_0.3-41      deSolve_1.28             
-##  [3] rootSolve_1.8.2.2         quadprog_1.5-8           
-##  [5] kableExtra_1.3.4          tibble_3.1.2             
-##  [7] kernlab_0.9-29            lattice_0.20-44          
-##  [9] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
-## [11] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
-## [13] ROI_1.0-0                 lpSolve_5.6.15           
+##  [1] quadprog_1.5-8            kableExtra_1.3.4         
+##  [3] tibble_3.1.3              Sim.DiffProc_4.8         
+##  [5] nlmeODE_1.1               nlme_3.1-152             
+##  [7] PBSddesolve_1.12.6        ReacTran_1.4.3.1         
+##  [9] shape_1.4.6               scatterplot3d_0.3-41     
+## [11] deSolve_1.28              BB_2019.10-1             
+## [13] rootSolve_1.8.2.2         kernlab_0.9-29           
+## [15] lattice_0.20-44           ROI.plugin.quadprog_1.0-0
+## [17] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
+## [19] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
+## [21] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] xfun_0.24               slam_0.1-48             colorspace_2.0-2       
-##  [4] vctrs_0.3.8             htmltools_0.5.1.1       viridisLite_0.4.0      
-##  [7] yaml_2.2.1              utf8_1.2.1              rlang_0.4.11           
-## [10] nloptr_1.2.2.2          pillar_1.6.1            glue_1.4.2             
-## [13] registry_0.5-1          lifecycle_1.0.0         stringr_1.4.0          
-## [16] munsell_0.5.0           rvest_1.0.0             lpSolveAPI_5.5.2.0-17.7
-## [19] evaluate_0.14           knitr_1.33              fansi_0.5.0            
-## [22] scales_1.1.1            webshot_0.5.2           alabama_2015.3-1       
-## [25] systemfonts_1.0.2       digest_0.6.27           stringi_1.7.3          
-## [28] bookdown_0.22           numDeriv_2016.8-1.1     grid_4.1.0             
-## [31] tools_4.1.0             magrittr_2.0.1          crayon_1.4.1           
-## [34] pkgconfig_2.0.3         ellipsis_0.3.2          xml2_1.3.2             
-## [37] rmarkdown_2.9           svglite_2.0.0           httr_1.4.2             
-## [40] rstudioapi_0.13         R6_2.5.0                compiler_4.1.0
+##  [1] svglite_2.0.0           digest_0.6.27           utf8_1.2.2             
+##  [4] slam_0.1-48             R6_2.5.0                alabama_2015.3-1       
+##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.2           
+## [10] rlang_0.4.11            rstudioapi_0.13         nloptr_1.2.2.2         
+## [13] rmarkdown_2.9           webshot_0.5.2           stringr_1.4.0          
+## [16] munsell_0.5.0           compiler_4.1.0          numDeriv_2016.8-1.1    
+## [19] Deriv_4.1.3             xfun_0.24               pkgconfig_2.0.3        
+## [22] systemfonts_1.0.2       htmltools_0.5.1.1       bookdown_0.22          
+## [25] viridisLite_0.4.0       fansi_0.5.0             crayon_1.4.1           
+## [28] MASS_7.3-54             grid_4.1.0              lifecycle_1.0.0        
+## [31] registry_0.5-1          magrittr_2.0.1          scales_1.1.1           
+## [34] stringi_1.7.3           xml2_1.3.2              ellipsis_0.3.2         
+## [37] vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7 tools_4.1.0            
+## [40] glue_1.4.2              parallel_4.1.0          yaml_2.2.1             
+## [43] colorspace_2.0-2        rvest_1.0.1             knitr_1.33
 ```
 

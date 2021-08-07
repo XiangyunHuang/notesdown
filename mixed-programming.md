@@ -1,4 +1,4 @@
-# 混合编程 {#chap:mixed-programming}
+# 混合编程 {#chap-mixed-programming}
 
 
 
@@ -7,7 +7,7 @@ R 语言 [@Ross_1996_R] 是一个统计计算和绘图的环境，以下各个�
 <!-- 介绍 R 与其它语言的异同，降低编程门槛 -->
 
 
-## 函数源码 {#sec:function-source}
+## 函数源码 {#sec-function-source}
 
 
 [funflow](https://github.com/moodymudskipper/funflow) 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码
@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5612e2c536b8>
+## <bytecode: 0x56161e3a2368>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5612e2c536b8>
+## <bytecode: 0x56161e3a2368>
 ## <environment: namespace:stats>
 ```
 
@@ -134,14 +134,14 @@ names(formals(read.table))
 ```
 
 
-## 命名约定 {#sec:naming-conventions}
+## 命名约定 {#sec-naming-conventions}
 
 R 语言当前的命名状态  <https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf> 和 <https://essentials.togaware.com/StyleO.pdf>
 
 
 R 与不同的编程语言如何交互
 
-## R 与 JavaScripts {#sec:r-javascripts}
+## R 与 JavaScripts {#sec-r-javascripts}
 
 <!-- roughviz.js 为例介绍如何使用 htmlwidgets 制作将 JavaScripts 库打包成 R 包 -->
 
@@ -150,7 +150,7 @@ R 与不同的编程语言如何交互
 library(htmlwidgets)
 ```
 
-## R 与 Python {#sec:r-python}
+## R 与 Python {#sec-r-python}
 
 R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块， reticulate 包还支持 Python 和 R 之间的数据对象通信交流。
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7fdc1c735490>]
+## [<matplotlib.lines.Line2D object at 0x7f3e4a482460>]
 plt.show()
 ```
 
@@ -181,7 +181,7 @@ plt.show()
 \end{figure}
 
 
-## R 与 C {#sec:r-c}
+## R 与 C {#sec-r-c}
 
 knitr 支持在 R Markdown 中嵌入 C 语言代码
 
@@ -194,8 +194,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c60fa6daba498.c -o c60fa6daba498.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c60fa6daba498.so c60fa6daba498.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c828867ffa6e0.c -o c828867ffa6e0.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c828867ffa6e0.so c828867ffa6e0.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -233,7 +233,7 @@ out$b
 ```
 
 
-## R 与 C++ {#sec:r-cpp}
+## R 与 C++ {#sec-r-cpp}
 
 [Dirk Eddelbuettel](https://dirk.eddelbuettel.com) 是 Rcpp 的核心开发者。
 
@@ -248,7 +248,7 @@ out$b
 library(Rcpp)
 ```
 
-## R 与 LaTeX {#sec:r-latex}
+## R 与 LaTeX {#sec-r-latex}
 
 <!-- TeX 的历史一小段介绍，tikzDevice 对公式的加强， 引入 TikZ 图形，常用 LaTeX 语法 <https://wch.github.io/latexsheet/latexsheet-a4.pdf> -->
 
@@ -310,7 +310,7 @@ library(Rcpp)
 \end{figure}
 
 
-## 运行环境 {#sec:mixed-programming-session-info}
+## 运行环境 {#sec-mixed-programming-session-info}
 
 
 ```r

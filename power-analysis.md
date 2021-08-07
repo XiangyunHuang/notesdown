@@ -1,4 +1,4 @@
-# 功效分析 {#chap:power-Analysis}
+# 功效分析 {#chap-power-Analysis}
 
 
 
@@ -25,7 +25,7 @@ library(lme4)
 <!-- **lmerTest** 和 **lmtest** 从命名空间导入函数的方式来计算，以免引起冲突、同时能尽量减少对运行环境的污染 -->
 
 
-## 方差分析检验的功效 {#sec:power-anova-test}
+## 方差分析检验的功效 {#sec-power-anova-test}
 
 `power.anova.test()` 计算平衡的单因素方差分析检验的功效
 
@@ -65,7 +65,7 @@ power.anova.test(
 ```
 
 
-## 比例检验的功效  {#sec:power-prop-test}
+## 比例检验的功效  {#sec-power-prop-test}
 
 `power.prop.test()` 计算两样本比例检验的功效
 
@@ -179,7 +179,7 @@ pwr.2p2n.test(
 
 h 表示两个样本的差异，计算得到的功效是 0.75
 
-## t 检验的功效 {#sec:power-t-test}
+## t 检验的功效 {#sec-power-t-test}
 
 `power.t.test()` 计算单样本或两样本的 t 检验的功效，或者根据功效计算参数，如样本量
 
@@ -352,7 +352,7 @@ power.exact.test
 
 
 
-## 运行环境 {#sec:power-session}
+## 运行环境 {#sec-power-session}
 
 
 ```r
@@ -384,9 +384,9 @@ sessionInfo()
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        compiler_4.1.0    pillar_1.6.1      nloptr_1.2.2.2   
+##  [1] Rcpp_1.0.7        compiler_4.1.0    pillar_1.6.2      nloptr_1.2.2.2   
 ##  [5] tools_4.1.0       boot_1.3-28       digest_0.6.27     evaluate_0.14    
-##  [9] lifecycle_1.0.0   tibble_3.1.2      gtable_0.3.0      nlme_3.1-152     
+##  [9] lifecycle_1.0.0   tibble_3.1.3      gtable_0.3.0      nlme_3.1-152     
 ## [13] lattice_0.20-44   pkgconfig_2.0.3   rlang_0.4.11      DBI_1.1.1        
 ## [17] yaml_2.2.1        xfun_0.24         withr_2.4.2       dplyr_1.0.7      
 ## [21] stringr_1.4.0     knitr_1.33        generics_0.1.0    vctrs_0.3.8      
@@ -394,7 +394,7 @@ sessionInfo()
 ## [29] fansi_0.5.0       rmarkdown_2.9     bookdown_0.22     minqa_1.2.4      
 ## [33] farver_2.1.0      purrr_0.3.4       scales_1.1.1      htmltools_0.5.1.1
 ## [37] ellipsis_0.3.2    MASS_7.3-54       splines_4.1.0     assertthat_0.2.1 
-## [41] colorspace_2.0-2  labeling_0.4.2    utf8_1.2.1        stringi_1.7.3    
+## [41] colorspace_2.0-2  labeling_0.4.2    utf8_1.2.2        stringi_1.7.3    
 ## [45] munsell_0.5.0     crayon_1.4.1
 ```
 

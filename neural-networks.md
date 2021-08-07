@@ -1,4 +1,4 @@
-# 神经网络 {#chap:neural-network}
+# 神经网络 {#chap-neural-network}
 
 
 
@@ -10,7 +10,7 @@
 
 Norm Matloff 等开发的 [polyreg](https://github.com/matloff/polyreg) 包以多元多项式回归替代神经网络，Brian Ripley 开发的 nnet 包以单层前馈神经网络用于多项对数线性模型。
 
-## mxnet {#sec:mxnet}
+## mxnet {#sec-mxnet}
 
 ::: {.rmdinfo data-latex="{信息}"}
 mxnet 的 R 接口不太稳定好用，安装也比较麻烦，因此，通过 reticulate 包将 Python 模块 mxnet 导入 R 环境，然后调用其函数。

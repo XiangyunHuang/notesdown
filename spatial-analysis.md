@@ -1,8 +1,33 @@
-# 空间分析  {#chap:spatial-analysis}
+# 空间分析  {#chap-spatial-analysis}
 
+<!-- 
+1. 静态可视化和动态可视化
+1. Google 地图和开源地图服务需要介绍，国内的地图服务也需要介绍
+1. 介绍空间基础对象，及其数据操作和分析
+
+开源组织
+Timothée Giraud 等创建的 [riatelab](https://github.com/riatelab/) 和 Edzer Pebesma 等创建的 [r-spatial](https://github.com/r-spatial/)
+
+
+Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，新的R包更加简洁、速度更快、功能更强。
+
+mapedit
+mapview
+leaflet
+
+Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
+-->
+
+[mapsf](https://github.com/riatelab/mapsf) 是 [cartography](https://github.com/riatelab/cartography/) 的继任者，它更加友好、轻量和稳健。
+
+[choroplethr](https://github.com/trulia/choroplethr) 简化创建 thematic maps 的过程。
+
+[ggmap](https://github.com/dkahle/ggmap) 依赖 [RgoogleMaps](https://github.com/markusloecher/rgooglemaps) 就不介绍了
 
 [mapdeck](https://github.com/SymbolixAU/mapdeck) 支持调用 GPU 渲染
 [deck.gl](https://github.com/visgl/deck.gl) MIT 协议
+
+[googleway](https://github.com/SymbolixAU/googleway)
 
 
 Edzer Pebesma
@@ -19,14 +44,25 @@ library(RColorBrewer)
 library(raster)
 library(lattice)
 library(latticeExtra)
+library(terra) # 
 library(rasterVis) # https://oscarperpinan.github.io/rastervis/
 # https://oscarperpinan.github.io/rastervis/FAQ.html
 library(sf)
-library(rgdal)
-library(highcharter)
+library(sfarrow) # https://github.com/wcjochem/sfarrow
+# library(arrow) # 列式存储
+# library(rgdal) # 要替换掉
+# library(highcharter) # 要替换掉
 ```
 
-## 冈比亚儿童疟疾 {#sec:gambia-malaria}
+
+
+```r
+library(RgoogleMaps)
+library(mapdeck)
+library(mapsf)
+```
+
+## 冈比亚儿童疟疾 {#sec-gambia-malaria}
 
 冈比亚地形
 
@@ -73,7 +109,7 @@ rasterVis::levelplot(gambia_alt,
 # 加载数据
 data(gambia, package = "geoR")
 # 坐标变换
-library(rgdal)
+library(sp)
 sps <- SpatialPoints(gambia[, c("x", "y")],
   proj4string = CRS("+proj=utm +zone=28")
 )
@@ -167,36 +203,11 @@ mapdeck( location = c(145, -37.8), zoom = 10) %>%
   )
 ```
 
-[googleway](https://github.com/SymbolixAU/googleway)、[ggmap](https://github.com/dkahle/ggmap)、[RgoogleMaps](https://github.com/markusloecher/rgooglemaps)
-
-
-```r
-library(RgoogleMaps)
-lat <- c(40.702147, 40.718217, 40.711614)
-lon <- c(-74.012318, -74.015794, -73.998284)
-center <- c(mean(lat), mean(lon))
-zoom <- min(MaxZoom(range(lat), range(lon)))
-bb <- qbbox(lat, lon)
-par(pty = "s")
-# OSM
-myMap <- GetMap(center, zoom = 15)
-PlotOnStaticMap(myMap,
-  lat = lat, lon = lon, pch = 20,
-  col = c("red", "blue", "green"), cex = 2
-)
-```
 
 
 
-```r
-library(ggmap)
 
-us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
-get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>%
-  ggmap()
-```
-
-## 运行环境 {#sec:spatial-analysis-session}
+## 运行环境 {#sec-spatial-analysis-session}
 
 
 ```r
@@ -224,26 +235,22 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] highcharter_0.8.2   rgdal_1.5-23        sf_1.0-0           
-##  [4] rasterVis_0.50.2    terra_1.3-4         latticeExtra_0.6-29
-##  [7] lattice_0.20-44     raster_3.4-13       RColorBrewer_1.1-2 
-## [10] sp_1.4-5           
+## [1] sfarrow_0.4.0       sf_1.0-2            rasterVis_0.50.3   
+## [4] terra_1.3-4         latticeExtra_0.6-29 lattice_0.20-44    
+## [7] raster_3.4-13       RColorBrewer_1.1-2  sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.24          purrr_0.3.4       
 ##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.1.1  viridisLite_0.4.0 
-##  [9] yaml_2.2.1         utf8_1.2.1         rlang_0.4.11       e1071_1.7-7       
-## [13] hexbin_1.28.2      pillar_1.6.1       glue_1.4.2         DBI_1.1.1         
-## [17] TTR_0.24.2         jpeg_0.1-8.1       lifecycle_1.0.0    quantmod_0.4.18   
-## [21] stringr_1.4.0      htmlwidgets_1.5.3  codetools_0.2-18   evaluate_0.14     
-## [25] knitr_1.33         curl_4.3.2         parallel_4.1.0     class_7.3-19      
-## [29] fansi_0.5.0        xts_0.12.1         broom_0.7.8        Rcpp_1.0.7        
-## [33] KernSmooth_2.23-20 backports_1.2.1    classInt_0.4-3     jsonlite_1.7.2    
-## [37] png_0.1-7          digest_0.6.27      stringi_1.7.3      rlist_0.4.6.1     
-## [41] bookdown_0.22      dplyr_1.0.7        grid_4.1.0         tools_4.1.0       
-## [45] magrittr_2.0.1     proxy_0.4-26       tibble_3.1.2       tidyr_1.1.3       
-## [49] crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2     data.table_1.14.0 
-## [53] lubridate_1.7.10   assertthat_0.2.1   rmarkdown_2.9      R6_2.5.0          
-## [57] igraph_1.2.6       units_0.7-2        compiler_4.1.0
+##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-8       
+## [13] hexbin_1.28.2      pillar_1.6.2       glue_1.4.2         DBI_1.1.1         
+## [17] jpeg_0.1-9         lifecycle_1.0.0    stringr_1.4.0      codetools_0.2-18  
+## [21] evaluate_0.14      knitr_1.33         parallel_4.1.0     class_7.3-19      
+## [25] fansi_0.5.0        Rcpp_1.0.7         KernSmooth_2.23-20 classInt_0.4-3    
+## [29] png_0.1-7          digest_0.6.27      stringi_1.7.3      bookdown_0.22     
+## [33] dplyr_1.0.7        grid_4.1.0         rgdal_1.5-23       tools_4.1.0       
+## [37] magrittr_2.0.1     proxy_0.4-26       tibble_3.1.3       crayon_1.4.1      
+## [41] pkgconfig_2.0.3    ellipsis_0.3.2     assertthat_0.2.1   rmarkdown_2.9     
+## [45] R6_2.5.0           units_0.7-2        compiler_4.1.0
 ```
 

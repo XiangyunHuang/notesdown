@@ -1,7 +1,7 @@
 --- 
 title: "现代应用统计与 R 语言"
 author: "黄湘云"
-date: "2021-07-19"
+date: "2021-08-07"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -56,15 +56,13 @@ description: "线性模型理论及其应用，注意模型的适用范围、参
 \chaptermark{欢迎}
 
 ::: {.rmdwarn data-latex="{警告}"}
-Book in early development. Planned release in 202X. [^build-note]
+Book in early development. Planned release in 202X. 
 :::
 
-[^build-note]: 最新一次编译发生在 2021-07-19 15:43:36。
 
 
 
-
-## 本书风格 {#sec:style .unnumbered}
+## 本书风格 {#sec-style .unnumbered}
 
 \index{置信区间}
 \index{信仰区间}
@@ -115,7 +113,7 @@ Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次
 
 区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 $(5, 0.5)$ 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
 
-::: {.rmdtip data-latex="提示"}
+::: {.rmdtip data-latex="{提示}"}
 Base R 提供的 `uniroot()` 函数只能求取一元非线性方程的一个根，而 **rootSolve** 包提供的 `uniroot.all()` 函数可以求取所有的根。在给定分位点下，我们需要满足方程的最小的概率值。
 :::
 
@@ -166,6 +164,9 @@ binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
 \end{figure}
 
 实际达到的置信度水平随真实的未知参数值和样本量的变化而**剧烈**波动，这意味着这种参数估计方法在实际应用中不可靠、真实场景中参数真值是永远未知的，样本量是可控的，并且是可以变化的。根本原因在于这类分布是离散的，比如这里的二项分布。当数据 $x$ 是离散的情况，置信区间的端点$\ell(x)$ 和 $u(x)$ 也是离散的。这种缺陷是无法避免的，清晰的置信区间和离散的数据之间存在无法调和的冲突。
+
+
+<!-- 机器学习和统计学习本质上是一回事，计算机和统计学家各有所表。 -->
 
 覆盖概率 $P_{\theta}(X = x)$ 和参数真值 $\theta$ 的关系 [@Lawrence2001;@Geyer2005]
 
@@ -249,6 +250,7 @@ round(p, 3)
 
 [混合正态分布的参数估计]{.todo}
 
+
 \begin{figure}
 
 {\centering \includegraphics[width=0.75\linewidth]{index_files/figure-latex/god-play-games-1} 
@@ -278,38 +280,38 @@ round(p, 3)
 Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values [@Geyer2005] 文章中的图 1 名义覆盖概率的计算见 [@Blyth1960]
 
 
-## 本书定位 {#sec:audience .unnumbered}
+## 本书定位 {#sec-audience .unnumbered}
 
 学习本书需要读者具备基本的概率、统计知识，比如上过一学期的概率论和数理统计学，也需要读者接触过编程知识，比如至少上过一学期的 C 语言、Python 语言或 Matlab 语言。了解基本的线性代数，比如矩阵的加、减、乘、逆四则运算、线性子空间、矩阵的 LU、SVD、Eigen 等分解。
 
-## 内容概要 {#sec:abstract .unnumbered}
+## 内容概要 {#sec-abstract .unnumbered}
 
-第 \@ref(chap:preface) 章介绍本书的写作背景、语言环境、全书的记号约定、如何获取帮助、作者简介等信息。
+第 \@ref(chap-preface) 章介绍本书的写作背景、语言环境、全书的记号约定、如何获取帮助、作者简介等信息。
 
-第 \@ref(chap:notations) 章介绍全书的数学公式符号。
+第 \@ref(chap-notations) 章介绍全书的数学公式符号。
 
-第 \@ref(chap:file-operations) 章介绍文件操作。
+第 \@ref(chap-file-operations) 章介绍文件操作。
 
-第 \@ref(chap:data-structure) 章介绍 R 语言的数据结构。
+第 \@ref(chap-data-structure) 章介绍 R 语言的数据结构。
 
-第 \@ref(chap:data-manipulation) 章介绍数据操作，包括 Base R 、**data.table** 和 **magrittr**。
+第 \@ref(chap-data-manipulation) 章介绍数据操作，包括 Base R 、**data.table** 和 **magrittr**。
 
-第 \@ref(chap:data-transportation) 章介绍数据导入导出， **data.table** 之于 csv 文件， **openxlsx** 之于 xlsx 文件。
+第 \@ref(chap-data-transportation) 章介绍数据导入导出， **data.table** 之于 csv 文件， **openxlsx** 之于 xlsx 文件。
 
-第 \@ref(chap:data-visualization) 章介绍数据可视化，分四个部分，基础元素、常用图形、字体和颜色设置。
+第 \@ref(chap-data-visualization) 章介绍数据可视化，分四个部分，基础元素、常用图形、字体和颜色设置。
 
-第 \@ref(chap:dynamic-documents) 章介绍动态文档，即 R Markdown 及其生态系统。
+第 \@ref(chap-dynamic-documents) 章介绍动态文档，即 R Markdown 及其生态系统。
 
-第 \@ref(chap:interactive-web-graphics) 章介绍交互式网页图形，以常用的 **plotly** 和 **highcharter** 为主，重点介绍 R 和 JavaScript 库的对应关系。
+第 \@ref(chap-interactive-web-graphics) 章介绍交互图形，以常用的 **plotly** 和 **highcharter** 为主，重点介绍 R 和 JavaScript 库的对应关系。
 
-第 \@ref(chap:interactive-data-tables) 章介绍交互式数据表格，分两节介绍交互式的 **DT** 和 **reactable**，静态的 **gt** 和 **kableExtra**，掌握这几个 R 包足以应付日常工作。
+第 \@ref(chap-interactive-data-tables) 章介绍交互表格，分两节介绍交互式的 **DT** 和 **reactable**，静态的 **gt** 和 **kableExtra**，掌握这几个 R 包足以应付日常工作。
 
-第 \@ref(chap:interactive-shiny-app) 章介绍交互式数据报表开发，符合工业标准的最佳实践。
+第 \@ref(chap-interactive-shiny-app) 章介绍交互报表开发，符合工业标准的最佳实践。
 
 
-## 致谢名单 {#sec:acknowledgments .unnumbered}
+## 致谢名单 {#sec-acknowledgments .unnumbered}
 
-特别感谢 XX，还有很多人通过提交 PR 或 Issues 的方式参与了本书的创作过程，没有这一点一滴的持续改进，本书不会达到现在的样子，所以我将他们列在致谢名单中，详见表 \@ref(tab:acknowledgments)，人名按照提交量（commit 的个数）倒序排列。
+特别感谢 XX，还有很多人通过提交 PR 或 Issues 的方式参与了本书的创作过程，没有这一点一滴的持续改进，本书不会达到现在的样子，所以我将他们列在致谢名单中，详见表 \@ref(tab:acknowledgments)，人名按照提交量（commit 的个数）降序排列。
 
 
 
@@ -326,7 +328,7 @@ Yihui Xie          1
 :::
 
 
-## 授权说明 {#sec:licenses .unnumbered}
+## 授权说明 {#sec-licenses .unnumbered}
 
 ::: {.rmdwarn data-latex="{警告}"}
 本书采用 [知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可，请君自重，别没事儿拿去传个什么新浪爱问、百度文库以及 XX 经济论坛，项目中代码使用 [MIT 协议](https://github.com/XiangyunHuang/masr/blob/master/LICENSE) 开源
@@ -335,7 +337,9 @@ Yihui Xie          1
 
 \begin{flushleft}\includegraphics[width=0.15\linewidth]{images/cc-by-nc-nd} \end{flushleft}
 
-## 运行信息 {#sec:session .unnumbered}
+## 运行信息 {#sec-session-welcome .unnumbered}
+
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-07 06:03:28。
 
 
 ```r

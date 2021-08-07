@@ -1,9 +1,16 @@
-# 矩阵运算 {#chap:matrix-operations}
+# 矩阵运算 {#chap-matrix-operations}
+
+<!-- 介绍矩阵代数内容：各类矩阵分解及其几何解释，比如矩阵行列式 -->
 
 > Eigenvectors from Eigenvalues [@Denton_2019_Eigen]
 
 > 参考 [matlib](https://github.com/friendly/matlib) 和 Matrix 包，[SparseM](https://CRAN.R-project.org/package=SparseM) 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares [@Boyd_2018_matrix] 及其 [Julia 语言实现](https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf)，矩阵分解部分参考 [Introduction to Linear Algebra, 5th Edition](http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf)
 [fastmatrix](https://github.com/faosorios/fastmatrix) 各种矩阵操作
+
+[abind](https://cran.r-project.org/package=abind)
+
+
+[Evan Chen](https://web.evanchen.cc/) 的书[An Infinitely Large Napkin](https://github.com/vEnhance/napkin) 介绍矩阵代数的内积空间、群、环、域等高级内容，作者提供免费的电子书。
 
 
 <!-- 解释基本的矩阵概念，比如秩、迹、行列式、直积等 -->
@@ -102,7 +109,7 @@ demo_mat <- t(attitude_mat[, -1]) %*% attitude_mat[, -1]
 ```
 
 
-## 矩阵乘法 {#subsec:matrix-multiplication}
+## 矩阵乘法 {#subsec-matrix-multiplication}
 
 
 ```r
@@ -172,7 +179,7 @@ A ** A
 ## [2,]    4   27
 ```
 
-## Hadamard 积 {#subsec:hadamard-product}
+## Hadamard 积 {#subsec-hadamard-product}
 
 Hadamard 积（法国数学家 Jacques Hadamard）也叫 Schur 积（德国数学家Issai Schur ）或 entrywise 积是两个维数相同的矩阵对应元素相乘，特别地，$A^2$ 表示将矩阵 $A$ 的每个元素平方
 
@@ -211,7 +218,7 @@ A^2
 ## [2,]    4    9
 ```
 
-## 矩阵转置 {#subsec:matrix-transpose}
+## 矩阵转置 {#subsec-matrix-transpose}
 
 
 ```r
@@ -226,7 +233,7 @@ t(B)
 ```
 
 
-## 矩阵外积 {#subsec:outer-product}
+## 矩阵外积 {#subsec-outer-product}
 
 
 ```r
@@ -286,7 +293,7 @@ A %x% B # kronecker(A, B, FUN = "*")
 ## [4,]    4    8   12    6   12   18
 ```
 
-## 矩阵乘方 {#subsec:matrix-exp}
+## 矩阵乘方 {#subsec-matrix-exp}
 
 矩阵 A 首先是一个方阵，对称性和正定性未知，n 个 矩阵 A 相乘
 
@@ -374,7 +381,7 @@ A %*% A %*% A
 ## [2,]   34   55
 ```
 
-## 矩阵求幂 {#subsec:matrix-power}
+## 矩阵求幂 {#subsec-matrix-power}
 
 
 ```r
@@ -399,7 +406,7 @@ exp(A)
 
 [expm](https://cran.r-project.org/web/packages/expm/index.html) 包含 更多关于矩阵开方、取对数等计算
 
-## 矩阵交叉积 {#subsec:matrix-crossproduct}
+## 矩阵交叉积 {#subsec-matrix-crossproduct}
 
 交叉积 $A^{\top}A$
 
@@ -424,7 +431,7 @@ tcrossprod(A, A) #  x %*% t(y)
 ## [2,]    8   13
 ```
 
-## 矩阵行列式 {#subsec:matrix-determinant}
+## 矩阵行列式 {#subsec-matrix-determinant}
 
 
 ```r
@@ -437,7 +444,7 @@ det(A)
 
 expm 包计算矩阵 $e^{\mathbf{A}}$
 
-## 矩阵条件数 {#subsec:matrix-cond-num}
+## 矩阵条件数 {#subsec-matrix-cond-num}
 
 
 ```r
@@ -473,7 +480,7 @@ Matrix::rcond(A)
 ## [1] 0.04
 ```
 
-## 矩阵求逆 {#subsec:matrix-inverse}
+## 矩阵求逆 {#subsec-matrix-inverse}
 
 
 ```r
@@ -598,7 +605,7 @@ ginv(A) %*% A
 ## [2,] -8.881784e-16 1.000000e+00
 ```
 
-## 矩阵伴随 {#subsec:matrix-adjoint}
+## 矩阵伴随 {#subsec-matrix-adjoint}
 
 伴随矩阵 $A*A^{\star} = A^{\star} *A = |A|*I, A^{\star} = |A|*A^{-1}$
 
@@ -621,7 +628,7 @@ det(A)*solve(A)
 
 
 
-## 矩阵范数 {#subsec:matrix-norm}
+## 矩阵范数 {#subsec-matrix-norm}
 
 向量和矩阵的范数，包括1，2，无穷范数，其他操作看 Matrix 包，尤其关于稀疏矩阵计算部分
 
@@ -685,7 +692,7 @@ norm(A, type = "2") # max(svd(A)$d)
 显然，$1-,\infty-,M-$ 的范数计算比 $F-$ 范数快，函数 `norm` 默认情况下求 $1-$ 范数
 :::
 
-## 矩阵求秩 {#subsec:matrix-rank}
+## 矩阵求秩 {#subsec-matrix-rank}
 
 
 ```r
@@ -696,7 +703,7 @@ qr(A)$rank # or qr.default(A)$rank
 ## [1] 2
 ```
 
-## 矩阵求迹 {#subsec:matrix-trace}
+## 矩阵求迹 {#subsec-matrix-trace}
 
 若
 
@@ -722,7 +729,7 @@ sum(diag(A))
 
 特殊矩阵的构造
 
-## 单位矩阵 {#subsec:identity-matrix}
+## 单位矩阵 {#subsec-identity-matrix}
 
 矩阵对角线上全是1，其余位置都是0
 
@@ -761,7 +768,7 @@ rep(1,3) %o% rep(1,3)
 ```
 
 
-## 对角矩阵 {#subsec:matrix-diagonals}
+## 对角矩阵 {#subsec-matrix-diagonals}
 
 
 ```r
@@ -782,7 +789,7 @@ diag(diag(A)) # construct a diagonal matrix
 ## [2,]    0    3
 ```
 
-## 上/下三角矩阵 {#subsec:upper-matrix}
+## 上/下三角矩阵 {#subsec-upper-matrix}
 
 矩阵下三角
 
@@ -902,7 +909,7 @@ A
 ## [2,]    2    3
 ```
 
-## 稀疏矩阵 {#subsec:sparse-matrix}
+## 稀疏矩阵 {#subsec-sparse-matrix}
 
 
 ```r
@@ -940,7 +947,7 @@ i <- c(1,3:8); j <- c(2,9,6:10); x <- 7 * (1:7)
 ## [8,] . . . . .  .  .  .  . 49
 ```
 
-## 三对角矩阵 {#subsec:triangular-matrix}
+## 三对角矩阵 {#subsec-triangular-matrix}
 
 
 
@@ -950,11 +957,11 @@ i <- c(1,3:8); j <- c(2,9,6:10); x <- 7 * (1:7)
 
 
 
-## LU 分解 {#subsec:lu-decomposition}
+## LU 分解 {#subsec-lu-decomposition}
 
-## Schur 分解 {#subsec:schur-decomposition}
+## Schur 分解 {#subsec-schur-decomposition}
 
-## Cholesky 分解 {#subsec:choleski-decomposition}
+## Cholesky 分解 {#subsec-choleski-decomposition}
 
 实对称正定矩阵的 Choleski 分解
 
@@ -985,7 +992,7 @@ Matrix::chol2inv(A + diag(rep(1,2)))
 
 
 
-## 特征值分解 {#subsec:eigenvalues-decomposition}
+## 特征值分解 {#subsec-eigenvalues-decomposition}
 
 特征值分解（Eigenvalues Decomposition）也叫谱分解（Spectral Decomposition）
 
@@ -1006,7 +1013,7 @@ eigen(A)
 ```
 
 
-## SVD 分解 {#subsec:Singular-Value-Decomposition}
+## SVD 分解 {#subsec-Singular-Value-Decomposition}
 
 [Fast truncated singular value decompositions](https://github.com/bwlewis/irlba) 
 奇异值分解是特征值分解的推广
@@ -1041,7 +1048,7 @@ svd(A)$d
 
 邱怡轩将奇异值分解用于图像压缩 <https://cosx.org/2014/02/svd-and-image-compression> 并制作了 [Shiny App](https://yihui.shinyapps.io/imgsvd/) 交互式演示
 
-## QR 分解 {#subsec:QR-Decomposition}
+## QR 分解 {#subsec-QR-Decomposition}
 
 
 ```r
@@ -1166,10 +1173,10 @@ Stan 实现的 QR 分解在贝叶斯线性回归模型中的应用[^qr-stan]
 
 [^qr-stan]: https://mc-stan.org/users/documentation/case-studies/qr_regression.html
   
-## Jordan 分解 {#subsec:jordan-Decomposition}
+## Jordan 分解 {#subsec-jordan-Decomposition}
 
 
-## Givens 旋转 {#subsec:Givens-Rotation}
+## Givens 旋转 {#subsec-Givens-Rotation}
 
 - Givens 旋转 <https://www.wikiwand.com/en/Givens_rotation>
 
@@ -1178,7 +1185,7 @@ Stan 实现的 QR 分解在贝叶斯线性回归模型中的应用[^qr-stan]
 
 
 
-## 特殊函数 {#sec:special-functions}
+## 特殊函数 {#sec-special-functions}
 
 ### 阶乘 {#factorial}
 
@@ -1420,4 +1427,30 @@ legend(0, 6, legend = paste("nu=", nus), col = nus + 2, lwd = 1)
 
 
 \begin{center}\includegraphics{matrix-operations_files/figure-latex/modified-bessel-1} \end{center}
+
+
+介绍复数矩阵的计算，矩阵的指数计算，介绍一点分形
+
+
+```r
+# 考虑用 gganimate 实现，去掉 caTools 依赖
+library(caTools)
+jet.colors <- colorRampPalette(c(
+  "green", "blue", "red", "cyan", "#7FFF7F",
+  "yellow", "#FF7F00", "red", "#7F0000"
+))
+m <- 1000 # define size
+C <- complex(
+  real = rep(seq(-1.8, 0.6, length.out = m), each = m),
+  imag = rep(seq(-1.2, 1.2, length.out = m), m)
+)
+C <- matrix(C, m, m) # reshape as square matrix of complex numbers
+Z <- 0 # initialize Z to zero
+X <- array(0, c(m, m, 20)) # initialize output 3D array
+for (k in 1:20) { # loop with 20 iterations
+  Z <- Z^2 + C # the central difference equation
+  X[, , k] <- exp(-abs(Z)) # capture results
+}
+write.gif(X, "Mandelbrot.gif", col = jet.colors, delay = 100)
+```
 
