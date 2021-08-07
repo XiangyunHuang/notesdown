@@ -1590,23 +1590,18 @@ R Markdown 文档 [@xie2018] 中的 Python 代码块是由 knitr 包 [@xie2015] 
 
 pandas 读取数据，整理后由 reticulate 包传递给 R 环境中的 data.frame 对象，加载 ggplot2 绘图
 
-<!--
 ```{r save-iris, echo=FALSE, eval=!file.exists('iris.csv')}
 write.csv(iris, file = "iris.csv", row.names = F)
 ```
-```{python}
+```{python, eval=file.exists('iris.csv')}
 import pandas as pd
-iris = pd.read_csv('iris.csv')
+iris2 = pd.read_csv('iris.csv')
 ```
-```{r rm-iris, eval=F, include=FALSE}
-file.remove("iris.csv")
-```
-```{r plot-iris, fig.cap="从 R 调用 Python 数据对象", fig.asp=.4}
-library(reticulate)
+```{r plot-iris, fig.cap="从 R 调用 Python 数据对象", fig.width=6, fig.height=3, out.width="75%", eval=file.exists('iris.csv')}
 library(ggplot2)
 theme_set(theme_minimal())
 library(patchwork)
-p1 <- ggplot(py$iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+p1 <- ggplot(py$iris2, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point(aes(color = Species)) +
   labs(title = "Call iris from Python")
 p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
@@ -1614,10 +1609,6 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Call iris from R")
 p1 + p2
 ```
-
--->
-
-<!--pandas 抛出的警告 sys:1: FutureWarning: RangeIndex._start is deprecated and will be removed in a future version. Use RangeIndex.start instead -->
 
 以 NumPy 为例
 
