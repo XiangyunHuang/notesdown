@@ -201,7 +201,7 @@ Hello, \faGithub
 而在 R 绘制的图形中，通过指定 `par()`、 `plot()`、 `title()` 等函数的 `family` 参数值，比如 `family = "Liberation Sans"` 来调用系统无衬线 Liberation 字体，效果见图 \@ref(fig:system-fonts-liberation)。
 
 
-```{r system-fonts-liberation, fig.width=6.5, fig.height=6, fig.cap="调用系统字体绘图", out.width="75%"}
+```{r system-fonts-liberation, fig.width=6.5, fig.height=5, fig.cap="调用系统字体绘图", out.width="75%"}
 library(extrafont)
 plot(data = pressure, pressure ~ temperature, 
      xlab = "Temperature (deg C)", ylab = "Pressure (mm of Hg)",
@@ -241,7 +241,7 @@ sysfonts::font_add_google(name = "Noto Sans SC", family = "Noto Sans SC")
 在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。
 :::
 
-```{r font-in-ggplot, fig.width=4, fig.height=4, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体"}
+```{r font-in-ggplot, fig.width=6, fig.height=6, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体", out.width="75%"}
 p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
   geom_point() +
   ggtitle(label = "默认字体设置")
@@ -294,7 +294,7 @@ sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed"
 ```
 
 
-```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", fig.width=4, fig.height=4, out.width="75%"}
+```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", fig.width=6, fig.height=5, out.width="75%"}
 library(hrbrthemes)
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
@@ -309,7 +309,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 
 如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:arial-narrow) 使用了 `theme_ipsum()` 中的 Arial Narrow 字体。
 
-```{r arial-narrow, fig.cap="默认字体 Arial Narrow", out.width="75%", fig.width=4, fig.height=4}
+```{r arial-narrow, fig.cap="默认字体 Arial Narrow", fig.width=6, fig.height=5, out.width="75%"}
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
   labs(
@@ -550,7 +550,7 @@ R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 
 图 \@ref(fig:xkcd-graph) 是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
 
-```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png", out.width="75%", fig.width=4, fig.height=4}
+```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png", out.width="75%", fig.width=5, fig.height=4}
 library(extrafont)
 library(xkcd)
 ggplot(aes(mpg, wt), data = mtcars) +
@@ -589,13 +589,14 @@ data.frame(
   geom_text(aes(label = category), family = "Noto Emoji", size = 12) +
   theme_void()
 ```
-```{r emoji-fonts-online, echo=!is.na(Sys.getenv('CI', NA)), eval=!is.na(Sys.getenv('CI', NA)), fig.cap="表情字体", out.width="75%", fig.width=4, fig.height=4}
+```{r emoji-fonts-online, echo=!is.na(Sys.getenv('CI', NA)), eval=!is.na(Sys.getenv('CI', NA)), fig.cap="表情字体", out.width="75%", fig.width=4.5, fig.height=4}
 data.frame(
   category = c("pineapple", "apple", "watermelon", "mango", "pear"),
-  value = c(5, 4, 3, 7, 2)
+  value = c(5, 4, 3, 6, 2)
 ) |> 
   transform(category = sapply(category, emo::ji)) |> 
   ggplot(aes(x = category, y = value)) +
+  scale_y_continuous(limits = c(2, 7)) +
   geom_text(aes(label = category), size = 12, vjust = -0.5) +
   theme_minimal()
 ```
