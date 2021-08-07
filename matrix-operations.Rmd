@@ -4,11 +4,9 @@
 
 > Eigenvectors from Eigenvalues [@Denton_2019_Eigen]
 
-> 参考 [matlib](https://github.com/friendly/matlib) 和 Matrix 包，[SparseM](https://CRAN.R-project.org/package=SparseM) 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares [@Boyd_2018_matrix] 及其 [Julia 语言实现](https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf)，矩阵分解部分参考 [Introduction to Linear Algebra, 5th Edition](http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf)
-[fastmatrix](https://github.com/faosorios/fastmatrix) 各种矩阵操作
+> 参考 [matlib](https://github.com/friendly/matlib) 和 Matrix 包，[SparseM](https://CRAN.R-project.org/package=SparseM) 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares [@Boyd_2018_matrix] 及其 [Julia 语言实现](https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf)，矩阵分解部分参考 [Introduction to Linear Algebra, 5th Edition](http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf)、[Linear Algebra for Data Science with examples in R](https://shainarace.github.io/LinearAlgebra)
 
-[abind](https://cran.r-project.org/package=abind)
-
+[fastmatrix](https://github.com/faosorios/fastmatrix)、[abind](https://cran.r-project.org/package=abind) 各种矩阵操作。
 
 [Evan Chen](https://web.evanchen.cc/) 的书[An Infinitely Large Napkin](https://github.com/vEnhance/napkin) 介绍矩阵代数的内积空间、群、环、域等高级内容，作者提供免费的电子书。
 
