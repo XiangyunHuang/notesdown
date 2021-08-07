@@ -1850,7 +1850,7 @@ htmltools::includeHTML("lines.html")
 
 R 和 Python 之间的交互，Python 负责数据处理和建模， R 负责绘图，有些复杂的机器学习模型及其相关数据操作需要在 Python 中完成，数据集清理至数据框的形式后导入到 R 中，画各种静态或者动态图，这时候需要加载 reticulate 包，只是设置 `python.reticulate = TRUE` 还不够
 
-::: sidebar
+::: {.rmdtip data-latex="{提示}"}
 R Markdown 文档 [@xie2018] 中的 Python 代码块是由 knitr 包 [@xie2015] 负责调度处理的，展示 Matplotlib 绘图的结果使用了 reticulate 包 [@reticulate] 提供的 Python 引擎而不是 knitr 自带的。
 
 在 `knitr::opts_chunk` 中设置 `python.reticulate = TRUE` 意味着所有的 Python 代码块共享一个 Python Session，而 `python.reticulate = FALSE` 意味着使用 knitr 提供的 Python 引擎，所有的 Python 代码块独立运行。
@@ -1860,10 +1860,6 @@ pandas 读取数据，整理后由 reticulate 包传递给 R 环境中的 data.f
 
 
 
-```python
-import pandas as pd
-iris2 = pd.read_csv('iris.csv')
-```
 
 ```r
 library(ggplot2)
@@ -1877,15 +1873,6 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Call iris from R")
 p1 + p2
 ```
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
-
-}
-
-\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
-\end{figure}
 
 以 NumPy 为例
 

@@ -226,12 +226,12 @@ a column separator --></p>
 <code class="sourceCode R"><span class="va">diamonds_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6"</span><span class="op">)</span>
 <span class="va">diamonds_sample</span></code></pre></div>
 <pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  1.00      Fair     H     SI2  66.1    56  2856 6.21 5.97 4.04
-## 2  0.79   Premium     E     VS2  60.6    53  2876 6.04 5.98 3.64
-## 3  0.90 Very Good     I     SI1  63.5    59  3121 6.10 6.05 3.86
-## 4  0.72 Very Good     F    VVS2  63.4    56  3338 5.68 5.71 3.61
-## 5  0.90 Very Good     G     SI2  62.3    58  3398 6.15 6.20 3.85
-## 6  0.27 Very Good     D    VVS2  64.6    53   575 4.04 4.10 2.63</code></pre>
+## 1  1.02     Ideal     I      I1  61.7    56  2872 6.44 6.49 3.99
+## 2  0.80     Ideal     E     SI2  61.0    55  2978 6.00 6.03 3.67
+## 3  0.36     Ideal     H     VS2  62.1    55   568 4.57 4.58 2.84
+## 4  1.51      Good     G      I1  64.0    59  3497 7.29 7.17 4.63
+## 5  1.00      Good     H     SI2  63.9    55  3878 6.25 6.33 4.02
+## 6  0.91 Very Good     H     VS1  62.7    63  3881 6.10 6.03 3.80</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
@@ -242,12 +242,12 @@ a column separator --></p>
 "</span><span class="op">)</span>
 <span class="va">diamonds_rank</span></code></pre></div>
 <pre><code>##    cut price rank
-## 1 Fair  4276    1
-## 2 Good   597    1
-## 3 Good   601    2
-## 4 Good  1624    3
-## 5 Good  2074    4
-## 6 Good  3310    5</code></pre>
+## 1 Fair  2359    1
+## 2 Fair  5624    2
+## 3 Good   447    1
+## 4 Good  1119    2
+## 5 Good  2401    3
+## 6 Good  2516    4</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -269,10 +269,10 @@ INSERT INTO person VALUES
 <div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM person"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2</code></pre>
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
 <div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>,<span class="st">"
@@ -282,12 +282,12 @@ SELECT * FROM person
 LIMIT 6
 "</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80</code></pre>
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
 <div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 今天</span>

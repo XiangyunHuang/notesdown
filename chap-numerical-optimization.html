@@ -1138,10 +1138,10 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1]   0.00000 -21.99115</code></pre>
+<pre><code>## [1] 22.22222  0.00000</code></pre>
 <div class="sourceCode" id="cb1347"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -1</code></pre>
+<pre><code>## [1] -0.9734211</code></pre>
 <p>实际上，还是陷入局部最优解。</p>
 <pre><code>SETS:
 P/1..5/;
@@ -1333,13 +1333,12 @@ b = (2, 2, -4, -4)
 <code class="sourceCode R"><span class="co"># 调全局优化算法</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] 368.1061</code></pre>
+<pre><code>## [1] 368.1059</code></pre>
 <div class="sourceCode" id="cb1365"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000</code></pre>
+<pre><code>##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000</code></pre>
 <p>下面再与函数 <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> 提供的 L-BFGS-B 算法比较</p>
 <div class="sourceCode" id="cb1367"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optim.html">optim</a></span><span class="op">(</span>
@@ -1634,10 +1633,10 @@ b = (2, 2, -4, -4)
 <div class="sourceCode" id="cb1393"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.196154 4.636626 3.932217 1.268644</code></pre>
+<pre><code>## [1] 1.138080 4.256109 4.378525 1.190829</code></pre>
 <div class="sourceCode" id="cb1395"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] 18.75054</code></pre>
+<pre><code>## [1] 17.62308</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>，推荐使用 nloptr.slsqp 求解器。</p>
 </div>
 <div id="nonlinear-mixed-integer-constrained" class="section level4" number="33.4.3.4">
@@ -1743,7 +1742,7 @@ b = (2, 2, -4, -4)
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="va">p0</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.227972 4.245375</code></pre>
+<pre><code>## [1] 1.227973 4.245374</code></pre>
 <div class="sourceCode" id="cb1403"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
@@ -1883,10 +1882,10 @@ x - (( @cos(y) )^x - x)^y = 0;
 <div class="sourceCode" id="cb1420"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] -33.95582  41.61228</code></pre>
+<pre><code>## [1] 40.17986 11.52642</code></pre>
 <div class="sourceCode" id="cb1422"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -3.24825</code></pre>
+<pre><code>## [1] -3.026156</code></pre>
 <p>比如下面三组</p>
 <div class="sourceCode" id="cb1424"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">40.95941</span>, <span class="fl">41.52914</span><span class="op">)</span><span class="op">)</span></code></pre></div>

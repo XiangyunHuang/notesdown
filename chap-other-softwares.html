@@ -1628,14 +1628,12 @@ print(px.colors.qualitative.Plotly)
 <div class="sourceCode" id="cb1676"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">htmltools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/include.html">includeHTML</a></span><span class="op">(</span><span class="st">"lines.html"</span><span class="op">)</span></code></pre></div>
 <p>R 和 Python 之间的交互，Python 负责数据处理和建模， R 负责绘图，有些复杂的机器学习模型及其相关数据操作需要在 Python 中完成，数据集清理至数据框的形式后导入到 R 中，画各种静态或者动态图，这时候需要加载 reticulate 包，只是设置 <code>python.reticulate = TRUE</code> 还不够</p>
-<div class="sidebar">
+<div class="rmdtip">
 <p>R Markdown 文档 <span class="citation">(<a href="references.html#ref-xie2018" role="doc-biblioref">Xie, Allaire, and Grolemund 2018</a>)</span> 中的 Python 代码块是由 knitr 包 <span class="citation">(<a href="references.html#ref-xie2015" role="doc-biblioref">Xie 2015</a>)</span> 负责调度处理的，展示 Matplotlib 绘图的结果使用了 reticulate 包 <span class="citation">(<a href="references.html#ref-reticulate" role="doc-biblioref">Ushey, Allaire, and Tang 2021</a>)</span> 提供的 Python 引擎而不是 knitr 自带的。</p>
 <p>在 <code><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">knitr::opts_chunk</a></code> 中设置 <code>python.reticulate = TRUE</code> 意味着所有的 Python 代码块共享一个 Python Session，而 <code>python.reticulate = FALSE</code> 意味着使用 knitr 提供的 Python 引擎，所有的 Python 代码块独立运行。</p>
 </div>
 <p>pandas 读取数据，整理后由 reticulate 包传递给 R 环境中的 data.frame 对象，加载 ggplot2 绘图</p>
-<div class="sourceCode" id="cb1677"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1677-1"><a href="chap-other-softwares.html#cb1677-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1677-2"><a href="chap-other-softwares.html#cb1677-2" aria-hidden="true" tabindex="-1"></a>iris2 <span class="op">=</span> pd.read_csv(<span class="st">'iris.csv'</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb1678"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1677"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
@@ -1647,33 +1645,33 @@ print(px.colors.qualitative.Plotly)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Call iris from R"</span><span class="op">)</span>
 <span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></code></pre></div>
 <p>以 NumPy 为例</p>
-<div class="sourceCode" id="cb1679"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1679-1"><a href="chap-other-softwares.html#cb1679-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1679-2"><a href="chap-other-softwares.html#cb1679-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.arange(<span class="dv">15</span>).reshape(<span class="dv">3</span>, <span class="dv">5</span>)</span>
-<span id="cb1679-3"><a href="chap-other-softwares.html#cb1679-3" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<div class="sourceCode" id="cb1678"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1678-1"><a href="chap-other-softwares.html#cb1678-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1678-2"><a href="chap-other-softwares.html#cb1678-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.arange(<span class="dv">15</span>).reshape(<span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb1678-3"><a href="chap-other-softwares.html#cb1678-3" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
 <pre><code>## array([[ 0,  1,  2,  3,  4],
 ##        [ 5,  6,  7,  8,  9],
 ##        [10, 11, 12, 13, 14]])</code></pre>
-<div class="sourceCode" id="cb1681"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1681-1"><a href="chap-other-softwares.html#cb1681-1" aria-hidden="true" tabindex="-1"></a>a.shape</span></code></pre></div>
+<div class="sourceCode" id="cb1680"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1680-1"><a href="chap-other-softwares.html#cb1680-1" aria-hidden="true" tabindex="-1"></a>a.shape</span></code></pre></div>
 <pre><code>## (3, 5)</code></pre>
-<div class="sourceCode" id="cb1683"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1683-1"><a href="chap-other-softwares.html#cb1683-1" aria-hidden="true" tabindex="-1"></a>a.ndim</span></code></pre></div>
+<div class="sourceCode" id="cb1682"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1682-1"><a href="chap-other-softwares.html#cb1682-1" aria-hidden="true" tabindex="-1"></a>a.ndim</span></code></pre></div>
 <pre><code>## 2</code></pre>
-<div class="sourceCode" id="cb1685"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1685-1"><a href="chap-other-softwares.html#cb1685-1" aria-hidden="true" tabindex="-1"></a>a.dtype.name</span></code></pre></div>
+<div class="sourceCode" id="cb1684"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1684-1"><a href="chap-other-softwares.html#cb1684-1" aria-hidden="true" tabindex="-1"></a>a.dtype.name</span></code></pre></div>
 <pre><code>## 'int64'</code></pre>
-<div class="sourceCode" id="cb1687"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1687-1"><a href="chap-other-softwares.html#cb1687-1" aria-hidden="true" tabindex="-1"></a>a.itemsize</span></code></pre></div>
+<div class="sourceCode" id="cb1686"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1686-1"><a href="chap-other-softwares.html#cb1686-1" aria-hidden="true" tabindex="-1"></a>a.itemsize</span></code></pre></div>
 <pre><code>## 8</code></pre>
-<div class="sourceCode" id="cb1689"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1689-1"><a href="chap-other-softwares.html#cb1689-1" aria-hidden="true" tabindex="-1"></a>a.size</span></code></pre></div>
+<div class="sourceCode" id="cb1688"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1688-1"><a href="chap-other-softwares.html#cb1688-1" aria-hidden="true" tabindex="-1"></a>a.size</span></code></pre></div>
 <pre><code>## 15</code></pre>
-<div class="sourceCode" id="cb1691"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1691-1"><a href="chap-other-softwares.html#cb1691-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(a)</span></code></pre></div>
+<div class="sourceCode" id="cb1690"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1690-1"><a href="chap-other-softwares.html#cb1690-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(a)</span></code></pre></div>
 <pre><code>## &lt;class 'numpy.ndarray'&gt;</code></pre>
-<div class="sourceCode" id="cb1693"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1693-1"><a href="chap-other-softwares.html#cb1693-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>])</span>
-<span id="cb1693-2"><a href="chap-other-softwares.html#cb1693-2" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
+<div class="sourceCode" id="cb1692"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1692-1"><a href="chap-other-softwares.html#cb1692-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> np.array([<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>])</span>
+<span id="cb1692-2"><a href="chap-other-softwares.html#cb1692-2" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
 <pre><code>## array([6, 7, 8])</code></pre>
-<div class="sourceCode" id="cb1695"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1695-1"><a href="chap-other-softwares.html#cb1695-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(b)</span></code></pre></div>
+<div class="sourceCode" id="cb1694"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1694-1"><a href="chap-other-softwares.html#cb1694-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(b)</span></code></pre></div>
 <pre><code>## &lt;class 'numpy.ndarray'&gt;</code></pre>
-<div class="sourceCode" id="cb1697"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1697-1"><a href="chap-other-softwares.html#cb1697-1" aria-hidden="true" tabindex="-1"></a>a.transpose() <span class="op">@</span> b</span></code></pre></div>
+<div class="sourceCode" id="cb1696"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1696-1"><a href="chap-other-softwares.html#cb1696-1" aria-hidden="true" tabindex="-1"></a>a.transpose() <span class="op">@</span> b</span></code></pre></div>
 <pre><code>## array([115, 136, 157, 178, 199])</code></pre>
 <p>Python 里面的点号<span class="math inline">\(\cdot\)</span>对应于R里面的 <code><a href="https://rdrr.io/pkg/terra/man/replace-vector.html">$</a></code></p>
-<div class="sourceCode" id="cb1699"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1698"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate">reticulate</a></span><span class="op">)</span>
 <span class="va">np</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"numpy"</span>, convert<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># 导入 Python 模块</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">np</span><span class="op">$</span><span class="fu">arange</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span><span class="op">$</span><span class="fu">reshape</span><span class="op">(</span><span class="fl">3L</span>, <span class="fl">5L</span><span class="op">)</span>
@@ -1681,53 +1679,53 @@ print(px.colors.qualitative.Plotly)
 <pre><code>## [[ 0.  1.  2.  3.  4.]
 ##  [ 5.  6.  7.  8.  9.]
 ##  [10. 11. 12. 13. 14.]]</code></pre>
-<div class="sourceCode" id="cb1701"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1700"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">shape</span></code></pre></div>
 <pre><code>## (3, 5)</code></pre>
-<div class="sourceCode" id="cb1703"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1702"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">ndim</span></code></pre></div>
 <pre><code>## 2</code></pre>
-<div class="sourceCode" id="cb1705"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1704"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">dtype</span><span class="op">$</span><span class="va">name</span></code></pre></div>
 <pre><code>## float64</code></pre>
-<div class="sourceCode" id="cb1707"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1706"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">itemsize</span></code></pre></div>
 <pre><code>## 8</code></pre>
-<div class="sourceCode" id="cb1709"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1708"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">size</span></code></pre></div>
 <pre><code>## 15</code></pre>
-<div class="sourceCode" id="cb1711"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1710"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">ctypes</span></code></pre></div>
 <pre><code>## &lt;numpy.core._internal._ctypes&gt;</code></pre>
-<div class="sourceCode" id="cb1713"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1712"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">dtype</span> <span class="co"># data type 数据类型</span></code></pre></div>
 <pre><code>## float64</code></pre>
-<div class="sourceCode" id="cb1715"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1714"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="va">astype</span></code></pre></div>
 <pre><code>## &lt;built-in method astype of numpy.ndarray&gt;</code></pre>
-<div class="sourceCode" id="cb1717"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1716"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">builtins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import_builtins</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Python 内建的函数，不需要导入第三方模块</span>
 <span class="va">builtins</span><span class="op">$</span><span class="fu">type</span><span class="op">(</span><span class="va">a</span><span class="op">)</span></code></pre></div>
 <pre><code>## &lt;class 'numpy.ndarray'&gt;</code></pre>
 <p>基本线性代数运算</p>
-<div class="sourceCode" id="cb1719"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1718"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="fu">transpose</span><span class="op">(</span><span class="op">)</span> <span class="co"># 转置</span></code></pre></div>
 <pre><code>## [[ 0.  5. 10.]
 ##  [ 1.  6. 11.]
 ##  [ 2.  7. 12.]
 ##  [ 3.  8. 13.]
 ##  [ 4.  9. 14.]]</code></pre>
-<div class="sourceCode" id="cb1721"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1720"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="op">)</span> <span class="co"># 迹</span></code></pre></div>
 <pre><code>## 18.0</code></pre>
-<div class="sourceCode" id="cb1723"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1722"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">np</span><span class="op">$</span><span class="fu">eye</span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span> <span class="co"># 单位矩阵</span></code></pre></div>
 <pre><code>## [[1. 0.]
 ##  [0. 1.]]</code></pre>
-<div class="sourceCode" id="cb1725"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1724"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span><span class="op">$</span><span class="fu">diagonal</span><span class="op">(</span><span class="op">)</span> <span class="co"># 对角</span></code></pre></div>
 <pre><code>## [ 0.  6. 12.]</code></pre>
-<div class="sourceCode" id="cb1727"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1726"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 两个矩阵的乘法</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">np</span><span class="op">$</span><span class="fu">array</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">reshape</span><span class="op">(</span><span class="fl">5L</span>, <span class="fl">1L</span><span class="op">)</span>
 <span class="va">b</span></code></pre></div>
@@ -1736,16 +1734,16 @@ print(px.colors.qualitative.Plotly)
 ##  [ 8.]
 ##  [ 9.]
 ##  [10.]]</code></pre>
-<div class="sourceCode" id="cb1729"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1728"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">b</span><span class="op">$</span><span class="va">shape</span></code></pre></div>
 <pre><code>## (5, 1)</code></pre>
-<div class="sourceCode" id="cb1731"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1730"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">np</span><span class="op">$</span><span class="fu">multiply</span><span class="op">(</span><span class="va">b</span><span class="op">$</span><span class="fu">transpose</span><span class="op">(</span><span class="op">)</span>, <span class="va">a</span><span class="op">)</span> <span class="co"># b 乘以 a</span></code></pre></div>
 <pre><code>## [[  0.   7.  16.  27.  40.]
 ##  [ 30.  42.  56.  72.  90.]
 ##  [ 60.  77.  96. 117. 140.]]</code></pre>
 <p>Python 对象转化为 R 对象</p>
-<div class="sourceCode" id="cb1733"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1732"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/r-py-conversion.html">py_to_r</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1]
 ## [1,]    6
@@ -1763,20 +1761,20 @@ print(px.colors.qualitative.Plotly)
 <span class="header-section-number">B.20.1</span> 从命令行启动虚拟机<a class="anchor" aria-label="anchor" href="#subsec-cmd-start-vbox"><i class="fas fa-link"></i></a>
 </h3>
 <p>当前我的虚拟机里安装了两个系统 Fedora 29 和 CentOS 8.2</p>
-<div class="sourceCode" id="cb1735"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1735-1"><a href="chap-other-softwares.html#cb1735-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> list vms</span></code></pre></div>
+<div class="sourceCode" id="cb1734"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1734-1"><a href="chap-other-softwares.html#cb1734-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> list vms</span></code></pre></div>
 <pre><code>"Fedora 29" {d316fe8d-c053-4941-8a45-a59fd476898d}
 "CentOS 8.2" {f1613f26-ea65-4f02-9cb6-6a79a758a60e}</code></pre>
 <p>以无图形化界面的方式启动虚拟机 CentOS 8.2</p>
-<div class="sourceCode" id="cb1737"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1737-1"><a href="chap-other-softwares.html#cb1737-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> startvm <span class="st">"CentOS 8.2"</span> <span class="at">--type</span> headless</span>
-<span id="cb1737-2"><a href="chap-other-softwares.html#cb1737-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
-<span id="cb1737-3"><a href="chap-other-softwares.html#cb1737-3" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxHeadless</span> <span class="at">--startvm</span> <span class="st">"CentOS 8.2"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1736"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1736-1"><a href="chap-other-softwares.html#cb1736-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> startvm <span class="st">"CentOS 8.2"</span> <span class="at">--type</span> headless</span>
+<span id="cb1736-2"><a href="chap-other-softwares.html#cb1736-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者</span></span>
+<span id="cb1736-3"><a href="chap-other-softwares.html#cb1736-3" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxHeadless</span> <span class="at">--startvm</span> <span class="st">"CentOS 8.2"</span></span></code></pre></div>
 <p>其它常用的命令还有</p>
-<div class="sourceCode" id="cb1738"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1738-1"><a href="chap-other-softwares.html#cb1738-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> list runningvms <span class="co"># 列出运行中的虚拟机</span></span>
-<span id="cb1738-2"><a href="chap-other-softwares.html#cb1738-2" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> acpipowerbutton <span class="co"># 关闭虚拟机，等价于点击系统关闭按钮，正常关机</span></span>
-<span id="cb1738-3"><a href="chap-other-softwares.html#cb1738-3" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> poweroff <span class="co"># 关闭虚拟机，等价于直接关闭电源，非正常关机</span></span>
-<span id="cb1738-4"><a href="chap-other-softwares.html#cb1738-4" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> pause <span class="co"># 暂停虚拟机的运行</span></span>
-<span id="cb1738-5"><a href="chap-other-softwares.html#cb1738-5" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> resume <span class="co"># 恢复暂停的虚拟机</span></span>
-<span id="cb1738-6"><a href="chap-other-softwares.html#cb1738-6" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> savestate <span class="co"># 保存当前虚拟机的运行状态</span></span></code></pre></div>
+<div class="sourceCode" id="cb1737"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1737-1"><a href="chap-other-softwares.html#cb1737-1" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> list runningvms <span class="co"># 列出运行中的虚拟机</span></span>
+<span id="cb1737-2"><a href="chap-other-softwares.html#cb1737-2" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> acpipowerbutton <span class="co"># 关闭虚拟机，等价于点击系统关闭按钮，正常关机</span></span>
+<span id="cb1737-3"><a href="chap-other-softwares.html#cb1737-3" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> poweroff <span class="co"># 关闭虚拟机，等价于直接关闭电源，非正常关机</span></span>
+<span id="cb1737-4"><a href="chap-other-softwares.html#cb1737-4" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> pause <span class="co"># 暂停虚拟机的运行</span></span>
+<span id="cb1737-5"><a href="chap-other-softwares.html#cb1737-5" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> resume <span class="co"># 恢复暂停的虚拟机</span></span>
+<span id="cb1737-6"><a href="chap-other-softwares.html#cb1737-6" aria-hidden="true" tabindex="-1"></a><span class="ex">VBoxManage</span> controlvm <span class="st">"CentOS 8.2"</span> savestate <span class="co"># 保存当前虚拟机的运行状态</span></span></code></pre></div>
 <p>更多细节解释见 <a href="https://www.virtualbox.org/manual/ch07.html#man_vboxheadless">VBox 官方文档</a></p>
 </div>
 </div>
@@ -1786,10 +1784,10 @@ print(px.colors.qualitative.Plotly)
 </h2>
 <p>docker 创建云实例 rstudio <a href="https://cerebralmastication.com/2019/07/10/starting-a-digital-ocean-instance-from-docker-machine/">DigitalOcean</a>，docker 支持的驱动类型 <a href="https://docs.docker.com/machine/drivers/" class="uri">https://docs.docker.com/machine/drivers/</a>。Rocker 项目组提供的 shiny 容器 <a href="https://github.com/rocker-org/shiny" class="uri">https://github.com/rocker-org/shiny</a> 和构建过程 <a href="https://hub.docker.com/r/rocker/shiny/dockerfile" class="uri">https://hub.docker.com/r/rocker/shiny/dockerfile</a></p>
 <p>主机 80 端口映射给 shiny 容器 3838 端口</p>
-<div class="sourceCode" id="cb1739"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1739-1"><a href="chap-other-softwares.html#cb1739-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--user</span> shiny <span class="at">-d</span> <span class="at">-p</span> 80:3838 <span class="dt">\</span></span>
-<span id="cb1739-2"><a href="chap-other-softwares.html#cb1739-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /srv/shinyapps/:/srv/shiny-server/ <span class="dt">\</span></span>
-<span id="cb1739-3"><a href="chap-other-softwares.html#cb1739-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /srv/shinylog/:/var/log/shiny-server/ <span class="dt">\</span></span>
-<span id="cb1739-4"><a href="chap-other-softwares.html#cb1739-4" aria-hidden="true" tabindex="-1"></a>    rocker/shiny</span></code></pre></div>
+<div class="sourceCode" id="cb1738"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1738-1"><a href="chap-other-softwares.html#cb1738-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--user</span> shiny <span class="at">-d</span> <span class="at">-p</span> 80:3838 <span class="dt">\</span></span>
+<span id="cb1738-2"><a href="chap-other-softwares.html#cb1738-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /srv/shinyapps/:/srv/shiny-server/ <span class="dt">\</span></span>
+<span id="cb1738-3"><a href="chap-other-softwares.html#cb1738-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /srv/shinylog/:/var/log/shiny-server/ <span class="dt">\</span></span>
+<span id="cb1738-4"><a href="chap-other-softwares.html#cb1738-4" aria-hidden="true" tabindex="-1"></a>    rocker/shiny</span></code></pre></div>
 <p>shiny 服务器默认支持从 80 端口访问 <a href="http://localhost:80" class="uri">http://localhost:80</a>，shiny 应用放在目录 <code>/srv/shinyapps/appdir</code>，访问 Shiny 应用的位置 <a href="http://localhost/appdir/" class="uri">http://localhost/appdir/</a>，使用 boot2docker 则访问 <a href="http://192.168.59.103:80/appdir/" class="uri">http://192.168.59.103:80/appdir/</a></p>
 <!-- 自己基于容器搭建一个 shiny 服务器 -->
 <p>Docker 相比虚拟机占用资源少，拉起来就可以用，虚拟机还需要各种环境配置，很多与R有关的项目现在都提供Docker镜像，大大方便了开发人员和数据分析师。当然 docker 的环境隔离性，对主机系统侵入小，即使挂了，再拉起来也就是了，安全性和可靠性高。</p>
@@ -1808,46 +1806,46 @@ print(px.colors.qualitative.Plotly)
 <p>其它容器相关项目有 <a href="https://github.com/bwlewis/r-and-singularity">Singularity</a> 和 <a href="https://www.kubernetes.org.cn">Kubernetes 容器集群管理</a>，更多参见高策的博客 <a href="https://gaocegege.com" class="uri">https://gaocegege.com</a></p>
 <p>本节介绍与本书配套的 VBox 镜像和 Docker 容器镜像，方便读者直接运行书籍原稿中的例子，尽量不限于软件环境配置的苦海中，因为对于大多数初学者来说，软件配置是一件不小的麻烦事。</p>
 <p>本书依赖的 R 包和配置环境比较复杂，所以将整个运行环境打包成 Docker 镜像，方便读者重现，构建镜像的 Dockerfile 文件随同书籍源文件一起托管在 Github 上，方便读者研究。本地编译书籍只需三步走，先将存放在 Github 上的书籍项目克隆到本地，如果本地环境中没有 Git，你需要从它的官网 <a href="https://git-scm.com/" class="uri">https://git-scm.com/</a> 下载安装适配本地系统的 Git 软件。</p>
-<div class="sourceCode" id="cb1740"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1740-1"><a href="chap-other-softwares.html#cb1740-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/XiangyunHuang/masr.git</span></code></pre></div>
+<div class="sourceCode" id="cb1739"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1739-1"><a href="chap-other-softwares.html#cb1739-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/XiangyunHuang/masr.git</span></code></pre></div>
 <p>然后在 Git Bash 的模拟终端器中，启动虚拟机，拉取准备好的镜像文件。为了方便读者重现本书的内容，特将书籍的编译环境打包成 Docker 镜像。在启动镜像前需要确保本地已经安装 Docker 软件 <a href="https://www.docker.com/products/docker-desktop" class="uri">https://www.docker.com/products/docker-desktop</a>，安装过程请看官网教程。</p>
-<div class="sourceCode" id="cb1741"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1741-1"><a href="chap-other-softwares.html#cb1741-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine.exe</span> start default</span>
-<span id="cb1741-2"><a href="chap-other-softwares.html#cb1741-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull xiangyunhuang/masr</span></code></pre></div>
+<div class="sourceCode" id="cb1740"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1740-1"><a href="chap-other-softwares.html#cb1740-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine.exe</span> start default</span>
+<span id="cb1740-2"><a href="chap-other-softwares.html#cb1740-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull xiangyunhuang/masr</span></code></pre></div>
 <p>最后 <code>cd</code> 进入书籍项目所在目录，运行如下命令编译书籍</p>
-<div class="sourceCode" id="cb1742"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1742-1"><a href="chap-other-softwares.html#cb1742-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-u</span> docker <span class="at">-v</span> <span class="st">"/</span><span class="va">${PWD}</span><span class="st">://home/docker/workspace"</span> <span class="dt">\</span></span>
-<span id="cb1742-2"><a href="chap-other-softwares.html#cb1742-2" aria-hidden="true" tabindex="-1"></a>  xiangyunhuang/masr make gitbook</span></code></pre></div>
+<div class="sourceCode" id="cb1741"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1741-1"><a href="chap-other-softwares.html#cb1741-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-u</span> docker <span class="at">-v</span> <span class="st">"/</span><span class="va">${PWD}</span><span class="st">://home/docker/workspace"</span> <span class="dt">\</span></span>
+<span id="cb1741-2"><a href="chap-other-softwares.html#cb1741-2" aria-hidden="true" tabindex="-1"></a>  xiangyunhuang/masr make gitbook</span></code></pre></div>
 <p>编译成功后，可以在目录 <code>_book/</code> 下看到生成的文件，点击文件 <code>index.html</code> 选择谷歌浏览器打开，不要使用 IE 浏览器，推荐使用谷歌浏览器获取最佳阅读体验，尽情地阅读吧！</p>
 <p>如果你想了解编译书籍的环境和过程，我推荐你阅读随书籍源文件一起的 Dockerfile 文件， <a href="https://hub.docker.com/">Docker Hub</a> 是根据此文件构建的镜像，打包成功后，大约占用空间 2 Gb，本书在 RStudio IDE 下用 R Markdown <span class="citation">(<a href="references.html#ref-xie2018" role="doc-biblioref">Xie, Allaire, and Grolemund 2018</a>)</span> 编辑的，编译本书获得电子版还需要一些 R 包和软件。Pandoc <a href="https://pandoc.org/" class="uri">https://pandoc.org/</a> 软件是系统 Fedora 30 仓库自带的，版本是 2.2.1，较新的 RStudio IDE 捆绑的 Pandoc 软件一般会高于此版本。如果你打算在本地系统上编译书籍，RStudio IDE 捆绑的 Pandoc 软件版本已经足够，当然你也可以在 <a href="https://github.com/jgm/pandoc/releases/latest" class="uri">https://github.com/jgm/pandoc/releases/latest</a> 下载安装最新版本，此外，你还需参考书籍随附的 Dockerfile 文件配置 C++ 代码编译环境，安装所需的 R 包，并确保本地安装的版本不低于镜像内的版本。</p>
 <p>镜像中已安装的 R 包列表可运行如下命令查看。</p>
-<div class="sourceCode" id="cb1743"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1743-1"><a href="chap-other-softwares.html#cb1743-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> xiangyunhuang/masr <span class="dt">\ </span></span>
-<span id="cb1743-2"><a href="chap-other-softwares.html#cb1743-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'xfun::session_info(.packages(TRUE))'</span></span></code></pre></div>
+<div class="sourceCode" id="cb1742"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1742-1"><a href="chap-other-softwares.html#cb1742-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> xiangyunhuang/masr <span class="dt">\ </span></span>
+<span id="cb1742-2"><a href="chap-other-softwares.html#cb1742-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'xfun::session_info(.packages(TRUE))'</span></span></code></pre></div>
 <p>Docker &amp; Docker Machine &amp; Docker Swarm</p>
 <ol style="list-style-type: decimal">
 <li>
 <p>容器与镜像的操作</p>
-<div class="sourceCode" id="cb1744"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1744-1"><a href="chap-other-softwares.html#cb1744-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
-<span id="cb1744-2"><a href="chap-other-softwares.html#cb1744-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Docker version 18.03.0-ce, build 0520e24302</span></span></code></pre></div>
+<div class="sourceCode" id="cb1743"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1743-1"><a href="chap-other-softwares.html#cb1743-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
+<span id="cb1743-2"><a href="chap-other-softwares.html#cb1743-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Docker version 18.03.0-ce, build 0520e24302</span></span></code></pre></div>
 <p>查看容器</p>
-<div class="sourceCode" id="cb1745"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1745-1"><a href="chap-other-softwares.html#cb1745-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps <span class="at">-a</span></span></code></pre></div>
+<div class="sourceCode" id="cb1744"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1744-1"><a href="chap-other-softwares.html#cb1744-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps <span class="at">-a</span></span></code></pre></div>
 <p>删除容器 <code>docker rm 容器 ID</code>，删除前要确认已经停止该容器的运行</p>
-<div class="sourceCode" id="cb1746"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1746-1"><a href="chap-other-softwares.html#cb1746-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm 6f932357e6ce</span></code></pre></div>
+<div class="sourceCode" id="cb1745"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1745-1"><a href="chap-other-softwares.html#cb1745-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm 6f932357e6ce</span></code></pre></div>
 <p>查看镜像</p>
-<div class="sourceCode" id="cb1747"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1747-1"><a href="chap-other-softwares.html#cb1747-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> images</span></code></pre></div>
+<div class="sourceCode" id="cb1746"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1746-1"><a href="chap-other-softwares.html#cb1746-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> images</span></code></pre></div>
 <p>删除镜像</p>
 <p><code>docker rmi 镜像 ID</code></p>
-<div class="sourceCode" id="cb1748"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1748-1"><a href="chap-other-softwares.html#cb1748-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rmi 811281c54b23</span></code></pre></div>
+<div class="sourceCode" id="cb1747"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1747-1"><a href="chap-other-softwares.html#cb1747-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rmi 811281c54b23</span></code></pre></div>
 </li>
 <li>
 <p>拉取镜像</p>
-<div class="sourceCode" id="cb1749"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1749-1"><a href="chap-other-softwares.html#cb1749-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull rocker/verse:latest</span></code></pre></div>
+<div class="sourceCode" id="cb1748"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1748-1"><a href="chap-other-softwares.html#cb1748-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull rocker/verse:latest</span></code></pre></div>
 </li>
 <li>
 <p>运行容器</p>
-<div class="sourceCode" id="cb1750"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1750-1"><a href="chap-other-softwares.html#cb1750-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> verse <span class="at">-d</span> <span class="at">-p</span> 8282:8080 <span class="at">-e</span> ROOT=TRUE <span class="dt">\</span></span>
-<span id="cb1750-2"><a href="chap-other-softwares.html#cb1750-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">-e</span> USER=rstudio <span class="at">-e</span> PASSWORD=cloud rocker/verse</span></code></pre></div>
+<div class="sourceCode" id="cb1749"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1749-1"><a href="chap-other-softwares.html#cb1749-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> verse <span class="at">-d</span> <span class="at">-p</span> 8282:8080 <span class="at">-e</span> ROOT=TRUE <span class="dt">\</span></span>
+<span id="cb1749-2"><a href="chap-other-softwares.html#cb1749-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">-e</span> USER=rstudio <span class="at">-e</span> PASSWORD=cloud rocker/verse</span></code></pre></div>
 <p>将主机端口 8282 映射给虚拟机/容器的 8080 端口，RStudio Server 默认使用的端口是 8787，因此改为 8080 需要修改 <code>/etc/rstudio/rserver.conf</code> 文件，添加</p>
 <pre><code>www-port=8080</code></pre>
 <p>然后重启 RStudio Server，之后可以在浏览器中登陆，登陆网址为 <a href="http://ip-addr:8080" class="uri">http://ip-addr:8080</a>，其中 <code>ip-addr</code> 可在容器中运行如下一行命令获得</p>
-<div class="sourceCode" id="cb1752"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1752-1"><a href="chap-other-softwares.html#cb1752-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> addr</span></code></pre></div>
+<div class="sourceCode" id="cb1751"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1751-1"><a href="chap-other-softwares.html#cb1751-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> addr</span></code></pre></div>
 </li>
 </ol>
 <p>更多关于服务器版本的 RStudio 介绍，请参考 <a href="https://docs.rstudio.com/ide/server-pro/access-and-security.html" class="uri">https://docs.rstudio.com/ide/server-pro/access-and-security.html</a></p>
@@ -1856,40 +1854,40 @@ print(px.colors.qualitative.Plotly)
 <ul>
 <li>
 <p>查看 docker machine 版本信息</p>
-<div class="sourceCode" id="cb1753"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1753-1"><a href="chap-other-softwares.html#cb1753-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> <span class="at">--version</span></span>
-<span id="cb1753-2"><a href="chap-other-softwares.html#cb1753-2" aria-hidden="true" tabindex="-1"></a><span class="co"># docker-machine.exe version 0.14.0, build 89b8332</span></span></code></pre></div>
+<div class="sourceCode" id="cb1752"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1752-1"><a href="chap-other-softwares.html#cb1752-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> <span class="at">--version</span></span>
+<span id="cb1752-2"><a href="chap-other-softwares.html#cb1752-2" aria-hidden="true" tabindex="-1"></a><span class="co"># docker-machine.exe version 0.14.0, build 89b8332</span></span></code></pre></div>
 </li>
 <li>
 <p>列出创建的虚拟机</p>
-<div class="sourceCode" id="cb1754"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1754-1"><a href="chap-other-softwares.html#cb1754-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动前</span></span>
-<span id="cb1754-2"><a href="chap-other-softwares.html#cb1754-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ls</span>
-<span id="cb1754-3"><a href="chap-other-softwares.html#cb1754-3" aria-hidden="true" tabindex="-1"></a><span class="co"># NAME      ACTIVE   DRIVER       STATE     URL   SWARM   DOCKER    ERRORS</span></span>
-<span id="cb1754-4"><a href="chap-other-softwares.html#cb1754-4" aria-hidden="true" tabindex="-1"></a><span class="co"># default   -        virtualbox   Stopped                 Unknown</span></span>
-<span id="cb1754-5"><a href="chap-other-softwares.html#cb1754-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动后</span></span>
-<span id="cb1754-6"><a href="chap-other-softwares.html#cb1754-6" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ls</span>
-<span id="cb1754-7"><a href="chap-other-softwares.html#cb1754-7" aria-hidden="true" tabindex="-1"></a><span class="co"># NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span></span>
-<span id="cb1754-8"><a href="chap-other-softwares.html#cb1754-8" aria-hidden="true" tabindex="-1"></a><span class="co"># default   *        virtualbox   Running   tcp://192.168.99.100:2376           v18.03.0-ce</span></span></code></pre></div>
+<div class="sourceCode" id="cb1753"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1753-1"><a href="chap-other-softwares.html#cb1753-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动前</span></span>
+<span id="cb1753-2"><a href="chap-other-softwares.html#cb1753-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ls</span>
+<span id="cb1753-3"><a href="chap-other-softwares.html#cb1753-3" aria-hidden="true" tabindex="-1"></a><span class="co"># NAME      ACTIVE   DRIVER       STATE     URL   SWARM   DOCKER    ERRORS</span></span>
+<span id="cb1753-4"><a href="chap-other-softwares.html#cb1753-4" aria-hidden="true" tabindex="-1"></a><span class="co"># default   -        virtualbox   Stopped                 Unknown</span></span>
+<span id="cb1753-5"><a href="chap-other-softwares.html#cb1753-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动后</span></span>
+<span id="cb1753-6"><a href="chap-other-softwares.html#cb1753-6" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ls</span>
+<span id="cb1753-7"><a href="chap-other-softwares.html#cb1753-7" aria-hidden="true" tabindex="-1"></a><span class="co"># NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span></span>
+<span id="cb1753-8"><a href="chap-other-softwares.html#cb1753-8" aria-hidden="true" tabindex="-1"></a><span class="co"># default   *        virtualbox   Running   tcp://192.168.99.100:2376           v18.03.0-ce</span></span></code></pre></div>
 </li>
 <li>
 <p>查看虚拟机 default 的 ip</p>
-<div class="sourceCode" id="cb1755"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1755-1"><a href="chap-other-softwares.html#cb1755-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ip default</span>
-<span id="cb1755-2"><a href="chap-other-softwares.html#cb1755-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 192.168.99.100</span></span></code></pre></div>
+<div class="sourceCode" id="cb1754"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1754-1"><a href="chap-other-softwares.html#cb1754-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ip default</span>
+<span id="cb1754-2"><a href="chap-other-softwares.html#cb1754-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 192.168.99.100</span></span></code></pre></div>
 </li>
 <li>
 <p>启动虚拟机</p>
-<div class="sourceCode" id="cb1756"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1756-1"><a href="chap-other-softwares.html#cb1756-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> start default</span>
-<span id="cb1756-2"><a href="chap-other-softwares.html#cb1756-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Starting "default"...</span></span>
-<span id="cb1756-3"><a href="chap-other-softwares.html#cb1756-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Check network to re-create if needed...</span></span>
-<span id="cb1756-4"><a href="chap-other-softwares.html#cb1756-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Windows might ask for the permission to configure a dhcp server. Sometimes, such confirmation window is minimized in the taskbar.</span></span>
-<span id="cb1756-5"><a href="chap-other-softwares.html#cb1756-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Waiting for an IP...</span></span>
-<span id="cb1756-6"><a href="chap-other-softwares.html#cb1756-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine "default" was started.</span></span>
-<span id="cb1756-7"><a href="chap-other-softwares.html#cb1756-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Waiting for SSH to be available...</span></span>
-<span id="cb1756-8"><a href="chap-other-softwares.html#cb1756-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Detecting the provisioner...</span></span>
-<span id="cb1756-9"><a href="chap-other-softwares.html#cb1756-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.</span></span></code></pre></div>
+<div class="sourceCode" id="cb1755"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1755-1"><a href="chap-other-softwares.html#cb1755-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> start default</span>
+<span id="cb1755-2"><a href="chap-other-softwares.html#cb1755-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Starting "default"...</span></span>
+<span id="cb1755-3"><a href="chap-other-softwares.html#cb1755-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Check network to re-create if needed...</span></span>
+<span id="cb1755-4"><a href="chap-other-softwares.html#cb1755-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Windows might ask for the permission to configure a dhcp server. Sometimes, such confirmation window is minimized in the taskbar.</span></span>
+<span id="cb1755-5"><a href="chap-other-softwares.html#cb1755-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (default) Waiting for an IP...</span></span>
+<span id="cb1755-6"><a href="chap-other-softwares.html#cb1755-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine "default" was started.</span></span>
+<span id="cb1755-7"><a href="chap-other-softwares.html#cb1755-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Waiting for SSH to be available...</span></span>
+<span id="cb1755-8"><a href="chap-other-softwares.html#cb1755-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Detecting the provisioner...</span></span>
+<span id="cb1755-9"><a href="chap-other-softwares.html#cb1755-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.</span></span></code></pre></div>
 </li>
 <li>
 <p>进入 Docker 环境</p>
-<div class="sourceCode" id="cb1757"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1757-1"><a href="chap-other-softwares.html#cb1757-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ssh default</span></code></pre></div>
+<div class="sourceCode" id="cb1756"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1756-1"><a href="chap-other-softwares.html#cb1756-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> ssh default</span></code></pre></div>
 <pre><code>                        ##         .
                   ## ## ##        ==
                ## ## ## ## ##    ===
@@ -1908,33 +1906,33 @@ Docker version 18.03.0-ce, build 0520e24</code></pre>
 </li>
 <li>
 <p>查看容器</p>
-<div class="sourceCode" id="cb1759"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1759-1"><a href="chap-other-softwares.html#cb1759-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps <span class="at">-a</span></span>
-<span id="cb1759-2"><a href="chap-other-softwares.html#cb1759-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CONTAINER ID        IMAGE               COMMAND             CREATED            STATUS                   PORTS               NAMES</span></span>
-<span id="cb1759-3"><a href="chap-other-softwares.html#cb1759-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 69e6929d269e        rocker/verse        "/init"             3 weeks ago        Exited (0) 10 days ago                       verse</span></span></code></pre></div>
+<div class="sourceCode" id="cb1758"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1758-1"><a href="chap-other-softwares.html#cb1758-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps <span class="at">-a</span></span>
+<span id="cb1758-2"><a href="chap-other-softwares.html#cb1758-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CONTAINER ID        IMAGE               COMMAND             CREATED            STATUS                   PORTS               NAMES</span></span>
+<span id="cb1758-3"><a href="chap-other-softwares.html#cb1758-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 69e6929d269e        rocker/verse        "/init"             3 weeks ago        Exited (0) 10 days ago                       verse</span></span></code></pre></div>
 </li>
 <li>
 <p>启动/停止容器</p>
-<div class="sourceCode" id="cb1760"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1760-1"><a href="chap-other-softwares.html#cb1760-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> start verse</span>
-<span id="cb1760-2"><a href="chap-other-softwares.html#cb1760-2" aria-hidden="true" tabindex="-1"></a><span class="co"># verse</span></span>
-<span id="cb1760-3"><a href="chap-other-softwares.html#cb1760-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop verse</span>
-<span id="cb1760-4"><a href="chap-other-softwares.html#cb1760-4" aria-hidden="true" tabindex="-1"></a><span class="co"># verse</span></span></code></pre></div>
+<div class="sourceCode" id="cb1759"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1759-1"><a href="chap-other-softwares.html#cb1759-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> start verse</span>
+<span id="cb1759-2"><a href="chap-other-softwares.html#cb1759-2" aria-hidden="true" tabindex="-1"></a><span class="co"># verse</span></span>
+<span id="cb1759-3"><a href="chap-other-softwares.html#cb1759-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop verse</span>
+<span id="cb1759-4"><a href="chap-other-softwares.html#cb1759-4" aria-hidden="true" tabindex="-1"></a><span class="co"># verse</span></span></code></pre></div>
 </li>
 <li>
 <p>查看虚拟机 default 的环境</p>
-<div class="sourceCode" id="cb1761"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1761-1"><a href="chap-other-softwares.html#cb1761-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> env default</span>
-<span id="cb1761-2"><a href="chap-other-softwares.html#cb1761-2" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_TLS_VERIFY="1"</span></span>
-<span id="cb1761-3"><a href="chap-other-softwares.html#cb1761-3" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_HOST="tcp://192.168.99.100:2376"</span></span>
-<span id="cb1761-4"><a href="chap-other-softwares.html#cb1761-4" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_CERT_PATH="D:\Docker\machines\default"</span></span>
-<span id="cb1761-5"><a href="chap-other-softwares.html#cb1761-5" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_MACHINE_NAME="default"</span></span>
-<span id="cb1761-6"><a href="chap-other-softwares.html#cb1761-6" aria-hidden="true" tabindex="-1"></a><span class="co"># export COMPOSE_CONVERT_WINDOWS_PATHS="true"</span></span>
-<span id="cb1761-7"><a href="chap-other-softwares.html#cb1761-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # Run this command to configure your shell:</span></span>
-<span id="cb1761-8"><a href="chap-other-softwares.html#cb1761-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env default)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1760"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1760-1"><a href="chap-other-softwares.html#cb1760-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> env default</span>
+<span id="cb1760-2"><a href="chap-other-softwares.html#cb1760-2" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_TLS_VERIFY="1"</span></span>
+<span id="cb1760-3"><a href="chap-other-softwares.html#cb1760-3" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_HOST="tcp://192.168.99.100:2376"</span></span>
+<span id="cb1760-4"><a href="chap-other-softwares.html#cb1760-4" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_CERT_PATH="D:\Docker\machines\default"</span></span>
+<span id="cb1760-5"><a href="chap-other-softwares.html#cb1760-5" aria-hidden="true" tabindex="-1"></a><span class="co"># export DOCKER_MACHINE_NAME="default"</span></span>
+<span id="cb1760-6"><a href="chap-other-softwares.html#cb1760-6" aria-hidden="true" tabindex="-1"></a><span class="co"># export COMPOSE_CONVERT_WINDOWS_PATHS="true"</span></span>
+<span id="cb1760-7"><a href="chap-other-softwares.html#cb1760-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # Run this command to configure your shell:</span></span>
+<span id="cb1760-8"><a href="chap-other-softwares.html#cb1760-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # eval $("C:\Program Files\Docker Toolbox\docker-machine.exe" env default)</span></span></code></pre></div>
 </li>
 <li>
 <p>关闭虚拟机 default</p>
-<div class="sourceCode" id="cb1762"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1762-1"><a href="chap-other-softwares.html#cb1762-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> stop default</span>
-<span id="cb1762-2"><a href="chap-other-softwares.html#cb1762-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Stopping "default"...</span></span>
-<span id="cb1762-3"><a href="chap-other-softwares.html#cb1762-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine "default" was stopped.</span></span></code></pre></div>
+<div class="sourceCode" id="cb1761"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1761-1"><a href="chap-other-softwares.html#cb1761-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-machine</span> stop default</span>
+<span id="cb1761-2"><a href="chap-other-softwares.html#cb1761-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Stopping "default"...</span></span>
+<span id="cb1761-3"><a href="chap-other-softwares.html#cb1761-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Machine "default" was stopped.</span></span></code></pre></div>
 </li>
 </ul>
 <p>更多详情见帮助文档 <a href="https://docs.docker.com/machine/get-started" class="uri">https://docs.docker.com/machine/get-started</a></p>
@@ -1946,7 +1944,7 @@ Docker version 18.03.0-ce, build 0520e24</code></pre>
 <div class="rmdwarn">
 <p>本小节仅用于展示目前书籍写作过程中安装的 R 包依赖，不会出现在最终的书稿中</p>
 </div>
-<div class="sourceCode" id="cb1763"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1762"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/zpackages.html">.packages</a></span><span class="op">(</span><span class="cn">T</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -2186,7 +2184,7 @@ Docker version 18.03.0-ce, build 0520e24</code></pre>
 ## [429] xopen_1.0.0                xtable_1.8-4              
 ## [431] xts_0.12.1                 yaml_2.2.1                
 ## [433] zip_2.2.0                  zoo_1.8-9</code></pre>
-<div class="sourceCode" id="cb1765"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1764"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="va">pdb</span> <span class="op">&lt;-</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/CRANtools.html">CRAN_package_db</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">pkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="fu">desc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/desc/man/desc_get_deps.html">desc_get_deps</a></span><span class="op">(</span><span class="op">)</span>, subset <span class="op">=</span> <span class="va">type</span> <span class="op">==</span> <span class="st">"Imports"</span>, select <span class="op">=</span> <span class="st">"package"</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -3725,7 +3723,7 @@ Docker version 18.03.0-ce, build 0520e24</code></pre>
 <div class="rmdtip">
 <p>本书意欲覆盖的内容</p>
 </div>
-<div class="sourceCode" id="cb1766"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1765"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">inla_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   Package <span class="op">=</span> <span class="st">"INLA"</span>,
   Title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>

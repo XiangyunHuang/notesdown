@@ -339,7 +339,7 @@ p4 <- p1 + labs(
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/font-in-ggplot-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/font-in-ggplot-1} 
 
 }
 
@@ -754,10 +754,11 @@ brew cask install font-noto-color-emoji font-noto-emoji
 ```r
 data.frame(
   category = c("pineapple", "apple", "watermelon", "mango", "pear"),
-  value = c(5, 4, 3, 7, 2)
+  value = c(5, 4, 3, 6, 2)
 ) |> 
   transform(category = sapply(category, emo::ji)) |> 
   ggplot(aes(x = category, y = value)) +
+  scale_y_continuous(limits = c(2, 7)) +
   geom_text(aes(label = category), size = 12, vjust = -0.5) +
   theme_minimal()
 ```
@@ -2233,7 +2234,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x561ea0d00578>
+## <bytecode: 0x5620a431f1e8>
 ## <environment: namespace:ggpubr>
 ```
 
