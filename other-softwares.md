@@ -1350,14 +1350,8 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7fcf5febba90>]
-```
-
-```
+## [<matplotlib.lines.Line2D object at 0x7ff817a4ca60>]
 ## Text(0.5, 0, 'Coord $x$')
-```
-
-```
 ## Text(0, 0.5, 'Coord $y$')
 ```
 
@@ -1379,7 +1373,7 @@ tlmgr --repository http://www.preining.info/tlgpg/ install tlgpg
 :::
 
 
-二维函数 $f(x,y) = 20 + x^2 + y^2 - 10*\cos(2*\pi*x) - 10*\cos(2*\pi*y)$ 最小值 0 最大值 80
+二维函数 $f(x,y) = 20 + x^2 + y^2 - 10*\cos(2*\pi*x) - 10*\cos(2*\pi*y)$ 最小值 0，最大值 80
 
 
 ```python
@@ -1390,7 +1384,8 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 from matplotlib import rcParams
-rcParams.update({'font.size': 18, 'text.usetex': True}) # 其它可配置选项见 rcParams.keys()
+rcParams.update({'font.size': 18, 'text.usetex': True}) 
+# 其它可配置选项见 rcParams.keys()
 plt.switch_backend('agg')
 
 xDomain = np.arange(-5.12, 5.12, .08)
@@ -1419,7 +1414,7 @@ plt.show()
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/rastrigin-function-1} 
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/matplotlib-3} 
 
 }
 
@@ -1773,36 +1768,18 @@ rcParams.update({'font.size': 10, 'text.usetex': True})
 #                  'font.serif':      ['DejaVu Serif']})
 plt.switch_backend('agg')
 plt.plot([0, 2, 1, 4])
-```
-
-```
-## [<matplotlib.lines.Line2D object at 0x7fcf42bd9f70>]
-```
-
-```python
+## [<matplotlib.lines.Line2D object at 0x7ff817a325e0>]
 plt.xlabel(r'Coord $x$')
-```
-
-```
 ## Text(0.5, 0, 'Coord $x$')
-```
-
-```python
 plt.ylabel(r'Coord $y$')
-```
-
-```
 ## Text(0, 0.5, 'Coord $y$')
-```
-
-```python
 plt.tight_layout()
 plt.show()
 ```
 
 \begin{figure}
 
-{\centering \includegraphics{other-softwares_files/figure-latex/matplotlib-1} 
+{\centering \includegraphics{other-softwares_files/figure-latex/matplotlib-5} 
 
 }
 

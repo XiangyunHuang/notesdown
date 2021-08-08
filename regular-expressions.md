@@ -22,9 +22,9 @@ R 内置的三种匹配模式
 1. `perl = TRUE`: 使用 Perl 正则表达式.
 1. `fixed = FALSE, perl = FALSE`: 使用 POSIX 1003.2 extended 正则表达式 (默认设置).
 
-不要拘泥于一种解决方案，比如清理数据中正则表达式有 Base R 提供的一套，stringr 又一套，提高效率的工具 RStudio 插件 [regexplain](https://github.com/gadenbuie/regexplain) 和辅助创建正则表达式 [RVerbalExpressions](https://github.com/VerbalExpressions/RVerbalExpressions) 包
+不要拘泥于一种解决方案，比如清理数据中正则表达式有 Base R 提供的一套，stringr 又一套，提高效率的工具 RStudio 插件 [regexplain](https://github.com/gadenbuie/regexplain) 和辅助创建正则表达式 [RVerbalExpressions](https://github.com/VerbalExpressions/RVerbalExpressions) 包。
 
-::: sidebar
+
 有几个名词需要单独拎出来解释的
 
 - literal character strings 字面字符串
@@ -34,7 +34,6 @@ R 内置的三种匹配模式
 - Perl-like regular expressions  Perl 风格的正则表达式
 
 以下所述，都不考虑函数中参数 `perl=TRUE` 的情况，R 语言中提供了扩展的（默认的）和 Perl 风格 的两套正则表达式。作为入门，我们这里只关注前者，启用 Perl 正则表达式只需在函数如 `grep` 中将选项 `perl = TRUE` 即可，并将后者统一命名为 Perl 正则表达式[^learn-regex]。
-:::
 
 正则表达式 (**reg**ular **exp**ression，简称 regexp)， 函数 `regexpr` 和 `gregexpr` 的名称就好理解了，在控制台输入 `?regex` 查看 R 支持的正则表达式，这个文档看上百八十回也不过分。R 内支持正则表达式的函数有 `grep`、`grepl`、`sub`、`gsub`、`regexpr`、`gregexpr` 、 `regexec` 和 `strsplit`。函数 `apropos`，`browseEnv`，`help.search`，`list.files` 和 `ls` 是通过函数 `grep` 来使用正则表达式的，它们全都使用 extended regular expressions
 

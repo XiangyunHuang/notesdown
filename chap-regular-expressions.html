@@ -123,8 +123,7 @@ R-help (April 2004)</p>
 <li>
 <code>fixed = FALSE, perl = FALSE</code>: 使用 POSIX 1003.2 extended 正则表达式 (默认设置).</li>
 </ol>
-<p>不要拘泥于一种解决方案，比如清理数据中正则表达式有 Base R 提供的一套，stringr 又一套，提高效率的工具 RStudio 插件 <a href="https://github.com/gadenbuie/regexplain">regexplain</a> 和辅助创建正则表达式 <a href="https://github.com/VerbalExpressions/RVerbalExpressions">RVerbalExpressions</a> 包</p>
-<div class="sidebar">
+<p>不要拘泥于一种解决方案，比如清理数据中正则表达式有 Base R 提供的一套，stringr 又一套，提高效率的工具 RStudio 插件 <a href="https://github.com/gadenbuie/regexplain">regexplain</a> 和辅助创建正则表达式 <a href="https://github.com/VerbalExpressions/RVerbalExpressions">RVerbalExpressions</a> 包。</p>
 <p>有几个名词需要单独拎出来解释的</p>
 <ul>
 <li>literal character strings 字面字符串</li>
@@ -135,19 +134,18 @@ R-help (April 2004)</p>
 <li>Perl-like regular expressions Perl 风格的正则表达式</li>
 </ul>
 <p>以下所述，都不考虑函数中参数 <code>perl=TRUE</code> 的情况，R 语言中提供了扩展的（默认的）和 Perl 风格 的两套正则表达式。作为入门，我们这里只关注前者，启用 Perl 正则表达式只需在函数如 <code>grep</code> 中将选项 <code>perl = TRUE</code> 即可，并将后者统一命名为 Perl 正则表达式<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;推荐的学习正则表达式的路径可以见统计之都论坛 &lt;a href="https://d.cosx.org/d/420410" class="uri"&gt;https://d.cosx.org/d/420410&lt;/a&gt;&lt;/p&gt;'><sup>44</sup></a>。</p>
-</div>
 <p>正则表达式 (<strong>reg</strong>ular <strong>exp</strong>ression，简称 regexp)， 函数 <code>regexpr</code> 和 <code>gregexpr</code> 的名称就好理解了，在控制台输入 <code><a href="https://rdrr.io/r/base/regex.html">?regex</a></code> 查看 R 支持的正则表达式，这个文档看上百八十回也不过分。R 内支持正则表达式的函数有 <code>grep</code>、<code>grepl</code>、<code>sub</code>、<code>gsub</code>、<code>regexpr</code>、<code>gregexpr</code> 、 <code>regexec</code> 和 <code>strsplit</code>。函数 <code>apropos</code>，<code>browseEnv</code>，<code>help.search</code>，<code>list.files</code> 和 <code>ls</code> 是通过函数 <code>grep</code> 来使用正则表达式的，它们全都使用 extended regular expressions</p>
-<div class="sourceCode" id="cb1688"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1684"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">x</span>, ignore.case <span class="op">=</span> <span class="cn">FALSE</span>, perl <span class="op">=</span> <span class="cn">FALSE</span>, value <span class="op">=</span> <span class="cn">FALSE</span>,
      fixed <span class="op">=</span> <span class="cn">FALSE</span>, useBytes <span class="op">=</span> <span class="cn">FALSE</span>, invert <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>匹配模式 pattern 的内容 可以用函数 <code>cat</code> 打印出来，注意反斜杠进入 R 字符串中时，需要用两个，反斜杠 <code>\</code> 本身是转义符，否则会报错。</p>
-<div class="sourceCode" id="cb1689"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1685"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\\"</span><span class="op">)</span> <span class="co"># \ 反斜杠是转义字符</span></code></pre></div>
 <pre><code>## \</code></pre>
-<div class="sourceCode" id="cb1691"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1687"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\\."</span><span class="op">)</span></code></pre></div>
 <pre><code>## \.</code></pre>
-<div class="sourceCode" id="cb1693"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1689"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"\\\n"</span><span class="op">)</span> <span class="co"># 注意 \n 表示换行</span></code></pre></div>
 <pre><code>## \</code></pre>
 <div id="character-constants" class="section level2" number="14.1">
@@ -234,11 +232,11 @@ R-help (April 2004)</p>
 <span class="header-section-number">14.2</span> 软件环境<a class="anchor" aria-label="anchor" href="#environments"><i class="fas fa-link"></i></a>
 </h2>
 <p>R 内置的正则表达式实现是基于 PCRE ICU TRE iconv 等第三方库，搞清楚自己使用的版本信息是重要的，一些字符集的解释与区域环境有关，如 <code>[:alnum:]</code> 和 <code>[:alpha:]</code>等，所以获取当前的区域设置也很重要</p>
-<div class="sourceCode" id="cb1695"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1691"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># find a suitable coding for the current locale</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/localeToCharset.html">localeToCharset</a></span><span class="op">(</span>locale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/locales.html">Sys.getlocale</a></span><span class="op">(</span><span class="st">"LC_CTYPE"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "UTF-8"     "ISO8859-1"</code></pre>
-<div class="sourceCode" id="cb1697"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1693"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 软件版本信息</span>
 <span class="fu"><a href="https://rdrr.io/r/base/extSoftVersion.html">extSoftVersion</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##                                              zlib 
@@ -259,7 +257,7 @@ R-help (April 2004)</p>
 ##                                             "8.0" 
 ##                                              BLAS 
 ## "/usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0"</code></pre>
-<div class="sourceCode" id="cb1699"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1695"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 区域及其编码信息</span>
 <span class="fu"><a href="https://rdrr.io/r/base/l10n_info.html">l10n_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $MBCS
@@ -273,7 +271,7 @@ R-help (April 2004)</p>
 ## 
 ## $codeset
 ## [1] "UTF-8"</code></pre>
-<div class="sourceCode" id="cb1701"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1697"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 表示数字、货币的细节</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.localeconv.html">Sys.localeconv</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##     decimal_point     thousands_sep          grouping   int_curr_symbol 
@@ -286,12 +284,12 @@ R-help (April 2004)</p>
 ##               "1"               "0"               "1"               "0" 
 ##       p_sign_posn       n_sign_posn 
 ##               "1"               "1"</code></pre>
-<div class="sourceCode" id="cb1703"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1699"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># PCRE 启用的配置选项</span>
 <span class="fu"><a href="https://rdrr.io/r/base/pcre_config.html">pcre_config</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##              UTF-8 Unicode properties                JIT              stack 
 ##               TRUE               TRUE               TRUE              FALSE</code></pre>
-<div class="sourceCode" id="cb1705"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1701"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 比较全的字符信息</span>
 <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_info.html">stri_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## $Unicode.version
@@ -364,7 +362,7 @@ R-help (April 2004)</p>
 ## $ICU.UTF8
 ## [1] TRUE</code></pre>
 <p>需要临时改变区域环境设置，配合特殊的画图和文本输出要求。</p>
-<div class="sourceCode" id="cb1707"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1703"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 获取当前默认的区域设置</span>
 <span class="fu"><a href="https://rdrr.io/r/base/locales.html">Sys.getlocale</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">foo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/locales.html">Sys.getlocale</a></span><span class="op">(</span><span class="op">)</span>
@@ -489,7 +487,7 @@ R-help (April 2004)</p>
 </table></div>
 <p>函数 <code>regexpr</code> 和 <code>gregexpr</code> 支持命名捕捉 (named capture). 如果一个组被命名了，如 <code>(?&lt;first&gt;[A-Z][a-z]+)</code> 那么，匹配的位置是按名字返回。</p>
 <p>下面举个例子说明，从字符串向量 <code>notables</code> 中获得了三组匹配 <code>name.rex</code> 是一段正则表达式，描述的模式是人名</p>
-<div class="sourceCode" id="cb1709"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1705"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## named capture</span>
 <span class="va">notables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"  Ben Franklin and Jefferson Davis"</span>,
               <span class="st">"\tMillard Fillmore"</span><span class="op">)</span>
@@ -538,11 +536,11 @@ R-help (April 2004)</p>
 <p>The sequence <code>(?#</code> marks the start of a comment which continues up to the next closing parenthesis. Nested parentheses are not permitted. The characters that make up a comment play no part at all in the pattern matching.</p>
 <p>If the extended option is set, an unescaped <code>#</code> character outside a character class introduces a comment that continues up to the next newline character in the pattern.</p>
 <p>批量转换驼峰式命名</p>
-<div class="sourceCode" id="cb1711"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1707"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">old_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"."</span>, pattern <span class="op">=</span> <span class="st">"^[A-Z].*.Rmd$"</span><span class="op">)</span>
 <span class="va">new_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"rmd"</span>, <span class="st">"Rmd"</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="va">old_name</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.rename</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">old_name</span>, to <span class="op">=</span> <span class="va">new_name</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1712"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1708"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">html_lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"https://movie.douban.com/top250"</span><span class="op">)</span>
 <span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">html_lines</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
 
@@ -551,13 +549,13 @@ R-help (April 2004)</p>
 
 <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">".*&gt;(.*?)&lt;.*"</span>, <span class="st">"\\1"</span>, <span class="st">'&lt;span class="title"&gt;肖生克的救赎&lt;/span&gt;'</span>, perl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 <p>解析术之 XPath</p>
-<div class="sourceCode" id="cb1713"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1709"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org/">xml2</a></span><span class="op">)</span>
 <span class="va">dom</span> <span class="op">=</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span>
 <span class="va">title_nodes</span> <span class="op">=</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_find_all.html">xml_find_all</a></span><span class="op">(</span><span class="va">dom</span>, <span class="st">'.//span[@class="title"]'</span><span class="op">)</span>
 <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_text.html">xml_text</a></span><span class="op">(</span><span class="va">title_nodes</span><span class="op">)</span></code></pre></div>
 <p>解析术之 CSS Selector</p>
-<div class="sourceCode" id="cb1714"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1710"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span>
 <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span> <span class="op">%&gt;%</span>
 <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_nodes</a></span><span class="op">(</span><span class="st">'.title'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># class="title"的标签</span>
