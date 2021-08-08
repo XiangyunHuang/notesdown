@@ -620,7 +620,7 @@ p4 <- p1 + labs(
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/font-in-ggplot-1} 
+{\centering \includegraphics[width=0.85\linewidth]{data-visualization_files/figure-latex/font-in-ggplot-1} 
 
 }
 
@@ -2990,11 +2990,11 @@ ggplot(mtcars) +
 
 \begin{figure}
 
-{\centering \subfloat[Base R 直方图(\#fig:unnamed-chunk-42-1)]{\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-1} }\subfloat[Ggplot2 直方图(\#fig:unnamed-chunk-42-2)]{\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-2} }
+{\centering \subfloat[Base R 直方图(\#fig:base-vs-ggplot2-hist-1)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/base-vs-ggplot2-hist-1} }\subfloat[Ggplot2 直方图(\#fig:base-vs-ggplot2-hist-2)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/base-vs-ggplot2-hist-2} }
 
 }
 
-\caption{直方图}(\#fig:unnamed-chunk-42)
+\caption{直方图}(\#fig:base-vs-ggplot2-hist)
 \end{figure}
 
 
@@ -3055,7 +3055,7 @@ boxplot(weight ~ group,
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-43-1} \end{center}
 
 
 以钻石切割质量 cut 为分面依据，以钻石颜色类别 color 为 x 轴，钻石价格为 y 轴，绘制箱线图\@ref(fig:boxplot-facet-color)
@@ -3218,11 +3218,11 @@ ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} 
 
 }
 
-\caption{条件密度估计图}(\#fig:unnamed-chunk-45)
+\caption{条件密度估计图}(\#fig:unnamed-chunk-44)
 \end{figure}
 
 
@@ -3236,7 +3236,7 @@ ggplot(diamonds) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} \end{center}
 
 二维的密度图又是一种延伸
 
@@ -3249,7 +3249,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
 
 `stat` 函数，特别是 nlevel 参数，在密度曲线之间填充我们又可以得到热力图
 
@@ -3262,7 +3262,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
 
 `gemo_hex` 也是二维密度图的一种变体，特别适合数据量比较大的情形
 
@@ -3274,7 +3274,7 @@ ggplot(diamonds, aes(x = carat, y = price)) + geom_hex() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-49-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
 
 
 [heatmaps in ggplot2](https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/) 二维密度图
@@ -3403,7 +3403,7 @@ ggplot(mpg, aes(x = class, y = hwy, color = class)) + geom_jitter()
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-50-1} \end{center}
 
 抖不抖，还是抖一下
 
@@ -3417,7 +3417,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
 
 ```r
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
@@ -3431,7 +3431,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-2} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-2} \end{center}
 
 在数据量比较大的时候，可以用箱线图、密度图、提琴图
 
@@ -3442,11 +3442,11 @@ ggplot(sub_diamonds, aes(x = cut, y = price)) + geom_jitter()
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} 
 
 }
 
-\caption{抖动图的反例}(\#fig:unnamed-chunk-53)
+\caption{抖动图的反例}(\#fig:unnamed-chunk-52)
 \end{figure}
 
 上色和分面都不好使的抖动图，因为区分度变小
@@ -3460,11 +3460,11 @@ ggplot(sub_diamonds, aes(x = color, y = price, color = color)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
 
 }
 
-\caption{根据钻石颜色上色}(\#fig:unnamed-chunk-54)
+\caption{根据钻石颜色上色}(\#fig:unnamed-chunk-53)
 \end{figure}
 
 箱线图此时不宜分的过细
@@ -3618,7 +3618,7 @@ p + geom_bar(position = "fill") +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-55-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} \end{center}
 
 
 [^nightingale-rose]: https://mbostock.github.io/protovis/ex/crimea-rose-full.html
@@ -3757,7 +3757,7 @@ ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-58-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-57-1} \end{center}
 
 
 
@@ -3908,7 +3908,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x56122287b548>
+## <bytecode: 0x562a47192db8>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -4592,7 +4592,7 @@ ggplot() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-67-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-66-1} \end{center}
 
 ### 主成分图 {#sec-ggplot2-prcomp}
 

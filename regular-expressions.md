@@ -394,9 +394,7 @@ parsed
 \caption{命名捕捉}(\#fig:name-capture)
 \end{figure}
 
-::: sidebar
-Atomic grouping 原子分组, possessive qualifiers 占有限定 and conditional 条件 and recursive 递归等模式超出介绍的范围，不在此处详述，感兴趣的读者可参考，此外，插播一条漫画 \@ref(fig:regex-xkcd) 
-:::
+Atomic grouping 原子分组, possessive qualifiers 占有限定 and conditional 条件 and recursive 递归等模式超出介绍的范围，不在此处详述，感兴趣的读者可参考，此外，插播一条漫画 \@ref(fig:regex-xkcd)
 
 [^char-byte]: `useBytes = TRUE` 表示把字符看作字节。字符、字节和比特的关系是，一个字节 byte 八个比特 bit，一个英文字符 character 用一个字节表示，而一个中、日、韩文字符需要两个字节表示 
 [^learn-regex]: 推荐的学习正则表达式的路径可以见统计之都论坛 <https://d.cosx.org/d/420410>

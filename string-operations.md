@@ -954,7 +954,7 @@ regmatches(x, m)
 
 \begin{figure}
 
-{\centering \href{https://regex101.com/}{\includegraphics[width=6.8in]{screenshots/regexp-name-group} }
+{\centering \href{https://regex101.com/}{\includegraphics[width=0.75\linewidth]{screenshots/regexp-name-group} }
 
 }
 
@@ -1941,7 +1941,7 @@ sapply(
 ## actual   10   10   11   12   13   14   15   16   17    18    19    20    21
 ##        [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 ## target    23    24    25    26    27    28    29    30    31    32    33    34
-## actual    22    23    24    25    26    27    28    29    30    30    32    33
+## actual    22    23    24    25    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
 ## actual    34    35    36    37    38    39
@@ -2217,12 +2217,12 @@ xfun::session_info()
 ##   glue_1.4.2        graphics_4.1.0    grDevices_4.1.0   highr_0.9        
 ##   htmltools_0.5.1.1 jsonlite_1.7.2    knitr_1.33        lifecycle_1.0.0  
 ##   magrittr_2.0.1    markdown_1.1      methods_4.1.0     mime_0.11        
-##   openssl_1.4.4     pillar_1.6.2      pkgconfig_2.0.3   png_0.1-7        
-##   purrr_0.3.4       R6_2.5.0          rlang_0.4.11      rmarkdown_2.10   
-##   stats_4.1.0       stringi_1.7.3     stringr_1.4.0     sys_3.4          
-##   tibble_3.1.3      tidyr_1.1.3       tidyselect_1.1.1  tinytex_0.33     
-##   tools_4.1.0       utf8_1.2.2        utils_4.1.0       vctrs_0.3.8      
-##   xfun_0.25         yaml_2.2.1
+##   openssl_1.4.4     pillar_1.6.2      pkgconfig_2.0.3   purrr_0.3.4      
+##   R6_2.5.0          rlang_0.4.11      rmarkdown_2.10    stats_4.1.0      
+##   stringi_1.7.3     stringr_1.4.0     sys_3.4           tibble_3.1.3     
+##   tidyr_1.1.3       tidyselect_1.1.1  tinytex_0.33      tools_4.1.0      
+##   utf8_1.2.2        utils_4.1.0       vctrs_0.3.8       xfun_0.25        
+##   yaml_2.2.1
 ```
 
 [^regexp]: https://homepage.divms.uiowa.edu/~luke/R/regexp.html
