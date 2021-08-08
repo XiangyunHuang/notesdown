@@ -2124,29 +2124,17 @@ cut(Z, breaks = 3, dig.lab = 4, ordered = TRUE)
 ```r
 # 条形图
 plot(cut(Z, breaks = -6:6))
-```
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.35\linewidth]{data-manipulation_files/figure-latex/cut-1} 
-
-}
-
-\caption{连续型变量分组统计}(\#fig:cut-1)
-\end{figure}
-
-```r
 # 直方图
 hist(Z, breaks = -6:6)
 ```
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.35\linewidth]{data-manipulation_files/figure-latex/cut-2} 
+{\centering \subfloat[条形图(\#fig:cut-1)]{\includegraphics[width=0.45\linewidth]{data-manipulation_files/figure-latex/cut-1} }\subfloat[直方图(\#fig:cut-2)]{\includegraphics[width=0.45\linewidth]{data-manipulation_files/figure-latex/cut-2} }
 
 }
 
-\caption{连续型变量分组统计}(\#fig:cut-2)
+\caption{连续型变量分组统计}(\#fig:cut)
 \end{figure}
 
 在指定分组数的情况下，我们还想获取分组的断点

@@ -88,6 +88,52 @@ ggplot(mpg, aes(displ, hwy)) +
 
 ## 元素 {#sec-elements}
 
+以数据集 airquality 为例介绍 GGplot2 图层、主题、配色、坐标、尺度、注释和组合等
+
+### 图层 {#ggplot2-layer}
+
+
+```r
+ls("package:ggplot2", pattern = "^geom_")
+```
+
+```
+##  [1] "geom_abline"            "geom_area"              "geom_bar"              
+##  [4] "geom_bin_2d"            "geom_bin2d"             "geom_blank"            
+##  [7] "geom_boxplot"           "geom_col"               "geom_contour"          
+## [10] "geom_contour_filled"    "geom_count"             "geom_crossbar"         
+## [13] "geom_curve"             "geom_density"           "geom_density_2d"       
+## [16] "geom_density_2d_filled" "geom_density2d"         "geom_density2d_filled" 
+## [19] "geom_dotplot"           "geom_errorbar"          "geom_errorbarh"        
+## [22] "geom_freqpoly"          "geom_function"          "geom_hex"              
+## [25] "geom_histogram"         "geom_hline"             "geom_jitter"           
+## [28] "geom_label"             "geom_line"              "geom_linerange"        
+## [31] "geom_map"               "geom_path"              "geom_point"            
+## [34] "geom_pointrange"        "geom_polygon"           "geom_qq"               
+## [37] "geom_qq_line"           "geom_quantile"          "geom_raster"           
+## [40] "geom_rect"              "geom_ribbon"            "geom_rug"              
+## [43] "geom_segment"           "geom_sf"                "geom_sf_label"         
+## [46] "geom_sf_text"           "geom_smooth"            "geom_spoke"            
+## [49] "geom_step"              "geom_text"              "geom_tile"             
+## [52] "geom_violin"            "geom_vline"
+```
+
+生成一个散点图
+
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point()
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-3-1} \end{center}
+
+
 ### 标签 {#subsec-axis-label}
 
 图形的标签分为横纵轴标签、刻度标签、主标题、副标题等
@@ -116,11 +162,11 @@ data.frame(
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/approval-ratings-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/approval-ratings-1} 
 
 }
 
-\caption{美国总统支持率：自1945年第一季度至1974年第四季度}(\#fig:approval-ratings)
+\caption{自1945年第一季度至1974年第四季度美国总统的支持率}(\#fig:approval-ratings)
 \end{figure}
 
 <!-- 每个点给出总统的人名，部分给出图片
@@ -155,7 +201,7 @@ ggplot(data = dat, aes(x, y)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/text-annotation-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/text-annotation-1} 
 
 }
 
@@ -176,7 +222,7 @@ mtcars |>
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/mtcars-annotation-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/mtcars-annotation-1} 
 
 }
 
@@ -185,11 +231,246 @@ mtcars |>
 
 Claus Wilke 开发的 [ggtext](https://github.com/wilkelab/ggtext) 包支持更加丰富的注释样式，详见网站 <https://wilkelab.org/ggtext/>
 
+
+```r
+ls("package:ggplot2", pattern = "^annotation_")
+```
+
+```
+## [1] "annotation_custom"   "annotation_logticks" "annotation_map"     
+## [4] "annotation_raster"
+```
+
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + 
+  geom_point(na.rm = TRUE)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-5-1} \end{center}
+
+
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + 
+  geom_point(na.rm = TRUE) +
+  labs(title = substitute(paste(d *
+    bolditalic(x)[italic(t)] == alpha * (theta - bolditalic(x)[italic(t)]) *
+    d * italic(t) + lambda * d * italic(B)[italic(t)]), list(lambda = 4)))
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/math-expr-r-1} \end{center}
+
+### 刻度 {#ggplot2-scale}
+
+
+```r
+ls("package:ggplot2", pattern = "^scale_(x|y)_")
+```
+
+```
+##  [1] "scale_x_binned"     "scale_x_continuous" "scale_x_date"      
+##  [4] "scale_x_datetime"   "scale_x_discrete"   "scale_x_log10"     
+##  [7] "scale_x_reverse"    "scale_x_sqrt"       "scale_x_time"      
+## [10] "scale_y_binned"     "scale_y_continuous" "scale_y_date"      
+## [13] "scale_y_datetime"   "scale_y_discrete"   "scale_y_log10"     
+## [16] "scale_y_reverse"    "scale_y_sqrt"       "scale_y_time"
+```
+
+
+```r
+range(airquality$Temp, na.rm = TRUE)
+```
+
+```
+## [1] 56 97
+```
+
+```r
+range(airquality$Ozone, na.rm = TRUE)
+```
+
+```
+## [1]   1 168
+```
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + 
+  geom_point(na.rm = TRUE) +
+  scale_x_continuous(breaks = seq(50, 100, 5)) +
+  scale_y_continuous(breaks = seq(0, 200, 20))
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-7-1} \end{center}
+
+### 图例 {#ggplot2-legend}
+
+二维的图例 [biscale](https://github.com/slu-openGIS/biscale) 和 [multiscales](https://github.com/clauswilke/multiscales) 和 [ggnewscale](https://github.com/eliocamp/ggnewscale)
+
+
+### 坐标系 {#ggplot2-coord}
+
+极坐标，直角坐标
+
+
+```r
+ls("package:ggplot2", pattern = "^coord_")
+```
+
+```
+##  [1] "coord_cartesian" "coord_equal"     "coord_fixed"     "coord_flip"     
+##  [5] "coord_map"       "coord_munch"     "coord_polar"     "coord_quickmap" 
+##  [9] "coord_sf"        "coord_trans"
+```
+
+### 坐标轴 {#ggplot2-axes}
+
+坐标轴标签位置、大小、字体
+
+
+### 配色 {#ggplot2-color}
+
+
+```r
+ls("package:ggplot2", pattern = "^scale_(color|fill)_")
+```
+
+```
+##  [1] "scale_color_binned"     "scale_color_brewer"     "scale_color_continuous"
+##  [4] "scale_color_date"       "scale_color_datetime"   "scale_color_discrete"  
+##  [7] "scale_color_distiller"  "scale_color_fermenter"  "scale_color_gradient"  
+## [10] "scale_color_gradient2"  "scale_color_gradientn"  "scale_color_grey"      
+## [13] "scale_color_hue"        "scale_color_identity"   "scale_color_manual"    
+## [16] "scale_color_ordinal"    "scale_color_steps"      "scale_color_steps2"    
+## [19] "scale_color_stepsn"     "scale_color_viridis_b"  "scale_color_viridis_c" 
+## [22] "scale_color_viridis_d"  "scale_fill_binned"      "scale_fill_brewer"     
+## [25] "scale_fill_continuous"  "scale_fill_date"        "scale_fill_datetime"   
+## [28] "scale_fill_discrete"    "scale_fill_distiller"   "scale_fill_fermenter"  
+## [31] "scale_fill_gradient"    "scale_fill_gradient2"   "scale_fill_gradientn"  
+## [34] "scale_fill_grey"        "scale_fill_hue"         "scale_fill_identity"   
+## [37] "scale_fill_manual"      "scale_fill_ordinal"     "scale_fill_steps"      
+## [40] "scale_fill_steps2"      "scale_fill_stepsn"      "scale_fill_viridis_b"  
+## [43] "scale_fill_viridis_c"   "scale_fill_viridis_d"
+```
+
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone, color = as.factor(Month))) +
+  geom_point(na.rm = TRUE)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-10-1} \end{center}
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone, color = as.ordered(Month))) +
+  geom_point(na.rm = TRUE)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-10-2} \end{center}
+
+
 ### 主题 {#subsec-theme}
 
 [ggcharts](https://github.com/thomas-neitmann/ggcharts) 和 [bbplot](https://github.com/bbc/bbplot)
 [prettyB](https://github.com/jumpingrivers/prettyB) 美化 Base R 图形
 [ggprism](https://github.com/csdaw/ggprism)
+
+
+```r
+ls("package:ggplot2", pattern = "^theme_")
+```
+
+```
+##  [1] "theme_bw"       "theme_classic"  "theme_dark"     "theme_get"     
+##  [5] "theme_gray"     "theme_grey"     "theme_light"    "theme_linedraw"
+##  [9] "theme_minimal"  "theme_replace"  "theme_set"      "theme_test"    
+## [13] "theme_update"   "theme_void"
+```
+
+这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
+
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+```r
+ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_classic()
+```
+
+```
+## Warning: Removed 37 rows containing missing values (geom_point).
+```
+
+\begin{figure}
+
+{\centering \subfloat[黑白主题(\#fig:builtin-themes-1)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/builtin-themes-1} }\subfloat[无主题(\#fig:builtin-themes-2)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/builtin-themes-2} }\newline\subfloat[极少配置的主题(\#fig:builtin-themes-3)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/builtin-themes-3} }\subfloat[经典主题(\#fig:builtin-themes-4)]{\includegraphics[width=0.45\linewidth]{data-visualization_files/figure-latex/builtin-themes-4} }
+
+}
+
+\caption{ggplot2 内置的主题}(\#fig:builtin-themes)
+\end{figure}
+
+除主题之外，还有一类提供一整套统一的风格样式来绘制各种统计图形，如 [ggpubr](https://github.com/kassambara/ggpubr) 和 [bbplot](https://github.com/bbc/bbplot)
+
+
+
+### 布局 {#ggplot2-grid}
+
+
+```r
+ggplot(airquality) + 
+  geom_point(aes(x = Temp, y = Ozone), na.rm = TRUE) + 
+  facet_wrap(~ as.ordered(Month))
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-12-1} \end{center}
+
+```r
+ggplot(airquality) + 
+  geom_point(aes(x = Temp, y = Ozone), na.rm = TRUE) + 
+  facet_wrap(~ as.ordered(Month), nrow = 1)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-12-2} \end{center}
+
+[cowplot](https://github.com/wilkelab/cowplot) 是以作者 [Claus O. Wilke](https://wilkelab.org/) 命名的，用来组合 ggplot 对象画图，类似的组合图形的功能包还有 [baptiste auguié](https://baptiste.github.io/) 开发的 [gridExtra](https://CRAN.R-project.org/package=gridExtra) 和 [egg](https://github.com/baptiste/egg)， [Thomas Lin Pedersen](https://www.data-imaginist.com/) 开发的 [patchwork](https://github.com/thomasp85/patchwork)
+
+[Dean Attali](https://deanattali.com/) 开发的 [ggExtra](https://github.com/daattali/ggExtra) 可以在图的边界添加密度估计曲线，直方图等
 
 
 ## 字体 {#sec-fonts}
@@ -1091,7 +1372,8 @@ pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
 除之前提到的 **grDevices** 包， [**colorspace**](https://colorspace.r-forge.r-project.org/) (<https://hclwizard.org/>) 包 [@colorspace_2009_rainbow; @colorspace_2009_rgb; @colorspace_2019]，[RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <https://colorbrewer2.org/>，[viridis](https://github.com/sjmgarnier/viridis) 包、[colourvalues](https://github.com/SymbolixAU/colourvalues)、[wesanderson](https://github.com/karthik/wesanderson)、[dichromat](https://CRAN.R-project.org/package=dichromat) 包、[pals](https://github.com/kwstat/pals) 包，[palr](https://github.com/AustralianAntarcticDivision/palr) 包，[colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
 
 [colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
-[paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。
+[paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。根据电影 Harry Potter 制作的调色板 [harrypotter](https://github.com/aljrico/harrypotter)，根据网站 [CARTO](https://carto.com/) 设计的 [rcartocolor](https://github.com/Nowosad/rcartocolor) 包，[colorblindr](https://github.com/clauswilke/colorblindr) 模拟色盲环境下的配色方案。
+
 [yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate's Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
 
 
@@ -1234,8 +1516,234 @@ ls("package:ggplot2", pattern = "scale_fill_")
 ## [22] "scale_fill_viridis_d"
 ```
 
+colourlovers 包借助 XML, jsonlite 和 httr 包可以在线获取网站 [COLOURlovers](https://www.colourlovers.com/) 的调色板
+
+
+```r
+library(colourlovers)
+palette1 <- clpalette('113451')
+palette2 <- clpalette('92095')
+palette3 <- clpalette('629637')
+palette4 <- clpalette('694737')
+```
+
+使用调色板
+
+
+```r
+layout(matrix(1:4, nrow = 2))
+par(mar = c(2, 2, 2, 2))
+
+barplot(VADeaths, col = swatch(palette1)[[1]], border = NA)
+barplot(VADeaths, col = swatch(palette2)[[1]], border = NA)
+barplot(VADeaths, col = swatch(palette3)[[1]], border = NA)
+barplot(VADeaths, col = swatch(palette4)[[1]], border = NA)
+```
+
+调色板的描述信息
+
+
+```r
+palette1
+```
+
+获取调色板中的颜色向量
+
+
+```r
+swatch(palette1)[[1]]
+```
 
 ### 颜色模式 {#subsec-color-schames}
+
+不同的颜色模式，从 RGB 到 HCL 的基本操作 <https://stat545.com/block018_colors.html>
+
+
+```r
+# https://github.com/hadley/ggplot2-book
+hcl <- expand.grid(x = seq(-1, 1, length = 100), y = seq(-1, 1, length = 100)) |>
+  subset(subset = x^2 + y^2 < 1) |>
+  transform(
+    r = sqrt(x^2 + y^2)
+  ) |>
+  transform(
+    h = 180 / pi * atan2(y, x),
+    c = 100 * r,
+    l = 65
+  ) |>
+  transform(
+    colour = hcl(h, c, l)
+  )
+
+# sin(h) = y / (c / 100)
+# y = sin(h) * c / 100
+
+cols <- scales::hue_pal()(5)
+selected <- colorspace::RGB(t(col2rgb(cols)) / 255) %>%
+  as("polarLUV") %>%
+  colorspace::coords() %>%
+  as.data.frame() %>%
+  transform(
+    x = cos(H / 180 * pi) * C / 100,
+    y = sin(H / 180 * pi) * C / 100,
+    colour = cols
+  )
+
+ggplot(hcl, aes(x, y)) +
+  geom_raster(aes(fill = colour)) +
+  scale_fill_identity() +
+  scale_colour_identity() +
+  coord_equal() +
+  scale_x_continuous("", breaks = NULL) +
+  scale_y_continuous("", breaks = NULL) +
+  geom_point(data = selected, size = 10, color = "white") +
+  geom_point(data = selected, size = 5, aes(colour = colour))
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-23-1} 
+
+}
+
+\caption{HCL调色}(\#fig:unnamed-chunk-23)
+\end{figure}
+
+R 内置了 502 种不同颜色的名称，下面随机地选取 20 种颜色
+
+
+```r
+sample(colors(TRUE), 20)
+```
+
+```
+##  [1] "royalblue4"      "plum1"           "papayawhip"      "darkslategray"  
+##  [5] "darkturquoise"   "gray79"          "darkred"         "maroon4"        
+##  [9] "darkolivegreen4" "springgreen2"    "orchid4"         "lemonchiffon2"  
+## [13] "paleturquoise4"  "gray49"          "cyan"            "antiquewhite1"  
+## [17] "yellow2"         "gray13"          "cadetblue2"      "gray77"
+```
+
+R 包 grDevices 提供 hcl 调色板[^hcl-palettes] 调制两个色板
+
+[^hcl-palettes]: https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/index.html
+
+
+```r
+# Colors from https://github.com/johannesbjork/LaCroixColoR
+color_pal <- c("#FF3200", "#E9A17C", "#E9E4A6", "#1BB6AF", "#0076BB", "#172869")
+n <- 16
+more_colors <- (grDevices::colorRampPalette(color_pal))(n)
+scales::show_col(colours = more_colors)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/color-pal-1} 
+
+}
+
+\caption{桃色至梨色的渐变}(\#fig:color-pal)
+\end{figure}
+
+
+```r
+# colors in colortools from http://www.gastonsanchez.com/
+fish_pal <- c(
+  "#69D2E7", "#6993E7", "#7E69E7", "#BD69E7",
+  "#E769D2", "#E76993", "#E77E69", "#E7BD69",
+  "#D2E769", "#93E769", "#69E77E", "#69E7BD"
+)
+more_colors <- (grDevices::colorRampPalette(fish_pal))(n)
+scales::show_col(colours = more_colors)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/fish-hsv-pal-1} 
+
+}
+
+\caption{Hue-Saturation-Value (HSV) color model}(\#fig:fish-hsv-pal)
+\end{figure}
+
+
+```r
+rgb(red = 86, green = 180, blue = 233, maxColorValue = 255) # "#56B4E9"
+```
+
+```
+## [1] "#56B4E9"
+```
+
+```r
+rgb(red = 0, green = 158, blue = 115, maxColorValue = 255) # "#009E73"
+```
+
+```
+## [1] "#009E73"
+```
+
+```r
+rgb(red = 240, green = 228, blue = 66, maxColorValue = 255) # "#F0E442"
+```
+
+```
+## [1] "#F0E442"
+```
+
+```r
+rgb(red = 0, green = 114, blue = 178, maxColorValue = 255) # "#0072B2"
+```
+
+```
+## [1] "#0072B2"
+```
+
+举例子，直方图配色与不配色
+
+
+```r
+# library(pander)
+# evalsOptions('graph.unify', TRUE)
+# panderOptions('graph.colors') 获取调色板
+# https://www.fontke.com/tool/rgbschemes/ 在线配色
+cols <- c(
+  "#56B4E9", "#009E73", "#F0E442", "#0072B2",
+  "#D55E00", "#CC79A7", "#999999", "#E69F00"
+)
+hist(mtcars$hp, col = "#56B4E9", border = "white", grid = grid())
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-26-1} 
+
+}
+
+\caption{直方图}(\#fig:unnamed-chunk-26)
+\end{figure}
+
+
+```r
+ggplot(mtcars) +
+  geom_histogram(aes(x = hp, fill = as.factor(..count..)),
+    color = "white", bins = 6
+  ) +
+  scale_fill_manual(values = rep("#56B4E9", 10)) +
+  ggtitle("Histogram with ggplot2") +
+  theme_minimal() +
+  theme(legend.position = "none") 
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-27-1} 
+
+}
+
+\caption{直方图}(\#fig:unnamed-chunk-27)
+\end{figure}
 
 #### RGB
 
@@ -1630,7 +2138,611 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("ComplexHeatmap")
 ```
 
+### 散点图 {#ggplot2-scatter}
+
+下面以 diamonds 数据集为例展示 ggplot2 的绘图过程，首先加载 diamonds 数据集，查看数据集的内容
+
+
+```r
+data(diamonds)
+str(diamonds)
+```
+
+```
+## tibble [53,940 x 10] (S3: tbl_df/tbl/data.frame)
+##  $ carat  : num [1:53940] 0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+##  $ cut    : Ord.factor w/ 5 levels "Fair"<"Good"<..: 5 4 2 4 2 3 3 3 1 3 ...
+##  $ color  : Ord.factor w/ 7 levels "D"<"E"<"F"<"G"<..: 2 2 2 6 7 7 6 5 2 5 ...
+##  $ clarity: Ord.factor w/ 8 levels "I1"<"SI2"<"SI1"<..: 2 3 5 4 2 6 7 3 4 5 ...
+##  $ depth  : num [1:53940] 61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+##  $ table  : num [1:53940] 55 61 65 58 58 57 57 55 61 61 ...
+##  $ price  : int [1:53940] 326 326 327 334 335 336 336 337 337 338 ...
+##  $ x      : num [1:53940] 3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+##  $ y      : num [1:53940] 3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+##  $ z      : num [1:53940] 2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...
+```
+
+数值型变量 carat 作为 x 轴
+
+
+```r
+ggplot(diamonds, aes(x = carat))
+ggplot(diamonds, aes(x = carat, y = price))
+ggplot(diamonds, aes(x = carat, color = cut))
+ggplot(diamonds, aes(x = carat), color = "steelblue")
+```
+
+\begin{figure}
+
+{\centering \subfloat[指定 x 轴(\#fig:diamonds-axis-1)]{\includegraphics[width=0.35\linewidth]{data-visualization_files/figure-latex/diamonds-axis-1} }\subfloat[数值变量 price 作为纵轴(\#fig:diamonds-axis-2)]{\includegraphics[width=0.35\linewidth]{data-visualization_files/figure-latex/diamonds-axis-2} }\newline\subfloat[有序分类变量 cut 指定颜色(\#fig:diamonds-axis-3)]{\includegraphics[width=0.35\linewidth]{data-visualization_files/figure-latex/diamonds-axis-3} }\subfloat[指定统一颜色(\#fig:diamonds-axis-4)]{\includegraphics[width=0.35\linewidth]{data-visualization_files/figure-latex/diamonds-axis-4} }
+
+}
+
+\caption{绘图过程}(\#fig:diamonds-axis)
+\end{figure}
+
+图 \@ref(fig:diamonds-axis) 的基础上添加数据图层
+
+
+```r
+sub_diamonds <- diamonds[sample(1:nrow(diamonds), 1000), ]
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-1} 
+
+}
+
+\caption{添加数据图层}(\#fig:scatter)
+\end{figure}
+
+给散点图\@ref(fig:scatter)上色
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point(color = "steelblue")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-color-1-1} 
+
+}
+
+\caption{散点图配色}(\#fig:scatter-color-1)
+\end{figure}
+
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point(color = "steelblue") +
+  scale_y_continuous(
+    labels = scales::unit_format(unit = "k", scale = 1e-3),
+    breaks = seq(0, 20000, 4000)
+  )
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-scale-1-1} 
+
+}
+
+\caption{格式化坐标轴刻度标签}(\#fig:scatter-scale-1)
+\end{figure}
+
+让另一变量 cut 作为颜色分类指标
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-color-2-1} 
+
+}
+
+\caption{分类散点图}(\#fig:scatter-color-2)
+\end{figure}
+
+当然还有一种类似的表示就是分组，默认情况下，ggplot2将所有观测点视为一组，以分类变量 cut 来分组
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
+  geom_point()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-group-1} 
+
+}
+
+\caption{分组}(\#fig:scatter-group)
+\end{figure}
+
+在图\@ref(fig:scatter-group) 上没有体现出来分组的意思，下面以 cut 分组线性回归为例
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/group-lm-1} 
+
+}
+
+\caption{分组线性回归}(\#fig:group-lm-1)
+\end{figure}
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/group-lm-2} 
+
+}
+
+\caption{分组线性回归}(\#fig:group-lm-2)
+\end{figure}
+
+我们当然可以选择更加合适的拟合方式，如局部多项式平滑 `loess` 但是该方法不太适用观测值比较多的情况，因为它会占用比较多的内存，建议使用广义可加模型作平滑拟合
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
+  geom_point() +
+  geom_smooth(method = "loess")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-33-1} 
+
+}
+
+\caption{局部多项式平滑}(\#fig:unnamed-chunk-33)
+\end{figure}
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
+  geom_point() +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"))
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/group-gam-1} 
+
+}
+
+\caption{数据分组应用广义可加平滑}(\#fig:group-gam)
+\end{figure}
+
+[ggfortify](https://github.com/sinhrks/ggfortify) 包支持更多的统计分析结果的可视化。
+
+为了更好地区分开组别，我们在图\@ref(fig:group-gam)的基础上分面或者配色
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
+  geom_point() +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs")) +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/group-facet-1} 
+
+}
+
+\caption{分组分面}(\#fig:group-facet-1)
+\end{figure}
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, group = cut, color = cut)) +
+  geom_point() +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"))
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/group-facet-2} 
+
+}
+
+\caption{分组配色}(\#fig:group-facet-2)
+\end{figure}
+
+在分类散点图的另一种表示方法就是分面图，以 cut 变量作为分面的依据
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-facet-1} 
+
+}
+
+\caption{分面散点图}(\#fig:scatter-facet)
+\end{figure}
+
+给图 \@ref(fig:scatter-facet) 上色
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price)) +
+  geom_point(color = "steelblue") +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-facet-color-1-1} 
+
+}
+
+\caption{给分面散点图上色}(\#fig:scatter-facet-color-1)
+\end{figure}
+
+在图\@ref(fig:scatter-facet-color-1)的基础上，给不同的类上不同的颜色
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point() +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-facet-color-2-1} 
+
+}
+
+\caption{给不同的类上不同的颜色}(\#fig:scatter-facet-color-2)
+\end{figure}
+
+去掉图例，此时图例属于冗余信息了
+
+
+```r
+ggplot(sub_diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point(show.legend = FALSE) +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/scatter-facet-color-3-1} 
+
+}
+
+\caption{去掉图例}(\#fig:scatter-facet-color-3)
+\end{figure}
+
+四块土地，所施肥料不同，肥力大小顺序 4 < 2 < 3 < 1 小麦产量随肥力的变化
+
+
+```r
+data(Wheat2, package = "nlme") # Wheat Yield Trials
+library(colorspace)
+ggplot(Wheat2, aes(longitude, latitude)) +
+  geom_point(aes(size = yield, colour = Block)) +
+  scale_color_discrete_sequential(palette = "Viridis") +
+  scale_x_continuous(breaks = seq(0, 30, 5)) +
+  scale_y_continuous(breaks = seq(0, 50, 10))
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-34-1} 
+
+}
+
+\caption{多个图例}(\#fig:unnamed-chunk-34)
+\end{figure}
+  
+
+```r
+ggplot(mtcars, aes(x = hp, y = mpg, color = factor(am))) +
+  geom_point()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/category-ggplot-1} 
+
+}
+
+\caption{分类散点图}(\#fig:category-ggplot)
+\end{figure}
+
+图层、分组、分面和散点图介绍完了，接下来就是其它统计图形，如箱线图，小提琴图和条形图
+
+
+```r
+dat <- as.data.frame(cbind(rep(1948 + seq(12), each = 12), rep(seq(12), 12), AirPassengers))
+colnames(dat) <- c("year", "month", "passengers")
+
+ggplot(data = dat, aes(x = as.factor(year), y = as.factor(month))) +
+  stat_sum(aes(size = passengers), colour = "lightblue") +
+  scale_size(range = c(1, 10), breaks = seq(100, 650, 50)) +
+  labs(x = "Year", y = "Month", colour = "Passengers") +
+  theme_minimal()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-35-1} 
+
+}
+
+\caption{1948年至1960年航班乘客人数变化}(\#fig:unnamed-chunk-35)
+\end{figure}
+
 ### 条形图 {#sec-ggplot2-barplot}
+
+条形图特别适合分类变量的展示，我们这里展示钻石切割质量 cut 不同等级的数量，当然我们可以直接展示各类的数目，在图层 `geom_bar` 中指定 `stat="identity"`
+
+
+```r
+# 需要映射数据框的两个变量，相当于自己先计算了每类的数量
+with(diamonds, table(cut))
+```
+
+```
+## cut
+##      Fair      Good Very Good   Premium     Ideal 
+##      1610      4906     12082     13791     21551
+```
+
+```r
+cut_df <- as.data.frame(table(diamonds$cut))
+ggplot(cut_df, aes(x = Var1, y = Freq)) + geom_bar(stat = "identity")
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-36-1} \end{center}
+
+```r
+ggplot(diamonds, aes(x = cut)) + geom_bar()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-1-1} 
+
+}
+
+\caption{频数条形图}(\#fig:diamonds-barplot-1)
+\end{figure}
+
+还有另外三种表示方法
+
+
+```r
+ggplot(diamonds, aes(x = cut)) + geom_bar(stat = "count")
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-1} \end{center}
+
+```r
+ggplot(diamonds, aes(x = cut, y = ..count..)) + geom_bar()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-2} \end{center}
+
+```r
+ggplot(diamonds, aes(x = cut, y = stat(count))) + geom_bar()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-3} \end{center}
+
+我们还可以在图 \@ref(fig:diamonds-barplot-1) 的基础上再添加一个分类变量钻石的纯净度 clarity，形成堆积条形图
+
+
+```r
+ggplot(diamonds, aes(x = cut, fill = clarity)) + geom_bar()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-2-1} 
+
+}
+
+\caption{堆积条形图}(\#fig:diamonds-barplot-2)
+\end{figure}
+
+再添加一个分类变量钻石颜色 color 比较好的做法是分面
+
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar() +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-3-1} 
+
+}
+
+\caption{分面堆积条形图}(\#fig:diamonds-barplot-3)
+\end{figure}
+
+实际上，绘制图\@ref(fig:diamonds-barplot-3)包含了对分类变量的分组计数过程，如下
+
+
+```r
+with(diamonds, table(cut, color))
+```
+
+```
+##            color
+## cut            D    E    F    G    H    I    J
+##   Fair       163  224  312  314  303  175  119
+##   Good       662  933  909  871  702  522  307
+##   Very Good 1513 2400 2164 2299 1824 1204  678
+##   Premium   1603 2337 2331 2924 2360 1428  808
+##   Ideal     2834 3903 3826 4884 3115 2093  896
+```
+
+还有一种堆积的方法是按比例，而不是按数量，如图\@ref(fig:diamonds-barplot-4)
+
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar(position = "fill") +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-4-1} 
+
+}
+
+\caption{比例堆积条形图}(\#fig:diamonds-barplot-4)
+\end{figure}
+
+接下来就是复合条形图
+
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar(position = "dodge")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-5-1} 
+
+}
+
+\caption{复合条形图}(\#fig:diamonds-barplot-5)
+\end{figure}
+
+再添加一个分类变量，就是需要分面大法了，图 \@ref(fig:diamonds-barplot-5) 展示了三个分类变量，其实我们还可以再添加一个分类变量用作分面的列依据
+
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar(position = "dodge") +
+  facet_grid(rows = vars(cut))
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/diamonds-barplot-6-1} 
+
+}
+
+\caption{分面复合条形图}(\#fig:diamonds-barplot-6)
+\end{figure}
+
+图 \@ref(fig:diamonds-barplot-6) 展示的数据如下
+
+
+```r
+with(diamonds, table(color, clarity, cut))
+```
+
+```
+## , , cut = Fair
+## 
+##      clarity
+## color   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF
+##     D    4   56   58   25    5    9    3    3
+##     E    9   78   65   42   14   13    3    0
+##     F   35   89   83   53   33   10    5    4
+##     G   53   80   69   45   45   17    3    2
+##     H   52   91   75   41   32   11    1    0
+##     I   34   45   30   32   25    8    1    0
+##     J   23   27   28   23   16    1    1    0
+## 
+## , , cut = Good
+## 
+##      clarity
+## color   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF
+##     D    8  223  237  104   43   25   13    9
+##     E   23  202  355  160   89   52   43    9
+##     F   19  201  273  184  132   50   35   15
+##     G   19  163  207  192  152   75   41   22
+##     H   14  158  235  138   77   45   31    4
+##     I    9   81  165  110  103   26   22    6
+##     J    4   53   88   90   52   13    1    6
+## 
+## , , cut = Very Good
+## 
+##      clarity
+## color   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF
+##     D    5  314  494  309  175  141   52   23
+##     E   22  445  626  503  293  298  170   43
+##     F   13  343  559  466  293  249  174   67
+##     G   16  327  474  479  432  302  190   79
+##     H   12  343  547  376  257  145  115   29
+##     I    8  200  358  274  205   71   69   19
+##     J    8  128  182  184  120   29   19    8
+## 
+## , , cut = Premium
+## 
+##      clarity
+## color   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF
+##     D   12  421  556  339  131   94   40   10
+##     E   30  519  614  629  292  121  105   27
+##     F   34  523  608  619  290  146   80   31
+##     G   46  492  566  721  566  275  171   87
+##     H   46  521  655  532  336  118  112   40
+##     I   24  312  367  315  221   82   84   23
+##     J   13  161  209  202  153   34   24   12
+## 
+## , , cut = Ideal
+## 
+##      clarity
+## color   I1  SI2  SI1  VS2  VS1 VVS2 VVS1   IF
+##     D   13  356  738  920  351  284  144   28
+##     E   18  469  766 1136  593  507  335   79
+##     F   42  453  608  879  616  520  440  268
+##     G   16  486  660  910  953  774  594  491
+##     H   38  450  763  556  467  289  326  226
+##     I   17  274  504  438  408  178  179   95
+##     J    2  110  243  232  201   54   29   25
+```
+
 
 
 ```r
@@ -1799,6 +2911,221 @@ plotly::plot_ly(diamonds,
   plotly::config(displayModeBar = FALSE)
 ```
 
+### 直方图 {#ggplot2-histogram}
+
+直方图用来查看连续变量的分布
+
+
+```r
+ggplot(diamonds, aes(price)) + geom_histogram(bins = 30)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-40-1} 
+
+}
+
+\caption{钻石价格的分布}(\#fig:unnamed-chunk-40)
+\end{figure}
+
+堆积直方图
+
+
+```r
+ggplot(diamonds, aes(x = price, fill = cut)) + geom_histogram(bins = 30)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-41-1} 
+
+}
+
+\caption{钻石价格随切割质量的分布}(\#fig:unnamed-chunk-41)
+\end{figure}
+
+基础 R 包与 Ggplot2 包绘制的直方图的对比，Base R 绘图速度快，代码更加稳定，Ggplot2 代码简洁，更美观
+
+
+```r
+par(mar = c(2.1, 2.1, 1.5, 0.5))
+plot(c(50, 350), c(0, 10),
+  type = "n", font.main = 1,
+  xlab = "", ylab = "", frame.plot = FALSE, axes = FALSE,
+  # xlab = "hp", ylab = "Frequency",
+  main = paste("Histogram with Base R", paste(rep(" ", 60), collapse = ""))
+)
+axis(
+  side = 1, at = seq(50, 350, 50), labels = seq(50, 350, 50),
+  tick = FALSE, las = 1, padj = 0, mgp = c(3, 0.1, 0)
+)
+axis(
+  side = 2, at = seq(0, 10, 2), labels = seq(0, 10, 2),
+  # col = "white", 坐标轴的颜色
+  # col.ticks 刻度线的颜色
+  tick = FALSE, # 取消刻度线
+  las = 1, # 水平方向
+  hadj = 1, # 右侧对齐
+  mgp = c(3, 0.1, 0) # 纵轴边距线设置为 0.1
+)
+abline(h = seq(0, 10, 2), v = seq(50, 350, 50), col = "gray90", lty = "solid")
+abline(h = seq(1, 9, 2), v = seq(75, 325, 50), col = "gray95", lty = "solid")
+hist(mtcars$hp,
+  col = "#56B4E9", border = "white",
+  freq = TRUE, add = TRUE
+  # labels = TRUE, axes = TRUE, ylim = c(0, 10.5),
+  # xlab = "hp",main = "Histogram with Base R"
+)
+mtext("hp", 1, line = 1.0)
+mtext("Frequency", 2, line = 1.0)
+
+ggplot(mtcars) +
+  geom_histogram(aes(x = hp), fill = "#56B4E9", color = "white", breaks = seq(50, 350, 50)) +
+  scale_x_continuous(breaks = seq(50, 350, 50)) +
+  scale_y_continuous(breaks = seq(0, 12, 2)) +
+  labs(x = "hp", y = "Frequency", title = "Histogram with Ggplot2") +
+  theme_minimal(base_size = 12)
+```
+
+\begin{figure}
+
+{\centering \subfloat[Base R 直方图(\#fig:unnamed-chunk-42-1)]{\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-1} }\subfloat[Ggplot2 直方图(\#fig:unnamed-chunk-42-2)]{\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-2} }
+
+}
+
+\caption{直方图}(\#fig:unnamed-chunk-42)
+\end{figure}
+
+
+
+### 箱线图 {#ggplot2-boxplot}
+
+以 PlantGrowth 数据集为例展示箱线图，在两组不同实验条件下，植物生长的情况，纵坐标是干燥植物的量，横坐标表示不同的实验条件。这是非常典型的适合用箱线图来表达数据的场合，Y 轴对应数值型变量，X 轴对应分类变量，在 R 语言中，分类变量的类型是 factor
+
+
+```r
+data("PlantGrowth")
+str(PlantGrowth)
+```
+
+```
+## 'data.frame':	30 obs. of  2 variables:
+##  $ weight: num  4.17 5.58 5.18 6.11 4.5 4.61 5.17 4.53 5.33 5.14 ...
+##  $ group : Factor w/ 3 levels "ctrl","trt1",..: 1 1 1 1 1 1 1 1 1 1 ...
+```
+
+
+```r
+ggplot(data = PlantGrowth, aes(x = group, y = weight)) + geom_boxplot()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/PlantGrowth-boxplot-1} \end{center}
+
+PlantGrowth 数据量比较小，此时比较适合采用抖动散点图，抖动是为了避免点之间相互重叠，为了增加不同类别之间的识别性，我们可以用不同的点的形状或者不同的颜色来表示类别
+
+
+```r
+ggplot(data = PlantGrowth, aes(x = group, y = weight, shape = group)) + geom_jitter()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/PlantGrowth-jitter-1} \end{center}
+
+```r
+ggplot(data = PlantGrowth, aes(x = group, y = weight, color = group)) + geom_jitter()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/PlantGrowth-jitter-2} \end{center}
+
+
+
+```r
+boxplot(weight ~ group,
+  data = PlantGrowth,
+  ylab = "Dried weight of plants", col = "lightgray",
+  notch = FALSE, varwidth = TRUE
+)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} \end{center}
+
+
+以钻石切割质量 cut 为分面依据，以钻石颜色类别 color 为 x 轴，钻石价格为 y 轴，绘制箱线图\@ref(fig:boxplot-facet-color)
+
+
+```r
+ggplot(diamonds, aes(x = color, y = price, color = cut)) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_grid(~cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-1} 
+
+}
+
+\caption{箱线图}(\#fig:boxplot-facet-color)
+\end{figure}
+
+我们当然还可以添加钻石的纯净度 clarity 作为分面依据，那么箱线图可以为图 \@ref(fig:boxplot-facet-color-clarity-1)
+
+
+```r
+ggplot(diamonds, aes(x = color, y = price, color = cut)) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_grid(clarity ~ cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-1-1} 
+
+}
+
+\caption{复合分面箱线图}(\#fig:boxplot-facet-color-clarity-1)
+\end{figure}
+
+经过观察，我们发现水平分类过多，考虑用切割质量 cut 替换钻石颜色 color 绘图，但是由于分类过细，图信息展示不简练，反而不好，如图 \@ref(fig:boxplot-facet-color-clarity-2)
+
+
+```r
+ggplot(diamonds, aes(x = cut, y = price, color = cut)) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_grid(clarity ~ color)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-1} 
+
+}
+
+\caption{切割质量cut上色}(\#fig:boxplot-facet-color-clarity-2-1)
+\end{figure}
+
+```r
+ggplot(diamonds, aes(x = cut, y = price, color = color)) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_grid(clarity ~ color)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-2} 
+
+}
+
+\caption{钻石颜色配色}(\#fig:boxplot-facet-color-clarity-2-2)
+\end{figure}
 
 ### 函数图 {#sec-ggplot2-function}
 
@@ -1810,6 +3137,145 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{align}
 
 ### 密度图 {#sec-ggplot2-density}
+
+
+
+```r
+ggplot(mpg, aes(cty)) +
+  geom_density(aes(fill = factor(cyl)), alpha = 0.8) +
+  labs(
+    title = "Density plot",
+    subtitle = "City Mileage Grouped by Number of cylinders",
+    caption = "Source: mpg",
+    x = "City Mileage",
+    fill = "# Cylinders"
+  )
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/mpg-cyl-density-1} 
+
+}
+
+\caption{按汽缸数分组的城市里程}(\#fig:mpg-cyl-density)
+\end{figure}
+
+添加透明度，解决遮挡
+
+
+```r
+ggplot(diamonds, aes(x = price, fill = cut)) + geom_density()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/density-1} 
+
+}
+
+\caption{密度图}(\#fig:density-1)
+\end{figure}
+
+```r
+ggplot(diamonds, aes(x = price, fill = cut)) + geom_density(alpha = 0.5)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/density-2} 
+
+}
+
+\caption{添加透明度的密度图}(\#fig:density-2)
+\end{figure}
+
+堆积密度图
+
+
+```r
+ggplot(diamonds, aes(x = price, fill = cut)) +
+  geom_density(position = "stack")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/stack-density-1} 
+
+}
+
+\caption{堆积密度图}(\#fig:stack-density)
+\end{figure}
+
+条件密度估计
+
+
+```r
+# You can use position="fill" to produce a conditional density estimate
+ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
+  geom_density(position = "fill")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} 
+
+}
+
+\caption{条件密度估计图}(\#fig:unnamed-chunk-45)
+\end{figure}
+
+
+岭线图是密度图的一种变体，可以防止密度曲线重叠在一起
+
+
+```r
+ggplot(diamonds) +
+  ggridges::geom_density_ridges(aes(x = price, y = color, fill = color))
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
+
+二维的密度图又是一种延伸
+
+
+```r
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_density_2d(aes(color = cut)) +
+  facet_grid(~cut)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
+
+`stat` 函数，特别是 nlevel 参数，在密度曲线之间填充我们又可以得到热力图
+
+
+```r
+ggplot(diamonds, aes(x = carat, y = price)) +
+  stat_density_2d(aes(fill = stat(nlevel)), geom = "polygon") +
+  facet_grid(. ~ cut)
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
+
+`gemo_hex` 也是二维密度图的一种变体，特别适合数据量比较大的情形
+
+
+```r
+ggplot(diamonds, aes(x = carat, y = price)) + geom_hex() +
+  scale_fill_viridis_c()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-49-1} \end{center}
+
 
 [heatmaps in ggplot2](https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/) 二维密度图
 
@@ -1924,6 +3390,137 @@ with(
 \caption{正态分布的概率密度曲线}(\#fig:normal-violin)
 \end{figure}
 
+
+### 抖动图 {#ggplot2-jitter}
+
+
+抖动图适合数据量比较小的情况
+
+
+```r
+ggplot(mpg, aes(x = class, y = hwy, color = class)) + geom_jitter()
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
+
+抖不抖，还是抖一下
+
+
+```r
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_point(aes(fill = Species), size = 5, shape = 21, colour = "grey20") +
+  # geom_boxplot(outlier.colour = NA, fill = NA, colour = "grey20") +
+  labs(title = "Not Jittered")
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} \end{center}
+
+```r
+ggplot(iris, aes(x = Species, y = Sepal.Length)) +
+  geom_point(aes(fill = Species),
+    size = 5, shape = 21, colour = "grey20",
+    position = position_jitter(width = 0.2, height = 0.1)
+  ) +
+  # geom_boxplot(outlier.colour = NA, fill = NA, colour = "grey20") +
+  labs(title = "Jittered")
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-2} \end{center}
+
+在数据量比较大的时候，可以用箱线图、密度图、提琴图
+
+
+```r
+ggplot(sub_diamonds, aes(x = cut, y = price)) + geom_jitter()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
+
+}
+
+\caption{抖动图的反例}(\#fig:unnamed-chunk-53)
+\end{figure}
+
+上色和分面都不好使的抖动图，因为区分度变小
+
+
+```r
+ggplot(sub_diamonds, aes(x = color, y = price, color = color)) +
+  geom_jitter() +
+  facet_grid(clarity ~ cut)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} 
+
+}
+
+\caption{根据钻石颜色上色}(\#fig:unnamed-chunk-54)
+\end{figure}
+
+箱线图此时不宜分的过细
+
+
+```r
+ggplot(diamonds, aes(x = color, y = price, color = color)) +
+  geom_boxplot() +
+  facet_grid(cut ~ clarity)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-cut-clarity-1} 
+
+}
+
+\caption{箱线图}(\#fig:boxplot-facet-cut-clarity)
+\end{figure}
+
+所以这样更好，先按纯净度分面，再对比不同的颜色，钻石价格的差异
+
+
+```r
+ggplot(diamonds, aes(x = color, y = price, color = color)) +
+  geom_boxplot() +
+  facet_grid(~clarity)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-clarity-1} 
+
+}
+
+\caption{钻石按纯净度分面}(\#fig:boxplot-facet-clarity)
+\end{figure}
+
+最好只比较一个维度，不同颜色钻石的价格对比
+
+
+```r
+ggplot(diamonds, aes(x = color, y = price, color = color)) +
+  geom_boxplot()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-color-1} 
+
+}
+
+\caption{不同颜色钻石的价格比较}(\#fig:boxplot-color)
+\end{figure}
+
+
 ### 蜂群图 {#sec-ggplot2-beeswarm}
 
 在样本点有限的情况下，用蜜蜂图代替普通的抖动图，可视化效果会好很多，如图 \@ref(fig:beeswarm) 所示。Erik Clarke 开发的 [ggbeeswarm](https://github.com/eclarke/ggbeeswarm) 包可以将随机抖动的散点图朝着比较规律的方向聚合，又不丢失数据本身的准确性。
@@ -1948,6 +3545,83 @@ p1 + p2
 
 \caption{蜜蜂图可视化效果比抖动图好}(\#fig:beeswarm)
 \end{figure}
+
+
+
+### 玫瑰图 {#ggplot2-rose}
+
+南丁格尔风玫瑰图[^nightingale-rose] 可以作为堆积条形图，分组条形图
+
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/stack-to-rose-1} 
+
+}
+
+\caption{堆积条形图转风玫瑰图}(\#fig:stack-to-rose-1)
+\end{figure}
+
+```r
+ggplot(diamonds, aes(x = color, fill = clarity)) +
+  geom_bar() +
+  coord_polar()
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/stack-to-rose-2} 
+
+}
+
+\caption{堆积条形图转风玫瑰图}(\#fig:stack-to-rose-2)
+\end{figure}
+
+
+```r
+# 风玫瑰图 http://blog.csdn.net/Bone_ACE/article/details/47624987
+set.seed(2018)
+# 随机生成100次风向，并汇集到16个区间内
+direction <- cut_interval(runif(100, 0, 360), n = 16)
+# 随机生成100次风速，并划分成4种强度
+mag <- cut_interval(rgamma(100, 15), 4)
+dat <- data.frame(direction = direction, mag = mag)
+# 将风向映射到X轴，频数映射到Y轴，风速大小映射到填充色，生成条形图后再转为极坐标形式即可
+p <- ggplot(dat, aes(x = direction, y = ..count.., fill = mag))
+p + geom_bar(colour = "white") +
+  coord_polar() +
+  theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
+  labs(x = "", y = "", fill = "Magnitude")
+```
+
+\begin{figure}
+
+{\centering \includegraphics{data-visualization_files/figure-latex/wind-rose-1} 
+
+}
+
+\caption{风玫瑰图}(\#fig:wind-rose)
+\end{figure}
+
+
+```r
+p + geom_bar(position = "fill") +
+  coord_polar() +
+  theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
+  labs(x = "", y = "", fill = "Magnitude")
+```
+
+
+
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-55-1} \end{center}
+
+
+[^nightingale-rose]: https://mbostock.github.io/protovis/ex/crimea-rose-full.html
 
 ### 瓦片图 {#sec-ggplot2-tile}
 
@@ -2038,7 +3712,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Sat"
+## [1] "Sun"
 ```
 
 ```r
@@ -2046,7 +3720,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 7
+## [1] 1
 ```
 
 :::
@@ -2083,7 +3757,7 @@ ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-58-1} \end{center}
 
 
 
@@ -2234,7 +3908,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x564c5d3b5330>
+## <bytecode: 0x56122287b548>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -2621,6 +4295,11 @@ ggplot(data = titanic_wide,
 \caption{桑基图}(\#fig:ggalluvial)
 \end{figure}
 
+### 词云图 {#ggplot2-wordcloud}
+
+词云 [ggwordcloud](https://github.com/lepennec/ggwordcloud)
+
+
 ### 马赛克图 {#sec-ggplot2-ggmosaic}
 
 
@@ -2688,7 +4367,7 @@ ggplot(df, aes(season, rank, color = player)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/ggbump-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/ggbump-1} 
 
 }
 
@@ -2712,7 +4391,7 @@ ggplot(blockbusters, aes(year, box_office, fill = genre)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/stream-graph-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/stream-graph-1} 
 
 }
 
@@ -2913,7 +4592,7 @@ ggplot() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-24-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-67-1} \end{center}
 
 ### 主成分图 {#sec-ggplot2-prcomp}
 

@@ -1973,20 +1973,20 @@ sessionInfo()
 ##  [1] xts_0.12.1        lubridate_1.7.10  webshot_0.5.2     httr_1.4.2       
 ##  [5] tools_4.1.0       backports_1.2.1   utf8_1.2.2        R6_2.5.0         
 ##  [9] DBI_1.1.1         lazyeval_0.2.2    colorspace_2.0-2  withr_2.4.2      
-## [13] tidyselect_1.1.1  processx_3.5.2    curl_4.3.2        compiler_4.1.0   
+## [13] processx_3.5.2    tidyselect_1.1.1  curl_4.3.2        compiler_4.1.0   
 ## [17] isoband_0.2.5     labeling_0.4.2    bookdown_0.22     scales_1.1.1     
 ## [21] callr_3.7.0       stringr_1.4.0     digest_0.6.27     foreign_0.8-81   
-## [25] rmarkdown_2.9     pkgconfig_2.0.3   htmltools_0.5.1.1 fastmap_1.1.0    
+## [25] rmarkdown_2.10    pkgconfig_2.0.3   htmltools_0.5.1.1 fastmap_1.1.0    
 ## [29] highr_0.9         htmlwidgets_1.5.3 rlang_0.4.11      TTR_0.24.2       
 ## [33] rstudioapi_0.13   quantmod_0.4.18   shiny_1.6.0       farver_2.1.0     
 ## [37] generics_0.1.0    zoo_1.8-9         jsonlite_1.7.2    crosstalk_1.1.1  
 ## [41] dplyr_1.0.7       magrittr_2.0.1    rlist_0.4.6.1     Matrix_1.3-4     
 ## [45] Rcpp_1.0.7        munsell_0.5.0     fansi_0.5.0       lifecycle_1.0.0  
 ## [49] stringi_1.7.3     yaml_2.2.1        MASS_7.3-54       grid_4.1.0       
-## [53] promises_1.2.0.1  crayon_1.4.1      lattice_0.20-44   knitr_1.33       
-## [57] ps_1.6.0          pillar_1.6.2      glue_1.4.2        evaluate_0.14    
+## [53] promises_1.2.0.1  crayon_1.4.1      lattice_0.20-44   ps_1.6.0         
+## [57] knitr_1.33        pillar_1.6.2      glue_1.4.2        evaluate_0.14    
 ## [61] data.table_1.14.0 png_0.1-7         vctrs_0.3.8       httpuv_1.6.1     
 ## [65] gtable_0.3.0      purrr_0.3.4       tidyr_1.1.3       assertthat_0.2.1 
-## [69] xfun_0.24         mime_0.11         xtable_1.8-4      broom_0.7.9      
+## [69] xfun_0.25         mime_0.11         xtable_1.8-4      broom_0.7.9      
 ## [73] later_1.2.0       viridisLite_0.4.0 tibble_3.1.3      ellipsis_0.3.2
 ```

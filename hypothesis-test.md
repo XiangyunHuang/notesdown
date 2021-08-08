@@ -207,13 +207,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 26, number of trials = 100, p-value = 1.667e-06
+## number of successes = 25, number of trials = 100, p-value = 5.636e-07
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1773944 0.3573121
+##  0.1687797 0.3465525
 ## sample estimates:
 ## probability of success 
-##                   0.26
+##                   0.25
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -228,13 +228,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 26, number of trials = 100, p-value = 0.1344
+## number of successes = 25, number of trials = 100, p-value = 0.2118
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1773944 0.3573121
+##  0.1687797 0.3465525
 ## sample estimates:
 ## probability of success 
-##                   0.26
+##                   0.25
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -1497,7 +1497,7 @@ system.time(comp_auc(dat = dat2, show_roc = FALSE))
 
 ```
 ##    user  system elapsed 
-##   0.001   0.000   0.002
+##   0.002   0.000   0.002
 ```
 
 更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。
@@ -1693,14 +1693,14 @@ sessionInfo()
 ##  [5] tools_4.1.0        digest_0.6.27      viridisLite_0.4.0  jsonlite_1.7.2    
 ##  [9] evaluate_0.14      lifecycle_1.0.0    tibble_3.1.3       gtable_0.3.0      
 ## [13] pkgconfig_2.0.3    rlang_0.4.11       DBI_1.1.1          ggrepel_0.9.1     
-## [17] yaml_2.2.1         xfun_0.24          httr_1.4.2         withr_2.4.2       
-## [21] stringr_1.4.0      dplyr_1.0.7        knitr_1.33         htmlwidgets_1.5.3 
-## [25] generics_0.1.0     vctrs_0.3.8        grid_4.1.0         tidyselect_1.1.1  
-## [29] data.table_1.14.0  glue_1.4.2         R6_2.5.0           plotly_4.9.4.1    
-## [33] fansi_0.5.0        rmarkdown_2.9      bookdown_0.22      tidyr_1.1.3       
-## [37] farver_2.1.0       purrr_0.3.4        productplots_0.1.1 scales_1.1.1      
-## [41] ellipsis_0.3.2     htmltools_0.5.1.1  assertthat_0.2.1   colorspace_2.0-2  
-## [45] labeling_0.4.2     utf8_1.2.2         stringi_1.7.3      lazyeval_0.2.2    
-## [49] munsell_0.5.0      crayon_1.4.1
+## [17] curl_4.3.2         yaml_2.2.1         xfun_0.25          httr_1.4.2        
+## [21] withr_2.4.2        stringr_1.4.0      dplyr_1.0.7        knitr_1.33        
+## [25] htmlwidgets_1.5.3  generics_0.1.0     vctrs_0.3.8        grid_4.1.0        
+## [29] tidyselect_1.1.1   data.table_1.14.0  glue_1.4.2         R6_2.5.0          
+## [33] plotly_4.9.4.1     fansi_0.5.0        rmarkdown_2.10     bookdown_0.22     
+## [37] tidyr_1.1.3        farver_2.1.0       purrr_0.3.4        productplots_0.1.1
+## [41] scales_1.1.1       ellipsis_0.3.2     htmltools_0.5.1.1  assertthat_0.2.1  
+## [45] colorspace_2.0-2   labeling_0.4.2     utf8_1.2.2         stringi_1.7.3     
+## [49] lazyeval_0.2.2     munsell_0.5.0      crayon_1.4.1
 ```
 

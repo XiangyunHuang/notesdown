@@ -88,10 +88,10 @@ Tn
 
 ```
 ## $quantile
-## [1] 2.561154
+## [1] 2.561042
 ## 
 ## $f.quantile
-## [1] 1.492994e-07
+## [1] 1.969252e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -152,7 +152,7 @@ persp(f1$z,
   col = drapecol(f1$z, col = terrain.colors(20)),
   theta = 30, phi = 20, 
   r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
-  shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE
+  shade = 0.1, ticktype = "detailed", nticks = 5
 )
 ```
 

@@ -1410,17 +1410,21 @@ ax.set_xlim(-5.12, 5.12)
 ax.set_ylim(-5.12, 5.12)
 ## (-5.12, 5.12)
 ax.set_zlim(0, 80)
+# fig.colorbar(surf, aspect=30)
+# plt.title(r'Rastrigin Function in Two Dimensions')
 ## (0.0, 80.0)
-fig.colorbar(surf, aspect=30)
-## <matplotlib.colorbar.Colorbar object at 0x7fcf5c8f70a0>
-plt.title(r'Rastrigin Function in Two Dimensions')
-## Text(0.5, 0.92, 'Rastrigin Function in Two Dimensions')
+plt.tight_layout()
 plt.show()
 ```
 
+\begin{figure}
 
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/rastrigin-function-1} 
 
-\begin{center}\includegraphics[width=.8\textwidth]{other-softwares_files/figure-latex/matplotlib-3} \end{center}
+}
+
+\caption{Python 绘制三维图形：Rastrigin 函数图形}(\#fig:rastrigin-function)
+\end{figure}
 
 ## Python 基础操作 {#sec-basic-python}
 
@@ -1822,7 +1826,7 @@ x # 得到 python 中的向量 vector 或数组 array
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月07日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月08日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
 
 
 

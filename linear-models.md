@@ -1131,17 +1131,18 @@ sessionInfo()
 ## [5] magrittr_2.0.1 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.24         purrr_0.3.4      
-##  [5] splines_4.1.0     lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8      
+##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.25         purrr_0.3.4      
+##  [5] lattice_0.20-44   splines_4.1.0     colorspace_2.0-2  vctrs_0.3.8      
 ##  [9] generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1       
 ## [13] mgcv_1.8-36       utf8_1.2.2        rlang_0.4.11      pillar_1.6.2     
 ## [17] glue_1.4.2        withr_2.4.2       DBI_1.1.1         tweenr_1.0.2     
 ## [21] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
-## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        fansi_0.5.0      
-## [29] gifski_1.4.3-1    Rttf2pt1_1.3.9    Rcpp_1.0.7        scales_1.1.1     
-## [33] farver_2.1.0      hms_1.1.0         digest_0.6.27     stringi_1.7.3    
-## [37] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
-## [41] tibble_3.1.3      crayon_1.4.1      extrafontdb_1.0   pkgconfig_2.0.3  
-## [45] ellipsis_0.3.2    Matrix_1.3-4      prettyunits_1.1.1 assertthat_0.2.1 
-## [49] rmarkdown_2.9     R6_2.5.0          nlme_3.1-152      compiler_4.1.0
+## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        curl_4.3.2       
+## [29] fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.9    Rcpp_1.0.7       
+## [33] scales_1.1.1      farver_2.1.0      hms_1.1.0         digest_0.6.27    
+## [37] stringi_1.7.3     bookdown_0.22     dplyr_1.0.7       grid_4.1.0       
+## [41] tools_4.1.0       tibble_3.1.3      crayon_1.4.1      extrafontdb_1.0  
+## [45] pkgconfig_2.0.3   Matrix_1.3-4      ellipsis_0.3.2    prettyunits_1.1.1
+## [49] assertthat_0.2.1  rmarkdown_2.10    R6_2.5.0          nlme_3.1-152     
+## [53] compiler_4.1.0
 ```
