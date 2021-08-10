@@ -1,4 +1,10 @@
-# 广义可加模型 {#chap:generalized-additive-models}
+# 广义可加模型 {#chap-generalized-additive-models}
+
+```{r}
+library(mgcv)
+library(splines)
+library(splines2)
+```
 
 广义可加模型，主要参考 Simon N. Wood [@Wood_2017_Generalized] GAM  `mgcv::gam`
 
@@ -23,13 +29,14 @@ Package gam from CRAN implements all the Generalized Additive Models (GAM) funct
 
 拟合广义可加模型的 R 包还有 gam、 gamm4 和 VGAM
 
-## splines {#subsec:spline-smooth}
+## splines {#subsec-spline-smooth}
 
 > Bandwidth selection is an unresolved (and possibly unsolvable) problem in smoothing, so you're perfectly justified in trying/choosing an arbitrary value if it produces good pictures!
 >
 > --- Adrian Baddeley (answering a user's question about the choice of smoothing parameter when using the `density.ppp()` function from the **spatstat** package) private communication (March 2013)
 
-MASS 也有平滑参数 KernSmooth 包 [@KernSmooth1995]
+MASS 也有平滑参数 
+KernSmooth 包 [@KernSmooth1995]
 
 样条和平滑 splines 和 [splines2](https://github.com/wenjie2wang/splines2)
 
@@ -37,7 +44,11 @@ MASS 也有平滑参数 KernSmooth 包 [@KernSmooth1995]
 # lowess 和 loess 的区别和联系 https://d.cosx.org/d/420981
 # smooth  `Visualize' steps in Tukey's smoothers
 demo("smooth", ask = FALSE)
+```
 
+
+```{r,results='hide',eval=FALSE}
+library(ISLR)
 Income <- read.table("http://faculty.marshall.usc.edu/gareth-james/ISL/Income2.csv", sep = ",", header = TRUE)
 mod <- loess(Income ~ Education + Seniority, data = Income)
 
@@ -54,7 +65,12 @@ point_pmat <- persp(
   x = x_Edu, y = x_Sen, z = y_income, theta = 45, phi = 35, col = "lightblue",
   xlab = "Years of Education", ylab = "Seniority", zlab = "Income"
 )
-points(trans3d(x = Income$Education, y = Income$Seniority, z = Income$Income, pmat = point_pmat), col = "red", pch = 16)
+
+
+points(trans3d(x = Income$Education, y = Income$Seniority,
+               z = Income$Income, pmat = point_pmat), col = "red", pch = 16)
+
+
 for (i in 1:dim(Income)[1]) {
   z <- seq(Income$Income[i], pred_func(Income$Education[i], Income$Seniority[i]), length.out = 10)
   lines(trans3d(x = Income$Education[i], y = Income$Seniority[i], z = z, pmat = point_pmat))

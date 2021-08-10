@@ -1,17 +1,12 @@
-# 符号计算 {#chap:symbolic-computation}
-
-```{r setup, include=FALSE}
-library(reticulate)
-knitr::opts_chunk$set(python.reticulate = TRUE, cache = TRUE)
-# 启用 required = TRUE 是让 reticulate 使用指定的 Python 虚拟环境，而不是让它漫无目的地到处找
-reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-```
+# 符号计算 {#chap-symbolic-computation}
 
 相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 `deriv()`、`D()` 等可以做一些简单的微分运算，扩展包 [Ryacas](https://github.com/r-cas/ryacas) 提供 [Yacas](https://github.com/grzegorzmazur/yacas/) 核心计算引擎，[symengine](https://github.com/symengine/symengine.R) 引入 C++ 符号计算库[SymEngine](https://github.com/symengine/)，相比于 **Ryacas**，**symengine** 不会和 Base R 函数冲突。Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/>。
 
+16年在统计之都灌水[符号计算与R语言](https://cosx.org/2016/07/r-symbol-calculate)，相应的 Rmd 源文件放在[Github](https://github.com/XiangyunHuang/Symbolic-Computing)上。
+
 ```{r}
 # 多元函数求偏导
-ftoo <- deriv(expression(sin(x1) + sin(x2) + cos(3 * x1 * x2) + x1^2 + x2^2),
+ft <- deriv(expression(sin(x1) + sin(x2) + cos(3 * x1 * x2) + x1^2 + x2^2),
   namevec = c("x1", "x2"), function.arg = TRUE
 )
 # 隐函数求偏导
@@ -44,12 +39,69 @@ Simplify(DD(NormDensity, "x", 3))
 ```
 即 $x (3 - x^2) \mathrm{e}^{-x^2/2}/\sqrt{2 \pi}$，`eval()` 将表达式转为函数，代入数值运算。
 
+$$\tau(x) = \frac{(-1)^{j-1}}{\sqrt{j!}}\phi^{(j)}(x)$$
+
+
 ```{r}
 Tetrachoric <- function(x, j) {
   (-1)^(j - 1) / sqrt(factorial(j)) * eval(DD(NormDensity, "x", j))
 }
 Tetrachoric(2, 3)
 ```
+
+```{r Tetrachoric, fig.cap="Tetrachoric 函数", echo=FALSE, fig.width=5.5, fig.height=5}
+t <- seq(-4, 4, length.out = 80)
+plot(c(-4, 4), c(-0.3, 0.3),
+  xlab = expression(x), ylab = "",
+  main = expression(Tetrachoric(x)), type = "n"
+)
+abline(v = 0, h = 0, lty = 2)
+n <- 8
+for (i in 1:n) {
+  lines(t, Tetrachoric(t, i),
+    lty = 1, lwd = 1.5, type = "l",
+    col = terrain.colors(9)[i]
+  )
+}
+legend(-4, .3,
+  legend = paste("n=", seq(n)),
+  col = terrain.colors(9), lwd = 1
+)
+```
+
+表达式转函数
+
+```{r}
+ExpToFun<-function(x) eval(Simplify(DD(NormDensity, "x", 4)))
+ExpToFun(2)
+```
+
+函数求积分
+
+```{r}
+integrate(ExpToFun, 0, pi)
+```
+对函数求微分
+
+```{r}
+fun <- function(x) x * pi / sqrt(x)
+# D(body(fun),'x')
+Simplify(D(body(fun), "x"))
+```
+
+
+```{r}
+Dfun <- function(x) {
+}
+body(Dfun) <- Simplify(D(body(fun), "x"))
+Dfun
+```
+
+
+```{r}
+Dfun(4)
+```
+
 
 下面简单介绍 symengine 的符号计算能力
 
@@ -87,13 +139,3 @@ solutions <- solve(d1_expr, "x")
 solutions
 ```
 
-```{python, eval=FALSE}
-from sympy import * 
-# 设置显示样式
-init_printing(use_unicode=False, wrap_line=False)
-x = Symbol('x')
-# 积分
-integrate(x**2 + x + 1, x)
-# 因式分解
-factor(5*x**4/2 + 3*x**3 - 108*x**2/5 - 27*x - 81/10)
-```
