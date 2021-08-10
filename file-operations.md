@@ -156,7 +156,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
     ##                                                       ctime               atime
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-08 12:26:52 2021-08-08 12:35:14
+    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-10 03:43:53 2021-08-10 03:51:53
     ##                                         uid gid uname grname
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -192,7 +192,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 12288  TRUE  755 2021-08-08 13:11:16 2021-08-08 13:11:16 2021-08-08 13:11:16
+    ## . 12288  TRUE  755 2021-08-10 04:27:37 2021-08-10 04:27:37 2021-08-10 04:27:38
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -204,9 +204,9 @@ library(fs)
     
     ```
     ##          size isdir mode               mtime               ctime
-    ## ./_book/ 4096  TRUE  755 2021-08-08 13:11:12 2021-08-08 13:11:12
+    ## ./_book/ 4096  TRUE  755 2021-08-10 04:27:29 2021-08-10 04:27:29
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-08 13:11:11 1001 121 runner docker
+    ## ./_book/ 2021-08-10 04:27:28 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -337,96 +337,97 @@ library(fs)
     ##  [61] "images"                                     
     ##  [62] "index_cache"                                
     ##  [63] "index_files"                                
-    ##  [64] "index.md"                                   
-    ##  [65] "index.Rmd"                                  
-    ##  [66] "interactive-data-tables.Rmd"                
-    ##  [67] "interactive-network-graphics_files"         
-    ##  [68] "interactive-shiny-app_files"                
-    ##  [69] "interactive-shiny-app.Rmd"                  
-    ##  [70] "interactive-web-graphics_files"             
-    ##  [71] "interactive-web-graphics.Rmd"               
-    ##  [72] "k-means-clustering.Rmd"                     
-    ##  [73] "k-nearest-neighbors.Rmd"                    
-    ##  [74] "LICENSE"                                    
-    ##  [75] "linear-discriminant-analysis.Rmd"           
-    ##  [76] "linear-mixed-effects-models.Rmd"            
-    ##  [77] "linear-models_cache"                        
-    ##  [78] "linear-models_files"                        
-    ##  [79] "linear-models.Rmd"                          
-    ##  [80] "machine-learning.Rmd"                       
-    ##  [81] "Makefile"                                   
-    ##  [82] "markov-chain-monte-carlo.Rmd"               
-    ##  [83] "masr.rds"                                   
-    ##  [84] "masr.Rproj"                                 
-    ##  [85] "matrix-operations_files"                    
-    ##  [86] "matrix-operations.Rmd"                      
-    ##  [87] "metastore_db"                               
-    ##  [88] "mixed-programming_cache"                    
-    ##  [89] "mixed-programming_files"                    
-    ##  [90] "mixed-programming.Rmd"                      
-    ##  [91] "model-assessment.Rmd"                       
-    ##  [92] "model-deployment.Rmd"                       
-    ##  [93] "naive-bayes.Rmd"                            
-    ##  [94] "natural-language-processing.Rmd"            
-    ##  [95] "network-analysis.Rmd"                       
-    ##  [96] "neural-networks_cache"                      
-    ##  [97] "neural-networks.Rmd"                        
-    ##  [98] "nonlinear-mixed-models.Rmd"                 
-    ##  [99] "nonlinear-models.Rmd"                       
-    ## [100] "notations.md"                               
-    ## [101] "notations.Rmd"                              
-    ## [102] "numerical-optimization_files"               
-    ## [103] "numerical-optimization.Rmd"                 
-    ## [104] "object-oriented-programming.Rmd"            
-    ## [105] "other-softwares_cache"                      
-    ## [106] "other-softwares_files"                      
-    ## [107] "other-softwares.Rmd"                        
-    ## [108] "outlier-detection.Rmd"                      
-    ## [109] "packages.bib"                               
-    ## [110] "parameter-estimators_files"                 
-    ## [111] "parameter-estimators.Rmd"                   
-    ## [112] "power-analysis_files"                       
-    ## [113] "power-analysis.Rmd"                         
-    ## [114] "preamble.tex"                               
-    ## [115] "preface_cache"                              
-    ## [116] "preface_files"                              
-    ## [117] "preface.md"                                 
-    ## [118] "preface.Rmd"                                
-    ## [119] "push.sh"                                    
-    ## [120] "random-forests.Rmd"                         
-    ## [121] "random-vector.Rmd"                          
-    ## [122] "README.md"                                  
-    ## [123] "recommender-systems.Rmd"                    
-    ## [124] "references.Rmd"                             
-    ## [125] "regular-expressions.Rmd"                    
-    ## [126] "render62b57f55e36a.rds"                     
-    ## [127] "renv.lock"                                  
-    ## [128] "requirements.txt"                           
-    ## [129] "sampling-distributions_files"               
-    ## [130] "sampling-distributions.Rmd"                 
-    ## [131] "screenshots"                                
-    ## [132] "sidebar.lua"                                
-    ## [133] "spark-3.1.1-bin-hadoop3.2.tgz"              
-    ## [134] "spark-warehouse"                            
-    ## [135] "spatial-analysis_cache"                     
-    ## [136] "spatial-analysis_files"                     
-    ## [137] "spatial-analysis.Rmd"                       
-    ## [138] "spatial-modeling_cache"                     
-    ## [139] "spatial-modeling.Rmd"                       
-    ## [140] "stochastic-process.Rmd"                     
-    ## [141] "string-operations.Rmd"                      
-    ## [142] "style.css"                                  
-    ## [143] "support-vector-machines.Rmd"                
-    ## [144] "survival-analysis_files"                    
-    ## [145] "survival-analysis.Rmd"                      
-    ## [146] "symbolic-computation_cache"                 
-    ## [147] "symbolic-computation_files"                 
-    ## [148] "symbolic-computation.Rmd"                   
-    ## [149] "texlive.txt"                                
-    ## [150] "text-analysis.Rmd"                          
-    ## [151] "time-series-analysis_cache"                 
-    ## [152] "time-series-analysis_files"                 
-    ## [153] "time-series-analysis.Rmd"
+    ##  [64] "index-tikzDictionary"                       
+    ##  [65] "index.md"                                   
+    ##  [66] "index.Rmd"                                  
+    ##  [67] "interactive-data-tables.Rmd"                
+    ##  [68] "interactive-network-graphics_files"         
+    ##  [69] "interactive-shiny-app_files"                
+    ##  [70] "interactive-shiny-app.Rmd"                  
+    ##  [71] "interactive-web-graphics_files"             
+    ##  [72] "interactive-web-graphics.Rmd"               
+    ##  [73] "k-means-clustering.Rmd"                     
+    ##  [74] "k-nearest-neighbors.Rmd"                    
+    ##  [75] "LICENSE"                                    
+    ##  [76] "linear-discriminant-analysis.Rmd"           
+    ##  [77] "linear-mixed-effects-models.Rmd"            
+    ##  [78] "linear-models_cache"                        
+    ##  [79] "linear-models_files"                        
+    ##  [80] "linear-models.Rmd"                          
+    ##  [81] "machine-learning.Rmd"                       
+    ##  [82] "Makefile"                                   
+    ##  [83] "markov-chain-monte-carlo.Rmd"               
+    ##  [84] "masr.rds"                                   
+    ##  [85] "masr.Rproj"                                 
+    ##  [86] "matrix-operations_files"                    
+    ##  [87] "matrix-operations.Rmd"                      
+    ##  [88] "metastore_db"                               
+    ##  [89] "mixed-programming_cache"                    
+    ##  [90] "mixed-programming_files"                    
+    ##  [91] "mixed-programming.Rmd"                      
+    ##  [92] "model-assessment.Rmd"                       
+    ##  [93] "model-deployment.Rmd"                       
+    ##  [94] "naive-bayes.Rmd"                            
+    ##  [95] "natural-language-processing.Rmd"            
+    ##  [96] "network-analysis.Rmd"                       
+    ##  [97] "neural-networks_cache"                      
+    ##  [98] "neural-networks.Rmd"                        
+    ##  [99] "nonlinear-mixed-models.Rmd"                 
+    ## [100] "nonlinear-models.Rmd"                       
+    ## [101] "notations.md"                               
+    ## [102] "notations.Rmd"                              
+    ## [103] "numerical-optimization_files"               
+    ## [104] "numerical-optimization.Rmd"                 
+    ## [105] "object-oriented-programming.Rmd"            
+    ## [106] "other-softwares_cache"                      
+    ## [107] "other-softwares_files"                      
+    ## [108] "other-softwares.Rmd"                        
+    ## [109] "outlier-detection.Rmd"                      
+    ## [110] "packages.bib"                               
+    ## [111] "parameter-estimators_files"                 
+    ## [112] "parameter-estimators.Rmd"                   
+    ## [113] "power-analysis_files"                       
+    ## [114] "power-analysis.Rmd"                         
+    ## [115] "preamble.tex"                               
+    ## [116] "preface_cache"                              
+    ## [117] "preface_files"                              
+    ## [118] "preface.md"                                 
+    ## [119] "preface.Rmd"                                
+    ## [120] "push.sh"                                    
+    ## [121] "random-forests.Rmd"                         
+    ## [122] "random-vector.Rmd"                          
+    ## [123] "README.md"                                  
+    ## [124] "recommender-systems.Rmd"                    
+    ## [125] "references.Rmd"                             
+    ## [126] "regular-expressions.Rmd"                    
+    ## [127] "render625d5eab307a.rds"                     
+    ## [128] "renv.lock"                                  
+    ## [129] "requirements.txt"                           
+    ## [130] "sampling-distributions_files"               
+    ## [131] "sampling-distributions.Rmd"                 
+    ## [132] "screenshots"                                
+    ## [133] "sidebar.lua"                                
+    ## [134] "spark-3.1.1-bin-hadoop3.2.tgz"              
+    ## [135] "spark-warehouse"                            
+    ## [136] "spatial-analysis_cache"                     
+    ## [137] "spatial-analysis_files"                     
+    ## [138] "spatial-analysis.Rmd"                       
+    ## [139] "spatial-modeling_cache"                     
+    ## [140] "spatial-modeling.Rmd"                       
+    ## [141] "stochastic-process.Rmd"                     
+    ## [142] "string-operations.Rmd"                      
+    ## [143] "style.css"                                  
+    ## [144] "support-vector-machines.Rmd"                
+    ## [145] "survival-analysis_files"                    
+    ## [146] "survival-analysis.Rmd"                      
+    ## [147] "symbolic-computation_cache"                 
+    ## [148] "symbolic-computation_files"                 
+    ## [149] "symbolic-computation.Rmd"                   
+    ## [150] "texlive.txt"                                
+    ## [151] "text-analysis.Rmd"                          
+    ## [152] "time-series-analysis_cache"                 
+    ## [153] "time-series-analysis_files"                 
+    ## [154] "time-series-analysis.Rmd"
     ```
     
     ```r
@@ -498,96 +499,97 @@ library(fs)
     ##  [61] "images"                                     
     ##  [62] "index_cache"                                
     ##  [63] "index_files"                                
-    ##  [64] "index.md"                                   
-    ##  [65] "index.Rmd"                                  
-    ##  [66] "interactive-data-tables.Rmd"                
-    ##  [67] "interactive-network-graphics_files"         
-    ##  [68] "interactive-shiny-app_files"                
-    ##  [69] "interactive-shiny-app.Rmd"                  
-    ##  [70] "interactive-web-graphics_files"             
-    ##  [71] "interactive-web-graphics.Rmd"               
-    ##  [72] "k-means-clustering.Rmd"                     
-    ##  [73] "k-nearest-neighbors.Rmd"                    
-    ##  [74] "LICENSE"                                    
-    ##  [75] "linear-discriminant-analysis.Rmd"           
-    ##  [76] "linear-mixed-effects-models.Rmd"            
-    ##  [77] "linear-models_cache"                        
-    ##  [78] "linear-models_files"                        
-    ##  [79] "linear-models.Rmd"                          
-    ##  [80] "machine-learning.Rmd"                       
-    ##  [81] "Makefile"                                   
-    ##  [82] "markov-chain-monte-carlo.Rmd"               
-    ##  [83] "masr.rds"                                   
-    ##  [84] "masr.Rproj"                                 
-    ##  [85] "matrix-operations_files"                    
-    ##  [86] "matrix-operations.Rmd"                      
-    ##  [87] "metastore_db"                               
-    ##  [88] "mixed-programming_cache"                    
-    ##  [89] "mixed-programming_files"                    
-    ##  [90] "mixed-programming.Rmd"                      
-    ##  [91] "model-assessment.Rmd"                       
-    ##  [92] "model-deployment.Rmd"                       
-    ##  [93] "naive-bayes.Rmd"                            
-    ##  [94] "natural-language-processing.Rmd"            
-    ##  [95] "network-analysis.Rmd"                       
-    ##  [96] "neural-networks_cache"                      
-    ##  [97] "neural-networks.Rmd"                        
-    ##  [98] "nonlinear-mixed-models.Rmd"                 
-    ##  [99] "nonlinear-models.Rmd"                       
-    ## [100] "notations.md"                               
-    ## [101] "notations.Rmd"                              
-    ## [102] "numerical-optimization_files"               
-    ## [103] "numerical-optimization.Rmd"                 
-    ## [104] "object-oriented-programming.Rmd"            
-    ## [105] "other-softwares_cache"                      
-    ## [106] "other-softwares_files"                      
-    ## [107] "other-softwares.Rmd"                        
-    ## [108] "outlier-detection.Rmd"                      
-    ## [109] "packages.bib"                               
-    ## [110] "parameter-estimators_files"                 
-    ## [111] "parameter-estimators.Rmd"                   
-    ## [112] "power-analysis_files"                       
-    ## [113] "power-analysis.Rmd"                         
-    ## [114] "preamble.tex"                               
-    ## [115] "preface_cache"                              
-    ## [116] "preface_files"                              
-    ## [117] "preface.md"                                 
-    ## [118] "preface.Rmd"                                
-    ## [119] "push.sh"                                    
-    ## [120] "random-forests.Rmd"                         
-    ## [121] "random-vector.Rmd"                          
-    ## [122] "README.md"                                  
-    ## [123] "recommender-systems.Rmd"                    
-    ## [124] "references.Rmd"                             
-    ## [125] "regular-expressions.Rmd"                    
-    ## [126] "render62b57f55e36a.rds"                     
-    ## [127] "renv.lock"                                  
-    ## [128] "requirements.txt"                           
-    ## [129] "sampling-distributions_files"               
-    ## [130] "sampling-distributions.Rmd"                 
-    ## [131] "screenshots"                                
-    ## [132] "sidebar.lua"                                
-    ## [133] "spark-3.1.1-bin-hadoop3.2.tgz"              
-    ## [134] "spark-warehouse"                            
-    ## [135] "spatial-analysis_cache"                     
-    ## [136] "spatial-analysis_files"                     
-    ## [137] "spatial-analysis.Rmd"                       
-    ## [138] "spatial-modeling_cache"                     
-    ## [139] "spatial-modeling.Rmd"                       
-    ## [140] "stochastic-process.Rmd"                     
-    ## [141] "string-operations.Rmd"                      
-    ## [142] "style.css"                                  
-    ## [143] "support-vector-machines.Rmd"                
-    ## [144] "survival-analysis_files"                    
-    ## [145] "survival-analysis.Rmd"                      
-    ## [146] "symbolic-computation_cache"                 
-    ## [147] "symbolic-computation_files"                 
-    ## [148] "symbolic-computation.Rmd"                   
-    ## [149] "texlive.txt"                                
-    ## [150] "text-analysis.Rmd"                          
-    ## [151] "time-series-analysis_cache"                 
-    ## [152] "time-series-analysis_files"                 
-    ## [153] "time-series-analysis.Rmd"
+    ##  [64] "index-tikzDictionary"                       
+    ##  [65] "index.md"                                   
+    ##  [66] "index.Rmd"                                  
+    ##  [67] "interactive-data-tables.Rmd"                
+    ##  [68] "interactive-network-graphics_files"         
+    ##  [69] "interactive-shiny-app_files"                
+    ##  [70] "interactive-shiny-app.Rmd"                  
+    ##  [71] "interactive-web-graphics_files"             
+    ##  [72] "interactive-web-graphics.Rmd"               
+    ##  [73] "k-means-clustering.Rmd"                     
+    ##  [74] "k-nearest-neighbors.Rmd"                    
+    ##  [75] "LICENSE"                                    
+    ##  [76] "linear-discriminant-analysis.Rmd"           
+    ##  [77] "linear-mixed-effects-models.Rmd"            
+    ##  [78] "linear-models_cache"                        
+    ##  [79] "linear-models_files"                        
+    ##  [80] "linear-models.Rmd"                          
+    ##  [81] "machine-learning.Rmd"                       
+    ##  [82] "Makefile"                                   
+    ##  [83] "markov-chain-monte-carlo.Rmd"               
+    ##  [84] "masr.rds"                                   
+    ##  [85] "masr.Rproj"                                 
+    ##  [86] "matrix-operations_files"                    
+    ##  [87] "matrix-operations.Rmd"                      
+    ##  [88] "metastore_db"                               
+    ##  [89] "mixed-programming_cache"                    
+    ##  [90] "mixed-programming_files"                    
+    ##  [91] "mixed-programming.Rmd"                      
+    ##  [92] "model-assessment.Rmd"                       
+    ##  [93] "model-deployment.Rmd"                       
+    ##  [94] "naive-bayes.Rmd"                            
+    ##  [95] "natural-language-processing.Rmd"            
+    ##  [96] "network-analysis.Rmd"                       
+    ##  [97] "neural-networks_cache"                      
+    ##  [98] "neural-networks.Rmd"                        
+    ##  [99] "nonlinear-mixed-models.Rmd"                 
+    ## [100] "nonlinear-models.Rmd"                       
+    ## [101] "notations.md"                               
+    ## [102] "notations.Rmd"                              
+    ## [103] "numerical-optimization_files"               
+    ## [104] "numerical-optimization.Rmd"                 
+    ## [105] "object-oriented-programming.Rmd"            
+    ## [106] "other-softwares_cache"                      
+    ## [107] "other-softwares_files"                      
+    ## [108] "other-softwares.Rmd"                        
+    ## [109] "outlier-detection.Rmd"                      
+    ## [110] "packages.bib"                               
+    ## [111] "parameter-estimators_files"                 
+    ## [112] "parameter-estimators.Rmd"                   
+    ## [113] "power-analysis_files"                       
+    ## [114] "power-analysis.Rmd"                         
+    ## [115] "preamble.tex"                               
+    ## [116] "preface_cache"                              
+    ## [117] "preface_files"                              
+    ## [118] "preface.md"                                 
+    ## [119] "preface.Rmd"                                
+    ## [120] "push.sh"                                    
+    ## [121] "random-forests.Rmd"                         
+    ## [122] "random-vector.Rmd"                          
+    ## [123] "README.md"                                  
+    ## [124] "recommender-systems.Rmd"                    
+    ## [125] "references.Rmd"                             
+    ## [126] "regular-expressions.Rmd"                    
+    ## [127] "render625d5eab307a.rds"                     
+    ## [128] "renv.lock"                                  
+    ## [129] "requirements.txt"                           
+    ## [130] "sampling-distributions_files"               
+    ## [131] "sampling-distributions.Rmd"                 
+    ## [132] "screenshots"                                
+    ## [133] "sidebar.lua"                                
+    ## [134] "spark-3.1.1-bin-hadoop3.2.tgz"              
+    ## [135] "spark-warehouse"                            
+    ## [136] "spatial-analysis_cache"                     
+    ## [137] "spatial-analysis_files"                     
+    ## [138] "spatial-analysis.Rmd"                       
+    ## [139] "spatial-modeling_cache"                     
+    ## [140] "spatial-modeling.Rmd"                       
+    ## [141] "stochastic-process.Rmd"                     
+    ## [142] "string-operations.Rmd"                      
+    ## [143] "style.css"                                  
+    ## [144] "support-vector-machines.Rmd"                
+    ## [145] "survival-analysis_files"                    
+    ## [146] "survival-analysis.Rmd"                      
+    ## [147] "symbolic-computation_cache"                 
+    ## [148] "symbolic-computation_files"                 
+    ## [149] "symbolic-computation.Rmd"                   
+    ## [150] "texlive.txt"                                
+    ## [151] "text-analysis.Rmd"                          
+    ## [152] "time-series-analysis_cache"                 
+    ## [153] "time-series-analysis_files"                 
+    ## [154] "time-series-analysis.Rmd"
     ```
     
     ```r
@@ -674,96 +676,97 @@ library(fs)
     ##  [67] "images"                                     
     ##  [68] "index_cache"                                
     ##  [69] "index_files"                                
-    ##  [70] "index.md"                                   
-    ##  [71] "index.Rmd"                                  
-    ##  [72] "interactive-data-tables.Rmd"                
-    ##  [73] "interactive-network-graphics_files"         
-    ##  [74] "interactive-shiny-app_files"                
-    ##  [75] "interactive-shiny-app.Rmd"                  
-    ##  [76] "interactive-web-graphics_files"             
-    ##  [77] "interactive-web-graphics.Rmd"               
-    ##  [78] "k-means-clustering.Rmd"                     
-    ##  [79] "k-nearest-neighbors.Rmd"                    
-    ##  [80] "LICENSE"                                    
-    ##  [81] "linear-discriminant-analysis.Rmd"           
-    ##  [82] "linear-mixed-effects-models.Rmd"            
-    ##  [83] "linear-models_cache"                        
-    ##  [84] "linear-models_files"                        
-    ##  [85] "linear-models.Rmd"                          
-    ##  [86] "machine-learning.Rmd"                       
-    ##  [87] "Makefile"                                   
-    ##  [88] "markov-chain-monte-carlo.Rmd"               
-    ##  [89] "masr.rds"                                   
-    ##  [90] "masr.Rproj"                                 
-    ##  [91] "matrix-operations_files"                    
-    ##  [92] "matrix-operations.Rmd"                      
-    ##  [93] "metastore_db"                               
-    ##  [94] "mixed-programming_cache"                    
-    ##  [95] "mixed-programming_files"                    
-    ##  [96] "mixed-programming.Rmd"                      
-    ##  [97] "model-assessment.Rmd"                       
-    ##  [98] "model-deployment.Rmd"                       
-    ##  [99] "naive-bayes.Rmd"                            
-    ## [100] "natural-language-processing.Rmd"            
-    ## [101] "network-analysis.Rmd"                       
-    ## [102] "neural-networks_cache"                      
-    ## [103] "neural-networks.Rmd"                        
-    ## [104] "nonlinear-mixed-models.Rmd"                 
-    ## [105] "nonlinear-models.Rmd"                       
-    ## [106] "notations.md"                               
-    ## [107] "notations.Rmd"                              
-    ## [108] "numerical-optimization_files"               
-    ## [109] "numerical-optimization.Rmd"                 
-    ## [110] "object-oriented-programming.Rmd"            
-    ## [111] "other-softwares_cache"                      
-    ## [112] "other-softwares_files"                      
-    ## [113] "other-softwares.Rmd"                        
-    ## [114] "outlier-detection.Rmd"                      
-    ## [115] "packages.bib"                               
-    ## [116] "parameter-estimators_files"                 
-    ## [117] "parameter-estimators.Rmd"                   
-    ## [118] "power-analysis_files"                       
-    ## [119] "power-analysis.Rmd"                         
-    ## [120] "preamble.tex"                               
-    ## [121] "preface_cache"                              
-    ## [122] "preface_files"                              
-    ## [123] "preface.md"                                 
-    ## [124] "preface.Rmd"                                
-    ## [125] "push.sh"                                    
-    ## [126] "random-forests.Rmd"                         
-    ## [127] "random-vector.Rmd"                          
-    ## [128] "README.md"                                  
-    ## [129] "recommender-systems.Rmd"                    
-    ## [130] "references.Rmd"                             
-    ## [131] "regular-expressions.Rmd"                    
-    ## [132] "render62b57f55e36a.rds"                     
-    ## [133] "renv.lock"                                  
-    ## [134] "requirements.txt"                           
-    ## [135] "sampling-distributions_files"               
-    ## [136] "sampling-distributions.Rmd"                 
-    ## [137] "screenshots"                                
-    ## [138] "sidebar.lua"                                
-    ## [139] "spark-3.1.1-bin-hadoop3.2.tgz"              
-    ## [140] "spark-warehouse"                            
-    ## [141] "spatial-analysis_cache"                     
-    ## [142] "spatial-analysis_files"                     
-    ## [143] "spatial-analysis.Rmd"                       
-    ## [144] "spatial-modeling_cache"                     
-    ## [145] "spatial-modeling.Rmd"                       
-    ## [146] "stochastic-process.Rmd"                     
-    ## [147] "string-operations.Rmd"                      
-    ## [148] "style.css"                                  
-    ## [149] "support-vector-machines.Rmd"                
-    ## [150] "survival-analysis_files"                    
-    ## [151] "survival-analysis.Rmd"                      
-    ## [152] "symbolic-computation_cache"                 
-    ## [153] "symbolic-computation_files"                 
-    ## [154] "symbolic-computation.Rmd"                   
-    ## [155] "texlive.txt"                                
-    ## [156] "text-analysis.Rmd"                          
-    ## [157] "time-series-analysis_cache"                 
-    ## [158] "time-series-analysis_files"                 
-    ## [159] "time-series-analysis.Rmd"
+    ##  [70] "index-tikzDictionary"                       
+    ##  [71] "index.md"                                   
+    ##  [72] "index.Rmd"                                  
+    ##  [73] "interactive-data-tables.Rmd"                
+    ##  [74] "interactive-network-graphics_files"         
+    ##  [75] "interactive-shiny-app_files"                
+    ##  [76] "interactive-shiny-app.Rmd"                  
+    ##  [77] "interactive-web-graphics_files"             
+    ##  [78] "interactive-web-graphics.Rmd"               
+    ##  [79] "k-means-clustering.Rmd"                     
+    ##  [80] "k-nearest-neighbors.Rmd"                    
+    ##  [81] "LICENSE"                                    
+    ##  [82] "linear-discriminant-analysis.Rmd"           
+    ##  [83] "linear-mixed-effects-models.Rmd"            
+    ##  [84] "linear-models_cache"                        
+    ##  [85] "linear-models_files"                        
+    ##  [86] "linear-models.Rmd"                          
+    ##  [87] "machine-learning.Rmd"                       
+    ##  [88] "Makefile"                                   
+    ##  [89] "markov-chain-monte-carlo.Rmd"               
+    ##  [90] "masr.rds"                                   
+    ##  [91] "masr.Rproj"                                 
+    ##  [92] "matrix-operations_files"                    
+    ##  [93] "matrix-operations.Rmd"                      
+    ##  [94] "metastore_db"                               
+    ##  [95] "mixed-programming_cache"                    
+    ##  [96] "mixed-programming_files"                    
+    ##  [97] "mixed-programming.Rmd"                      
+    ##  [98] "model-assessment.Rmd"                       
+    ##  [99] "model-deployment.Rmd"                       
+    ## [100] "naive-bayes.Rmd"                            
+    ## [101] "natural-language-processing.Rmd"            
+    ## [102] "network-analysis.Rmd"                       
+    ## [103] "neural-networks_cache"                      
+    ## [104] "neural-networks.Rmd"                        
+    ## [105] "nonlinear-mixed-models.Rmd"                 
+    ## [106] "nonlinear-models.Rmd"                       
+    ## [107] "notations.md"                               
+    ## [108] "notations.Rmd"                              
+    ## [109] "numerical-optimization_files"               
+    ## [110] "numerical-optimization.Rmd"                 
+    ## [111] "object-oriented-programming.Rmd"            
+    ## [112] "other-softwares_cache"                      
+    ## [113] "other-softwares_files"                      
+    ## [114] "other-softwares.Rmd"                        
+    ## [115] "outlier-detection.Rmd"                      
+    ## [116] "packages.bib"                               
+    ## [117] "parameter-estimators_files"                 
+    ## [118] "parameter-estimators.Rmd"                   
+    ## [119] "power-analysis_files"                       
+    ## [120] "power-analysis.Rmd"                         
+    ## [121] "preamble.tex"                               
+    ## [122] "preface_cache"                              
+    ## [123] "preface_files"                              
+    ## [124] "preface.md"                                 
+    ## [125] "preface.Rmd"                                
+    ## [126] "push.sh"                                    
+    ## [127] "random-forests.Rmd"                         
+    ## [128] "random-vector.Rmd"                          
+    ## [129] "README.md"                                  
+    ## [130] "recommender-systems.Rmd"                    
+    ## [131] "references.Rmd"                             
+    ## [132] "regular-expressions.Rmd"                    
+    ## [133] "render625d5eab307a.rds"                     
+    ## [134] "renv.lock"                                  
+    ## [135] "requirements.txt"                           
+    ## [136] "sampling-distributions_files"               
+    ## [137] "sampling-distributions.Rmd"                 
+    ## [138] "screenshots"                                
+    ## [139] "sidebar.lua"                                
+    ## [140] "spark-3.1.1-bin-hadoop3.2.tgz"              
+    ## [141] "spark-warehouse"                            
+    ## [142] "spatial-analysis_cache"                     
+    ## [143] "spatial-analysis_files"                     
+    ## [144] "spatial-analysis.Rmd"                       
+    ## [145] "spatial-modeling_cache"                     
+    ## [146] "spatial-modeling.Rmd"                       
+    ## [147] "stochastic-process.Rmd"                     
+    ## [148] "string-operations.Rmd"                      
+    ## [149] "style.css"                                  
+    ## [150] "support-vector-machines.Rmd"                
+    ## [151] "survival-analysis_files"                    
+    ## [152] "survival-analysis.Rmd"                      
+    ## [153] "symbolic-computation_cache"                 
+    ## [154] "symbolic-computation_files"                 
+    ## [155] "symbolic-computation.Rmd"                   
+    ## [156] "texlive.txt"                                
+    ## [157] "text-analysis.Rmd"                          
+    ## [158] "time-series-analysis_cache"                 
+    ## [159] "time-series-analysis_files"                 
+    ## [160] "time-series-analysis.Rmd"
     ```
     
     ```r
@@ -1399,7 +1402,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 25356
+    ## [1] 25307
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -1413,7 +1416,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.081   0.004   0.085
+    ##   0.083   0.000   0.082
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -1427,7 +1430,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.081   0.004   0.085
+    ##   0.072   0.008   0.079
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1516,7 +1519,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 06:11:17 PDT"
+    ## [1] "2021-08-09 21:27:38 PDT"
     ```
     
     ```r
@@ -1525,7 +1528,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 09:11:17 EDT"
+    ## [1] "2021-08-10 00:27:38 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1536,7 +1539,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08"
+    ## [1] "2021-08-10"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1547,7 +1550,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Aug  8 13:11:17 2021"
+    ## [1] "Tue Aug 10 04:27:38 2021"
     ```
     
     ```r
@@ -1556,7 +1559,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Aug 08 13:11:17 2021"
+    ## [1] "Tue Aug 10 04:27:38 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1567,7 +1570,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 13:11:17 GMT"
+    ## [1] "2021-08-10 04:27:38 GMT"
     ```
 
 1. 时间计算
@@ -1578,7 +1581,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 13:11:17 UTC"
+    ## [1] "2021-08-10 04:27:38 UTC"
     ```
     
     ```r
@@ -1586,7 +1589,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 12:11:17 UTC"
+    ## [1] "2021-08-10 03:27:38 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1651,9 +1654,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1775 FALSE  644 2021-08-08 12:41:08 2021-08-08 12:41:08
+    ## ./_common.R 1775 FALSE  644 2021-08-10 03:58:07 2021-08-10 03:58:07
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-08 13:11:12 1001 121 runner docker
+    ## ./_common.R 2021-08-10 04:27:29 1001 121 runner docker
     ```
     
     ```r
@@ -1664,9 +1667,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1775 FALSE  644 2021-08-08 13:11:17 2021-08-08 13:11:17
+    ## ./_common.R 1775 FALSE  644 2021-08-10 04:27:38 2021-08-10 04:27:38
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-08 13:11:17 1001 121 runner docker
+    ## ./_common.R 2021-08-10 04:27:38 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1687,7 +1690,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 13:11:17 CST"
+    ## [1] "2021-08-10 04:27:38 CST"
     ```
     
     ```r
@@ -1695,7 +1698,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 13:11:17"
+    ## [1] "2021-08-10 04:27:38"
     ```
     
     ```r
@@ -1703,7 +1706,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-08 21:11:17 CST"
+    ## [1] "2021-08-10 12:27:38 CST"
     ```
 
 1. 设置时区
@@ -1837,12 +1840,14 @@ apropos('package')
     ```
     
     ```
-    ##        Package  LibPath                      Installed Built   ReposVer
-    ## Matrix "Matrix" "/opt/R/4.1.0/lib/R/library" "1.3-3"   "4.1.0" "1.3-4" 
-    ## mgcv   "mgcv"   "/opt/R/4.1.0/lib/R/library" "1.8-35"  "4.1.0" "1.8-36"
-    ##        Repository                               
-    ## Matrix "https://cloud.r-project.org/src/contrib"
-    ## mgcv   "https://cloud.r-project.org/src/contrib"
+    ##          Package    LibPath                           Installed Built  
+    ## sysfonts "sysfonts" "/home/runner/work/_temp/Library" "0.8.4"   "4.1.0"
+    ## Matrix   "Matrix"   "/opt/R/4.1.0/lib/R/library"      "1.3-3"   "4.1.0"
+    ## mgcv     "mgcv"     "/opt/R/4.1.0/lib/R/library"      "1.8-35"  "4.1.0"
+    ##          ReposVer Repository                               
+    ## sysfonts "0.8.5"  "https://cloud.r-project.org/src/contrib"
+    ## Matrix   "1.3-4"  "https://cloud.r-project.org/src/contrib"
+    ## mgcv     "1.8-36" "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1867,13 +1872,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 411       0          11
+    ##   /home/runner/work/_temp/Library 410       1          11
     ##   /opt/R/4.1.0/lib/R/library       27       2           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       424         17537
+    ##   https://cloud.r-project.org/src/contrib       424         17549
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1939,47 +1944,48 @@ apropos('package')
     ```
     ##   [1] "gg.gap"            "ggallin"           "ggalluvial"       
     ##   [4] "ggalt"             "gganimate"         "ggasym"           
-    ##   [7] "ggbeeswarm"        "ggbreak"           "ggBubbles"        
-    ##  [10] "ggbuildr"          "ggbump"            "ggcharts"         
-    ##  [13] "ggChernoff"        "ggconf"            "ggcorrplot"       
-    ##  [16] "ggdag"             "ggdark"            "ggDCA"            
-    ##  [19] "ggdemetra"         "ggdendro"          "ggdist"           
-    ##  [22] "ggdmc"             "ggeasy"            "ggedit"           
-    ##  [25] "ggenealogy"        "ggetho"            "ggExtra"          
-    ##  [28] "ggfan"             "ggfittext"         "ggfocus"          
-    ##  [31] "ggforce"           "ggformula"         "ggfortify"        
-    ##  [34] "ggfun"             "ggfx"              "gggap"            
-    ##  [37] "gggenes"           "ggghost"           "gggibbous"        
-    ##  [40] "ggguitar"          "ggh4x"             "gghalfnorm"       
-    ##  [43] "gghalves"          "ggheatmap"         "gghighlight"      
-    ##  [46] "gghilbertstrings"  "ggimage"           "ggimg"            
-    ##  [49] "gginference"       "gginnards"         "ggip"             
-    ##  [52] "ggiraph"           "ggiraphExtra"      "ggjoy"            
-    ##  [55] "gglm"              "gglogo"            "ggloop"           
-    ##  [58] "gglorenz"          "ggmap"             "ggmcmc"           
-    ##  [61] "ggmosaic"          "ggmsa"             "ggmuller"         
-    ##  [64] "ggmulti"           "ggnetwork"         "ggnewscale"       
-    ##  [67] "ggnormalviolin"    "ggnuplot"          "ggpacman"         
-    ##  [70] "ggpage"            "ggparallel"        "ggparliament"     
-    ##  [73] "ggparty"           "ggperiodic"        "ggplot.multistats"
-    ##  [76] "ggplotAssist"      "ggplotgui"         "ggplotify"        
-    ##  [79] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
-    ##  [82] "ggpointdensity"    "ggpol"             "ggpolypath"       
-    ##  [85] "ggpp"              "ggprism"           "ggpubr"           
-    ##  [88] "ggpval"            "ggQC"              "ggQQunif"         
-    ##  [91] "ggquickeda"        "ggquiver"          "ggRandomForests"  
-    ##  [94] "ggraph"            "ggraptR"           "ggrasp"           
-    ##  [97] "ggrastr"           "ggrepel"           "ggResidpanel"     
-    ## [100] "ggridges"          "ggROC"             "ggsci"            
-    ## [103] "ggseas"            "ggseqlogo"         "ggshadow"         
-    ## [106] "ggside"            "ggsignif"          "ggsn"             
-    ## [109] "ggsoccer"          "ggsolvencyii"      "ggsom"            
-    ## [112] "ggspatial"         "ggspectra"         "ggstance"         
-    ## [115] "ggstar"            "ggstatsplot"       "ggstream"         
-    ## [118] "ggstudent"         "ggswissmaps"       "ggtern"           
-    ## [121] "ggtext"            "ggThemeAssist"     "ggthemes"         
-    ## [124] "ggupset"           "ggvenn"            "ggVennDiagram"    
-    ## [127] "ggvoronoi"         "ggwordcloud"       "ggx"
+    ##   [7] "ggbeeswarm"        "ggborderline"      "ggbreak"          
+    ##  [10] "ggBubbles"         "ggbuildr"          "ggbump"           
+    ##  [13] "ggcharts"          "ggChernoff"        "ggconf"           
+    ##  [16] "ggcorrplot"        "ggdag"             "ggdark"           
+    ##  [19] "ggDCA"             "ggdemetra"         "ggdendro"         
+    ##  [22] "ggdist"            "ggdmc"             "ggeasy"           
+    ##  [25] "ggedit"            "ggenealogy"        "ggetho"           
+    ##  [28] "ggExtra"           "ggfan"             "ggfittext"        
+    ##  [31] "ggfocus"           "ggforce"           "ggformula"        
+    ##  [34] "ggfortify"         "ggfun"             "ggfx"             
+    ##  [37] "gggap"             "gggenes"           "ggghost"          
+    ##  [40] "gggibbous"         "ggguitar"          "ggh4x"            
+    ##  [43] "gghalfnorm"        "gghalves"          "ggheatmap"        
+    ##  [46] "gghighlight"       "gghilbertstrings"  "ggimage"          
+    ##  [49] "ggimg"             "gginference"       "gginnards"        
+    ##  [52] "ggip"              "ggiraph"           "ggiraphExtra"     
+    ##  [55] "ggjoy"             "gglm"              "gglogo"           
+    ##  [58] "ggloop"            "gglorenz"          "ggmap"            
+    ##  [61] "ggmcmc"            "ggmosaic"          "ggmsa"            
+    ##  [64] "ggmuller"          "ggmulti"           "ggnetwork"        
+    ##  [67] "ggnewscale"        "ggnormalviolin"    "ggnuplot"         
+    ##  [70] "ggpacman"          "ggpage"            "ggparallel"       
+    ##  [73] "ggparliament"      "ggparty"           "ggperiodic"       
+    ##  [76] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
+    ##  [79] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
+    ##  [82] "ggPMX"             "ggpointdensity"    "ggpol"            
+    ##  [85] "ggpolypath"        "ggpp"              "ggprism"          
+    ##  [88] "ggpubr"            "ggpval"            "ggQC"             
+    ##  [91] "ggQQunif"          "ggquickeda"        "ggquiver"         
+    ##  [94] "ggRandomForests"   "ggraph"            "ggraptR"          
+    ##  [97] "ggrasp"            "ggrastr"           "ggrepel"          
+    ## [100] "ggResidpanel"      "ggridges"          "ggrisk"           
+    ## [103] "ggROC"             "ggsci"             "ggseas"           
+    ## [106] "ggseqlogo"         "ggshadow"          "ggside"           
+    ## [109] "ggsignif"          "ggsn"              "ggsoccer"         
+    ## [112] "ggsolvencyii"      "ggsom"             "ggspatial"        
+    ## [115] "ggspectra"         "ggstance"          "ggstar"           
+    ## [118] "ggstatsplot"       "ggstream"          "ggstudent"        
+    ## [121] "ggswissmaps"       "ggtern"            "ggtext"           
+    ## [124] "ggThemeAssist"     "ggthemes"          "ggupset"          
+    ## [127] "ggvenn"            "ggVennDiagram"     "ggvoronoi"        
+    ## [130] "ggwordcloud"       "ggx"
     ```
     
 
@@ -2017,7 +2023,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5613d5524778>
+## <bytecode: 0x555823289778>
 ## <environment: namespace:base>
 ```
 

@@ -218,7 +218,7 @@
 
 \title{现代应用统计与 R 语言}
 \author{黄湘云}
-\date{2021-08-08}
+\date{2021-08-10}
 
 \begin{document}
 \maketitle
@@ -259,7 +259,7 @@ Book in early development. Planned release in 202X.
 
 \index{统计分布}
 
-Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次是基于正态分布假设的，这种类型已经研究的很清楚了，往往可以得到精确的结果，第二层次是将正态分布推广到指数族，这种类型的也研究的比较多了，常见的情况都研究的比较清楚，罕见的情况也是大量存在的，特别是在实际应用当中，总的来说只能得到部分准确的结果，第三层次对分布没有任何限定，只要满足成为一个统计分布的条件，这种情况下就只能求助于一般的数学工具和渐进理论。
+Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次是基于正态分布假设的，这种类型已经研究的很清楚了，往往可以得到精确的结果，第二层次是将正态分布推广到指数族，这种类型的也研究的比较多了，常见的情况都研究的比较清楚，罕见的情况也是大量存在的，特别是在实际应用当中，总的来说只能得到部分精确的结果，第三层次对分布没有任何限定，只要满足成为一个统计分布的条件，这种情况下就只能求助于一般的数学工具和渐进理论。
 
 \begin{figure}
 
@@ -352,9 +352,7 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 
 比如总体为二项分布 \(B(n, \theta)\) 其中 n = 10，在置信水平 \(\alpha = 0.95\) 下，问参数 \(\theta\) 的覆盖概率是多少？随参数 \(\theta\) 的变化情况如何？\url{https://d.cosx.org/d/421502-coverage-probability}
 
-还是以抛硬币的为例，我来做这个实验，抛10次，获得 7 次正面向上，他做这个实验，10 次中 4 次正面，每个人来做这个实验可能都会有所不同，实际上有 2\^{}10 = 1024 个结果（含位置变化），每个结果都可以用来估计未知的参数 \(p\) 及其置信区间，和相应的覆盖概率。
-
-假设参数的真值是 0.7，做一次实验，得到正面朝上的结果，有6次
+以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2\^{}10 = 1024 个结果，每个结果都可以用来估计未知的参数 \(p\) 及其置信区间、覆盖概率。假设参数 \(p\) 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 \(B(10, 0.7)\)，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 \texttt{rbinom()}，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -367,7 +365,7 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 ## [1] 6
 \end{verbatim}
 
-这个检验的原假设是 p = 0.7，样本落在拒绝域的概率是 0.4997 \textgreater{} 0.05 即不能拒绝原假设。
+假设只知道抛了 10 次硬币，有 6 次正面朝上的结果，并不知道参数 \(p\) 的真实值，现在做个假设，假设 \(p = 0.7\)，我们看看基于这样一次实验的数据，检验一下该假设是否成立。这是一个典型的二项检验，R 已经提供内置的函数 \texttt{binom.test()} 来实现，经计算，检验的 P 值，即样本落在拒绝域的概率是 0.4997，大于 0.05，所以原假设有一定合理性，不能拒绝。
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -404,6 +402,16 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 ## [1] 0.2964 0.9036
 \end{verbatim}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.9036363}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{pnorm}\NormalTok{(}\AttributeTok{q =} \FloatTok{0.2963637}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2004
+\end{verbatim}
+
 \textcolor{red}{\textbf{TODO: }{多重比较与检验}}
 
 多重比较 \texttt{p.adjust()} 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 \texttt{oneway.test()}
@@ -434,6 +442,8 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 \end{Shaded}
 
 \textcolor{red}{\textbf{TODO: }{混合正态分布的参数估计}}
+
+标准正态分布的概率密度函数 \(f(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\) 的图像见图\ref{fig:god-play-games} 中的红线，非常的优美，然而，现实中的数据所呈现出来的却是另一翻景象，它们只是近似却永远也不会严丝合缝，这又是大自然神奇的地方，整体似乎有某种确定性的规律，局部又有不确定的随机扰动，横看成岭侧成峰，远近高低各不同。
 
 \begin{figure}
 
@@ -535,7 +545,7 @@ Yihui Xie & 1 \\
 \section*{运行信息}\label{sec-session-welcome}}
 \addcontentsline{toc}{section}{运行信息}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-08 13:11:14。
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-10 04:27:35。
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -702,7 +712,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}\label{fig:book-workflow}
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月08日13时11分15秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月10日04时27分37秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1179,7 +1189,7 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 ##                                          size isdir mode               mtime
 ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
 ##                                                       ctime               atime
-## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-08 12:26:52 2021-08-08 12:35:14
+## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-10 03:43:53 2021-08-10 03:51:53
 ##                                         uid gid uname grname
 ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
 \end{verbatim}
@@ -1223,7 +1233,7 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 
 \begin{verbatim}
 ##    size isdir mode               mtime               ctime               atime
-## . 12288  TRUE  755 2021-08-08 13:11:16 2021-08-08 13:11:16 2021-08-08 13:11:16
+## . 12288  TRUE  755 2021-08-10 04:27:37 2021-08-10 04:27:37 2021-08-10 04:27:38
 ##    uid gid  uname grname
 ## . 1001 121 runner docker
 \end{verbatim}
@@ -1237,9 +1247,9 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 
 \begin{verbatim}
 ##          size isdir mode               mtime               ctime
-## ./_book/ 4096  TRUE  755 2021-08-08 13:11:12 2021-08-08 13:11:12
+## ./_book/ 4096  TRUE  755 2021-08-10 04:27:29 2021-08-10 04:27:29
 ##                        atime  uid gid  uname grname
-## ./_book/ 2021-08-08 13:11:11 1001 121 runner docker
+## ./_book/ 2021-08-10 04:27:28 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{file.access(names,\ mode\ =\ 0)}
@@ -1379,96 +1389,97 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 ##  [61] "images"                                     
 ##  [62] "index_cache"                                
 ##  [63] "index_files"                                
-##  [64] "index.md"                                   
-##  [65] "index.Rmd"                                  
-##  [66] "interactive-data-tables.Rmd"                
-##  [67] "interactive-network-graphics_files"         
-##  [68] "interactive-shiny-app_files"                
-##  [69] "interactive-shiny-app.Rmd"                  
-##  [70] "interactive-web-graphics_files"             
-##  [71] "interactive-web-graphics.Rmd"               
-##  [72] "k-means-clustering.Rmd"                     
-##  [73] "k-nearest-neighbors.Rmd"                    
-##  [74] "LICENSE"                                    
-##  [75] "linear-discriminant-analysis.Rmd"           
-##  [76] "linear-mixed-effects-models.Rmd"            
-##  [77] "linear-models_cache"                        
-##  [78] "linear-models_files"                        
-##  [79] "linear-models.Rmd"                          
-##  [80] "machine-learning.Rmd"                       
-##  [81] "Makefile"                                   
-##  [82] "markov-chain-monte-carlo.Rmd"               
-##  [83] "masr.rds"                                   
-##  [84] "masr.Rproj"                                 
-##  [85] "matrix-operations_files"                    
-##  [86] "matrix-operations.Rmd"                      
-##  [87] "metastore_db"                               
-##  [88] "mixed-programming_cache"                    
-##  [89] "mixed-programming_files"                    
-##  [90] "mixed-programming.Rmd"                      
-##  [91] "model-assessment.Rmd"                       
-##  [92] "model-deployment.Rmd"                       
-##  [93] "naive-bayes.Rmd"                            
-##  [94] "natural-language-processing.Rmd"            
-##  [95] "network-analysis.Rmd"                       
-##  [96] "neural-networks_cache"                      
-##  [97] "neural-networks.Rmd"                        
-##  [98] "nonlinear-mixed-models.Rmd"                 
-##  [99] "nonlinear-models.Rmd"                       
-## [100] "notations.md"                               
-## [101] "notations.Rmd"                              
-## [102] "numerical-optimization_files"               
-## [103] "numerical-optimization.Rmd"                 
-## [104] "object-oriented-programming.Rmd"            
-## [105] "other-softwares_cache"                      
-## [106] "other-softwares_files"                      
-## [107] "other-softwares.Rmd"                        
-## [108] "outlier-detection.Rmd"                      
-## [109] "packages.bib"                               
-## [110] "parameter-estimators_files"                 
-## [111] "parameter-estimators.Rmd"                   
-## [112] "power-analysis_files"                       
-## [113] "power-analysis.Rmd"                         
-## [114] "preamble.tex"                               
-## [115] "preface_cache"                              
-## [116] "preface_files"                              
-## [117] "preface.md"                                 
-## [118] "preface.Rmd"                                
-## [119] "push.sh"                                    
-## [120] "random-forests.Rmd"                         
-## [121] "random-vector.Rmd"                          
-## [122] "README.md"                                  
-## [123] "recommender-systems.Rmd"                    
-## [124] "references.Rmd"                             
-## [125] "regular-expressions.Rmd"                    
-## [126] "render62b57f55e36a.rds"                     
-## [127] "renv.lock"                                  
-## [128] "requirements.txt"                           
-## [129] "sampling-distributions_files"               
-## [130] "sampling-distributions.Rmd"                 
-## [131] "screenshots"                                
-## [132] "sidebar.lua"                                
-## [133] "spark-3.1.1-bin-hadoop3.2.tgz"              
-## [134] "spark-warehouse"                            
-## [135] "spatial-analysis_cache"                     
-## [136] "spatial-analysis_files"                     
-## [137] "spatial-analysis.Rmd"                       
-## [138] "spatial-modeling_cache"                     
-## [139] "spatial-modeling.Rmd"                       
-## [140] "stochastic-process.Rmd"                     
-## [141] "string-operations.Rmd"                      
-## [142] "style.css"                                  
-## [143] "support-vector-machines.Rmd"                
-## [144] "survival-analysis_files"                    
-## [145] "survival-analysis.Rmd"                      
-## [146] "symbolic-computation_cache"                 
-## [147] "symbolic-computation_files"                 
-## [148] "symbolic-computation.Rmd"                   
-## [149] "texlive.txt"                                
-## [150] "text-analysis.Rmd"                          
-## [151] "time-series-analysis_cache"                 
-## [152] "time-series-analysis_files"                 
-## [153] "time-series-analysis.Rmd"
+##  [64] "index-tikzDictionary"                       
+##  [65] "index.md"                                   
+##  [66] "index.Rmd"                                  
+##  [67] "interactive-data-tables.Rmd"                
+##  [68] "interactive-network-graphics_files"         
+##  [69] "interactive-shiny-app_files"                
+##  [70] "interactive-shiny-app.Rmd"                  
+##  [71] "interactive-web-graphics_files"             
+##  [72] "interactive-web-graphics.Rmd"               
+##  [73] "k-means-clustering.Rmd"                     
+##  [74] "k-nearest-neighbors.Rmd"                    
+##  [75] "LICENSE"                                    
+##  [76] "linear-discriminant-analysis.Rmd"           
+##  [77] "linear-mixed-effects-models.Rmd"            
+##  [78] "linear-models_cache"                        
+##  [79] "linear-models_files"                        
+##  [80] "linear-models.Rmd"                          
+##  [81] "machine-learning.Rmd"                       
+##  [82] "Makefile"                                   
+##  [83] "markov-chain-monte-carlo.Rmd"               
+##  [84] "masr.rds"                                   
+##  [85] "masr.Rproj"                                 
+##  [86] "matrix-operations_files"                    
+##  [87] "matrix-operations.Rmd"                      
+##  [88] "metastore_db"                               
+##  [89] "mixed-programming_cache"                    
+##  [90] "mixed-programming_files"                    
+##  [91] "mixed-programming.Rmd"                      
+##  [92] "model-assessment.Rmd"                       
+##  [93] "model-deployment.Rmd"                       
+##  [94] "naive-bayes.Rmd"                            
+##  [95] "natural-language-processing.Rmd"            
+##  [96] "network-analysis.Rmd"                       
+##  [97] "neural-networks_cache"                      
+##  [98] "neural-networks.Rmd"                        
+##  [99] "nonlinear-mixed-models.Rmd"                 
+## [100] "nonlinear-models.Rmd"                       
+## [101] "notations.md"                               
+## [102] "notations.Rmd"                              
+## [103] "numerical-optimization_files"               
+## [104] "numerical-optimization.Rmd"                 
+## [105] "object-oriented-programming.Rmd"            
+## [106] "other-softwares_cache"                      
+## [107] "other-softwares_files"                      
+## [108] "other-softwares.Rmd"                        
+## [109] "outlier-detection.Rmd"                      
+## [110] "packages.bib"                               
+## [111] "parameter-estimators_files"                 
+## [112] "parameter-estimators.Rmd"                   
+## [113] "power-analysis_files"                       
+## [114] "power-analysis.Rmd"                         
+## [115] "preamble.tex"                               
+## [116] "preface_cache"                              
+## [117] "preface_files"                              
+## [118] "preface.md"                                 
+## [119] "preface.Rmd"                                
+## [120] "push.sh"                                    
+## [121] "random-forests.Rmd"                         
+## [122] "random-vector.Rmd"                          
+## [123] "README.md"                                  
+## [124] "recommender-systems.Rmd"                    
+## [125] "references.Rmd"                             
+## [126] "regular-expressions.Rmd"                    
+## [127] "render625d5eab307a.rds"                     
+## [128] "renv.lock"                                  
+## [129] "requirements.txt"                           
+## [130] "sampling-distributions_files"               
+## [131] "sampling-distributions.Rmd"                 
+## [132] "screenshots"                                
+## [133] "sidebar.lua"                                
+## [134] "spark-3.1.1-bin-hadoop3.2.tgz"              
+## [135] "spark-warehouse"                            
+## [136] "spatial-analysis_cache"                     
+## [137] "spatial-analysis_files"                     
+## [138] "spatial-analysis.Rmd"                       
+## [139] "spatial-modeling_cache"                     
+## [140] "spatial-modeling.Rmd"                       
+## [141] "stochastic-process.Rmd"                     
+## [142] "string-operations.Rmd"                      
+## [143] "style.css"                                  
+## [144] "support-vector-machines.Rmd"                
+## [145] "survival-analysis_files"                    
+## [146] "survival-analysis.Rmd"                      
+## [147] "symbolic-computation_cache"                 
+## [148] "symbolic-computation_files"                 
+## [149] "symbolic-computation.Rmd"                   
+## [150] "texlive.txt"                                
+## [151] "text-analysis.Rmd"                          
+## [152] "time-series-analysis_cache"                 
+## [153] "time-series-analysis_files"                 
+## [154] "time-series-analysis.Rmd"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1542,96 +1553,97 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 ##  [61] "images"                                     
 ##  [62] "index_cache"                                
 ##  [63] "index_files"                                
-##  [64] "index.md"                                   
-##  [65] "index.Rmd"                                  
-##  [66] "interactive-data-tables.Rmd"                
-##  [67] "interactive-network-graphics_files"         
-##  [68] "interactive-shiny-app_files"                
-##  [69] "interactive-shiny-app.Rmd"                  
-##  [70] "interactive-web-graphics_files"             
-##  [71] "interactive-web-graphics.Rmd"               
-##  [72] "k-means-clustering.Rmd"                     
-##  [73] "k-nearest-neighbors.Rmd"                    
-##  [74] "LICENSE"                                    
-##  [75] "linear-discriminant-analysis.Rmd"           
-##  [76] "linear-mixed-effects-models.Rmd"            
-##  [77] "linear-models_cache"                        
-##  [78] "linear-models_files"                        
-##  [79] "linear-models.Rmd"                          
-##  [80] "machine-learning.Rmd"                       
-##  [81] "Makefile"                                   
-##  [82] "markov-chain-monte-carlo.Rmd"               
-##  [83] "masr.rds"                                   
-##  [84] "masr.Rproj"                                 
-##  [85] "matrix-operations_files"                    
-##  [86] "matrix-operations.Rmd"                      
-##  [87] "metastore_db"                               
-##  [88] "mixed-programming_cache"                    
-##  [89] "mixed-programming_files"                    
-##  [90] "mixed-programming.Rmd"                      
-##  [91] "model-assessment.Rmd"                       
-##  [92] "model-deployment.Rmd"                       
-##  [93] "naive-bayes.Rmd"                            
-##  [94] "natural-language-processing.Rmd"            
-##  [95] "network-analysis.Rmd"                       
-##  [96] "neural-networks_cache"                      
-##  [97] "neural-networks.Rmd"                        
-##  [98] "nonlinear-mixed-models.Rmd"                 
-##  [99] "nonlinear-models.Rmd"                       
-## [100] "notations.md"                               
-## [101] "notations.Rmd"                              
-## [102] "numerical-optimization_files"               
-## [103] "numerical-optimization.Rmd"                 
-## [104] "object-oriented-programming.Rmd"            
-## [105] "other-softwares_cache"                      
-## [106] "other-softwares_files"                      
-## [107] "other-softwares.Rmd"                        
-## [108] "outlier-detection.Rmd"                      
-## [109] "packages.bib"                               
-## [110] "parameter-estimators_files"                 
-## [111] "parameter-estimators.Rmd"                   
-## [112] "power-analysis_files"                       
-## [113] "power-analysis.Rmd"                         
-## [114] "preamble.tex"                               
-## [115] "preface_cache"                              
-## [116] "preface_files"                              
-## [117] "preface.md"                                 
-## [118] "preface.Rmd"                                
-## [119] "push.sh"                                    
-## [120] "random-forests.Rmd"                         
-## [121] "random-vector.Rmd"                          
-## [122] "README.md"                                  
-## [123] "recommender-systems.Rmd"                    
-## [124] "references.Rmd"                             
-## [125] "regular-expressions.Rmd"                    
-## [126] "render62b57f55e36a.rds"                     
-## [127] "renv.lock"                                  
-## [128] "requirements.txt"                           
-## [129] "sampling-distributions_files"               
-## [130] "sampling-distributions.Rmd"                 
-## [131] "screenshots"                                
-## [132] "sidebar.lua"                                
-## [133] "spark-3.1.1-bin-hadoop3.2.tgz"              
-## [134] "spark-warehouse"                            
-## [135] "spatial-analysis_cache"                     
-## [136] "spatial-analysis_files"                     
-## [137] "spatial-analysis.Rmd"                       
-## [138] "spatial-modeling_cache"                     
-## [139] "spatial-modeling.Rmd"                       
-## [140] "stochastic-process.Rmd"                     
-## [141] "string-operations.Rmd"                      
-## [142] "style.css"                                  
-## [143] "support-vector-machines.Rmd"                
-## [144] "survival-analysis_files"                    
-## [145] "survival-analysis.Rmd"                      
-## [146] "symbolic-computation_cache"                 
-## [147] "symbolic-computation_files"                 
-## [148] "symbolic-computation.Rmd"                   
-## [149] "texlive.txt"                                
-## [150] "text-analysis.Rmd"                          
-## [151] "time-series-analysis_cache"                 
-## [152] "time-series-analysis_files"                 
-## [153] "time-series-analysis.Rmd"
+##  [64] "index-tikzDictionary"                       
+##  [65] "index.md"                                   
+##  [66] "index.Rmd"                                  
+##  [67] "interactive-data-tables.Rmd"                
+##  [68] "interactive-network-graphics_files"         
+##  [69] "interactive-shiny-app_files"                
+##  [70] "interactive-shiny-app.Rmd"                  
+##  [71] "interactive-web-graphics_files"             
+##  [72] "interactive-web-graphics.Rmd"               
+##  [73] "k-means-clustering.Rmd"                     
+##  [74] "k-nearest-neighbors.Rmd"                    
+##  [75] "LICENSE"                                    
+##  [76] "linear-discriminant-analysis.Rmd"           
+##  [77] "linear-mixed-effects-models.Rmd"            
+##  [78] "linear-models_cache"                        
+##  [79] "linear-models_files"                        
+##  [80] "linear-models.Rmd"                          
+##  [81] "machine-learning.Rmd"                       
+##  [82] "Makefile"                                   
+##  [83] "markov-chain-monte-carlo.Rmd"               
+##  [84] "masr.rds"                                   
+##  [85] "masr.Rproj"                                 
+##  [86] "matrix-operations_files"                    
+##  [87] "matrix-operations.Rmd"                      
+##  [88] "metastore_db"                               
+##  [89] "mixed-programming_cache"                    
+##  [90] "mixed-programming_files"                    
+##  [91] "mixed-programming.Rmd"                      
+##  [92] "model-assessment.Rmd"                       
+##  [93] "model-deployment.Rmd"                       
+##  [94] "naive-bayes.Rmd"                            
+##  [95] "natural-language-processing.Rmd"            
+##  [96] "network-analysis.Rmd"                       
+##  [97] "neural-networks_cache"                      
+##  [98] "neural-networks.Rmd"                        
+##  [99] "nonlinear-mixed-models.Rmd"                 
+## [100] "nonlinear-models.Rmd"                       
+## [101] "notations.md"                               
+## [102] "notations.Rmd"                              
+## [103] "numerical-optimization_files"               
+## [104] "numerical-optimization.Rmd"                 
+## [105] "object-oriented-programming.Rmd"            
+## [106] "other-softwares_cache"                      
+## [107] "other-softwares_files"                      
+## [108] "other-softwares.Rmd"                        
+## [109] "outlier-detection.Rmd"                      
+## [110] "packages.bib"                               
+## [111] "parameter-estimators_files"                 
+## [112] "parameter-estimators.Rmd"                   
+## [113] "power-analysis_files"                       
+## [114] "power-analysis.Rmd"                         
+## [115] "preamble.tex"                               
+## [116] "preface_cache"                              
+## [117] "preface_files"                              
+## [118] "preface.md"                                 
+## [119] "preface.Rmd"                                
+## [120] "push.sh"                                    
+## [121] "random-forests.Rmd"                         
+## [122] "random-vector.Rmd"                          
+## [123] "README.md"                                  
+## [124] "recommender-systems.Rmd"                    
+## [125] "references.Rmd"                             
+## [126] "regular-expressions.Rmd"                    
+## [127] "render625d5eab307a.rds"                     
+## [128] "renv.lock"                                  
+## [129] "requirements.txt"                           
+## [130] "sampling-distributions_files"               
+## [131] "sampling-distributions.Rmd"                 
+## [132] "screenshots"                                
+## [133] "sidebar.lua"                                
+## [134] "spark-3.1.1-bin-hadoop3.2.tgz"              
+## [135] "spark-warehouse"                            
+## [136] "spatial-analysis_cache"                     
+## [137] "spatial-analysis_files"                     
+## [138] "spatial-analysis.Rmd"                       
+## [139] "spatial-modeling_cache"                     
+## [140] "spatial-modeling.Rmd"                       
+## [141] "stochastic-process.Rmd"                     
+## [142] "string-operations.Rmd"                      
+## [143] "style.css"                                  
+## [144] "support-vector-machines.Rmd"                
+## [145] "survival-analysis_files"                    
+## [146] "survival-analysis.Rmd"                      
+## [147] "symbolic-computation_cache"                 
+## [148] "symbolic-computation_files"                 
+## [149] "symbolic-computation.Rmd"                   
+## [150] "texlive.txt"                                
+## [151] "text-analysis.Rmd"                          
+## [152] "time-series-analysis_cache"                 
+## [153] "time-series-analysis_files"                 
+## [154] "time-series-analysis.Rmd"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1722,96 +1734,97 @@ Y 叫做因变量或者响应变量 response variables，X 叫做自变量、协
 ##  [67] "images"                                     
 ##  [68] "index_cache"                                
 ##  [69] "index_files"                                
-##  [70] "index.md"                                   
-##  [71] "index.Rmd"                                  
-##  [72] "interactive-data-tables.Rmd"                
-##  [73] "interactive-network-graphics_files"         
-##  [74] "interactive-shiny-app_files"                
-##  [75] "interactive-shiny-app.Rmd"                  
-##  [76] "interactive-web-graphics_files"             
-##  [77] "interactive-web-graphics.Rmd"               
-##  [78] "k-means-clustering.Rmd"                     
-##  [79] "k-nearest-neighbors.Rmd"                    
-##  [80] "LICENSE"                                    
-##  [81] "linear-discriminant-analysis.Rmd"           
-##  [82] "linear-mixed-effects-models.Rmd"            
-##  [83] "linear-models_cache"                        
-##  [84] "linear-models_files"                        
-##  [85] "linear-models.Rmd"                          
-##  [86] "machine-learning.Rmd"                       
-##  [87] "Makefile"                                   
-##  [88] "markov-chain-monte-carlo.Rmd"               
-##  [89] "masr.rds"                                   
-##  [90] "masr.Rproj"                                 
-##  [91] "matrix-operations_files"                    
-##  [92] "matrix-operations.Rmd"                      
-##  [93] "metastore_db"                               
-##  [94] "mixed-programming_cache"                    
-##  [95] "mixed-programming_files"                    
-##  [96] "mixed-programming.Rmd"                      
-##  [97] "model-assessment.Rmd"                       
-##  [98] "model-deployment.Rmd"                       
-##  [99] "naive-bayes.Rmd"                            
-## [100] "natural-language-processing.Rmd"            
-## [101] "network-analysis.Rmd"                       
-## [102] "neural-networks_cache"                      
-## [103] "neural-networks.Rmd"                        
-## [104] "nonlinear-mixed-models.Rmd"                 
-## [105] "nonlinear-models.Rmd"                       
-## [106] "notations.md"                               
-## [107] "notations.Rmd"                              
-## [108] "numerical-optimization_files"               
-## [109] "numerical-optimization.Rmd"                 
-## [110] "object-oriented-programming.Rmd"            
-## [111] "other-softwares_cache"                      
-## [112] "other-softwares_files"                      
-## [113] "other-softwares.Rmd"                        
-## [114] "outlier-detection.Rmd"                      
-## [115] "packages.bib"                               
-## [116] "parameter-estimators_files"                 
-## [117] "parameter-estimators.Rmd"                   
-## [118] "power-analysis_files"                       
-## [119] "power-analysis.Rmd"                         
-## [120] "preamble.tex"                               
-## [121] "preface_cache"                              
-## [122] "preface_files"                              
-## [123] "preface.md"                                 
-## [124] "preface.Rmd"                                
-## [125] "push.sh"                                    
-## [126] "random-forests.Rmd"                         
-## [127] "random-vector.Rmd"                          
-## [128] "README.md"                                  
-## [129] "recommender-systems.Rmd"                    
-## [130] "references.Rmd"                             
-## [131] "regular-expressions.Rmd"                    
-## [132] "render62b57f55e36a.rds"                     
-## [133] "renv.lock"                                  
-## [134] "requirements.txt"                           
-## [135] "sampling-distributions_files"               
-## [136] "sampling-distributions.Rmd"                 
-## [137] "screenshots"                                
-## [138] "sidebar.lua"                                
-## [139] "spark-3.1.1-bin-hadoop3.2.tgz"              
-## [140] "spark-warehouse"                            
-## [141] "spatial-analysis_cache"                     
-## [142] "spatial-analysis_files"                     
-## [143] "spatial-analysis.Rmd"                       
-## [144] "spatial-modeling_cache"                     
-## [145] "spatial-modeling.Rmd"                       
-## [146] "stochastic-process.Rmd"                     
-## [147] "string-operations.Rmd"                      
-## [148] "style.css"                                  
-## [149] "support-vector-machines.Rmd"                
-## [150] "survival-analysis_files"                    
-## [151] "survival-analysis.Rmd"                      
-## [152] "symbolic-computation_cache"                 
-## [153] "symbolic-computation_files"                 
-## [154] "symbolic-computation.Rmd"                   
-## [155] "texlive.txt"                                
-## [156] "text-analysis.Rmd"                          
-## [157] "time-series-analysis_cache"                 
-## [158] "time-series-analysis_files"                 
-## [159] "time-series-analysis.Rmd"
+##  [70] "index-tikzDictionary"                       
+##  [71] "index.md"                                   
+##  [72] "index.Rmd"                                  
+##  [73] "interactive-data-tables.Rmd"                
+##  [74] "interactive-network-graphics_files"         
+##  [75] "interactive-shiny-app_files"                
+##  [76] "interactive-shiny-app.Rmd"                  
+##  [77] "interactive-web-graphics_files"             
+##  [78] "interactive-web-graphics.Rmd"               
+##  [79] "k-means-clustering.Rmd"                     
+##  [80] "k-nearest-neighbors.Rmd"                    
+##  [81] "LICENSE"                                    
+##  [82] "linear-discriminant-analysis.Rmd"           
+##  [83] "linear-mixed-effects-models.Rmd"            
+##  [84] "linear-models_cache"                        
+##  [85] "linear-models_files"                        
+##  [86] "linear-models.Rmd"                          
+##  [87] "machine-learning.Rmd"                       
+##  [88] "Makefile"                                   
+##  [89] "markov-chain-monte-carlo.Rmd"               
+##  [90] "masr.rds"                                   
+##  [91] "masr.Rproj"                                 
+##  [92] "matrix-operations_files"                    
+##  [93] "matrix-operations.Rmd"                      
+##  [94] "metastore_db"                               
+##  [95] "mixed-programming_cache"                    
+##  [96] "mixed-programming_files"                    
+##  [97] "mixed-programming.Rmd"                      
+##  [98] "model-assessment.Rmd"                       
+##  [99] "model-deployment.Rmd"                       
+## [100] "naive-bayes.Rmd"                            
+## [101] "natural-language-processing.Rmd"            
+## [102] "network-analysis.Rmd"                       
+## [103] "neural-networks_cache"                      
+## [104] "neural-networks.Rmd"                        
+## [105] "nonlinear-mixed-models.Rmd"                 
+## [106] "nonlinear-models.Rmd"                       
+## [107] "notations.md"                               
+## [108] "notations.Rmd"                              
+## [109] "numerical-optimization_files"               
+## [110] "numerical-optimization.Rmd"                 
+## [111] "object-oriented-programming.Rmd"            
+## [112] "other-softwares_cache"                      
+## [113] "other-softwares_files"                      
+## [114] "other-softwares.Rmd"                        
+## [115] "outlier-detection.Rmd"                      
+## [116] "packages.bib"                               
+## [117] "parameter-estimators_files"                 
+## [118] "parameter-estimators.Rmd"                   
+## [119] "power-analysis_files"                       
+## [120] "power-analysis.Rmd"                         
+## [121] "preamble.tex"                               
+## [122] "preface_cache"                              
+## [123] "preface_files"                              
+## [124] "preface.md"                                 
+## [125] "preface.Rmd"                                
+## [126] "push.sh"                                    
+## [127] "random-forests.Rmd"                         
+## [128] "random-vector.Rmd"                          
+## [129] "README.md"                                  
+## [130] "recommender-systems.Rmd"                    
+## [131] "references.Rmd"                             
+## [132] "regular-expressions.Rmd"                    
+## [133] "render625d5eab307a.rds"                     
+## [134] "renv.lock"                                  
+## [135] "requirements.txt"                           
+## [136] "sampling-distributions_files"               
+## [137] "sampling-distributions.Rmd"                 
+## [138] "screenshots"                                
+## [139] "sidebar.lua"                                
+## [140] "spark-3.1.1-bin-hadoop3.2.tgz"              
+## [141] "spark-warehouse"                            
+## [142] "spatial-analysis_cache"                     
+## [143] "spatial-analysis_files"                     
+## [144] "spatial-analysis.Rmd"                       
+## [145] "spatial-modeling_cache"                     
+## [146] "spatial-modeling.Rmd"                       
+## [147] "stochastic-process.Rmd"                     
+## [148] "string-operations.Rmd"                      
+## [149] "style.css"                                  
+## [150] "support-vector-machines.Rmd"                
+## [151] "survival-analysis_files"                    
+## [152] "survival-analysis.Rmd"                      
+## [153] "symbolic-computation_cache"                 
+## [154] "symbolic-computation_files"                 
+## [155] "symbolic-computation.Rmd"                   
+## [156] "texlive.txt"                                
+## [157] "text-analysis.Rmd"                          
+## [158] "time-series-analysis_cache"                 
+## [159] "time-series-analysis_files"                 
+## [160] "time-series-analysis.Rmd"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2539,7 +2552,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 25356
+## [1] 25307
 \end{verbatim}
 \item
   \texttt{proc.time()} R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -2554,7 +2567,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.081   0.004   0.085
+##   0.083   0.000   0.082
 \end{verbatim}
 \item
   \texttt{system.time} 计算 R 表达式/程序块运行耗费的CPU时间
@@ -2569,7 +2582,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.081   0.004   0.085
+##   0.072   0.008   0.079
 \end{verbatim}
 \item
   \texttt{gc.time} 报告垃圾回收耗费的时间
@@ -2672,7 +2685,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 06:11:17 PDT"
+## [1] "2021-08-09 21:27:38 PDT"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2683,7 +2696,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 09:11:17 EDT"
+## [1] "2021-08-10 00:27:38 EDT"
 \end{verbatim}
 \item
   \texttt{Sys.Date} 显示当前时区下的日期，精确到日，返回数据类型为 \texttt{date}
@@ -2695,7 +2708,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08"
+## [1] "2021-08-10"
 \end{verbatim}
 \item
   \texttt{date} 返回当前系统日期和时间，数据类型是字符串
@@ -2707,7 +2720,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sun Aug  8 13:11:17 2021"
+## [1] "Tue Aug 10 04:27:38 2021"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2718,7 +2731,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sun Aug 08 13:11:17 2021"
+## [1] "Tue Aug 10 04:27:38 2021"
 \end{verbatim}
 \item
   \texttt{as.POSIX*} 是一个 Date-time 转换函数
@@ -2730,7 +2743,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 13:11:17 GMT"
+## [1] "2021-08-10 04:27:38 GMT"
 \end{verbatim}
 \item
   时间计算
@@ -2742,7 +2755,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 13:11:17 UTC"
+## [1] "2021-08-10 04:27:38 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2752,7 +2765,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 12:11:17 UTC"
+## [1] "2021-08-10 03:27:38 UTC"
 \end{verbatim}
 \item
   \texttt{.leap.seconds} 是内置的日期序列
@@ -2824,9 +2837,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1775 FALSE  644 2021-08-08 12:41:08 2021-08-08 12:41:08
+## ./_common.R 1775 FALSE  644 2021-08-10 03:58:07 2021-08-10 03:58:07
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-08-08 13:11:12 1001 121 runner docker
+## ./_common.R 2021-08-10 04:27:29 1001 121 runner docker
 \end{verbatim}
 
 \begin{Shaded}
@@ -2839,9 +2852,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1775 FALSE  644 2021-08-08 13:11:17 2021-08-08 13:11:17
+## ./_common.R 1775 FALSE  644 2021-08-10 04:27:38 2021-08-10 04:27:38
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-08-08 13:11:17 1001 121 runner docker
+## ./_common.R 2021-08-10 04:27:38 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{strptime} 用于字符串与 \texttt{POSIXlt}、 \texttt{POSIXct} 类对象之间的转化，\texttt{format} 默认 \texttt{tz\ =\ ""} 且 \texttt{usetz\ =\ TRUE}
@@ -2865,7 +2878,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 13:11:17 CST"
+## [1] "2021-08-10 04:27:38 CST"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2875,7 +2888,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 13:11:17"
+## [1] "2021-08-10 04:27:38"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2885,7 +2898,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 21:11:17 CST"
+## [1] "2021-08-10 12:27:38 CST"
 \end{verbatim}
 \item
   设置时区
@@ -3036,12 +3049,14 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-##        Package  LibPath                      Installed Built   ReposVer
-## Matrix "Matrix" "/opt/R/4.1.0/lib/R/library" "1.3-3"   "4.1.0" "1.3-4" 
-## mgcv   "mgcv"   "/opt/R/4.1.0/lib/R/library" "1.8-35"  "4.1.0" "1.8-36"
-##        Repository                               
-## Matrix "https://cloud.r-project.org/src/contrib"
-## mgcv   "https://cloud.r-project.org/src/contrib"
+##          Package    LibPath                           Installed Built  
+## sysfonts "sysfonts" "/home/runner/work/_temp/Library" "0.8.4"   "4.1.0"
+## Matrix   "Matrix"   "/opt/R/4.1.0/lib/R/library"      "1.3-3"   "4.1.0"
+## mgcv     "mgcv"     "/opt/R/4.1.0/lib/R/library"      "1.8-35"  "4.1.0"
+##          ReposVer Repository                               
+## sysfonts "0.8.5"  "https://cloud.r-project.org/src/contrib"
+## Matrix   "1.3-4"  "https://cloud.r-project.org/src/contrib"
+## mgcv     "1.8-36" "https://cloud.r-project.org/src/contrib"
 \end{verbatim}
 \item
   \texttt{new.packages} 还没有安装的 R 包
@@ -3068,13 +3083,13 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 ## Number of installed packages:
 ##                                  
 ##                                    ok upgrade unavailable
-##   /home/runner/work/_temp/Library 411       0          11
+##   /home/runner/work/_temp/Library 410       1          11
 ##   /opt/R/4.1.0/lib/R/library       27       2           0
 ## 
 ## Number of available packages (each package counted only once):
 ##                                          
 ##                                           installed not installed
-##   https://cloud.r-project.org/src/contrib       424         17537
+##   https://cloud.r-project.org/src/contrib       424         17549
 \end{verbatim}
 \item
   \texttt{packageDescription} 查询 R 包描述信息
@@ -3145,47 +3160,48 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \begin{verbatim}
 ##   [1] "gg.gap"            "ggallin"           "ggalluvial"       
 ##   [4] "ggalt"             "gganimate"         "ggasym"           
-##   [7] "ggbeeswarm"        "ggbreak"           "ggBubbles"        
-##  [10] "ggbuildr"          "ggbump"            "ggcharts"         
-##  [13] "ggChernoff"        "ggconf"            "ggcorrplot"       
-##  [16] "ggdag"             "ggdark"            "ggDCA"            
-##  [19] "ggdemetra"         "ggdendro"          "ggdist"           
-##  [22] "ggdmc"             "ggeasy"            "ggedit"           
-##  [25] "ggenealogy"        "ggetho"            "ggExtra"          
-##  [28] "ggfan"             "ggfittext"         "ggfocus"          
-##  [31] "ggforce"           "ggformula"         "ggfortify"        
-##  [34] "ggfun"             "ggfx"              "gggap"            
-##  [37] "gggenes"           "ggghost"           "gggibbous"        
-##  [40] "ggguitar"          "ggh4x"             "gghalfnorm"       
-##  [43] "gghalves"          "ggheatmap"         "gghighlight"      
-##  [46] "gghilbertstrings"  "ggimage"           "ggimg"            
-##  [49] "gginference"       "gginnards"         "ggip"             
-##  [52] "ggiraph"           "ggiraphExtra"      "ggjoy"            
-##  [55] "gglm"              "gglogo"            "ggloop"           
-##  [58] "gglorenz"          "ggmap"             "ggmcmc"           
-##  [61] "ggmosaic"          "ggmsa"             "ggmuller"         
-##  [64] "ggmulti"           "ggnetwork"         "ggnewscale"       
-##  [67] "ggnormalviolin"    "ggnuplot"          "ggpacman"         
-##  [70] "ggpage"            "ggparallel"        "ggparliament"     
-##  [73] "ggparty"           "ggperiodic"        "ggplot.multistats"
-##  [76] "ggplotAssist"      "ggplotgui"         "ggplotify"        
-##  [79] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
-##  [82] "ggpointdensity"    "ggpol"             "ggpolypath"       
-##  [85] "ggpp"              "ggprism"           "ggpubr"           
-##  [88] "ggpval"            "ggQC"              "ggQQunif"         
-##  [91] "ggquickeda"        "ggquiver"          "ggRandomForests"  
-##  [94] "ggraph"            "ggraptR"           "ggrasp"           
-##  [97] "ggrastr"           "ggrepel"           "ggResidpanel"     
-## [100] "ggridges"          "ggROC"             "ggsci"            
-## [103] "ggseas"            "ggseqlogo"         "ggshadow"         
-## [106] "ggside"            "ggsignif"          "ggsn"             
-## [109] "ggsoccer"          "ggsolvencyii"      "ggsom"            
-## [112] "ggspatial"         "ggspectra"         "ggstance"         
-## [115] "ggstar"            "ggstatsplot"       "ggstream"         
-## [118] "ggstudent"         "ggswissmaps"       "ggtern"           
-## [121] "ggtext"            "ggThemeAssist"     "ggthemes"         
-## [124] "ggupset"           "ggvenn"            "ggVennDiagram"    
-## [127] "ggvoronoi"         "ggwordcloud"       "ggx"
+##   [7] "ggbeeswarm"        "ggborderline"      "ggbreak"          
+##  [10] "ggBubbles"         "ggbuildr"          "ggbump"           
+##  [13] "ggcharts"          "ggChernoff"        "ggconf"           
+##  [16] "ggcorrplot"        "ggdag"             "ggdark"           
+##  [19] "ggDCA"             "ggdemetra"         "ggdendro"         
+##  [22] "ggdist"            "ggdmc"             "ggeasy"           
+##  [25] "ggedit"            "ggenealogy"        "ggetho"           
+##  [28] "ggExtra"           "ggfan"             "ggfittext"        
+##  [31] "ggfocus"           "ggforce"           "ggformula"        
+##  [34] "ggfortify"         "ggfun"             "ggfx"             
+##  [37] "gggap"             "gggenes"           "ggghost"          
+##  [40] "gggibbous"         "ggguitar"          "ggh4x"            
+##  [43] "gghalfnorm"        "gghalves"          "ggheatmap"        
+##  [46] "gghighlight"       "gghilbertstrings"  "ggimage"          
+##  [49] "ggimg"             "gginference"       "gginnards"        
+##  [52] "ggip"              "ggiraph"           "ggiraphExtra"     
+##  [55] "ggjoy"             "gglm"              "gglogo"           
+##  [58] "ggloop"            "gglorenz"          "ggmap"            
+##  [61] "ggmcmc"            "ggmosaic"          "ggmsa"            
+##  [64] "ggmuller"          "ggmulti"           "ggnetwork"        
+##  [67] "ggnewscale"        "ggnormalviolin"    "ggnuplot"         
+##  [70] "ggpacman"          "ggpage"            "ggparallel"       
+##  [73] "ggparliament"      "ggparty"           "ggperiodic"       
+##  [76] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
+##  [79] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
+##  [82] "ggPMX"             "ggpointdensity"    "ggpol"            
+##  [85] "ggpolypath"        "ggpp"              "ggprism"          
+##  [88] "ggpubr"            "ggpval"            "ggQC"             
+##  [91] "ggQQunif"          "ggquickeda"        "ggquiver"         
+##  [94] "ggRandomForests"   "ggraph"            "ggraptR"          
+##  [97] "ggrasp"            "ggrastr"           "ggrepel"          
+## [100] "ggResidpanel"      "ggridges"          "ggrisk"           
+## [103] "ggROC"             "ggsci"             "ggseas"           
+## [106] "ggseqlogo"         "ggshadow"          "ggside"           
+## [109] "ggsignif"          "ggsn"              "ggsoccer"         
+## [112] "ggsolvencyii"      "ggsom"             "ggspatial"        
+## [115] "ggspectra"         "ggstance"          "ggstar"           
+## [118] "ggstatsplot"       "ggstream"          "ggstudent"        
+## [121] "ggswissmaps"       "ggtern"            "ggtext"           
+## [124] "ggThemeAssist"     "ggthemes"          "ggupset"          
+## [127] "ggvenn"            "ggVennDiagram"     "ggvoronoi"        
+## [130] "ggwordcloud"       "ggx"
 \end{verbatim}
 \item
   重装R包，与 R 版本号保持一致
@@ -3227,7 +3243,7 @@ R-level 的源代码都可以直接看
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5613d5524778>
+## <bytecode: 0x555823289778>
 ## <environment: namespace:base>
 \end{verbatim}
 
@@ -3441,7 +3457,7 @@ SEXP attribute_hidden do_body(SEXP call, SEXP op, SEXP args, SEXP rho)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "464,282,367"
+## [1] "234,054,075"
 \end{verbatim}
 
 \begin{Shaded}
@@ -3464,7 +3480,7 @@ SEXP attribute_hidden do_body(SEXP call, SEXP op, SEXP args, SEXP rho)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-08 00:00:00"
+## [1] "2021-08-10 00:00:00"
 \end{verbatim}
 
 从 POSIXt 数据对象中，抽取小时和分钟部分，返回字符串
@@ -3476,7 +3492,7 @@ SEXP attribute_hidden do_body(SEXP call, SEXP op, SEXP args, SEXP rho)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "13:11"
+## [1] "04:27"
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -8214,7 +8230,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpFOPS23/file6363610005ab.data"
+## [1] "/tmp/RtmppTzruG/file63295aaa413e.data"
 \end{verbatim}
 
 设置参数 \texttt{n\ =\ -1} 表示将文件 fil 的内容从头读到尾
@@ -8259,7 +8275,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpFOPS23/test636313de95a4"
+## [1] "/tmp/RtmppTzruG/test63296b37cfd9"
 \end{verbatim}
 
 \begin{Shaded}
@@ -9689,12 +9705,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.79 Very Good     G     SI1  60.6    57  2793 5.98 6.06 3.65
-## 2  0.80   Premium     F     SI2  61.0    57  2797 6.03 6.01 3.67
-## 3  0.69 Very Good     F    VVS2  61.5    60  2993 5.64 5.67 3.48
-## 4  0.71 Very Good     F     VS2  59.6    56  2994 5.84 5.88 3.49
-## 5  0.78     Ideal     E     SI1  62.7    55  3014 5.90 5.87 3.69
-## 6  1.00      Fair     F     SI2  65.5    56  3146 6.30 6.19 4.09
+## 1  0.86 Very Good     I     VS1  61.2    58  2905 6.10 6.16 3.75
+## 2  0.70   Premium     F    VVS2  58.7    60  3062 5.80 5.75 3.39
+## 3  0.85     Ideal     G     SI1  62.0    54  3084 6.08 6.11 3.78
+## 4  0.72 Very Good     F    VVS2  63.6    59  3420 5.65 5.70 3.61
+## 5  0.92   Premium     G     SI2  59.4    62  3555 6.36 6.34 3.77
+## 6  1.02      Good     J     SI2  62.2    61  3639 6.41 6.48 4.01
 \end{verbatim}
 
 将抽样的结果用窗口函数 \texttt{RANK()} 排序，详见 \url{https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html}
@@ -9713,13 +9729,13 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 \end{Shaded}
 
 \begin{verbatim}
-##     cut price rank
-## 1  Fair  2112    1
-## 2  Good  2062    1
-## 3  Good  4138    2
-## 4  Good  4506    3
-## 5 Ideal   477    1
-## 6 Ideal   603    2
+##    cut price rank
+## 1 Fair  2376    1
+## 2 Fair  3278    2
+## 3 Fair 11966    3
+## 4 Good   512    1
+## 5 Good  1197    2
+## 6 Good  4183    3
 \end{verbatim}
 
 LATERAL VIEW 把一列拆成多行
@@ -9755,10 +9771,10 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2
 \end{verbatim}
 
 行列转换 \url{https://www.cnblogs.com/kimbo/p/6208973.html}，LATERAL VIEW 展开
@@ -9776,12 +9792,12 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80
 \end{verbatim}
 
 日期相关的函数 \url{https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html\#date-and-timestamp-functions}
@@ -9795,7 +9811,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   current_date()
-## 1     2021-08-08
+## 1     2021-08-10
 \end{verbatim}
 
 \begin{Shaded}
@@ -9807,7 +9823,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   date_sub(current_date(), 1)
-## 1                  2021-08-07
+## 1                  2021-08-09
 \end{verbatim}
 
 \begin{Shaded}
@@ -9831,7 +9847,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   dayofweek(current_date())
-## 1                         1
+## 1                         3
 \end{verbatim}
 
 最后，使用完记得关闭 Spark 连接
@@ -13816,6 +13832,19 @@ Arial 的细瘦版 & liberation-narrow-fonts & Arial Narrow \\
 \bottomrule
 \end{longtable}
 
+Lionel Henry 将 Liberation 系列字体打包到 R 包 \href{https://github.com/lionel-/fontLiberation}{fontLiberation}，非常便携，不需要操心跨平台的字体安装了。那如何使用呢？
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("fontLiberation")}
+\FunctionTok{system.file}\NormalTok{(}\AttributeTok{package =} \StringTok{"fontLiberation"}\NormalTok{, }\StringTok{"fonts"}\NormalTok{, }\StringTok{"liberation{-}fonts"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] ""
+\end{verbatim}
+
 此外，我们还可以从网上获取各种个样的字体，特别地，Boryslav Larin 收录的 \href{https://github.com/brabadu/awesome-fonts}{awesome-fonts} 列表是一个不错的开始，比如图标字体 \href{https://github.com/FortAwesome/Font-Awesome}{Font-Awesome}，
 
 \begin{Shaded}
@@ -14143,7 +14172,7 @@ fontcm 包提供数学字体，\texttt{grDevices::embedFonts()} 函数调用 Gho
 \CommentTok{\# 默认字体}
 \NormalTok{p1 }\OtherTok{\textless{}{-}}\NormalTok{ p }\SpecialCharTok{+} \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{,}
   \AttributeTok{x =} \DecValTok{3}\NormalTok{, }\AttributeTok{y =} \DecValTok{3}\NormalTok{,}
-  \AttributeTok{parse =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{label =}\NormalTok{ eq}
+  \AttributeTok{parse =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{label =}\NormalTok{ eq }\CommentTok{\# , family = "CM Roman"}
 \NormalTok{)}
 \CommentTok{\# 使用 CM Roman 字体}
 \NormalTok{p2 }\OtherTok{\textless{}{-}}\NormalTok{ p }\SpecialCharTok{+} \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{,}
@@ -14965,11 +14994,11 @@ colourlovers 包借助 XML, jsonlite 和 httr 包可以在线获取网站 \href{
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-23-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-24-1} 
 
 }
 
-\caption{HCL调色}\label{fig:unnamed-chunk-23}
+\caption{HCL调色}\label{fig:unnamed-chunk-24}
 \end{figure}
 
 R 内置了 502 种不同颜色的名称，下面随机地选取 20 种颜色
@@ -15089,11 +15118,11 @@ R 包 grDevices 提供 hcl 调色板\footnote{\url{https://developer.r-project.o
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-26-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-27-1} 
 
 }
 
-\caption{直方图}\label{fig:unnamed-chunk-26}
+\caption{直方图}\label{fig:unnamed-chunk-27}
 \end{figure}
 
 \begin{Shaded}
@@ -15111,11 +15140,11 @@ R 包 grDevices 提供 hcl 调色板\footnote{\url{https://developer.r-project.o
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-27-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-28-1} 
 
 }
 
-\caption{直方图}\label{fig:unnamed-chunk-27}
+\caption{直方图}\label{fig:unnamed-chunk-28}
 \end{figure}
 
 \hypertarget{rgb}{%
@@ -15744,11 +15773,11 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-33-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-34-1} 
 
 }
 
-\caption{局部多项式平滑}\label{fig:unnamed-chunk-33}
+\caption{局部多项式平滑}\label{fig:unnamed-chunk-34}
 \end{figure}
 
 \begin{Shaded}
@@ -15899,11 +15928,11 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-34-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-35-1} 
 
 }
 
-\caption{多个图例}\label{fig:unnamed-chunk-34}
+\caption{多个图例}\label{fig:unnamed-chunk-35}
 \end{figure}
 
 \begin{Shaded}
@@ -15939,11 +15968,11 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-35-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-36-1} 
 
 }
 
-\caption{1948年至1960年航班乘客人数变化}\label{fig:unnamed-chunk-35}
+\caption{1948年至1960年航班乘客人数变化}\label{fig:unnamed-chunk-36}
 \end{figure}
 
 \hypertarget{sec-ggplot2-barplot}{%
@@ -15971,7 +16000,7 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-36-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-1} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -15996,7 +16025,7 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-1} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -16004,7 +16033,7 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-2} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-2} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -16012,7 +16041,7 @@ Zuguang Gu 开发的 \href{https://github.com/jokergoo/ComplexHeatmap}{ComplexHe
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-3} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-3} \end{center}
 
 我们还可以在图 \ref{fig:diamonds-barplot-1} 的基础上再添加一个分类变量钻石的纯净度 clarity，形成堆积条形图
 
@@ -16378,11 +16407,11 @@ IF & 9 (0.56\%) & 71 (1.45\%) & 268 (2.22\%) & 230 (1.67\%) & 1212 (5.62\%)\\
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-40-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-41-1} 
 
 }
 
-\caption{钻石价格的分布}\label{fig:unnamed-chunk-40}
+\caption{钻石价格的分布}\label{fig:unnamed-chunk-41}
 \end{figure}
 
 堆积直方图
@@ -16395,11 +16424,11 @@ IF & 9 (0.56\%) & 71 (1.45\%) & 268 (2.22\%) & 230 (1.67\%) & 1212 (5.62\%)\\
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-41-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-1} 
 
 }
 
-\caption{钻石价格随切割质量的分布}\label{fig:unnamed-chunk-41}
+\caption{钻石价格随切割质量的分布}\label{fig:unnamed-chunk-42}
 \end{figure}
 
 基础 R 包与 Ggplot2 包绘制的直方图的对比，Base R 绘图速度快，代码更加稳定，Ggplot2 代码简洁，更美观
@@ -16509,7 +16538,7 @@ PlantGrowth 数据量比较小，此时比较适合采用抖动散点图，抖�
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-43-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} \end{center}
 
 以钻石切割质量 cut 为分面依据，以钻石颜色类别 color 为 x 轴，钻石价格为 y 轴，绘制箱线图\ref{fig:boxplot-facet-color}
 
@@ -16683,11 +16712,11 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} 
 
 }
 
-\caption{条件密度估计图}\label{fig:unnamed-chunk-44}
+\caption{条件密度估计图}\label{fig:unnamed-chunk-45}
 \end{figure}
 
 岭线图是密度图的一种变体，可以防止密度曲线重叠在一起
@@ -16699,7 +16728,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
 
 二维的密度图又是一种延伸
 
@@ -16711,7 +16740,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
 
 \texttt{stat} 函数，特别是 nlevel 参数，在密度曲线之间填充我们又可以得到热力图
 
@@ -16723,7 +16752,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
 
 \texttt{gemo\_hex} 也是二维密度图的一种变体，特别适合数据量比较大的情形
 
@@ -16734,7 +16763,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-49-1} \end{center}
 
 \href{https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/}{heatmaps in ggplot2} 二维密度图
 
@@ -16874,7 +16903,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-50-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
 
 抖不抖，还是抖一下
 
@@ -16887,7 +16916,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -16901,7 +16930,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-2} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-2} \end{center}
 
 在数据量比较大的时候，可以用箱线图、密度图、提琴图
 
@@ -16913,11 +16942,11 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
 
 }
 
-\caption{抖动图的反例}\label{fig:unnamed-chunk-52}
+\caption{抖动图的反例}\label{fig:unnamed-chunk-53}
 \end{figure}
 
 上色和分面都不好使的抖动图，因为区分度变小
@@ -16932,11 +16961,11 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} 
 
 }
 
-\caption{根据钻石颜色上色}\label{fig:unnamed-chunk-53}
+\caption{根据钻石颜色上色}\label{fig:unnamed-chunk-54}
 \end{figure}
 
 箱线图此时不宜分的过细
@@ -17096,7 +17125,7 @@ y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-55-1} \end{center}
 
 \hypertarget{sec-ggplot2-tile}{%
 \subsection{瓦片图}\label{sec-ggplot2-tile}}
@@ -17193,7 +17222,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sun"
+## [1] "Tue"
 \end{verbatim}
 
 \begin{Shaded}
@@ -17203,7 +17232,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1
+## [1] 3
 \end{verbatim}
 
 \end{rmdnote}
@@ -17238,7 +17267,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-57-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-58-1} \end{center}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -17397,7 +17426,7 @@ ggpubr 包提供了 \texttt{stat\_chull()} 图层
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x558a04ff1a50>
+## <bytecode: 0x5588fe25a720>
 ## <environment: namespace:ggpubr>
 \end{verbatim}
 
@@ -18110,7 +18139,7 @@ ggdendro 的 \texttt{dendro\_data()} 函数支持 \texttt{tree} 、\texttt{hclus
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-66-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-67-1} \end{center}
 
 \hypertarget{sec-ggplot2-prcomp}{%
 \subsection{主成分图}\label{sec-ggplot2-prcomp}}
@@ -22549,15 +22578,15 @@ miniUI 包
 ##  [25] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [37] FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
-##  [73] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE
-##  [85]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [145] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE
-## [157] FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [73]  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+##  [85] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE
+## [121] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE
+## [133] FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [145] FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+## [157] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
 \end{verbatim}
 
 \begin{Shaded}
@@ -22573,15 +22602,15 @@ miniUI 包
 ##  [25] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [37] FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49] FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
-##  [73] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE
-##  [85]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
-## [145] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE
-## [157] FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [73]  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+##  [85] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE
+## [121] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE
+## [133] FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+## [145] FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+## [157] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
 \end{verbatim}
 
 部分匹配(Partial String Matching)
@@ -24209,7 +24238,7 @@ R 语言是用字符串来表示正则表达式的，但是正则表达式不是
 ## actual    22    23    24    25    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    36    38    39
+## actual    33    35    36    37    38    39
 \end{verbatim}
 
 \hypertarget{strtrim}{%
@@ -25160,10 +25189,10 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 
 \begin{verbatim}
 ## $quantile
-## [1] 2.561076
+## [1] 2.561057
 ## 
 ## $f.quantile
-## [1] 1.964438e-07
+## [1] 1.542382e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -26271,13 +26300,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 16, number of trials = 100, p-value = 2.606e-12
+## number of successes = 28, number of trials = 100, p-value = 1.258e-05
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.09431029 0.24678760
+##  0.1947936 0.3786670
 ## sample estimates:
 ## probability of success 
-##                   0.16
+##                   0.28
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.5， P 值 \(6.148 \times 10^{-11}\) 结论是拒绝原假设
@@ -26293,13 +26322,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 16, number of trials = 100, p-value = 0.3814
+## number of successes = 28, number of trials = 100, p-value = 0.05948
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.09431029 0.24678760
+##  0.1947936 0.3786670
 ## sample estimates:
 ## probability of success 
-##                   0.16
+##                   0.28
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -27618,7 +27647,7 @@ ROC 曲线越往左上角拱越好， AUC 是 ROC 曲线下的面积，所以 AU
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.002   0.000   0.003
+##   0.002   0.001   0.002
 \end{verbatim}
 
 更多关于 auc 计算的讨论见统计之都论坛帖 \url{https://d.cosx.org/d/419436}，我感觉这个问题最后会归结到排序问题。
@@ -28257,12 +28286,12 @@ fisher.test \url{https://en.wikipedia.org/wiki/Fisher's_exact_test}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{rmdtip}{提示}
+\begin{rmdnote}{注意}
 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。
 
-\end{rmdtip}
+\end{rmdnote}
 
-试验设计（Design of Experiment，简称 DOE）是一个应用性很强的学科领域，R. A. Fisher 曾在农业站做实验验证孟德尔的豌豆实验结果。
+试验设计（Design of Experiment，简称 DOE）是一个应用性很强的学科领域，\href{https://en.wikipedia.org/wiki/Ronald_Fisher}{R. A. Fisher} 曾在\href{https://en.wikipedia.org/wiki/Rothamsted_Research}{英国洛桑试验站}做实验验证孟德尔的豌豆实验结果。
 
 Vikneswaran 提供了一份书籍 \citet{Berger2002} 的补充材料 --- \href{http://CRAN.R-project.org/doc/contrib/Vikneswaran-ED_companion.pdf}{An R companion to ``Experimental Design''}，目前 Paul Berger 的这本书已经迭代到第二版 \citep{Berger2018}，2015 年 Paul Berger 出版了新书 《Improving the User Experience through Practical Data Analytics: Gain Meaningful Insight and Increase Your Bottom Line》 \citep{Berger2015} 颇具应用性，结合产品用户体验来谈试验设计。
 
@@ -32121,10 +32150,10 @@ ts 和 seq 构造时间向量的关系是什么？
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1] -1.22144404 -1.09917952  1.31666765  0.33796943 -0.52882427  1.36839287
-##  [7] -0.84014117 -0.11928822  0.17768037 -1.52773390  0.33427221  0.33573150
-## [13]  0.61185154  0.62155987  1.08169573 -0.04698529  0.93731170 -0.22251925
-## [19]  1.38425605  0.71740938
+##  [1] -0.83901540  0.29247691 -0.97235114  1.30535197 -1.02616619 -0.32763449
+##  [7]  0.32774477  0.08165703  1.40695431 -0.30678883  0.98759814  1.70562368
+## [13] -2.86678105 -0.36988608  0.71569475  0.33592168 -0.40585563 -0.73380376
+## [19]  0.19150191  0.46947488
 \end{verbatim}
 
 周数据，一周采一个点，采了 20 个点
@@ -33012,7 +33041,7 @@ loaloa 眼线虫病，人群感染，村庄水平， 响应变量服从二项分
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.7 seconds.
+## Total execution time: 0.6 seconds.
 \end{verbatim}
 
 检查收敛性，Rhat 决定收敛性，所有待估参数的Rhat必须小于1.1，同时有效样本数量 n\_eff 除以抽样总数 N 必须小于0.001，否则收敛性是值得怀疑的。拟合结果及解释如下：
@@ -33028,21 +33057,21 @@ loaloa 眼线虫病，人群感染，村庄水平， 响应变量服从二项分
 ## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.016, 0.017, 0.016, 0.016) seconds, 0.065 seconds total
-## Sampling took (0.059, 0.050, 0.050, 0.046) seconds, 0.21 seconds total
+## Warmup took (0.016, 0.018, 0.017, 0.016) seconds, 0.067 seconds total
+## Sampling took (0.053, 0.048, 0.044, 0.047) seconds, 0.19 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    17518      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  5.2e+03  1.0e+00
-## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  9.8e+00  1.5e+13
-## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.0e+02  1.1e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    18705      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  5.5e+03  1.0e+00
+## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.0e+01  1.5e+13
+## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.1e+02  1.1e+00
 ## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.2e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
-## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.6e+04  1.0e+00
+## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.7e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    27961     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    33585     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    29854     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    35859     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -33165,37 +33194,37 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.026, 0.032, 0.027, 0.033) seconds, 0.12 seconds total
-## Sampling took (0.098, 0.11, 0.097, 0.11) seconds, 0.41 seconds total
+## Warmup took (0.026, 0.031, 0.027, 0.030) seconds, 0.11 seconds total
+## Sampling took (0.080, 0.10, 0.096, 0.11) seconds, 0.38 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     5954     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  4.4e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  4.9e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.0e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.4e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     6373     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  4.8e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  5.2e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.2e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.6e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  5.9e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  6.3e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886     9455      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     7455      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    18773     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    20503     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    20242      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    20000      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    17895      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    20533      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    17651      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    17897     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    13790     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    21752      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    16936      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    20718      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    19994      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    20690     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    15905     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    14364      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    10120      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     7979      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    20093     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    21945     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    21665      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    21406      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    19154      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    21976      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    18892      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    19155     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    14760     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    23282      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    18127      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    22175      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    21400      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    22145     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    17023     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    15374      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -33417,13 +33446,13 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.7 seconds.
-## Chain 2 finished in 0.8 seconds.
-## Chain 3 finished in 0.9 seconds.
+## Chain 2 finished in 0.7 seconds.
+## Chain 3 finished in 0.8 seconds.
 ## Chain 4 finished in 0.7 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 0.8 seconds.
-## Total execution time: 3.5 seconds.
+## Mean chain execution time: 0.7 seconds.
+## Total execution time: 3.1 seconds.
 \end{verbatim}
 
 \hypertarget{sec-nlm-gp}{%
@@ -36710,7 +36739,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 22.22222  0.00000
+## [1]  0.00000 22.22222
 \end{verbatim}
 
 \begin{Shaded}
@@ -36975,7 +37004,7 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 368.106
+## [1] 368.1061
 \end{verbatim}
 
 \begin{Shaded}
@@ -37393,7 +37422,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.358362 4.711158 3.831629 1.130327
+## [1] 1.278024 4.431860 4.188310 1.085498
 \end{verbatim}
 
 \begin{Shaded}
@@ -37403,7 +37432,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 19.03377
+## [1] 17.92
 \end{verbatim}
 
 可以看出，nloptr 提供的优化能力可以覆盖\href{https://github.com/coin-or/Ipopt}{Ipopt 求解器}，推荐使用 nloptr.slsqp 求解器。
@@ -37533,7 +37562,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.227971 4.245371
+## [1] 1.227971 4.245373
 \end{verbatim}
 
 \begin{Shaded}
@@ -37748,7 +37777,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -16.98862  29.66315
+## [1] 37.29934 37.04812
 \end{verbatim}
 
 \begin{Shaded}
@@ -37758,7 +37787,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -3.167618
+## [1] -3.159983
 \end{verbatim}
 
 比如下面三组
@@ -41344,7 +41373,7 @@ wrapt & 1.12.1 \\
 ## <module 'posixpath' from '/usr/lib/python3.8/posixpath.py'>
 \end{verbatim}
 
-matplotlib 绘图，支持交叉引用\footnote{早些时候，在 R Markdown 中设置 \texttt{python.reticulate\ =\ TRUE} 调用 reticulate 包，带来的副作用是不支持交叉引用的 \url{https://d.cosx.org/d/420680-python-reticulate-true}。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了 \url{https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/}。截至本文写作时间 2021年08月08日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。}，如图 \ref{fig:matplotlib-copy} 所示
+matplotlib 绘图，支持交叉引用\footnote{早些时候，在 R Markdown 中设置 \texttt{python.reticulate\ =\ TRUE} 调用 reticulate 包，带来的副作用是不支持交叉引用的 \url{https://d.cosx.org/d/420680-python-reticulate-true}。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了 \url{https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/}。截至本文写作时间 2021年08月10日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。}，如图 \ref{fig:matplotlib-copy} 所示
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -42901,7 +42930,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55d9b3bf41f0>
+## <bytecode: 0x555791ff7b50>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -42930,7 +42959,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55d9b3bf41f0>
+## <bytecode: 0x555791ff7b50>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -42998,7 +43027,7 @@ R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块，
 \NormalTok{plt.switch\_backend(}\StringTok{\textquotesingle{}agg\textquotesingle{}}\NormalTok{)}
 
 \NormalTok{plt.plot([}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{])}
-\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7fd6c290b460\textgreater{}]}
+\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7fc55a8f6460\textgreater{}]}
 \NormalTok{plt.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -43027,8 +43056,8 @@ knitr 支持在 R Markdown 中嵌入 C 语言代码
 
 \begin{verbatim}
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c69cd224d9c59.c -o c69cd224d9c59.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c69cd224d9c59.so c69cd224d9c59.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c693e67a4fee2.c -o c693e67a4fee2.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c693e67a4fee2.so c693e67a4fee2.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 \end{verbatim}
 

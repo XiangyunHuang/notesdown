@@ -108,10 +108,10 @@
 <span class="header-section-number">C.1</span> 函数源码<a class="anchor" aria-label="anchor" href="#sec-function-source"><i class="fas fa-link"></i></a>
 </h2>
 <p><a href="https://github.com/moodymudskipper/funflow">funflow</a> 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码</p>
-<div class="sourceCode" id="cb2973"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2977"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'moodymudskipper/funflow'</span><span class="op">)</span>
 <span class="fu">funflow</span><span class="fu">::</span><span class="fu">view_flow</span><span class="op">(</span><span class="st">'median.default'</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2974"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2978"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/methods.html">methods</a></span><span class="op">(</span><span class="va">predict</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] predict.ar*                predict.Arima*            
 ##  [3] predict.arima0*            predict.glm               
@@ -123,14 +123,14 @@
 ## [15] predict.smooth.spline.fit* predict.StructTS*         
 ## see '?methods' for accessing help and source code</code></pre>
 <p>stats 包里找不到这个函数</p>
-<div class="sourceCode" id="cb2976"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2980"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="st">"package:stats"</span>, all.names <span class="op">=</span> <span class="cn">TRUE</span>, pattern <span class="op">=</span> <span class="st">"predict.poly"</span><span class="op">)</span></code></pre></div>
 <pre><code>## character(0)</code></pre>
-<div class="sourceCode" id="cb2978"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2982"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">predict.poly</span></code></pre></div>
 <pre><code>## Error in eval(expr, envir, enclos): object 'predict.poly' not found</code></pre>
 <p>可见函数 <code><a href="https://rdrr.io/r/stats/poly.html">predict.poly()</a></code> 默认没有导出</p>
-<div class="sourceCode" id="cb2980"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2984"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">stats</span><span class="fu">:::</span><span class="va"><a href="https://rdrr.io/r/stats/poly.html">predict.poly</a></span></code></pre></div>
 <pre><code>## function (object, newdata, ...) 
 ## {
@@ -142,10 +142,10 @@
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## &lt;bytecode: 0x55899ac5caa8&gt;
+## &lt;bytecode: 0x55f9e0f58a80&gt;
 ## &lt;environment: namespace:stats&gt;</code></pre>
 <p>或者</p>
-<div class="sourceCode" id="cb2982"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2986"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/getAnywhere.html">getAnywhere</a></span><span class="op">(</span><span class="va">predict.poly</span><span class="op">)</span></code></pre></div>
 <pre><code>## A single object matching 'predict.poly' was found
 ## It was found in the following places
@@ -163,14 +163,14 @@
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## &lt;bytecode: 0x55899ac5caa8&gt;
+## &lt;bytecode: 0x55f9e0f58a80&gt;
 ## &lt;environment: namespace:stats&gt;</code></pre>
-<div class="sourceCode" id="cb2984"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2988"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/getAnywhere.html">getAnywhere</a></span><span class="op">(</span><span class="st">"predict.poly"</span><span class="op">)</span><span class="op">$</span><span class="va">where</span></code></pre></div>
 <pre><code>## [1] "registered S3 method for predict from namespace stats"
 ## [2] "namespace:stats"</code></pre>
 <p>函数参数个数</p>
-<div class="sourceCode" id="cb2986"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2990"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/formals.html">formals</a></span><span class="op">(</span><span class="va">read.table</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "file"             "header"           "sep"              "quote"           
 ##  [5] "dec"              "numerals"         "row.names"        "col.names"       
@@ -192,7 +192,7 @@
 <span class="header-section-number">C.3</span> R 与 JavaScripts<a class="anchor" aria-label="anchor" href="#sec-r-javascripts"><i class="fas fa-link"></i></a>
 </h2>
 <!-- roughviz.js 为例介绍如何使用 htmlwidgets 制作将 JavaScripts 库打包成 R 包 -->
-<div class="sourceCode" id="cb2988"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2992"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ramnathv/htmlwidgets">htmlwidgets</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sec-r-python" class="section level2" number="37.4">
@@ -200,15 +200,15 @@
 <span class="header-section-number">C.4</span> R 与 Python<a class="anchor" aria-label="anchor" href="#sec-r-python"><i class="fas fa-link"></i></a>
 </h2>
 <p>R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块， reticulate 包还支持 Python 和 R 之间的数据对象通信交流。</p>
-<div class="sourceCode" id="cb2989"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2993"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate">reticulate</a></span><span class="op">)</span></code></pre></div>
 <p>如图 <a href="chap-mixed-programming.html#fig:reticulate-matplotlib">C.1</a> 所示，在 R Markdown 中执行 Python 绘图代码，并且将图形插入文档。</p>
-<div class="sourceCode" id="cb2990"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2990-1"><a href="chap-mixed-programming.html#cb2990-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2990-2"><a href="chap-mixed-programming.html#cb2990-2" aria-hidden="true" tabindex="-1"></a>plt.switch_backend(<span class="st">'agg'</span>)</span>
-<span id="cb2990-3"><a href="chap-mixed-programming.html#cb2990-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2990-4"><a href="chap-mixed-programming.html#cb2990-4" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>])</span>
-<span id="cb2990-5"><a href="chap-mixed-programming.html#cb2990-5" aria-hidden="true" tabindex="-1"></a><span class="co">## [&lt;matplotlib.lines.Line2D object at 0x7ff47f91b430&gt;]</span></span>
-<span id="cb2990-6"><a href="chap-mixed-programming.html#cb2990-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb2994"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2994-1"><a href="chap-mixed-programming.html#cb2994-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2994-2"><a href="chap-mixed-programming.html#cb2994-2" aria-hidden="true" tabindex="-1"></a>plt.switch_backend(<span class="st">'agg'</span>)</span>
+<span id="cb2994-3"><a href="chap-mixed-programming.html#cb2994-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2994-4"><a href="chap-mixed-programming.html#cb2994-4" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>])</span>
+<span id="cb2994-5"><a href="chap-mixed-programming.html#cb2994-5" aria-hidden="true" tabindex="-1"></a><span class="co">## [&lt;matplotlib.lines.Line2D object at 0x7f50c8b2b6d0&gt;]</span></span>
+<span id="cb2994-6"><a href="chap-mixed-programming.html#cb2994-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span id="fig:reticulate-matplotlib"></span>
 <img src="mixed-programming_files/figure-html/reticulate-matplotlib-1.svg" alt="Python 图形" width=".8\textwidth"><p class="caption">
@@ -221,25 +221,25 @@
 <span class="header-section-number">C.5</span> R 与 C<a class="anchor" aria-label="anchor" href="#sec-r-c"><i class="fas fa-link"></i></a>
 </h2>
 <p>knitr 支持在 R Markdown 中嵌入 C 语言代码</p>
-<div class="sourceCode" id="cb2991"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2991-1"><a href="chap-mixed-programming.html#cb2991-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> useC<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>i<span class="op">){</span></span>
-<span id="cb2991-2"><a href="chap-mixed-programming.html#cb2991-2" aria-hidden="true" tabindex="-1"></a>  i<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">11</span><span class="op">;</span></span>
-<span id="cb2991-3"><a href="chap-mixed-programming.html#cb2991-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb2995"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2995-1"><a href="chap-mixed-programming.html#cb2995-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> useC<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>i<span class="op">){</span></span>
+<span id="cb2995-2"><a href="chap-mixed-programming.html#cb2995-2" aria-hidden="true" tabindex="-1"></a>  i<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">11</span><span class="op">;</span></span>
+<span id="cb2995-3"><a href="chap-mixed-programming.html#cb2995-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <pre><code>## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c5ec244fd40ac.c -o c5ec244fd40ac.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c5ec244fd40ac.so c5ec244fd40ac.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c5e405a1fd333.c -o c5e405a1fd333.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c5e405a1fd333.so c5e405a1fd333.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'</code></pre>
-<div class="sourceCode" id="cb2993"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2997"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">10</span><span class="op">)</span>
 <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Foreign.html">.C</a></span><span class="op">(</span><span class="st">"useC"</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span>
 <span class="va">out</span></code></pre></div>
 <pre><code>## $b
 ##  [1] 11  2  2  2  2  2  2  2  2  2</code></pre>
-<div class="sourceCode" id="cb2995"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2999"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out</span><span class="op">$</span><span class="va">b</span></code></pre></div>
 <pre><code>##  [1] 11  2  2  2  2  2  2  2  2  2</code></pre>
 <p>一步一步地命令行操作</p>
-<div class="sourceCode" id="cb2997"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2997-1"><a href="chap-mixed-programming.html#cb2997-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD SHLIB useC1.c</span></code></pre></div>
-<div class="sourceCode" id="cb2998"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3001"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3001-1"><a href="chap-mixed-programming.html#cb3001-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> CMD SHLIB useC1.c</span></code></pre></div>
+<div class="sourceCode" id="cb3002"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dynload.html">dyn.load</a></span><span class="op">(</span><span class="st">"useC1.dll"</span><span class="op">)</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">10</span><span class="op">)</span>
 <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Foreign.html">.C</a></span><span class="op">(</span><span class="st">"useC"</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span>
@@ -262,7 +262,7 @@
 <li>课程 <a href="https://ds4ps.org/cpp-526-sum-2020/">Foundations of Data Science</a>
 </li>
 </ul>
-<div class="sourceCode" id="cb2999"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3003"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rcpp.org">Rcpp</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sec-r-latex" class="section level2" number="37.7">
@@ -271,47 +271,47 @@
 </h2>
 <!-- TeX 的历史一小段介绍，tikzDevice 对公式的加强， 引入 TikZ 图形，常用 LaTeX 语法 <https://wch.github.io/latexsheet/latexsheet-a4.pdf> -->
 <p><strong>tikzDevice</strong> 包将 LaTeX 公式和绘图系统 <a href="https://en.wikipedia.org/wiki/PGF/TikZ">TikZ</a> 引入 R 语言生态，贡献在于提供更加漂亮的公式输出，对图形进行后期布局排版加工，达到设计师出品的质量水平。图 <a href="chap-mixed-programming.html#fig:tex-system">C.2</a> 展示了复杂的 TeX 生态系统， R 语言只是取其精华，使用 TikZ 绘制。</p>
-<div class="sourceCode" id="cb3000"><pre class="sourceCode tex"><code class="sourceCode latex"><span id="cb3000-1"><a href="chap-mixed-programming.html#cb3000-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}</span>
-<span id="cb3000-2"><a href="chap-mixed-programming.html#cb3000-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\path</span> [</span>
-<span id="cb3000-3"><a href="chap-mixed-programming.html#cb3000-3" aria-hidden="true" tabindex="-1"></a>    mindmap,</span>
-<span id="cb3000-4"><a href="chap-mixed-programming.html#cb3000-4" aria-hidden="true" tabindex="-1"></a>    text = white,</span>
-<span id="cb3000-5"><a href="chap-mixed-programming.html#cb3000-5" aria-hidden="true" tabindex="-1"></a>    level 1 concept/.append style =</span>
-<span id="cb3000-6"><a href="chap-mixed-programming.html#cb3000-6" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\Large\bfseries\sffamily</span>, sibling angle=90, level distance=125},</span>
-<span id="cb3000-7"><a href="chap-mixed-programming.html#cb3000-7" aria-hidden="true" tabindex="-1"></a>    level 2 concept/.append style =</span>
-<span id="cb3000-8"><a href="chap-mixed-programming.html#cb3000-8" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\normalsize\bfseries\sffamily</span>},</span>
-<span id="cb3000-9"><a href="chap-mixed-programming.html#cb3000-9" aria-hidden="true" tabindex="-1"></a>    level 3 concept/.append style =</span>
-<span id="cb3000-10"><a href="chap-mixed-programming.html#cb3000-10" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\small\bfseries\sffamily</span>},</span>
-<span id="cb3000-11"><a href="chap-mixed-programming.html#cb3000-11" aria-hidden="true" tabindex="-1"></a>    tex/.style     = {concept, ball color=blue,</span>
-<span id="cb3000-12"><a href="chap-mixed-programming.html#cb3000-12" aria-hidden="true" tabindex="-1"></a>      font=<span class="fu">\Huge\bfseries</span>},</span>
-<span id="cb3000-13"><a href="chap-mixed-programming.html#cb3000-13" aria-hidden="true" tabindex="-1"></a>    engines/.style = {concept, ball color=green!50!black},</span>
-<span id="cb3000-14"><a href="chap-mixed-programming.html#cb3000-14" aria-hidden="true" tabindex="-1"></a>    formats/.style = {concept, ball color=purple!50!black},</span>
-<span id="cb3000-15"><a href="chap-mixed-programming.html#cb3000-15" aria-hidden="true" tabindex="-1"></a>    systems/.style = {concept, ball color=red!90!black},</span>
-<span id="cb3000-16"><a href="chap-mixed-programming.html#cb3000-16" aria-hidden="true" tabindex="-1"></a>    editors/.style = {concept, ball color=orange!90!black}</span>
-<span id="cb3000-17"><a href="chap-mixed-programming.html#cb3000-17" aria-hidden="true" tabindex="-1"></a>  ]</span>
-<span id="cb3000-18"><a href="chap-mixed-programming.html#cb3000-18" aria-hidden="true" tabindex="-1"></a>  node [tex] {<span class="fu">\TeX</span>} [clockwise from=0]</span>
-<span id="cb3000-19"><a href="chap-mixed-programming.html#cb3000-19" aria-hidden="true" tabindex="-1"></a>    child[concept color=green!50!black, nodes={engines}] {</span>
-<span id="cb3000-20"><a href="chap-mixed-programming.html#cb3000-20" aria-hidden="true" tabindex="-1"></a>      node {Engines} [clockwise from=90]</span>
-<span id="cb3000-21"><a href="chap-mixed-programming.html#cb3000-21" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span>} }</span>
-<span id="cb3000-22"><a href="chap-mixed-programming.html#cb3000-22" aria-hidden="true" tabindex="-1"></a>        child { node {pdf<span class="fu">\TeX</span>} }</span>
-<span id="cb3000-23"><a href="chap-mixed-programming.html#cb3000-23" aria-hidden="true" tabindex="-1"></a>        child { node {XeTeX} }</span>
-<span id="cb3000-24"><a href="chap-mixed-programming.html#cb3000-24" aria-hidden="true" tabindex="-1"></a>        child { node {Lua<span class="fu">\TeX</span>} }}</span>
-<span id="cb3000-25"><a href="chap-mixed-programming.html#cb3000-25" aria-hidden="true" tabindex="-1"></a>    child [concept color=purple, nodes={formats}] {</span>
-<span id="cb3000-26"><a href="chap-mixed-programming.html#cb3000-26" aria-hidden="true" tabindex="-1"></a>      node {Formats} [clockwise from=300]</span>
-<span id="cb3000-27"><a href="chap-mixed-programming.html#cb3000-27" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\LaTeX</span>} }</span>
-<span id="cb3000-28"><a href="chap-mixed-programming.html#cb3000-28" aria-hidden="true" tabindex="-1"></a>        child { node {Con<span class="fu">\TeX</span> t} }}</span>
-<span id="cb3000-29"><a href="chap-mixed-programming.html#cb3000-29" aria-hidden="true" tabindex="-1"></a>    child [concept color=red, nodes={systems}] {</span>
-<span id="cb3000-30"><a href="chap-mixed-programming.html#cb3000-30" aria-hidden="true" tabindex="-1"></a>      node {Systems} [clockwise from=210]</span>
-<span id="cb3000-31"><a href="chap-mixed-programming.html#cb3000-31" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> Live} [clockwise from=300]</span>
-<span id="cb3000-32"><a href="chap-mixed-programming.html#cb3000-32" aria-hidden="true" tabindex="-1"></a>          child { node {Mac <span class="fu">\TeX</span>} }}</span>
-<span id="cb3000-33"><a href="chap-mixed-programming.html#cb3000-33" aria-hidden="true" tabindex="-1"></a>        child { node {MiK<span class="fu">\TeX</span>} [clockwise from=60]</span>
-<span id="cb3000-34"><a href="chap-mixed-programming.html#cb3000-34" aria-hidden="true" tabindex="-1"></a>          child { node {Pro <span class="fu">\TeX</span> t} }}}</span>
-<span id="cb3000-35"><a href="chap-mixed-programming.html#cb3000-35" aria-hidden="true" tabindex="-1"></a>    child [concept color=orange, nodes={editors}] {</span>
-<span id="cb3000-36"><a href="chap-mixed-programming.html#cb3000-36" aria-hidden="true" tabindex="-1"></a>      node {Editors} [clockwise from=180]</span>
-<span id="cb3000-37"><a href="chap-mixed-programming.html#cb3000-37" aria-hidden="true" tabindex="-1"></a>        child { node {WinEdt} }</span>
-<span id="cb3000-38"><a href="chap-mixed-programming.html#cb3000-38" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> works} }</span>
-<span id="cb3000-39"><a href="chap-mixed-programming.html#cb3000-39" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> studio} }</span>
-<span id="cb3000-40"><a href="chap-mixed-programming.html#cb3000-40" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> maker} }};</span>
-<span id="cb3000-41"><a href="chap-mixed-programming.html#cb3000-41" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb3004"><pre class="sourceCode tex"><code class="sourceCode latex"><span id="cb3004-1"><a href="chap-mixed-programming.html#cb3004-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}</span>
+<span id="cb3004-2"><a href="chap-mixed-programming.html#cb3004-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">\path</span> [</span>
+<span id="cb3004-3"><a href="chap-mixed-programming.html#cb3004-3" aria-hidden="true" tabindex="-1"></a>    mindmap,</span>
+<span id="cb3004-4"><a href="chap-mixed-programming.html#cb3004-4" aria-hidden="true" tabindex="-1"></a>    text = white,</span>
+<span id="cb3004-5"><a href="chap-mixed-programming.html#cb3004-5" aria-hidden="true" tabindex="-1"></a>    level 1 concept/.append style =</span>
+<span id="cb3004-6"><a href="chap-mixed-programming.html#cb3004-6" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\Large\bfseries\sffamily</span>, sibling angle=90, level distance=125},</span>
+<span id="cb3004-7"><a href="chap-mixed-programming.html#cb3004-7" aria-hidden="true" tabindex="-1"></a>    level 2 concept/.append style =</span>
+<span id="cb3004-8"><a href="chap-mixed-programming.html#cb3004-8" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\normalsize\bfseries\sffamily</span>},</span>
+<span id="cb3004-9"><a href="chap-mixed-programming.html#cb3004-9" aria-hidden="true" tabindex="-1"></a>    level 3 concept/.append style =</span>
+<span id="cb3004-10"><a href="chap-mixed-programming.html#cb3004-10" aria-hidden="true" tabindex="-1"></a>      {font=<span class="fu">\small\bfseries\sffamily</span>},</span>
+<span id="cb3004-11"><a href="chap-mixed-programming.html#cb3004-11" aria-hidden="true" tabindex="-1"></a>    tex/.style     = {concept, ball color=blue,</span>
+<span id="cb3004-12"><a href="chap-mixed-programming.html#cb3004-12" aria-hidden="true" tabindex="-1"></a>      font=<span class="fu">\Huge\bfseries</span>},</span>
+<span id="cb3004-13"><a href="chap-mixed-programming.html#cb3004-13" aria-hidden="true" tabindex="-1"></a>    engines/.style = {concept, ball color=green!50!black},</span>
+<span id="cb3004-14"><a href="chap-mixed-programming.html#cb3004-14" aria-hidden="true" tabindex="-1"></a>    formats/.style = {concept, ball color=purple!50!black},</span>
+<span id="cb3004-15"><a href="chap-mixed-programming.html#cb3004-15" aria-hidden="true" tabindex="-1"></a>    systems/.style = {concept, ball color=red!90!black},</span>
+<span id="cb3004-16"><a href="chap-mixed-programming.html#cb3004-16" aria-hidden="true" tabindex="-1"></a>    editors/.style = {concept, ball color=orange!90!black}</span>
+<span id="cb3004-17"><a href="chap-mixed-programming.html#cb3004-17" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb3004-18"><a href="chap-mixed-programming.html#cb3004-18" aria-hidden="true" tabindex="-1"></a>  node [tex] {<span class="fu">\TeX</span>} [clockwise from=0]</span>
+<span id="cb3004-19"><a href="chap-mixed-programming.html#cb3004-19" aria-hidden="true" tabindex="-1"></a>    child[concept color=green!50!black, nodes={engines}] {</span>
+<span id="cb3004-20"><a href="chap-mixed-programming.html#cb3004-20" aria-hidden="true" tabindex="-1"></a>      node {Engines} [clockwise from=90]</span>
+<span id="cb3004-21"><a href="chap-mixed-programming.html#cb3004-21" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span>} }</span>
+<span id="cb3004-22"><a href="chap-mixed-programming.html#cb3004-22" aria-hidden="true" tabindex="-1"></a>        child { node {pdf<span class="fu">\TeX</span>} }</span>
+<span id="cb3004-23"><a href="chap-mixed-programming.html#cb3004-23" aria-hidden="true" tabindex="-1"></a>        child { node {XeTeX} }</span>
+<span id="cb3004-24"><a href="chap-mixed-programming.html#cb3004-24" aria-hidden="true" tabindex="-1"></a>        child { node {Lua<span class="fu">\TeX</span>} }}</span>
+<span id="cb3004-25"><a href="chap-mixed-programming.html#cb3004-25" aria-hidden="true" tabindex="-1"></a>    child [concept color=purple, nodes={formats}] {</span>
+<span id="cb3004-26"><a href="chap-mixed-programming.html#cb3004-26" aria-hidden="true" tabindex="-1"></a>      node {Formats} [clockwise from=300]</span>
+<span id="cb3004-27"><a href="chap-mixed-programming.html#cb3004-27" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\LaTeX</span>} }</span>
+<span id="cb3004-28"><a href="chap-mixed-programming.html#cb3004-28" aria-hidden="true" tabindex="-1"></a>        child { node {Con<span class="fu">\TeX</span> t} }}</span>
+<span id="cb3004-29"><a href="chap-mixed-programming.html#cb3004-29" aria-hidden="true" tabindex="-1"></a>    child [concept color=red, nodes={systems}] {</span>
+<span id="cb3004-30"><a href="chap-mixed-programming.html#cb3004-30" aria-hidden="true" tabindex="-1"></a>      node {Systems} [clockwise from=210]</span>
+<span id="cb3004-31"><a href="chap-mixed-programming.html#cb3004-31" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> Live} [clockwise from=300]</span>
+<span id="cb3004-32"><a href="chap-mixed-programming.html#cb3004-32" aria-hidden="true" tabindex="-1"></a>          child { node {Mac <span class="fu">\TeX</span>} }}</span>
+<span id="cb3004-33"><a href="chap-mixed-programming.html#cb3004-33" aria-hidden="true" tabindex="-1"></a>        child { node {MiK<span class="fu">\TeX</span>} [clockwise from=60]</span>
+<span id="cb3004-34"><a href="chap-mixed-programming.html#cb3004-34" aria-hidden="true" tabindex="-1"></a>          child { node {Pro <span class="fu">\TeX</span> t} }}}</span>
+<span id="cb3004-35"><a href="chap-mixed-programming.html#cb3004-35" aria-hidden="true" tabindex="-1"></a>    child [concept color=orange, nodes={editors}] {</span>
+<span id="cb3004-36"><a href="chap-mixed-programming.html#cb3004-36" aria-hidden="true" tabindex="-1"></a>      node {Editors} [clockwise from=180]</span>
+<span id="cb3004-37"><a href="chap-mixed-programming.html#cb3004-37" aria-hidden="true" tabindex="-1"></a>        child { node {WinEdt} }</span>
+<span id="cb3004-38"><a href="chap-mixed-programming.html#cb3004-38" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> works} }</span>
+<span id="cb3004-39"><a href="chap-mixed-programming.html#cb3004-39" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> studio} }</span>
+<span id="cb3004-40"><a href="chap-mixed-programming.html#cb3004-40" aria-hidden="true" tabindex="-1"></a>        child { node {<span class="fu">\TeX</span> maker} }};</span>
+<span id="cb3004-41"><a href="chap-mixed-programming.html#cb3004-41" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span id="fig:tex-system"></span>
 <img src="mixed-programming_files/figure-html/tex-system-1.png" alt="TeX 系统" width="672"><p class="caption">
@@ -323,7 +323,7 @@
 <h2>
 <span class="header-section-number">C.8</span> 运行环境<a class="anchor" aria-label="anchor" href="#sec-mixed-programming-session-info"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb3001"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3005"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -395,7 +395,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-08.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

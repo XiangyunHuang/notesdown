@@ -6,11 +6,11 @@ library(magrittr)
 library(ggplot2)
 ```
 
-::: {.rmdtip data-latex="{提示}"}
+::: {.rmdnote data-latex="{注意}"}
 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。
 :::
 
-试验设计（Design of Experiment，简称 DOE）是一个应用性很强的学科领域，R. A. Fisher 曾在农业站做实验验证孟德尔的豌豆实验结果。
+试验设计（Design of Experiment，简称 DOE）是一个应用性很强的学科领域，[R. A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) 曾在[英国洛桑试验站](https://en.wikipedia.org/wiki/Rothamsted_Research)做实验验证孟德尔的豌豆实验结果。
 
 Vikneswaran 提供了一份书籍 @Berger2002 的补充材料 --- [An R companion to "Experimental Design"](http://CRAN.R-project.org/doc/contrib/Vikneswaran-ED_companion.pdf)，目前 Paul Berger 的这本书已经迭代到第二版 [@Berger2018]，2015 年 Paul Berger 出版了新书 《Improving the User Experience through Practical Data Analytics: Gain Meaningful Insight and Increase Your Bottom Line》 [@Berger2015] 颇具应用性，结合产品用户体验来谈试验设计。
 
