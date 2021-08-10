@@ -3921,7 +3921,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x5588fe25a720>
+## <bytecode: 0x55e3c3705a58>
 ## <environment: namespace:ggpubr>
 ```
 

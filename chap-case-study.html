@@ -111,8 +111,8 @@
 <p><a href="https://github.com/rfordatascience">R for Data Science Online Learning Community</a> 在线学习社区以 <a href="https://github.com/rfordatascience/tidytuesday">tidytuesday</a> 闻名遐迩。</p>
 <div class="figure" style="text-align: center">
 <span id="fig:workflow"></span>
-<div id="htmlwidget-f22899c55212f383ce40" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f22899c55212f383ce40">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-a45cdafe7c8c3b3a92be" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a45cdafe7c8c3b3a92be">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#fill: #FFDAE1; #FFA9D4\n#stroke: #C71585\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script><p class="caption">
 图 23.1: 模型
 </p>
 </div>
@@ -140,7 +140,7 @@
 <span class="header-section-number">23.3</span> 不同实验条件下植物生长情况<a class="anchor" aria-label="anchor" href="#sec-PlantGrowth"><i class="fas fa-link"></i></a>
 </h2>
 <p>PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》<span class="citation"><a href="references.html#ref-Dobson_1983_Modelling" role="doc-biblioref">[80]</a></span> 第 2 章第 2 节的案例 — 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 <a href="chap-case-study.html#tab:PlantGrowth-data">23.1</a> 所示</p>
-<div class="sourceCode" id="cb2115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># do.call("cbind", lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = "weight"))</span>
 <span class="co">## 或者</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
@@ -212,7 +212,7 @@
 </tbody>
 </table></div>
 <p>设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响</p>
-<div class="sourceCode" id="cb2116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>##      weight       group   
 ##  Min.   :3.590   ctrl:10  
@@ -229,7 +229,7 @@
 </p>
 </div>
 <p>实验条件 trt1 和 trt2 对植物生长状况有显著的影响，为了量化这种影响，建立线性回归模型</p>
-<div class="sourceCode" id="cb2118"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_sublm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>,
   data <span class="op">=</span> <span class="va">PlantGrowth</span>,
   subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt1"</span><span class="op">)</span>
@@ -241,7 +241,7 @@
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## group      1 0.6882 0.68820  1.4191  0.249
 ## Residuals 18 8.7292 0.48496</code></pre>
-<div class="sourceCode" id="cb2120"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2122"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_sublm</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -263,7 +263,7 @@
 ## Multiple R-squared:  0.07308,    Adjusted R-squared:  0.02158 
 ## F-statistic: 1.419 on 1 and 18 DF,  p-value: 0.249</code></pre>
 <p>下面再通过检验的方式比较实验组和对照组相比，是否有显著作用</p>
-<div class="sourceCode" id="cb2122"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2124"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 控制组和实验组1比较</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt1"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -277,7 +277,7 @@
 ## sample estimates:
 ## mean in group ctrl mean in group trt1 
 ##              5.032              4.661</code></pre>
-<div class="sourceCode" id="cb2124"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 控制组和实验组2比较</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -292,7 +292,7 @@
 ## mean in group ctrl mean in group trt2 
 ##              5.032              5.526</code></pre>
 <p>检验结果表明，实验条件 trt2 会对植物生长产生显著效果，而实验条件 trt1 不会。在假定同方差的情况下，建立线性回归模型，同时考虑实验条件 trt1 和 trt2</p>
-<div class="sourceCode" id="cb2126"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 模型拟合</span>
 <span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 
@@ -317,7 +317,7 @@
 ## Residual standard error: 0.6234 on 27 degrees of freedom
 ## Multiple R-squared:  0.2641, Adjusted R-squared:  0.2096 
 ## F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
-<div class="sourceCode" id="cb2128"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 方差分析</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -328,7 +328,7 @@
 ## Residuals 27 10.4921  0.3886                  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<div class="sourceCode" id="cb2130"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 参数估计</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -371,27 +371,27 @@
 </tbody>
 </table></div>
 <p>还可以将模型转化为数学公式</p>
-<div class="sourceCode" id="cb2132"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 理论模型</span>
 <span class="fu">equatiomatic</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/equatiomatic/man/extract_eq.html">extract_eq</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{weight} = \alpha + \beta_{1}(\operatorname{group}_{\operatorname{trt1}}) + \beta_{2}(\operatorname{group}_{\operatorname{trt2}}) + \epsilon
 \]</span></p>
-<div class="sourceCode" id="cb2133"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 拟合模型</span>
 <span class="fu">equatiomatic</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/equatiomatic/man/extract_eq.html">extract_eq</a></span><span class="op">(</span><span class="va">fit_lm</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{\widehat{weight}} = 5.03 - 0.37(\operatorname{group}_{\operatorname{trt1}}) + 0.49(\operatorname{group}_{\operatorname{trt2}})
 \]</span></p>
 <p>进一步地，我们在线性模型的基础上考虑每个实验组有不同的方差，先做方差齐性检验。</p>
-<div class="sourceCode" id="cb2134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Bartlett test of homogeneity of variances
 ## 
 ## data:  weight by group
 ## Bartlett's K-squared = 2.8786, df = 2, p-value = 0.2371</code></pre>
-<div class="sourceCode" id="cb2136"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/fligner.test.html">fligner.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Fligner-Killeen test of homogeneity of variances
@@ -400,7 +400,7 @@
 ## Fligner-Killeen:med chi-squared = 2.3499, df = 2, p-value = 0.3088</code></pre>
 <p>检验的结果显示，可以认为三个组的方差没有显著差异，但我们还是考虑每个组有不同的方差，看看放开假设能获得多少提升，后续会发现，从对数似然的角度来看，实际提升量很小，只有 7.72%</p>
 <p>上面同时比较多个总体的方差，会发现方差没有显著差异，那么接下来在假定方差齐性的条件下，比较均值的差异是否显著？</p>
-<div class="sourceCode" id="cb2138"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 参数检验，假定异方差</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, var.equal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -408,7 +408,7 @@
 ## 
 ## data:  weight and group
 ## F = 5.181, num df = 2.000, denom df = 17.128, p-value = 0.01739</code></pre>
-<div class="sourceCode" id="cb2140"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 参数检验，假定方差齐性</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -416,7 +416,7 @@
 ## 
 ## data:  weight and group
 ## F = 4.8461, num df = 2, denom df = 27, p-value = 0.01591</code></pre>
-<div class="sourceCode" id="cb2142"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 非参数检验</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -425,7 +425,7 @@
 ## data:  weight by group
 ## Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 <p>检验结果显示它们的均值是有显著差异的！</p>
-<div class="sourceCode" id="cb2144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 固定效应模型</span>
 <span class="va">fit_gls</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/gls.html">gls</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>,
   weights <span class="op">=</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/varIdent.html">varIdent</a></span><span class="op">(</span>form <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span><span class="op">)</span>,
@@ -455,7 +455,7 @@
 ## 
 ## Residual standard error: 0.5896195 
 ## Degrees of freedom: 30 total; 29 residual</code></pre>
-<div class="sourceCode" id="cb2146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 随机效应模型</span>
 <span class="va">fit_lme</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>, random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lme</span><span class="op">)</span></code></pre></div>
@@ -484,7 +484,7 @@
 y_{ij} = \mu + \epsilon_{ij}, i = 1,2,3
 \]</span></p>
 <p>其中 <span class="math inline">\(\mu\)</span> 是固定的未知参数，我们和之前假定同方差情形下的模型比较一下，现在异方差情况下模型提升的情况，从对数似然的角度来看</p>
-<div class="sourceCode" id="cb2148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span>
 <span class="co">## 'log Lik.' -26.80952 (df=4)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">fit_lm</span>, REML <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -503,7 +503,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 \end{align}\]</span></p>
 <p>其中 <span class="math inline">\(\mu_i\)</span> 是随机的未知变量，服从均值为 <span class="math inline">\(\mu_{\theta}\)</span> 方差为 <span class="math inline">\(Var(\xi_i) = \tau^2\)</span> 的正态分布</p>
 <p>我们用 <strong>MASS</strong> 包提供的 <code><a href="https://rdrr.io/pkg/MASS/man/glmmPQL.html">glmmPQL()</a></code> 函数拟合该数据集</p>
-<div class="sourceCode" id="cb2149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_lme_pql</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glmmPQL.html">glmmPQL</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>,
   random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,
   family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>
@@ -534,7 +534,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ## Number of Groups: 3</code></pre>
 <p>我们再借助 <strong>brms</strong> 包从贝叶斯的角度来分析数据，并建模</p>
 <!-- 就以 brms 包为例谈谈先验、参数设置，默认的先验有可能太宽泛了，导致不是很合理 <https://discourse.mc-stan.org/t/11584> -->
-<div class="sourceCode" id="cb2151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 贝叶斯模型</span>
 <span class="va">fit_brm</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 <span class="co"># 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/</span>
@@ -557,7 +557,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 <li>circumference: 橘树树干的周长，单位是毫米</li>
 </ul>
 <p>查看部分数据的情况</p>
-<div class="sourceCode" id="cb2152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">)</span></code></pre></div>
 <pre><code>## Grouped Data: circumference ~ age | Tree
 ##   Tree  age circumference
@@ -568,7 +568,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ## 5    1 1231           120
 ## 6    1 1372           142</code></pre>
 <p>查看变量的属性</p>
-<div class="sourceCode" id="cb2154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">)</span></code></pre></div>
 <pre><code>## Classes 'nfnGroupedData', 'nfGroupedData', 'groupedData' and 'data.frame':   35 obs. of  3 variables:
 ##  $ Tree         : Ord.factor w/ 5 levels "3"&lt;"1"&lt;"5"&lt;"2"&lt;..: 2 2 2 2 2 2 2 4 4 4 ...
@@ -583,11 +583,11 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ##   ..$ x: chr "(days)"
 ##   ..$ y: chr "(mm)"</code></pre>
 <p>说明 5 棵树之间的大小关系是 <code>3 &lt; 1 &lt; 5 &lt; 2 &lt; 4</code>，这里的数字 1，2，3，4，5 只是对树的编号，第一次测量时树的大小关系在 R 内用有序因子来表示。</p>
-<div class="sourceCode" id="cb2156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">$</span><span class="va">Tree</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "3" "1" "5" "2" "4"</code></pre>
 <p>表 <a href="chap-case-study.html#tab:orange-data">23.3</a> 记录了 5 颗橘树自 1968 年 12 月 31 日以来的生长情况</p>
-<div class="sourceCode" id="cb2158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># aggregate(data = Orange, circumference ~  age, FUN = mean)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span>
@@ -666,7 +666,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 </tbody>
 </table></div>
 <p>图 <a href="chap-case-study.html#fig:orange-tree">23.3</a> 以直观的方式展示 5 颗橘树的生长变化，相比于表 <a href="chap-case-study.html#tab:orange-data">23.3</a> 我们能更加明确读取数据中的变化</p>
-<div class="sourceCode" id="cb2159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Orange</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">circumference</span>, color <span class="op">=</span> <span class="va">Tree</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -680,7 +680,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 图 23.3: 橘树生长模型
 </p>
 </div>
-<div class="sourceCode" id="cb2160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com">gganimate</a></span><span class="op">)</span>
 <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://gganimate.com/reference/transition_reveal.html">transition_reveal</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-7-1.gif" style="display: block; margin: auto;"></div>

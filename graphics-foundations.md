@@ -2965,6 +2965,55 @@ levelplot(z ~ x * y, xyz,
 
 \begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/smoothness-1} \end{center}
 
+### 透视图 {#lattice-persp}
+
+
+```r
+library(shape)
+persp(volcano, 
+  theta = 30, phi = 20, 
+  r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
+  shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
+  col = drapecol(volcano, col = terrain.colors(100)),
+  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent",
+  main = "Topographic Information \n on Auckland's Maunga Whau Volcano"
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{graphics-foundations_files/figure-latex/volcano-topo-1} 
+
+}
+
+\caption{(ref:volcano-topo)}(\#fig:volcano-topo)
+\end{figure}
+
+
+```r
+wireframe(volcano,
+  shade = TRUE,
+  xlab = expression(x[1]),
+  ylab = expression(x[2]),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = -45, x = -50, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/volcano-shade-1} 
+
+}
+
+\caption{(ref:volcano-topo)}(\#fig:volcano-shade)
+\end{figure}
+
+(ref:volcano-topo) Auckland Maunga Whau 火山地形图 $10m\times 10m$。火山的实况地形图 <https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden>。
+
+
 ### 地图 {#lattice-map}
 
 

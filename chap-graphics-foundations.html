@@ -2481,11 +2481,49 @@ sunspots Monthly Sunspot Numbers, 1749-1983</p>
 <span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="graphics-foundations_files/figure-html/smoothness-1.png" width="75%" style="display: block; margin: auto;"></div>
 </div>
-<div id="lattice-map" class="section level3" number="7.3.8">
+<div id="lattice-persp" class="section level3" number="7.3.8">
 <h3>
-<span class="header-section-number">7.3.8</span> 地图<a class="anchor" aria-label="anchor" href="#lattice-map"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.3.8</span> 透视图<a class="anchor" aria-label="anchor" href="#lattice-persp"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb980"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">shape</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/persp.html">persp</a></span><span class="op">(</span><span class="va">volcano</span>, 
+  theta <span class="op">=</span> <span class="fl">30</span>, phi <span class="op">=</span> <span class="fl">20</span>, 
+  r <span class="op">=</span> <span class="fl">50</span>, d <span class="op">=</span> <span class="fl">0.1</span>, expand <span class="op">=</span> <span class="fl">0.5</span>, ltheta <span class="op">=</span> <span class="fl">90</span>, lphi <span class="op">=</span> <span class="fl">180</span>,
+  shade <span class="op">=</span> <span class="fl">0.1</span>, ticktype <span class="op">=</span> <span class="st">"detailed"</span>, nticks <span class="op">=</span> <span class="fl">5</span>, box <span class="op">=</span> <span class="cn">TRUE</span>,
+  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shape/man/drapecol.html">drapecol</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">terrain.colors</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>,
+  xlab <span class="op">=</span> <span class="st">"X"</span>, ylab <span class="op">=</span> <span class="st">"Y"</span>, zlab <span class="op">=</span> <span class="st">"Z"</span>, border <span class="op">=</span> <span class="st">"transparent"</span>,
+  main <span class="op">=</span> <span class="st">"Topographic Information \n on Auckland's Maunga Whau Volcano"</span>
+<span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span id="fig:volcano-topo"></span>
+<img src="graphics-foundations_files/figure-html/volcano-topo-1.png" alt="Auckland Maunga Whau 火山地形图 \(10m\times 10m\)。火山的实况地形图 https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden。" width="528"><p class="caption">
+图 7.62: Auckland Maunga Whau 火山地形图 <span class="math inline">\(10m\times 10m\)</span>。火山的实况地形图 <a href="https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden" class="uri">https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden</a>。
+</p>
+</div>
+<div class="sourceCode" id="cb981"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/cloud.html">wireframe</a></span><span class="op">(</span><span class="va">volcano</span>,
+  shade <span class="op">=</span> <span class="cn">TRUE</span>,
+  xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,
+  ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
+  zlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">italic</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_group_order.html">group</a></span><span class="op">(</span><span class="st">"("</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span>, rot <span class="op">=</span> <span class="fl">90</span><span class="op">)</span>,
+  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>arrows <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>,
+  par.settings <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>axis.line <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span><span class="op">)</span>,
+  screen <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>z <span class="op">=</span> <span class="op">-</span><span class="fl">45</span>, x <span class="op">=</span> <span class="op">-</span><span class="fl">50</span>, y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span id="fig:volcano-shade"></span>
+<img src="graphics-foundations_files/figure-html/volcano-shade-1.png" alt="Auckland Maunga Whau 火山地形图 \(10m\times 10m\)。火山的实况地形图 https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden。" width="75%"><p class="caption">
+图 7.63: Auckland Maunga Whau 火山地形图 <span class="math inline">\(10m\times 10m\)</span>。火山的实况地形图 <a href="https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden" class="uri">https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden</a>。
+</p>
+</div>
+
+</div>
+<div id="lattice-map" class="section level3" number="7.3.9">
+<h3>
+<span class="header-section-number">7.3.9</span> 地图<a class="anchor" aria-label="anchor" href="#lattice-map"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb982"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">maps</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mapproj</span><span class="op">)</span>
 <span class="co"># 找一个新的 map 包含夏威夷和阿拉斯加</span>
@@ -2505,11 +2543,11 @@ sunspots Monthly Sunspot Numbers, 1749-1983</p>
 ## unmatched regions: alaska,nome, alaska,wade hampton, alaska,haines, alaska,....</code></pre>
 <div class="inline-figure"><img src="graphics-foundations_files/figure-html/map-1.png" width="75%" style="display: block; margin: auto;"></div>
 </div>
-<div id="lattice-cluster" class="section level3" number="7.3.9">
+<div id="lattice-cluster" class="section level3" number="7.3.10">
 <h3>
-<span class="header-section-number">7.3.9</span> 聚类图<a class="anchor" aria-label="anchor" href="#lattice-cluster"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.3.10</span> 聚类图<a class="anchor" aria-label="anchor" href="#lattice-cluster"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb983"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb985"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">xyplot</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Petal.Length</span>,
   groups <span class="op">=</span> <span class="va">Species</span>,
   data <span class="op">=</span> <span class="va">iris</span>, scales <span class="op">=</span> <span class="st">"free"</span>,
@@ -2530,7 +2568,7 @@ sunspots Monthly Sunspot Numbers, 1749-1983</p>
 <h2>
 <span class="header-section-number">7.4</span> 运行环境<a class="anchor" aria-label="anchor" href="#graphics-sessioninfo"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb984"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb986"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.1.0 (2021-05-18)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -2630,8 +2668,9 @@ sunspots Monthly Sunspot Numbers, 1749-1983</p>
 <li><a class="nav-link" href="#lattice-step"><span class="header-section-number">7.3.5</span> 阶梯图</a></li>
 <li><a class="nav-link" href="#lattice-facet"><span class="header-section-number">7.3.6</span> 分面图</a></li>
 <li><a class="nav-link" href="#lattice-contour"><span class="header-section-number">7.3.7</span> 等高线图</a></li>
-<li><a class="nav-link" href="#lattice-map"><span class="header-section-number">7.3.8</span> 地图</a></li>
-<li><a class="nav-link" href="#lattice-cluster"><span class="header-section-number">7.3.9</span> 聚类图</a></li>
+<li><a class="nav-link" href="#lattice-persp"><span class="header-section-number">7.3.8</span> 透视图</a></li>
+<li><a class="nav-link" href="#lattice-map"><span class="header-section-number">7.3.9</span> 地图</a></li>
+<li><a class="nav-link" href="#lattice-cluster"><span class="header-section-number">7.3.10</span> 聚类图</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#graphics-sessioninfo"><span class="header-section-number">7.4</span> 运行环境</a></li>

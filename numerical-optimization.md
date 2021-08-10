@@ -1470,7 +1470,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1061
+## [1] 368.1059
 ```
 
 ```r
@@ -1478,10 +1478,9 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000
+##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -1863,7 +1862,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.278024 4.431860 4.188310 1.085498
+## [1] 1.118347 4.884720 3.535651 1.545505
 ```
 
 ```r
@@ -1871,7 +1870,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.92
+## [1] 20.02248
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1999,7 +1998,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245373
+## [1] 1.227971 4.245374
 ```
 
 ```r
@@ -2199,7 +2198,7 @@ nlp$solution
 ```
 
 ```
-## [1] 37.29934 37.04812
+## [1] 2.089782 9.949279
 ```
 
 ```r
@@ -2207,7 +2206,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.159983
+## [1] -3.010524
 ```
 比如下面三组
 
@@ -2782,30 +2781,6 @@ ReacTran 的几个关键函数介绍
 
 参数 $D = 0.01$，边界条件 $y_{t,x=0} = 0, y_{t, x = 1} = 1$，初始条件 $y_{t=0,x} = \sin(\pi x)$。
 
-
-
-```r
-library(shape)
-persp(volcano, 
-  theta = 30, phi = 20, 
-  r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
-  shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
-  col = drapecol(volcano, col = terrain.colors(100)),
-  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent",
-  main = "Topographic Information \n on Auckland's Maunga Whau Volcano"
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/volcano-topo-1} 
-
-}
-
-\caption{(ref:volcano-topo)}(\#fig:volcano-topo)
-\end{figure}
-
-(ref:volcano-topo) Auckland Maunga Whau 火山地形图 $10m\times 10m$。火山的实况地形图 <https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden>。
 
 
 ```r
