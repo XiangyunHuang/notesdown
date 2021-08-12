@@ -47,7 +47,10 @@
 
 R 提供了丰富的图形接口，包括 Tcl/Tk , Gtk, Shiny 等，以及基于它们的衍生品 rattle（[RGtk2](http://www.ggobi.org/rgtk2/)）、[Rcmdr]( https://CRAN.R-project.org/package=Rcmdr)（tcl/tk）、[radiant](https://github.com/radiant-rstats/radiant)（shiny）。更多底层介绍，见 John Chamber 的著作《Extending R》。
 
-TikZ 在绘制示意图方面有很大优势，特别是示意图里包含数学公式，这更是 LaTeX 所擅长的方面
+[Eviews](https://www.eviews.com) 时间序列和计量经济模型，相比于 Eviews， [Stata](https://www.stata.com/) 是综合型的统计软件，提供丰富的统计模型，
+[SPSS](https://www.ibm.com/cn-zh/products/spss-statistics) 同 Stata 类似，[Minitab](https://www.minitab.com/zh-cn/)，
+[JASP](https://jasp-stats.org/) 是开源的软件， [Octave](https://www.gnu.org/software/octave/) 是对标 Matlab 的工程计算软件，
+有丰富的优化功能，是一门编程语言兼软件，为求解统计模型的参数提供了广泛的基础能力。[Tableau](https://www.tableau.com/zh-cn) 提供强大的分析和打造数据产品的能力。TikZ 在绘制示意图方面有很大优势，特别是示意图里包含数学公式，这更是 LaTeX 所擅长的方面。
 
 JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管在 Github 上 <https://github.com/jasp-stats/jasp-desktop>，主要由阿姆斯特丹大学 E. J. Wagenmakers 教授 <https://www.ejwagenmakers.com/> 领导的团队维护开发，实现了很多贝叶斯和频率统计方法，相似的图形用户界面使得 JASP 可以作为 SPSS 的替代，目前实现的功能见 <https://jasp-stats.org/current-functionality/>，统计方法见博客 <https://www.bayesianspectacles.org/>。
 
@@ -104,7 +107,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}(\#fig:book-workflow)
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月10日10时17分26秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月12日08时11分10秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
 
 
 ```r

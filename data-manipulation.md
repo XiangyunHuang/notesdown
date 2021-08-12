@@ -3,7 +3,17 @@
 <!-- 
 参考 Data Manipulation With R [@Spector_2008_Manipulation] 重新捋一遍本章，
 介绍 Base R 提供的数据操作，重点在于常用的数据操作，其次在于常用的使用场景，最后是总结。
+Tabset 的方式支持展示 Base R dplyr data.table 三种
 -->
+
+data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本时间为准），是基于 `data.frame` 的扩展和 Base R 的数据操作连贯一些，dplyr 诞生于2014年1月29日，号称数据操作的语法，其实二者套路一致，都是借用 SQL 语言的设计，实现方式不同罢了，前者主要依靠 C 语言完成底层数据操作，总代码量1.29M，C 占65.6%，后者主要依靠 C++ 语言完成底层数据操作，总代码量1.2M，C++ 占34.4%，上层的高级操作接口都是 R 语言。像这样的大神在写代码，码力应该差不多，编程语言会对数据操作的性能有比较大的影响，我想这也是为什么在很多场合下 data.table 霸榜！
+
+关于 data.table 和 dplyr 的对比，参看爆栈网的帖子 <https://stackoverflow.com/questions/21435339>
+
+::: {.rmdtip data-latex="{提示}"}
+学习 data.table 包最快的方式就是在 R 控制台运行 `example(data.table)` 并研究其输出。
+:::
+
 
 [data.table](https://github.com/Rdatatable/data.table) 大大加强了 [Base R](https://github.com/wch/r-source) 提供的数据操作，[poorman](https://github.com/nathaneastwood/poorman) 提供最常用的数据操作，但是不依赖 dplyr，[fst](https://github.com/fstpackage/fst)，[arrow](https://github.com/apache/arrow/tree/master/r) 和 [feather](https://github.com/wesm/feather/tree/master/R) 提供更加高效的数据读写性能。
 
@@ -62,6 +72,7 @@ sapply(.libPaths(), function(pkg_path) {
 ## [1,]                           FALSE                       TRUE
 ## [2,]                            TRUE                      FALSE
 ```
+
 
 ## 查看数据 {#dm-view}
 
@@ -382,6 +393,50 @@ subset(iris,
 
 [^non-standard-eval]: Thomas Lumley (2003) Standard nonstandard evaluation rules. https://developer.r-project.org/nonstandard-eval.pdf
 
+选择操作是针对数据框的列（变量/特征/字段）
+
+
+```r
+library(data.table)
+mtcars$cars <- rownames(mtcars)
+mtcars_df <- as.data.table(mtcars)
+```
+
+
+```r
+mtcars_df[, .(mpg, disp)] |> head()
+```
+
+```
+##     mpg disp
+## 1: 21.0  160
+## 2: 21.0  160
+## 3: 22.8  108
+## 4: 21.4  258
+## 5: 18.7  360
+## 6: 18.1  225
+```
+
+::: {.rmdtip data-latex="{dplyr 版}"}
+
+
+```r
+mtcars |> 
+  dplyr::select(mpg, disp) |> 
+  head()
+```
+
+```
+##                    mpg disp
+## Mazda RX4         21.0  160
+## Mazda RX4 Wag     21.0  160
+## Datsun 710        22.8  108
+## Hornet 4 Drive    21.4  258
+## Hornet Sportabout 18.7  360
+## Valiant           18.1  225
+```
+
+:::
 
 ## 数据重塑 {#dm-reshape}
 
@@ -1405,7 +1460,7 @@ unique(x)
 
 
 ```r
-set.seed(123)
+set.seed(2019)
 df <- data.frame(
   x = sample(0:1, 10, replace = T),
   y = sample(0:1, 10, replace = T),
@@ -1416,29 +1471,111 @@ df
 
 ```
 ##    x y  z
-## 1  0 1  1
+## 1  0 0  1
 ## 2  0 1  2
-## 3  0 1  3
-## 4  1 0  4
+## 3  1 0  3
+## 4  0 0  4
 ## 5  0 1  5
-## 6  1 0  6
-## 7  1 1  7
-## 8  1 0  8
+## 6  0 1  6
+## 7  1 0  7
+## 8  0 1  8
 ## 9  0 0  9
-## 10 0 0 10
+## 10 1 0 10
 ```
 
 ```r
-df[!duplicated(df[, 1:2]), ]
+df[!duplicated(df[, c("x", "y")]), ]
 ```
 
 ```
 ##   x y z
-## 1 0 1 1
-## 4 1 0 4
-## 7 1 1 7
-## 9 0 0 9
+## 1 0 0 1
+## 2 0 1 2
+## 3 1 0 3
 ```
+
+::: {.rmdtip data-latex="{提示}"}
+
+去掉字段 cyl 和 gear 有重复的记录，data.table 方式
+
+
+```r
+mtcars_df[!duplicated(mtcars_df, by = c("cyl", "gear"))][,.(mpg, cyl, gear)]
+```
+
+```
+##     mpg cyl gear
+## 1: 21.0   6    4
+## 2: 22.8   4    4
+## 3: 21.4   6    3
+## 4: 18.7   8    3
+## 5: 21.5   4    3
+## 6: 26.0   4    5
+## 7: 15.8   8    5
+## 8: 19.7   6    5
+```
+
+dplyr 方式
+
+
+```r
+mtcars |> 
+  dplyr::distinct(cyl, gear, .keep_all = TRUE) |> 
+  dplyr::select(mpg, cyl, gear)
+```
+
+```
+##                    mpg cyl gear
+## Mazda RX4         21.0   6    4
+## Datsun 710        22.8   4    4
+## Hornet 4 Drive    21.4   6    3
+## Hornet Sportabout 18.7   8    3
+## Toyota Corona     21.5   4    3
+## Porsche 914-2     26.0   4    5
+## Ford Pantera L    15.8   8    5
+## Ferrari Dino      19.7   6    5
+```
+
+dplyr 的去重操作不需要拷贝一个新的数据对象 mtcars_df，并且可以以管道的方式将后续的选择操作连接起来，代码更加具有可读性。
+
+
+```r
+mtcars_df[!duplicated(mtcars_df[, c("cyl", "gear")]), c("mpg","cyl","gear")]
+```
+
+```
+##     mpg cyl gear
+## 1: 21.0   6    4
+## 2: 22.8   4    4
+## 3: 21.4   6    3
+## 4: 18.7   8    3
+## 5: 21.5   4    3
+## 6: 26.0   4    5
+## 7: 15.8   8    5
+## 8: 19.7   6    5
+```
+
+Base R 和 data.table 提供的 `duplicated()` 函数和 `[` 函数一起实现去重的操作，选择操作放在 `[` 实现，`[` 其实是一个函数
+
+
+```r
+x <- 2:4
+x[1]
+```
+
+```
+## [1] 2
+```
+
+```r
+`[`(x, 1)
+```
+
+```
+## [1] 2
+```
+
+:::
 
 
 ## 数据缺失 {#dm-missing}
@@ -1579,8 +1716,9 @@ apropos("apply")
 ```
 
 ```
-##  [1] "apply"      "dendrapply" "eapply"     "kernapply"  "lapply"    
-##  [6] "mapply"     "rapply"     "sapply"     "tapply"     "vapply"
+##  [1] "apply"      "dendrapply" "eapply"     "frollapply" "kernapply" 
+##  [6] "lapply"     "mapply"     "rapply"     "sapply"     "tapply"    
+## [11] "vapply"
 ```
 
 

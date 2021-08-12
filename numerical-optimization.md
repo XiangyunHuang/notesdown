@@ -1470,7 +1470,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1059
+## [1] 368.1061
 ```
 
 ```r
@@ -1478,9 +1478,10 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -1862,7 +1863,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.118347 4.884720 3.535651 1.545505
+## [1] 1.658911 4.959655 3.407025 1.020733
 ```
 
 ```r
@@ -1870,7 +1871,7 @@ nlp$objval
 ```
 
 ```
-## [1] 20.02248
+## [1] 20.38342
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1998,7 +1999,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245374
+## [1] 1.227971 4.245375
 ```
 
 ```r
@@ -2198,7 +2199,7 @@ nlp$solution
 ```
 
 ```
-## [1] 2.089782 9.949279
+## [1] -8.586295 23.142016
 ```
 
 ```r
@@ -2206,7 +2207,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.010524
+## [1] -3.13989
 ```
 比如下面三组
 
@@ -2495,7 +2496,7 @@ pmat[!duplicated(pmat), ]
 
 多目标规划的基本想法是将多目标问题转化为单目标问题，常见方法有理想点法、线性加权法、非劣解集法、极大极小法。理想点法是先在给定约束条件下分别求解单个目标的最优值，构造新的单目标函数。线性加权法是给每个目标函数赋予权重系数，各个权重系数之和等于1。非劣解集法是先求解其中一个单目标函数的最优值，然后将其设为等式约束，将其最优值从最小值开始递增，然后求解另一个目标函数的最小值。极大极小法是采用标准的简面体爬山法和通用全局优化法求解多目标优化问题。
 
-R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)
+R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)。另外，《Search Methodologies: Introductory Tutorials in Optimization and Decision Support Techniques》[@Deb2005] 多目标优化方法
 
 
 \begin{equation*}

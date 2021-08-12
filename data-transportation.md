@@ -169,28 +169,38 @@ unlink("data/ex.data") # tidy up
 
 
 ```r
-read.table(file, header = FALSE, sep = "", quote = "\"'",
-           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
-           row.names, col.names, as.is = !stringsAsFactors,
-           na.strings = "NA", colClasses = NA, nrows = -1,
-           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
-           strip.white = FALSE, blank.lines.skip = TRUE,
-           comment.char = "#",
-           allowEscapes = FALSE, flush = FALSE,
-           stringsAsFactors = default.stringsAsFactors(),
-           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+read.table(file,
+  header = FALSE, sep = "", quote = "\"'",
+  dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+  row.names, col.names, as.is = !stringsAsFactors,
+  na.strings = "NA", colClasses = NA, nrows = -1,
+  skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+  strip.white = FALSE, blank.lines.skip = TRUE,
+  comment.char = "#",
+  allowEscapes = FALSE, flush = FALSE,
+  stringsAsFactors = default.stringsAsFactors(),
+  fileEncoding = "", encoding = "unknown", text, skipNul = FALSE
+)
 
-read.csv(file, header = TRUE, sep = ",", quote = "\"",
-         dec = ".", fill = TRUE, comment.char = "", ...)
+read.csv(file,
+  header = TRUE, sep = ",", quote = "\"",
+  dec = ".", fill = TRUE, comment.char = "", ...
+)
 
-read.csv2(file, header = TRUE, sep = ";", quote = "\"",
-          dec = ",", fill = TRUE, comment.char = "", ...)
+read.csv2(file,
+  header = TRUE, sep = ";", quote = "\"",
+  dec = ",", fill = TRUE, comment.char = "", ...
+)
 
-read.delim(file, header = TRUE, sep = "\t", quote = "\"",
-           dec = ".", fill = TRUE, comment.char = "", ...)
+read.delim(file,
+  header = TRUE, sep = "\t", quote = "\"",
+  dec = ".", fill = TRUE, comment.char = "", ...
+)
 
-read.delim2(file, header = TRUE, sep = "\t", quote = "\"",
-            dec = ",", fill = TRUE, comment.char = "", ...)
+read.delim2(file,
+  header = TRUE, sep = "\t", quote = "\"",
+  dec = ",", fill = TRUE, comment.char = "", ...
+)
 ```
 
 变量名是不允许以下划线开头的，同样在数据框里，列名也不推荐使用下划线开头。默认情况下，`read.table` 都会通过参数 `check.names` 检查列名的有效性，该参数实际调用了函数 `make.names` 去检查。如果想尽量保持数据集原来的样子可以设置参数 `check.names = FALSE, stringsAsFactors = FALSE`。 默认情形下，`read.table` 还会将字符串转化为因子变量，这是 R 的历史原因，作为一门统计学家的必备语言，在统计模型中，字符常用来描述类别，而类别变量在 R 环境中常用因子类型来表示，而且大量内置的统计模型也是将它们视为因子变量，如 `lm` 、`glm` 等
@@ -227,11 +237,13 @@ dat2
 ```
 
 ```r
-dat3 = read.table(header = TRUE, check.names = FALSE, stringsAsFactors = FALSE, text = "
+dat3 <- read.table(header = TRUE, check.names = FALSE,
+  stringsAsFactors = FALSE, text = "
 _a _b _c
 1 2 a1
 3 4 a2
-")
+"
+)
 dat3
 ```
 
@@ -276,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpjUaVq1/file62c432472440.data"
+## [1] "/tmp/RtmpONknFf/file69da50566dc7.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -316,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpjUaVq1/test62c4747bdce9"
+## [1] "/tmp/RtmpONknFf/test69da2fa2794d"
 ```
 
 ```r
@@ -1604,13 +1616,13 @@ diamonds_sample
 ```
 
 ```
-##   carat     cut color clarity depth table price    x    y    z
-## 1  0.30    Good     G     VS1  63.4    55   565 4.26 4.32 2.72
-## 2  0.36   Ideal     G     SI1  61.4    55   571 4.61 4.64 2.84
-## 3  0.90    Fair     H     VS2  64.6    54  3725 6.09 6.14 3.95
-## 4  1.02   Ideal     I     SI2  62.7    57  3913 6.43 6.40 4.02
-## 5  1.03 Premium     H     SI1  61.8    58  3945 6.47 6.41 3.98
-## 6  1.00 Premium     F     SI2  61.5    60  4340 6.35 6.33 3.90
+##   carat       cut color clarity depth table price    x    y    z
+## 1  0.75   Premium     F     VS2  61.6    58  3013 5.84 5.89 3.61
+## 2  1.14     Ideal     J     SI1  60.2    57  3045 6.81 6.71 4.07
+## 3  1.00      Fair     D     SI2  64.8    60  3304 6.23 6.18 4.02
+## 4  0.25 Very Good     G     VS2  61.9    57   407 4.05 4.08 2.51
+## 5  0.30     Ideal     H     SI1  62.0    58   407 4.25 4.33 2.66
+## 6  0.90   Premium     D     SI2  62.9    56  4007 6.19 6.09 3.86
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1629,12 +1641,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Fair   830    1
-## 2 Fair   871    2
-## 3 Fair  3077    3
-## 4 Fair  9386    4
-## 5 Good   720    1
-## 6 Good  2048    2
+## 1 Fair  4044    1
+## 2 Fair  4844    2
+## 3 Good   432    1
+## 4 Good   611    2
+## 5 Good   838    3
+## 6 Good  1312    4
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1669,10 +1681,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1689,12 +1701,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1707,7 +1719,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-08-10
+## 1     2021-08-12
 ```
 
 ```r
@@ -1717,7 +1729,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-08-09
+## 1                  2021-08-11
 ```
 
 ```r
@@ -1737,7 +1749,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         3
+## 1                         5
 ```
 
 最后，使用完记得关闭 Spark 连接

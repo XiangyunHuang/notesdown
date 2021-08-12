@@ -1872,11 +1872,11 @@ with(data = faithful, {
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/faithful-1} 
+{\centering \includegraphics{graphics-foundations_files/figure-latex/faithful-ecdf-1} 
 
 }
 
-\caption{累积经验分布图}(\#fig:faithful)
+\caption{累积经验分布图}(\#fig:faithful-ecdf)
 \end{figure}
 
 ### QQ 图 {#plot-qqnorm}
@@ -1965,8 +1965,14 @@ stem(longley$Unemployed)
 
 
 ```r
-stripchart(longley$Unemployed, method = "jitter", jitter = 0.1, pch = 16, col = "lightblue")
-stripchart(longley$Unemployed, method = "overplot", pch = 16, col = "lightblue")
+stripchart(longley$Unemployed,
+  method = "jitter",
+  jitter = 0.1, pch = 16, col = "lightblue"
+)
+stripchart(longley$Unemployed,
+  method = "overplot",
+  pch = 16, col = "lightblue"
+)
 ```
 
 \begin{figure}
@@ -2036,7 +2042,7 @@ legend(300, 35,
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/category-base-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/category-base-1} 
 
 }
 
@@ -2057,7 +2063,7 @@ box(col = "gray")
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/iris-scatter-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/iris-scatter-1} 
 
 }
 
@@ -2125,12 +2131,15 @@ densCols(x,
 
 
 ```r
-plot(faithful, col = densCols(faithful), pch = 20, panel.first = grid())
+plot(faithful,
+  col = densCols(faithful),
+  pch = 20, panel.first = grid()
+)
 ```
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth]{graphics-foundations_files/figure-latex/densCols-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/densCols-1} 
 
 }
 
@@ -2349,7 +2358,7 @@ set.seed(1234)
 n <- 8
 g <- gl(n, 100, n * 100) # n水平个数 100是重复次数
 x <- rnorm(n * 100) + sqrt(as.numeric(g))
-boxplot(split(x, g), col = hcl.colors(n), notch = TRUE)
+boxplot(split(x, g), col = terrain.colors(n), notch = TRUE)
 title(
   main = "Notched Boxplots", xlab = "Group",
   font.main = 4, font.lab = 1
@@ -2791,7 +2800,7 @@ show.settings()
 
 
 
-\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/lattice-settings-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/lattice-settings-1} \end{center}
 
 
 
@@ -2816,7 +2825,7 @@ trellis.par.set(my.settings)
 library(MASS)
 library(lattice)
 
-myColours <- hcl.colors(6)
+myColours <- terrain.colors(6)
 
 barchart(Claims / Holders * 100 ~ Age | Group,
   groups = District, data = Insurance,
@@ -2936,14 +2945,16 @@ depth.ord <- rev(order(quakes$depth))
 quakes$Magnitude <- equal.count(quakes$mag, 4)
 quakes.ordered <- quakes[depth.ord, ]
 
-levelplot(depth ~ long + lat | Magnitude, data = quakes.ordered,
-         panel = panel.levelplot.points, type = c("p", "g"),
-         aspect = "iso", prepanel = prepanel.default.xyplot)
+levelplot(depth ~ long + lat | Magnitude,
+  data = quakes.ordered,
+  panel = panel.levelplot.points, type = c("p", "g"),
+  aspect = "iso", prepanel = prepanel.default.xyplot
+)
 ```
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-88-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-88-1} \end{center}
 
 ### 等高线图 {#lattice-contour}
 
@@ -3020,8 +3031,8 @@ wireframe(volcano,
 ```r
 library(maps)
 library(mapproj)
+library(latticeExtra)
 # 找一个新的 map 包含夏威夷和阿拉斯加
-## Note: Alaska, Hawaii and others are not included in county map;
 ## this generates warnings with both USCancerRates and ancestry.
 data(USCancerRates)
 mapplot(rownames(USCancerRates) ~ log(rate.male) + log(rate.female),
@@ -3043,9 +3054,16 @@ mapplot(rownames(USCancerRates) ~ log(rate.male) + log(rate.female),
 ## unmatched regions: alaska,nome, alaska,wade hampton, alaska,haines, alaska,....
 ```
 
+\begin{figure}
 
+{\centering \includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/map-1} 
 
-\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/map-1} \end{center}
+}
+
+\caption{(ref:county-map)}(\#fig:map)
+\end{figure}
+
+(ref:county-map)  maps 包提供的 county 数据集不包含阿拉斯加和夏威夷两个州。
 
 
 ### 聚类图 {#lattice-cluster}

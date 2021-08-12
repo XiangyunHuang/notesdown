@@ -31,6 +31,7 @@
 
 图来自 [@Lawrence_1986_Dist]
 
+[fitdistrplus](https://github.com/aursiber/fitdistrplus)
 
 ## 指数族 {#sec-exponential-family}
 
@@ -88,10 +89,10 @@ Tn
 
 ```
 ## $quantile
-## [1] 2.56098
+## [1] 2.560667
 ## 
 ## $f.quantile
-## [1] 2.039539e-07
+## [1] 2.156688e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"

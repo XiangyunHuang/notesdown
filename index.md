@@ -1,7 +1,7 @@
 --- 
 title: "现代应用统计与 R 语言"
 author: "黄湘云"
-date: "2021-08-10"
+date: "2021-08-12"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -274,11 +274,11 @@ round(p, 3)
 
 \begin{figure}
 
-{\centering \includegraphics{index_files/figure-latex/faithful-1} 
+{\centering \includegraphics{index_files/figure-latex/faithful-dens-1} 
 
 }
 
-\caption{散点图：faithful 数据集}(\#fig:faithful)
+\caption{散点图：faithful 数据集}(\#fig:faithful-dens)
 \end{figure}
 
 [统计检验，决策风险，显著性水平]{.todo}
@@ -348,7 +348,7 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-10 10:17:25。
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-12 08:11:09。
 
 
 ```r

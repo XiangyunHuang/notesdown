@@ -456,7 +456,9 @@ ggplot(airquality) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-12-1} \end{center}
+\begin{center}\includegraphics[width=0.85\linewidth]{data-visualization_files/figure-latex/unnamed-chunk-12-1} \end{center}
+
+
 
 ```r
 ggplot(airquality) + 
@@ -466,7 +468,7 @@ ggplot(airquality) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-12-2} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{data-visualization_files/figure-latex/unnamed-chunk-13-1} \end{center}
 
 [cowplot](https://github.com/wilkelab/cowplot) 是以作者 [Claus O. Wilke](https://wilkelab.org/) 命名的，用来组合 ggplot 对象画图，类似的组合图形的功能包还有 [baptiste auguié](https://baptiste.github.io/) 开发的 [gridExtra](https://CRAN.R-project.org/package=gridExtra) 和 [egg](https://github.com/baptiste/egg)， [Thomas Lin Pedersen](https://www.data-imaginist.com/) 开发的 [patchwork](https://github.com/thomasp85/patchwork)
 
@@ -633,7 +635,7 @@ p4 <- p1 + labs(
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.85\linewidth]{data-visualization_files/figure-latex/font-in-ggplot-1} 
+{\centering \includegraphics[width=1\linewidth]{data-visualization_files/figure-latex/font-in-ggplot-1} 
 
 }
 
@@ -1457,7 +1459,7 @@ expand.grid(months = month.abb, years = 1949:1960) |>
 \caption{Spectral 调色板}(\#fig:palette-spectral)
 \end{figure}
 
-再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
+再举例子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
 
 
 ```r
@@ -1615,11 +1617,11 @@ ggplot(hcl, aes(x, y)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-24-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-25-1} 
 
 }
 
-\caption{HCL调色}(\#fig:unnamed-chunk-24)
+\caption{HCL调色}(\#fig:unnamed-chunk-25)
 \end{figure}
 
 R 内置了 502 种不同颜色的名称，下面随机地选取 20 种颜色
@@ -1730,11 +1732,11 @@ hist(mtcars$hp, col = "#56B4E9", border = "white", grid = grid())
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-27-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-28-1} 
 
 }
 
-\caption{直方图}(\#fig:unnamed-chunk-27)
+\caption{直方图}(\#fig:unnamed-chunk-28)
 \end{figure}
 
 
@@ -1751,11 +1753,11 @@ ggplot(mtcars) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-28-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-29-1} 
 
 }
 
-\caption{直方图}(\#fig:unnamed-chunk-28)
+\caption{直方图}(\#fig:unnamed-chunk-29)
 \end{figure}
 
 #### RGB
@@ -2327,11 +2329,11 @@ ggplot(sub_diamonds, aes(x = carat, y = price, group = cut)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-34-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-35-1} 
 
 }
 
-\caption{局部多项式平滑}(\#fig:unnamed-chunk-34)
+\caption{局部多项式平滑}(\#fig:unnamed-chunk-35)
 \end{figure}
 
 
@@ -2473,11 +2475,11 @@ ggplot(Wheat2, aes(longitude, latitude)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-35-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-36-1} 
 
 }
 
-\caption{多个图例}(\#fig:unnamed-chunk-35)
+\caption{多个图例}(\#fig:unnamed-chunk-36)
 \end{figure}
   
 
@@ -2511,11 +2513,11 @@ ggplot(data = dat, aes(x = as.factor(year), y = as.factor(month))) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-36-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-1} 
 
 }
 
-\caption{1948年至1960年航班乘客人数变化}(\#fig:unnamed-chunk-36)
+\caption{1948年至1960年航班乘客人数变化}(\#fig:unnamed-chunk-37)
 \end{figure}
 
 ### 条形图 {#sec-ggplot2-barplot}
@@ -2541,7 +2543,7 @@ ggplot(cut_df, aes(x = Var1, y = Freq)) + geom_bar(stat = "identity")
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-37-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-1} \end{center}
 
 ```r
 ggplot(diamonds, aes(x = cut)) + geom_bar()
@@ -2565,7 +2567,7 @@ ggplot(diamonds, aes(x = cut)) + geom_bar(stat = "count")
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-39-1} \end{center}
 
 ```r
 ggplot(diamonds, aes(x = cut, y = ..count..)) + geom_bar()
@@ -2573,7 +2575,7 @@ ggplot(diamonds, aes(x = cut, y = ..count..)) + geom_bar()
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-2} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-39-2} \end{center}
 
 ```r
 ggplot(diamonds, aes(x = cut, y = stat(count))) + geom_bar()
@@ -2581,7 +2583,7 @@ ggplot(diamonds, aes(x = cut, y = stat(count))) + geom_bar()
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-38-3} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-39-3} \end{center}
 
 我们还可以在图 \@ref(fig:diamonds-barplot-1) 的基础上再添加一个分类变量钻石的纯净度 clarity，形成堆积条形图
 
@@ -2935,11 +2937,11 @@ ggplot(diamonds, aes(price)) + geom_histogram(bins = 30)
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-41-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-1} 
 
 }
 
-\caption{钻石价格的分布}(\#fig:unnamed-chunk-41)
+\caption{钻石价格的分布}(\#fig:unnamed-chunk-42)
 \end{figure}
 
 堆积直方图
@@ -2951,11 +2953,11 @@ ggplot(diamonds, aes(x = price, fill = cut)) + geom_histogram(bins = 30)
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-42-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-43-1} 
 
 }
 
-\caption{钻石价格随切割质量的分布}(\#fig:unnamed-chunk-42)
+\caption{钻石价格随切割质量的分布}(\#fig:unnamed-chunk-43)
 \end{figure}
 
 基础 R 包与 Ggplot2 包绘制的直方图的对比，Base R 绘图速度快，代码更加稳定，Ggplot2 代码简洁，更美观
@@ -3068,7 +3070,7 @@ boxplot(weight ~ group,
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-44-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} \end{center}
 
 
 以钻石切割质量 cut 为分面依据，以钻石颜色类别 color 为 x 轴，钻石价格为 y 轴，绘制箱线图\@ref(fig:boxplot-facet-color)
@@ -3114,18 +3116,6 @@ ggplot(diamonds, aes(x = color, y = price, color = cut)) +
 ggplot(diamonds, aes(x = cut, y = price, color = cut)) +
   geom_boxplot(show.legend = FALSE) +
   facet_grid(clarity ~ color)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-1} 
-
-}
-
-\caption{切割质量cut上色}(\#fig:boxplot-facet-color-clarity-2-1)
-\end{figure}
-
-```r
 ggplot(diamonds, aes(x = cut, y = price, color = color)) +
   geom_boxplot(show.legend = FALSE) +
   facet_grid(clarity ~ color)
@@ -3133,11 +3123,11 @@ ggplot(diamonds, aes(x = cut, y = price, color = color)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-2} 
+{\centering \subfloat[切割质量cut上色(\#fig:boxplot-facet-color-clarity-2-1)]{\includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-1} }\newline\subfloat[钻石颜色配色(\#fig:boxplot-facet-color-clarity-2-2)]{\includegraphics{data-visualization_files/figure-latex/boxplot-facet-color-clarity-2-2} }
 
 }
 
-\caption{钻石颜色配色}(\#fig:boxplot-facet-color-clarity-2-2)
+\caption{箱线图配色}(\#fig:boxplot-facet-color-clarity-2)
 \end{figure}
 
 ### 函数图 {#sec-ggplot2-function}
@@ -3231,11 +3221,11 @@ ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-45-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} 
 
 }
 
-\caption{条件密度估计图}(\#fig:unnamed-chunk-45)
+\caption{条件密度估计图}(\#fig:unnamed-chunk-46)
 \end{figure}
 
 
@@ -3249,7 +3239,7 @@ ggplot(diamonds) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-46-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
 
 二维的密度图又是一种延伸
 
@@ -3262,7 +3252,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-47-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
 
 `stat` 函数，特别是 nlevel 参数，在密度曲线之间填充我们又可以得到热力图
 
@@ -3275,7 +3265,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-48-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-49-1} \end{center}
 
 `gemo_hex` 也是二维密度图的一种变体，特别适合数据量比较大的情形
 
@@ -3287,7 +3277,7 @@ ggplot(diamonds, aes(x = carat, y = price)) + geom_hex() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-49-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-50-1} \end{center}
 
 
 [heatmaps in ggplot2](https://themockup.blog/posts/2020-08-28-heatmaps-in-ggplot2/) 二维密度图
@@ -3416,7 +3406,7 @@ ggplot(mpg, aes(x = class, y = hwy, color = class)) + geom_jitter()
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-51-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} \end{center}
 
 抖不抖，还是抖一下
 
@@ -3430,7 +3420,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} \end{center}
 
 ```r
 ggplot(iris, aes(x = Species, y = Sepal.Length)) +
@@ -3444,7 +3434,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Length)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-52-2} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-2} \end{center}
 
 在数据量比较大的时候，可以用箱线图、密度图、提琴图
 
@@ -3455,11 +3445,11 @@ ggplot(sub_diamonds, aes(x = cut, y = price)) + geom_jitter()
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-53-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} 
 
 }
 
-\caption{抖动图的反例}(\#fig:unnamed-chunk-53)
+\caption{抖动图的反例}(\#fig:unnamed-chunk-54)
 \end{figure}
 
 上色和分面都不好使的抖动图，因为区分度变小
@@ -3473,11 +3463,11 @@ ggplot(sub_diamonds, aes(x = color, y = price, color = color)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-54-1} 
+{\centering \includegraphics{data-visualization_files/figure-latex/unnamed-chunk-55-1} 
 
 }
 
-\caption{根据钻石颜色上色}(\#fig:unnamed-chunk-54)
+\caption{根据钻石颜色上色}(\#fig:unnamed-chunk-55)
 \end{figure}
 
 箱线图此时不宜分的过细
@@ -3631,7 +3621,7 @@ p + geom_bar(position = "fill") +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-55-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-56-1} \end{center}
 
 
 [^nightingale-rose]: https://mbostock.github.io/protovis/ex/crimea-rose-full.html
@@ -3725,7 +3715,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Tue"
+## [1] "Thu"
 ```
 
 ```r
@@ -3733,7 +3723,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 3
+## [1] 5
 ```
 
 :::
@@ -3770,7 +3760,7 @@ ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-58-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-59-1} \end{center}
 
 
 
@@ -3921,7 +3911,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55e3c3705a58>
+## <bytecode: 0x55c541d1c1a8>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -4605,7 +4595,7 @@ ggplot() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-67-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-68-1} \end{center}
 
 ### 主成分图 {#sec-ggplot2-prcomp}
 

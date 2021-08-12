@@ -435,21 +435,10 @@ create_smtp_creds_key(
 )
 ```
 
-
-
-
-
-
-
-
-
-
 第二步，准备邮件内容，包括邮件主题、发件人、收件人、抄送人、密送人、邮件主体和附件等。
 
 
 ```r
-library(blastula)
-
 attachment <- "data/mail.txt" # 如果没有附件，引号内留空即可。
 # 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用
 body <- "examples/html-document.Rmd" 
