@@ -507,7 +507,7 @@ sessionInfo()
 ##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     highr_0.9        
 ##  [9] blob_1.2.2        stringr_1.4.0     tools_4.1.0       webshot_0.5.2    
 ## [13] nomnoml_0.2.3     xfun_0.25         htmltools_0.5.1.1 yaml_2.2.1       
-## [17] bit64_4.0.5       digest_0.6.27     lifecycle_1.0.0   bookdown_0.22    
+## [17] bit64_4.0.5       digest_0.6.27     lifecycle_1.0.0   bookdown_0.23    
 ## [21] processx_3.5.2    callr_3.7.0       vctrs_0.3.8       htmlwidgets_1.5.3
 ## [25] ps_1.6.0          curl_4.3.2        cachem_1.0.5      memoise_2.0.0    
 ## [29] evaluate_0.14     RSQLite_2.2.7     rmarkdown_2.10    stringi_1.7.3    

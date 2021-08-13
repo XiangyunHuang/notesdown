@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 17 章 参数估计 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Jeremy Koster: My students were looking at the estimated varying intercepts for each higher-level group (or the “BLUP’s”, as some people seem to call them). Douglas Bates: As Alan James once said,...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 17 章 参数估计 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Jeremy Koster: My students were looking at the estimated varying intercepts for each higher-level group (or the “BLUP’s”, as some people seem to call them). Douglas Bates: As Alan James once said,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 17 章 参数估计 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="Jeremy Koster: My students were looking at the estimated varying intercepts for each higher-level group (or the “BLUP’s”, as some people seem to call them). Douglas Bates: As Alan James once said,...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -120,7 +128,7 @@
 </ul>
 <p>单参数和多参数模型的参数估计，比如指数分布、泊松分布、二项分布、正态分布，线性模型各个估计的推导过程</p>
 <div class="rmdnote">
-<p>应当考虑 <span class="math inline">\((X^{\top}X)^{-1}\)</span> 不存在的情况，在均方误差最小的意义下，不必要求 <span class="math inline">\(\beta\)</span> 的估计 <span class="math inline">\(\hat{\beta}\)</span> 满足无偏性的要求，所以介绍岭回归估计 <span class="math inline">\(\hat{\beta}_{ridge}\)</span>、压缩估计 <span class="math inline">\(\hat{\beta}_{jse}\)</span>、主成分估计 <span class="math inline">\(\hat{\beta}_{pca}\)</span> 和偏最小二乘估计 <span class="math inline">\(\hat{\beta}_{pls}\)</span>。相比于 <span class="math inline">\(\hat{\beta}_{pca}\)</span>， <span class="math inline">\(\hat{\beta}_{pls}\)</span> 考虑了响应变量的作用。《数理统计引论》第5章第5节线性估计类从改进 LS 估计出发，牺牲一部分估计的偏差，即采用有偏的估计，达到总体均方误差更小的效果 <span class="citation"><a href="references.html#ref-Stat_1981_Chen" role="doc-biblioref">[34]</a></span></p>
+<p>应当考虑 <span class="math inline">\((X^{\top}X)^{-1}\)</span> 不存在的情况，在均方误差最小的意义下，不必要求 <span class="math inline">\(\beta\)</span> 的估计 <span class="math inline">\(\hat{\beta}\)</span> 满足无偏性的要求，所以介绍岭回归估计 <span class="math inline">\(\hat{\beta}_{ridge}\)</span>、压缩估计 <span class="math inline">\(\hat{\beta}_{jse}\)</span>、主成分估计 <span class="math inline">\(\hat{\beta}_{pca}\)</span> 和偏最小二乘估计 <span class="math inline">\(\hat{\beta}_{pls}\)</span>。相比于 <span class="math inline">\(\hat{\beta}_{pca}\)</span>， <span class="math inline">\(\hat{\beta}_{pls}\)</span> 考虑了响应变量的作用。《数理统计引论》第5章第5节线性估计类从改进 LS 估计出发，牺牲一部分估计的偏差，即采用有偏的估计，达到总体均方误差更小的效果 <span class="citation"><a href="#ref-Stat_1981_Chen" role="doc-biblioref">[34]</a></span></p>
 <p>James-Stein 估计可不可以看作一种压缩估计？从它牺牲一部分偏差，获取整体方差的降低来看和上面应该有某种联系</p>
 </div>
 <ul>
@@ -367,7 +375,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:ci"></span>
+<span style="display:block;" id="fig:ci"></span>
 <img src="parameter-estimators_files/figure-html/ci-1.png" alt="\(\mu\) 的置信水平为 0.95 的置信区间" width="672"><p class="caption">
 图 17.1: <span class="math inline">\(\mu\)</span> 的置信水平为 0.95 的置信区间
 </p>
@@ -463,7 +471,7 @@
 <span class="header-section-number">17.2.3</span> 置信区间和信仰区间<a class="anchor" aria-label="anchor" href="#sec-confidence-fiducial-limits"><i class="fas fa-link"></i></a>
 </h3>
 <p>计算置信区间的覆盖概率 <a href="https://cran.r-project.org/package=binom">binom</a></p>
-<p>二项分布的参数估计，包括点估计和区间估计 <span class="citation"><a href="references.html#ref-Test_1934_binom" role="doc-biblioref">[2]</a></span></p>
+<p>二项分布的参数估计，包括点估计和区间估计 <span class="citation"><a href="#ref-Test_1934_binom" role="doc-biblioref">[2]</a></span></p>
 <p>给定样本量 n = 10 0-1 分布 成功概率 p 分别取 0.1,0.2,…,1
 置信度为 95% 观测到 x 取 1,2,3,..,10 时 估计 p 的上下限</p>
 <div class="sourceCode" id="cb1768"><pre class="downlit sourceCode r">
@@ -662,6 +670,17 @@
 
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Test_1934_binom" class="csl-entry">
+<div class="csl-left-margin">[2] </div>
+<div class="csl-right-inline">C. J. Clopper and E. S. Pearson, <span>“The use of confidence or fiducial limits illustrated in the case of the binomial,”</span> <em>Biometrika</em>, vol. 26, no. 4, pp. 404–413, Dec. 1934, doi: <a href="https://doi.org/10.1093/biomet/26.4.404">10.1093/biomet/26.4.404</a>.</div>
+</div>
+<div id="ref-Stat_1981_Chen" class="csl-entry">
+<div class="csl-left-margin">[34] </div>
+<div class="csl-right-inline">陈希孺, <em>数理统计引论</em>. 北京: 科学出版社, 1981.</div>
+</div>
+</div>
 
   <div class="chapter-nav">
 <div class="prev"><a href="chap-sampling-distributions.html"><span class="header-section-number">16</span> 抽样分布</a></div>
@@ -692,8 +711,8 @@
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/parameter-estimators.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/parameter-estimators.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/parameter-estimators.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/parameter-estimators.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -705,7 +724,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -725,6 +744,22 @@
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

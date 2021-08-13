@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 16 章 抽样分布 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="分布我们已经听说过很多了，可是它们都是凭空臆测的吗？肯定不是，那它们是怎么产生的呢？谁提出了正态分布，他/她是怎么提出的？一定有故事背景，一定有数据记录，即观察值，我们的样本数据 抽样分布其中抽样二字更加贴近生活，说明它源于实际生产场景，而不是光靠大脑思维理论推导出来的东西，它是最本质的  16.1 正态分布 分三块介绍 历史背景 分布性质 应用场景 来源，为啥叫逻辑斯谛？历史故事...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 16 章 抽样分布 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="分布我们已经听说过很多了，可是它们都是凭空臆测的吗？肯定不是，那它们是怎么产生的呢？谁提出了正态分布，他/她是怎么提出的？一定有故事背景，一定有数据记录，即观察值，我们的样本数据 抽样分布其中抽样二字更加贴近生活，说明它源于实际生产场景，而不是光靠大脑思维理论推导出来的东西，它是最本质的  16.1 正态分布 分三块介绍 历史背景 分布性质 应用场景 来源，为啥叫逻辑斯谛？历史故事...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 16 章 抽样分布 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="分布我们已经听说过很多了，可是它们都是凭空臆测的吗？肯定不是，那它们是怎么产生的呢？谁提出了正态分布，他/她是怎么提出的？一定有故事背景，一定有数据记录，即观察值，我们的样本数据 抽样分布其中抽样二字更加贴近生活，说明它源于实际生产场景，而不是光靠大脑思维理论推导出来的东西，它是最本质的  16.1 正态分布 分三块介绍 历史背景 分布性质 应用场景 来源，为啥叫逻辑斯谛？历史故事...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -127,7 +135,7 @@
 <p>分一元和多元情况阐述正态分布、t 分布、F 分布、卡方分布及分布<a href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/doc/contrib/Ricci-distributions-en.pdf">拟合</a></p>
 <p>常见分布之间的关系图需要用 TikZ 来绘制</p>
 <p>完整的关系图 <a href="http://www.math.wm.edu/~leemis/2008amstat.pdf" class="uri">http://www.math.wm.edu/~leemis/2008amstat.pdf</a> 参考自 <a href="https://www.math.wustl.edu/~jmding/math494/dist.pdf" class="uri">https://www.math.wustl.edu/~jmding/math494/dist.pdf</a></p>
-<p>图来自 <span class="citation"><a href="references.html#ref-Lawrence_1986_Dist" role="doc-biblioref">[32]</a></span></p>
+<p>图来自 <span class="citation"><a href="#ref-Lawrence_1986_Dist" role="doc-biblioref">[32]</a></span></p>
 <p><a href="https://github.com/aursiber/fitdistrplus">fitdistrplus</a></p>
 </div>
 <div id="sec-exponential-family" class="section level2" number="16.2">
@@ -173,10 +181,10 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 <span class="op">)</span>
 <span class="va">Tn</span></code></pre></div>
 <pre><code>## $quantile
-## [1] 2.56058
+## [1] 2.561122
 ## 
 ## $f.quantile
-## [1] 1.954057e-07
+## [1] 1.969022e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"</code></pre>
@@ -206,7 +214,7 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span>x <span class="op">=</span><span class="fl">0</span>, y <span class="op">=</span> <span class="fl">0</span>, pch <span class="op">=</span> <span class="fl">3</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:bivariate-scatter"></span>
+<span style="display:block;" id="fig:bivariate-scatter"></span>
 <img src="sampling-distributions_files/figure-html/bivariate-scatter-1.png" alt="二维正态分布" width="75%"><p class="caption">
 图 16.1: 二维正态分布
 </p>
@@ -225,13 +233,25 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
   shade <span class="op">=</span> <span class="fl">0.1</span>, ticktype <span class="op">=</span> <span class="st">"detailed"</span>, nticks <span class="op">=</span> <span class="fl">5</span>
 <span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:bivariate-persp"></span>
+<span style="display:block;" id="fig:bivariate-persp"></span>
 <img src="sampling-distributions_files/figure-html/bivariate-persp-1.png" alt="二维正态分布" width="45%"><img src="sampling-distributions_files/figure-html/bivariate-persp-2.png" alt="二维正态分布" width="45%"><p class="caption">
 图 16.2: 二维正态分布
 </p>
 </div>
-<p>Wishart 分布 文献 <span class="citation"><a href="references.html#ref-Eaton_2007_MultiStat" role="doc-biblioref">[33]</a></span> 第八章</p>
+<p>Wishart 分布 文献 <span class="citation"><a href="#ref-Eaton_2007_MultiStat" role="doc-biblioref">[33]</a></span> 第八章</p>
 
+</div>
+</div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Lawrence_1986_Dist" class="csl-entry">
+<div class="csl-left-margin">[32] </div>
+<div class="csl-right-inline">L. M. Leemis, <span>“Relationships among common univariate distributions,”</span> <em>The American Statistician</em>, vol. 40, no. 2, pp. 143–146, 1986,Available: <a href="https://www.jstor.org/stable/2684876">https://www.jstor.org/stable/2684876</a>
+</div>
+</div>
+<div id="ref-Eaton_2007_MultiStat" class="csl-entry">
+<div class="csl-left-margin">[33] </div>
+<div class="csl-right-inline">M. L. Eaton, <span>“Chapter 8: The wishart distribution,”</span> in <em>Multivariate statistics</em>, vol. 53, Beachwood, Ohio, USA: Institute of Mathematical Statistics, 2007, pp. 302–333. doi: <a href="https://doi.org/10.1214/lnms/1196285114">10.1214/lnms/1196285114</a>.</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -247,8 +267,8 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/sampling-distributions.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/sampling-distributions.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/sampling-distributions.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/sampling-distributions.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -260,7 +280,7 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -280,6 +300,22 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

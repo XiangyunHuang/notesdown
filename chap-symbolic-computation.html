@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 33 章 符号计算 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas，symengine 不会和 Base R 函数冲突。Python...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 33 章 符号计算 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas，symengine 不会和 Base R 函数冲突。Python...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 33 章 符号计算 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas，symengine 不会和 Base R 函数冲突。Python...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -101,7 +109,7 @@
 <h1>
 <span class="header-section-number">第 33 章</span> 符号计算<a class="anchor" aria-label="anchor" href="#chap-symbolic-computation"><i class="fas fa-link"></i></a>
 </h1>
-<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation"><a href="references.html#ref-SymPy" role="doc-biblioref">[97]</a></span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
+<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation"><a href="#ref-SymPy" role="doc-biblioref">[97]</a></span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
 <p>16年在统计之都灌水<a href="https://cosx.org/2016/07/r-symbol-calculate">符号计算与R语言</a>，相应的 Rmd 源文件放在<a href="https://github.com/XiangyunHuang/Symbolic-Computing">Github</a>上。</p>
 <div class="sourceCode" id="cb2558"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 多元函数求偏导</span>
@@ -156,7 +164,7 @@
 <span class="fu">Tetrachoric</span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.04408344</code></pre>
 <div class="figure" style="text-align: center">
-<span id="fig:Tetrachoric"></span>
+<span style="display:block;" id="fig:Tetrachoric"></span>
 <img src="symbolic-computation_files/figure-html/Tetrachoric-1.png" alt="Tetrachoric 函数" width="528"><p class="caption">
 图 33.1: Tetrachoric 函数
 </p>
@@ -217,6 +225,13 @@
 ## V( -1/2 + (-1/2)*sqrt(1 + (-1/3)*(2 + 4*a)), -1/2 + (1/2)*sqrt(1 + (-1/3)*(2 + 4*a)) )</code></pre>
 
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-SymPy" class="csl-entry">
+<div class="csl-left-margin">[97] </div>
+<div class="csl-right-inline">A. Meurer <em>et al.</em>, <span>“<span>SymPy</span>: Symbolic computing in python,”</span> <em>PeerJ Computer Science</em>, vol. 3, p. e103, Jan. 2017, doi: <a href="https://doi.org/10.7717/peerj-cs.103">10.7717/peerj-cs.103</a>.</div>
+</div>
+</div>
   <div class="chapter-nav">
 <div class="prev"><a href="chap-matrix-operations.html"><span class="header-section-number">32</span> 矩阵运算</a></div>
 <div class="next"><a href="chap-numerical-optimization.html"><span class="header-section-number">34</span> 数值优化</a></div>
@@ -226,8 +241,8 @@
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/symbolic-computation.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/symbolic-computation.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/symbolic-computation.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/symbolic-computation.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -239,7 +254,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -259,6 +274,22 @@
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

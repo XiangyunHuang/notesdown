@@ -1140,7 +1140,7 @@ sessionInfo()
 ## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        curl_4.3.2       
 ## [29] fansi_0.5.0       gifski_1.4.3-1    Rttf2pt1_1.3.9    Rcpp_1.0.7       
 ## [33] scales_1.1.1      farver_2.1.0      hms_1.1.0         digest_0.6.27    
-## [37] stringi_1.7.3     bookdown_0.22     dplyr_1.0.7       grid_4.1.0       
+## [37] stringi_1.7.3     bookdown_0.23     dplyr_1.0.7       grid_4.1.0       
 ## [41] tools_4.1.0       tibble_3.1.3      crayon_1.4.1      extrafontdb_1.0  
 ## [45] pkgconfig_2.0.3   Matrix_1.3-4      ellipsis_0.3.2    prettyunits_1.1.1
 ## [49] assertthat_0.2.1  rmarkdown_2.10    R6_2.5.0          nlme_3.1-152     

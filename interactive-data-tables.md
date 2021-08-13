@@ -398,7 +398,7 @@ sessionInfo()
 ##  [5] munsell_0.5.0     viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.0         
 ##  [9] rlang_0.4.11      stringr_1.4.0     httr_1.4.2        tools_4.1.0      
 ## [13] webshot_0.5.2     xfun_0.25         systemfonts_1.0.2 htmltools_0.5.1.1
-## [17] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   bookdown_0.22    
+## [17] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   bookdown_0.23    
 ## [21] htmlwidgets_1.5.3 curl_4.3.2        glue_1.4.2        evaluate_0.14    
 ## [25] rmarkdown_2.10    stringi_1.7.3     compiler_4.1.0    scales_1.1.1     
 ## [29] svglite_2.0.0

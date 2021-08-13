@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 19 章 功效分析 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效应模型和统计检验，提供对应的 R 实现。 MKpower 包提供 Welch 和 Hsu（许宝騄）t 检验、Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是蒙特卡罗模拟。Superpower 基于模拟的方法分析三因素方差分析实验设计的功效，开发者写了本书介绍，详见...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 19 章 功效分析 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效应模型和统计检验，提供对应的 R 实现。 MKpower 包提供 Welch 和 Hsu（许宝騄）t 检验、Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是蒙特卡罗模拟。Superpower 基于模拟的方法分析三因素方差分析实验设计的功效，开发者写了本书介绍，详见...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 19 章 功效分析 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效应模型和统计检验，提供对应的 R 实现。 MKpower 包提供 Welch 和 Hsu（许宝騄）t 检验、Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是蒙特卡罗模拟。Superpower 基于模拟的方法分析三因素方差分析实验设计的功效，开发者写了本书介绍，详见...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -104,9 +112,9 @@
 <p>CRAN 上有很多功效计算和分析的 R 包，我们针对不同的混合效应模型和统计检验，提供对应的 R 实现。</p>
 <p><a href="https://github.com/stamats/MKpower">MKpower</a> 包提供 Welch 和 Hsu（许宝騄）t 检验、Wilcoxon 秩和检验、符号秩检验的功效分析和样本量计算，经验功效和第一类错误的计算方法是蒙特卡罗模拟。<a href="https://github.com/arcaldwell49/Superpower">Superpower</a> 基于模拟的方法分析三因素方差分析实验设计的功效，开发者写了本书介绍，详见 <a href="https://aaroncaldwell.us/SuperpowerBook/" class="uri">https://aaroncaldwell.us/SuperpowerBook/</a>，也开发了两个 Shiny 应用。<a href="https://github.com/rpsychologist/powerlmm">powerlmm</a> 可用于计算两、三个水平的纵向多水平/线性混合效应模型的功效。<a href="https://github.com/ChaWM/pwrAB">pwrAB</a> Welch 两样本 t 检验的功效分析，常用于 A/B 测试。<a href="https://www.metinbulus.com/">Metin Bulus</a> 开发 <a href="https://github.com/metinbulus/PowerUpR">PowerUpR</a> 计算响应变量是连续型的多水平随机对照实验统计功效，最小可检测的效应大小，最小样本量要求。<a href="https://github.com/pitakakariki/simr">simr</a> 通过模拟方法分析广义线性混合效应模型的功效。<a href="https://github.com/johnnyzhz/WebPower">WebPower</a> 提供相关性、比例、t 检验、单因素方差分析、两因素方差分析、线性回归、逻辑回归、泊松回归、纵向数据分析、结构方程模型和多水平模型等的功效分析，详见网站 <a href="https://webpower.psychstat.org/" class="uri">https://webpower.psychstat.org/</a>，包含书籍和功效分析的工具。<a href="https://github.com/ginettelafit/PowerAnalysisIL">PowerAnalysisIL</a> 功效分析的 shiny 应用
 <a href="http://daniellakens.blogspot.com/2015/01/always-use-welchs-t-test-instead-of.html" class="uri">http://daniellakens.blogspot.com/2015/01/always-use-welchs-t-test-instead-of.html</a>。</p>
-<p>此外，还有 <a href="https://github.com/runehaubo/lmerTestR">lmerTest</a> <span class="citation"><a href="references.html#ref-Kuznetsova_2017_lmerTest" role="doc-biblioref">[51]</a></span> 和 lmtest <span class="citation"><a href="references.html#ref-Zeileis_2002_lmtest" role="doc-biblioref">[52]</a></span>。
-试验设计 <span class="citation"><a href="references.html#ref-Design_2004_Mao" role="doc-biblioref">[53]</a></span> 可以视为一种组织形式，包括各类检验，
-R 语言实战 <span class="citation"><a href="references.html#ref-Action_2015_Robert" role="doc-biblioref">[54]</a></span> 作者 Robert I. Kabacoff 创建了网站 <a href="https://www.statmethods.net/">Quick-R</a>，实战这本书第 10 章功效分析主要基于 <a href="https://github.com/heliosdrm/pwr">pwr</a> 包来介绍，Jacob Cohen 的著作《Statistical Power Analysis for the Behavioral Sciences》第二版 <span class="citation"><a href="references.html#ref-Cohen1988" role="doc-biblioref">[55]</a></span></p>
+<p>此外，还有 <a href="https://github.com/runehaubo/lmerTestR">lmerTest</a> <span class="citation"><a href="#ref-Kuznetsova_2017_lmerTest" role="doc-biblioref">[51]</a></span> 和 lmtest <span class="citation"><a href="#ref-Zeileis_2002_lmtest" role="doc-biblioref">[52]</a></span>。
+试验设计 <span class="citation"><a href="#ref-Design_2004_Mao" role="doc-biblioref">[53]</a></span> 可以视为一种组织形式，包括各类检验，
+R 语言实战 <span class="citation"><a href="#ref-Action_2015_Robert" role="doc-biblioref">[54]</a></span> 作者 Robert I. Kabacoff 创建了网站 <a href="https://www.statmethods.net/">Quick-R</a>，实战这本书第 10 章功效分析主要基于 <a href="https://github.com/heliosdrm/pwr">pwr</a> 包来介绍，Jacob Cohen 的著作《Statistical Power Analysis for the Behavioral Sciences》第二版 <span class="citation"><a href="#ref-Cohen1988" role="doc-biblioref">[55]</a></span></p>
 <p><a href="https://powerandsamplesize.com/" class="uri">https://powerandsamplesize.com/</a> 功效和样本量计算器</p>
 <div class="sourceCode" id="cb1899"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>
@@ -243,7 +251,7 @@ R 语言实战 <span class="citation"><a href="references.html#ref-Action_2015_R
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"d = t / sqrt(n)"</span>, y <span class="op">=</span> <span class="st">"2 * (1 - pt(x, n - 1))"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:power-t-test"></span>
+<span style="display:block;" id="fig:power-t-test"></span>
 <img src="power-analysis_files/figure-html/power-t-test-1.png" alt="t 检验的功效" width="672"><p class="caption">
 图 19.1: t 检验的功效
 </p>
@@ -312,7 +320,7 @@ R 语言实战 <span class="citation"><a href="references.html#ref-Action_2015_R
 </tbody>
 </table></div>
 <p>参数 <code>n</code>，<code>delta</code>，<code>power</code>，<code>sd</code> 和 <code>sig.level</code> 必须有一个值为 <code>NULL</code>，为 <code>NULL</code> 的参数是由其它参数决定的。</p>
-<p><a href="https://en.wikipedia.org/wiki/Jacob_Cohen_(statistician)">Jacob Cohen</a> 提出的 Cohen’s d 和 Cohen’s f 详见书籍 <span class="citation"><a href="references.html#ref-Cohen1988" role="doc-biblioref">[55]</a></span>，他的代表性文章，地球是圆的 <span class="citation"><a href="references.html#ref-Cohen_1994_Earth" role="doc-biblioref">[35]</a></span></p>
+<p><a href="https://en.wikipedia.org/wiki/Jacob_Cohen_(statistician)">Jacob Cohen</a> 提出的 Cohen’s d 和 Cohen’s f 详见书籍 <span class="citation"><a href="#ref-Cohen1988" role="doc-biblioref">[55]</a></span>，他的代表性文章，地球是圆的 <span class="citation"><a href="#ref-Cohen_1994_Earth" role="doc-biblioref">[35]</a></span></p>
 <div class="sourceCode" id="cb1919"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 前面 t 检验和方差分析检验的等价功效计算</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>
@@ -419,12 +427,42 @@ power.exact.test</p>
 ## [25] labeling_0.4.2    knitr_1.33        curl_4.3.2        fansi_0.5.0      
 ## [29] highr_0.9         Rcpp_1.0.7        scales_1.1.1      jsonlite_1.7.2   
 ## [33] farver_2.1.0      fs_1.5.0          digest_0.6.27     stringi_1.7.3    
-## [37] bookdown_0.22     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
+## [37] bookdown_0.23     dplyr_1.0.7       grid_4.1.0        tools_4.1.0      
 ## [41] sass_0.4.0        tibble_3.1.3      crayon_1.4.1      pkgconfig_2.0.3  
 ## [45] downlit_0.2.1     MASS_7.3-54       ellipsis_0.3.2    xml2_1.3.2       
 ## [49] assertthat_0.2.1  minqa_1.2.4       rmarkdown_2.10    R6_2.5.0         
 ## [53] boot_1.3-28       nlme_3.1-152      compiler_4.1.0</code></pre>
 
+</div>
+</div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Cohen_1994_Earth" class="csl-entry">
+<div class="csl-left-margin">[35] </div>
+<div class="csl-right-inline">J. Cohen, <span>“The earth is round (<span class="math inline">\(p &lt; .05\)</span>),”</span> <em>American Psychologist</em>, vol. 49, no. 12, pp. 997–1003, 1994, doi: <a href="https://doi.org/10.1037/0003-066x.49.12.997">10.1037/0003-066x.49.12.997</a>.</div>
+</div>
+<div id="ref-Kuznetsova_2017_lmerTest" class="csl-entry">
+<div class="csl-left-margin">[51] </div>
+<div class="csl-right-inline">A. Kuznetsova, P. B. Brockhoff, and R. H. B. Christensen, <span>“<span class="nocase">lmerTest</span> package: Tests in linear mixed effects models,”</span> <em>Journal of Statistical Software</em>, vol. 82, no. 13, pp. 1–26, 2017, doi: <a href="https://doi.org/10.18637/jss.v082.i13">10.18637/jss.v082.i13</a>.</div>
+</div>
+<div id="ref-Zeileis_2002_lmtest" class="csl-entry">
+<div class="csl-left-margin">[52] </div>
+<div class="csl-right-inline">A. Zeileis and T. Hothorn, <span>“Diagnostic checking in regression relationships,”</span> <em>R News</em>, vol. 2, no. 3, pp. 7–10, 2002,Available: <a href="https://CRAN.R-project.org/doc/Rnews/">https://CRAN.R-project.org/doc/Rnews/</a>
+</div>
+</div>
+<div id="ref-Design_2004_Mao" class="csl-entry">
+<div class="csl-left-margin">[53] </div>
+<div class="csl-right-inline">茆诗松, 周纪芗, and 陈颖, <em>试验设计</em>, 1st ed. 北京: 中国统计出版社, 2004.</div>
+</div>
+<div id="ref-Action_2015_Robert" class="csl-entry">
+<div class="csl-left-margin">[54] </div>
+<div class="csl-right-inline">R. I. Kabacoff, <em>R in action: Data analysis and graphics with r</em>, 2nd ed. Shelter Island, NY: Manning PUblications Co., 2015.Available: <a href="https://github.com/kabacoff/RiA2">https://github.com/kabacoff/RiA2</a>
+</div>
+</div>
+<div id="ref-Cohen1988" class="csl-entry">
+<div class="csl-left-margin">[55] </div>
+<div class="csl-right-inline">J. Cohen, <em>Statistical power analysis for the behavioral sciences</em>, 2nd ed. Hillsdale, NJ: Lawrence Erlbaum Associates, 1988.Available: <a href="https://www.utstat.toronto.edu/~brunner/oldclass/378f16/readings/CohenPower.pdf">https://www.utstat.toronto.edu/~brunner/oldclass/378f16/readings/CohenPower.pdf</a>
+</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -442,8 +480,8 @@ power.exact.test</p>
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/power-analysis.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/power-analysis.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/power-analysis.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/power-analysis.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -455,7 +493,7 @@ power.exact.test</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -475,6 +513,22 @@ power.exact.test</p>
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

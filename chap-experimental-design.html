@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 20 章 试验设计 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="library(magrittr) library(ggplot2) 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。 试验设计（Design...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 20 章 试验设计 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="library(magrittr) library(ggplot2) 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。 试验设计（Design...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 20 章 试验设计 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="library(magrittr) library(ggplot2) 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。 试验设计（Design...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -108,9 +116,9 @@
 <p>我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。</p>
 </div>
 <p>试验设计（Design of Experiment，简称 DOE）是一个应用性很强的学科领域，<a href="https://en.wikipedia.org/wiki/Ronald_Fisher">R. A. Fisher</a> 曾在<a href="https://en.wikipedia.org/wiki/Rothamsted_Research">英国洛桑试验站</a>做实验验证孟德尔的豌豆实验结果。</p>
-<p>Vikneswaran 提供了一份书籍 <span class="citation"><a href="references.html#ref-Berger2002" role="doc-biblioref">[56]</a></span> 的补充材料 — <a href="http://CRAN.R-project.org/doc/contrib/Vikneswaran-ED_companion.pdf">An R companion to “Experimental Design”</a>，目前 Paul Berger 的这本书已经迭代到第二版 <span class="citation"><a href="references.html#ref-Berger2018" role="doc-biblioref">[57]</a></span>，2015 年 Paul Berger 出版了新书 《Improving the User Experience through Practical Data Analytics: Gain Meaningful Insight and Increase Your Bottom Line》 <span class="citation"><a href="references.html#ref-Berger2015" role="doc-biblioref">[58]</a></span> 颇具应用性，结合产品用户体验来谈试验设计。</p>
+<p>Vikneswaran 提供了一份书籍 <span class="citation"><a href="#ref-Berger2002" role="doc-biblioref">[56]</a></span> 的补充材料 — <a href="http://CRAN.R-project.org/doc/contrib/Vikneswaran-ED_companion.pdf">An R companion to “Experimental Design”</a>，目前 Paul Berger 的这本书已经迭代到第二版 <span class="citation"><a href="#ref-Berger2018" role="doc-biblioref">[57]</a></span>，2015 年 Paul Berger 出版了新书 《Improving the User Experience through Practical Data Analytics: Gain Meaningful Insight and Increase Your Bottom Line》 <span class="citation"><a href="#ref-Berger2015" role="doc-biblioref">[58]</a></span> 颇具应用性，结合产品用户体验来谈试验设计。</p>
 <p>Bill Venables 开发的 <a href="https://cran.r-project.org/package=conf.design">conf.design</a> 是试验设计领域的核心 R 包，CRAN 官网上试验设计视图 <a href="https://cran.r-project.org/view=ExperimentalDesign" class="uri">https://cran.r-project.org/view=ExperimentalDesign</a> 可以让我们对试验设计这个领域有一个粗略的了解。</p>
-<p>推荐读者使用贴合 R 语言的试验设计入门书 《Design and Analysis of Experiments with R》<span class="citation"><a href="references.html#ref-Lawson2014" role="doc-biblioref">[59]</a></span>，作者提供相应的 R 包 <a href="https://cran.r-project.org/package=daewr">daewr</a> 打包了该书的数据和代码。另外，推荐的读物是 《Statistics for Experimenters: Design, Innovation, and Discovery》<span class="citation"><a href="references.html#ref-Box2005" role="doc-biblioref">[60]</a></span> 和《Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing》 <span class="citation"><a href="references.html#ref-Ron2020" role="doc-biblioref">[61]</a></span>。</p>
+<p>推荐读者使用贴合 R 语言的试验设计入门书 《Design and Analysis of Experiments with R》<span class="citation"><a href="#ref-Lawson2014" role="doc-biblioref">[59]</a></span>，作者提供相应的 R 包 <a href="https://cran.r-project.org/package=daewr">daewr</a> 打包了该书的数据和代码。另外，推荐的读物是 《Statistics for Experimenters: Design, Innovation, and Discovery》<span class="citation"><a href="#ref-Box2005" role="doc-biblioref">[60]</a></span> 和《Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing》 <span class="citation"><a href="#ref-Ron2020" role="doc-biblioref">[61]</a></span>。</p>
 <p>另一个和试验设计紧密相关的话题是敏感性分析，推荐 Devin Incerti 的敏感性分析系列博客 <a href="https://devinincerti.com/blog.html" class="uri">https://devinincerti.com/blog.html</a>，R 包 <a href="https://CRAN.R-project.org/package=sensitivity">sensitivity</a> 提供140+ 页的手册，功能非常强，模型的全局敏感性分析， <a href="https://github.com/chrisschuerz/SWATplusR">SWATplusR</a> SWAT 分析法和 R 语言结合。</p>
 <div id="sec-sleep" class="section level2" number="20.1">
 <h2>
@@ -129,14 +137,14 @@
 <span class="header-section-number">20.2</span> 驱虫喷雾的效果<a class="anchor" aria-label="anchor" href="#sec-insect-sprays"><i class="fas fa-link"></i></a>
 </h2>
 <!-- 单因素多水平方差分析，多重比较 -->
-<p>InsectSprays 数据集 <span class="citation"><a href="references.html#ref-Beall1942" role="doc-biblioref">[62]</a></span> 来源于农业实验，记录了不同杀虫剂的效果，即杀虫剂过后，单位实验区域内虫子的数量，如图<a href="chap-experimental-design.html#fig:insect-sprays">20.1</a>所示，横轴表示杀虫剂种类，纵轴表示虫子数量。</p>
+<p>InsectSprays 数据集 <span class="citation"><a href="#ref-Beall1942" role="doc-biblioref">[62]</a></span> 来源于农业实验，记录了不同杀虫剂的效果，即杀虫剂过后，单位实验区域内虫子的数量，如图<a href="chap-experimental-design.html#fig:insect-sprays">20.1</a>所示，横轴表示杀虫剂种类，纵轴表示虫子数量。</p>
 <div class="sourceCode" id="cb1929"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">InsectSprays</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray</span>, y <span class="op">=</span> <span class="va">count</span>, color <span class="op">=</span> <span class="va">spray</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:insect-sprays"></span>
+<span style="display:block;" id="fig:insect-sprays"></span>
 <img src="experimental-design_files/figure-html/insect-sprays-1.png" alt="不同杀虫剂的效果" width="672"><p class="caption">
 图 20.1: 不同杀虫剂的效果
 </p>
@@ -280,7 +288,7 @@
 <div class="sourceCode" id="cb1961"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod3</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:tukey-hsd"></span>
+<span style="display:block;" id="fig:tukey-hsd"></span>
 <img src="experimental-design_files/figure-html/tukey-hsd-1.png" alt="成对显著性水平" width="75%"><p class="caption">
 图 20.2: 成对显著性水平
 </p>
@@ -321,7 +329,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"conc (mL/L)"</span>, y <span class="op">=</span> <span class="st">"uptake (umol/m^2 sec)"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:co2"></span>
+<span style="display:block;" id="fig:co2"></span>
 <img src="experimental-design_files/figure-html/co2-1.png" alt="草类植物吸收二氧化碳的量" width="672"><p class="caption">
 图 20.3: 草类植物吸收二氧化碳的量
 </p>
@@ -348,6 +356,39 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Berger2002" class="csl-entry">
+<div class="csl-left-margin">[56] </div>
+<div class="csl-right-inline">P. Berger and R. Maurer, <em>Experimental design: With application in management, engineering, and the sciences.</em>, 1st ed. Duxbury, 2002.</div>
+</div>
+<div id="ref-Berger2018" class="csl-entry">
+<div class="csl-left-margin">[57] </div>
+<div class="csl-right-inline">P. Berger, R. Maurer, and G. B. Celli, <em>Experimental design: With application in management, engineering, and the sciences.</em>, 2nd ed. New York, NY: Springer International Publishing, 2018. doi: <a href="https://doi.org/10.1007/978-3-319-64583-4">10.1007/978-3-319-64583-4</a>.</div>
+</div>
+<div id="ref-Berger2015" class="csl-entry">
+<div class="csl-left-margin">[58] </div>
+<div class="csl-right-inline">M. Fritz and P. D. Berger, <em>Improving the user experience through practical data analytics: Gain meaningful insight and increase your bottom line</em>, 1st ed. Morgan Kaufmann, 2015.</div>
+</div>
+<div id="ref-Lawson2014" class="csl-entry">
+<div class="csl-left-margin">[59] </div>
+<div class="csl-right-inline">J. Lawson, <em>Design and analysis of experiments with r</em>, 1st ed. Boca Raton, Florida: Chapman; Hall/CRC, 2014.Available: <a href="http://www.mvstat.net/mvksa/mvksa.pdf">http://www.mvstat.net/mvksa/mvksa.pdf</a>
+</div>
+</div>
+<div id="ref-Box2005" class="csl-entry">
+<div class="csl-left-margin">[60] </div>
+<div class="csl-right-inline">G. E. P. Box, J. S. Hunter, and W. G. Hunter, <em>Statistics for experimenters: Design, innovation, and discovery</em>, 2nd ed. Hoboken, New Jersey: John Wiley &amp; Sons, Inc, 2005.</div>
+</div>
+<div id="ref-Ron2020" class="csl-entry">
+<div class="csl-left-margin">[61] </div>
+<div class="csl-right-inline">R. Kohavi, D. Tang, and Y. Xu, <em>Trustworthy online controlled experiments: A practical guide to a/b testing</em>. Cambridge, United Kingdom: Cambridge University Press, 2020.Available: <a href="https://experimentguide.com/">https://experimentguide.com/</a>
+</div>
+</div>
+<div id="ref-Beall1942" class="csl-entry">
+<div class="csl-left-margin">[62] </div>
+<div class="csl-right-inline">G. Beall, <span>“The transformation of data from entomological field experiments so that the analysis of variance becomes applicable,”</span> <em>Biometrika</em>, vol. 32, no. 3/4, pp. 243–262, 1942, doi: <a href="https://doi.org/10.2307/2332128">10.2307/2332128</a>.</div>
+</div>
+</div>
   <div class="chapter-nav">
 <div class="prev"><a href="chap-power-Analysis.html"><span class="header-section-number">19</span> 功效分析</a></div>
 <div class="next"><a href="chap-linear-models.html"><span class="header-section-number">21</span> 线性模型</a></div>
@@ -365,8 +406,8 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/experimental-design.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/experimental-design.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/experimental-design.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/experimental-design.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -378,7 +419,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -398,6 +439,22 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

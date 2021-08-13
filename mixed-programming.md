@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x557a8564a940>
+## <bytecode: 0x556ed1a16e38>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x557a8564a940>
+## <bytecode: 0x556ed1a16e38>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f4437e37460>]
+## [<matplotlib.lines.Line2D object at 0x7ffbd0c974c0>]
 plt.show()
 ```
 
@@ -194,8 +194,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c6ff520a95c09.c -o c6ff520a95c09.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c6ff520a95c09.so c6ff520a95c09.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c7103400b7448.c -o c7103400b7448.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c7103400b7448.so c7103400b7448.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -346,7 +346,7 @@ sessionInfo()
 ##  [5] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     tools_4.1.0      
 ##  [9] grid_4.1.0        xfun_0.25         png_0.1-7         htmltools_0.5.1.1
 ## [13] ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
-## [17] bookdown_0.22     Matrix_1.3-4      later_1.2.0       promises_1.2.0.1 
+## [17] bookdown_0.23     Matrix_1.3-4      later_1.2.0       promises_1.2.0.1 
 ## [21] curl_4.3.2        evaluate_0.14     mime_0.11         rmarkdown_2.10   
 ## [25] stringi_1.7.3     compiler_4.1.0    jsonlite_1.7.2    httpuv_1.6.1
 ```

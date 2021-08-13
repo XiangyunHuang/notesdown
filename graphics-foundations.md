@@ -3114,20 +3114,20 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3     bookdown_0.22       compiler_4.1.0     
+##   base64enc_0.1.3     bookdown_0.23       compiler_4.1.0     
 ##   curl_4.3.2          digest_0.6.27       evaluate_0.14      
 ##   glue_1.4.2          graphics_4.1.0      grDevices_4.1.0    
 ##   grid_4.1.0          highr_0.9           htmltools_0.5.1.1  
-##   jpeg_0.1-9          jsonlite_1.7.2      KernSmooth_2.23-20 
-##   knitr_1.33          lattice_0.20-44     latticeExtra_0.6-29
-##   magrittr_2.0.1      mapproj_1.2.7       maps_3.3.0         
-##   markdown_1.1        MASS_7.3-54         Matrix_1.3-4       
-##   methods_4.1.0       mgcv_1.8-36         mime_0.11          
-##   nlme_3.1-152        png_0.1-7           pracma_2.3.3       
-##   RColorBrewer_1.1-2  rlang_0.4.11        rmarkdown_2.10     
-##   shape_1.4.6         splines_4.1.0       stats_4.1.0        
-##   stringi_1.7.3       stringr_1.4.0       survival_3.2-11    
-##   tinytex_0.33        tools_4.1.0         utils_4.1.0        
-##   xfun_0.25           yaml_2.2.1
+##   jpeg_0.1-9          jquerylib_0.1.4     jsonlite_1.7.2     
+##   KernSmooth_2.23-20  knitr_1.33          lattice_0.20-44    
+##   latticeExtra_0.6-29 magrittr_2.0.1      mapproj_1.2.7      
+##   maps_3.3.0          markdown_1.1        MASS_7.3-54        
+##   Matrix_1.3-4        methods_4.1.0       mgcv_1.8-36        
+##   mime_0.11           nlme_3.1-152        png_0.1-7          
+##   pracma_2.3.3        RColorBrewer_1.1-2  rlang_0.4.11       
+##   rmarkdown_2.10      shape_1.4.6         splines_4.1.0      
+##   stats_4.1.0         stringi_1.7.3       stringr_1.4.0      
+##   survival_3.2-12     tinytex_0.33        tools_4.1.0        
+##   utils_4.1.0         xfun_0.25           yaml_2.2.1
 ```
 

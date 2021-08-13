@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 23 章 案例研究 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="library(magrittr) library(ggplot2) library(gganimate) library(formattable) library(packagemetrics) 提升回归模型的10个提示 10 quick tips to improve your regression modeling tidymodels 和 easystats 都是基于...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 23 章 案例研究 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="library(magrittr) library(ggplot2) library(gganimate) library(formattable) library(packagemetrics) 提升回归模型的10个提示 10 quick tips to improve your regression modeling tidymodels 和 easystats 都是基于...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 23 章 案例研究 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="library(magrittr) library(ggplot2) library(gganimate) library(formattable) library(packagemetrics) 提升回归模型的10个提示 10 quick tips to improve your regression modeling tidymodels 和 easystats 都是基于...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -101,26 +109,33 @@
 <h1>
 <span class="header-section-number">第 23 章</span> 案例研究<a class="anchor" aria-label="anchor" href="#chap-case-study"><i class="fas fa-link"></i></a>
 </h1>
+<div class="sourceCode" id="cb2131"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com">gganimate</a></span><span class="op">)</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://renkun-ken.github.io/formattable/">formattable</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">packagemetrics</span><span class="op">)</span></code></pre></div>
 <p>提升回归模型的10个提示
 <a href="https://statmodeling.stat.columbia.edu/wp-content/uploads/2020/07/raos_tips.pdf">10 quick tips to improve your regression modeling</a></p>
-<p><a href="https://github.com/tidymodels/tidymodels">tidymodels</a> 和 <a href="https://github.com/easystats/easystats">easystats</a> 都是基于 <a href="https://github.com/tidyverse/tidyverse">tidyverse</a> <span class="citation"><a href="references.html#ref-Hadley_2019_tidyverse" role="doc-biblioref">[75]</a></span> 的统计模型套件，<a href="https://github.com/strengejacke/strengejacke">strengejacke</a>、 <a href="https://github.com/mlr-org/mlr3verse">mlr3verse</a> 目的和 tidymodels 差不多，都是提供做数据建模的完整解决方案，区别在于它不基于 tidyverse 这套东西。</p>
-<p><a href="https://github.com/easystats/easystats">easystats</a> 包含 <a href="https://github.com/easystats/insight">insight</a> <span class="citation"><a href="references.html#ref-ludecke2019insight" role="doc-biblioref">[76]</a></span> 和 <a href="https://github.com/easystats/bayestestR">bayestestR</a> <span class="citation"><a href="references.html#ref-makowski2019bayestestr" role="doc-biblioref">[77]</a></span> 等共 9 个R 包，<a href="https://github.com/tidymodels/tidymodels">tidymodels</a> 也包含差不多量的 R 包。</p>
+<p><a href="https://github.com/tidymodels/tidymodels">tidymodels</a> 和 <a href="https://github.com/easystats/easystats">easystats</a> 都是基于 <a href="https://github.com/tidyverse/tidyverse">tidyverse</a> <span class="citation"><a href="#ref-Hadley_2019_tidyverse" role="doc-biblioref">[75]</a></span> 的统计模型套件，<a href="https://github.com/strengejacke/strengejacke">strengejacke</a>、 <a href="https://github.com/mlr-org/mlr3verse">mlr3verse</a> 目的和 tidymodels 差不多，都是提供做数据建模的完整解决方案，区别在于它不基于 tidyverse 这套东西。</p>
+<p><a href="https://github.com/easystats/easystats">easystats</a> 包含 <a href="https://github.com/easystats/insight">insight</a> <span class="citation"><a href="#ref-ludecke2019insight" role="doc-biblioref">[76]</a></span> 和 <a href="https://github.com/easystats/bayestestR">bayestestR</a> <span class="citation"><a href="#ref-makowski2019bayestestr" role="doc-biblioref">[77]</a></span> 等共 9 个R 包，<a href="https://github.com/tidymodels/tidymodels">tidymodels</a> 也包含差不多量的 R 包。</p>
 <p><a href="https://github.com/harrelfe/rms">rms</a> Regression Modeling Strategies</p>
 <p><a href="https://github.com/ddsjoberg/gtsummary">gtsummary</a>
 <a href="https://github.com/vincentarelbundock/modelsummary">modelsummary</a> 整理模型输出，提供丰富的格式输出，如 PDF, Text/Markdown, LaTeX, MS Word, RTF, JPG, and PNG.</p>
-<div class="sourceCode" id="cb2131"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">gtsummary</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">modelsummary</span><span class="op">)</span></code></pre></div>
 <p><a href="https://github.com/ModelOriented/DrWhy">DrWhy</a></p>
 <p><a href="https://github.com/rfordatascience">R for Data Science Online Learning Community</a> 在线学习社区以 <a href="https://github.com/rfordatascience/tidytuesday">tidytuesday</a> 闻名遐迩。</p>
 <div class="figure" style="text-align: center">
-<span id="fig:workflow"></span>
-<div id="htmlwidget-6692c2e0f8b868afd0dd" style="width:672px;height:480px;" class="nomnoml html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6692c2e0f8b868afd0dd">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#stroke: #26A63A\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script><p class="caption">
+<span style="display:block;" id="fig:workflow"></span>
+<div id="htmlwidget-13b6daa8da91e336df2d" style="width:2100px;height:1500px;" class="nomnoml html-widget"></div>
+<script type="application/json" data-for="htmlwidget-13b6daa8da91e336df2d">{"x":{"code":"\n#fill: #FEFEFF\n#lineWidth: 1\n#zoom: 4\n#direction: right\n\n\n#padding: 25\n#fontsize: 18\n#stroke: #26A63A\n#linewidth: 2\n\n[Import] -> [Understand]\n\n[Understand |\n  [Wrangle] -> [Visualize]\n  [Visualize] -> [Model]\n  [Model] -> [Wrangle]\n]\n\n[Understand] -> [Communicate]\n","svg":false},"evals":[],"jsHooks":[]}</script><p class="caption">
 图 23.1: 模型
 </p>
 </div>
-<p>统计建模：两种文化 <span class="citation"><a href="references.html#ref-Breiman_2001_Modeling" role="doc-biblioref">[78]</a></span></p>
+<p>统计建模：两种文化 <span class="citation"><a href="#ref-Breiman_2001_Modeling" role="doc-biblioref">[78]</a></span></p>
 <blockquote>
 <p>这些案例来自 Kaggle、 Tudesday 或者自己找的数据集，而不是论文里，或者 R 包里的小数据集，应该更加真实，贴近实际问题，考虑更多细节</p>
 </blockquote>
@@ -131,7 +146,7 @@
 <!-- 定位：不用任何数据建模的手段，我只是呈现数据本身，但是给人的感觉要达到，一眼就能获得一个直接的感觉，读者立马就能有个感觉，这个感觉就是知道影响统计学家寿命的重大因素有哪些，后续的检验只是帮助我们更加准确地知道影响的大小 -->
 <p>世纪统计学家 100 位统计学家，寿命的影响因素，关联分析，图展示数据本身的</p>
 <!-- https://github.com/XiangyunHuang/MSG-Book/issues/74 -->
-<p>注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力，参考文献 <span class="citation"><a href="references.html#ref-Statisticians_1997_Johnson" role="doc-biblioref">[79]</a></span></p>
+<p>注明每位统计学家所在的年代经历的重大事件，如欧洲中世纪霍乱，第二次世界大战，文化大革命，用图形来讲故事，展现数据可视化的魅力，参考文献 <span class="citation"><a href="#ref-Statisticians_1997_Johnson" role="doc-biblioref">[79]</a></span></p>
 </div>
 <div id="sec-history-of-r" class="section level2" number="23.2">
 <h2>
@@ -143,8 +158,8 @@
 <h2>
 <span class="header-section-number">23.3</span> 不同实验条件下植物生长情况<a class="anchor" aria-label="anchor" href="#sec-PlantGrowth"><i class="fas fa-link"></i></a>
 </h2>
-<p>PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》<span class="citation"><a href="references.html#ref-Dobson_1983_Modelling" role="doc-biblioref">[80]</a></span> 第 2 章第 2 节的案例 — 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 <a href="chap-case-study.html#tab:PlantGrowth-data">23.1</a> 所示</p>
-<div class="sourceCode" id="cb2132"><pre class="downlit sourceCode r">
+<p>PlantGrowth 数据集收集自 Annette J. Dobson 所著书籍《An Introduction to Statistical Modelling》<span class="citation"><a href="#ref-Dobson_1983_Modelling" role="doc-biblioref">[80]</a></span> 第 2 章第 2 节的案例 — 研究植物在两种不同试验条件下的生长情况，植物通过光合作用吸收土壤的养分和空气中的二氧化碳，完成积累，故以植物的干重来刻画植物的生长情况，首先将几乎相同的种子随机地分配到实验组和对照组，基于完全随机实验设计（completely randomized experimental design），经过预定的时间后，将植物收割，干燥并称重，结果如表 <a href="chap-case-study.html#tab:PlantGrowth-data">23.1</a> 所示</p>
+<div class="sourceCode" id="cb2133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># do.call("cbind", lapply(split(PlantGrowth, f = PlantGrowth$group), subset, select = "weight"))</span>
 <span class="co">## 或者</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
@@ -216,7 +231,7 @@
 </tbody>
 </table></div>
 <p>设立对照组（控制组）ctrl 和实验组 trt1 和 trt2，比较不同的处理方式对植物干重的影响</p>
-<div class="sourceCode" id="cb2133"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>##      weight       group   
 ##  Min.   :3.590   ctrl:10  
@@ -227,13 +242,13 @@
 ##  Max.   :6.310</code></pre>
 <p>每个组都有10颗植物，生长情况如图<a href="chap-case-study.html#fig:plant-growth-fig">23.2</a>所示</p>
 <div class="figure" style="text-align: center">
-<span id="fig:plant-growth-fig"></span>
+<span style="display:block;" id="fig:plant-growth-fig"></span>
 <img src="case-study_files/figure-html/plant-growth-fig-1.png" alt="植物干重" width="45%"><img src="case-study_files/figure-html/plant-growth-fig-2.png" alt="植物干重" width="45%"><p class="caption">
 图 23.2: 植物干重
 </p>
 </div>
 <p>实验条件 trt1 和 trt2 对植物生长状况有显著的影响，为了量化这种影响，建立线性回归模型</p>
-<div class="sourceCode" id="cb2135"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_sublm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>,
   data <span class="op">=</span> <span class="va">PlantGrowth</span>,
   subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt1"</span><span class="op">)</span>
@@ -245,7 +260,7 @@
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## group      1 0.6882 0.68820  1.4191  0.249
 ## Residuals 18 8.7292 0.48496</code></pre>
-<div class="sourceCode" id="cb2137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_sublm</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -267,7 +282,7 @@
 ## Multiple R-squared:  0.07308,    Adjusted R-squared:  0.02158 
 ## F-statistic: 1.419 on 1 and 18 DF,  p-value: 0.249</code></pre>
 <p>下面再通过检验的方式比较实验组和对照组相比，是否有显著作用</p>
-<div class="sourceCode" id="cb2139"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 控制组和实验组1比较</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt1"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -281,7 +296,7 @@
 ## sample estimates:
 ## mean in group ctrl mean in group trt1 
 ##              5.032              4.661</code></pre>
-<div class="sourceCode" id="cb2141"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 控制组和实验组2比较</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, subset <span class="op">=</span> <span class="va">group</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ctrl"</span>, <span class="st">"trt2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -296,7 +311,7 @@
 ## mean in group ctrl mean in group trt2 
 ##              5.032              5.526</code></pre>
 <p>检验结果表明，实验条件 trt2 会对植物生长产生显著效果，而实验条件 trt1 不会。在假定同方差的情况下，建立线性回归模型，同时考虑实验条件 trt1 和 trt2</p>
-<div class="sourceCode" id="cb2143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 模型拟合</span>
 <span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 
@@ -321,7 +336,7 @@
 ## Residual standard error: 0.6234 on 27 degrees of freedom
 ## Multiple R-squared:  0.2641, Adjusted R-squared:  0.2096 
 ## F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
-<div class="sourceCode" id="cb2145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 方差分析</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -332,7 +347,7 @@
 ## Residuals 27 10.4921  0.3886                  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<div class="sourceCode" id="cb2147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 参数估计</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -375,27 +390,27 @@
 </tbody>
 </table></div>
 <p>还可以将模型转化为数学公式</p>
-<div class="sourceCode" id="cb2149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 理论模型</span>
 <span class="fu">equatiomatic</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/equatiomatic/man/extract_eq.html">extract_eq</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{weight} = \alpha + \beta_{1}(\operatorname{group}_{\operatorname{trt1}}) + \beta_{2}(\operatorname{group}_{\operatorname{trt2}}) + \epsilon
 \]</span></p>
-<div class="sourceCode" id="cb2150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 拟合模型</span>
 <span class="fu">equatiomatic</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/equatiomatic/man/extract_eq.html">extract_eq</a></span><span class="op">(</span><span class="va">fit_lm</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><span class="math display">\[
 \operatorname{\widehat{weight}} = 5.03 - 0.37(\operatorname{group}_{\operatorname{trt1}}) + 0.49(\operatorname{group}_{\operatorname{trt2}})
 \]</span></p>
 <p>进一步地，我们在线性模型的基础上考虑每个实验组有不同的方差，先做方差齐性检验。</p>
-<div class="sourceCode" id="cb2151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Bartlett test of homogeneity of variances
 ## 
 ## data:  weight by group
 ## Bartlett's K-squared = 2.8786, df = 2, p-value = 0.2371</code></pre>
-<div class="sourceCode" id="cb2153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/fligner.test.html">fligner.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Fligner-Killeen test of homogeneity of variances
@@ -404,7 +419,7 @@
 ## Fligner-Killeen:med chi-squared = 2.3499, df = 2, p-value = 0.3088</code></pre>
 <p>检验的结果显示，可以认为三个组的方差没有显著差异，但我们还是考虑每个组有不同的方差，看看放开假设能获得多少提升，后续会发现，从对数似然的角度来看，实际提升量很小，只有 7.72%</p>
 <p>上面同时比较多个总体的方差，会发现方差没有显著差异，那么接下来在假定方差齐性的条件下，比较均值的差异是否显著？</p>
-<div class="sourceCode" id="cb2155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 参数检验，假定异方差</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, var.equal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -412,7 +427,7 @@
 ## 
 ## data:  weight and group
 ## F = 5.181, num df = 2.000, denom df = 17.128, p-value = 0.01739</code></pre>
-<div class="sourceCode" id="cb2157"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 参数检验，假定方差齐性</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>, var.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -420,7 +435,7 @@
 ## 
 ## data:  weight and group
 ## F = 4.8461, num df = 2, denom df = 27, p-value = 0.01591</code></pre>
-<div class="sourceCode" id="cb2159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 非参数检验</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -429,7 +444,7 @@
 ## data:  weight by group
 ## Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 <p>检验结果显示它们的均值是有显著差异的！</p>
-<div class="sourceCode" id="cb2161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 固定效应模型</span>
 <span class="va">fit_gls</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/gls.html">gls</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>,
   weights <span class="op">=</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/varIdent.html">varIdent</a></span><span class="op">(</span>form <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span><span class="op">)</span>,
@@ -459,7 +474,7 @@
 ## 
 ## Residual standard error: 0.5896195 
 ## Degrees of freedom: 30 total; 29 residual</code></pre>
-<div class="sourceCode" id="cb2163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 随机效应模型</span>
 <span class="va">fit_lme</span> <span class="op">&lt;-</span> <span class="fu">nlme</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>, random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lme</span><span class="op">)</span></code></pre></div>
@@ -488,7 +503,7 @@
 y_{ij} = \mu + \epsilon_{ij}, i = 1,2,3
 \]</span></p>
 <p>其中 <span class="math inline">\(\mu\)</span> 是固定的未知参数，我们和之前假定同方差情形下的模型比较一下，现在异方差情况下模型提升的情况，从对数似然的角度来看</p>
-<div class="sourceCode" id="cb2165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">fit_lm</span><span class="op">)</span>
 <span class="co">## 'log Lik.' -26.80952 (df=4)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">fit_lm</span>, REML <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -507,7 +522,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 \end{align}\]</span></p>
 <p>其中 <span class="math inline">\(\mu_i\)</span> 是随机的未知变量，服从均值为 <span class="math inline">\(\mu_{\theta}\)</span> 方差为 <span class="math inline">\(Var(\xi_i) = \tau^2\)</span> 的正态分布</p>
 <p>我们用 <strong>MASS</strong> 包提供的 <code><a href="https://rdrr.io/pkg/MASS/man/glmmPQL.html">glmmPQL()</a></code> 函数拟合该数据集</p>
-<div class="sourceCode" id="cb2166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_lme_pql</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glmmPQL.html">glmmPQL</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="fl">1</span>,
   random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">group</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,
   family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span>
@@ -538,7 +553,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ## Number of Groups: 3</code></pre>
 <p>我们再借助 <strong>brms</strong> 包从贝叶斯的角度来分析数据，并建模</p>
 <!-- 就以 brms 包为例谈谈先验、参数设置，默认的先验有可能太宽泛了，导致不是很合理 <https://discourse.mc-stan.org/t/11584> -->
-<div class="sourceCode" id="cb2168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 贝叶斯模型</span>
 <span class="va">fit_brm</span> <span class="op">&lt;-</span> <span class="fu">brms</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span><span class="va">weight</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">PlantGrowth</span><span class="op">)</span>
 <span class="co"># 参考 https://www.xiangyunhuang.com.cn/2019/05/normal-hierarchical-model/</span>
@@ -561,7 +576,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 <li>circumference: 橘树树干的周长，单位是毫米</li>
 </ul>
 <p>查看部分数据的情况</p>
-<div class="sourceCode" id="cb2169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">)</span></code></pre></div>
 <pre><code>## Grouped Data: circumference ~ age | Tree
 ##   Tree  age circumference
@@ -572,7 +587,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ## 5    1 1231           120
 ## 6    1 1372           142</code></pre>
 <p>查看变量的属性</p>
-<div class="sourceCode" id="cb2171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">)</span></code></pre></div>
 <pre><code>## Classes 'nfnGroupedData', 'nfGroupedData', 'groupedData' and 'data.frame':   35 obs. of  3 variables:
 ##  $ Tree         : Ord.factor w/ 5 levels "3"&lt;"1"&lt;"5"&lt;"2"&lt;..: 2 2 2 2 2 2 2 4 4 4 ...
@@ -587,11 +602,11 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 ##   ..$ x: chr "(days)"
 ##   ..$ y: chr "(mm)"</code></pre>
 <p>说明 5 棵树之间的大小关系是 <code>3 &lt; 1 &lt; 5 &lt; 2 &lt; 4</code>，这里的数字 1，2，3，4，5 只是对树的编号，第一次测量时树的大小关系在 R 内用有序因子来表示。</p>
-<div class="sourceCode" id="cb2173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">$</span><span class="va">Tree</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "3" "1" "5" "2" "4"</code></pre>
 <p>表 <a href="chap-case-study.html#tab:orange-data">23.3</a> 记录了 5 颗橘树自 1968 年 12 月 31 日以来的生长情况</p>
-<div class="sourceCode" id="cb2175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># aggregate(data = Orange, circumference ~  age, FUN = mean)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span>
@@ -670,7 +685,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 </tbody>
 </table></div>
 <p>图 <a href="chap-case-study.html#fig:orange-tree">23.3</a> 以直观的方式展示 5 颗橘树的生长变化，相比于表 <a href="chap-case-study.html#tab:orange-data">23.3</a> 我们能更加明确读取数据中的变化</p>
-<div class="sourceCode" id="cb2176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Orange</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">circumference</span>, color <span class="op">=</span> <span class="va">Tree</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -679,47 +694,47 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"age (day)"</span>, y <span class="op">=</span> <span class="st">"circumference (mm)"</span><span class="op">)</span>
 <span class="va">p</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:orange-tree"></span>
-<img src="case-study_files/figure-html/orange-tree-1.png" alt="橘树生长模型" width="672"><p class="caption">
+<span style="display:block;" id="fig:orange-tree"></span>
+<img src="case-study_files/figure-html/orange-tree-1.png" alt="橘树生长模型" width="2100"><p class="caption">
 图 23.3: 橘树生长模型
 </p>
 </div>
-<div class="sourceCode" id="cb2177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com">gganimate</a></span><span class="op">)</span>
 <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://gganimate.com/reference/transition_reveal.html">transition_reveal</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-8-1.gif" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-9-1.gif" style="display: block; margin: auto;"></div>
 </div>
 <div id="pkg-network" class="section level2" number="23.5">
 <h2>
 <span class="header-section-number">23.5</span> R 包网络分析<a class="anchor" aria-label="anchor" href="#pkg-network"><i class="fas fa-link"></i></a>
 </h2>
 <p>首先我们从 CRAN 官网下载 R 包描述信息</p>
-<div class="sourceCode" id="cb2178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span> <span class="op">&lt;-</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/CRANtools.html">CRAN_package_db</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>接着，我们可以看看CRAN 上发布的 R 包数量</p>
-<div class="sourceCode" id="cb2179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 18017</code></pre>
+<pre><code>## [1] 18033</code></pre>
 <p>经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息</p>
-<div class="sourceCode" id="cb2181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##  [1] "boot"       "class"      "cluster"    "codetools"  "foreign"   
 ##  [6] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
 ## [11] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
 ## [16] "RODBC"      "XML"</code></pre>
 <p>不难发现，果然有！所以去掉重复的 R 包信息，就是 CRAN 上实际发布的 R 包数量</p>
-<div class="sourceCode" id="cb2183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>, subset <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>## [1] 18000</code></pre>
+<pre><code>## [1] 18016</code></pre>
 <p>接下来就是分析去掉重复信息后的数据矩阵 pdb</p>
-<div class="sourceCode" id="cb2185"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2186"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>, subset <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div id="R-Core-Team" class="section level3" number="23.5.1">
 <h3>
 <span class="header-section-number">23.5.1</span> R 核心团队<a class="anchor" aria-label="anchor" href="#R-Core-Team"><i class="fas fa-link"></i></a>
 </h3>
 <p>R 核心团队除了维护开发 Base R 包以外，还开发了哪些 R 包，我们依据这些开发者邮箱 <code>&lt;Firstname&gt;.&lt;Lastname&gt;@R-project.org</code> 的特点，从数据集 pdb 中提取他们开发的 R 包</p>
-<div class="sourceCode" id="cb2186"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>,
   subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span>
     x <span class="op">=</span> <span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span>,
@@ -730,32 +745,32 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 104   2</code></pre>
 <p>这么少，是不是有点意外，看来很多大佬更喜欢用自己的邮箱，比如 Paul Murrell， 他的邮箱是 <a href="mailto:paul@stat.auckland.ac.nz" class="email">paul@stat.auckland.ac.nz</a></p>
-<div class="sourceCode" id="cb2188"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>,
   subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span>, pattern <span class="op">=</span> <span class="st">"(Paul Murrell)"</span><span class="op">)</span>,
   select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Maintainer"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>##            Package                              Maintainer
-## 2474       compare Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 5628         gdiff Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6359      gridBase Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6360    gridBezier Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6361     gridDebug Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6363  gridGeometry Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6364  gridGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6365  gridGraphviz Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6369       gridSVG Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6372      grImport Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6373     grImport2 Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6688       hexView Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 9052      metapost Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 12647    rasterize Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 13364    RGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 13787        roloc Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 13788 rolocISCCNBS Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 17546       vwline Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;</code></pre>
+## 2476       compare Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 5634         gdiff Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6365      gridBase Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6366    gridBezier Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6367     gridDebug Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6369  gridGeometry Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6370  gridGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6371  gridGraphviz Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6375       gridSVG Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6378      grImport Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6379     grImport2 Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6694       hexView Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 9061      metapost Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 12660    rasterize Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 13378    RGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 13801        roloc Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 13802 rolocISCCNBS Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 17562       vwline Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;</code></pre>
 <p>所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 <code><a href="https://rdrr.io/r/base/contributors.html">contributors()</a></code> 函数已经收集了成员名单，不需要我们去官网找了。</p>
-<div class="sourceCode" id="cb2190"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core_team</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span>
   text <span class="op">=</span> <span class="st">"
 Douglas Bates
@@ -790,7 +805,7 @@ Simon Wood
   colClasses <span class="op">=</span> <span class="st">"character"</span>, comment.char <span class="op">=</span> <span class="st">""</span>, col.names <span class="op">=</span> <span class="st">"name"</span>
 <span class="op">)</span></code></pre></div>
 <p>R 核心团队维护的 R 包及其最新发布的日期</p>
-<div class="sourceCode" id="cb2191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2192"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>,
   subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span>
     x <span class="op">=</span> <span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span>,
@@ -799,7 +814,7 @@ Simon Wood
   select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Maintainer"</span>, <span class="st">"Published"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>清理 Maintainer 字段中的邮箱部分，方便表格展示</p>
-<div class="sourceCode" id="cb2192"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clean_maintainer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># 去掉邮箱</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"&lt;([^&lt;&gt;]*)&gt;"</span>, <span class="st">""</span>, <span class="va">x</span><span class="op">)</span>
@@ -810,11 +825,11 @@ Simon Wood
 <span class="op">}</span>
 <span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">clean_maintainer</span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>我们可以看到 R 核心团队总共开发维护有 175 个 R 包</p>
-<div class="sourceCode" id="cb2193"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2194"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 175   3</code></pre>
-<p>篇幅所限，我们就展示部分人和R包，见表 <a href="chap-case-study.html#tab:r-core-team">23.4</a> 按照拼音顺序 Brian Ripley 是第一位</p>
-<div class="sourceCode" id="cb2195"><pre class="downlit sourceCode r">
+<p>篇幅所限，就展示部分人和R包，见表 <a href="chap-case-study.html#tab:r-core-team">23.4</a> 按照拼音顺序 Brian Ripley 是第一位</p>
+<div class="sourceCode" id="cb2196"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span>
   <span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span>,
   <span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span>
@@ -863,20 +878,15 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 </tr>
 </tbody>
 </table></div>
-<p>分组计数，看看每个核心开发者维护的 R 包有多少</p>
-<div class="sourceCode" id="cb2196"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##      Kurt Hornik  Martin Maechler    Simon Urbanek     Paul Murrell 
-##               28               28               27               18 
-##     Brian Ripley    Thomas Lumley       Uwe Ligges      David Meyer 
-##               12               11                9                6 
-##   Duncan Murdoch Michael Lawrence Friedrich Leisch     Luke Tierney 
-##                6                6                5                5 
-##    Douglas Bates    John Chambers       Simon Wood  Deepayan Sarkar 
-##                3                3                3                2 
-##   Martyn Plummer   Peter Dalgaard 
-##                2                1</code></pre>
+<p>分组计数，看看核心开发者维护的 R 包有多少</p>
+<div class="sourceCode" id="cb2197"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">core_pdb</span>, <span class="va">Package</span> <span class="op">~</span> <span class="va">Maintainer</span>, FUN <span class="op">=</span> <span class="va">length</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">Maintainer</span>, <span class="va">Package</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">Package</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"R 核心团队"</span>, y <span class="op">=</span> <span class="st">"R 包数量"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span>base_family <span class="op">=</span> <span class="st">"source-han-serif-cn"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-21-1.png" width="75%" style="display: block; margin: auto;"></div>
 </div>
 <div id="Top-Creators" class="section level3" number="23.5.2">
 <h3>
@@ -1090,7 +1100,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <p>接下来，我们想看看 R 包维护者数量有多少</p>
 <div class="sourceCode" id="cb2207"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 10501</code></pre>
+<pre><code>## [1] 10511</code></pre>
 <p>可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。</p>
 <div class="sourceCode" id="cb2209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>,
@@ -1101,57 +1111,14 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 ## 596      assertthat    Hadley Wickham &lt;hadley@rstudio.com&gt;
 ## 750       babynames    Hadley Wickham &lt;hadley@rstudio.com&gt;
 ## 1196      bigrquery    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 2165      classifly   Hadley Wickham &lt;h.wickham@gmail.com&gt;
-## 2555     conflicted    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 2971        cubelyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 3210         dbplyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 3537     diffviewer    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 3800        downlit    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 3814          dplyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 3923         dtplyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 4272       ellipsis    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 4954        feather    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 5229        forcats    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 5406    fueleconomy    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 5695       generics    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 5966  ggplot2movies    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 6457         gtable    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 6575          haven    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 6689       hflights   Hadley Wickham &lt;h.wickham@gmail.com&gt;
-## 6728      highlight    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 6901           httr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 8017       lazyeval    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 8327         lobstr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 8535         lvplot    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 8964         meifly   Hadley Wickham &lt;h.wickham@gmail.com&gt;
-## 9541         modelr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 9864     multidplyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 10055   nasaweather 'Hadley Wickham' &lt;h.wickham@gmail.com&gt;
-## 10524  nycflights13    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 11474          pins    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 11508       pkgdown    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 11625          plyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 11993  productplots    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 12007         profr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 12056         proto    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 12085          pryr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 12622      rappdirs    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 13227       reshape    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 13228      reshape2   Hadley Wickham &lt;h.wickham@gmail.com&gt;
-## 13844      roxygen2    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 14201         rvest    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 14428        scales    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 15188         sloop    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 15996       stringr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 16477      testthat    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 16629         tidyr    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 16648     tidyverse    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 17560         waldo    Hadley Wickham &lt;hadley@rstudio.com&gt;</code></pre>
+## 2167      classifly   Hadley Wickham &lt;h.wickham@gmail.com&gt;
+## 2557     conflicted    Hadley Wickham &lt;hadley@rstudio.com&gt;
+....</code></pre>
 <p>因此，有必要先把 Maintainer 字段中的邮箱部分去掉，这样我们可以得到比较靠谱的R包维护者数量了！</p>
 <div class="sourceCode" id="cb2211"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">clean_maintainer</span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 9708</code></pre>
+<pre><code>## [1] 9718</code></pre>
 <p>接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图<a href="chap-case-study.html#fig:top-maintainers">23.4</a> 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。</p>
 <div class="sourceCode" id="cb2213"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">top_maintainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>
@@ -1171,7 +1138,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:top-maintainers"></span>
+<span style="display:block;" id="fig:top-maintainers"></span>
 <img src="case-study_files/figure-html/top-maintainers-1.png" alt="维护 R 包数量最多的 20 个人" width="75%"><p class="caption">
 图 23.4: 维护 R 包数量最多的 20 个人
 </p>
@@ -1186,14 +1153,14 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Maintainer"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Numbers of Package"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-29-1.png" width="2100" style="display: block; margin: auto;"></div>
 <p>条形图在柱子很多的情况下，点线图是一种更加简洁的替代方式</p>
 <div class="sourceCode" id="cb2215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">top_maintainer</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Freq</span>, y <span class="op">=</span> <span class="va">Maintainer</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">20</span>, xend <span class="op">=</span> <span class="va">Freq</span>, yend <span class="op">=</span> <span class="va">Maintainer</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">" # of Packages "</span>, y <span class="op">=</span> <span class="st">" Maintainer "</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-30-1.png" width="2100" style="display: block; margin: auto;"></div>
 <p>接下来，我们想看看开发者维护的 R 包数量的分布，仅从上图，我们知道有的人能维护 80 多个 R 包，总体的分布情况又是如何呢？如图所示，我们将纵轴刻度设置为 log 模式，随着开发的R包数量的增加，开发者人数是指数级递减，可见开发R包依然是一个门槛很高的工作！</p>
 <div class="sourceCode" id="cb2216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,
@@ -1201,7 +1168,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
   xlab <span class="op">=</span> <span class="st">"# of Packages"</span>, ylab <span class="op">=</span> <span class="st">"# of Maintainers (log)"</span>,
   panel.first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-31-1.png" width="2100" style="display: block; margin: auto;"></div>
 <p>只开发一个 R 包的人数达到 5276 人，占开发者总数的 67.31%，约为2/3。</p>
 </div>
 <div id="first-commit" class="section level3" number="23.5.4">
@@ -1236,7 +1203,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <p>维护多个 R 包的开发者数量</p>
 <div class="sourceCode" id="cb2219"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 3190</code></pre>
+<pre><code>## [1] 3193</code></pre>
 <p>总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有</p>
 <div class="sourceCode" id="cb2221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">first_ctb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span>
@@ -1256,17 +1223,18 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
     <span class="op">)</span>, <span class="va">length</span>
   <span class="op">)</span>
 <span class="op">)</span>
+
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">ctb_num</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, border <span class="op">=</span> <span class="st">"white"</span>, 
      probability <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="cn">TRUE</span>,
      xlab <span class="op">=</span> <span class="st">"# of Contributors"</span>, ylab <span class="op">=</span> <span class="st">"Proportion"</span>, main <span class="op">=</span> <span class="st">""</span>,
-     panel.first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;"></div>
+     panel.first <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/grid.html">grid</a></span><span class="op">(</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-36-1.png" width="2100" style="display: block; margin: auto;"></div>
 <p>这些基本单干的R包开发者是否参与其它 R 包的贡献？如果不参与，则他们对社区的贡献非常有限，仅限于为社区带来数量上的堆积！</p>
 <div class="sourceCode" id="cb2223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">ctb_num</span><span class="op">)</span></code></pre></div>
 <pre><code>## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 2958 1364  918  552  272  154  105   54   44   26   12   10    6    8    4    4 
+## 2960 1366  920  553  272  154  105   54   44   26   12   10    6    8    4    4 
 ##   17   18   19   20   21   22   23   27   28   56   60  133 
 ##    8    5    1    3    1    1    3    1    1    1    1    1</code></pre>
 <p>有意思的是，有一个开发者虽然只开发了一个 R 包，但是却引来37位贡献者（包括开发者本人在内），下面把这个颇受欢迎的 R 包找出来</p>
@@ -1278,7 +1246,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <code class="sourceCode R"><span class="co"># 找到 R 包</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">sub_pdb</span>, subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Matt Dowle"</span>, <span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, select <span class="op">=</span> <span class="st">"Package"</span><span class="op">)</span></code></pre></div>
 <pre><code>##         Package
-## 3117 data.table</code></pre>
+## 3119 data.table</code></pre>
 <p>哇，大名鼎鼎的 <a href="https://github.com/Rdatatable/data.table">data.table</a> 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 <a href="https://github.com/mattdowle">Github 主页</a> 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！</p>
 </div>
 <div id="Contribution-Network" class="section level3" number="23.5.5">
@@ -1343,8 +1311,8 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <div class="sourceCode" id="cb2239"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">spM</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:vis-sparse-mat"></span>
-<img src="case-study_files/figure-html/vis-sparse-mat-1.png" alt="稀疏矩阵的图表示" width="672"><p class="caption">
+<span style="display:block;" id="fig:vis-sparse-mat"></span>
+<img src="case-study_files/figure-html/vis-sparse-mat-1.png" alt="稀疏矩阵的图表示" width="2100"><p class="caption">
 图 23.5: 稀疏矩阵的图表示
 </p>
 </div>
@@ -1427,8 +1395,8 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Published Date"</span>, y <span class="op">=</span> <span class="st">"Count"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:pdb-update-history"></span>
-<img src="case-study_files/figure-html/pdb-update-history-1.png" alt="R 包更新历史" width="672"><p class="caption">
+<span style="display:block;" id="fig:pdb-update-history"></span>
+<img src="case-study_files/figure-html/pdb-update-history-1.png" alt="R 包更新历史" width="2100"><p class="caption">
 图 23.6: R 包更新历史
 </p>
 </div>
@@ -1436,7 +1404,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <div class="sourceCode" id="cb2247"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">update_pdb</span>, subset <span class="op">=</span> <span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##        Package  Published
-## 2783 coxrobust 2006-03-15</code></pre>
+## 2785 coxrobust 2006-03-15</code></pre>
 <div class="sourceCode" id="cb2249"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">update_pdb</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] "coxrobust"</code></pre>
@@ -1470,13 +1438,13 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
          x1 <span class="op">=</span> <span class="va">license_pdb</span>, y1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">license_pdb</span><span class="op">)</span><span class="op">)</span>, 
          col <span class="op">=</span> <span class="st">"lightblue"</span>, lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:license-cran"></span>
-<img src="case-study_files/figure-html/license-cran-1.png" alt="CRAN 上采用的发布协议" width="672"><p class="caption">
+<span style="display:block;" id="fig:license-cran"></span>
+<img src="case-study_files/figure-html/license-cran-1.png" alt="CRAN 上采用的发布协议" width="2100"><p class="caption">
 图 23.7: CRAN 上采用的发布协议
 </p>
 </div>
 <div class="sourceCode" id="cb2252"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rforge_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/available.packages.html">available.packages</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="st">"http://R-Forge.R-project.org"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">rforge_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/available.packages.html">available.packages</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="st">"https://R-Forge.R-project.org"</span><span class="op">)</span>
 <span class="va">license_rforge_pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">rforge_pdb</span><span class="op">[</span>, <span class="st">"License"</span><span class="op">]</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">12</span>, <span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1e1</span>, <span class="fl">1e2</span>, <span class="fl">1e3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">20</span>,length.out <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,
@@ -1497,8 +1465,8 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
          x1 <span class="op">=</span> <span class="va">license_rforge_pdb</span>, y1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">license_rforge_pdb</span><span class="op">)</span><span class="op">)</span>, 
          lwd <span class="op">=</span> <span class="fl">4</span>, col <span class="op">=</span> <span class="st">"lightblue"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:license-rforge"></span>
-<img src="case-study_files/figure-html/license-rforge-1.png" alt="R-Forge 开发者采用的发布协议" width="672"><p class="caption">
+<span style="display:block;" id="fig:license-rforge"></span>
+<img src="case-study_files/figure-html/license-rforge-1.png" alt="R-Forge 开发者采用的发布协议" width="2100"><p class="caption">
 图 23.8: R-Forge 开发者采用的发布协议
 </p>
 </div>
@@ -1630,6 +1598,33 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 </div>
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Hadley_2019_tidyverse" class="csl-entry">
+<div class="csl-left-margin">[75] </div>
+<div class="csl-right-inline">H. Wickham <em>et al.</em>, <span>“Welcome to the <span class="nocase">tidyverse</span>,”</span> <em>Journal of Open Source Software</em>, vol. 4, no. 43, p. 1686, 2019, doi: <a href="https://doi.org/10.21105/joss.01686">10.21105/joss.01686</a>.</div>
+</div>
+<div id="ref-ludecke2019insight" class="csl-entry">
+<div class="csl-left-margin">[76] </div>
+<div class="csl-right-inline">D. Lüdecke, P. Waggoner, and D. Makowski, <span>“<span class="nocase">insight</span>: A unified interface to access information from model objects in r,”</span> <em>Journal of Open Source Software</em>, vol. 4, no. 38, p. 1412, 2019, doi: <a href="https://doi.org/10.21105/joss.01412">10.21105/joss.01412</a>.</div>
+</div>
+<div id="ref-makowski2019bayestestr" class="csl-entry">
+<div class="csl-left-margin">[77] </div>
+<div class="csl-right-inline">D. Makowski, M. Ben-Shachar, and D. Lüdecke, <span>“<span class="nocase">bayestestR</span>: Describing effects and their uncertainty, existence and significance within the bayesian framework,”</span> <em>Journal of Open Source Software</em>, vol. 4, no. 40, p. 1541, 2019, doi: <a href="https://doi.org/10.21105/joss.01541">10.21105/joss.01541</a>.</div>
+</div>
+<div id="ref-Breiman_2001_Modeling" class="csl-entry">
+<div class="csl-left-margin">[78] </div>
+<div class="csl-right-inline">L. Breiman, <span>“Statistical modeling: The two cultures (with comments and a rejoinder by the author),”</span> <em>Journal of the American Statistical Association</em>, vol. 16, no. 3, pp. 199–231, Dec. 2001, doi: <a href="https://doi.org/10.1214/ss/1009213726">10.1214/ss/1009213726</a>.</div>
+</div>
+<div id="ref-Statisticians_1997_Johnson" class="csl-entry">
+<div class="csl-left-margin">[79] </div>
+<div class="csl-right-inline">N. L. Johnson and S. Kotz, <em>Leading personalities in statistical sciences: From the seventeenth century to the present</em>. New York, NY: John Wiley &amp; Sons, 1997.</div>
+</div>
+<div id="ref-Dobson_1983_Modelling" class="csl-entry">
+<div class="csl-left-margin">[80] </div>
+<div class="csl-right-inline">A. J. Dobson, <em>An introduction to statistical modelling</em>, 1st ed. London: Chapman; Hall/CRC, 1983. doi: <a href="https://doi.org/10.1007/978-1-4899-3174-0">10.1007/978-1-4899-3174-0</a>.</div>
+</div>
+</div>
 
   <div class="chapter-nav">
 <div class="prev"><a href="chap-generalized-linear-models.html"><span class="header-section-number">22</span> 广义线性模型</a></div>
@@ -1659,8 +1654,8 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/case-study.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/case-study.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/case-study.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/case-study.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -1672,7 +1667,7 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1692,6 +1687,22 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

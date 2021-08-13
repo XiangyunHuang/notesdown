@@ -248,7 +248,7 @@ sessionInfo()
 ## [21] evaluate_0.14      knitr_1.33         parallel_4.1.0     curl_4.3.2        
 ## [25] class_7.3-19       fansi_0.5.0        Rcpp_1.0.7         KernSmooth_2.23-20
 ## [29] classInt_0.4-3     png_0.1-7          digest_0.6.27      stringi_1.7.3     
-## [33] bookdown_0.22      dplyr_1.0.7        grid_4.1.0         rgdal_1.5-23      
+## [33] bookdown_0.23      dplyr_1.0.7        grid_4.1.0         rgdal_1.5-23      
 ## [37] tools_4.1.0        magrittr_2.0.1     proxy_0.4-26       tibble_3.1.3      
 ## [41] crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2     assertthat_0.2.1  
 ## [45] rmarkdown_2.10     R6_2.5.0           units_0.7-2        compiler_4.1.0

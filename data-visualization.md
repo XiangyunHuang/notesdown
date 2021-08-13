@@ -2,7 +2,7 @@
 
 
 ```r
-library(ggplot2)
+library(ggplot2)           # ggplot2 图形
 library(patchwork)         # 图形布局
 library(magrittr)          # 管道操作
 library(ggrepel)           # 文本注释
@@ -3715,7 +3715,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Thu"
+## [1] "Fri"
 ```
 
 ```r
@@ -3723,7 +3723,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 5
+## [1] 6
 ```
 
 :::
@@ -3911,7 +3911,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55c541d1c1a8>
+## <bytecode: 0x55920f859840>
 ## <environment: namespace:ggpubr>
 ```
 

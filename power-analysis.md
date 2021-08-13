@@ -392,7 +392,7 @@ sessionInfo()
 ## [17] curl_4.3.2        yaml_2.2.1        xfun_0.25         withr_2.4.2      
 ## [21] dplyr_1.0.7       stringr_1.4.0     knitr_1.33        generics_0.1.0   
 ## [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.1.0        glue_1.4.2       
-## [29] R6_2.5.0          fansi_0.5.0       rmarkdown_2.10    bookdown_0.22    
+## [29] R6_2.5.0          fansi_0.5.0       rmarkdown_2.10    bookdown_0.23    
 ## [33] minqa_1.2.4       farver_2.1.0      purrr_0.3.4       scales_1.1.1     
 ## [37] htmltools_0.5.1.1 ellipsis_0.3.2    MASS_7.3-54       splines_4.1.0    
 ## [41] assertthat_0.2.1  colorspace_2.0-2  labeling_0.4.2    utf8_1.2.2       

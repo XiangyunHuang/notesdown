@@ -1974,7 +1974,7 @@ sessionInfo()
 ##  [5] tools_4.1.0       backports_1.2.1   utf8_1.2.2        R6_2.5.0         
 ##  [9] DBI_1.1.1         lazyeval_0.2.2    colorspace_2.0-2  withr_2.4.2      
 ## [13] processx_3.5.2    tidyselect_1.1.1  curl_4.3.2        compiler_4.1.0   
-## [17] isoband_0.2.5     labeling_0.4.2    bookdown_0.22     scales_1.1.1     
+## [17] isoband_0.2.5     labeling_0.4.2    bookdown_0.23     scales_1.1.1     
 ## [21] callr_3.7.0       stringr_1.4.0     digest_0.6.27     foreign_0.8-81   
 ## [25] rmarkdown_2.10    pkgconfig_2.0.3   htmltools_0.5.1.1 fastmap_1.1.0    
 ## [29] highr_0.9         htmlwidgets_1.5.3 rlang_0.4.11      TTR_0.24.2       

@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 29 章 贝叶斯模型 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="LaplacesDemon 支持常见模型的贝叶斯推断，具体可见网站 [86]，shinystan 借助 rstan 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 rstan，brms 支持了更加广泛的模型，shinybrms 类似 shinystan 提供可视化的 shiny 前端，方便用户调用模型和评估效果。rstanarm 基于 stan 语言重写了 arm...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 29 章 贝叶斯模型 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="LaplacesDemon 支持常见模型的贝叶斯推断，具体可见网站 [86]，shinystan 借助 rstan 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 rstan，brms 支持了更加广泛的模型，shinybrms 类似 shinystan 提供可视化的 shiny 前端，方便用户调用模型和评估效果。rstanarm 基于 stan 语言重写了 arm...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 29 章 贝叶斯模型 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="LaplacesDemon 支持常见模型的贝叶斯推断，具体可见网站 [86]，shinystan 借助 rstan 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 rstan，brms 支持了更加广泛的模型，shinybrms 类似 shinystan 提供可视化的 shiny 前端，方便用户调用模型和评估效果。rstanarm 基于 stan 语言重写了 arm...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -101,12 +109,12 @@
 <h1>
 <span class="header-section-number">第 29 章</span> 贝叶斯模型<a class="anchor" aria-label="anchor" href="#chap-bayesian-models"><i class="fas fa-link"></i></a>
 </h1>
-<p><a href="https://github.com/LaplacesDemonR/LaplacesDemon">LaplacesDemon</a> 支持常见模型的贝叶斯推断，具体可见<a href="https://CRAN.R-project.org/package=LaplacesDemon">网站</a> <span class="citation"><a href="references.html#ref-LaplacesDemon2021" role="doc-biblioref">[86]</a></span>，<a href="https://github.com/stan-dev/shinystan">shinystan</a> 借助 <a href="https://github.com/stan-dev/rstan">rstan</a> 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 <a href="https://github.com/stan-dev/rstan">rstan</a>，<a href="https://github.com/paul-buerkner/brms">brms</a> 支持了更加广泛的模型，<a href="https://github.com/fweber144/shinybrms">shinybrms</a> 类似 <a href="https://github.com/stan-dev/shinystan">shinystan</a> 提供可视化的 shiny 前端，方便用户调用模型和评估效果。<a href="https://github.com/stan-dev/rstanarm">rstanarm</a> 基于 stan 语言重写了 <a href="https://github.com/suyusung/arm">arm</a> 里的模型，和 <a href="https://github.com/paul-buerkner/brms">brms</a> 一样，提供类似 <a href="https://github.com/lme4/lme4">lme4</a> 的公式语法，和 Base R 内置的函数 <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> 和 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 保持一致，降低用户学习成本。</p>
-<p><a href="https://github.com/stan-dev/cmdstanr">cmdstanr</a> 相比于 rstan 将会更加轻量，更快地将 CmdStan 的新功能融入进来，方便用户滚动升级，相比于 <strong>rstan</strong> 包，<strong>cmdstanr</strong> 包的一个巨大优势是和 Stan 软件的更新分离。做贝叶斯计算的软件框架还包括 JAGS 和 WinBUGS，苏毓松开发的 R2jags 包 <span class="citation"><a href="references.html#ref-R2jags" role="doc-biblioref">[87]</a></span> 是 JAGS 的 R 接口。</p>
+<p><a href="https://github.com/LaplacesDemonR/LaplacesDemon">LaplacesDemon</a> 支持常见模型的贝叶斯推断，具体可见<a href="https://CRAN.R-project.org/package=LaplacesDemon">网站</a> <span class="citation"><a href="#ref-LaplacesDemon2021" role="doc-biblioref">[86]</a></span>，<a href="https://github.com/stan-dev/shinystan">shinystan</a> 借助 <a href="https://github.com/stan-dev/rstan">rstan</a> 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 <a href="https://github.com/stan-dev/rstan">rstan</a>，<a href="https://github.com/paul-buerkner/brms">brms</a> 支持了更加广泛的模型，<a href="https://github.com/fweber144/shinybrms">shinybrms</a> 类似 <a href="https://github.com/stan-dev/shinystan">shinystan</a> 提供可视化的 shiny 前端，方便用户调用模型和评估效果。<a href="https://github.com/stan-dev/rstanarm">rstanarm</a> 基于 stan 语言重写了 <a href="https://github.com/suyusung/arm">arm</a> 里的模型，和 <a href="https://github.com/paul-buerkner/brms">brms</a> 一样，提供类似 <a href="https://github.com/lme4/lme4">lme4</a> 的公式语法，和 Base R 内置的函数 <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> 和 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 保持一致，降低用户学习成本。</p>
+<p><a href="https://github.com/stan-dev/cmdstanr">cmdstanr</a> 相比于 rstan 将会更加轻量，更快地将 CmdStan 的新功能融入进来，方便用户滚动升级，相比于 <strong>rstan</strong> 包，<strong>cmdstanr</strong> 包的一个巨大优势是和 Stan 软件的更新分离。做贝叶斯计算的软件框架还包括 JAGS 和 WinBUGS，苏毓松开发的 R2jags 包 <span class="citation"><a href="#ref-R2jags" role="doc-biblioref">[87]</a></span> 是 JAGS 的 R 接口。</p>
 <p><a href="https://github.com/kaskr/adcomp">TMB</a></p>
 <ul>
 <li><p>书籍：
-<a href="https://xcelab.net/rm/">Richard McElreath</a> 为《Statistical Rethinking》写的 <a href="https://github.com/rmcelreath/rethinking">rethinking</a> 包，参考 Derek S. Young <span class="citation"><a href="references.html#ref-Regression_2017_Young" role="doc-biblioref">[88]</a></span> 和 Michael H. Kutner 等 <span class="citation"><a href="references.html#ref-Kutner_2005_Applied" role="doc-biblioref">[89]</a></span></p></li>
+<a href="https://xcelab.net/rm/">Richard McElreath</a> 为《Statistical Rethinking》写的 <a href="https://github.com/rmcelreath/rethinking">rethinking</a> 包，参考 Derek S. Young <span class="citation"><a href="#ref-Regression_2017_Young" role="doc-biblioref">[88]</a></span> 和 Michael H. Kutner 等 <span class="citation"><a href="#ref-Kutner_2005_Applied" role="doc-biblioref">[89]</a></span></p></li>
 <li><p>论文：
 An Introduction to Inductive Statistical Inference: from Parameter Estimation to Decision-Making <a href="https://arxiv.org/abs/1808.10173v2" class="uri">https://arxiv.org/abs/1808.10173v2</a> 固定效应/随机效应广义线性模型：多水平各种模型回归，模型结构和 Stan 代码</p></li>
 <li><p>课程：
@@ -189,7 +197,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ## Chain 1 finished in 0.1 seconds.
 ## Chain 2 finished in 0.1 seconds.
 ## Chain 3 finished in 0.1 seconds.
-## Chain 4 finished in 0.0 seconds.
+## Chain 4 finished in 0.1 seconds.
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
@@ -201,21 +209,21 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <pre><code>## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.017, 0.014, 0.014, 0.013) seconds, 0.058 seconds total
-## Sampling took (0.045, 0.041, 0.039, 0.036) seconds, 0.16 seconds total
+## Warmup took (0.014, 0.014, 0.014, 0.014) seconds, 0.056 seconds total
+## Sampling took (0.044, 0.042, 0.039, 0.037) seconds, 0.16 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22306      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.6e+03  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22168      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.5e+03  1.0e+00
 ## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
 ## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
 ## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.5e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
 ## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    35602     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42763     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    35382     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42499     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -236,7 +244,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">normal_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mcmc_hist</a></span><span class="op">(</span><span class="va">normal_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:mu-sigma-dist"></span>
+<span style="display:block;" id="fig:mu-sigma-dist"></span>
 <img src="bayesian-models_files/figure-html/mu-sigma-dist-1.png" alt="参数 \(\mu, \sigma\) 的迭代轨迹图和后验分布图" width="768"><img src="bayesian-models_files/figure-html/mu-sigma-dist-2.png" alt="参数 \(\mu, \sigma\) 的迭代轨迹图和后验分布图" width="768"><p class="caption">
 图 29.1: 参数 <span class="math inline">\(\mu, \sigma\)</span> 的迭代轨迹图和后验分布图
 </p>
@@ -247,7 +255,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <h2>
 <span class="header-section-number">29.3</span> 高斯过程<a class="anchor" aria-label="anchor" href="#sec-gaussian-process"><i class="fas fa-link"></i></a>
 </h2>
-<p>模拟高斯过程例子来自 Stan 参考手册 <span class="citation"><a href="references.html#ref-Stan_2018_Bayesian" role="doc-biblioref">[90]</a></span></p>
+<p>模拟高斯过程例子来自 Stan 参考手册 <span class="citation"><a href="#ref-Stan_2018_Bayesian" role="doc-biblioref">[90]</a></span></p>
 <div class="sourceCode" id="cb2335"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/normal_gp.stan"</span><span class="op">)</span></code></pre></div>
 <p>stan 库内置了核函数为二次幂指数的实现，因此可以直接调用 <code>cov_exp_quad</code> 函数计算协方差矩阵</p>
@@ -292,44 +300,44 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.7 seconds.</code></pre>
+## Total execution time: 0.8 seconds.</code></pre>
 <p>模型拟合结果</p>
 <div class="sourceCode" id="cb2339"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">cmdstan_summary</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.023, 0.026, 0.023, 0.023) seconds, 0.095 seconds total
-## Sampling took (0.070, 0.084, 0.083, 0.078) seconds, 0.32 seconds total
+## Warmup took (0.023, 0.026, 0.024, 0.027) seconds, 0.10 seconds total
+## Sampling took (0.069, 0.085, 0.085, 0.091) seconds, 0.33 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7769     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.8e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.4e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.7e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.1e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7416     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.5e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.1e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.5e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.0e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.7e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.3e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    12336      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9727      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    24494     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    26752     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    26411      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    26095      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    23349      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    26790      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    23030      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    23351     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17993     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    28382      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    22098      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    27032      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    26087      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    26996     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    20752     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    18741      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11776      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9285      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23381     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25536     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25211      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    24909      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22288      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25572      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    21983      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22290     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17175     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27092      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21093      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    25804      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    24902      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    25769     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    19809     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    17889      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -446,7 +454,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <div class="sourceCode" id="cb2349"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mcmc_dens</a></span><span class="op">(</span><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="bayesian-models_files/figure-html/mu-iteration-1.png" width="672" style="display: block; margin: auto;"></div>
-<p>分层线性模型之生长曲线模型 <span class="citation"><a href="references.html#ref-Gelfand_1990_JASA" role="doc-biblioref">[91]</a></span></p>
+<p>分层线性模型之生长曲线模型 <span class="citation"><a href="#ref-Gelfand_1990_JASA" role="doc-biblioref">[91]</a></span></p>
 </div>
 <div id="subsec-rats" class="section level3" number="29.4.2">
 <h3>
@@ -502,10 +510,10 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="op">)</span></code></pre></div>
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
-## Chain 1 finished in 0.5 seconds.
-## Chain 2 finished in 0.6 seconds.
-## Chain 3 finished in 0.6 seconds.
-## Chain 4 finished in 0.5 seconds.
+## Chain 1 finished in 0.6 seconds.
+## Chain 2 finished in 0.7 seconds.
+## Chain 3 finished in 0.7 seconds.
+## Chain 4 finished in 0.6 seconds.
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.6 seconds.
@@ -535,6 +543,36 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 </div>
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-LaplacesDemon2021" class="csl-entry">
+<div class="csl-left-margin">[86] </div>
+<div class="csl-right-inline">Statisticat and LLC., <em><span>LaplacesDemon</span>: Complete environment for bayesian inference</em>. 2021.Available: <a href="https://www.bayesian-inference.com/">https://www.bayesian-inference.com/</a>
+</div>
+</div>
+<div id="ref-R2jags" class="csl-entry">
+<div class="csl-left-margin">[87] </div>
+<div class="csl-right-inline">Y.-S. Su and M. Yajima, <em><span>R2jags</span>: Using r to run <span>JAGS</span></em>. 2020.Available: <a href="https://CRAN.R-project.org/package=R2jags">https://CRAN.R-project.org/package=R2jags</a>
+</div>
+</div>
+<div id="ref-Regression_2017_Young" class="csl-entry">
+<div class="csl-left-margin">[88] </div>
+<div class="csl-right-inline">D. S. Young, <em>Handbook of regression methods</em>. Boca Raton, FL: Chapman; Hall/CRC, 2017.</div>
+</div>
+<div id="ref-Kutner_2005_Applied" class="csl-entry">
+<div class="csl-left-margin">[89] </div>
+<div class="csl-right-inline">M. H. Kutner, C. J. Nachtsheim, J. Neter, and W. Li, <em>Applied linear statistical models</em>, Fifth. New York, NY: McGraw-Hill/Irwin, 2005.</div>
+</div>
+<div id="ref-Stan_2018_Bayesian" class="csl-entry">
+<div class="csl-left-margin">[90] </div>
+<div class="csl-right-inline">Stan Development Team, <em>Bayesian statistics using <span>Stan</span></em>. 2019.Available: <a href="https://github.com/stan-dev/stan-book">https://github.com/stan-dev/stan-book</a>
+</div>
+</div>
+<div id="ref-Gelfand_1990_JASA" class="csl-entry">
+<div class="csl-left-margin">[91] </div>
+<div class="csl-right-inline">A. E. Gelfand, S. E. Hills, A. Racine-Poon, and A. F. M. Smith, <span>“Illustration of bayesian inference in normal data models using gibbs sampling,”</span> <em>Journal of the American Statistical Association</em>, vol. 85, no. 412, pp. 972–985, 1990, doi: <a href="https://doi.org/10.1080/01621459.1990.10474968">10.1080/01621459.1990.10474968</a>.</div>
+</div>
+</div>
   <div class="chapter-nav">
 <div class="prev"><a href="chap-spatial-modeling.html"><span class="header-section-number">28</span> 空间建模</a></div>
 <div class="next"><a href="chap-gradient-boosting-machine.html"><span class="header-section-number">30</span> 梯度提升机</a></div>
@@ -558,8 +596,8 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/bayesian-models.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/bayesian-models.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/bayesian-models.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/bayesian-models.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -571,7 +609,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -591,6 +629,22 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

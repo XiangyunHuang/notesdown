@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 32 章 矩阵运算 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Eigenvectors from Eigenvalues [93]  参考 matlib 和 Matrix 包，SparseM 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 32 章 矩阵运算 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="Eigenvectors from Eigenvalues [93]  参考 matlib 和 Matrix 包，SparseM 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 32 章 矩阵运算 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="Eigenvectors from Eigenvalues [93]  参考 matlib 和 Matrix 包，SparseM 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -103,10 +111,10 @@
 </h1>
 <!-- 介绍矩阵代数内容：各类矩阵分解及其几何解释，比如矩阵行列式 -->
 <blockquote>
-<p>Eigenvectors from Eigenvalues <span class="citation"><a href="references.html#ref-Denton_2019_Eigen" role="doc-biblioref">[93]</a></span></p>
+<p>Eigenvectors from Eigenvalues <span class="citation"><a href="#ref-Denton_2019_Eigen" role="doc-biblioref">[93]</a></span></p>
 </blockquote>
 <blockquote>
-<p>参考 <a href="https://github.com/friendly/matlib">matlib</a> 和 Matrix 包，<a href="https://CRAN.R-project.org/package=SparseM">SparseM</a> 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares <span class="citation"><a href="references.html#ref-Boyd_2018_matrix" role="doc-biblioref">[94]</a></span> 及其 <a href="https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf">Julia 语言实现</a>，矩阵分解部分参考 <a href="http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf">Introduction to Linear Algebra, 5th Edition</a>、<a href="https://shainarace.github.io/LinearAlgebra">Linear Algebra for Data Science with examples in R</a></p>
+<p>参考 <a href="https://github.com/friendly/matlib">matlib</a> 和 Matrix 包，<a href="https://CRAN.R-project.org/package=SparseM">SparseM</a> 更加强调稀疏矩阵的 Cholesky 分解和后退法，矩阵取子集和 Kronecker 积。矩阵计算一般介绍参考在线书籍 Stephen Boyd and Lieven Vandenberghe 最新著作 Introduction to Applied Linear Algebra – Vectors, Matrices, and Least Squares <span class="citation"><a href="#ref-Boyd_2018_matrix" role="doc-biblioref">[94]</a></span> 及其 <a href="https://web.stanford.edu/~boyd/vmls/vmls-julia-companion.pdf">Julia 语言实现</a>，矩阵分解部分参考 <a href="http://math.mit.edu/~gs/linearalgebra/linearalgebra5_Matrix.pdf">Introduction to Linear Algebra, 5th Edition</a>、<a href="https://shainarace.github.io/LinearAlgebra">Linear Algebra for Data Science with examples in R</a></p>
 </blockquote>
 <p><a href="https://github.com/faosorios/fastmatrix">fastmatrix</a>、<a href="https://cran.r-project.org/package=abind">abind</a> 各种矩阵操作。</p>
 <p><a href="https://web.evanchen.cc/">Evan Chen</a> 的书<a href="https://github.com/vEnhance/napkin">An Infinitely Large Napkin</a> 介绍矩阵代数的内积空间、群、环、域等高级内容，作者提供免费的电子书。</p>
@@ -836,7 +844,7 @@ A = \begin{bmatrix}
 <pre><code>##      [,1]          [,2]
 ## [1,]    1 -2.220446e-16
 ## [2,]    2  3.000000e+00</code></pre>
-<p>用 <a href="https://www.wikiwand.com/en/Householder_transformation">Householder 变换</a> 做 QR 分解 <span class="citation"><a href="references.html#ref-Bates_1988_Nonlinear" role="doc-biblioref">[95]</a></span> 及其 R 语言实现 <a href="https://rpubs.com/aaronsc32/qr-decomposition-householder" class="uri">https://rpubs.com/aaronsc32/qr-decomposition-householder</a></p>
+<p>用 <a href="https://www.wikiwand.com/en/Householder_transformation">Householder 变换</a> 做 QR 分解 <span class="citation"><a href="#ref-Bates_1988_Nonlinear" role="doc-biblioref">[95]</a></span> 及其 R 语言实现 <a href="https://rpubs.com/aaronsc32/qr-decomposition-householder" class="uri">https://rpubs.com/aaronsc32/qr-decomposition-householder</a></p>
 <p>Householder 变换是平面反射的一般情况：
 要计算 <span class="math inline">\(N\times P\)</span> 维矩阵 <span class="math inline">\(X\)</span> 的 QR 分解，我们采用 Householder 变换</p>
 <p><span class="math display">\[
@@ -884,7 +892,7 @@ A = \begin{bmatrix}
 </h2>
 <ul>
 <li><p>Givens 旋转 <a href="https://www.wikiwand.com/en/Givens_rotation" class="uri">https://www.wikiwand.com/en/Givens_rotation</a></p></li>
-<li><p>帽子矩阵在统计中的应用 回归与方差分析 <span class="citation"><a href="references.html#ref-David_1978_Hat" role="doc-biblioref">[96]</a></span></p></li>
+<li><p>帽子矩阵在统计中的应用 回归与方差分析 <span class="citation"><a href="#ref-David_1978_Hat" role="doc-biblioref">[96]</a></span></p></li>
 </ul>
 </div>
 <div id="sec-special-functions" class="section level2" number="32.28">
@@ -1059,6 +1067,29 @@ A = \begin{bmatrix}
 </div>
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Denton_2019_Eigen" class="csl-entry">
+<div class="csl-left-margin">[93] </div>
+<div class="csl-right-inline">P. B. Denton, S. J. Parke, T. Tao, and X. Zhang, <span>“Eigenvectors from eigenvalues,”</span> 2019,Available: <a href="https://arxiv.org/pdf/1908.03795.pdf">https://arxiv.org/pdf/1908.03795.pdf</a>
+</div>
+</div>
+<div id="ref-Boyd_2018_matrix" class="csl-entry">
+<div class="csl-left-margin">[94] </div>
+<div class="csl-right-inline">S. Boyd and L. Vandenberghe, <em>Introduction to applied linear algebra: Vectors, matrices, and least squares</em>. New York, NY: Cambridge University Press, 2018.Available: <a href="https://web.stanford.edu/~boyd/vmls/vmls.pdf">https://web.stanford.edu/~boyd/vmls/vmls.pdf</a>
+</div>
+</div>
+<div id="ref-Bates_1988_Nonlinear" class="csl-entry">
+<div class="csl-left-margin">[95] </div>
+<div class="csl-right-inline">D. M. Bates and D. G. Watts, <em>Nonlinear regression analysis and its applications</em>. New York, NY: John Wiley &amp; Sons, 1988.Available: <a href="https://doi.org/10.1002/9780470316757.app2">https://doi.org/10.1002/9780470316757.app2</a>
+</div>
+</div>
+<div id="ref-David_1978_Hat" class="csl-entry">
+<div class="csl-left-margin">[96] </div>
+<div class="csl-right-inline">D. C. Hoaglin and R. E. Welsch, <span>“The hat matrix in regression and ANOVA,”</span> <em>The American Statistician</em>, vol. 32, no. 1, pp. 17–22, 1978,Available: <a href="https://www.jstor.org/stable/2683469">https://www.jstor.org/stable/2683469</a>
+</div>
+</div>
+</div>
 
   <div class="chapter-nav">
 <div class="prev"><a href="chap-neural-network.html"><span class="header-section-number">31</span> 神经网络</a></div>
@@ -1106,8 +1137,8 @@ A = \begin{bmatrix}
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/matrix-operations.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/matrix-operations.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/matrix-operations.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/matrix-operations.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -1119,7 +1150,7 @@ A = \begin{bmatrix}
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1139,6 +1170,22 @@ A = \begin{bmatrix}
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 30 章 梯度提升机 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 [92]， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。gbm 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。h2o 是基于 Java...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 30 章 梯度提升机 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 [92]， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。gbm 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。h2o 是基于 Java...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 30 章 梯度提升机 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 [92]， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。gbm 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。h2o 是基于 Java...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -115,7 +123,7 @@ useR!2018 Erin LeDell [Machine Learning Tutorial](https://koalaverse.github.io/m
 https://catboost.ai/docs/concepts/input-data_values-file.html
 
 -->
-<p>关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 <span class="citation"><a href="references.html#ref-Friedman2001" role="doc-biblioref">[92]</a></span>， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。<a href="https://github.com/gbm-developers/gbm">gbm</a> 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。<a href="https://github.com/h2oai/h2o-3/tree/master/h2o-r">h2o</a> 是基于 Java 平台的机器学习平台，学习材料 <a href="https://github.com/h2oai/h2o-tutorials">h2o-tutorials</a>。基于决策树的分类和回归方法 <a href="https://github.com/topepo/caret/">caret</a> 和基于模型的提升方法 <a href="https://github.com/boost-R" class="uri">https://github.com/boost-R</a> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。<a href="https://github.com/dmlc/xgboost/tree/master/R-package">xgboost</a> 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <a href="https://xgboost.apachecn.org/cn/latest/" class="uri">https://xgboost.apachecn.org/cn/latest/</a>，也提供多种语言接口。类似的还有 <a href="https://github.com/schalkdaniel/compboost">compboost</a>，其它比较小众的提升库还有 <a href="https://github.com/aksnzhy/xlearn">xLearn</a>。<a href="https://github.com/catboost/catboost">catboost</a> 开源的基于决策树的梯度提升库，支持分类特征，提供 R 和 Python 接口，详见官网 <a href="https://catboost.ai" class="uri">https://catboost.ai</a>。
+<p>关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 <span class="citation"><a href="#ref-Friedman2001" role="doc-biblioref">[92]</a></span>， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 Brandon Greenwell 在维护。<a href="https://github.com/gbm-developers/gbm">gbm</a> 实现了 Freund and Schapire’s AdaBoost 算法和 Friedman 的梯度提升机。<a href="https://github.com/h2oai/h2o-3/tree/master/h2o-r">h2o</a> 是基于 Java 平台的机器学习平台，学习材料 <a href="https://github.com/h2oai/h2o-tutorials">h2o-tutorials</a>。基于决策树的分类和回归方法 <a href="https://github.com/topepo/caret/">caret</a> 和基于模型的提升方法 <a href="https://github.com/boost-R" class="uri">https://github.com/boost-R</a> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。<a href="https://github.com/dmlc/xgboost/tree/master/R-package">xgboost</a> 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <a href="https://xgboost.apachecn.org/cn/latest/" class="uri">https://xgboost.apachecn.org/cn/latest/</a>，也提供多种语言接口。类似的还有 <a href="https://github.com/schalkdaniel/compboost">compboost</a>，其它比较小众的提升库还有 <a href="https://github.com/aksnzhy/xlearn">xLearn</a>。<a href="https://github.com/catboost/catboost">catboost</a> 开源的基于决策树的梯度提升库，支持分类特征，提供 R 和 Python 接口，详见官网 <a href="https://catboost.ai" class="uri">https://catboost.ai</a>。
 <a href="https://github.com/Microsoft/LightGBM/tree/master/R-package">LightGBM</a> 提供了 R 包，微软的工具主要支持 Windows 平台和 VS 编译工具。 Python 接口的中文文档 <a href="https://lightgbm.apachecn.org/" class="uri">https://lightgbm.apachecn.org/</a>， 顺便一提，袁进辉 等人开发的<a href="https://github.com/Microsoft/lightlda">LightLDA</a> 是大规模主题建模的框架。</p>
 <div id="sec-xgboost" class="section level2" number="30.1">
 <h2>
@@ -124,6 +132,14 @@ https://catboost.ai/docs/concepts/input-data_values-file.html
 <div class="sourceCode" id="cb2355"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span></code></pre></div>
 
+</div>
+</div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Friedman2001" class="csl-entry">
+<div class="csl-left-margin">[92] </div>
+<div class="csl-right-inline">J. H. Friedman, <span>“Greedy function approximation: A gradient boosting machine.”</span> <em>Annals of Statistics</em>, vol. 29, no. 5, pp. 1189–1232, 2001,Available: <a href="https://projecteuclid.org/euclid.aos/1013203451">https://projecteuclid.org/euclid.aos/1013203451</a>
+</div>
 </div>
 </div>
   <div class="chapter-nav">
@@ -138,8 +154,8 @@ https://catboost.ai/docs/concepts/input-data_values-file.html
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/gradient-boosting-machine.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/gradient-boosting-machine.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/gradient-boosting-machine.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/gradient-boosting-machine.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -151,7 +167,7 @@ https://catboost.ai/docs/concepts/input-data_values-file.html
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -171,6 +187,22 @@ https://catboost.ai/docs/concepts/input-data_values-file.html
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

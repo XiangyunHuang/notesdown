@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 22 章 广义线性模型 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="It’s not meant for sampling weights. It’s meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 22 章 广义线性模型 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="It’s not meant for sampling weights. It’s meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 22 章 广义线性模型 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="It’s not meant for sampling weights. It’s meant for precision weights. How best to include sampling weights in mixed models is a research problem at the moment, but you can rely on getting the...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -106,10 +114,10 @@
 <p>— Thomas Lumley <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html" class="uri"&gt;https://stat.ethz.ch/pipermail/r-help/2012-January/301501.html&lt;/a&gt;&lt;/p&gt;'><sup>60</sup></a></p>
 </blockquote>
 <!-- 每个模型都给出 rstan/rstanarm 中的实现方式，或者另起一章在贝叶斯模型中 -->
-<p>一般广义线性模型理论参考文献 An Introduction to Generalized Linear Models <span class="citation"><a href="references.html#ref-Dobson_2018_Generalized" role="doc-biblioref">[64]</a></span> 和 Generalized Linear Models <span class="citation"><a href="references.html#ref-McCullagh_1989_Generalized" role="doc-biblioref">[65]</a></span>，逻辑回归模型主要参考 Applied Logistic Regression <span class="citation"><a href="references.html#ref-David_2000_Logistic" role="doc-biblioref">[66]</a></span> 和 Discrete Choice Methods with Simulation <span class="citation"><a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">[67]</a></span>。</p>
+<p>一般广义线性模型理论参考文献 An Introduction to Generalized Linear Models <span class="citation"><a href="#ref-Dobson_2018_Generalized" role="doc-biblioref">[64]</a></span> 和 Generalized Linear Models <span class="citation"><a href="#ref-McCullagh_1989_Generalized" role="doc-biblioref">[65]</a></span>，逻辑回归模型主要参考 Applied Logistic Regression <span class="citation"><a href="#ref-David_2000_Logistic" role="doc-biblioref">[66]</a></span> 和 Discrete Choice Methods with Simulation <span class="citation"><a href="#ref-Train_2009_mlogit" role="doc-biblioref">[67]</a></span>。</p>
 <p>简单线性模型（Linear Models，简称 LM），<code><a href="https://rdrr.io/r/stats/lm.html">stats::lm()</a></code> 函数可以拟合线性模型，而一般线性模型（General Linear Models，简称 GLM）允许线性模型方差非齐性、存在相关关系，甚至可以扩展到线性混合效应模型，将线性回归模型，方差分析模型，协方差分析模型统一地看待，一般要采用广义最小二乘（Generalized Least Squares，简称 GLS）拟合， <code><a href="https://rdrr.io/pkg/nlme/man/gls.html">nlme::gls()</a></code> 函数实现广义最小二乘拟合线性模型，类似地，<code><a href="https://rdrr.io/pkg/nlme/man/gnls.html">nlme::gnls()</a></code> 函数实现广义最小二乘拟合非线性模型。<code>glm2::glm2()</code> 补充 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>，提供更加稳定的拟合方法，适应于 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 不收敛的情况，而 <code>fastglm::fastglm()</code> 主要是加快 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 求解效率，收敛效果也比 <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> 和 <code>glm2()</code> 好。</p>
-<p><a href="https://CRAN.R-project.org/package=glmnet">glmnet</a> 包是处理广义线性模型的事实标准。 其官网见 <a href="https://glmnet.stanford.edu/" class="uri">https://glmnet.stanford.edu/</a>，而 <a href="https://github.com/hongooi73/glmnetUtils">glmnetUtils</a> 补充公式接口，适用于弹性网络回归，交叉验证筛选 <span class="math inline">\(\alpha\)</span> 参数等。 <a href="https://CRAN.R-project.org/package=glmpath">glmpath</a> 包实现 path-following 算法用于带 L1 正则项的广义线性模型和 Cox 比例风险模型。<a href="https://github.com/steve-the-bayesian/BOOM">Boom</a> 和 <strong>BoomSpikeSlab</strong> 包实现 MCMC 算法用于 Spike 和 Slab 回归，而 <strong>spikeslab</strong> 包进一步实现预测和变量选择 <span class="citation"><a href="references.html#ref-spikeslab_2005_Ishwaran" role="doc-biblioref">[68]</a></span>。<a href="https://github.com/OHDSI/Cyclops">Cyclops</a> 包实现 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间。<a href="https://github.com/fbertran/plsRglm">plsRglm</a> 包实现偏最小二乘回归方法用于广义线性模型。<strong>biglm</strong>、<a href="https://cran.r-project.org/package=speedglm">speedglm</a> 和 <a href="https://CRAN.R-project.org/package=bigReg">bigReg</a> 用于处理大数据集的回归，求解限制内存的 GLM <a href="https://CRAN.R-project.org/package=biglmm">biglmm</a>。<a href="https://CRAN.R-project.org/package=cglm">cglm</a> 估计带聚类数据的条件 GLM 的回归系数和发散参数。<a href="https://CRAN.R-project.org/package=MGLM">MGLM</a> 拟合多个响应变量的广义线性回归模型（多重 GLM ）。<a href="https://CRAN.R-project.org/package=robmixglm">robmixglm</a> 响应变量扩展到混合分布的情形，实现稳健 GLM 回归估计。<a href="https://CRAN.R-project.org/package=ClusterBootstrap">ClusterBootstrap</a> 实现自主法估计带聚类数据的 GLM。<a href="https://CRAN.R-project.org/package=lcpm">lcpm</a> 和 <a href="https://CRAN.R-project.org/package=oglmx">oglmx</a> 处理有序输出的回归。
-<a href="https://cran.r-project.org/package=gmnl">gmnl</a>、 <a href="https://CRAN.R-project.org/package=mlogit">mlogit</a> <span class="citation"><a href="references.html#ref-Train_2009_mlogit" role="doc-biblioref">[67]</a></span> 和 <strong>mnlogit</strong> <span class="citation"><a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">[69]</a></span> 处理多项逻辑回归。<a href="https://github.com/atahk/pscl">pscl</a> 包（Political Science Computational Laboratory）可以处理贝叶斯 IRT 模型，zero-inflated 零膨胀模型，广义线性模型的拟合优度度量。</p>
+<p><a href="https://CRAN.R-project.org/package=glmnet">glmnet</a> 包是处理广义线性模型的事实标准。 其官网见 <a href="https://glmnet.stanford.edu/" class="uri">https://glmnet.stanford.edu/</a>，而 <a href="https://github.com/hongooi73/glmnetUtils">glmnetUtils</a> 补充公式接口，适用于弹性网络回归，交叉验证筛选 <span class="math inline">\(\alpha\)</span> 参数等。 <a href="https://CRAN.R-project.org/package=glmpath">glmpath</a> 包实现 path-following 算法用于带 L1 正则项的广义线性模型和 Cox 比例风险模型。<a href="https://github.com/steve-the-bayesian/BOOM">Boom</a> 和 <strong>BoomSpikeSlab</strong> 包实现 MCMC 算法用于 Spike 和 Slab 回归，而 <strong>spikeslab</strong> 包进一步实现预测和变量选择 <span class="citation"><a href="#ref-spikeslab_2005_Ishwaran" role="doc-biblioref">[68]</a></span>。<a href="https://github.com/OHDSI/Cyclops">Cyclops</a> 包实现 Cyclic coordinate descent 算法 用于逻辑回归、泊松回归和生存分析，适用于大规模正则回归 large scale regularized regressions，达到百万级别的观测和特征变量，交叉验证自动选择超参数，独立变量稀疏表示，用剖面似然估计某个变量的置信区间。<a href="https://github.com/fbertran/plsRglm">plsRglm</a> 包实现偏最小二乘回归方法用于广义线性模型。<strong>biglm</strong>、<a href="https://cran.r-project.org/package=speedglm">speedglm</a> 和 <a href="https://CRAN.R-project.org/package=bigReg">bigReg</a> 用于处理大数据集的回归，求解限制内存的 GLM <a href="https://CRAN.R-project.org/package=biglmm">biglmm</a>。<a href="https://CRAN.R-project.org/package=cglm">cglm</a> 估计带聚类数据的条件 GLM 的回归系数和发散参数。<a href="https://CRAN.R-project.org/package=MGLM">MGLM</a> 拟合多个响应变量的广义线性回归模型（多重 GLM ）。<a href="https://CRAN.R-project.org/package=robmixglm">robmixglm</a> 响应变量扩展到混合分布的情形，实现稳健 GLM 回归估计。<a href="https://CRAN.R-project.org/package=ClusterBootstrap">ClusterBootstrap</a> 实现自主法估计带聚类数据的 GLM。<a href="https://CRAN.R-project.org/package=lcpm">lcpm</a> 和 <a href="https://CRAN.R-project.org/package=oglmx">oglmx</a> 处理有序输出的回归。
+<a href="https://cran.r-project.org/package=gmnl">gmnl</a>、 <a href="https://CRAN.R-project.org/package=mlogit">mlogit</a> <span class="citation"><a href="#ref-Train_2009_mlogit" role="doc-biblioref">[67]</a></span> 和 <strong>mnlogit</strong> <span class="citation"><a href="#ref-mnlogit_2016_JSS" role="doc-biblioref">[69]</a></span> 处理多项逻辑回归。<a href="https://github.com/atahk/pscl">pscl</a> 包（Political Science Computational Laboratory）可以处理贝叶斯 IRT 模型，zero-inflated 零膨胀模型，广义线性模型的拟合优度度量。</p>
 <!--
 https://github.com/jolars/SLOPE 
 Sorted L1 Penalized Estimation
@@ -167,7 +175,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h3>
 <span class="header-section-number">22.2.4</span> 偏最小二乘回归<a class="anchor" aria-label="anchor" href="#subsec-glm-pls"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://github.com/bhmevik/pls">pls</a> 包 <span class="citation"><a href="references.html#ref-JSS_2007_pls" role="doc-biblioref">[70]</a></span> 实现了偏最小二乘回归（partial least squares regression， PLS）和主成分回归 （principal component regression， PCR），详见主页 <a href="https://mevik.net/work/software/pls.html" class="uri">https://mevik.net/work/software/pls.html</a>
+<p><a href="https://github.com/bhmevik/pls">pls</a> 包 <span class="citation"><a href="#ref-JSS_2007_pls" role="doc-biblioref">[70]</a></span> 实现了偏最小二乘回归（partial least squares regression， PLS）和主成分回归 （principal component regression， PCR），详见主页 <a href="https://mevik.net/work/software/pls.html" class="uri">https://mevik.net/work/software/pls.html</a>
 帮助文档的质量较高，是比较完整全面的。</p>
 <ul>
 <li>several algorithms: the traditional orthogonal scores (NIPALS) PLS algorithm, kernel PLS, wide kernel PLS, Simpls and PCR through svd</li>
@@ -233,7 +241,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 
 ## Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
 <div class="figure" style="text-align: center">
-<span id="fig:esoph-data"></span>
+<span style="display:block;" id="fig:esoph-data"></span>
 <img src="generalized-linear-models_files/figure-html/esoph-data-1.png" alt="吸烟喝酒和食道癌的关系" width="672"><p class="caption">
 图 22.1: 吸烟喝酒和食道癌的关系
 </p>
@@ -454,7 +462,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <span class="header-section-number">22.6</span> 研究婴儿出生体重低的相关危险因素<a class="anchor" aria-label="anchor" href="#sec-birthwt"><i class="fas fa-link"></i></a>
 </h2>
 <!-- 多项逻辑回归模型 Multinomial-Logistic-Regression-Models -->
-<p>在线性回归的基础上，响应变量是离散的类别，且无序 <span class="citation"><a href="references.html#ref-mnlogit_2016_JSS" role="doc-biblioref">[69]</a></span></p>
+<p>在线性回归的基础上，响应变量是离散的类别，且无序 <span class="citation"><a href="#ref-mnlogit_2016_JSS" role="doc-biblioref">[69]</a></span></p>
 <p>birthwt 数据是 1986 年在马萨诸塞州斯普林菲尔德的 Baystate 医疗中心收集的，用于研究婴儿出生体重低的相关危险因素</p>
 <div class="sourceCode" id="cb2065"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 加载数据</span>
@@ -715,7 +723,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h2>
 <span class="header-section-number">22.8</span> 癫痫病发作次数<a class="anchor" aria-label="anchor" href="#sec-epileptics-counts"><i class="fas fa-link"></i></a>
 </h2>
-<p>纵向数据 <span class="citation"><a href="references.html#ref-Peter_1990_epil" role="doc-biblioref">[71]</a></span>，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立</p>
+<p>纵向数据 <span class="citation"><a href="#ref-Peter_1990_epil" role="doc-biblioref">[71]</a></span>，考虑了过度发散 overdispersion 异方差 heteroscedasticity 观测不独立</p>
 <p>数据集 epil 记录癫痫发作的次数及病人的特征，下面是数据建模分析过程</p>
 <div class="sourceCode" id="cb2102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">epil</span>, package <span class="op">=</span> <span class="st">"MASS"</span><span class="op">)</span>
@@ -755,7 +763,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <h2>
 <span class="header-section-number">22.9</span> 对数线性模型<a class="anchor" aria-label="anchor" href="#sec-generalized-log-linear-model"><i class="fas fa-link"></i></a>
 </h2>
-<p>当响应变量 <span class="math inline">\(Y\)</span> 服从对数正态分布的时候，广义线性模型具化为对数线性模型，<strong>gllm</strong> 包 <span class="citation"><a href="references.html#ref-gllm" role="doc-biblioref">[72]</a></span></p>
+<p>当响应变量 <span class="math inline">\(Y\)</span> 服从对数正态分布的时候，广义线性模型具化为对数线性模型，<strong>gllm</strong> 包 <span class="citation"><a href="#ref-gllm" role="doc-biblioref">[72]</a></span></p>
 </div>
 <div id="sec-generalized-possion-linear-model" class="section level2" number="22.10">
 <h2>
@@ -879,10 +887,10 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>计算得知发散参数(dispersion parameter) 是 1.35472，可见数据Y并不是发散得离谱，泊松分布可能仍然是对这个数据的合理假设</p>
-<p>AER 包是书籍 Applied Econometrics with R 的配套材料 <span class="citation"><a href="references.html#ref-AER_2008_Kleiber" role="doc-biblioref">[73]</a></span>，可用于直接检验发散参数是否大于1</p>
+<p>AER 包是书籍 Applied Econometrics with R 的配套材料 <span class="citation"><a href="#ref-AER_2008_Kleiber" role="doc-biblioref">[73]</a></span>，可用于直接检验发散参数是否大于1</p>
 <div class="sourceCode" id="cb2126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># AER::dispersiontest(pois.mod, alternative="greater")</span></code></pre></div>
-<p>如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 <span class="citation"><a href="references.html#ref-MASS_2002_Venables" role="doc-biblioref">[74]</a></span> 提供的 <code>glm.nb</code>函数</p>
+<p>如果数据真的过度离散，就应该使用负二项分布作为响应变量的拟合分布，拟合它就采用 MASS 包 <span class="citation"><a href="#ref-MASS_2002_Venables" role="doc-biblioref">[74]</a></span> 提供的 <code>glm.nb</code>函数</p>
 <div class="sourceCode" id="cb2127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">NB.mod1</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">trt</span>, data <span class="op">=</span> <span class="va">beall.webworms</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">NB.mod1</span><span class="op">)</span></code></pre></div>
@@ -933,6 +941,60 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 
 </div>
 </div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Dobson_2018_Generalized" class="csl-entry">
+<div class="csl-left-margin">[64] </div>
+<div class="csl-right-inline">A. J. Dobson and A. G. Barnett, <em>An introduction to generalized linear models</em>, Fourth. Boca Raton, Florida: Chapman; Hall/CRC, 2018.Available: <a href="https://www.crcpress.com/p/book/9781138741515">https://www.crcpress.com/p/book/9781138741515</a>
+</div>
+</div>
+<div id="ref-McCullagh_1989_Generalized" class="csl-entry">
+<div class="csl-left-margin">[65] </div>
+<div class="csl-right-inline">P. McCullagh and J. Nelder, <em>Generalized linear models</em>, Second. London: Chapman; Hall/CRC, 1989.Available: <a href="https://www.crcpress.com/p/book/9780412317606">https://www.crcpress.com/p/book/9780412317606</a>
+</div>
+</div>
+<div id="ref-David_2000_Logistic" class="csl-entry">
+<div class="csl-left-margin">[66] </div>
+<div class="csl-right-inline">D. W. Hosmer and S. Lemeshow, <em>Applied logistic regression</em>, Second. New York, NY: John Wiley &amp; Sons, 2000.</div>
+</div>
+<div id="ref-Train_2009_mlogit" class="csl-entry">
+<div class="csl-left-margin">[67] </div>
+<div class="csl-right-inline">K. E. Train, <em>Discrete choice methods with simulation</em>, Second. New York, NY: Cambridge University Press, 2009.</div>
+</div>
+<div id="ref-spikeslab_2005_Ishwaran" class="csl-entry">
+<div class="csl-left-margin">[68] </div>
+<div class="csl-right-inline">H. Ishwaran and J. S. Rao, <span>“Spike and slab variable selection: Frequentist and bayesian strategies,”</span> <em>Ann. Statist.</em>, vol. 33, no. 2, pp. 730–773, 2005,Available: <a href="http://arXiv.org/abs/math/0505633v1">http://arXiv.org/abs/math/0505633v1</a>
+</div>
+</div>
+<div id="ref-mnlogit_2016_JSS" class="csl-entry">
+<div class="csl-left-margin">[69] </div>
+<div class="csl-right-inline">A. Hasan, Z. Wang, and A. S. Mahani, <span>“Fast estimation of multinomial logit models: <span>R</span> package <span class="nocase">mnlogit</span>,”</span> <em>Journal of Statistical Software</em>, vol. 75, no. 3, pp. 1–24, 2016, doi: <a href="https://doi.org/10.18637/jss.v075.i03">10.18637/jss.v075.i03</a>.</div>
+</div>
+<div id="ref-JSS_2007_pls" class="csl-entry">
+<div class="csl-left-margin">[70] </div>
+<div class="csl-right-inline">B.-H. Mevik and R. Wehrens, <span>“The <span class="nocase">pls</span> package: Principal component and partial least squares regression in r,”</span> <em>Journal of Statistical Software</em>, vol. 18, no. 2, pp. 1–23, 2007, doi: <a href="https://doi.org/10.18637/jss.v018.i02">10.18637/jss.v018.i02</a>.</div>
+</div>
+<div id="ref-Peter_1990_epil" class="csl-entry">
+<div class="csl-left-margin">[71] </div>
+<div class="csl-right-inline">P. F. Thall and S. C. Vail, <span>“Some covariance models for longitudinal count data with overdispersion,”</span> <em>Biometrics</em>, vol. 46, no. 3, pp. 657–671, 1990,Available: <a href="https://www.jstor.org/stable/2532086">https://www.jstor.org/stable/2532086</a>
+</div>
+</div>
+<div id="ref-gllm" class="csl-entry">
+<div class="csl-left-margin">[72] </div>
+<div class="csl-right-inline">M. A. Espeland and S. L. Hui, <span>“A general approach to analyzing epidemiologic data that contain misclassification errors,”</span> <em>Biometrics</em>, vol. 43, no. 4, pp. 1001–1012, 1987,Available: <a href="https://www.jstor.org/stable/2531553">https://www.jstor.org/stable/2531553</a>
+</div>
+</div>
+<div id="ref-AER_2008_Kleiber" class="csl-entry">
+<div class="csl-left-margin">[73] </div>
+<div class="csl-right-inline">C. Kleiber and A. Zeileis, <em>Applied econometrics with <span>R</span></em>. New York: Springer-Verlag, 2008.Available: <a href="https://CRAN.R-project.org/package=AER">https://CRAN.R-project.org/package=AER</a>
+</div>
+</div>
+<div id="ref-MASS_2002_Venables" class="csl-entry">
+<div class="csl-left-margin">[74] </div>
+<div class="csl-right-inline">W. N. Venables and B. D. Ripley, <em>Modern applied statistics with <span>S</span></em>, Fourth. New York, NY: Springer-Verlag, 2002.Available: <a href="http://www.stats.ox.ac.uk/pub/MASS4">http://www.stats.ox.ac.uk/pub/MASS4</a>
+</div>
+</div>
+</div>
 
   <div class="chapter-nav">
 <div class="prev"><a href="chap-linear-models.html"><span class="header-section-number">21</span> 线性模型</a></div>
@@ -962,8 +1024,8 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/generalized-linear-models.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/generalized-linear-models.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/generalized-linear-models.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/generalized-linear-models.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -975,7 +1037,7 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -995,6 +1057,22 @@ f(y,\theta) &amp; = \exp(-\theta) \theta^y/(y!) \\
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>

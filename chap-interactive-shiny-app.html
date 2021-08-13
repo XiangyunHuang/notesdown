@@ -6,7 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 12 章 交互报表 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.2"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="学习 shiny 应用开发，建议多看看 Learn Shiny。 了解 shiny server ，推荐从 Shiny Server Professional Administrator’s Guide 开始。了解 shiny 相关的生态，建议从 shiny 资源列表 https://github.com/grabear/awesome-rshiny 和 shiny 扩展合集...">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="第 12 章 交互报表 | 现代应用统计与 R 语言">
+<meta property="og:type" content="book">
+<meta property="og:description" content="学习 shiny 应用开发，建议多看看 Learn Shiny。 了解 shiny server ，推荐从 Shiny Server Professional Administrator’s Guide 开始。了解 shiny 相关的生态，建议从 shiny 资源列表 https://github.com/grabear/awesome-rshiny 和 shiny 扩展合集...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第 12 章 交互报表 | 现代应用统计与 R 语言">
+<meta name="twitter:description" content="学习 shiny 应用开发，建议多看看 Learn Shiny。 了解 shiny server ，推荐从 Shiny Server Professional Administrator’s Guide 开始。了解 shiny 相关的生态，建议从 shiny 资源列表 https://github.com/grabear/awesome-rshiny 和 shiny 扩展合集...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
@@ -27,7 +35,7 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/mark.min.js"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -105,15 +113,15 @@
 了解 shiny server ，推荐从 <a href="https://docs.rstudio.com/shiny-server/">Shiny Server Professional Administrator’s Guide</a> 开始。了解 shiny 相关的生态，建议从 shiny 资源列表 <a href="https://github.com/grabear/awesome-rshiny" class="uri">https://github.com/grabear/awesome-rshiny</a> 和 shiny 扩展合集 <a href="https://github.com/nanxstats/awesome-shiny-extensions" class="uri">https://github.com/nanxstats/awesome-shiny-extensions</a> 开始，希望读者能从中打造属于自己的最佳实践。</p>
 <p>RStudio 首席技术官 CTO Joe Cheng 在 2019年 RStudio 大会上介绍 <a href="https://resources.rstudio.com/rstudio-conf-2019/shiny-in-production-principles-practices-and-tools-joe-cheng">企业级 shiny 应用 原理、实践和工具</a> 可以作为 shiny 从新技术到生产力的蜕变节点。支持高并发的异步编程，比如 Heather Nolis 和 Dr. Jacqueline Nolis 的报告介绍了日百万访问量下的 shiny 应用如何搭建<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://resources.rstudio.com/rstudio-conf-2020/we-re-hitting-r-a-million-times-a-day-so-we-made-a-talk-about-it-heather-nolis-dr-jacqueline-nolis" class="uri"&gt;https://resources.rstudio.com/rstudio-conf-2020/we-re-hitting-r-a-million-times-a-day-so-we-made-a-talk-about-it-heather-nolis-dr-jacqueline-nolis&lt;/a&gt;&lt;/p&gt;'><sup>40</sup></a>。 Colin Fay, Sébastien Rochette, Vincent Guyader, Cervan Girard 的书 <a href="https://engineering-shiny.org/">Engineering Production-Grade Shiny Apps</a>、David Granjon 的书<a href="https://unleash-shiny.rinterface.com/">Outstanding User Interfaces with Shiny</a> 和 Hadley Wickham 的书 <a href="https://mastering-shiny.org/">Mastering Shiny</a> 的问世宣告 shiny 的成熟稳定，以及生态的形成，在此之前 shiny 一直不被看好。shiny 生态意味着一个完整的工业级的应用圈，满足安全性、稳定性、高效性、维护性、扩展性的要求。</p>
 <div class="figure" style="text-align: center">
-<span id="fig:shiny-ecosystem"></span>
+<span style="display:block;" id="fig:shiny-ecosystem"></span>
 <img src="screenshots/shiny-app.png" alt="Shiny 生态系统" width="1546"><p class="caption">
 图 12.1: Shiny 生态系统
 </p>
 </div>
 <p>iSEE is winner of the Most Technically Impressive award of the 2019 Shiny Contest. 源码地址 <a href="https://github.com/iSEE/isee-shiny-contest" class="uri">https://github.com/iSEE/isee-shiny-contest</a></p>
-<p>Six Years of Shiny in Research - Collaborative Development of Web Tools in R <span class="citation"><a href="references.html#ref-RJ-2021-004" role="doc-biblioref">[30]</a></span></p>
+<p>Six Years of Shiny in Research - Collaborative Development of Web Tools in R <span class="citation"><a href="#ref-RJ-2021-004" role="doc-biblioref">[30]</a></span></p>
 <div class="figure" style="text-align: center">
-<span id="fig:shiny-org"></span>
+<span style="display:block;" id="fig:shiny-org"></span>
 <img src="diagrams/shiny-org.png" alt="开发 Shiny 应用扩展的组织" width="75%"><p class="caption">
 图 12.2: 开发 Shiny 应用扩展的组织
 </p>
@@ -684,11 +692,18 @@
 ## [17] rlang_0.4.11      curl_4.3.2        yaml_2.2.1        xfun_0.25        
 ## [21] fastmap_1.1.0     stringr_1.4.0     xml2_1.3.2        knitr_1.33       
 ## [25] fs_1.5.0          sass_0.4.0        vctrs_0.3.8       R6_2.5.0         
-## [29] fansi_0.5.0       rmarkdown_2.10    bookdown_0.22     magrittr_2.0.1   
+## [29] fansi_0.5.0       rmarkdown_2.10    bookdown_0.23     magrittr_2.0.1   
 ## [33] promises_1.2.0.1  ellipsis_0.3.2    htmltools_0.5.1.1 mime_0.11        
 ## [37] xtable_1.8-4      httpuv_1.6.1      utf8_1.2.2        stringi_1.7.3    
 ## [41] crayon_1.4.1</code></pre>
 
+</div>
+</div>
+<h3>参考文献</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-RJ-2021-004" class="csl-entry">
+<div class="csl-left-margin">[30] </div>
+<div class="csl-right-inline">P. Kasprzak, L. Mitchell, O. Kravchuk, and A. Timmins, <span>“<span class="nocase">Six Years of Shiny in Research - Collaborative Development of Web Tools in R</span>,”</span> <em><span>The R Journal</span></em>, vol. 12, no. 2, pp. 155–162, 2021, doi: <a href="https://doi.org/10.32614/RJ-2021-004">10.32614/RJ-2021-004</a>.</div>
 </div>
 </div>
 
@@ -718,8 +733,8 @@
 
       <div class="book-extra">
         <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/master/interactive-shiny-app.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/master/interactive-shiny-app.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+<li><a id="book-source" href="https://github.com/XiangyunHuang/masr/blob/devel/interactive-shiny-app.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/XiangyunHuang/masr/edit/devel/interactive-shiny-app.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
         </ul>
 </div>
     </nav>
@@ -731,7 +746,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-12.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -751,6 +766,22 @@
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
 </html>
