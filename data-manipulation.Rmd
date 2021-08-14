@@ -1,9 +1,23 @@
 # 数据操作 {#chap-data-manipulation}
 
+```{r,include=FALSE}
+source(file = "_common.R")
+```
+
 <!-- 
 参考 Data Manipulation With R [@Spector_2008_Manipulation] 重新捋一遍本章，
 介绍 Base R 提供的数据操作，重点在于常用的数据操作，其次在于常用的使用场景，最后是总结。
+Tabset 的方式支持展示 Base R dplyr data.table 三种
 -->
+
+data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本时间为准），是基于 `data.frame` 的扩展和 Base R 的数据操作连贯一些，dplyr 诞生于2014年1月29日，号称数据操作的语法，其实二者套路一致，都是借用 SQL 语言的设计，实现方式不同罢了，前者主要依靠 C 语言完成底层数据操作，总代码量1.29M，C 占65.6%，后者主要依靠 C++ 语言完成底层数据操作，总代码量1.2M，C++ 占34.4%，上层的高级操作接口都是 R 语言。像这样的大神在写代码，码力应该差不多，编程语言会对数据操作的性能有比较大的影响，我想这也是为什么在很多场合下 data.table 霸榜！
+
+关于 data.table 和 dplyr 的对比，参看爆栈网的帖子 <https://stackoverflow.com/questions/21435339>
+
+::: {.rmdtip data-latex="{提示}"}
+学习 data.table 包最快的方式就是在 R 控制台运行 `example(data.table)` 并研究其输出。
+:::
+
 
 [data.table](https://github.com/Rdatatable/data.table) 大大加强了 [Base R](https://github.com/wch/r-source) 提供的数据操作，[poorman](https://github.com/nathaneastwood/poorman) 提供最常用的数据操作，但是不依赖 dplyr，[fst](https://github.com/fstpackage/fst)，[arrow](https://github.com/apache/arrow/tree/master/r) 和 [feather](https://github.com/wesm/feather/tree/master/R) 提供更加高效的数据读写性能。
 
@@ -39,6 +53,7 @@ sapply(.libPaths(), function(pkg_path) {
   c("survival", "ggplot2") %in% .packages(T, lib.loc = pkg_path)
 })
 ```
+
 
 ## 查看数据 {#dm-view}
 
@@ -146,6 +161,27 @@ subset(iris,
 
 [^non-standard-eval]: Thomas Lumley (2003) Standard nonstandard evaluation rules. https://developer.r-project.org/nonstandard-eval.pdf
 
+选择操作是针对数据框的列（变量/特征/字段）
+
+```{r}
+library(data.table)
+mtcars$cars <- rownames(mtcars)
+mtcars_df <- as.data.table(mtcars)
+```
+
+```{r}
+mtcars_df[, .(mpg, disp)] |> head()
+```
+
+::: {.rmdtip data-latex="{dplyr 版}"}
+
+```{r dplyr-select}
+mtcars |> 
+  dplyr::select(mpg, disp) |> 
+  head()
+```
+
+:::
 
 ## 数据重塑 {#dm-reshape}
 
@@ -420,15 +456,47 @@ unique(x)
 数据框类型数据中，去除重复的行，这个重复可以是多个变量对应的向量
 
 ```{r}
-set.seed(123)
+set.seed(2019)
 df <- data.frame(
   x = sample(0:1, 10, replace = T),
   y = sample(0:1, 10, replace = T),
   z = 1:10
 )
 df
-df[!duplicated(df[, 1:2]), ]
+df[!duplicated(df[, c("x", "y")]), ]
 ```
+
+::: {.rmdtip data-latex="{提示}"}
+
+去掉字段 cyl 和 gear 有重复的记录，data.table 方式
+
+```{r data-table-duplicated}
+mtcars_df[!duplicated(mtcars_df, by = c("cyl", "gear"))][,.(mpg, cyl, gear)]
+```
+
+dplyr 方式
+
+```{r dplyr-distinct}
+mtcars |> 
+  dplyr::distinct(cyl, gear, .keep_all = TRUE) |> 
+  dplyr::select(mpg, cyl, gear)
+```
+
+dplyr 的去重操作不需要拷贝一个新的数据对象 mtcars_df，并且可以以管道的方式将后续的选择操作连接起来，代码更加具有可读性。
+
+```{r base-duplicated}
+mtcars_df[!duplicated(mtcars_df[, c("cyl", "gear")]), c("mpg","cyl","gear")]
+```
+
+Base R 和 data.table 提供的 `duplicated()` 函数和 `[` 函数一起实现去重的操作，选择操作放在 `[` 实现，`[` 其实是一个函数
+
+```{r}
+x <- 2:4
+x[1]
+`[`(x, 1)
+```
+
+:::
 
 
 ## 数据缺失 {#dm-missing}
@@ -906,7 +974,7 @@ head(aq)
 
 下面再举一个复杂的绘图例子，这个例子来自 `boxplot` 函数
 
-```{r subset-in-boxplot,title.mar=TRUE,fig.asp=0.8}
+```{r subset-in-boxplot, fig.width=6, fig.height=5, out.width="75%"}
 with(ToothGrowth, {
   boxplot(len ~ dose,
     boxwex = 0.25, at = 1:3 - 0.2,
@@ -927,7 +995,7 @@ with(ToothGrowth, {
 
 将 `boxplot` 函数的 `subset` 参数单独提出来，调用数据子集选择函数 `subset` ，这里 `with` 中只包含一个表达式，所以也可以不用大括号
 
-```{r subset-out-boxplot,title.mar=TRUE,fig.asp=0.8}
+```{r subset-out-boxplot, fig.width=6, fig.height=5, out.width="75%"}
 with(
   subset(ToothGrowth, supp == "VC"),
   boxplot(len ~ dose,
@@ -988,7 +1056,7 @@ Table: (\#tab:apply-functions) apply 函数
 
 除此之外，还有 `dendrapply()` 专门处理层次聚类或分类回归树型结构， 而函数 `kernapply()` 用于时间序列的平滑处理
 
-```{r spectrum-sunspot-year, fig.cap="太阳黑子的频谱"}
+```{r spectrum-sunspot-year, fig.cap="太阳黑子的频谱", fig.width=6, fig.height=5, out.width="75%"}
 # Reproduce example 10.4.3 from Brockwell and Davis (1991) [@Brockwell_1991_Time]
 spectrum(sunspot.year, kernel = kernel("daniell", c(11, 7, 3)), log = "no")
 ```
@@ -1010,7 +1078,7 @@ samples
 
 我们借用图\@ref(fig:mapply-lapply)来看一下 mapply 的效果，多组随机数生成非常有助于快速模拟。
 
-```{r mapply-lapply, fig.cap=" lapply 函数"}
+```{r mapply-lapply, fig.cap=" lapply 函数", fig.width=6, fig.height=5, out.width="75%"}
 par(mfrow = c(2, 2), mar = c(2, 2, 2, 2))
 invisible(lapply(samples, function(x) {
   plot(x, pch = 16, col = "grey")
@@ -1041,7 +1109,7 @@ vapply 和 sapply 类似，但是预先指定返回值类型，这样可以更�
 
 以数据集 presidents 为例，它是一个 ts 对象类型的时间序列数据，记录了 1945 年至 1974 年每个季度美国总统的支持率，这组数据中存在缺失值，以 NA 表示。支持率的变化趋势见图 \@ref(fig:usa-presidents)。
 
-```{r usa-presidents, fig.cap="1945-1974美国总统的支持率"}
+```{r usa-presidents, fig.cap="1945-1974美国总统的支持率",  fig.width=6, fig.height=5, out.width="75%"}
 plot(presidents)
 ```
 
@@ -1117,7 +1185,7 @@ head(df)
 ```
 
 
-```{r with-op, fig.cap="with 操作"}
+```{r with-op, fig.cap="with 操作", fig.width=6, fig.height=5, out.width="75%"}
 library(ggplot2)
 ggplot(df, aes(x, y, z = z)) +
   geom_contour()
@@ -1265,7 +1333,7 @@ class(iris)
 
 用 Base R 提供的管道符号 |> 将 data.table 数据操作与 ggplot2 数据可视化连接起来
 
-```{r pipe-dataframe-ggplot2, fig.cap="管道连接数据操作和可视化"}
+```{r pipe-dataframe-ggplot2, fig.cap="管道连接数据操作和可视化", fig.width=6, fig.height=5, out.width="75%"}
 library(ggplot2)
 iris |>
   subset(Species == "setosa" & Sepal.Length > 5.5) |>

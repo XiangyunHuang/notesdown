@@ -1,0 +1,124 @@
+# 随机优化 {#chap-stochastic-optimization}
+
+<!-- 预计花费 4 - 6 周的周末 10-12 天，8月底完成。 -->
+
+书籍《Modern Optimization with R》[@Cortez2014; @Cortez2021] 介绍了差分进化、遗传算法、禁忌搜索、模拟退火 SANN 、粒子群算法。2014 年 Katharine M. Mullen 综述了连续空间中的全局优化算法 [@globalOptTests]。
+
+[pso](https://cran.r-project.org/package=pso)
+[hydroPSO](https://github.com/hzambran/hydroPSO) 粒子群算法
+
+[ppso](https://github.com/TillF/ppso) 基于 Rmpi 的并行粒子群算法
+
+[ABCoptim](https://github.com/gvegayon/ABCoptim) 蜂群算法
+
+```{r}
+library(pso)
+library(ABCoptim)
+```
+
+需要使用启发式算法来求解组合优化、非线性混合整数、多目标优化、图规划问题。
+
+
+## 金融领域的优化问题 {#sec-optimization-in-finance}
+
+```{r}
+library(NMOF)
+```
+
+Numerical Methods and Optimization in Finance
+
+[PortfolioAnalytics](https://github.com/braverock/PortfolioAnalytics)
+投资组合优化，均值-方差，收益和风险权衡 
+Rmetrics 提供系列时间序列数据分析和建模的 R 包，包括投资组合 fPortfolio、多元分析 fMultivar fGarch 自回归条件异方差模型、fCopulae 二元相依结构的 Copulae 分析、fBasics 市场和基础统计
+
+
+
+## 网络优化 {#sec-network-optimization}
+
+
+```{r}
+library(igraph)
+```
+
+
+
+## 遗传算法 {#sec-genetic-algorithms}
+
+```{r}
+library(GA)
+```
+
+以求解 TSP 问题为例，介绍遗传算法
+
+## 模拟退火 {#sec-simulated-annealing}
+
+optim 关于 模拟退火 算法的介绍
+
+退火，简单介绍炼钢中退火的流程，结合具体算法过程，
+
+@Belisle1992 提出一类 $\mathbb{R}^d$ 空间上的模拟退火算法的收敛定理，
+`optim(..., method = 'SANN')` 实现的算法是此文的一个变种，属于随机全局优化算法。它仅需要使用函数值，但是速度比较慢，它适用目标函数不可微的情形。
+
+This implementation uses the Metropolis function for the acceptance probability. By default the next candidate point is generated from a Gaussian Markov kernel with scale proportional to the actual temperature. If a function to generate a new candidate point is given, method "SANN" can also be used to solve combinatorial optimization problems. Temperatures are decreased according to the logarithmic cooling schedule as given in Belisle (1992, p. 890); 
+
+
+specifically, the temperature is set to $temp / \log(((t-1) %/% tmax)*tmax + \exp(1))$, where t is the current iteration step and temp and tmax are specifiable via control, see below. Note that the "SANN" method depends critically on the settings of the control parameters. It is not a general-purpose method but can be very useful in getting to a good value on a very rough surface.
+
+配合 maps 图形
+eurodist 数据集，21 座欧洲城市，数据来自 The Cambridge Encyclopaedia
+
+以求解 TSP 问题为例，介绍模拟退火算法
+
+stats 提供了 dist 数据类型
+
+UScitiesD 数据集 10 座美国城市的直线距离
+
+```{r}
+## Combinatorial optimization: Traveling salesman problem
+library(stats) # normally loaded
+
+eurodistmat <- as.matrix(eurodist)
+
+distance <- function(sq) {  # Target function
+    sq2 <- embed(sq, 2)
+    sum(eurodistmat[cbind(sq2[,2], sq2[,1])])
+}
+
+genseq <- function(sq) {  # Generate new candidate sequence
+    idx <- seq(2, NROW(eurodistmat)-1)
+    changepoints <- sample(idx, size = 2, replace = FALSE)
+    tmp <- sq[changepoints[1]]
+    sq[changepoints[1]] <- sq[changepoints[2]]
+    sq[changepoints[2]] <- tmp
+    sq
+}
+
+sq <- c(1:nrow(eurodistmat), 1)  # Initial sequence: alphabetic
+distance(sq)
+# rotate for conventional orientation
+loc <- -cmdscale(eurodist, add = TRUE)$points
+x <- loc[,1]
+y <- loc[,2]
+s <- seq_len(nrow(eurodistmat))
+tspinit <- loc[sq,]
+
+plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
+     main = "initial solution of traveling salesman problem", axes = FALSE)
+arrows(tspinit[s,1], tspinit[s,2], tspinit[s+1,1], tspinit[s+1,2],
+       angle = 10, col = "green")
+text(x, y, labels(eurodist), cex = 0.8)
+
+set.seed(123) # chosen to get a good soln relatively quickly
+res <- optim(sq, distance, genseq, method = "SANN",
+             control = list(maxit = 30000, temp = 2000, trace = TRUE,
+                            REPORT = 500))
+res  # Near optimum distance around 12842
+
+tspres <- loc[res$par,]
+plot(x, y, type = "n", asp = 1, xlab = "", ylab = "",
+     main = "optim() 'solving' traveling salesman problem", axes = FALSE)
+arrows(tspres[s,1], tspres[s,2], tspres[s+1,1], tspres[s+1,2],
+       angle = 10, col = "red")
+text(x, y, labels(eurodist), cex = 0.8)
+```
+

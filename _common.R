@@ -1,8 +1,4 @@
 knitr::opts_chunk$set(width = 69, dpi = 300, message = FALSE, fig.align='center')
-knitr::opts_template$set(
-  fig.large = list(fig.width = 7, fig.height = 5),
-  fig.small = list(fig.width = 4.5, fig.height = 4.5)
-)
 
 # convert pdf to png
 to_png <- function(fig_path) {
@@ -28,7 +24,7 @@ knitr::knit_hooks$set(output = local({
   hook_output = knitr::knit_hooks$get('output')
   function(x, options) {
     if (!is.null(n <- options$out.lines)) { # out.lines
-      x = knitr:::split_lines(x)
+      x = xfun::split_lines(x)
       if (length(x) > n) {
         # truncate the output
         x = c(head(x, n), '....\n')
@@ -57,4 +53,3 @@ is_unix <- identical(.Platform$OS.type, 'unix')
 
 # 创建临时的目录存放数据集
 if(!dir.exists(paths = "./data")) dir.create(path = "./data")
-

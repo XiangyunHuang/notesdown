@@ -1,7 +1,7 @@
 # 数据可视化 {#chap-data-visualization}
 
 ```{r}
-library(ggplot2)
+library(ggplot2)           # ggplot2 图形
 library(patchwork)         # 图形布局
 library(magrittr)          # 管道操作
 library(ggrepel)           # 文本注释
@@ -249,10 +249,14 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_classic()
 
 ### 布局 {#ggplot2-grid}
 
-```{r}
+```{r, out.width="85%", fig.width=6, fig.height=4}
 ggplot(airquality) + 
   geom_point(aes(x = Temp, y = Ozone), na.rm = TRUE) + 
   facet_wrap(~ as.ordered(Month))
+```
+
+
+```{r, out.width="100%", fig.width=8, fig.height=3}
 ggplot(airquality) + 
   geom_point(aes(x = Temp, y = Ozone), na.rm = TRUE) + 
   facet_wrap(~ as.ordered(Month), nrow = 1)
@@ -361,7 +365,7 @@ sysfonts::font_add_google(name = "Noto Sans SC", family = "Noto Sans SC")
 在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。
 :::
 
-```{r font-in-ggplot, fig.width=6, fig.height=6, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体", out.width="85%"}
+```{r font-in-ggplot, fig.width=6, fig.height=6, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体", out.width="100%"}
 p1 <- ggplot(pressure, aes(x = temperature, y = pressure)) +
   geom_point() +
   ggtitle(label = "默认字体设置")
@@ -978,7 +982,7 @@ expand.grid(months = month.abb, years = 1949:1960) |>
   labs(x = "年", y = "月", fill = "人数")
 ```
 
-再举栗子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
+再举例子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
 
 ```{r faithfuld,fig.cap="美国黄石国家公园的老忠实泉"}
 erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
@@ -1871,7 +1875,7 @@ ggplot(diamonds, aes(x = color, y = price, color = cut)) +
 
 经过观察，我们发现水平分类过多，考虑用切割质量 cut 替换钻石颜色 color 绘图，但是由于分类过细，图信息展示不简练，反而不好，如图 \@ref(fig:boxplot-facet-color-clarity-2)
 
-```{r boxplot-facet-color-clarity-2,fig.cap="箱线图配色",fig.cap=c("切割质量cut上色","钻石颜色配色"),fig.ncol=1}
+```{r boxplot-facet-color-clarity-2,fig.cap="箱线图配色",fig.subcap=c("切割质量cut上色","钻石颜色配色"),fig.ncol=1}
 ggplot(diamonds, aes(x = cut, y = price, color = cut)) +
   geom_boxplot(show.legend = FALSE) +
   facet_grid(clarity ~ color)
