@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpitYE7I/file5f8c6e4c3d4d.data"
+## [1] "/tmp/RtmpcEp5FL/file5f4a1e3ee66a.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpitYE7I/test5f8c50f8896c"
+## [1] "/tmp/RtmpcEp5FL/test5f4a35ef75c7"
 ```
 
 ```r
@@ -479,25 +479,26 @@ yaml::read_yaml(file = '_bookdown.yml')
 ## 
 ## $rmd_files
 ##  [1] "index.Rmd"                       "preface.Rmd"                    
-##  [3] "notations.Rmd"                   "file-operations.Rmd"            
-##  [5] "data-structure.Rmd"              "data-manipulation.Rmd"          
-##  [7] "data-transportation.Rmd"         "graphics-foundations.Rmd"       
-##  [9] "data-visualization.Rmd"          "dynamic-documents.Rmd"          
-## [11] "interactive-web-graphics.Rmd"    "interactive-data-tables.Rmd"    
-## [13] "interactive-shiny-app.Rmd"       "string-operations.Rmd"          
-## [15] "regular-expressions.Rmd"         "text-analysis.Rmd"              
-## [17] "sampling-distributions.Rmd"      "parameter-estimators.Rmd"       
-## [19] "hypothesis-test.Rmd"             "power-analysis.Rmd"             
-## [21] "experimental-design.Rmd"         "linear-models.Rmd"              
-## [23] "generalized-linear-models.Rmd"   "case-study.Rmd"                 
-## [25] "data-explorer.Rmd"               "survival-analysis.Rmd"          
-## [27] "time-series-analysis.Rmd"        "spatial-analysis.Rmd"           
-## [29] "spatial-modeling.Rmd"            "bayesian-models.Rmd"            
-## [31] "gradient-boosting-machine.Rmd"   "neural-networks.Rmd"            
-## [33] "matrix-operations.Rmd"           "symbolic-computation.Rmd"       
-## [35] "numerical-optimization.Rmd"      "appendix.Rmd"                   
-## [37] "other-softwares.Rmd"             "mixed-programming.Rmd"          
-## [39] "object-oriented-programming.Rmd" "references.Rmd"
+##  [3] "data-structure.Rmd"              "data-transportation.Rmd"        
+##  [5] "string-operations.Rmd"           "regular-expressions.Rmd"        
+##  [7] "data-manipulation.Rmd"           "graphics-foundations.Rmd"       
+##  [9] "data-visualization.Rmd"          "interactive-web-graphics.Rmd"   
+## [11] "interactive-data-tables.Rmd"     "interactive-shiny-app.Rmd"      
+## [13] "dynamic-documents.Rmd"           "sampling-distributions.Rmd"     
+## [15] "parameter-estimators.Rmd"        "hypothesis-test.Rmd"            
+## [17] "power-analysis.Rmd"              "experimental-design.Rmd"        
+## [19] "linear-models.Rmd"               "generalized-linear-models.Rmd"  
+## [21] "bayesian-models.Rmd"             "text-analysis.Rmd"              
+## [23] "survival-analysis.Rmd"           "time-series-analysis.Rmd"       
+## [25] "spatial-analysis.Rmd"            "spatial-modeling.Rmd"           
+## [27] "case-study.Rmd"                  "data-explorer.Rmd"              
+## [29] "machine-learning.Rmd"            "gradient-boosting-machine.Rmd"  
+## [31] "neural-networks.Rmd"             "numerical-optimization.Rmd"     
+## [33] "appendix.Rmd"                    "matrix-operations.Rmd"          
+## [35] "symbolic-computation.Rmd"        "mixed-programming.Rmd"          
+## [37] "object-oriented-programming.Rmd" "file-operations.Rmd"            
+## [39] "other-softwares.Rmd"             "notations.Rmd"                  
+## [41] "references.Rmd"
 ```
 
 Table: (\#tab:other-softwares) 导入来自其它数据分析软件产生的数据集
@@ -1617,12 +1618,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.30   Premium     D     SI1  62.6    59   552 4.23 4.27 2.66
-## 2  0.93     Ideal     I     SI2  62.3    57  3047 6.22 6.20 3.87
-## 3  0.90     Ideal     G     SI2  61.2    57  3521 6.24 6.28 3.83
-## 4  0.91   Premium     D     SI2  62.4    56  3949 6.20 6.17 3.86
-## 5  1.02 Very Good     F     SI2  59.6    59  3974 6.51 6.54 3.89
-## 6  0.90 Very Good     E     VS2  63.0    57  4643 6.07 6.15 3.85
+## 1  0.23 Very Good     F     VS1  60.0    57   402 4.00 4.03 2.41
+## 2  0.77     Ideal     I     VS1  61.5    59  2798 5.87 5.91 3.62
+## 3  0.80   Premium     E     SI2  59.9    58  2939 6.03 5.96 3.59
+## 4  1.50      Good     G      I1  57.4    62  3179 7.56 7.39 4.29
+## 5  0.34     Ideal     E     SI1  61.9    55   565 4.51 4.53 2.80
+## 6  0.70      Good     F    VVS1  61.2    61  3536 5.71 5.79 3.52
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1640,13 +1641,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  2856    1
-## 2 Good   394    1
-## 3 Good   425    2
-## 4 Good   809    3
-## 5 Good  1436    4
-## 6 Good  4419    5
+##     cut price rank
+## 1  Good  1295    1
+## 2  Good  2010    2
+## 3  Good  3538    3
+## 4  Good  4639    4
+## 5 Ideal   610    1
+## 6 Ideal   658    2
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1681,10 +1682,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1701,12 +1702,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>

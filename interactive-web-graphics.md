@@ -2,6 +2,8 @@
 
 
 
+<!-- plotly highcharter echart4r 都太重了。 -->
+
 
 
 
@@ -16,6 +18,7 @@ Paul C. Bauer 的书 [Applied Data Visualization](https://bookdown.org/paul/appl
 
 [echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
 [ECharts2Shiny](https://github.com/XD-DENG/ECharts2Shiny) 包将 ECharts 嵌入 shiny 框架中。
+
 
 
 [timevis](https://github.com/daattali/timevis) 创建交互式的时间线的时序可视化，它基于 [Vis](https://visjs.org/) 的 [vis-timeline](https://github.com/visjs/vis-timeline) 模块，支持 shiny 集成。[dygraphs](https://github.com/rstudio/dygraphs) 包基于 [dygraphs](https://github.com/danvk/dygraphs) 可视化库，将时序数据可视化，更多情况见 <https://dygraphs.com/>。[leaflet](https://github.com/rstudio/leaflet) 提供 [leaflet](https://leafletjs.com/) 的 R 接口。[rAmCharts4](https://github.com/stla/rAmCharts4) 基于 [amCharts 4](https://github.com/amcharts/amcharts4/) 库， [apexcharter](https://github.com/dreamRs/apexcharter) 提供 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 R 接口。还有 [billboarder](https://github.com/dreamRs/billboarder) 等。更完整地，请看 Etienne Bacher 维护的 R 包列表 [r-js-adaptation](https://github.com/etiennebacher/r-js-adaptation) 。

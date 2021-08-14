@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
     ##                                                       ctime               atime
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 07:57:55 2021-08-14 08:08:16
+    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 10:32:05 2021-08-14 10:40:02
     ##                                         uid gid uname grname
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 12288  TRUE  755 2021-08-14 08:42:38 2021-08-14 08:42:38 2021-08-14 08:42:38
+    ## . 12288  TRUE  755 2021-08-14 11:17:07 2021-08-14 11:17:07 2021-08-14 11:17:07
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##          size isdir mode               mtime               ctime
-    ## ./_book/ 4096  TRUE  755 2021-08-14 08:42:34 2021-08-14 08:42:34
+    ## ./_book/ 4096  TRUE  755 2021-08-14 11:12:11 2021-08-14 11:12:11
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-14 08:42:34 1001 121 runner docker
+    ## ./_book/ 2021-08-14 11:16:35 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 24377
+    ## [1] 26086
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.077   0.000   0.078
+    ##   0.064   0.008   0.071
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.075   0.000   0.075
+    ##   0.060   0.008   0.068
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 01:42:39 PDT"
+    ## [1] "2021-08-14 04:17:08 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 04:42:39 EDT"
+    ## [1] "2021-08-14 07:17:08 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 08:42:39 2021"
+    ## [1] "Sat Aug 14 11:17:08 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 08:42:39 2021"
+    ## [1] "Sat Aug 14 11:17:08 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 08:42:39 GMT"
+    ## [1] "2021-08-14 11:17:08 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 08:42:39 UTC"
+    ## [1] "2021-08-14 11:17:08 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:42:39 UTC"
+    ## [1] "2021-08-14 10:17:08 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 08:10:30 2021-08-14 08:10:30
+    ## ./_common.R 1639 FALSE  644 2021-08-14 10:48:40 2021-08-14 10:48:40
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 08:10:38 1001 121 runner docker
+    ## ./_common.R 2021-08-14 11:12:11 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 08:42:39 2021-08-14 08:42:39
+    ## ./_common.R 1639 FALSE  644 2021-08-14 11:17:08 2021-08-14 11:17:08
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 08:42:39 1001 121 runner docker
+    ## ./_common.R 2021-08-14 11:17:08 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 08:42:39 CST"
+    ## [1] "2021-08-14 11:17:08 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 08:42:39"
+    ## [1] "2021-08-14 11:17:08"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 16:42:39 CST"
+    ## [1] "2021-08-14 19:17:08 CST"
     ```
 
 1. 设置时区
@@ -1318,14 +1318,16 @@ apropos('package')
     ```
     
     ```
-    ##          Package    LibPath                      Installed Built   ReposVer
-    ## Matrix   "Matrix"   "/opt/R/4.1.0/lib/R/library" "1.3-3"   "4.1.0" "1.3-4" 
-    ## mgcv     "mgcv"     "/opt/R/4.1.0/lib/R/library" "1.8-35"  "4.1.0" "1.8-36"
-    ## survival "survival" "/opt/R/4.1.0/lib/R/library" "3.2-11"  "4.1.0" "3.2-12"
-    ##          Repository                               
-    ## Matrix   "https://cloud.r-project.org/src/contrib"
-    ## mgcv     "https://cloud.r-project.org/src/contrib"
-    ## survival "https://cloud.r-project.org/src/contrib"
+    ##          Package    LibPath                           Installed Built  
+    ## showtext "showtext" "/home/runner/work/_temp/Library" "0.9-3"   "4.1.0"
+    ## Matrix   "Matrix"   "/opt/R/4.1.0/lib/R/library"      "1.3-3"   "4.1.0"
+    ## mgcv     "mgcv"     "/opt/R/4.1.0/lib/R/library"      "1.8-35"  "4.1.0"
+    ## survival "survival" "/opt/R/4.1.0/lib/R/library"      "3.2-11"  "4.1.0"
+    ##          ReposVer Repository                               
+    ## showtext "0.9-4"  "https://cloud.r-project.org/src/contrib"
+    ## Matrix   "1.3-4"  "https://cloud.r-project.org/src/contrib"
+    ## mgcv     "1.8-36" "https://cloud.r-project.org/src/contrib"
+    ## survival "3.2-12" "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1350,7 +1352,7 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 420       0          13
+    ##   /home/runner/work/_temp/Library 419       1          13
     ##   /opt/R/4.1.0/lib/R/library       26       3           0
     ## 
     ## Number of available packages (each package counted only once):
@@ -1495,7 +1497,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55ef2a9313b0>
+## <bytecode: 0x55ef6ff9d3b0>
 ## <environment: namespace:base>
 ```
 
