@@ -217,6 +217,13 @@
 \bibliographystyle{plainnat}
 
 \title{现代应用统计与 R 语言}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Modern Applied Statistics with R}
 \author{黄湘云}
 \date{2021-08-14}
 
@@ -545,40 +552,7 @@ Yihui Xie & 1 \\
 \section*{运行信息}\label{sec-session-welcome}}
 \addcontentsline{toc}{section}{运行信息}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-14 11:12:12。
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{xfun}\SpecialCharTok{::}\FunctionTok{session\_info}\NormalTok{(}\AttributeTok{packages =} \FunctionTok{c}\NormalTok{(}
-  \StringTok{"knitr"}\NormalTok{, }\StringTok{"rmarkdown"}\NormalTok{, }\StringTok{"bookdown"}\NormalTok{, }\StringTok{"equatiomatic"}\NormalTok{,}
-  \StringTok{"data.table"}\NormalTok{, }\StringTok{"DT"}\NormalTok{, }\StringTok{"kableExtra"}\NormalTok{, }\StringTok{"reactable"}\NormalTok{,}
-  \StringTok{"patchwork"}\NormalTok{, }\StringTok{"plotly"}\NormalTok{, }\StringTok{"shiny"}\NormalTok{,}
-  \StringTok{"ggplot2"}\NormalTok{, }\StringTok{"dplyr"}\NormalTok{, }\StringTok{"tidyverse"}
-\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## R version 4.1.0 (2021-05-18)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   bookdown_0.23      data.table_1.14.0  dplyr_1.0.7        DT_0.18           
-##   equatiomatic_0.2.0 ggplot2_3.3.5      kableExtra_1.3.4   knitr_1.33        
-##   patchwork_1.1.1    plotly_4.9.4.1     reactable_0.2.3    rmarkdown_2.10    
-##   shiny_1.6.0        tidyverse_1.3.1   
-## 
-## Pandoc version: 2.14.1
-\end{verbatim}
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-14 19:38:20。
 
 \hypertarget{chap-preface}{%
 \chapter{前言}\label{chap-preface}}
@@ -712,7 +686,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}\label{fig:book-workflow}
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月14日11时12分14秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月14日11时38分21秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -743,7 +717,10 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 
 借助 \textbf{bookdown} \citep{xie2016} 可以将 Rmd 文件组织起来， \textbf{rmarkdown} \citep{rmarkdown}和 \textbf{knitr} \citep{xie2015} 将源文件编译成 Markdown 文件， \href{https://pandoc.org/}{Pandoc} 将 Markdown 文件转化成 HTML 和 TeX 文件， \href{https://yihui.name/tinytex/}{TinyTeX} \citep{xie2019} 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 \textbf{ggplot2} 包制作 \citep{Wickham_2016_ggplot2}，而统计理论相关的示意图用 Base R 创作。
 
-最后，本书在三个位置提供网页版， 网站 \href{https://pages.github.com/}{Github Pages} 发布最近一次在 Travis 构建成功的版本 \url{https://xiangyunhuang.github.io/masr/}，网站 \href{https://bookdown.org}{Bookdown} 发布本地手动创建的版本 \url{https://bookdown.org/xiangyun/masr/} ，网站 \href{https://netlify.com/}{Netlify} 发布最新的开发版 \url{https://masr.netlify.app/}。
+\begin{rmdtip}{提示}
+得益于 Github Action 提供的测试服务，\href{https://pages.github.com/}{Github Pages}、\href{https://bookdown.org}{Bookdown} 和 \href{https://netlify.com/}{Netlify} 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 \url{https://xiangyunhuang.github.io/masr/}， \url{https://bookdown.org/xiangyun/masr/} ， \url{https://masr.netlify.app/}。
+
+\end{rmdtip}
 
 \hypertarget{sec-conventions}{%
 \section{记号约定}\label{sec-conventions}}
@@ -1026,7 +1003,7 @@ There are probably others. Running your code I think the answer is the last one.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "736,053,595"
+## [1] "203,062,567"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1061,7 +1038,7 @@ There are probably others. Running your code I think the answer is the last one.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "11:12"
+## [1] "11:38"
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1429,7 +1406,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpcEp5FL/file5f4a1e3ee66a.data"
+## [1] "/tmp/Rtmp352EVv/file5f54d673806.data"
 \end{verbatim}
 
 设置参数 \texttt{n\ =\ -1} 表示将文件 fil 的内容从头读到尾
@@ -1474,7 +1451,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpcEp5FL/test5f4a35ef75c7"
+## [1] "/tmp/Rtmp352EVv/test5f5425cbb9f3"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2904,13 +2881,13 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 \end{Shaded}
 
 \begin{verbatim}
-##   carat       cut color clarity depth table price    x    y    z
-## 1  0.23 Very Good     F     VS1  60.0    57   402 4.00 4.03 2.41
-## 2  0.77     Ideal     I     VS1  61.5    59  2798 5.87 5.91 3.62
-## 3  0.80   Premium     E     SI2  59.9    58  2939 6.03 5.96 3.59
-## 4  1.50      Good     G      I1  57.4    62  3179 7.56 7.39 4.29
-## 5  0.34     Ideal     E     SI1  61.9    55   565 4.51 4.53 2.80
-## 6  0.70      Good     F    VVS1  61.2    61  3536 5.71 5.79 3.52
+##   carat     cut color clarity depth table price    x    y    z
+## 1  0.79 Premium     D     SI2  60.0    60  2853 6.07 6.03 3.63
+## 2  0.90    Fair     H     SI2  65.6    58  3105 6.05 5.95 3.95
+## 3  0.70    Good     D    VVS2  63.7    55  3312 5.66 5.61 3.59
+## 4  0.71   Ideal     D     SI1  62.3    56  3316 5.72 5.70 3.56
+## 5  0.71   Ideal     E     VS1  62.0    57  3380 5.72 5.66 3.53
+## 6  0.90 Premium     I     VS1  62.9    60  3484 6.09 6.05 3.82
 \end{verbatim}
 
 将抽样的结果用窗口函数 \texttt{RANK()} 排序，详见 \url{https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html}
@@ -2930,12 +2907,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##     cut price rank
-## 1  Good  1295    1
-## 2  Good  2010    2
-## 3  Good  3538    3
-## 4  Good  4639    4
-## 5 Ideal   610    1
-## 6 Ideal   658    2
+## 1  Fair  5385    1
+## 2  Good   814    1
+## 3  Good  4805    2
+## 4  Good  6474    3
+## 5 Ideal   422    1
+## 6 Ideal   772    2
 \end{verbatim}
 
 LATERAL VIEW 把一列拆成多行
@@ -5556,10 +5533,10 @@ R 语言是用字符串来表示正则表达式的，但是正则表达式不是
 ## actual   10   10   11   12   13   14   15   16   17    18    19    20    21
 ##        [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 ## target    23    24    25    26    27    28    29    30    31    32    33    34
-## actual    22    23    24    25    26    27    28    29    30    31    32    33
+## actual    22    23    24    25    26    27    28    28    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    37    38    39
+## actual    34    35    36    37    37    39
 \end{verbatim}
 
 \hypertarget{strtrim}{%
@@ -17720,7 +17697,7 @@ ggpubr 包提供了 \texttt{stat\_chull()} 图层
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x558ac86a36e0>
+## <bytecode: 0x557dda2f83f0>
 ## <environment: namespace:ggpubr>
 \end{verbatim}
 
@@ -22446,10 +22423,10 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 
 \begin{verbatim}
 ## $quantile
-## [1] 2.561071
+## [1] 2.561067
 ## 
 ## $f.quantile
-## [1] 2.132071e-07
+## [1] 2.255484e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -23557,13 +23534,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1.116e-09
+## number of successes = 16, number of trials = 100, p-value = 2.606e-12
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.09431029 0.24678760
 ## sample estimates:
 ## probability of success 
-##                    0.2
+##                   0.16
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.5， P 值 \(6.148 \times 10^{-11}\) 结论是拒绝原假设
@@ -23579,13 +23556,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1
+## number of successes = 16, number of trials = 100, p-value = 0.3814
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.09431029 0.24678760
 ## sample estimates:
 ## probability of success 
-##                    0.2
+##                   0.16
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -24904,7 +24881,7 @@ ROC 曲线越往左上角拱越好， AUC 是 ROC 曲线下的面积，所以 AU
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.002   0.000   0.002
+##   0.002   0.000   0.003
 \end{verbatim}
 
 更多关于 auc 计算的讨论见统计之都论坛帖 \url{https://d.cosx.org/d/419436}，我感觉这个问题最后会归结到排序问题。
@@ -28480,21 +28457,21 @@ AER 包是书籍 Applied Econometrics with R 的配套材料 \citep{AER_2008_Kle
 ## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.015, 0.016, 0.020, 0.014) seconds, 0.065 seconds total
-## Sampling took (0.047, 0.044, 0.042, 0.040) seconds, 0.17 seconds total
+## Warmup took (0.016, 0.017, 0.017, 0.017) seconds, 0.067 seconds total
+## Sampling took (0.054, 0.049, 0.047, 0.045) seconds, 0.20 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    20759      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.1e+03  1.0e+00
-## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
-## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.2e+02  1.1e+00
-## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.4e+02  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    18417      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  5.4e+03  1.0e+00
+## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.0e+01  1.5e+13
+## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.1e+02  1.1e+00
+## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.2e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
-## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.9e+04  1.0e+00
+## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  1.7e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    33133     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    39797     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    29395     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    35307     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -28602,7 +28579,7 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.7 seconds.
+## Total execution time: 0.9 seconds.
 \end{verbatim}
 
 模型拟合结果
@@ -28617,37 +28594,37 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.026, 0.028, 0.024, 0.026) seconds, 0.10 seconds total
-## Sampling took (0.076, 0.084, 0.082, 0.084) seconds, 0.33 seconds total
+## Warmup took (0.028, 0.035, 0.029, 0.033) seconds, 0.12 seconds total
+## Sampling took (0.089, 0.10, 0.10, 0.11) seconds, 0.40 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7507     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.6e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.1e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.6e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.0e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     6103     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  4.6e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  5.0e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.1e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  2.5e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.4e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  6.0e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11920      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9399      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23668     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25849     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25520      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    25215      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22561      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25886      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    22253      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22563     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17386     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27424      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21352      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    26120      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    25207      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    26085     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    20052     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    18109      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886     9691      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     7641      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    19241     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    21014     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    20747      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    20499      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    18342      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    21045      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    18091      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    18343     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    14134     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    22295      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    17359      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    21235      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    20493      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    21206     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    16301     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    14722      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -28869,13 +28846,13 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.7 seconds.
-## Chain 2 finished in 0.7 seconds.
-## Chain 3 finished in 0.7 seconds.
-## Chain 4 finished in 0.6 seconds.
+## Chain 2 finished in 0.8 seconds.
+## Chain 3 finished in 0.9 seconds.
+## Chain 4 finished in 0.7 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 0.7 seconds.
-## Total execution time: 2.8 seconds.
+## Mean chain execution time: 0.8 seconds.
+## Total execution time: 3.3 seconds.
 \end{verbatim}
 
 \hypertarget{sec-nlm-gp}{%
@@ -29290,10 +29267,10 @@ ts 和 seq 构造时间向量的关系是什么？
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1]  0.55371213 -1.17096202  0.32048420 -0.20739681  0.65397327  0.07867625
-##  [7]  0.74411102 -0.86779239  1.20185634 -0.50702642  1.46548519 -1.04101485
-## [13] -1.37460593 -1.51049546 -0.44105026  0.85185443 -0.37730457 -0.12326046
-## [19]  1.10094533  1.54604196
+##  [1] -1.97638519 -1.00026270 -0.40217760 -0.91691734  0.99473816 -1.06786266
+##  [7] -0.37061740 -1.08530796  1.25932998 -0.03914261 -0.94459923 -0.78452715
+## [13]  1.63108545  0.35238567  1.78055708  1.51532139 -0.11207507 -0.71995708
+## [19]  0.74668665  0.29331071
 \end{verbatim}
 
 周数据，一周采一个点，采了 20 个点
@@ -33592,7 +33569,7 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 368.1059
+## [1] 368.106
 \end{verbatim}
 
 \begin{Shaded}
@@ -33602,9 +33579,10 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
 \end{verbatim}
 
 下面再与函数 \texttt{optim()} 提供的 L-BFGS-B 算法比较
@@ -34009,7 +33987,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.444950 4.777240 3.681627 1.239771
+## [1] 1.079863 4.324610 4.310041 1.264026
 \end{verbatim}
 
 \begin{Shaded}
@@ -34019,7 +33997,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 21.42339
+## [1] 17.57012
 \end{verbatim}
 
 可以看出，nloptr 提供的优化能力可以覆盖\href{https://github.com/coin-or/Ipopt}{Ipopt 求解器}，推荐使用 nloptr.slsqp 求解器。
@@ -34149,7 +34127,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.227973 4.245380
+## [1] 1.227971 4.245371
 \end{verbatim}
 
 \begin{Shaded}
@@ -34364,7 +34342,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -44.37452  16.86448
+## [1]  1.342868 11.993749
 \end{verbatim}
 
 \begin{Shaded}
@@ -34374,7 +34352,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -3.187677
+## [1] -3.145723
 \end{verbatim}
 
 比如下面三组
@@ -37915,7 +37893,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5593e4bd6838>
+## <bytecode: 0x56334d477b28>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -37944,7 +37922,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5593e4bd6838>
+## <bytecode: 0x56334d477b28>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -38012,7 +37990,7 @@ R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块，
 \NormalTok{plt.switch\_backend(}\StringTok{\textquotesingle{}agg\textquotesingle{}}\NormalTok{)}
 
 \NormalTok{plt.plot([}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{])}
-\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7f202745d4c0\textgreater{}]}
+\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7f5647b2c4c0\textgreater{}]}
 \NormalTok{plt.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -38041,8 +38019,8 @@ knitr 支持在 R Markdown 中嵌入 C 语言代码
 
 \begin{verbatim}
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c657d3011d166.c -o c657d3011d166.o
-## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c657d3011d166.so c657d3011d166.o -L/opt/R/4.1.0/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.0/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c661d5b18d098.c -o c661d5b18d098.o
+## gcc -shared -L/opt/R/4.1.0/lib/R/lib -L/usr/local/lib -o c661d5b18d098.so c661d5b18d098.o -L/opt/R/4.1.0/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 \end{verbatim}
 
@@ -38599,7 +38577,7 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 ##                                          size isdir mode               mtime
 ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
 ##                                                       ctime               atime
-## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 10:32:05 2021-08-14 10:40:02
+## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 10:54:41 2021-08-14 11:03:04
 ##                                         uid gid uname grname
 ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
 \end{verbatim}
@@ -38643,7 +38621,7 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 
 \begin{verbatim}
 ##    size isdir mode               mtime               ctime               atime
-## . 12288  TRUE  755 2021-08-14 11:17:07 2021-08-14 11:17:07 2021-08-14 11:17:07
+## . 12288  TRUE  755 2021-08-14 11:43:48 2021-08-14 11:43:48 2021-08-14 11:43:48
 ##    uid gid  uname grname
 ## . 1001 121 runner docker
 \end{verbatim}
@@ -38657,9 +38635,9 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 
 \begin{verbatim}
 ##          size isdir mode               mtime               ctime
-## ./_book/ 4096  TRUE  755 2021-08-14 11:12:11 2021-08-14 11:12:11
+## ./_book/ 4096  TRUE  755 2021-08-14 11:38:19 2021-08-14 11:38:19
 ##                        atime  uid gid  uname grname
-## ./_book/ 2021-08-14 11:16:35 1001 121 runner docker
+## ./_book/ 2021-08-14 11:39:12 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{file.access(names,\ mode\ =\ 0)}
@@ -39515,7 +39493,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 26086
+## [1] 26246
 \end{verbatim}
 \item
   \texttt{proc.time()} R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -39530,7 +39508,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.064   0.008   0.071
+##   0.080   0.000   0.081
 \end{verbatim}
 \item
   \texttt{system.time} 计算 R 表达式/程序块运行耗费的CPU时间
@@ -39545,7 +39523,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.060   0.008   0.068
+##    0.08    0.00    0.08
 \end{verbatim}
 \item
   \texttt{gc.time} 报告垃圾回收耗费的时间
@@ -39648,7 +39626,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 04:17:08 PDT"
+## [1] "2021-08-14 04:43:49 PDT"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39659,7 +39637,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 07:17:08 EDT"
+## [1] "2021-08-14 07:43:49 EDT"
 \end{verbatim}
 \item
   \texttt{Sys.Date} 显示当前时区下的日期，精确到日，返回数据类型为 \texttt{date}
@@ -39683,7 +39661,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sat Aug 14 11:17:08 2021"
+## [1] "Sat Aug 14 11:43:49 2021"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39694,7 +39672,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sat Aug 14 11:17:08 2021"
+## [1] "Sat Aug 14 11:43:49 2021"
 \end{verbatim}
 \item
   \texttt{as.POSIX*} 是一个 Date-time 转换函数
@@ -39706,7 +39684,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 11:17:08 GMT"
+## [1] "2021-08-14 11:43:49 GMT"
 \end{verbatim}
 \item
   时间计算
@@ -39718,7 +39696,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 11:17:08 UTC"
+## [1] "2021-08-14 11:43:49 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39728,7 +39706,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 10:17:08 UTC"
+## [1] "2021-08-14 10:43:49 UTC"
 \end{verbatim}
 \item
   \texttt{.leap.seconds} 是内置的日期序列
@@ -39800,9 +39778,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1639 FALSE  644 2021-08-14 10:48:40 2021-08-14 10:48:40
+## ./_common.R 1639 FALSE  644 2021-08-14 11:12:14 2021-08-14 11:12:14
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-08-14 11:12:11 1001 121 runner docker
+## ./_common.R 2021-08-14 11:38:19 1001 121 runner docker
 \end{verbatim}
 
 \begin{Shaded}
@@ -39815,9 +39793,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1639 FALSE  644 2021-08-14 11:17:08 2021-08-14 11:17:08
+## ./_common.R 1639 FALSE  644 2021-08-14 11:43:49 2021-08-14 11:43:49
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-08-14 11:17:08 1001 121 runner docker
+## ./_common.R 2021-08-14 11:43:49 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{strptime} 用于字符串与 \texttt{POSIXlt}、 \texttt{POSIXct} 类对象之间的转化，\texttt{format} 默认 \texttt{tz\ =\ ""} 且 \texttt{usetz\ =\ TRUE}
@@ -39841,7 +39819,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 11:17:08 CST"
+## [1] "2021-08-14 11:43:49 CST"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39851,7 +39829,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 11:17:08"
+## [1] "2021-08-14 11:43:49"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39861,7 +39839,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-08-14 19:17:08 CST"
+## [1] "2021-08-14 19:43:49 CST"
 \end{verbatim}
 \item
   设置时区
@@ -40192,7 +40170,7 @@ R-level 的源代码都可以直接看
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55ef6ff9d3b0>
+## <bytecode: 0x563c863b53b0>
 ## <environment: namespace:base>
 \end{verbatim}
 

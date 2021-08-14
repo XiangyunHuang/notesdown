@@ -107,7 +107,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}(\#fig:book-workflow)
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月14日11时12分14秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年08月14日11时38分21秒，本书用 R version 4.1.0 (2021-05-18) 编译，完整运行环境如下：
 
 
 ```r
@@ -137,9 +137,9 @@ xfun::session_info(packages = c(
 
 借助 **bookdown** [@xie2016] 可以将 Rmd 文件组织起来， **rmarkdown** [@rmarkdown]和 **knitr** [@xie2015] 将源文件编译成 Markdown 文件， [Pandoc](https://pandoc.org/) 将 Markdown 文件转化成 HTML 和 TeX 文件， [TinyTeX](https://yihui.name/tinytex/) [@xie2019] 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 **ggplot2** 包制作 [@Wickham_2016_ggplot2]，而统计理论相关的示意图用 Base R 创作。
 
-
-最后，本书在三个位置提供网页版， 网站 [Github Pages](https://pages.github.com/) 发布最近一次在 Travis 构建成功的版本 <https://xiangyunhuang.github.io/masr/>，网站 [Bookdown](https://bookdown.org) 发布本地手动创建的版本 <https://bookdown.org/xiangyun/masr/> ，网站 [Netlify](https://netlify.com/) 发布最新的开发版 <https://masr.netlify.app/>。
-
+::: {.rmdtip data-latex="{提示}"}
+得益于 Github Action 提供的测试服务，[Github Pages](https://pages.github.com/)、[Bookdown](https://bookdown.org) 和 [Netlify](https://netlify.com/) 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 <https://xiangyunhuang.github.io/masr/>， <https://bookdown.org/xiangyun/masr/> ， <https://masr.netlify.app/>。
+:::
 
 ## 记号约定 {#sec-conventions}
 

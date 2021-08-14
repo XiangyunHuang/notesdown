@@ -1,5 +1,6 @@
 --- 
 title: "现代应用统计与 R 语言"
+subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
 date: "2021-08-14"
 site: bookdown::bookdown_site
@@ -348,37 +349,6 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-14 11:12:12。
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-14 19:38:20。
 
-
-```r
-xfun::session_info(packages = c(
-  "knitr", "rmarkdown", "bookdown", "equatiomatic",
-  "data.table", "DT", "kableExtra", "reactable",
-  "patchwork", "plotly", "shiny",
-  "ggplot2", "dplyr", "tidyverse"
-), dependencies = FALSE)
-```
-
-```
-## R version 4.1.0 (2021-05-18)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   bookdown_0.23      data.table_1.14.0  dplyr_1.0.7        DT_0.18           
-##   equatiomatic_0.2.0 ggplot2_3.3.5      kableExtra_1.3.4   knitr_1.33        
-##   patchwork_1.1.1    plotly_4.9.4.1     reactable_0.2.3    rmarkdown_2.10    
-##   shiny_1.6.0        tidyverse_1.3.1   
-## 
-## Pandoc version: 2.14.1
-```
 
