@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
     ##                                                       ctime               atime
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 07:20:15 2021-08-14 07:27:33
+    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 07:57:55 2021-08-14 08:08:16
     ##                                         uid gid uname grname
     ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 12288  TRUE  755 2021-08-14 07:54:47 2021-08-14 07:54:47 2021-08-14 07:54:48
+    ## . 12288  TRUE  755 2021-08-14 08:42:38 2021-08-14 08:42:38 2021-08-14 08:42:38
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##          size isdir mode               mtime               ctime
-    ## ./_book/ 4096  TRUE  755 2021-08-14 07:54:44 2021-08-14 07:54:44
+    ## ./_book/ 4096  TRUE  755 2021-08-14 08:42:34 2021-08-14 08:42:34
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-14 07:54:44 1001 121 runner docker
+    ## ./_book/ 2021-08-14 08:42:34 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 23864
+    ## [1] 24377
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.066   0.000   0.067
+    ##   0.077   0.000   0.078
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.060   0.004   0.064
+    ##   0.075   0.000   0.075
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 00:54:48 PDT"
+    ## [1] "2021-08-14 01:42:39 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 03:54:48 EDT"
+    ## [1] "2021-08-14 04:42:39 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 07:54:48 2021"
+    ## [1] "Sat Aug 14 08:42:39 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 07:54:48 2021"
+    ## [1] "Sat Aug 14 08:42:39 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:54:48 GMT"
+    ## [1] "2021-08-14 08:42:39 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:54:48 UTC"
+    ## [1] "2021-08-14 08:42:39 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 06:54:48 UTC"
+    ## [1] "2021-08-14 07:42:39 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 07:29:28 2021-08-14 07:29:28
+    ## ./_common.R 1639 FALSE  644 2021-08-14 08:10:30 2021-08-14 08:10:30
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 07:29:35 1001 121 runner docker
+    ## ./_common.R 2021-08-14 08:10:38 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 07:54:48 2021-08-14 07:54:48
+    ## ./_common.R 1639 FALSE  644 2021-08-14 08:42:39 2021-08-14 08:42:39
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 07:54:48 1001 121 runner docker
+    ## ./_common.R 2021-08-14 08:42:39 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:54:48 CST"
+    ## [1] "2021-08-14 08:42:39 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:54:48"
+    ## [1] "2021-08-14 08:42:39"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 15:54:48 CST"
+    ## [1] "2021-08-14 16:42:39 CST"
     ```
 
 1. 设置时区
@@ -1495,7 +1495,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5608d1c5e3b0>
+## <bytecode: 0x55ef2a9313b0>
 ## <environment: namespace:base>
 ```
 
