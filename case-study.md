@@ -19,7 +19,7 @@ library(packagemetrics)
 [tidymodels](https://github.com/tidymodels/tidymodels) 和 [easystats](https://github.com/easystats/easystats) 都是基于 [tidyverse](https://github.com/tidyverse/tidyverse) [@Hadley_2019_tidyverse] 的统计模型套件，[strengejacke](https://github.com/strengejacke/strengejacke)、 [mlr3verse](https://github.com/mlr-org/mlr3verse) 目的和 tidymodels 差不多，都是提供做数据建模的完整解决方案，区别在于它不基于 tidyverse 这套东西。
 
 [easystats](https://github.com/easystats/easystats) 包含 [insight](https://github.com/easystats/insight) [@ludecke2019insight] 和 [bayestestR](https://github.com/easystats/bayestestR) [@makowski2019bayestestr] 等共 9 个R 包，[tidymodels](https://github.com/tidymodels/tidymodels) 也包含差不多量的 R 包。
-
+[DrWhy](https://github.com/ModelOriented/DrWhy)
 [rms](https://github.com/harrelfe/rms) Regression Modeling Strategies
 
 [gtsummary](https://github.com/ddsjoberg/gtsummary)
@@ -32,18 +32,26 @@ library(gtsummary)
 library(modelsummary)
 ```
 
-[DrWhy](https://github.com/ModelOriented/DrWhy)
+
 
 [R for Data Science Online Learning Community](https://github.com/rfordatascience) 在线学习社区以 [tidytuesday](https://github.com/rfordatascience/tidytuesday) 闻名遐迩。
 
-\begin{figure}
+```nomnoml
+#padding: 25
+#fontsize: 18
+#stroke: #26A63A
+#linewidth: 2
 
-{\centering \includegraphics{case-study_files/figure-latex/workflow-1} 
+[Import] -> [Understand]
 
-}
+[Understand |
+  [Wrangle] -> [Visualize]
+  [Visualize] -> [Model]
+  [Model] -> [Wrangle]
+]
 
-\caption{模型}(\#fig:workflow)
-\end{figure}
+[Understand] -> [Communicate]
+```
 
 统计建模：两种文化 [@Breiman_2001_Modeling]
 
@@ -1420,7 +1428,7 @@ image(spM)
 
 \begin{figure}
 
-{\centering \includegraphics{case-study_files/figure-latex/vis-sparse-mat-1} 
+{\centering \includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/vis-sparse-mat-1} 
 
 }
 

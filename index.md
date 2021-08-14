@@ -1,7 +1,7 @@
 --- 
 title: "现代应用统计与 R 语言"
 author: "黄湘云"
-date: "2021-08-13"
+date: "2021-08-14"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -348,7 +348,7 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-13 15:58:29。
+书籍在 R version 4.1.0 (2021-05-18) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-14 07:38:16。
 
 
 ```r

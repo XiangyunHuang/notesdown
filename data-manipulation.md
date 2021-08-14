@@ -2565,7 +2565,7 @@ with(ToothGrowth, {
 
 
 
-\begin{center}\includegraphics{data-manipulation_files/figure-latex/subset-in-boxplot-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/subset-in-boxplot-1} \end{center}
 
 将 `boxplot` 函数的 `subset` 参数单独提出来，调用数据子集选择函数 `subset` ，这里 `with` 中只包含一个表达式，所以也可以不用大括号
 
@@ -2594,7 +2594,7 @@ legend(2, 9, c("Ascorbic acid", "Orange juice"),
 
 
 
-\begin{center}\includegraphics{data-manipulation_files/figure-latex/subset-out-boxplot-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/subset-out-boxplot-1} \end{center}
 
 可以作为数据变换 `transform` 的一种替代，它也比较像 **dplyr** 包的 `mutate` 函数
 
@@ -2664,7 +2664,7 @@ spectrum(sunspot.year, kernel = kernel("daniell", c(11, 7, 3)), log = "no")
 
 \begin{figure}
 
-{\centering \includegraphics{data-manipulation_files/figure-latex/spectrum-sunspot-year-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/spectrum-sunspot-year-1} 
 
 }
 
@@ -2718,7 +2718,7 @@ invisible(lapply(samples, function(x) {
 
 \begin{figure}
 
-{\centering \includegraphics{data-manipulation_files/figure-latex/mapply-lapply-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/mapply-lapply-1} 
 
 }
 
@@ -2799,7 +2799,7 @@ plot(presidents)
 
 \begin{figure}
 
-{\centering \includegraphics{data-manipulation_files/figure-latex/usa-presidents-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/usa-presidents-1} 
 
 }
 
@@ -2960,7 +2960,7 @@ ggplot(df, aes(x, y, z = z)) +
 
 \begin{figure}
 
-{\centering \includegraphics{data-manipulation_files/figure-latex/with-op-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/with-op-1} 
 
 }
 
@@ -3304,7 +3304,7 @@ iris |>
 
 \begin{figure}
 
-{\centering \includegraphics{data-manipulation_files/figure-latex/pipe-dataframe-ggplot2-1} 
+{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/pipe-dataframe-ggplot2-1} 
 
 }
 

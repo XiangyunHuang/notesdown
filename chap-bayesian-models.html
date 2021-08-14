@@ -127,20 +127,20 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="header-section-number">29.1</span> 软件配置<a class="anchor" aria-label="anchor" href="#sec-stan-setup"><i class="fas fa-link"></i></a>
 </h2>
 <p>从 GitHub 下载最新版的源码包 <a href="https://github.com/stan-dev/cmdstan/releases/latest" class="uri">https://github.com/stan-dev/cmdstan/releases/latest</a>，编译二进制版本</p>
-<div class="sourceCode" id="cb2322"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2322-1"><a href="chap-bayesian-models.html#cb2322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> /Users/xiangyun/Desktop/cmdstan-2.26.0.tar.gz <span class="at">-C</span> /opt/</span>
-<span id="cb2322-2"><a href="chap-bayesian-models.html#cb2322-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cmdstan-2.26.0</span>
-<span id="cb2322-3"><a href="chap-bayesian-models.html#cb2322-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> build</span></code></pre></div>
+<div class="sourceCode" id="cb2323"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2323-1"><a href="chap-bayesian-models.html#cb2323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> /Users/xiangyun/Desktop/cmdstan-2.26.0.tar.gz <span class="at">-C</span> /opt/</span>
+<span id="cb2323-2"><a href="chap-bayesian-models.html#cb2323-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> cmdstan-2.26.0</span>
+<span id="cb2323-3"><a href="chap-bayesian-models.html#cb2323-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> build</span></code></pre></div>
 <p>设置环境变量 CMDSTAN 指向 CmdStan 安装路径，加载 <strong>cmdstanr</strong> 包会自动检测和加载</p>
-<div class="sourceCode" id="cb2323"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2324"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>CMDSTAN<span class="op">=</span><span class="st">"/opt/cmdstan-2.26.0"</span><span class="op">)</span></code></pre></div>
 <p>还可以设置环境变量 <code>CMDSTANR_NO_VER_CHECK=TRUE</code>，让 cmdstanr 不要检查 CmdStan 版本状态，是不是最新版，比如本书将固定下 CmdStan 版本为 2.26.0</p>
 <p><strong>cmdstanr</strong> 当前还在开发中，安装方式如下</p>
-<div class="sourceCode" id="cb2324"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2325"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'stan-dev/cmdstanr'</span><span class="op">)</span>
 <span class="co"># 或者</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cmdstanr"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"https://mc-stan.org/r-packages/"</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>另有一篇博文介绍在 <a href="https://www.maxmantei.com/blog/2020-05-16-installing-cmdstanr-on-windows/cmdstanr-windows/">Windows 系统上安装 cmdstanr</a> 的过程，这里不做展开。</p>
-<div class="sourceCode" id="cb2325"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2326"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># rstan</span>
 <span class="co"># brms</span>
 <span class="co"># rstanarm</span>
@@ -154,11 +154,11 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <p><span class="math display">\[Y \sim \mathcal{N}(\mu,\sigma^2)\]</span>
 已知 <span class="math inline">\(y_1,y_2,\ldots,y_n\)</span> 是来自正态总体 <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> 的一个样本，我们需要估计这个正态分布模型的参数 <span class="math inline">\(\mu\)</span> 和 <span class="math inline">\(\sigma^2\)</span>。</p>
 <p>最大似然估计，简单推导过程，计算代码；再讲 stan 的计算步骤</p>
-<div class="sourceCode" id="cb2326"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2327"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/cmdstanr">cmdstanr</a></span><span class="op">)</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/normal_dist.stan"</span>, compile <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>打包观测数据，初始化待估参数值，指定链条数，其中 <code>dataList</code> 必须与 stan 代码中数据块声明保持一致（如变量名称，长度），每条链使用不同的初始值，选择合适的初始值可以有效地提高收敛的速度。</p>
-<div class="sourceCode" id="cb2327"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2328"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 数据准备</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">20190427</span><span class="op">)</span>
 <span class="co"># 设置参数</span>
@@ -177,7 +177,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>将参数初值代入模型，抽样，获取参数的后验分布</p>
-<div class="sourceCode" id="cb2328"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2329"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">normal_fit</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">sample</span><span class="op">(</span>
   data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     N <span class="op">=</span> <span class="va">nobs</span>,
@@ -195,42 +195,42 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
 ## Chain 1 finished in 0.1 seconds.
-## Chain 2 finished in 0.1 seconds.
-## Chain 3 finished in 0.1 seconds.
-## Chain 4 finished in 0.1 seconds.
+## Chain 2 finished in 0.0 seconds.
+## Chain 3 finished in 0.0 seconds.
+## Chain 4 finished in 0.0 seconds.
 ## 
 ## All 4 chains finished successfully.
-## Mean chain execution time: 0.1 seconds.
+## Mean chain execution time: 0.0 seconds.
 ## Total execution time: 0.7 seconds.</code></pre>
 <p>检查收敛性，Rhat 决定收敛性，所有待估参数的Rhat必须小于1.1，同时有效样本数量 n_eff 除以抽样总数 N 必须小于0.001，否则收敛性是值得怀疑的。拟合结果及解释如下：</p>
-<div class="sourceCode" id="cb2330"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2331"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 模型参数估计结果</span>
 <span class="va">normal_fit</span><span class="op">$</span><span class="fu">cmdstan_summary</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.014, 0.014, 0.014, 0.014) seconds, 0.056 seconds total
-## Sampling took (0.044, 0.042, 0.039, 0.037) seconds, 0.16 seconds total
+## Warmup took (0.012, 0.012, 0.012, 0.012) seconds, 0.048 seconds total
+## Sampling took (0.040, 0.036, 0.035, 0.032) seconds, 0.14 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22168      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.5e+03  1.0e+00
-## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
-## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
-## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.5e+02  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    25114      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  7.4e+03  1.0e+00
+## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.4e+01  1.5e+13
+## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.5e+02  1.1e+00
+## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.7e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
-## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
+## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.3e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    35382     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42499     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    40084     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    48146     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
 ## and R_hat is the potential scale reduction factor on split chains (at 
 ## convergence, R_hat=1).</code></pre>
 <p>调用 draws 方法 <code>normal_fit$draws()</code>，获得一个由 <strong>posterior</strong> 构造的 <code>draws_array</code> 对象，</p>
-<div class="sourceCode" id="cb2332"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2333"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">draws_array</span> <span class="op">&lt;-</span> <span class="va">normal_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">draws_array</span><span class="op">)</span></code></pre></div>
 <pre><code>##  'draws_array' num [1:2000, 1:4, 1:3] -601 -601 -602 -601 -601 ...
@@ -239,7 +239,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ##   ..$ chain    : chr [1:4] "1" "2" "3" "4"
 ##   ..$ variable : chr [1:3] "lp__" "mu" "sigma"</code></pre>
 <p>采样结果可以直接传递给 <strong>bayesplot</strong> 包，绘制参数的后验分布和马尔科夫链蒙特卡罗采样的轨迹图（trace plot）。</p>
-<div class="sourceCode" id="cb2334"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2335"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/bayesplot/">bayesplot</a></span><span class="op">)</span>
 <span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-traces.html">mcmc_trace</a></span><span class="op">(</span><span class="va">normal_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mcmc_hist</a></span><span class="op">(</span><span class="va">normal_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -256,10 +256,10 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="header-section-number">29.3</span> 高斯过程<a class="anchor" aria-label="anchor" href="#sec-gaussian-process"><i class="fas fa-link"></i></a>
 </h2>
 <p>模拟高斯过程例子来自 Stan 参考手册 <span class="citation"><a href="#ref-Stan_2018_Bayesian" role="doc-biblioref">[90]</a></span></p>
-<div class="sourceCode" id="cb2335"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2336"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/normal_gp.stan"</span><span class="op">)</span></code></pre></div>
 <p>stan 库内置了核函数为二次幂指数的实现，因此可以直接调用 <code>cov_exp_quad</code> 函数计算协方差矩阵</p>
-<div class="sourceCode" id="cb2336"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2337"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/compat_gp.stan"</span><span class="op">)</span></code></pre></div>
 <p>以 MASS 的 topo 数据集引出高斯过程回归模型问题复杂性</p>
 </div>
@@ -272,7 +272,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <h3>
 <span class="header-section-number">29.4.1</span> schools 数据<a class="anchor" aria-label="anchor" href="#sec-eight-schools"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb2337"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2338"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 模型编译</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/eight_schools.stan"</span><span class="op">)</span>
 
@@ -300,51 +300,51 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.1 seconds.
-## Total execution time: 0.8 seconds.</code></pre>
+## Total execution time: 0.5 seconds.</code></pre>
 <p>模型拟合结果</p>
-<div class="sourceCode" id="cb2339"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2340"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">cmdstan_summary</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.023, 0.026, 0.024, 0.027) seconds, 0.10 seconds total
-## Sampling took (0.069, 0.085, 0.085, 0.091) seconds, 0.33 seconds total
+## Warmup took (0.020, 0.023, 0.020, 0.023) seconds, 0.086 seconds total
+## Sampling took (0.062, 0.074, 0.073, 0.076) seconds, 0.29 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7416     1.00
-## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.5e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.1e+00  1.8e+13
-## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.5e+01  1.1e+00
-## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.0e+01  1.1e+00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     8587     1.00
+## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  6.4e+02  1.0e+00
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  7.0e+00  1.8e+13
+## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.9e+01  1.1e+00
+## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.5e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
-## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.3e+03  1.0e+00
+## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  8.5e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11776      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9285      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23381     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25536     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25211      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    24909      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22288      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25572      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    21983      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22290     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17175     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27092      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21093      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    25804      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    24902      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    25769     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    19809     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    17889      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    13635      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064    10751      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    27073     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    29568     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    29191      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    28842      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    25807      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    29610      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    25455      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    25809     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    19887     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    31369      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    24424      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    29878      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    28833      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    29837     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    22936     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    20714      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
 ## and R_hat is the potential scale reduction factor on split chains (at 
 ## convergence, R_hat=1).</code></pre>
 <p>4 条马尔可夫链，19 个变量，2000 次迭代，轨迹数据如下</p>
-<div class="sourceCode" id="cb2341"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2342"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A draws_array: 2000 iterations, 4 chains, and 19 variables
 ## , , variable = lp__
@@ -389,7 +389,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ## 
 ## # ... with 1995 more iterations, and 15 more variables</code></pre>
 <p>提取参数 <span class="math inline">\(\mu\)</span> 的四条迭代点列</p>
-<div class="sourceCode" id="cb2343"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2344"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A draws_array: 2000 iterations, 4 chains, and 1 variables
 ## , , variable = mu
@@ -404,10 +404,10 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ## 
 ## # ... with 1995 more iterations</code></pre>
 <p><code>eight_schools_fit</code> 是一个 R6 对象，包含整个模型信息</p>
-<div class="sourceCode" id="cb2345"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2346"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">eight_schools_fit</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "CmdStanMCMC" "CmdStanFit"  "R6"</code></pre>
-<div class="sourceCode" id="cb2347"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2348"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">eight_schools_fit</span><span class="op">)</span></code></pre></div>
 <pre><code>## Classes 'CmdStanMCMC', 'CmdStanFit', 'R6' &lt;CmdStanMCMC&gt;
 ##   Inherits from: &lt;CmdStanFit&gt;
@@ -451,7 +451,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 ##     warmup_draws_: NULL
 ##     warmup_sampler_diagnostics_: NULL</code></pre>
 <p>模型诊断：查看迭代点列的平稳性</p>
-<div class="sourceCode" id="cb2349"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2350"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-distributions.html">mcmc_dens</a></span><span class="op">(</span><span class="va">eight_schools_fit</span><span class="op">$</span><span class="fu">draws</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="bayesian-models_files/figure-html/mu-iteration-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>分层线性模型之生长曲线模型 <span class="citation"><a href="#ref-Gelfand_1990_JASA" role="doc-biblioref">[91]</a></span></p>
@@ -461,7 +461,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="header-section-number">29.4.2</span> rats 数据<a class="anchor" aria-label="anchor" href="#subsec-rats"><i class="fas fa-link"></i></a>
 </h3>
 <p>贝叶斯分层图</p>
-<div class="sourceCode" id="cb2350"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2351"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 数据准备</span>
 <span class="co"># modified code from https://github.com/stan-dev/example-models/tree/master/bugs_examples/vol1/rats</span>
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">30</span>
@@ -494,7 +494,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
   tausq_c <span class="op">=</span> <span class="fl">1</span>, tausq_alpha <span class="op">=</span> <span class="fl">1</span>,
   tausq_beta <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span><span class="op">)</span>, <span class="va">chains</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2351"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2352"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/cmdstan_model.html">cmdstan_model</a></span><span class="op">(</span>stan_file <span class="op">=</span> <span class="st">"code/rats.stan"</span><span class="op">)</span>
 
 <span class="va">rats_fit</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">sample</span><span class="op">(</span>
@@ -510,14 +510,14 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <span class="op">)</span></code></pre></div>
 <pre><code>## Running MCMC with 4 sequential chains...
 ## 
-## Chain 1 finished in 0.6 seconds.
-## Chain 2 finished in 0.7 seconds.
-## Chain 3 finished in 0.7 seconds.
-## Chain 4 finished in 0.6 seconds.
+## Chain 1 finished in 0.5 seconds.
+## Chain 2 finished in 0.6 seconds.
+## Chain 3 finished in 0.6 seconds.
+## Chain 4 finished in 0.5 seconds.
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 0.6 seconds.
-## Total execution time: 2.7 seconds.</code></pre>
+## Total execution time: 2.6 seconds.</code></pre>
 </div>
 </div>
 <div id="sec-nlm-gp" class="section level2" number="29.5">
@@ -529,10 +529,10 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <h3>
 <span class="header-section-number">29.5.1</span> mcycle 数据<a class="anchor" aria-label="anchor" href="#subsec-mcycle"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb2353"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2354"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2354"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2355"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mcycle</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">times</span>, y<span class="op">=</span> <span class="va">accel</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="co"># geom_smooth() +</span>
@@ -609,7 +609,7 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <a href="http
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>" was written by 黄湘云. It was last built on 2021-08-14.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
