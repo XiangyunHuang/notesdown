@@ -2255,21 +2255,6 @@ boxplotdbl: Double Box Plot for Two-Axes Correlation. Correlation chart of two s
 [复合箱线图](https://tomizonor.wordpress.com/2013/03/15/double-box-plot/)
 
 
-
-```r
-A <- c(
-  79.98, 80.04, 80.02, 80.04, 80.03, 80.03, 80.04, 79.97,
-  80.05, 80.03, 80.02, 80, 80.02
-)
-B <- c(80.02, 79.94, 79.98, 79.97, 79.97, 80.03, 79.95, 79.97)
-boxplot(A, B)
-```
-
-
-
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/boxplot-1} \end{center}
-
-
 ```r
 with(data = iris, {
   op <- par(mfrow = c(2, 2), mar = c(4, 4, 2, .5))
@@ -2295,60 +2280,29 @@ with(data = iris, {
 
 
 ```r
-boxplot(longley$Unemployed)
-```
-
-
-
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-63-1} \end{center}
-
-```r
-# 水平放置
-boxplot(longley$Unemployed,
-  horizontal = TRUE,
-  col = "pink",
-  main = ""
-)
-```
-
-
-
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-63-2} \end{center}
-
-
-```r
 data(InsectSprays)
-boxplot(count ~ spray,
-  data = InsectSprays,
-  col = "pink",
-  xlab = "Spray",
-  ylab = "Count",
-  main = ""
+par(mar = c(4, 4, .5, .5))
+boxplot(
+  data = InsectSprays, count ~ spray,
+  col = "gray", xlab = "Spray", ylab = "Count"
+)
+
+boxplot(
+  data = InsectSprays, count ~ spray,
+  col = "gray", horizontal = TRUE,
+  las = 1, xlab = "Count", ylab = "Spray"
 )
 ```
 
+\begin{figure}
 
+{\centering \subfloat[垂直放置(\#fig:unnamed-chunk-63-1)]{\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-63-1} }\newline\subfloat[水平放置(\#fig:unnamed-chunk-63-2)]{\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-63-2} }
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-64-1} \end{center}
+}
 
-水平放置
+\caption{箱线图}(\#fig:unnamed-chunk-63)
+\end{figure}
 
-
-```r
-boxplot(count ~ spray,
-  data = InsectSprays,
-  col = "pink",
-  horizontal = TRUE,
-  las = 1, # Horizontal labels
-  xlab = "Count",
-  ylab = "Spray",
-  main = ""
-)
-```
-
-
-
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-65-1} \end{center}
 
 Notched Boxplots
 
@@ -2358,7 +2312,7 @@ set.seed(1234)
 n <- 8
 g <- gl(n, 100, n * 100) # n水平个数 100是重复次数
 x <- rnorm(n * 100) + sqrt(as.numeric(g))
-boxplot(split(x, g), col = terrain.colors(n), notch = TRUE)
+boxplot(split(x, g), col = gray.colors(n), notch = TRUE)
 title(
   main = "Notched Boxplots", xlab = "Group",
   font.main = 4, font.lab = 1
@@ -2367,7 +2321,7 @@ title(
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-66-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-64-1} \end{center}
 
 真实的情况是这样的
 
@@ -2435,11 +2389,11 @@ box()
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-69-1} 
+{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-67-1} 
 
 }
 
-\caption{带标准差的均值散点图}(\#fig:unnamed-chunk-69)
+\caption{带标准差的均值散点图}(\#fig:unnamed-chunk-67)
 \end{figure}
 
 
@@ -2475,11 +2429,11 @@ box(col = "gray")
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-70-1} 
+{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-68-1} 
 
 }
 
-\caption{折线图}(\#fig:unnamed-chunk-70)
+\caption{折线图}(\#fig:unnamed-chunk-68)
 \end{figure}
 
 ### 函数图 {#function}
@@ -2542,11 +2496,11 @@ plot(HairEyeColor, col = "lightblue", border = "white", main = "")
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-71-1} 
+{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-69-1} 
 
 }
 
-\caption{马赛克图}(\#fig:unnamed-chunk-71)
+\caption{马赛克图}(\#fig:unnamed-chunk-69)
 \end{figure}
 
 ### 点图 {#plot-dotchart}
@@ -2583,11 +2537,11 @@ pairs(longley,
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-72-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-70-1} 
 
 }
 
-\caption{变量关系}(\#fig:unnamed-chunk-72)
+\caption{变量关系}(\#fig:unnamed-chunk-70)
 \end{figure}
 
 
@@ -2598,11 +2552,11 @@ plot(iris[, -5], col = iris$Species)
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-73-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-71-1} 
 
 }
 
-\caption{矩阵图}(\#fig:unnamed-chunk-73)
+\caption{矩阵图}(\#fig:unnamed-chunk-71)
 \end{figure}
 
 
@@ -2632,11 +2586,11 @@ title(main = "Maunga Whau Volcano", font.main = 4)
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-74-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-72-1} 
 
 }
 
-\caption{image 图形}(\#fig:unnamed-chunk-74)
+\caption{image 图形}(\#fig:unnamed-chunk-72)
 \end{figure}
 
 ### 透视图 {#plot-persp}
@@ -2692,12 +2646,13 @@ persp(x1, x2, z,
 
 ```r
 library(lattice)
-bwplot(voice.part ~ height, data = singer)
+# plot(data = InsectSprays, count ~ spray)
+bwplot(count ~ spray, data = InsectSprays)
 ```
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-75-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-73-1} \end{center}
 
 
 ### 折线图 {#lattice-line}
@@ -2718,7 +2673,7 @@ xyplot(EuStockMarkets) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-76-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-74-1} \end{center}
 
 
 如何解释
@@ -2748,7 +2703,7 @@ horizonplot(EuStockMarkets,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-77-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-75-1} \end{center}
 
 
 
@@ -2761,13 +2716,13 @@ plot(Orange,
   outer = ~1,
   key = list(
     space = "right", title = "Tree", cex.title = 1,
-    lines = list(lty = 1, col = hcl.colors(5)),
-    # points = list(pch = 1, col = hcl.colors(5)),
+    lines = list(lty = 1, col = gray.colors(5)),
+    # points = list(pch = 1, col = gray.colors(5)),
     text = list(c("3", "1", "5", "2", "4"))
   ),
   par.settings = list(
-    # plot.line = list(col = hcl.colors(5), border = "transparent"),
-    # plot.symbol = list(col = hcl.colors(5), border = "transparent"),
+    # plot.line = list(col = gray.colors(5), border = "transparent"),
+    # plot.symbol = list(col = gray.colors(5), border = "transparent"),
     strip.background = list(col = "white"),
     strip.border = list(col = "black")
   )
@@ -2776,7 +2731,7 @@ plot(Orange,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-78-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-76-1} \end{center}
 
 
 ```r
@@ -2792,7 +2747,7 @@ barchart(Claims / Holders ~ Age | Group,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-79-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-77-1} \end{center}
 
 
 
@@ -2800,13 +2755,16 @@ barchart(Claims / Holders ~ Age | Group,
 barchart(Claims / Holders ~ Age | Group,
   groups = District, data = Insurance,
   main = "Claims frequency",
-  auto.key = list(space = "top", columns = 4, title = "District", cex.title = 1)
+  auto.key = list(
+    space = "top", columns = 4,
+    title = "District", cex.title = 1
+  )
 )
 ```
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-80-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-78-1} \end{center}
 
 lattice 图形的参数设置
 
@@ -2842,23 +2800,22 @@ trellis.par.set(my.settings)
 library(MASS)
 library(lattice)
 
-myColours <- terrain.colors(6)
-
 barchart(Claims / Holders * 100 ~ Age | Group,
   groups = District, data = Insurance,
   origin = 0, main = "Motor insurance claims frequency",
   xlab = "Age", ylab = "Claims frequency %",
   scales = list(alternating = 1),
   auto.key = list(
-    space = "top", columns = 4, points = FALSE, rectangles = TRUE,
+    space = "top", columns = 4, 
+    points = FALSE, rectangles = TRUE,
     title = "District", cex.title = 1
   ),
   par.settings = list(
-    superpose.polygon = list(col = myColours[2:5], border = "transparent"),
-    strip.background = list(col = myColours[6]),
+    superpose.polygon = list(col = gray.colors(4), border = "transparent"),
+    strip.background = list(col = "gray80"),
     strip.border = list(col = "black")
   ),
-  par.strip.text = list(col = "white", font = 2),
+  par.strip.text = list(col = "gray40", font = 2),
   panel = function(x, y, ...) {
     panel.grid(h = -1, v = 0)
     panel.barchart(x, y, ...)
@@ -2868,7 +2825,7 @@ barchart(Claims / Holders * 100 ~ Age | Group,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-82-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-80-1} \end{center}
 
 ### 平滑图 {#lattice-smooth}
 
@@ -2888,7 +2845,7 @@ xyplot(y ~ x, xy, panel = function(...) {
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-81-1} \end{center}
 
 ```r
 library(splines)
@@ -2898,7 +2855,7 @@ xyplot(y ~ x, xy) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-2} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-81-2} \end{center}
 
 ```r
 library(nlme)
@@ -2909,7 +2866,7 @@ xyplot(y ~ x, xy) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-3} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-81-3} \end{center}
 
 Trellis Displays of Tukey's Hanging Rootograms
 
@@ -2921,7 +2878,7 @@ rootogram(~x, dfun = function(x) dpois(x, lambda = 50))
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-82-1} \end{center}
 
 ### 点图 {#lattice-dotplot}
 
@@ -2936,7 +2893,7 @@ segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-85-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-1} \end{center}
 
 ### 阶梯图 {#lattice-step}
 
@@ -2949,7 +2906,7 @@ ecdfplot(~height | voice.part, data = singer)
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-86-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-1} \end{center}
 
 ### 分面图 {#lattice-facet}
 
@@ -2971,7 +2928,7 @@ levelplot(depth ~ long + lat | Magnitude,
 
 
 
-\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-87-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-85-1} \end{center}
 
 ### 等高线图 {#lattice-contour}
 
@@ -3105,7 +3062,7 @@ xyplot(Sepal.Length ~ Petal.Length,
 
 
 
-\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-88-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-86-1} \end{center}
 
 
 

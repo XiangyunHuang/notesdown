@@ -1856,15 +1856,6 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 p1 + p2
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
-
-}
-
-\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
-\end{figure}
-
 以 NumPy 为例
 
 

@@ -31,7 +31,7 @@ Paul C. Bauer 的书 [Applied Data Visualization](https://bookdown.org/paul/appl
 学习 [plotly](https://github.com/ropensci/plotly) 和 [highcharter](https://github.com/jbkunst/highcharter) 为代表的 基于 JavaScript 的 R 包，共有四重境界：第一重是照着帮助文档的示例，示例有啥我们做啥；第二重是明白帮助文档中 R 函数和 JavaScript 函数的对应关系，能力达到 JS 库的功能边界；第三重是深度自定义一些扩展性的 JS 功能，放飞自我；第四重是重新造轮子，为所欲为。下面的介绍希望能帮助读者到达第二重境界。
 :::
 
-[plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包，支持图片下载、背景图片[^plotly-logo]、工具栏[^plotly-toolbar]和注释[^plotly-annotation] 等一系列细节的自定义控制。下面结合 JavaScript 库 [plotly.js](https://github.com/plotly/plotly.js) 一起介绍，帮助文档 `?config` 没有太详细地介绍，所以我们看看 `config()` 函数中参数 `...` 和 JS 库 [plot_config.js](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js) 中的功能函数是怎么对应的。图 中图片下载按钮对应 `toImageButtonOptions` 参数， 看 [toImageButtonOptions](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js#L311) 源代码，可知 它接受任意数据类型，对应到 R 里面就是列表。 `watermark` 和 `displaylogo` 都是传递布尔值（TRUE/FALSE），具体根据 JS 代码中的 valType （参数值类型）决定，其它参数类似。另一个函数 [layout](https://plot.ly/r/reference/#Layout_and_layout_style_objects) 和函数 `config()` 是类似的，怎么传递参数值是根据 JS 代码来的。
+[plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包。它支持下载图片、添加水印、自定义背景图片、工具栏和注释[^plotly-annotation] 等一系列细节的自定义控制。下面结合 JavaScript 库 [plotly.js](https://github.com/plotly/plotly.js) 一起介绍，帮助文档 `?config` 没有太详细地介绍，所以我们看看 `config()` 函数中参数 `...` 和 JavaScript 库 [plot_config.js](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js) 中的功能函数是怎么对应的。图 中图片下载按钮对应 `toImageButtonOptions` 参数， 看 [toImageButtonOptions](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js#L311) 源代码，可知，它接受任意数据类型，对应到 R 里面就是列表。 `watermark` 和 `displaylogo` 都是传递布尔值（TRUE/FALSE），具体根据 JavaScript 代码中的 valType （参数值类型）决定，其它参数类似。另一个函数 [layout](https://plot.ly/r/reference/#Layout_and_layout_style_objects) 和函数 `config()` 是类似的，怎么传递参数值是根据 JavaScript 代码来的。
 
 ```js
 toImageButtonOptions: {
@@ -59,8 +59,7 @@ watermark: {
 ```
 
 
-[^plotly-logo]: <https://plotly.com/r/logos/>
-[^plotly-toolbar]: <https://plotly-r.com/control-modebar.html>
+
 [^plotly-annotation]: <https://plotly.com/r/reference/#layout-scene-annotations-items-annotation-font>
 
 
@@ -72,88 +71,69 @@ plot_ly(diamonds,
 ) %>%
   config(
     toImageButtonOptions = list(
-      format = "svg", filename = paste("plot", Sys.Date(), sep = "_"),
-      width = 450, height = 300 
-      # 设置下载图片的尺寸 https://github.com/ropensci/plotly/issues/1556#issuecomment-505833092
-    ), # 还可设置为 PNG 格式，可用 rsvg 的 rsvg_pdf 函数转化为 PDF
-    modeBarButtons = list(list("toImage")), # 保留下载按钮
-    # 完整的列表见 https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js
-    watermark = F,
-    displaylogo = FALSE, # 移除 Plotly 的 logo
-    locale = "zh-CN", # 汉化
-    # staticPlot = TRUE, # 静态图形而不是交互图形
-    # modeBarButtonsToRemove = c(
-    #   "zoom2d", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d", "pan2d",
-    #   "hoverClosestCartesian", "hoverCompareCartesian", "toggleSpikelines"
-    # ), # 去掉任意一个按钮
-    # displayModeBar = FALSE, # 去掉整个顶部工具栏
-    showLink = FALSE
+      format = "svg", width = 450, height = 300,
+      filename = paste("plot", Sys.Date(), sep = "_")
+    ), 
+    modeBarButtons = list(list("toImage")),
+    watermark = FALSE,
+    displaylogo = FALSE, 
+    locale = "zh-CN", 
+    staticPlot = TRUE,
+    showLink = FALSE,
+    modeBarButtonsToRemove = c(
+      "hoverClosestCartesian", "hoverCompareCartesian", 
+      "zoom2d", "zoomIn2d", "zoomOut2d", 
+      "autoScale2d", "resetScale2d", "pan2d",
+      "toggleSpikelines"
+    )
   ) %>%
   layout(
+    template = "plotly_dark",
     images = list(
       source = "https://images.plot.ly/language-icons/api-home/r-logo.png",
       xref = "paper",
       yref = "paper",
-      x = 1.0,
+      x = 1.00,
       y = 0.25,
       sizex = 0.2,
       sizey = 0.2,
       opacity = 0.5
     ),
     annotations = list(
-      text = "watermark", # 文本注释
+      text = "DRAFT",               # 水印文本
+      textangle = -30,              # 逆时针旋转 30 度
       font = list(
-        size = 40, # 字号
-        color = "red", # 颜色
-        family = "Times New Roman" # 字族
+        size = 40,                  # 字号
+        color = "gray",             # 颜色
+        family = "Times New Roman"  # 字族
       ),
-      opacity = 0.2, # 字体透明度
+      opacity = 0.2,                # 透明度
       xref = "paper",
       yref = "paper",
       x = 0.5,
       y = 0.5,
-      showarrow = FALSE # 去掉箭头指示
+      showarrow = FALSE             # 去掉箭头指示
     )
   )
 ```
 
-函数 `ggplotly()`  将 ggplot 对象转化为交互式 plotly 对象
+Table: (\#tab:plotly-config) 交互图形的设置函数 `config()` 各个参数及其作用（部分）
+
+| 参数             | 作用                                            |
+| :--------------- | :---------------------------------------------- |
+| displayModeBar   | 是否显示交互图形上的工具条，默认显示 `TRUE`[^plotly-toolbar]。      |
+| modeBarButtons   | 工具条上保留的工具，如下载 `"toImage"`，缩放 `"zoom2d"`[^modeBarButtons]。|
+| modeBarButtonsToRemove  | 工具条上要移除的工具，如下载和缩放图片 `c("toImage", "zoom2d")`。  |
+| toImageButtonOptions    | 工具条上下载图片的选项设置，包括名称、类型、尺寸等。[^toImageButtonOptions]|
+| displaylogo             | 是否交显示互图形上 Plotly 的图标，默认显示 `TRUE`[^plotly-logo]。   |
+| staticPlot              | 是否将交互图形转为静态图形，默认 `FALSE`。  |
+| locale                  | 本土化语言设置，比如 `"zh-CN"` 表示中文。   |
 
 
-```r
-gg <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
-  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
-  xlim(1, 6) +
-  ylim(40, 100)
-```
-
-静态图形
-
-
-```r
-gg
-```
-
-
-
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-3-1} \end{center}
-
-转化为 plotly 对象
-
-
-```r
-ggplotly(gg)
-```
-
-添加动态点的注释，比如点横纵坐标、坐标文本，整个注释标签的样式（如背景色）
-
-
-```r
-ggplotly(gg, dynamicTicks = "y") %>%
-  style(., hoveron = "points", hoverinfo = "x+y+text", 
-        hoverlabel = list(bgcolor = "white"))
-```
-
+[^plotly-logo]: <https://plotly.com/r/logos/>。
+[^plotly-toolbar]: <https://plotly-r.com/control-modebar.html>。
+[^modeBarButtons]: 完整的列表见 <https://github.com/plotly/plotly.js/blob/master/src/components/modebar/buttons.js>。
+[^toImageButtonOptions]: 设置下载图片的尺寸，还可设置为 PNG 格式，SVG 格式图片，可借助 **rsvg** 的 `rsvg_pdf()` 函数转化为 PDF 格式 <https://github.com/ropensci/plotly/issues/1556#issuecomment-505833092>。
 
 
 ## 散点图 {#sec-plotly-scatter}
@@ -175,6 +155,14 @@ Table: (\#tab:plotly-scatter-functions) 散点图类型
 
 plotly.js 提供很多图层用于绘制各类图形 <https://github.com/plotly/plotly.js/tree/master/src/traces>
 
+
+```r
+# 折线图
+plot_ly(Orange,
+  x = ~age, y = ~circumference, color = ~Tree,
+  type = "scatter", mode = "markers"
+)
+```
 
 ## 条形图 {#sec-plotly-barplot}
 
@@ -229,7 +217,7 @@ htmltools::tagList(p11, p12, p13, p14)
 
 ```r
 # 折线图
-p21 <- plot_ly(Orange,
+plot_ly(Orange,
   x = ~age, y = ~circumference, color = ~Tree,
   type = "scatter", mode = "markers+lines"
 )
@@ -259,7 +247,7 @@ dat <- data.frame(
 ```r
 plot_ly(data = dat) %>%
   add_bars(
-    x = ~dt, y = ~search_qv, color = I("#4285f4"), name = "搜索 QV",
+    x = ~dt, y = ~search_qv, color = I("gray80"), name = "搜索 QV",
     text = ~ paste0(
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
@@ -269,7 +257,7 @@ plot_ly(data = dat) %>%
     hoverinfo = "text"
   ) %>%
   add_bars(
-    x = ~dt, y = ~valid_click_qv, color = I("#FBBC05"), name = "点击 QV",
+    x = ~dt, y = ~valid_click_qv, color = I("gray60"), name = "点击 QV",
     text = ~ paste0(
       "日期：", dt, "<br>",
       "点击 QV：", format(valid_click_qv, big.mark = ","), "<br>",
@@ -279,10 +267,10 @@ plot_ly(data = dat) %>%
     hoverinfo = "text"
   ) %>%
   add_lines(
-    x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", color = I("#34A853"),
+    x = ~dt, y = ~qv_ctr, name = "QV_CTR", yaxis = "y2", color = I("gray40"),
     text = ~ paste("QV_CTR：", scales::percent(qv_ctr, accuracy = 0.01), "<br>"), 
     hoverinfo = "text",
-    line = list(shape = "spline", color = "Set1", width = 3, dash = "line")
+    line = list(shape = "spline", width = 3, dash = "line")
   ) %>%
   layout(
     title = "",
@@ -311,9 +299,8 @@ plot_ly(data = dat) %>%
 
 
 ```r
-# 分组直方图
-p22 <- plot_ly(iris,
-  x = ~Sepal.Length,
+plot_ly(iris,
+  x = ~Sepal.Length, colors = "Greys",
   color = ~Species, type = "histogram"
 )
 ```
@@ -323,82 +310,22 @@ p22 <- plot_ly(iris,
 
 ```r
 # 箱线图
-p23 <- plot_ly(diamonds,
-  x = ~clarity, y = ~price,
+plot_ly(diamonds,
+  x = ~clarity, y = ~price, colors = "Greys",
   color = ~clarity, type = "box"
 )
-
-# 箱线图
-plot_ly(diamonds, x = ~cut, y = ~price) %>%
-  add_boxplot()
-```
-
-
-```r
-# 不同的类别使用不同的颜色上色
-plot_ly(diamonds, x = ~clarity, y = ~price, color = ~clarity) %>%
-  add_boxplot()
-
-# 使用 colors 参数设置调色板
-plot_ly(diamonds,
-  x = ~clarity, y = ~price,
-  color = ~clarity, colors = "Set1"
-) %>%
-  add_boxplot()
-
-# 或者使用 qplot 式绘图风格
-plot_ly(diamonds,
-  x = ~clarity, y = ~price,
-  color = ~clarity, colors = "Set1", type = "box"
-)
-
-# 分组箱线图 https://github.com/ropensci/plotly/issues/994
-plot_ly(diamonds,
-  x = ~cut, y = ~price,
-  color = ~clarity, type = "box"
-) %>%
-  layout(boxmode = "group")
-
-# 修改图例的标题，R 的嵌套 list 对象对应于 JS 的 JSON 数据对象
-plot_ly(diamonds,
-  x = ~cut, y = ~price,
-  color = ~clarity, colors = "Set1", type = "box"
-) %>%
-  layout(
-    boxmode = "group",
-    legend = list(
-      bgcolor = "white",
-      title = list(text = "clarity")
-    )
-  )
-
-# 提琴图 
-plot_ly(diamonds, x = ~cut, y = ~price) %>%
-  add_trace(type = "violin")
-
-plot_ly(diamonds,
-  x = ~cut, y = ~price, split = ~cut, type = "violin",
-  box = list(visible = T),
-  meanline = list(visible = T)
-) %>%
-  layout(
-    xaxis = list(title = "Cut"),
-    yaxis = list(title = "Price", zeroline = F)
-  )
 ```
 
 ## 提琴图 {#sec-plotly-violin}
 
 
 ```r
-# 提琴图
-p24 <- plot_ly(sleep,
-   x = ~group, y = ~extra, split = ~group, type = "violin",
-   box = list(visible = T),
-   meanline = list(visible = T)
+plot_ly(sleep,
+  x = ~group, y = ~extra, split = ~group,
+  type = "violin",
+  box = list(visible = T),
+  meanline = list(visible = T)
 )
-
-htmltools::tagList(p21, p22, p23, p24)
 ```
 
 plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
@@ -448,7 +375,7 @@ dat <- diamonds[, .(
 ), by = .(cut)]
 
 plot_ly(
-  data = dat,
+  data = dat, colors = "Greys",
   x = ~carat, y = ~price, color = ~cut, size = ~cnt,
   type = "scatter", mode = "markers",
   marker = list(
@@ -477,8 +404,9 @@ plot_ly(
 
 ```r
 plot_ly(
-  x = c(1, 2.2, 3), y = c(5.3, 6, 7), type = "scatter",
-  mode = "markers+lines", line = list(shape = "spline"), color = I("#EA4335")
+  x = c(1, 2.2, 3), y = c(5.3, 6, 7), 
+  type = "scatter", color = I("gray40"), 
+  mode = "markers+lines", line = list(shape = "spline")
 ) %>%
   add_annotations(
     x = 2, y = 6, size = I(100),
@@ -498,7 +426,7 @@ plot_ly(
 ```r
 plot_ly(
   data = PlantGrowth, y = ~weight,
-  color = ~group,
+  color = ~group, colors = "Greys",
   type = "scatter", line = list(shape = "spline"),
   mode = "lines", fill = "tozeroy"
 )
@@ -511,8 +439,7 @@ plot_ly(
 
 
 ```r
-# Heatmaps
-plot_ly(z = volcano, type = 'heatmap')
+plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
 ```
 
 
@@ -526,7 +453,7 @@ plot_ly(z = volcano, type = 'heatmap')
 ```r
 data("quakes")
 plot_mapbox(
-  data = quakes,
+  data = quakes, colors = "Greys",
   lon = ~long, lat = ~lat,
   color = ~mag, size = 2,
   type = "scattermapbox", 
@@ -560,7 +487,7 @@ plot_ly(
     "震级：", mag
   ),
   marker = list(
-    color = ~mag,
+    color = ~mag, 
     size = 10, opacity = 0.8,
     line = list(color = "white", width = 1)
   )
@@ -598,7 +525,7 @@ plot_ly(data = dat,
   type = "choropleth",
   locations = ~stats_abbr,
   locationmode = "USA-states",
-  colorscale = "Viridis",
+  colorscale = "Greys", 
   z = ~Income
 ) %>%
   layout(geo = list(scope = "usa"))
@@ -742,7 +669,7 @@ plot_ly(data = df) %>%
     y = ~y, yend = ~y,
     color = ~resource,
     mode = "lines",
-    colors = "Set2",
+    colors = "Greys", 
     line = list(width = 20),
     showlegend = F,
     hoverinfo = "text",
@@ -818,8 +745,14 @@ dat <- dat[order(-dat$count), ] %>%
 dat$complaint <- reorder(x = dat$complaint, X = dat$count, FUN = function(x) 1/(1 + x))
 
 plot_ly(data = dat) %>%
-  add_bars(x = ~complaint, y = ~count, showlegend = F, color = I("#4285f4")) %>%
-  add_lines(x = ~complaint, y = ~cumulative, yaxis = "y2", showlegend = F) %>%
+  add_bars(
+    x = ~complaint, y = ~count,
+    showlegend = F, color = I("gray60")
+  ) %>%
+  add_lines(
+    x = ~complaint, y = ~cumulative, yaxis = "y2",
+    showlegend = F, color = I("gray40")
+  ) %>%
   layout(
     yaxis2 = list(
       tickfont = list(color = "black"),
@@ -872,12 +805,14 @@ dat <- data.frame(
   value = c(39, 27.4, 20.6, 11, 2)
 ) %>% 
   transform(percent = value / cumsum(value))
+
 plot_ly(data = dat) %>%
   add_trace(
     type = "funnel",
     y = ~category,
     x = ~value,
-    color = ~category,
+    color = ~category, 
+    colors = "Set2", 
     text = ~ paste0(value, "<br>", sprintf("%.2f%%", 100*percent)) ,
     hoverinfo = "text",
     showlegend = FALSE
@@ -916,12 +851,12 @@ plot_ly(
   type = "scatterpolar", mode = "markers", fill = "toself"
 ) %>%
   add_trace(
-    r = c(39, 28, 8, 7, 28, 39),
+    r = c(39, 28, 8, 7, 28, 39), color = I("gray40"),
     theta = c("数学", "物理", "化学", "英语", "生物", "数学"),
     name = "学生 A"
   ) %>%
   add_trace(
-    r = c(1.5, 10, 39, 31, 15, 1.5),
+    r = c(1.5, 10, 39, 31, 15, 1.5), color = I("gray80"),
     theta = c("数学", "物理", "化学", "英语", "生物", "数学"),
     name = "学生 B"
   ) %>%
@@ -973,7 +908,7 @@ dat[nrow(dat), "text"] <- "累计"
 plotly::plot_ly(dat,
   x = ~x, y = ~y, measure = ~measure, type = "waterfall",
   text = ~text, textposition = "outside", 
-  name = "收支", hoverinfo = "final",
+  name = "收支", hoverinfo = "final", 
   connector = list(line = list(color = "gray")),
   increasing = list(marker = list(color = "#66C2A5")),
   decreasing = list(marker = list(color = "#FC8D62")),
@@ -1007,14 +942,20 @@ plot_ly(iris,
   mode = "markers", type = "scatter",
   color = ~ Sepal.Length > 6, colors = c("#132B43", "#56B1F7")
 )
-plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
-        mode = "markers", type = "scatter")
+plot_ly(iris,
+  x = ~Petal.Length, y = ~Petal.Width, color = ~ Sepal.Length > 6,
+  mode = "markers", type = "scatter"
+)
 
-plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
-        mode = "markers", type = "scatter", colors = "Set2")
+plot_ly(iris,
+  x = ~Petal.Length, y = ~Petal.Width, color = ~ Sepal.Length > 6,
+  mode = "markers", type = "scatter", colors = "Set2"
+)
 
-plot_ly(iris, x = ~Petal.Length, y = ~Petal.Width, color = ~Sepal.Length>6, 
-        mode = "markers", type = "scatter", colors = "Set1")
+plot_ly(iris,
+  x = ~Petal.Length, y = ~Petal.Width, color = ~ Sepal.Length > 6,
+  mode = "markers", type = "scatter", colors = "Set1"
+)
 ```
 
 构造 20 个类别 超出 Set1 调色板的范围，会触发警告说 Set1 没有那么多色块，但还是返回足够多的色块，也可以使用 `viridis`、`plasma`、`magma` 或 `inferno` 调色板
@@ -1031,13 +972,13 @@ dat <- data.frame(
 )
 # viridis
 plot_ly(dat,
-  x = ~dt, y = ~qv, color = ~bu,
+  x = ~dt, y = ~qv, color = ~bu, 
   mode = "markers", type = "scatter", colors = "viridis"
 )
 ```
 
 
-## 面积图 {#sec-highcharter}
+## 堆积图 (highcharter) {#sec-highcharter}
 
 Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可视化案例，另一个关键的参考资料是 [highcharts API 文档](https://api.highcharts.com/highcharts/)，文档主要分两部分全局选项 `Highcharts.setOptions` 和绘图函数 `Highcharts.chart`。下面以 `data_to_boxplot()` 为例解析 R 中的数据结构是如何和 highcharts 的 JSON 以及绘图函数对应的。
 
@@ -1528,7 +1469,7 @@ dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") |>
   dyUnzoom()
 ```
 
-## 图形导出 {#sec-export}
+## 导出静态图形 {#sec-export}
 
 orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形具有很强的导出功能，[安装 orca](https://github.com/plotly/orca#installation) 后，`plotly::orca()` 函数可以将基于 htmlwidgets 的 plotly 图形对象导出为 PNG、PDF 和 SVG 等格式的高质量静态图片。
 
@@ -1537,6 +1478,46 @@ orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形�
 p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
 orca(p, "plot.svg")
 ```
+
+## 静态图形转交互图形 {#sec-ggplotly}
+
+函数 `ggplotly()`  将 ggplot 对象转化为交互式 plotly 对象
+
+
+```r
+gg <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
+  xlim(1, 6) +
+  ylim(40, 100)
+```
+
+静态图形
+
+
+```r
+gg
+```
+
+
+
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-15-1} \end{center}
+
+转化为 plotly 对象
+
+
+```r
+ggplotly(gg)
+```
+
+添加动态点的注释，比如点横纵坐标、坐标文本，整个注释标签的样式（如背景色）
+
+
+```r
+ggplotly(gg, dynamicTicks = "y") %>%
+  style(., hoveron = "points", hoverinfo = "x+y+text", 
+        hoverlabel = list(bgcolor = "white"))
+```
+
 
 
 ## 地图 II {#sec-echarts4r-map}
@@ -1801,7 +1782,7 @@ persp3d(x, y, z,
 
 
 ```r
-library(igraph)
+# library(igraph)
 ```
 
 ### networkD3 {#subsec-networkD3}
@@ -1871,7 +1852,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-25-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-24-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 
@@ -1985,25 +1966,25 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] sparkline_2.0     rpart_4.1-15      visNetwork_2.0.9  networkD3_0.4    
-##  [5] igraph_1.2.6      r2d3_0.2.5        dygraphs_1.1.1.6  highcharter_0.8.2
-##  [9] plotly_4.9.4.1    ggplot2_3.3.5     reticulate_1.20  
+##  [5] r2d3_0.2.5        dygraphs_1.1.1.6  highcharter_0.8.2 plotly_4.9.4.1   
+##  [9] ggplot2_3.3.5     reticulate_1.20  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] httr_1.4.2        tidyr_1.1.3       jsonlite_1.7.2    viridisLite_0.4.0
-##  [5] assertthat_0.2.1  TTR_0.24.2        highr_0.9         yaml_2.2.1       
-##  [9] pillar_1.6.2      backports_1.2.1   lattice_0.20-44   glue_1.4.2       
-## [13] rlist_0.4.6.1     digest_0.6.27     colorspace_2.0-2  htmltools_0.5.1.1
-## [17] Matrix_1.3-4      pkgconfig_2.0.3   broom_0.7.9       bookdown_0.23    
-## [21] purrr_0.3.4       scales_1.1.1      webshot_0.5.2     processx_3.5.2   
-## [25] tibble_3.1.3      generics_0.1.0    farver_2.1.0      ellipsis_0.3.2   
-## [29] withr_2.4.2       lazyeval_0.2.2    quantmod_0.4.18   magrittr_2.0.1   
-## [33] crayon_1.4.1      evaluate_0.14     ps_1.6.0          fansi_0.5.0      
-## [37] MASS_7.3-54       xts_0.12.1        tools_4.1.1       data.table_1.14.0
-## [41] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     callr_3.7.0      
-## [45] isoband_0.2.5     compiler_4.1.1    rlang_0.4.11      grid_4.1.1       
-## [49] rstudioapi_0.13   htmlwidgets_1.5.3 labeling_0.4.2    rmarkdown_2.10   
-## [53] gtable_0.3.0      DBI_1.1.1         curl_4.3.2        R6_2.5.0         
-## [57] zoo_1.8-9         lubridate_1.7.10  knitr_1.33        dplyr_1.0.7      
-## [61] utf8_1.2.2        stringi_1.7.3     Rcpp_1.0.7        vctrs_0.3.8      
-## [65] png_0.1-7         tidyselect_1.1.1  xfun_0.25
+##  [1] Rcpp_1.0.7        lubridate_1.7.10  lattice_0.20-44   tidyr_1.1.3      
+##  [5] ps_1.6.0          png_0.1-7         zoo_1.8-9         assertthat_0.2.1 
+##  [9] digest_0.6.27     utf8_1.2.2        R6_2.5.0          backports_1.2.1  
+## [13] evaluate_0.14     httr_1.4.2        highr_0.9         pillar_1.6.2     
+## [17] rlang_0.4.11      lazyeval_0.2.2    curl_4.3.2        rstudioapi_0.13  
+## [21] data.table_1.14.0 callr_3.7.0       TTR_0.24.2        Matrix_1.3-4     
+## [25] rmarkdown_2.10    labeling_0.4.2    webshot_0.5.2     stringr_1.4.0    
+## [29] htmlwidgets_1.5.3 igraph_1.2.6      munsell_0.5.0     broom_0.7.9      
+## [33] compiler_4.1.1    xfun_0.25         pkgconfig_2.0.3   htmltools_0.5.1.1
+## [37] tidyselect_1.1.1  tibble_3.1.3      bookdown_0.23     fansi_0.5.0      
+## [41] viridisLite_0.4.0 crayon_1.4.1      dplyr_1.0.7       withr_2.4.2      
+## [45] MASS_7.3-54       grid_4.1.1        jsonlite_1.7.2    gtable_0.3.0     
+## [49] lifecycle_1.0.0   DBI_1.1.1         magrittr_2.0.1    scales_1.1.1     
+## [53] rlist_0.4.6.1     quantmod_0.4.18   stringi_1.7.3     farver_2.1.0     
+## [57] ellipsis_0.3.2    xts_0.12.1        generics_0.1.0    vctrs_0.3.8      
+## [61] tools_4.1.1       glue_1.4.2        purrr_0.3.4       processx_3.5.2   
+## [65] yaml_2.2.1        colorspace_2.0-2  isoband_0.2.5     knitr_1.33
 ```
