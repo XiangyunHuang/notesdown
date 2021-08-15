@@ -607,7 +607,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -632,10 +632,10 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.7        knitr_1.33        magrittr_2.0.1    xtable_1.8-4     
 ##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0    
-##  [9] tools_4.1.0       xfun_0.25         png_0.1-7         htmltools_0.5.1.1
+##  [9] tools_4.1.1       xfun_0.25         png_0.1-7         htmltools_0.5.1.1
 ## [13] ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
 ## [17] bookdown_0.23     later_1.2.0       promises_1.2.0.1  curl_4.3.2       
 ## [21] evaluate_0.14     mime_0.11         rmarkdown_2.10    stringi_1.7.3    
-## [25] compiler_4.1.0    httpuv_1.6.1
+## [25] compiler_4.1.1    httpuv_1.6.1
 ```
 

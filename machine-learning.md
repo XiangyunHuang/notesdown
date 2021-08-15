@@ -1,6 +1,6 @@
 # (PART) 机器学习 {-}
 
-# 介绍 {#chap-machine-learning}
+# 介绍 {#chap-machine-learning .unnumbered}
 
 
 机器学习与统计的关系

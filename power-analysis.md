@@ -361,7 +361,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -385,16 +385,16 @@ sessionInfo()
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        compiler_4.1.0    pillar_1.6.2      nloptr_1.2.2.2   
-##  [5] tools_4.1.0       boot_1.3-28       digest_0.6.27     evaluate_0.14    
+##  [1] Rcpp_1.0.7        compiler_4.1.1    pillar_1.6.2      nloptr_1.2.2.2   
+##  [5] tools_4.1.1       boot_1.3-28       digest_0.6.27     evaluate_0.14    
 ##  [9] lifecycle_1.0.0   tibble_3.1.3      nlme_3.1-152      gtable_0.3.0     
 ## [13] lattice_0.20-44   pkgconfig_2.0.3   rlang_0.4.11      DBI_1.1.1        
 ## [17] curl_4.3.2        yaml_2.2.1        xfun_0.25         withr_2.4.2      
 ## [21] dplyr_1.0.7       stringr_1.4.0     knitr_1.33        generics_0.1.0   
-## [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.1.0        glue_1.4.2       
+## [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.1.1        glue_1.4.2       
 ## [29] R6_2.5.0          fansi_0.5.0       rmarkdown_2.10    bookdown_0.23    
 ## [33] minqa_1.2.4       farver_2.1.0      purrr_0.3.4       scales_1.1.1     
-## [37] htmltools_0.5.1.1 ellipsis_0.3.2    MASS_7.3-54       splines_4.1.0    
+## [37] htmltools_0.5.1.1 ellipsis_0.3.2    MASS_7.3-54       splines_4.1.1    
 ## [41] assertthat_0.2.1  colorspace_2.0-2  labeling_0.4.2    utf8_1.2.2       
 ## [45] stringi_1.7.3     munsell_0.5.0     crayon_1.4.1
 ```

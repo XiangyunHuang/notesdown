@@ -690,7 +690,7 @@ ridesDf %>%
 \end{figure}
 
 
-## 三维图 {#sec-plotly-3d}
+## 三维图 (plotly) {#sec-plotly-3d}
 
 
 
@@ -1541,8 +1541,6 @@ orca(p, "plot.svg")
 
 ## 地图 II {#sec-echarts4r-map}
 
-
-
 相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 [Apache ECharts](https://github.com/apache/echarts)。
 前者 MIT 协议，后者采用  Apache-2.0 协议，都可以商用。Apache ECharts 是 Apache 旗下顶级开源项目，由百度前端技术团队贡献，中文文档也比较全，学习起来门槛会低一些。
 
@@ -1774,7 +1772,28 @@ mtcars |>
           "))
 ```
 
+## 三维图 (rgl) {#sec-rgl-3d}
 
+
+```r
+library(rgl)
+lat <- matrix(seq(90, -90, len = 50) * pi / 180, 50, 50, byrow = TRUE)
+long <- matrix(seq(-180, 180, len = 50) * pi / 180, 50, 50)
+
+r <- 6378.1 # radius of Earth in km
+x <- r * cos(lat) * cos(long)
+y <- r * cos(lat) * sin(long)
+z <- r * sin(lat)
+# 调整视角
+rgl.viewpoint( theta = 0, phi = 15, fov = 60, zoom = 0.5, interactive = TRUE)
+
+persp3d(x, y, z,
+  col = "white", xlab = "", ylab = "", zlab = "",
+  texture = system.file("textures/world.png", package = "rgl"),
+  specular = "black", axes = FALSE, box = FALSE,
+  normal_x = x, normal_y = y, normal_z = z
+)
+```
 
 ## 网络图 {#sec-network-analysis}
 
@@ -1852,7 +1871,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-26-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-25-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 
@@ -1945,7 +1964,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -1965,31 +1984,26 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] sparkline_2.0        rpart_4.1-15         visNetwork_2.0.9    
-##  [4] networkD3_0.4        igraph_1.2.6         leaflet.extras_1.0.0
-##  [7] maptools_1.1-1       sp_1.4-5             leafletCN_0.2.1     
-## [10] leaflet_2.0.4.1      echarts4r_0.4.1      r2d3_0.2.5          
-## [13] dygraphs_1.1.1.6     highcharter_0.8.2    plotly_4.9.4.1      
-## [16] ggplot2_3.3.5        reticulate_1.20     
+##  [1] sparkline_2.0     rpart_4.1-15      visNetwork_2.0.9  networkD3_0.4    
+##  [5] igraph_1.2.6      r2d3_0.2.5        dygraphs_1.1.1.6  highcharter_0.8.2
+##  [9] plotly_4.9.4.1    ggplot2_3.3.5     reticulate_1.20  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] xts_0.12.1        lubridate_1.7.10  webshot_0.5.2     httr_1.4.2       
-##  [5] tools_4.1.0       backports_1.2.1   utf8_1.2.2        R6_2.5.0         
-##  [9] DBI_1.1.1         lazyeval_0.2.2    colorspace_2.0-2  withr_2.4.2      
-## [13] processx_3.5.2    tidyselect_1.1.1  curl_4.3.2        compiler_4.1.0   
-## [17] isoband_0.2.5     labeling_0.4.2    bookdown_0.23     scales_1.1.1     
-## [21] callr_3.7.0       stringr_1.4.0     digest_0.6.27     foreign_0.8-81   
-## [25] rmarkdown_2.10    pkgconfig_2.0.3   htmltools_0.5.1.1 fastmap_1.1.0    
-## [29] highr_0.9         htmlwidgets_1.5.3 rlang_0.4.11      TTR_0.24.2       
-## [33] rstudioapi_0.13   quantmod_0.4.18   shiny_1.6.0       farver_2.1.0     
-## [37] generics_0.1.0    zoo_1.8-9         jsonlite_1.7.2    crosstalk_1.1.1  
-## [41] dplyr_1.0.7       magrittr_2.0.1    rlist_0.4.6.1     Matrix_1.3-4     
-## [45] Rcpp_1.0.7        munsell_0.5.0     fansi_0.5.0       lifecycle_1.0.0  
-## [49] stringi_1.7.3     yaml_2.2.1        MASS_7.3-54       grid_4.1.0       
-## [53] promises_1.2.0.1  crayon_1.4.1      lattice_0.20-44   ps_1.6.0         
-## [57] knitr_1.33        pillar_1.6.2      glue_1.4.2        evaluate_0.14    
-## [61] data.table_1.14.0 png_0.1-7         vctrs_0.3.8       httpuv_1.6.1     
-## [65] gtable_0.3.0      purrr_0.3.4       tidyr_1.1.3       assertthat_0.2.1 
-## [69] xfun_0.25         mime_0.11         xtable_1.8-4      broom_0.7.9      
-## [73] later_1.2.0       viridisLite_0.4.0 tibble_3.1.3      ellipsis_0.3.2
+##  [1] httr_1.4.2        tidyr_1.1.3       jsonlite_1.7.2    viridisLite_0.4.0
+##  [5] assertthat_0.2.1  TTR_0.24.2        highr_0.9         yaml_2.2.1       
+##  [9] pillar_1.6.2      backports_1.2.1   lattice_0.20-44   glue_1.4.2       
+## [13] rlist_0.4.6.1     digest_0.6.27     colorspace_2.0-2  htmltools_0.5.1.1
+## [17] Matrix_1.3-4      pkgconfig_2.0.3   broom_0.7.9       bookdown_0.23    
+## [21] purrr_0.3.4       scales_1.1.1      webshot_0.5.2     processx_3.5.2   
+## [25] tibble_3.1.3      generics_0.1.0    farver_2.1.0      ellipsis_0.3.2   
+## [29] withr_2.4.2       lazyeval_0.2.2    quantmod_0.4.18   magrittr_2.0.1   
+## [33] crayon_1.4.1      evaluate_0.14     ps_1.6.0          fansi_0.5.0      
+## [37] MASS_7.3-54       xts_0.12.1        tools_4.1.1       data.table_1.14.0
+## [41] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     callr_3.7.0      
+## [45] isoband_0.2.5     compiler_4.1.1    rlang_0.4.11      grid_4.1.1       
+## [49] rstudioapi_0.13   htmlwidgets_1.5.3 labeling_0.4.2    rmarkdown_2.10   
+## [53] gtable_0.3.0      DBI_1.1.1         curl_4.3.2        R6_2.5.0         
+## [57] zoo_1.8-9         lubridate_1.7.10  knitr_1.33        dplyr_1.0.7      
+## [61] utf8_1.2.2        stringi_1.7.3     Rcpp_1.0.7        vctrs_0.3.8      
+## [65] png_0.1-7         tidyselect_1.1.1  xfun_0.25
 ```

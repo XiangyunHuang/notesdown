@@ -5,7 +5,7 @@
 
 ```r
 library(geoR)
-library(INLA)
+# library(INLA)
 # library(leaflet)
 library(highcharter)
 ```
@@ -35,7 +35,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -61,8 +61,8 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9               tidyselect_1.1.1        xfun_0.25              
-##  [4] purrr_0.3.4             splines_4.1.0           lattice_0.20-44        
-##  [7] tcltk_4.1.0             vctrs_0.3.8             generics_0.1.0         
+##  [4] purrr_0.3.4             splines_4.1.1           lattice_0.20-44        
+##  [7] tcltk_4.1.1             vctrs_0.3.8             generics_0.1.0         
 ## [10] htmltools_0.5.1.1       yaml_2.2.1              utf8_1.2.2             
 ## [13] rlang_0.4.11            pillar_1.6.2            glue_1.4.2             
 ## [16] DBI_1.1.1               TTR_0.24.2              lifecycle_1.0.0        
@@ -72,12 +72,12 @@ sessionInfo()
 ## [28] broom_0.7.9             Rcpp_1.0.7              backports_1.2.1        
 ## [31] jsonlite_1.7.2          digest_0.6.27           stringi_1.7.3          
 ## [34] rlist_0.4.6.1           bookdown_0.23           dplyr_1.0.7            
-## [37] splancs_2.01-42         grid_4.1.0              tools_4.1.0            
+## [37] splancs_2.01-42         grid_4.1.1              tools_4.1.1            
 ## [40] magrittr_2.0.1          tibble_3.1.3            crayon_1.4.1           
 ## [43] tidyr_1.1.3             pkgconfig_2.0.3         MASS_7.3-54            
 ## [46] ellipsis_0.3.2          data.table_1.14.0       RandomFieldsUtils_0.5.3
 ## [49] RandomFields_3.3.8      lubridate_1.7.10        assertthat_0.2.1       
 ## [52] rmarkdown_2.10          iterators_1.0.13        R6_2.5.0               
-## [55] igraph_1.2.6            compiler_4.1.0
+## [55] igraph_1.2.6            compiler_4.1.1
 ```
 

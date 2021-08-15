@@ -250,7 +250,7 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [4a4bc4f] 2021-07-19: update pandoc
+## Head:     [583dad8] 2021-08-15: 拆分
 ## 
 ## Branches:         1
 ## Tags:             0
@@ -258,16 +258,16 @@ summary(git2r::repository())
 ## Contributors:     1
 ## Stashes:          0
 ## Ignored files:   14
-## Untracked files: 80
-## Unstaged files:   0
+## Untracked files: 89
+## Unstaged files:   1
 ## Staged files:     0
 ## 
 ## Latest commits:
-## [4a4bc4f] 2021-07-19: update pandoc
-## [ec490cb] 2021-07-19: use https in references
-## [d00acdd] 2021-07-18: build full pdf
-## [9bc7292] 2021-07-18: fix WARNING when build pdf
-## [a49be96] 2021-07-18: fix error when build pdf
+## [583dad8] 2021-08-15: 拆分
+## [2fc988c] 2021-08-14: 章节划分，分出几个部分
+## [02c60a0] 2021-08-14: upgrade to R 4.1.1
+## [2dee052] 2021-08-14: 添加副标题
+## [811d100] 2021-08-14: reorg
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -1350,7 +1350,7 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7ff817a4ca60>]
+## [<matplotlib.lines.Line2D object at 0x7f61d4655a90>]
 ## Text(0.5, 0, 'Coord $x$')
 ## Text(0, 0.5, 'Coord $y$')
 ```
@@ -1651,69 +1651,70 @@ pip3 list --format=columns
 ```
 
 
-Package                 Version            
------------------------ -------------------
-absl-py                 0.13.0             
-astunparse              1.6.3              
-cachetools              4.2.2              
-certifi                 2021.5.30          
-charset-normalizer      2.0.4              
-cycler                  0.10.0             
-flatbuffers             1.12               
-gast                    0.4.0              
-google-auth             1.34.0             
-google-auth-oauthlib    0.4.5              
-google-pasta            0.2.0              
-graphviz                0.8.4              
-grpcio                  1.34.1             
-h5py                    3.1.0              
-idna                    3.2                
-joblib                  1.0.1              
-kaleido                 0.2.1              
-keras-nightly           2.5.0.dev2021032900
-Keras-Preprocessing     1.1.2              
-kiwisolver              1.3.1              
-Markdown                3.3.4              
-matplotlib              3.4.2              
-mpmath                  1.2.1              
-mxnet                   1.8.0.post0        
-numpy                   1.21.1             
-oauthlib                3.1.1              
-opt-einsum              3.3.0              
-pandas                  1.3.1              
-patsy                   0.5.1              
-Pillow                  8.3.1              
-pip                     20.0.2             
-pkg-resources           0.0.0              
-plotly                  5.1.0              
-protobuf                3.17.3             
-pyasn1                  0.4.8              
-pyasn1-modules          0.2.8              
-pyparsing               2.4.7              
-python-dateutil         2.8.2              
-pytz                    2021.1             
-requests                2.26.0             
-requests-oauthlib       1.3.0              
-rsa                     4.7.2              
-scikit-learn            0.24.2             
-scipy                   1.7.1              
-setuptools              44.0.0             
-six                     1.15.0             
-statsmodels             0.12.2             
-sympy                   1.8                
-tenacity                8.0.1              
-tensorboard             2.6.0              
-tensorboard-data-server 0.6.1              
-tensorboard-plugin-wit  1.8.0              
-tensorflow              2.5.0              
-tensorflow-estimator    2.5.0              
-termcolor               1.1.0              
-threadpoolctl           2.2.0              
-typing-extensions       3.7.4.3            
-urllib3                 1.26.6             
-Werkzeug                2.0.1              
-wheel                   0.36.2             
-wrapt                   1.12.1             
+Package                 Version    
+----------------------- -----------
+absl-py                 0.13.0     
+astunparse              1.6.3      
+cachetools              4.2.2      
+certifi                 2021.5.30  
+charset-normalizer      2.0.4      
+clang                   5.0        
+cycler                  0.10.0     
+flatbuffers             1.12       
+gast                    0.4.0      
+google-auth             1.34.0     
+google-auth-oauthlib    0.4.5      
+google-pasta            0.2.0      
+graphviz                0.8.4      
+grpcio                  1.39.0     
+h5py                    3.1.0      
+idna                    3.2        
+joblib                  1.0.1      
+kaleido                 0.2.1      
+keras                   2.6.0      
+Keras-Preprocessing     1.1.2      
+kiwisolver              1.3.1      
+Markdown                3.3.4      
+matplotlib              3.4.3      
+mpmath                  1.2.1      
+mxnet                   1.8.0.post0
+numpy                   1.21.1     
+oauthlib                3.1.1      
+opt-einsum              3.3.0      
+pandas                  1.3.1      
+patsy                   0.5.1      
+Pillow                  8.3.1      
+pip                     20.0.2     
+pkg-resources           0.0.0      
+plotly                  5.2.1      
+protobuf                3.17.3     
+pyasn1                  0.4.8      
+pyasn1-modules          0.2.8      
+pyparsing               2.4.7      
+python-dateutil         2.8.2      
+pytz                    2021.1     
+requests                2.26.0     
+requests-oauthlib       1.3.0      
+rsa                     4.7.2      
+scikit-learn            0.24.2     
+scipy                   1.7.1      
+setuptools              44.0.0     
+six                     1.15.0     
+statsmodels             0.12.2     
+sympy                   1.8        
+tenacity                8.0.1      
+tensorboard             2.6.0      
+tensorboard-data-server 0.6.1      
+tensorboard-plugin-wit  1.8.0      
+tensorflow              2.6.0      
+tensorflow-estimator    2.6.0      
+termcolor               1.1.0      
+threadpoolctl           2.2.0      
+typing-extensions       3.7.4.3    
+urllib3                 1.26.6     
+Werkzeug                2.0.1      
+wheel                   0.37.0     
+wrapt                   1.12.1     
 
 
 ```bash
@@ -1768,7 +1769,7 @@ rcParams.update({'font.size': 10, 'text.usetex': True})
 #                  'font.serif':      ['DejaVu Serif']})
 plt.switch_backend('agg')
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7ff817a325e0>]
+## [<matplotlib.lines.Line2D object at 0x7f61bc289190>]
 plt.xlabel(r'Coord $x$')
 ## Text(0.5, 0, 'Coord $x$')
 plt.ylabel(r'Coord $y$')
@@ -1779,7 +1780,7 @@ plt.show()
 
 \begin{figure}
 
-{\centering \includegraphics{other-softwares_files/figure-latex/matplotlib-5} 
+{\centering \includegraphics{other-softwares_files/figure-latex/matplotlib-1} 
 
 }
 
@@ -1803,7 +1804,7 @@ x # 得到 python 中的向量 vector 或数组 array
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月14日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月15日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
 
 
 
@@ -1854,6 +1855,15 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Call iris from R")
 p1 + p2
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
+
+}
+
+\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
+\end{figure}
 
 以 NumPy 为例
 
@@ -2415,7 +2425,7 @@ sessionInfo(sort(.packages(T)))
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -2439,220 +2449,249 @@ sessionInfo(sort(.packages(T)))
 ##   [1] ABCoptim_0.15.0            abind_1.4-5               
 ##   [3] agridat_1.18               alabama_2015.3-1          
 ##   [5] arrow_5.0.0                arules_1.6-8              
-##   [7] askpass_1.1                assertive.base_0.0-9      
-##   [9] assertive.properties_0.0-4 assertive.types_0.0-3     
-##  [11] assertthat_0.2.1           autoplotly_0.1.4          
-##  [13] backports_1.2.1            base64enc_0.1-3           
-##  [15] bayesplot_1.8.1            BB_2019.10-1              
-##  [17] bbmle_1.0.24               bdsmatrix_1.3-4           
-##  [19] beanplot_1.2               beeswarm_0.4.0            
-##  [21] BH_1.75.0-0                BiocGenerics_0.38.0       
-##  [23] BiocManager_1.30.16        BiocVersion_3.13.1        
-##  [25] bit_4.0.4                  bit64_4.0.5               
-##  [27] bitops_1.0-7               blob_1.2.2                
-##  [29] bookdown_0.22              boot_1.3-28               
-##  [31] brew_1.0-6                 bridgesampling_1.1-2      
-##  [33] brio_1.1.2                 brms_2.15.0               
-##  [35] Brobdingnag_1.2-6          broom_0.7.9               
-##  [37] broom.mixed_0.2.7          bslib_0.2.5.1             
-##  [39] cachem_1.0.5               Cairo_1.5-12.2            
-##  [41] callr_3.7.0                car_3.0-11                
-##  [43] carData_3.0-4              cellranger_1.1.0          
-##  [45] checkmate_2.0.0            circlize_0.4.13           
-##  [47] class_7.3-19               classInt_0.4-3            
-##  [49] cli_3.0.1                  clipr_0.7.1               
-##  [51] clue_0.3-59                cluster_2.1.2             
-##  [53] cmdstanr_0.4.0             coda_0.19-4               
-##  [55] codetools_0.2-18           colorspace_2.0-2          
-##  [57] colourpicker_1.1.0         commonmark_1.7            
-##  [59] ComplexHeatmap_2.8.0       config_0.3.1              
-##  [61] conquer_1.0.2              corrplot_0.90             
-##  [63] countrycode_1.3.0          cowplot_1.1.1             
-##  [65] cpp11_0.3.1                crayon_1.4.1              
-##  [67] credentials_1.3.1          crosstalk_1.1.1           
-##  [69] curl_4.3.2                 data.table_1.14.0         
-##  [71] DBI_1.1.1                  dbplyr_2.1.1              
-##  [73] dendextend_1.15.1          Deriv_4.1.3               
-##  [75] desc_1.3.0                 deSolve_1.28              
-##  [77] devtools_2.4.2             DiagrammeR_1.0.6.1        
-##  [79] diffobj_0.3.4              digest_0.6.27             
-##  [81] distributional_0.2.2       doParallel_1.0.16         
-##  [83] downlit_0.2.1              downloader_0.4            
-##  [85] dplyr_1.0.7                DT_0.18                   
-##  [87] dtplyr_1.1.0               dygraphs_1.1.1.6          
-##  [89] e1071_1.7-8                echarts4r_0.4.1           
-##  [91] egg_0.4.5                  ellipsis_0.3.2            
-##  [93] emo_0.0.0.9000             equatiomatic_0.2.0        
-##  [95] evaluate_0.14              extrafont_0.17            
-##  [97] extrafontdb_1.0            fansi_0.5.0               
-##  [99] farver_2.1.0               fastmap_1.1.0             
-## [101] filehash_2.4-2             flexdashboard_0.5.2       
-## [103] fontcm_1.1                 forcats_0.5.1             
-## [105] foreach_1.5.1              foreign_0.8-81            
-## [107] forge_0.2.0                formatR_1.11              
-## [109] formattable_0.2.1          Formula_1.2-4             
-## [111] fresh_0.2.0                fs_1.5.0                  
-## [113] future_1.21.0              GA_3.2.1                  
-## [115] gamm4_0.2-6                gapminder_0.3.0           
-## [117] gargle_1.2.0               gclus_1.3.2               
-## [119] gdtools_0.2.3              generics_0.1.0            
-## [121] geoR_1.8-1                 gert_1.3.1                
-## [123] GetoptLong_1.0.5           ggalluvial_0.12.3         
-## [125] gganimate_1.0.7            ggbeeswarm_0.6.0          
-## [127] ggbump_0.1.99999           ggdendro_0.1.22           
-## [129] ggfittext_0.9.1            ggfortify_0.4.12          
-## [131] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
-## [133] ggplot2_3.3.5              ggpubr_0.4.0              
-## [135] ggrepel_0.9.1              ggridges_0.5.3            
-## [137] ggsci_2.9                  ggsignif_0.6.2            
-## [139] ggstream_0.1.0             gh_1.3.0                  
-## [141] gifski_1.4.3-1             git2r_0.28.0              
-## [143] gitcreds_0.1.1             glmmTMB_1.1.2             
-## [145] glmnet_4.1-2               GlobalOptions_0.1.2       
-## [147] globals_0.14.0             glue_1.4.2                
-## [149] googledrive_2.0.0          googlesheets4_1.0.0       
-## [151] graph_1.70.0               gridBase_0.4-7            
-## [153] gridExtra_2.3              gt_0.3.0                  
-## [155] gtable_0.3.0               gtools_3.9.2              
-## [157] haven_2.4.3                heatmaply_1.2.1           
-## [159] hexbin_1.28.2              highcharter_0.8.2         
-## [161] highr_0.9                  Hmisc_4.5-0               
-## [163] hms_1.1.0                  hrbrthemes_0.8.0          
-## [165] htmlTable_2.2.1            htmltools_0.5.1.1         
-## [167] htmlwidgets_1.5.3          httpuv_1.6.1              
-## [169] httr_1.4.2                 ids_1.0.1                 
-## [171] igraph_1.2.6               influenceR_0.1.0          
-## [173] ini_0.3.1                  INLA_21.02.23             
-## [175] inline_0.3.19              IRanges_2.26.0            
-## [177] isoband_0.2.5              iterators_1.0.13          
-## [179] jpeg_0.1-9                 jquerylib_0.1.4           
-## [181] jsonlite_1.7.2             kableExtra_1.3.4          
-## [183] Kendall_2.2                kernlab_0.9-29            
-## [185] KernSmooth_2.23-20         knitr_1.33                
-## [187] labeling_0.4.2             later_1.2.0               
-## [189] lattice_0.20-44            latticeExtra_0.6-29       
-## [191] lazyeval_0.2.2             leaflet_2.0.4.1           
-## [193] leaflet.extras_1.0.0       leaflet.providers_1.9.0   
-## [195] leafletCN_0.2.1            lifecycle_1.0.0           
-## [197] lightgbm_3.2.1             listenv_0.8.0             
-## [199] lme4_1.1-27.1              loo_2.4.1                 
-## [201] lpSolve_5.6.15             lpSolveAPI_5.5.2.0-17.7   
-## [203] lubridate_1.7.10           magick_2.7.2              
-## [205] magrittr_2.0.1             mapdata_2.3.0             
-## [207] mapproj_1.2.7              maps_3.3.0                
-## [209] maptools_1.1-1             markdown_1.1              
-## [211] MASS_7.3-54                Matrix_1.3-4              
-## [213] MatrixModels_0.5-0         matrixStats_0.60.0        
-## [215] maxLik_1.5-2               mcmc_0.9-7                
-## [217] memoise_2.0.0              mgcv_1.8-36               
-## [219] mime_0.11                  miniUI_0.1.1.1            
-## [221] minqa_1.2.4                miscTools_0.6-26          
-## [223] modelr_0.1.8               munsell_0.5.0             
-## [225] mvtnorm_1.1-2              networkD3_0.4             
-## [227] nleqslv_3.3.2              nlme_3.1-152              
-## [229] nlmeODE_1.1                nloptr_1.2.2.2            
-## [231] NMOF_2.4-1                 nnet_7.3-16               
-## [233] nomnoml_0.2.3              numDeriv_2016.8-1.1       
-## [235] odbc_1.3.2                 openssl_1.4.4             
-## [237] openxlsx_4.2.4             optimx_2021-6.12          
-## [239] packrat_0.6.0              palmerpenguins_0.1.0      
-## [241] parallelly_1.27.0          patchwork_1.1.1           
-## [243] pbkrtest_0.5.1             PBSddesolve_1.12.6        
-## [245] pdftools_3.0.1             pdist_1.2                 
-## [247] pillar_1.6.2               pkgbuild_1.2.0            
-## [249] pkgconfig_2.0.3            pkgload_1.2.1             
-## [251] plogr_0.2.0                plotly_4.9.4.1            
-## [253] plyr_1.8.6                 png_0.1-7                 
-## [255] polynom_1.4-0              posterior_1.0.1           
-## [257] praise_1.0.0               prettydoc_0.4.1           
-## [259] prettyunits_1.1.1          PrevMap_1.5.3             
-## [261] processx_3.5.2             productplots_0.1.1        
-## [263] progress_1.2.2             projpred_2.0.2            
-## [265] promises_1.2.0.1           proxy_0.4-26              
-## [267] ps_1.6.0                   pso_1.0.3                 
-## [269] pspearman_0.3-0            purrr_0.3.4               
-## [271] pwr_1.3-0                  qap_0.1-1                 
-## [273] qpdf_1.1                   quadprog_1.5-8            
-## [275] quantmod_0.4.18            quantreg_5.86             
-## [277] r2d3_0.2.5                 R6_2.5.0                  
-## [279] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
-## [281] randomForest_4.6-14        rappdirs_0.3.3            
-## [283] raster_3.4-13              rasterly_0.2.0            
-## [285] rasterVis_0.50.3           rcmdcheck_1.3.3           
-## [287] RColorBrewer_1.1-2         Rcpp_1.0.7                
-## [289] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
-## [291] RcppParallel_5.1.4         reactable_0.2.3           
-## [293] reactR_0.4.4               ReacTran_1.4.3.1          
-## [295] readr_2.0.0                readxl_1.3.1              
-## [297] registry_0.5-1             rematch_1.0.1             
-## [299] rematch2_2.1.2             remotes_2.4.0             
-## [301] renv_0.14.0                reprex_2.0.0              
-## [303] reshape2_1.4.4             reticulate_1.20           
-## [305] rgdal_1.5-23               rgeos_0.5-5               
-## [307] RgoogleMaps_1.4.5.3        Rgraphviz_2.36.0          
-## [309] rio_0.5.27                 rJava_1.0-4               
-## [311] rjson_0.2.20               rlang_0.4.11              
-## [313] rlist_0.4.6.1              rmarkdown_2.9             
-## [315] rngtools_1.5               ROI_1.0-0                 
-## [317] ROI.plugin.alabama_1.0-0   ROI.plugin.lpsolve_1.0-1  
-## [319] ROI.plugin.nloptr_1.0-0    ROI.plugin.quadprog_1.0-0 
-## [321] rootSolve_1.8.2.2          roxygen2_7.1.1            
-## [323] rpart_4.1-15               rprojroot_2.0.2           
-## [325] rsconnect_0.8.18           RSQLite_2.2.7             
-## [327] rstan_2.26.2               rstantools_2.1.1          
-## [329] rstatix_0.7.0              rstudioapi_0.13           
-## [331] Rttf2pt1_1.3.9             rversions_2.1.1           
-## [333] rvest_1.0.1                s2_1.0.6                  
-## [335] S4Vectors_0.30.0           sandwich_3.0-1            
-## [337] sass_0.4.0                 scales_1.1.1              
-## [339] scatterplot3d_0.3-41       selectr_0.4-2             
-## [341] seriation_1.3.0            servr_0.22                
-## [343] sessioninfo_1.1.1          sf_1.0-2                  
-## [345] sfarrow_0.4.0              shades_1.4.0              
-## [347] shape_1.4.6                shiny_1.6.0               
-## [349] shinydashboard_0.7.1       shinydashboardPlus_2.0.2  
-## [351] shinyjs_2.0.0              shinystan_2.5.0           
-## [353] shinythemes_1.2.0          shinyWidgets_0.6.0        
-## [355] showtext_0.9-3             showtextdb_3.0            
-## [357] Sim.DiffProc_4.8           slam_0.1-48               
-## [359] sm_2.2-5.6                 sourcetools_0.1.7         
-## [361] sp_1.4-5                   sparkline_2.0             
-## [363] sparklyr_1.7.1             SparseM_1.81              
-## [365] spatial_7.3-14             spDataLarge_0.5.4         
-## [367] splancs_2.01-42            splines2_0.4.3            
-## [369] StanHeaders_2.26.2         stringi_1.7.3             
-## [371] stringr_1.4.0              SuppDists_1.1-9.5         
-## [373] survival_3.2-11            svglite_2.0.0             
-## [375] symengine_0.1.5            sys_3.4                   
-## [377] sysfonts_0.8.4             systemfonts_1.0.2         
-## [379] tensorA_0.36.2             tensorflow_2.5.0          
-## [381] terra_1.3-4                testthat_3.0.4            
-## [383] tfruns_1.5.0               threejs_0.3.3             
-## [385] tibble_3.1.3               tidyr_1.1.3               
-## [387] tidyselect_1.1.1           tidyverse_1.3.1           
-## [389] tikzDevice_0.12.3.1        timeline_0.9              
-## [391] timelineS_0.1.1            tint_0.1.3                
-## [393] tinytex_0.32               TMB_1.7.20                
-## [395] transformr_0.1.3           treemap_2.4-2             
-## [397] treemapify_2.5.5           truncnorm_1.0-8           
-## [399] TSP_1.1-10                 TTR_0.24.2                
-## [401] tweenr_1.0.2               tzdb_0.1.2                
-## [403] units_0.7-2                usethis_2.0.1             
-## [405] utf8_1.2.2                 uuid_0.1-4                
-## [407] V8_3.4.2                   vctrs_0.3.8               
-## [409] vioplot_0.3.7              vipor_0.4.5               
-## [411] viridis_0.6.1              viridisLite_0.4.0         
-## [413] visNetwork_2.0.9           vistime_1.2.1             
-## [415] vroom_1.5.3                waiter_0.2.3              
-## [417] waldo_0.2.5                webshot_0.5.2             
-## [419] whisker_0.4                withr_2.4.2               
-## [421] wk_0.5.0                   xaringan_0.22             
-## [423] xaringanthemer_0.4.0       xfun_0.24                 
-## [425] xgboost_1.4.1.1            xkcd_0.0.6                
-## [427] XML_3.99-0.6               xml2_1.3.2                
-## [429] xopen_1.0.0                xtable_1.8-4              
-## [431] xts_0.12.1                 yaml_2.2.1                
-## [433] zip_2.2.0                  zoo_1.8-9
+##   [7] ash_1.0-15                 askpass_1.1               
+##   [9] assertive.base_0.0-9       assertive.properties_0.0-4
+##  [11] assertive.types_0.0-3      assertthat_0.2.1          
+##  [13] autoplotly_0.1.4           backports_1.2.1           
+##  [15] base64enc_0.1-3            bayesplot_1.8.1           
+##  [17] BB_2019.10-1               bbmle_1.0.24              
+##  [19] bdsmatrix_1.3-4            beanplot_1.2              
+##  [21] beeswarm_0.4.0             BH_1.75.0-0               
+##  [23] BiocGenerics_0.38.0        BiocManager_1.30.16       
+##  [25] BiocVersion_3.13.1         bit_4.0.4                 
+##  [27] bit64_4.0.5                bitops_1.0-7              
+##  [29] blob_1.2.2                 BMA_3.18.15               
+##  [31] bookdown_0.23              boot_1.3-28               
+##  [33] brew_1.0-6                 bridgesampling_1.1-2      
+##  [35] brio_1.1.2                 brms_2.15.0               
+##  [37] Brobdingnag_1.2-6          broom_0.7.9               
+##  [39] broom.mixed_0.2.7          bslib_0.2.5.1             
+##  [41] cachem_1.0.5               Cairo_1.5-12.2            
+##  [43] callr_3.7.0                car_3.0-11                
+##  [45] carData_3.0-4              cellranger_1.1.0          
+##  [47] checkmate_2.0.0            circlize_0.4.13           
+##  [49] class_7.3-19               classInt_0.4-3            
+##  [51] cli_3.0.1                  clipr_0.7.1               
+##  [53] clue_0.3-59                cluster_2.1.2             
+##  [55] cmdstanr_0.4.0             coda_0.19-4               
+##  [57] codetools_0.2-18           colorspace_2.0-2          
+##  [59] colourpicker_1.1.0         combinat_0.0-8            
+##  [61] commonmark_1.7             ComplexHeatmap_2.8.0      
+##  [63] config_0.3.1               conquer_1.0.2             
+##  [65] corrplot_0.90              countrycode_1.3.0         
+##  [67] cowplot_1.1.1              cpp11_0.3.1               
+##  [69] cranlogs_2.1.1             crayon_1.4.1              
+##  [71] credentials_1.3.1          crosstalk_1.1.1           
+##  [73] cubature_2.0.4.2           curl_4.3.2                
+##  [75] data.table_1.14.0          DBI_1.1.1                 
+##  [77] dbplyr_2.1.1               deldir_0.2-10             
+##  [79] dendextend_1.15.1          DEoptimR_1.0-9            
+##  [81] Deriv_4.1.3                desc_1.3.0                
+##  [83] deSolve_1.28               devtools_2.4.2            
+##  [85] dfidx_0.0-4                DiagrammeR_1.0.6.1        
+##  [87] diffobj_0.3.4              digest_0.6.27             
+##  [89] distributional_0.2.2       doParallel_1.0.16         
+##  [91] dotCall64_1.0-1            downlit_0.2.1             
+##  [93] downloader_0.4             dplyr_1.0.7               
+##  [95] DT_0.18                    dtplyr_1.1.0              
+##  [97] dygraphs_1.1.1.6           e1071_1.7-8               
+##  [99] Ecdat_0.3-9                Ecfun_0.2-5               
+## [101] echarts4r_0.4.1            egg_0.4.5                 
+## [103] ellipsis_0.3.2             emo_0.0.0.9000            
+## [105] equatiomatic_0.2.0         evaluate_0.14             
+## [107] evd_2.3-3                  expm_0.999-6              
+## [109] extrafont_0.17             extrafontdb_1.0           
+## [111] fansi_0.5.0                farver_2.1.0              
+## [113] fastmap_1.1.0              fda_5.1.9                 
+## [115] fds_1.8                    fields_12.5               
+## [117] filehash_2.4-2             FNN_1.1.3                 
+## [119] fontcm_1.1                 forcats_0.5.1             
+## [121] foreach_1.5.1              foreign_0.8-81            
+## [123] forge_0.2.0                formatR_1.11              
+## [125] formattable_0.2.1          Formula_1.2-4             
+## [127] fs_1.5.0                   future_1.21.0             
+## [129] GA_3.2.1                   gamm4_0.2-6               
+## [131] gapminder_0.3.0            gargle_1.2.0              
+## [133] gclus_1.3.2                gdata_2.18.0              
+## [135] gdtools_0.2.3              generics_0.1.0            
+## [137] geoR_1.8-1                 gert_1.3.1                
+## [139] GetoptLong_1.0.5           ggalluvial_0.12.3         
+## [141] gganimate_1.0.7            ggbeeswarm_0.6.0          
+## [143] ggbump_0.1.0               ggdendro_0.1.22           
+## [145] ggfittext_0.9.1            ggfortify_0.4.12          
+## [147] ggmosaic_0.3.3             ggnormalviolin_0.1.2      
+## [149] ggplot2_3.3.5              ggpubr_0.4.0              
+## [151] ggrepel_0.9.1              ggridges_0.5.3            
+## [153] ggsci_2.9                  ggsignif_0.6.2            
+## [155] ggstream_0.1.0             gh_1.3.0                  
+## [157] gifski_1.4.3-1             git2r_0.28.0              
+## [159] gitcreds_0.1.1             glmmTMB_1.1.2             
+## [161] glmnet_4.1-2               GlobalOptions_0.1.2       
+## [163] globals_0.14.0             glue_1.4.2                
+## [165] gmodels_2.18.1             gmp_0.6-2                 
+## [167] googledrive_2.0.0          googlesheets4_1.0.0       
+## [169] graph_1.70.0               gridBase_0.4-7            
+## [171] gridExtra_2.3              gt_0.3.1                  
+## [173] gtable_0.3.0               gtools_3.9.2              
+## [175] haven_2.4.3                hdrcde_3.4                
+## [177] heatmaply_1.2.1            hexbin_1.28.2             
+## [179] highcharter_0.8.2          highr_0.9                 
+## [181] HKprocess_0.0-2            Hmisc_4.5-0               
+## [183] hms_1.1.0                  hrbrthemes_0.8.0          
+## [185] htmlTable_2.2.1            htmltools_0.5.1.1         
+## [187] htmlwidgets_1.5.3          httpuv_1.6.1              
+## [189] httr_1.4.2                 hunspell_3.0.1            
+## [191] ids_1.0.1                  igraph_1.2.6              
+## [193] influenceR_0.1.0           ini_0.3.1                 
+## [195] INLA_21.02.23              inline_0.3.19             
+## [197] IRanges_2.26.0             isoband_0.2.5             
+## [199] iterators_1.0.13           janeaustenr_0.1.5         
+## [201] janitor_2.1.0              jpeg_0.1-9                
+## [203] jquerylib_0.1.4            jsonlite_1.7.2            
+## [205] kableExtra_1.3.4           Kendall_2.2               
+## [207] kernlab_0.9-29             KernSmooth_2.23-20        
+## [209] knitr_1.33                 ks_1.13.2                 
+## [211] labeling_0.4.2             later_1.2.0               
+## [213] lattice_0.20-44            latticeExtra_0.6-29       
+## [215] lazyeval_0.2.2             leaflet_2.0.4.1           
+## [217] leaflet.providers_1.9.0    leafletCN_0.2.1           
+## [219] leaps_3.1                  LearnBayes_2.15.1         
+## [221] lifecycle_1.0.0            lightgbm_3.2.1            
+## [223] listenv_0.8.0              lme4_1.1-27.1             
+## [225] lmtest_0.9-38              locfit_1.5-9.4            
+## [227] loo_2.4.1                  lpSolve_5.6.15            
+## [229] lpSolveAPI_5.5.2.0-17.7    lubridate_1.7.10          
+## [231] magick_2.7.2               magrittr_2.0.1            
+## [233] mapdata_2.3.0              mapproj_1.2.7             
+## [235] maps_3.3.0                 maptools_1.1-1            
+## [237] markdown_1.1               MASS_7.3-54               
+## [239] mathjaxr_1.4-0             Matrix_1.3-4              
+## [241] MatrixModels_0.5-0         matrixStats_0.60.0        
+## [243] maxLik_1.5-2               mclust_5.4.7              
+## [245] mcmc_0.9-7                 MCMCpack_1.5-0            
+## [247] memoise_2.0.0              mgcv_1.8-36               
+## [249] mime_0.11                  miniUI_0.1.1.1            
+## [251] minqa_1.2.4                misc3d_0.9-0              
+## [253] miscTools_0.6-26           mlogit_1.1-1              
+## [255] mnormt_2.0.2               modelr_0.1.8              
+## [257] mpoly_1.1.1                multicool_0.1-12          
+## [259] multipol_1.0-7             munsell_0.5.0             
+## [261] mvtnorm_1.1-2              networkD3_0.4             
+## [263] nleqslv_3.3.2              nlme_3.1-152              
+## [265] nlmeODE_1.1                nloptr_1.2.2.2            
+## [267] NMOF_2.4-1                 nnet_7.3-16               
+## [269] nomnoml_0.2.3              numDeriv_2016.8-1.1       
+## [271] odbc_1.3.2                 openssl_1.4.4             
+## [273] openxlsx_4.2.4             optimx_2021-6.12          
+## [275] orthopolynom_1.0-5         packagemetrics_0.0.1.9001 
+## [277] packrat_0.6.0              palmerpenguins_0.1.0      
+## [279] parallelly_1.27.0          partitions_1.10-2         
+## [281] patchwork_1.1.1            pbkrtest_0.5.1            
+## [283] PBSddesolve_1.12.6         pcaPP_1.9-74              
+## [285] pdftools_3.0.1             pdist_1.2                 
+## [287] pillar_1.6.2               pixmap_0.4-12             
+## [289] pkgbuild_1.2.0             pkgconfig_2.0.3           
+## [291] pkgload_1.2.1              plogr_0.2.0               
+## [293] plot3D_1.4                 plotly_4.9.4.1            
+## [295] plyr_1.8.6                 png_0.1-7                 
+## [297] polynom_1.4-0              posterior_1.0.1           
+## [299] pracma_2.3.3               praise_1.0.0              
+## [301] prettydoc_0.4.1            prettyunits_1.1.1         
+## [303] PrevMap_1.5.3              processx_3.5.2            
+## [305] productplots_0.1.1         progress_1.2.2            
+## [307] projpred_2.0.2             promises_1.2.0.1          
+## [309] proxy_0.4-26               ps_1.6.0                  
+## [311] pso_1.0.3                  pspearman_0.3-0           
+## [313] purrr_0.3.4                pwr_1.3-0                 
+## [315] qap_0.1-1                  qpdf_1.1                  
+## [317] quadprog_1.5-8             quantmod_0.4.18           
+## [319] quantreg_5.86              r2d3_0.2.5                
+## [321] R6_2.5.0                   rainbow_3.6               
+## [323] RandomFields_3.3.8         RandomFieldsUtils_0.5.3   
+## [325] rappdirs_0.3.3             raster_3.4-13             
+## [327] rasterly_0.2.0             rasterVis_0.50.3          
+## [329] rbibutils_2.2.3            rcmdcheck_1.3.3           
+## [331] RColorBrewer_1.1-2         Rcpp_1.0.7                
+## [333] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
+## [335] RcppParallel_5.1.4         RCurl_1.98-1.3            
+## [337] Rdpack_2.1.2               reactable_0.2.3           
+## [339] reactR_0.4.4               ReacTran_1.4.3.1          
+## [341] readr_2.0.1                readxl_1.3.1              
+## [343] registry_0.5-1             rematch_1.0.1             
+## [345] rematch2_2.1.2             remotes_2.4.0             
+## [347] renv_0.14.0                reprex_2.0.1              
+## [349] reshape2_1.4.4             reticulate_1.20           
+## [351] rgdal_1.5-23               rgeos_0.5-5               
+## [353] rgl_0.107.10               RgoogleMaps_1.4.5.3       
+## [355] Rgraphviz_2.36.0           rio_0.5.27                
+## [357] rJava_1.0-4                rjson_0.2.20              
+## [359] rlang_0.4.11               rlist_0.4.6.1             
+## [361] rmarkdown_2.10             rngtools_1.5              
+## [363] robustbase_0.93-8          ROI_1.0-0                 
+## [365] ROI.plugin.alabama_1.0-0   ROI.plugin.lpsolve_1.0-1  
+## [367] ROI.plugin.nloptr_1.0-0    ROI.plugin.quadprog_1.0-0 
+## [369] rootSolve_1.8.2.2          roxygen2_7.1.1            
+## [371] rpart_4.1-15               rprojroot_2.0.2           
+## [373] rrcov_1.5-5                rsconnect_0.8.24          
+## [375] RSQLite_2.2.7              rstan_2.26.3              
+## [377] rstantools_2.1.1           rstatix_0.7.0             
+## [379] rstudioapi_0.13            Rttf2pt1_1.3.9            
+## [381] rversions_2.1.1            rvest_1.0.1               
+## [383] s2_1.0.6                   S4Vectors_0.30.0          
+## [385] sandwich_3.0-1             sass_0.4.0                
+## [387] scales_1.1.1               scatterplot3d_0.3-41      
+## [389] selectr_0.4-2              seriation_1.3.0           
+## [391] sessioninfo_1.1.1          sets_1.0-18               
+## [393] sf_1.0-2                   sfarrow_0.4.0             
+## [395] shades_1.4.0               shape_1.4.6               
+## [397] shiny_1.6.0                shinyjs_2.0.0             
+## [399] shinystan_2.5.0            shinythemes_1.2.0         
+## [401] showtext_0.9-4             showtextdb_3.0            
+## [403] Sim.DiffProc_4.8           slam_0.1-48               
+## [405] sm_2.2-5.6                 sn_2.0.0                  
+## [407] snakecase_0.11.0           SnowballC_0.7.0           
+## [409] sourcetools_0.1.7          sp_1.4-5                  
+## [411] spam_2.7-0                 sparkline_2.0             
+## [413] sparklyr_1.7.1             SparseM_1.81              
+## [415] spatial_7.3-14             spData_0.3.10             
+## [417] spDataLarge_0.5.4          spdep_1.1-8               
+## [419] splancs_2.01-42            splines2_0.4.3            
+## [421] stackr_0.0.0.9000          StanHeaders_2.26.3        
+## [423] statmod_1.4.36             stringi_1.7.3             
+## [425] stringr_1.4.0              SuppDists_1.1-9.5         
+## [427] survival_3.2-11            svglite_2.0.0             
+## [429] symengine_0.1.5            symmoments_1.2.1          
+## [431] sys_3.4                    sysfonts_0.8.5            
+## [433] systemfonts_1.0.2          TeachingDemos_2.12        
+## [435] tensorA_0.36.2             tensorflow_2.5.0          
+## [437] terra_1.3-4                testthat_3.0.4            
+## [439] tfruns_1.5.0               threejs_0.3.3             
+## [441] tibble_3.1.3               tidyr_1.1.3               
+## [443] tidyselect_1.1.1           tidytext_0.3.1            
+## [445] tidyverse_1.3.1            tikzDevice_0.12.3.1       
+## [447] timeline_0.9               timelineS_0.1.1           
+## [449] tint_0.1.3                 tinytex_0.33              
+## [451] tis_1.38                   TMB_1.7.20                
+## [453] tmvnsim_1.0-2              tokenizers_0.2.1          
+## [455] transformr_0.1.3           treemap_2.4-2             
+## [457] treemapify_2.5.5           truncnorm_1.0-8           
+## [459] TSP_1.1-10                 TTR_0.24.2                
+## [461] tweenr_1.0.2               tzdb_0.1.2                
+## [463] units_0.7-2                usethis_2.0.1             
+## [465] utf8_1.2.2                 uuid_0.1-4                
+## [467] V8_3.4.2                   vctrs_0.3.8               
+## [469] vioplot_0.3.7              vipor_0.4.5               
+## [471] viridis_0.6.1              viridisLite_0.4.0         
+## [473] visNetwork_2.0.9           vistime_1.2.1             
+## [475] vroom_1.5.4                waldo_0.2.5               
+## [477] webshot_0.5.2              whisker_0.4               
+## [479] withr_2.4.2                wk_0.5.0                  
+## [481] xfun_0.25                  xgboost_1.4.1.1           
+## [483] xkcd_0.0.6                 XML_3.99-0.6              
+## [485] xml2_1.3.2                 xopen_1.0.0               
+## [487] xtable_1.8-4               xts_0.12.1                
+## [489] yaml_2.2.1                 zip_2.2.0                 
+## [491] zoo_1.8-9
 ```
 
 
@@ -2702,7 +2741,7 @@ Package                   Version        Title
 **abind**                 1.4-5          Combine Multidimensional Arrays                                                                                             
 **agridat**               1.18           Agricultural Datasets                                                                                                       
 **alabama**               2015.3-1       Constrained Nonlinear Optimization                                                                                          
-**arrow**                 4.0.1          Integration to 'Apache' 'Arrow'                                                                                             
+**arrow**                 5.0.0          Integration to 'Apache' 'Arrow'                                                                                             
 **arules**                1.6-8          Mining Association Rules and Frequent Itemsets                                                                              
 **assertive.types**       0.0-3          Assertions to Check Types of Variables                                                                                      
 **assertthat**            0.2.1          Easy Pre and Post Assertions                                                                                                
@@ -2710,18 +2749,21 @@ Package                   Version        Title
 **backports**             1.2.1          Reimplementations of Functions Introduced Since R-3.0.0                                                                     
 **base64enc**             0.1-3          Tools for base64 encoding                                                                                                   
 **bayesplot**             1.8.1          Plotting for Bayesian Models                                                                                                
+**bbmle**                 1.0.24         Tools for General Maximum Likelihood Estimation                                                                             
+**bdsmatrix**             1.3-4          Routines for Block Diagonal Symmetric Matrices                                                                              
 **beanplot**              1.2            Visualization via Beanplots (like Boxplot/Stripchart/Violin Plot)                                                           
 **beeswarm**              0.4.0          The Bee Swarm Plot, an Alternative to Stripchart                                                                            
 **BH**                    1.75.0-0       Boost C++ Header Files                                                                                                      
 **BiocManager**           1.30.16        Access the Bioconductor Project Package Repository                                                                          
 **bit64**                 4.0.5          A S3 Class for Vectors of 64bit Integers                                                                                    
 **bitops**                1.0-7          Bitwise Operations                                                                                                          
-**blob**                  1.2.1          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
-**bookdown**              0.22           Authoring Books and Technical Documents with R Markdown                                                                     
+**blob**                  1.2.2          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
+**bookdown**              0.23           Authoring Books and Technical Documents with R Markdown                                                                     
 **boot**                  1.3-28         Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
 **bridgesampling**        1.1-2          Bridge Sampling for Marginal Likelihoods and Bayes Factors                                                                  
+**brio**                  1.1.2          Basic R Input Output                                                                                                        
 **brms**                  2.15.0         Bayesian Regression Models using Stan                                                                                       
-**broom**                 0.7.8          Convert Statistical Objects into Tidy Tibbles                                                                               
+**broom**                 0.7.9          Convert Statistical Objects into Tidy Tibbles                                                                               
 **broom.mixed**           0.2.7          Tidying Methods for Mixed Models                                                                                            
 **bslib**                 0.2.5.1        Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
 **cachem**                1.0.5          Cache R Objects with Automatic Pruning                                                                                      
@@ -2751,6 +2793,7 @@ Package                   Version        Title
 **devtools**              2.4.2          Tools to Make Developing R Packages Easier                                                                                  
 **DiagrammeR**            1.0.6.1        Graph/Network Visualization                                                                                                 
 **digest**                0.6.27         Create Compact Hash Digests of R Objects                                                                                    
+**downlit**               0.2.1          Syntax Highlighting and Automatic Linking                                                                                   
 **downloader**            0.4            Download Files over HTTP and HTTPS                                                                                          
 **dplyr**                 1.0.7          A Grammar of Data Manipulation                                                                                              
 **DT**                    0.18           A Wrapper of the JavaScript Library DataTables                                                                              
@@ -2762,6 +2805,7 @@ Package                   Version        Title
 **evaluate**              0.14           Parsing and Evaluation Tools that Provide More Details than the Default                                                     
 **extrafont**             0.17           Tools for using fonts                                                                                                       
 **extrafontdb**           1.0            Package for holding the database for the extrafont package                                                                  
+**fansi**                 0.5.0          ANSI Control Sequence Aware String Functions                                                                                
 **fastmap**               1.1.0          Fast Data Structures                                                                                                        
 **filehash**              2.4-2          Simple Key-Value Database                                                                                                   
 **fontcm**                1.1            Computer Modern font for use with extrafont package                                                                         
@@ -2792,16 +2836,17 @@ Package                   Version        Title
 **ggstream**              0.1.0          Create Streamplots in ggplot2                                                                                               
 **gifski**                1.4.3-1        Highest Quality GIF Encoder                                                                                                 
 **git2r**                 0.28.0         Provides Access to Git Repositories                                                                                         
+**glmmTMB**               1.1.2          Generalized Linear Mixed Models using Template Model Builder                                                                
 **glmnet**                4.1-2          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
 **globals**               0.14.0         Identify Global Objects in R Expressions                                                                                    
 **glue**                  1.4.2          Interpreted String Literals                                                                                                 
 **googledrive**           2.0.0          An Interface to Google Drive                                                                                                
-**googlesheets4**         0.3.0          Access Google Sheets using the Sheets API V4                                                                                
+**googlesheets4**         1.0.0          Access Google Sheets using the Sheets API V4                                                                                
 **gridBase**              0.4-7          Integration of base and grid graphics                                                                                       
 **gridExtra**             2.3            Miscellaneous Functions for Grid Graphics                                                                                   
-**gt**                    0.3.0          Easily Create Presentation-Ready Display Tables                                                                             
+**gt**                    0.3.1          Easily Create Presentation-Ready Display Tables                                                                             
 **gtable**                0.3.0          Arrange Grobs in Tables                                                                                                     
-**haven**                 2.4.1          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
+**haven**                 2.4.3          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
 **heatmaply**             1.2.1          Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
 **hexbin**                1.28.2         Hexagonal Binning Routines                                                                                                  
 **highcharter**           0.8.2          A Wrapper for the Highcharts Library                                                                                        
@@ -2817,6 +2862,7 @@ Package                   Version        Title
 **influenceR**            0.1.0          Software Tools to Quantify Structural Importance of Nodes in a Network                                                      
 **inline**                0.3.19         Functions to Inline C, C++, Fortran Function Calls from R                                                                   
 **isoband**               0.2.5          Generate Isolines and Isobands from Regularly Spaced Elevation Grids                                                        
+**jquerylib**             0.1.4          Obtain 'jQuery' as an HTML Dependency Object                                                                                
 **jsonlite**              1.7.2          A Simple and Robust JSON Parser and Generator for R                                                                         
 **kableExtra**            1.3.4          Construct Complex Table with kable and Pipe Syntax                                                                          
 **Kendall**               2.2            Kendall rank correlation and Mann-Kendall trend test                                                                        
@@ -2827,6 +2873,7 @@ Package                   Version        Title
 **lazyeval**              0.2.2          Lazy (Non-Standard) Evaluation                                                                                              
 **leaflet**               2.0.4.1        Create Interactive Web Maps with the JavaScript 'Leaflet' Library                                                           
 **leaflet.providers**     1.9.0          Leaflet Providers                                                                                                           
+**leafletCN**             0.2.1          An R Gallery for China and Other Geojson Choropleth Map in Leaflet                                                          
 **lifecycle**             1.0.0          Manage the Life Cycle of your Package Functions                                                                             
 **lightgbm**              3.2.1          Light Gradient Boosting Machine                                                                                             
 **lme4**                  1.1-27.1       Linear Mixed-Effects Models using Eigen and S4                                                                              
@@ -2843,8 +2890,8 @@ Package                   Version        Title
 **MASS**                  7.3-54         Support Functions and Datasets for Venables and Ripley's MASS                                                               
 **Matrix**                1.3-4          Sparse and Dense Matrix Classes and Methods                                                                                 
 **MatrixModels**          0.5-0          Modelling with Sparse and Dense Matrices                                                                                    
-**matrixStats**           0.59.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
-**maxLik**                1.4-8          Maximum Likelihood Estimation and Related Tools                                                                             
+**matrixStats**           0.60.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
+**maxLik**                1.5-2          Maximum Likelihood Estimation and Related Tools                                                                             
 **mcmc**                  0.9-7          Markov Chain Monte Carlo                                                                                                    
 **memoise**               2.0.0          Memoisation of Functions                                                                                                    
 **mgcv**                  1.8-36         Mixed GAM Computation Vehicle with Automatic Smoothness Estimation                                                          
@@ -2864,7 +2911,7 @@ Package                   Version        Title
 **patchwork**             1.1.1          The Composer of Plots                                                                                                       
 **pdftools**              3.0.1          Text Extraction, Rendering and Converting of PDF Documents                                                                  
 **pdist**                 1.2            Partitioned Distance Function                                                                                               
-**pillar**                1.6.1          Coloured Formatting for Columns                                                                                             
+**pillar**                1.6.2          Coloured Formatting for Columns                                                                                             
 **pkgbuild**              1.2.0          Find Tools Needed to Build R Packages                                                                                       
 **pkgconfig**             2.0.3          Private Configuration for R Packages                                                                                        
 **pkgload**               1.2.1          Simulate Package Installation and Attach                                                                                    
@@ -2893,26 +2940,28 @@ Package                   Version        Title
 **rappdirs**              0.3.3          Application Directories: Determine Where to Save Data, Caches, and Logs                                                     
 **raster**                3.4-13         Geographic Data Analysis and Modeling                                                                                       
 **rasterly**              0.2.0          Easily and Rapidly Generate Raster Image Data with Support for 'Plotly.js'                                                  
-**rasterVis**             0.50.2         Visualization Methods for Raster Data                                                                                       
+**rasterVis**             0.50.3         Visualization Methods for Raster Data                                                                                       
 **rcmdcheck**             1.3.3          Run 'R CMD check' from R and Capture Results                                                                                
 **RColorBrewer**          1.1-2          ColorBrewer Palettes                                                                                                        
 **Rcpp**                  1.0.7          Seamless R and C++ Integration                                                                                              
+**RcppArmadillo**         0.10.6.0.0     Rcpp Integration for the Armadillo Templated Linear Algebra Library                                                         
 **RcppEigen**             0.3.3.9.1      Rcpp Integration for the Eigen Templated Linear Algebra Library                                                             
 **RcppParallel**          5.1.4          Parallel Programming Tools for Rcpp                                                                                         
 **reactable**             0.2.3          Interactive Data Tables Based on 'React Table'                                                                              
 **reactR**                0.4.4          React Helpers                                                                                                               
-**readr**                 1.4.0          Read Rectangular Text Data                                                                                                  
+**readr**                 2.0.1          Read Rectangular Text Data                                                                                                  
 **readxl**                1.3.1          Read Excel Files                                                                                                            
 **registry**              0.5-1          Infrastructure for R Package Registries                                                                                     
 **remotes**               2.4.0          R Package Installation from Remote Repositories, Including 'GitHub'                                                         
-**reprex**                2.0.0          Prepare Reproducible Example Code via the Clipboard                                                                         
+**reprex**                2.0.1          Prepare Reproducible Example Code via the Clipboard                                                                         
 **reshape2**              1.4.4          Flexibly Reshape Data: A Reboot of the Reshape Package                                                                      
 **reticulate**            1.20           Interface to Python                                                                                                         
 **rgdal**                 1.5-23         Bindings for the Geospatial Data Abstraction Library                                                                        
+**rgeos**                 0.5-5          Interface to Geometry Engine - Open Source ('GEOS')                                                                         
 **rjson**                 0.2.20         JSON for R                                                                                                                  
 **rlang**                 0.4.11         Functions for Base Types and Core R and Tidyverse Features                                                                  
 **rlist**                 0.4.6.1        A Toolbox for Non-Tabular Data Manipulation                                                                                 
-**rmarkdown**             2.9            Dynamic Documents for R                                                                                                     
+**rmarkdown**             2.10           Dynamic Documents for R                                                                                                     
 **ROI**                   1.0-0          R Optimization Infrastructure                                                                                               
 **ROI.plugin.alabama**    1.0-0          'alabama' Plug-in for the R Optimization Infrastructure                                                                     
 **ROI.plugin.lpsolve**    1.0-1          'lp_solve' Plugin for the R Optimization Infrastructure                                                                     
@@ -2926,20 +2975,20 @@ Package                   Version        Title
 **rstantools**            2.1.1          Tools for Developing R Packages Interfacing with Stan                                                                       
 **rstatix**               0.7.0          Pipe-Friendly Framework for Basic Statistical Tests                                                                         
 **rstudioapi**            0.13           Safely Access the RStudio API                                                                                               
-**Rttf2pt1**              1.3.8          'ttf2pt1' Program                                                                                                           
+**Rttf2pt1**              1.3.9          'ttf2pt1' Program                                                                                                           
 **rversions**             2.1.1          Query R Versions, Including 'r-release' and 'r-oldrel'                                                                      
-**rvest**                 1.0.0          Easily Harvest (Scrape) Web Pages                                                                                           
+**rvest**                 1.0.1          Easily Harvest (Scrape) Web Pages                                                                                           
 **s2**                    1.0.6          Spherical Geometry Operators Using the S2 Geometry Library                                                                  
 **sass**                  0.4.0          Syntactically Awesome Style Sheets ('Sass')                                                                                 
 **scales**                1.1.1          Scale Functions for Visualization                                                                                           
 **scatterplot3d**         0.3-41         3D Scatter Plot                                                                                                             
 **seriation**             1.3.0          Infrastructure for Ordering Objects Using Seriation                                                                         
 **sessioninfo**           1.1.1          R Session Information                                                                                                       
-**sf**                    1.0-1          Simple Features for R                                                                                                       
+**sf**                    1.0-2          Simple Features for R                                                                                                       
 **shape**                 1.4.6          Functions for Plotting Graphical Shapes, Colors                                                                             
 **shiny**                 1.6.0          Web Application Framework for R                                                                                             
 **shinystan**             2.5.0          Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models                                     
-**showtext**              0.9-2          Using Fonts More Easily in R Graphs                                                                                         
+**showtext**              0.9-4          Using Fonts More Easily in R Graphs                                                                                         
 **showtextdb**            3.0            Font Files for the 'showtext' Package                                                                                       
 **slam**                  0.1-48         Sparse Lightweight Arrays and Matrices                                                                                      
 **sm**                    2.2-5.6        Smoothing Methods for Nonparametric Regression and Density Estimation                                                       
@@ -2949,19 +2998,20 @@ Package                   Version        Title
 **sparklyr**              1.7.1          R Interface to Apache Spark                                                                                                 
 **SparseM**               1.81           Sparse Linear Algebra                                                                                                       
 **splancs**               2.01-42        Spatial and Space-Time Point Pattern Analysis                                                                               
+**splines2**              0.4.3          Regression Spline Functions and Classes                                                                                     
 **StanHeaders**           2.21.0-7       C++ Header Files for Stan                                                                                                   
 **stringi**               1.7.3          Character String Processing Facilities                                                                                      
 **stringr**               1.4.0          Simple, Consistent Wrappers for Common String Operations                                                                    
 **SuppDists**             1.1-9.5        Supplementary Distributions                                                                                                 
-**survival**              3.2-11         Survival Analysis                                                                                                           
+**survival**              3.2-12         Survival Analysis                                                                                                           
 **svglite**               2.0.0          An 'SVG' Graphics Device                                                                                                    
 **symengine**             0.1.5          Interface to the 'SymEngine' Library                                                                                        
-**sysfonts**              0.8.3          Loading Fonts into R                                                                                                        
+**sysfonts**              0.8.5          Loading Fonts into R                                                                                                        
 **tensorflow**            2.5.0          R Interface to 'TensorFlow'                                                                                                 
 **terra**                 1.3-4          Spatial Data Analysis                                                                                                       
 **testthat**              3.0.4          Unit Testing for R                                                                                                          
 **tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
-**tibble**                3.1.2          Simple Data Frames                                                                                                          
+**tibble**                3.1.3          Simple Data Frames                                                                                                          
 **tidyr**                 1.1.3          Tidy Messy Data                                                                                                             
 **tidyselect**            1.1.1          Select from a Set of Strings                                                                                                
 **tidyverse**             1.3.1          Easily Install and Load the Tidyverse                                                                                       
@@ -2969,7 +3019,8 @@ Package                   Version        Title
 **timeline**              0.9            Timelines for a Grammar of Graphics                                                                                         
 **timelineS**             0.1.1          Timeline and Time Duration-Related Tools                                                                                    
 **tint**                  0.1.3          'tint' is not 'Tufte'                                                                                                       
-**tinytex**               0.32           Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents                                              
+**tinytex**               0.33           Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents                                              
+**TMB**                   1.7.20         Template Model Builder: A General Random Effect Tool Inspired by ADMB                                                       
 **transformr**            0.1.3          Polygon and Path Transformations                                                                                            
 **treemap**               2.4-2          Treemap Visualization                                                                                                       
 **treemapify**            2.5.5          Draw Treemaps in ggplot2                                                                                                    
@@ -2981,7 +3032,7 @@ Package                   Version        Title
 **uuid**                  0.1-4          Tools for Generating and Handling of UUIDs                                                                                  
 **V8**                    3.4.2          Embedded JavaScript and WebAssembly Engine for R                                                                            
 **vctrs**                 0.3.8          Vector Helpers                                                                                                              
-**vioplot**               0.3.6          Violin Plot                                                                                                                 
+**vioplot**               0.3.7          Violin Plot                                                                                                                 
 **vipor**                 0.4.5          Plot Categorical Data Using Quasirandom Noise and Density Estimates                                                         
 **viridis**               0.6.1          Colorblind-Friendly Color Maps for R                                                                                        
 **viridisLite**           0.4.0          Colorblind-Friendly Color Maps (Lite Version)                                                                               
@@ -2989,7 +3040,7 @@ Package                   Version        Title
 **vistime**               1.2.1          Pretty Timelines in R                                                                                                       
 **webshot**               0.5.2          Take Screenshots of Web Pages                                                                                               
 **withr**                 2.4.2          Run Code With Temporarily Modified Global State                                                                             
-**xfun**                  0.24           Supporting Functions for Packages Maintained by Yihui Xie                                                                   
+**xfun**                  0.25           Supporting Functions for Packages Maintained by Yihui Xie                                                                   
 **xgboost**               1.4.1.1        Extreme Gradient Boosting                                                                                                   
 **xkcd**                  0.0.6          Plotting ggplot2 Graphics in an XKCD Style                                                                                  
 **xml2**                  1.3.2          Parse XML                                                                                                                   
@@ -3068,12 +3119,12 @@ Package             Title
 **ggplot2**         Create Elegant Data Visualisations Using the Grammar of Graphics                                
 **glmm**            Generalized Linear Mixed Models via Monte Carlo Likelihood Approximation                        
 **GLMMadaptive**    Generalized Linear Mixed Models using Adaptive Gaussian Quadrature                              
-**glmmboot**        Bootstrap Resampling for Mixed Effects and Plain Models                                         
 **glmmEP**          Generalized Linear Mixed Model Analysis via Expectation Propagation                             
 **glmmfields**      Generalized Linear Mixed Models with Robust Random Fields for Spatiotemporal Modeling           
 **glmmLasso**       Variable Selection for Generalized Linear Mixed Models by L1-Penalized Estimation               
 **glmmML**          Generalized Linear Models with Clustering                                                       
 **glmmsr**          Fit a Generalized Linear Mixed Model                                                            
+**glmmTMB**         Generalized Linear Mixed Models using Template Model Builder                                    
 **glmnet**          Lasso and Elastic-Net Regularized Generalized Linear Models                                     
 **greta**           Simple and Scalable Statistical Modelling in R                                                  
 **hglm**            Hierarchical Generalized Linear Models                                                          

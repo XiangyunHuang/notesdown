@@ -1217,7 +1217,7 @@ nlp$solution
 ```
 
 ```
-## [1]  0.00000 22.22222
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -1470,7 +1470,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.106
+## [1] 368.1061
 ```
 
 ```r
@@ -1863,7 +1863,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.079863 4.324610 4.310041 1.264026
+## [1] 1.044661 4.911439 3.547046 1.471671
 ```
 
 ```r
@@ -1871,7 +1871,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.57012
+## [1] 18.15716
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1999,7 +1999,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245371
+## [1] 1.227970 4.245372
 ```
 
 ```r
@@ -2199,7 +2199,7 @@ nlp$solution
 ```
 
 ```
-## [1]  1.342868 11.993749
+## [1] -46.281029  -2.608704
 ```
 
 ```r
@@ -2207,7 +2207,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.145723
+## [1] -3.239788
 ```
 比如下面三组
 
@@ -2967,7 +2967,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -3005,15 +3005,15 @@ sessionInfo()
 ##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.2           
 ## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
 ## [13] nloptr_1.2.2.2          rmarkdown_2.10          webshot_0.5.2          
-## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.0         
+## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
 ## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.25              
 ## [22] pkgconfig_2.0.3         systemfonts_1.0.2       htmltools_0.5.1.1      
 ## [25] bookdown_0.23           viridisLite_0.4.0       fansi_0.5.0            
-## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.0             
+## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.1             
 ## [31] lifecycle_1.0.0         registry_0.5-1          magrittr_2.0.1         
 ## [34] scales_1.1.1            stringi_1.7.3           xml2_1.3.2             
 ## [37] ellipsis_0.3.2          vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7
-## [40] tools_4.1.0             glue_1.4.2              parallel_4.1.0         
+## [40] tools_4.1.1             glue_1.4.2              parallel_4.1.1         
 ## [43] yaml_2.2.1              colorspace_2.0-2        rvest_1.0.1            
 ## [46] knitr_1.33
 ```

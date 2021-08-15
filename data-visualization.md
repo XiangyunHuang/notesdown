@@ -800,12 +800,12 @@ fonts()
 ```
 
 ```
-##  [1] "Roboto Condensed"       "xkcd"                   "CM Roman"              
-##  [4] "CM Roman Asian"         "CM Roman CE"            "CM Roman Cyrillic"     
-##  [7] "CM Roman Greek"         "CM Sans"                "CM Sans Asian"         
-## [10] "CM Sans CE"             "CM Sans Cyrillic"       "CM Sans Greek"         
-## [13] "CM Symbol"              "CM Typewriter"          "CM Typewriter Asian"   
-## [16] "CM Typewriter CE"       "CM Typewriter Cyrillic" "CM Typewriter Greek"
+##  [1] "CM Roman"               "CM Roman Asian"         "CM Roman CE"           
+##  [4] "CM Roman Cyrillic"      "CM Roman Greek"         "CM Sans"               
+##  [7] "CM Sans Asian"          "CM Sans CE"             "CM Sans Cyrillic"      
+## [10] "CM Sans Greek"          "CM Symbol"              "CM Typewriter"         
+## [13] "CM Typewriter Asian"    "CM Typewriter CE"       "CM Typewriter Cyrillic"
+## [16] "CM Typewriter Greek"
 ```
 
 fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
@@ -1013,6 +1013,10 @@ library(xkcd)
 ggplot(aes(mpg, wt), data = mtcars) +
   geom_point() +
   theme_xkcd()
+```
+
+```
+## Warning in theme_xkcd(): Not xkcd fonts installed! See vignette("xkcd-intro")
 ```
 
 \begin{figure}
@@ -3715,7 +3719,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Sat"
+## [1] "Sun"
 ```
 
 ```r
@@ -3723,7 +3727,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 7
+## [1] 1
 ```
 
 :::
@@ -3911,7 +3915,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x557dda2f83f0>
+## <bytecode: 0x55a820a04180>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -4366,6 +4370,56 @@ ggplot(df, aes(season, rank, color = player)) +
   theme(panel.grid.major = element_blank(),
         axis.ticks = element_blank()) +
   scale_color_manual(values = RColorBrewer::brewer.pal(name = "Set2", n = 4))
+```
+
+```
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
+
+## Warning in f(...): 'StatBump' needs at least two observations per group
 ```
 
 \begin{figure}

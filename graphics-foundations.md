@@ -1003,7 +1003,7 @@ Hmisc 包的 labcurve 函数可以在曲线上放置名称，而不是遥远的�
 
 \begin{figure}
 
-{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.0/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.0/lib/R/library/graphics/help/figures/oma} }
+{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.1/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.1/lib/R/library/graphics/help/figures/oma} }
 
 }
 
@@ -2486,31 +2486,48 @@ box(col = "gray")
 
 
 ```r
-##  First zero on the critical line s = 0.5 + i t
-x <- seq(0, 20, len = 1001)
-z <- 0.5 + x * 1i
-fr <- Re(pracma::zeta(z))
-fi <- Im(pracma::zeta(z))
-fa <- abs(pracma::zeta(z))
-plot(x, fa,
-  type = "n", xlim = c(0, 20), ylim = c(-1.5, 2.5),
-  xlab = "Imaginary part (on critical line)", 
-  ylab = "Function value",
-  main = "Riemann's Zeta Function along the critical line"
+x0 <- 2^(-20:10)
+nus <- c(0:5, 10, 20)
+x <- seq(0, 4, length.out = 501)
+
+plot(x0, x0^-8,
+  frame.plot = TRUE, # 添加绘图框
+  log = "xy", # x 和 y 轴都取对数尺度
+  axes = FALSE, # 去掉坐标轴
+  xlab = "$u$", ylab = "$\\mathcal{K}_{\\kappa}(u)$", # 设置坐标轴标签
+  type = "n", # 清除绘图区域的内容
+  ann = TRUE, # 添加标题 x和y轴标签
+  panel.first = grid() # 添加背景参考线
 )
-grid()
-lines(x, fr, col = "blue")
-lines(x, fi, col = "darkgreen")
-lines(x, fa, col = "red", lwd = 2)
-points(14.1347, 0, col = "darkred")
-legend(0, 2.4, c("real part", "imaginary part", "absolute value"),
-  lty = 1, lwd = c(1, 1, 2), col = c("blue", "darkgreen", "red")
+
+axis(1,
+  at = 10^seq(from = -8, to = 2, by = 2),
+  labels = paste0("$\\mathsf{10^{", seq(from = -8, to = 2, by = 2), "}}$")
+)
+axis(2,
+  at = 10^seq(from = -8, to = 56, by = 16),
+  labels = paste0("$\\mathsf{10^{", seq(from = -8, to = 56, by = 16), "}}$"), las = 1
+)
+
+for (i in seq(length(nus))) {
+  lines(x0, besselK(x0, nu = nus[i]), col = hcl.colors(9)[i], lwd = 2)
+}
+legend("topright",
+  legend = paste0("$\\kappa=", rev(nus), "$"),
+  col = hcl.colors(9, rev = T), lwd = 2, cex = 1
 )
 ```
 
+\begin{figure}
+
+{\centering \includegraphics[width=0.65\linewidth]{graphics-foundations_files/figure-latex/bessel-function-1} 
+
+}
+
+\caption{贝塞尔函数}(\#fig:bessel-function)
+\end{figure}
 
 
-\begin{center}\includegraphics[width=0.65\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-71-1} \end{center}
 
 还有 eta 函数和 gammaz 函数
 
@@ -2525,11 +2542,11 @@ plot(HairEyeColor, col = "lightblue", border = "white", main = "")
 
 \begin{figure}
 
-{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-72-1} 
+{\centering \includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-71-1} 
 
 }
 
-\caption{马赛克图}(\#fig:unnamed-chunk-72)
+\caption{马赛克图}(\#fig:unnamed-chunk-71)
 \end{figure}
 
 ### 点图 {#plot-dotchart}
@@ -2566,11 +2583,11 @@ pairs(longley,
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-73-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-72-1} 
 
 }
 
-\caption{变量关系}(\#fig:unnamed-chunk-73)
+\caption{变量关系}(\#fig:unnamed-chunk-72)
 \end{figure}
 
 
@@ -2581,11 +2598,11 @@ plot(iris[, -5], col = iris$Species)
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-74-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-73-1} 
 
 }
 
-\caption{矩阵图}(\#fig:unnamed-chunk-74)
+\caption{矩阵图}(\#fig:unnamed-chunk-73)
 \end{figure}
 
 
@@ -2615,11 +2632,11 @@ title(main = "Maunga Whau Volcano", font.main = 4)
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-75-1} 
+{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-74-1} 
 
 }
 
-\caption{image 图形}(\#fig:unnamed-chunk-75)
+\caption{image 图形}(\#fig:unnamed-chunk-74)
 \end{figure}
 
 ### 透视图 {#plot-persp}
@@ -2680,7 +2697,7 @@ bwplot(voice.part ~ height, data = singer)
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-76-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-75-1} \end{center}
 
 
 ### 折线图 {#lattice-line}
@@ -2701,7 +2718,7 @@ xyplot(EuStockMarkets) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-77-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-76-1} \end{center}
 
 
 如何解释
@@ -2731,7 +2748,7 @@ horizonplot(EuStockMarkets,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-78-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-77-1} \end{center}
 
 
 
@@ -2759,7 +2776,7 @@ plot(Orange,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-79-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-78-1} \end{center}
 
 
 ```r
@@ -2775,7 +2792,7 @@ barchart(Claims / Holders ~ Age | Group,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-80-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-79-1} \end{center}
 
 
 
@@ -2789,7 +2806,7 @@ barchart(Claims / Holders ~ Age | Group,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-81-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-80-1} \end{center}
 
 lattice 图形的参数设置
 
@@ -2851,7 +2868,7 @@ barchart(Claims / Holders * 100 ~ Age | Group,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-82-1} \end{center}
 
 ### 平滑图 {#lattice-smooth}
 
@@ -2871,7 +2888,7 @@ xyplot(y ~ x, xy, panel = function(...) {
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-1} \end{center}
 
 ```r
 library(splines)
@@ -2881,7 +2898,7 @@ xyplot(y ~ x, xy) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-2} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-2} \end{center}
 
 ```r
 library(nlme)
@@ -2892,7 +2909,7 @@ xyplot(y ~ x, xy) +
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-3} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-83-3} \end{center}
 
 Trellis Displays of Tukey's Hanging Rootograms
 
@@ -2904,7 +2921,7 @@ rootogram(~x, dfun = function(x) dpois(x, lambda = 50))
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-85-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-84-1} \end{center}
 
 ### 点图 {#lattice-dotplot}
 
@@ -2919,7 +2936,7 @@ segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-86-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-85-1} \end{center}
 
 ### 阶梯图 {#lattice-step}
 
@@ -2932,7 +2949,7 @@ ecdfplot(~height | voice.part, data = singer)
 
 
 
-\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-87-1} \end{center}
+\begin{center}\includegraphics{graphics-foundations_files/figure-latex/unnamed-chunk-86-1} \end{center}
 
 ### 分面图 {#lattice-facet}
 
@@ -2954,7 +2971,7 @@ levelplot(depth ~ long + lat | Magnitude,
 
 
 
-\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-88-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-87-1} \end{center}
 
 ### 等高线图 {#lattice-contour}
 
@@ -3088,7 +3105,7 @@ xyplot(Sepal.Length ~ Petal.Length,
 
 
 
-\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-89-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/unnamed-chunk-88-1} \end{center}
 
 
 
@@ -3101,7 +3118,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -3114,20 +3131,23 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3     bookdown_0.23       compiler_4.1.0     
-##   curl_4.3.2          digest_0.6.27       evaluate_0.14      
-##   glue_1.4.2          graphics_4.1.0      grDevices_4.1.0    
-##   grid_4.1.0          highr_0.9           htmltools_0.5.1.1  
+##   askpass_1.1         base64enc_0.1.3     bookdown_0.23      
+##   codetools_0.2-18    compiler_4.1.1      curl_4.3.2         
+##   digest_0.6.27       evaluate_0.14       filehash_2.4-2     
+##   glue_1.4.2          graphics_4.1.1      grDevices_4.1.1    
+##   grid_4.1.1          highr_0.9           htmltools_0.5.1.1  
 ##   jpeg_0.1-9          jquerylib_0.1.4     jsonlite_1.7.2     
 ##   KernSmooth_2.23-20  knitr_1.33          lattice_0.20-44    
-##   latticeExtra_0.6-29 magrittr_2.0.1      mapproj_1.2.7      
-##   maps_3.3.0          markdown_1.1        MASS_7.3-54        
-##   Matrix_1.3-4        methods_4.1.0       mgcv_1.8-36        
-##   mime_0.11           nlme_3.1-152        png_0.1-7          
-##   pracma_2.3.3        RColorBrewer_1.1-2  rlang_0.4.11       
-##   rmarkdown_2.10      shape_1.4.6         splines_4.1.0      
-##   stats_4.1.0         stringi_1.7.3       stringr_1.4.0      
-##   survival_3.2-12     tinytex_0.33        tools_4.1.0        
-##   utils_4.1.0         xfun_0.25           yaml_2.2.1
+##   latticeExtra_0.6-29 magick_2.7.2        magrittr_2.0.1     
+##   mapproj_1.2.7       maps_3.3.0          markdown_1.1       
+##   MASS_7.3-54         Matrix_1.3-4        methods_4.1.1      
+##   mgcv_1.8-36         mime_0.11           nlme_3.1-152       
+##   pdftools_3.0.1      png_0.1-7           qpdf_1.1           
+##   RColorBrewer_1.1-2  Rcpp_1.0.7          rlang_0.4.11       
+##   rmarkdown_2.10      shape_1.4.6         splines_4.1.1      
+##   stats_4.1.1         stringi_1.7.3       stringr_1.4.0      
+##   survival_3.2-11     sys_3.4             tikzDevice_0.12.3.1
+##   tinytex_0.33        tools_4.1.1         utils_4.1.1        
+##   xfun_0.25           yaml_2.2.1
 ```
 

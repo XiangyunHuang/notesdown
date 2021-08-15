@@ -207,13 +207,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 16, number of trials = 100, p-value = 2.606e-12
+## number of successes = 18, number of trials = 100, p-value = 6.148e-11
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.09431029 0.24678760
+##  0.1103112 0.2694771
 ## sample estimates:
 ## probability of success 
-##                   0.16
+##                   0.18
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -228,13 +228,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 16, number of trials = 100, p-value = 0.3814
+## number of successes = 18, number of trials = 100, p-value = 0.7081
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.09431029 0.24678760
+##  0.1103112 0.2694771
 ## sample estimates:
 ## probability of success 
-##                   0.16
+##                   0.18
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -1665,7 +1665,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -1689,13 +1689,13 @@ sessionInfo()
 ## [5] formatR_1.11   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7         plyr_1.8.6         pillar_1.6.2       compiler_4.1.0    
-##  [5] tools_4.1.0        digest_0.6.27      viridisLite_0.4.0  jsonlite_1.7.2    
+##  [1] Rcpp_1.0.7         plyr_1.8.6         pillar_1.6.2       compiler_4.1.1    
+##  [5] tools_4.1.1        digest_0.6.27      viridisLite_0.4.0  jsonlite_1.7.2    
 ##  [9] evaluate_0.14      lifecycle_1.0.0    tibble_3.1.3       gtable_0.3.0      
 ## [13] pkgconfig_2.0.3    rlang_0.4.11       DBI_1.1.1          ggrepel_0.9.1     
 ## [17] curl_4.3.2         yaml_2.2.1         xfun_0.25          httr_1.4.2        
 ## [21] withr_2.4.2        stringr_1.4.0      dplyr_1.0.7        knitr_1.33        
-## [25] htmlwidgets_1.5.3  generics_0.1.0     vctrs_0.3.8        grid_4.1.0        
+## [25] htmlwidgets_1.5.3  generics_0.1.0     vctrs_0.3.8        grid_4.1.1        
 ## [29] tidyselect_1.1.1   data.table_1.14.0  glue_1.4.2         R6_2.5.0          
 ## [33] plotly_4.9.4.1     fansi_0.5.0        rmarkdown_2.10     bookdown_0.23     
 ## [37] tidyr_1.1.3        farver_2.1.0       purrr_0.3.4        productplots_0.1.1

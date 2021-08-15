@@ -37,12 +37,12 @@ library(fs)
    ```
    
    ```
-   ##  [1] "./_book"                             
-   ##  [2] "./_bookdown_files"                   
-   ##  [3] "./.git"                              
-   ##  [4] "./.github"                           
-   ##  [5] "./bayesian-models_files"             
-   ##  [6] "./case-study_cache"                  
+   ##  [1] "./_book"                           "./_bookdown_files"                
+   ##  [3] "./.git"                            "./.github"                        
+   ##  [5] "./bayesian-models_files"           "./case-study_cache"               
+   ##  [7] "./case-study_files"                "./code"                           
+   ##  [9] "./dashboard"                       "./data"                           
+   ## [11] "./data-manipulation_files"         "./data-transportation_files"      
    ....
    ```
    
@@ -51,12 +51,12 @@ library(fs)
    ```
    
    ```
-   ##  [1] "_book"                              "_bookdown_files"                   
-   ##  [3] ".git"                               ".github"                           
-   ##  [5] "bayesian-models_files"              "case-study_cache"                  
-   ##  [7] "case-study_files"                   "code"                              
-   ##  [9] "dashboard"                          "data"                              
-   ## [11] "data-manipulation_files"            "data-transportation_files"         
+   ##  [1] "_book"                           "_bookdown_files"                
+   ##  [3] ".git"                            ".github"                        
+   ##  [5] "bayesian-models_files"           "case-study_cache"               
+   ##  [7] "case-study_files"                "code"                           
+   ##  [9] "dashboard"                       "data"                           
+   ## [11] "data-manipulation_files"         "data-transportation_files"      
    ....
    ```
 
@@ -89,11 +89,11 @@ library(fs)
     
     ```
     ##                                          size isdir mode               mtime
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 63079 FALSE  644 2021-05-18 09:11:10
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 2021-08-14 10:54:41 2021-08-14 11:03:04
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-08-15 02:25:48 2021-08-15 02:35:01
     ##                                         uid gid uname grname
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h   0   0  root   root
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
     
     ```r
@@ -109,7 +109,7 @@ library(fs)
     ```
     
     ```
-    ## [1] "2021-05-18 09:11:10 UTC"
+    ## [1] "2021-08-10 08:11:27 UTC"
     ```
     
     ```r
@@ -117,7 +117,7 @@ library(fs)
     ```
     
     ```
-    ## [1] 63079
+    ## [1] 63180
     ```
     
     ```r
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 12288  TRUE  755 2021-08-14 11:43:48 2021-08-14 11:43:48 2021-08-14 11:43:48
+    ## . 20480  TRUE  755 2021-08-15 05:57:54 2021-08-15 05:57:54 2021-08-15 05:57:55
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -138,10 +138,10 @@ library(fs)
     ```
     
     ```
-    ##          size isdir mode               mtime               ctime
-    ## ./_book/ 4096  TRUE  755 2021-08-14 11:38:19 2021-08-14 11:38:19
+    ##           size isdir mode               mtime               ctime
+    ## ./_book/ 12288  TRUE  755 2021-08-15 05:48:46 2021-08-15 05:48:46
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-14 11:39:12 1001 121 runner docker
+    ## ./_book/ 2021-08-15 05:50:02 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -154,7 +154,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
     ##                                       0
     ```
     
@@ -163,7 +163,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
     ##                                      -1
     ```
     
@@ -172,7 +172,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
     ##                                      -1
     ```
     
@@ -181,7 +181,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.0/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
     ##                                       0
     ```
 
@@ -200,7 +200,7 @@ library(fs)
     ## [11] "dir.exists" "dirname"
     ```
     
-   显而易见，`dir.create` 和 `dir.exists` 分别是创建目录和查看目录的存在性。`dirname` 和 `basename` 是一对函数用来操作文件路径。以当前目录/home/runner/work/masr/masr为例，`dirname(getwd())` 返回 /home/runner/work/masr 而 `basename(getwd())` 返回 masr。对于文件路径而言，`dirname(rinternals)` 返回文件所在的目录/opt/R/4.1.0/lib/R/include， `basename(rinternals)` 返回文件名Rinternals.h。`dir` 函数查看指定路径或目录下的文件，支持以模式匹配和递归的方式查找目录下的文件
+   显而易见，`dir.create` 和 `dir.exists` 分别是创建目录和查看目录的存在性。`dirname` 和 `basename` 是一对函数用来操作文件路径。以当前目录/home/runner/work/masr/masr为例，`dirname(getwd())` 返回 /home/runner/work/masr 而 `basename(getwd())` 返回 masr。对于文件路径而言，`dirname(rinternals)` 返回文件所在的目录/opt/R/4.1.1/lib/R/include， `basename(rinternals)` 返回文件名Rinternals.h。`dir` 函数查看指定路径或目录下的文件，支持以模式匹配和递归的方式查找目录下的文件
 
     
     ```r
@@ -263,10 +263,10 @@ library(fs)
     ```
     
     ```
-    ## [1] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/AMD.txt"    
-    ## [2] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/CHOLMOD.txt"
-    ## [3] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/COLAMD.txt" 
-    ## [4] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/SPQR.txt"
+    ## [1] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/AMD.txt"    
+    ## [2] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/CHOLMOD.txt"
+    ## [3] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/COLAMD.txt" 
+    ## [4] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/SPQR.txt"
     ```
     
     ```r
@@ -566,7 +566,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/library/compiler/R/compiler.rdx"
+    ## [1] "/opt/R/4.1.1/lib/R/library/compiler/R/compiler.rdx"
     ```
 
 ## 查找文件 {#find}
@@ -593,7 +593,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/library/base/CITATION"
+    ## [1] "/opt/R/4.1.1/lib/R/library/base/CITATION"
     ```
 
 1. `R.home`
@@ -605,7 +605,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R"
+    ## [1] "/opt/R/4.1.1/lib/R"
     ```
     
     ```r
@@ -614,7 +614,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/bin"
+    ## [1] "/opt/R/4.1.1/lib/R/bin"
     ```
     
     ```r
@@ -623,7 +623,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/etc"
+    ## [1] "/opt/R/4.1.1/lib/R/etc"
     ```
     
     ```r
@@ -632,7 +632,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/library"
+    ## [1] "/opt/R/4.1.1/lib/R/library"
     ```
 
 1. `.libPaths()` R 包存放的路径有哪些
@@ -643,7 +643,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/home/runner/work/_temp/Library" "/opt/R/4.1.0/lib/R/library"
+    ## [1] "/home/runner/work/_temp/Library" "/opt/R/4.1.1/lib/R/library"
     ```
 
 1. `find.package` 查找R包所在目录
@@ -654,7 +654,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.0/lib/R/library/MASS"
+    ## [1] "/opt/R/4.1.1/lib/R/library/MASS"
     ```
 
 1. `file.exist` 检查文件是否存在
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 26246
+    ## [1] 151007
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.080   0.000   0.081
+    ##   0.072   0.003   0.076
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##    0.08    0.00    0.08
+    ##   0.066   0.009   0.074
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 04:43:49 PDT"
+    ## [1] "2021-08-14 22:57:56 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 07:43:49 EDT"
+    ## [1] "2021-08-15 01:57:56 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14"
+    ## [1] "2021-08-15"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 11:43:49 2021"
+    ## [1] "Sun Aug 15 05:57:56 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 14 11:43:49 2021"
+    ## [1] "Sun Aug 15 05:57:56 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 11:43:49 GMT"
+    ## [1] "2021-08-15 05:57:56 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 11:43:49 UTC"
+    ## [1] "2021-08-15 05:57:56 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 10:43:49 UTC"
+    ## [1] "2021-08-15 04:57:56 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 11:12:14 2021-08-14 11:12:14
+    ## ./_common.R 1639 FALSE  644 2021-08-15 05:22:05 2021-08-15 05:22:05
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 11:38:19 1001 121 runner docker
+    ## ./_common.R 2021-08-15 05:22:16 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-14 11:43:49 2021-08-14 11:43:49
+    ## ./_common.R 1639 FALSE  644 2021-08-15 05:57:56 2021-08-15 05:57:56
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-14 11:43:49 1001 121 runner docker
+    ## ./_common.R 2021-08-15 05:57:56 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 11:43:49 CST"
+    ## [1] "2021-08-15 05:57:56 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 11:43:49"
+    ## [1] "2021-08-15 05:57:56"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-14 19:43:49 CST"
+    ## [1] "2021-08-15 13:57:56 CST"
     ```
 
 1. 设置时区
@@ -1217,7 +1217,7 @@ system2(command = 'pdflatex', args = '--version')
     ## [1] "Asia/Shanghai"
     ```
     
-    全局修改，在文件 /opt/R/4.1.0/lib/R/etc/Rprofile.site 内添加`Sys.setenv(TZ="Asia/Shanghai")`。 局部修改，就是在本地R项目下，创建 `.Rprofile`，然后同样添加 `Sys.setenv(TZ="Asia/Shanghai")`。
+    全局修改，在文件 /opt/R/4.1.1/lib/R/etc/Rprofile.site 内添加`Sys.setenv(TZ="Asia/Shanghai")`。 局部修改，就是在本地R项目下，创建 `.Rprofile`，然后同样添加 `Sys.setenv(TZ="Asia/Shanghai")`。
 
 
 ## R 包管理 {#package}
@@ -1251,7 +1251,7 @@ apropos('package')
     ```
     
     ```
-    ## [1] 459
+    ## [1] 505
     ```
    
 1. `available.packages` 查询可用的 R 包
@@ -1318,16 +1318,10 @@ apropos('package')
     ```
     
     ```
-    ##          Package    LibPath                           Installed Built  
-    ## showtext "showtext" "/home/runner/work/_temp/Library" "0.9-3"   "4.1.0"
-    ## Matrix   "Matrix"   "/opt/R/4.1.0/lib/R/library"      "1.3-3"   "4.1.0"
-    ## mgcv     "mgcv"     "/opt/R/4.1.0/lib/R/library"      "1.8-35"  "4.1.0"
-    ## survival "survival" "/opt/R/4.1.0/lib/R/library"      "3.2-11"  "4.1.0"
-    ##          ReposVer Repository                               
-    ## showtext "0.9-4"  "https://cloud.r-project.org/src/contrib"
-    ## Matrix   "1.3-4"  "https://cloud.r-project.org/src/contrib"
-    ## mgcv     "1.8-36" "https://cloud.r-project.org/src/contrib"
-    ## survival "3.2-12" "https://cloud.r-project.org/src/contrib"
+    ##          Package    LibPath                      Installed Built   ReposVer
+    ## survival "survival" "/opt/R/4.1.1/lib/R/library" "3.2-11"  "4.1.1" "3.2-12"
+    ##          Repository                               
+    ## survival "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1352,13 +1346,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 419       1          13
-    ##   /opt/R/4.1.0/lib/R/library       26       3           0
+    ##   /home/runner/work/_temp/Library 463       0          13
+    ##   /opt/R/4.1.1/lib/R/library       28       1           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       432         17571
+    ##   https://cloud.r-project.org/src/contrib       478         17525
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1370,7 +1364,7 @@ apropos('package')
     
     ```
     ## Package: graphics
-    ## Version: 4.1.0
+    ## Version: 4.1.1
     ## Priority: base
     ## Title: The R Graphics Package
     ## Author: R Core Team and contributors worldwide
@@ -1400,10 +1394,9 @@ apropos('package')
     ```
     
     ```
-    ##  [1] "bookdown"       "flexdashboard"  "formattable"    "hrbrthemes"    
-    ##  [5] "kableExtra"     "prettydoc"      "reprex"         "tint"          
-    ##  [9] "xaringan"       "packagemetrics" "tidyverse"      "projpred"      
-    ## [13] "brms"
+    ##  [1] "bookdown"       "formattable"    "hrbrthemes"     "kableExtra"    
+    ##  [5] "prettydoc"      "reprex"         "tint"           "packagemetrics"
+    ##  [9] "tidyverse"      "projpred"       "brms"
     ```
     
     ggplot2 生态，仅列出以 gg 开头的 R 包
@@ -1497,7 +1490,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x563c863b53b0>
+## <bytecode: 0x55922e8ac000>
 ## <environment: namespace:base>
 ```
 
@@ -1542,7 +1535,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -1565,7 +1558,7 @@ sessionInfo()
 ## [1] rmarkdown_2.10 fs_1.5.0       magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_4.1.0    bookdown_0.23     htmltools_0.5.1.1 tools_4.1.0      
+##  [1] compiler_4.1.1    bookdown_0.23     htmltools_0.5.1.1 tools_4.1.1      
 ##  [5] yaml_2.2.1        curl_4.3.2        stringi_1.7.3     knitr_1.33       
 ##  [9] stringr_1.4.0     digest_0.6.27     xfun_0.25         rlang_0.4.11     
 ## [13] evaluate_0.14

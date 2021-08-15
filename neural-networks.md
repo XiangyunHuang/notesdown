@@ -84,7 +84,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.0 (2021-05-18)
+## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -107,10 +107,10 @@ sessionInfo()
 ## [1] reticulate_1.20
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        bookdown_0.22     codetools_0.2-18  lattice_0.20-44  
-##  [5] png_0.1-7         digest_0.6.27     grid_4.1.0        jsonlite_1.7.2   
+##  [1] Rcpp_1.0.7        bookdown_0.23     codetools_0.2-18  lattice_0.20-44  
+##  [5] png_0.1-7         digest_0.6.27     grid_4.1.1        jsonlite_1.7.2   
 ##  [9] magrittr_2.0.1    evaluate_0.14     rlang_0.4.11      stringi_1.7.3    
-## [13] Matrix_1.3-4      rmarkdown_2.9     tools_4.1.0       stringr_1.4.0    
-## [17] xfun_0.24         yaml_2.2.1        compiler_4.1.0    htmltools_0.5.1.1
-## [21] knitr_1.33
+## [13] curl_4.3.2        Matrix_1.3-4      rmarkdown_2.10    tools_4.1.1      
+## [17] stringr_1.4.0     xfun_0.25         yaml_2.2.1        compiler_4.1.1   
+## [21] htmltools_0.5.1.1 knitr_1.33
 ```
