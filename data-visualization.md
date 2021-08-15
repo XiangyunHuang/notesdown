@@ -1172,7 +1172,10 @@ gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式
 
 
 ```r
-all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
+all.equal(
+  col2rgb(paste0("gray", seq(100))),
+  col2rgb(paste0("grey", seq(100)))
+)
 ```
 
 ```
@@ -1183,8 +1186,10 @@ all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
 
 
 ```r
-barplot(1:8, col = gray.colors(8, start = .3, end = .9), 
-        main = "gray.colors function", border = NA)
+barplot(1:8,
+  col = gray.colors(8, start = .3, end = .9),
+  main = "gray.colors function", border = NA
+)
 ```
 
 \begin{figure}
@@ -1683,7 +1688,7 @@ scales::show_col(colours = more_colors)
 
 }
 
-\caption{Hue-Saturation-Value (HSV) color model}(\#fig:fish-hsv-pal)
+\caption{Hue-Saturation-Value (HSV) 颜色模型}(\#fig:fish-hsv-pal)
 \end{figure}
 
 
@@ -3915,7 +3920,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55a820a04180>
+## <bytecode: 0x55b7e8221bf0>
 ## <environment: namespace:ggpubr>
 ```
 
