@@ -2,7 +2,7 @@
 title: "现代应用统计与 R 语言"
 subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
-date: "2021-08-15"
+date: "2021-08-19"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -311,7 +311,7 @@ Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Value
 
 第 \@ref(chap-data-visualization) 章介绍数据可视化，分四个部分，基础元素、常用图形、字体和颜色设置。
 
-第 \@ref(chap-dynamic-documents) 章介绍动态文档，即 R Markdown 及其生态系统。
+第 \@ref(chap-document-elements) 章介绍动态文档，即 R Markdown 及其生态系统。
 
 第 \@ref(chap-interactive-web-graphics) 章介绍交互图形，以常用的 **plotly** 和 **highcharter** 为主，重点介绍 R 和 JavaScript 库的对应关系。
 
@@ -350,6 +350,6 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-15 20:21:22。
+书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-19 09:59:35。
 
 

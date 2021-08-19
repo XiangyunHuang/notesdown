@@ -11,9 +11,11 @@ Timothée Giraud 等创建的 [riatelab](https://github.com/riatelab/) 和 Edzer
 
 Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，新的R包更加简洁、速度更快、功能更强。
 
-mapedit
-mapview
-leaflet
+[mapedit](https://github.com/r-spatial/mapedit)
+[mapview](https://github.com/r-spatial/mapview)
+[leaflet](https://github.com/rstudio/leaflet)
+
+https://edzer.github.io/sp/
 
 Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
 -->
@@ -52,6 +54,84 @@ library(sfarrow) # https://github.com/wcjochem/sfarrow
 # library(arrow) # 列式存储
 # library(rgdal) # 要替换掉
 # library(highcharter) # 要替换掉
+```
+
+
+```r
+library(leaflet)
+library(maps)
+library(mapdata)
+map("china", fill = F, col = terrain.colors(100))
+
+mapChina = map("china", fill = F, plot = FALSE)
+leaflet(data = mapChina) %>% addTiles() %>%
+  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
+
+
+# From https://leafletjs.com/examples/choropleth/us-states.js
+# 返回 sp 对象
+states <- geojsonio::geojson_read("json/us-states.geojson", what = "sp")
+
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/>%g people / mi<sup>2</sup>",
+  states$name, states$density
+) %>% lapply(htmltools::HTML)
+
+leaflet(states) %>%
+  setView(-96, 37.8, 4) %>%
+  addProviderTiles("MapBox", options = providerTileOptions(
+    id = "mapbox.light",
+    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
+  addPolygons(
+    fillColor = ~pal(density),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
+    position = "bottomright")
+```
+
+
+
+```r
+library(sp)
+data(meuse)
+coordinates(meuse) <- ~x+y
+proj4string(meuse) <- CRS("+init=epsg:28992")
+plot(meuse)
+```
+
+
+```r
+library(sp)
+demo(meuse, ask = FALSE, echo = FALSE) # loads the meuse data sets
+library(maptools)
+crs.longlat = CRS("+init=epsg:4326")
+meuse.longlat = spTransform(meuse, crs.longlat)
+plot(meuse.longlat, axes = TRUE)
+
+library(mapview)
+library(rgdal) # for readOGR
+nc <- readOGR(system.file("shapes/", package="maptools"), "sids")
+proj4string(nc) <- CRS("+proj=longlat +datum=NAD27")
+class(nc)
+mapview(nc, zcol = c("SID74", "SID79"), alpha.regions = 1.0, legend = TRUE)
 ```
 
 
