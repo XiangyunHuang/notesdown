@@ -1,43 +1,30 @@
 # 空间分析  {#chap-spatial-analysis}
 
+
+Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 [r-spatial](https://github.com/r-spatial/) 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 [sp](https://edzer.github.io/sp/)、 [sf](https://github.com/r-spatial/sf)、 [stars](https://github.com/r-spatial/stars)、 [mapedit](https://github.com/r-spatial/mapedit) 和
+[mapview](https://github.com/r-spatial/mapview)。Edzer Pebesma 长期致力于地理信息和空间统计的软件开发，可以说目前已打造了一个生态。
+
+Timothée Giraud 创建的 [riatelab](https://github.com/riatelab/) 组织开发系列 R 包工具，可以绘制各种类型和风格的地图，专题地图工具已经从 [cartography](https://github.com/riatelab/cartography/) 过渡到 [mapsf](https://github.com/riatelab/mapsf)，它更加友好、轻量和稳健。类似的 R 包还有 [choroplethr](https://github.com/trulia/choroplethr)，只是上次更新在 2015 年。
+
+空间数据可视化常常离不开基础地图数据，不同的 R 包依赖的地图服务有所不同，比如
+ [RgoogleMaps](https://github.com/markusloecher/rgooglemaps)、[ggmap](https://github.com/dkahle/ggmap) 和 [googleway](https://github.com/SymbolixAU/googleway) 主要依赖谷歌的地图数据。
+而 [mapdeck](https://github.com/SymbolixAU/mapdeck) 基于 [deck.gl](https://github.com/visgl/deck.gl) 和 [Mapbox](https://github.com/mapbox/mapbox-gl-js) 支持移动和网页应用，GPU 渲染等。[leaflet](https://github.com/rstudio/leaflet) 则基于开源的[Leaflet](https://github.com/Leaflet/Leaflet)库提供交互式空间数据可视化的能力。
+
+
+[芝加哥大学空间数据科学中心](https://spatial.uchicago.edu/) 开发的 R 包 [rgeoda](https://github.com/GeoDaCenter/rgeoda) 基于开源的 C++ 库[GeoDa](https://github.com/GeoDaCenter/geoda)，提供一系列空间数据分析能力，包括探索性空间数据分析、空间聚类检测和聚类分析。
+
+
+Edzer Pebesma 和 Roger Bivand 合著的 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)，Christopher K. Wikle, Andrew Zammit-Mangion 和 Noel Cressie 合著的 [Spatio-Temporal Statistics with R](https://spacetimewithr.org/)。推荐学习 Edzer Pebesma 在几届国际 R 语言大会上的材料，2021 年的[R Spatial](https://edzer.github.io/UseR2021/)，2020 年的[Analyzing and visualising spatial and spatiotemporal data cubes Part I](https://edzer.github.io/UseR2020/)，
+2019 年的[Spatial workshop part I](https://edzer.github.io/UseR2019/part1.html) 和 [Spatial workshop part II](https://edzer.github.io/UseR2019/part2.html)，
+2017 年的[Spatial Data in R: New Directions](https://edzer.github.io/UseR2017/)
+2016 年的[Handling and Analyzing Spatial, Spatiotemporal and Movement Data](https://edzer.github.io/UseR2016/)。
+
 <!-- 
 1. 静态可视化和动态可视化
 1. Google 地图和开源地图服务需要介绍，国内的地图服务也需要介绍
 1. 介绍空间基础对象，及其数据操作和分析
-
-开源组织
-Timothée Giraud 等创建的 [riatelab](https://github.com/riatelab/) 和 Edzer Pebesma 等创建的 [r-spatial](https://github.com/r-spatial/)
-
-
-Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，新的R包更加简洁、速度更快、功能更强。
-
-[mapedit](https://github.com/r-spatial/mapedit)
-[mapview](https://github.com/r-spatial/mapview)
-[leaflet](https://github.com/rstudio/leaflet)
-
-https://edzer.github.io/sp/
-
-Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
 -->
 
-[mapsf](https://github.com/riatelab/mapsf) 是 [cartography](https://github.com/riatelab/cartography/) 的继任者，它更加友好、轻量和稳健。
-
-[choroplethr](https://github.com/trulia/choroplethr) 简化创建 thematic maps 的过程。
-
-[ggmap](https://github.com/dkahle/ggmap) 依赖 [RgoogleMaps](https://github.com/markusloecher/rgooglemaps) 就不介绍了
-
-[mapdeck](https://github.com/SymbolixAU/mapdeck) 支持调用 GPU 渲染
-[deck.gl](https://github.com/visgl/deck.gl) MIT 协议
-
-[googleway](https://github.com/SymbolixAU/googleway)
-
-
-Edzer Pebesma
-
-- UseR2020 [Analyzing and visualising spatial and spatiotemporal data cubes - Part I](https://edzer.github.io/UseR2020/)
-- UseR2019 [UseR! 2019 Spatial workshop part I](https://edzer.github.io/UseR2019/part1.html) [UseR! 2019 Spatial workshop part II](https://edzer.github.io/UseR2019/part2.html)
-- UseR2017 [Spatial Data in R: New Directions](https://edzer.github.io/UseR2017/)
-- UseR2016 [Handling and Analyzing Spatial, Spatiotemporal and Movement Data](https://edzer.github.io/UseR2016/)
 
 
 ```r

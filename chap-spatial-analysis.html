@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>第 29 章 空间分析 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<meta name="description" content="mapsf 是 cartography 的继任者，它更加友好、轻量和稳健。 choroplethr 简化创建 thematic maps 的过程。 ggmap 依赖 RgoogleMaps 就不介绍了 mapdeck 支持调用 GPU 渲染 deck.gl MIT 协议 googleway Edzer Pebesma UseR2020 Analyzing and visualising...">
+<meta name="description" content="Robert Hijmans 开发的 terra 用以替代 raster，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 r-spatial 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 sp、 sf、 stars、 mapedit 和...">
 <meta name="generator" content="bookdown 0.23 with bs4_book()">
 <meta property="og:title" content="第 29 章 空间分析 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="mapsf 是 cartography 的继任者，它更加友好、轻量和稳健。 choroplethr 简化创建 thematic maps 的过程。 ggmap 依赖 RgoogleMaps 就不介绍了 mapdeck 支持调用 GPU 渲染 deck.gl MIT 协议 googleway Edzer Pebesma UseR2020 Analyzing and visualising...">
+<meta property="og:description" content="Robert Hijmans 开发的 terra 用以替代 raster，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 r-spatial 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 sp、 sf、 stars、 mapedit 和...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第 29 章 空间分析 | 现代应用统计与 R 语言">
-<meta name="twitter:description" content="mapsf 是 cartography 的继任者，它更加友好、轻量和稳健。 choroplethr 简化创建 thematic maps 的过程。 ggmap 依赖 RgoogleMaps 就不介绍了 mapdeck 支持调用 GPU 渲染 deck.gl MIT 协议 googleway Edzer Pebesma UseR2020 Analyzing and visualising...">
+<meta name="twitter:description" content="Robert Hijmans 开发的 terra 用以替代 raster，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 r-spatial 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 sp、 sf、 stars、 mapedit 和...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -133,42 +133,22 @@
 <h1>
 <span class="header-section-number">第 29 章</span> 空间分析<a class="anchor" aria-label="anchor" href="#chap-spatial-analysis"><i class="fas fa-link"></i></a>
 </h1>
+<p>Robert Hijmans 开发的 <a href="https://github.com/rspatial/terra">terra</a> 用以替代 <a href="https://github.com/rspatial/raster">raster</a>，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 <a href="https://github.com/r-spatial/">r-spatial</a> 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 <a href="https://edzer.github.io/sp/">sp</a>、 <a href="https://github.com/r-spatial/sf">sf</a>、 <a href="https://github.com/r-spatial/stars">stars</a>、 <a href="https://github.com/r-spatial/mapedit">mapedit</a> 和
+<a href="https://github.com/r-spatial/mapview">mapview</a>。Edzer Pebesma 长期致力于地理信息和空间统计的软件开发，可以说目前已打造了一个生态。</p>
+<p>Timothée Giraud 创建的 <a href="https://github.com/riatelab/">riatelab</a> 组织开发系列 R 包工具，可以绘制各种类型和风格的地图，专题地图工具已经从 <a href="https://github.com/riatelab/cartography/">cartography</a> 过渡到 <a href="https://github.com/riatelab/mapsf">mapsf</a>，它更加友好、轻量和稳健。类似的 R 包还有 <a href="https://github.com/trulia/choroplethr">choroplethr</a>，只是上次更新在 2015 年。</p>
+<p>空间数据可视化常常离不开基础地图数据，不同的 R 包依赖的地图服务有所不同，比如
+<a href="https://github.com/markusloecher/rgooglemaps">RgoogleMaps</a>、<a href="https://github.com/dkahle/ggmap">ggmap</a> 和 <a href="https://github.com/SymbolixAU/googleway">googleway</a> 主要依赖谷歌的地图数据。
+而 <a href="https://github.com/SymbolixAU/mapdeck">mapdeck</a> 基于 <a href="https://github.com/visgl/deck.gl">deck.gl</a> 和 <a href="https://github.com/mapbox/mapbox-gl-js">Mapbox</a> 支持移动和网页应用，GPU 渲染等。<a href="https://github.com/rstudio/leaflet">leaflet</a> 则基于开源的<a href="https://github.com/Leaflet/Leaflet">Leaflet</a>库提供交互式空间数据可视化的能力。</p>
+<p><a href="https://spatial.uchicago.edu/">芝加哥大学空间数据科学中心</a> 开发的 R 包 <a href="https://github.com/GeoDaCenter/rgeoda">rgeoda</a> 基于开源的 C++ 库<a href="https://github.com/GeoDaCenter/geoda">GeoDa</a>，提供一系列空间数据分析能力，包括探索性空间数据分析、空间聚类检测和聚类分析。</p>
+<p>Edzer Pebesma 和 Roger Bivand 合著的 <a href="https://www.r-spatial.org/book">Spatial Data Science with applications in R</a>，Christopher K. Wikle, Andrew Zammit-Mangion 和 Noel Cressie 合著的 <a href="https://spacetimewithr.org/">Spatio-Temporal Statistics with R</a>。推荐学习 Edzer Pebesma 在几届国际 R 语言大会上的材料，2021 年的<a href="https://edzer.github.io/UseR2021/">R Spatial</a>，2020 年的<a href="https://edzer.github.io/UseR2020/">Analyzing and visualising spatial and spatiotemporal data cubes Part I</a>，
+2019 年的<a href="https://edzer.github.io/UseR2019/part1.html">Spatial workshop part I</a> 和 <a href="https://edzer.github.io/UseR2019/part2.html">Spatial workshop part II</a>，
+2017 年的<a href="https://edzer.github.io/UseR2017/">Spatial Data in R: New Directions</a>
+2016 年的<a href="https://edzer.github.io/UseR2016/">Handling and Analyzing Spatial, Spatiotemporal and Movement Data</a>。</p>
 <!-- 
 1. 静态可视化和动态可视化
 1. Google 地图和开源地图服务需要介绍，国内的地图服务也需要介绍
 1. 介绍空间基础对象，及其数据操作和分析
-
-开源组织
-Timothée Giraud 等创建的 [riatelab](https://github.com/riatelab/) 和 Edzer Pebesma 等创建的 [r-spatial](https://github.com/r-spatial/)
-
-
-Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，新的R包更加简洁、速度更快、功能更强。
-
-[mapedit](https://github.com/r-spatial/mapedit)
-[mapview](https://github.com/r-spatial/mapview)
-[leaflet](https://github.com/rstudio/leaflet)
-
-https://edzer.github.io/sp/
-
-Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
 -->
-<p><a href="https://github.com/riatelab/mapsf">mapsf</a> 是 <a href="https://github.com/riatelab/cartography/">cartography</a> 的继任者，它更加友好、轻量和稳健。</p>
-<p><a href="https://github.com/trulia/choroplethr">choroplethr</a> 简化创建 thematic maps 的过程。</p>
-<p><a href="https://github.com/dkahle/ggmap">ggmap</a> 依赖 <a href="https://github.com/markusloecher/rgooglemaps">RgoogleMaps</a> 就不介绍了</p>
-<p><a href="https://github.com/SymbolixAU/mapdeck">mapdeck</a> 支持调用 GPU 渲染
-<a href="https://github.com/visgl/deck.gl">deck.gl</a> MIT 协议</p>
-<p><a href="https://github.com/SymbolixAU/googleway">googleway</a></p>
-<p>Edzer Pebesma</p>
-<ul>
-<li>UseR2020 <a href="https://edzer.github.io/UseR2020/">Analyzing and visualising spatial and spatiotemporal data cubes - Part I</a>
-</li>
-<li>UseR2019 <a href="https://edzer.github.io/UseR2019/part1.html">UseR! 2019 Spatial workshop part I</a> <a href="https://edzer.github.io/UseR2019/part2.html">UseR! 2019 Spatial workshop part II</a>
-</li>
-<li>UseR2017 <a href="https://edzer.github.io/UseR2017/">Spatial Data in R: New Directions</a>
-</li>
-<li>UseR2016 <a href="https://edzer.github.io/UseR2016/">Handling and Analyzing Spatial, Spatiotemporal and Movement Data</a>
-</li>
-</ul>
 <div class="sourceCode" id="cb1992"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/">sp</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span>
@@ -456,7 +436,7 @@ Edzer Pebesma, Roger Bivand 著作 [Spatial Data Science with applications in R]
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-08-19.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-08-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
