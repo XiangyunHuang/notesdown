@@ -1236,198 +1236,6 @@ hchart(sleep, "line", hcaes(ID, extra, group = group))
 :::
 
 
-## 动画 I {#sec-highcharter-animation}
-
-动态条形图
-
-
-```r
-library(highcharter) # highcharter 的依赖也很重
-library(idbr)
-library(purrr)
-library(dplyr) # 未来替代一下
-
-# the US Census Bureau International Data Base API
-# 美国人口普查局国际数据库 API
-idb_api_key("35f116582d5a89d11a47c7ffbfc2ba309133f09d")
-yrs <- seq(1980, 2030, by = 5)
-
-df <- map_dfr(c("male", "female"), function(sex) {
-  transform(get_idb("US", yrs, sex = sex), sex_label = sex)
-})
-
-df <- df %>%
-  transform(population = pop * ifelse(sex_label == "male", -1, 1))
-
-# 数据变换
-series <- df %>%
-  group_by(sex_label, age) %>%
-  do(data = list(sequence = .$population)) %>%
-  ungroup() %>%
-  group_by(sex_label) %>%
-  do(data = .$data) %>%
-  mutate(name = sex_label) %>%
-  list_parse()
-
-maxpop <- max(abs(df$population))
-
-xaxis <- list(
-  categories = sort(unique(df$age)),
-  reversed = FALSE, tickInterval = 5,
-  labels = list(step = 5)
-)
-
-highchart() %>%
-  hc_chart(type = "bar") %>%
-  hc_motion(
-    enabled = TRUE,
-    labels = yrs,
-    series = c(0, 1),
-    autoplay = TRUE,
-    updateInterval = 10,
-    playIcon = "fa fa-play",
-    pauseIcon = "fa fa-pause"
-  ) %>%
-  hc_add_series_list(series) %>%
-  hc_plotOptions(
-    series = list(stacking = "normal"),
-    bar = list(groupPadding = 0, pointPadding = 0, borderWidth = 0)
-  ) %>%
-  hc_tooltip(
-    shared = FALSE,
-    formatter = JS("
-      function() {
-          return '<b>' + this.series.name +
-              ', age ' + this.point.category +
-              '</b><br/>' + 'Population: ' +
-              Highcharts.numberFormat(Math.abs(this.point.y), 0);
-      }
-   ")
-  ) %>%
-  hc_yAxis(
-    labels = list(
-      formatter = JS("
-        function() {
-            return Math.abs(this.value) / 1000000 + 'M';
-        }
-      ")
-    ),
-    tickInterval = 0.5e6,
-    min = -maxpop,
-    max = maxpop
-  ) %>%
-  hc_xAxis(
-    xaxis,
-    rlist::list.merge(xaxis, list(opposite = TRUE, linkedTo = 0))
-  )
-```
-
-动态气泡图
-
-
-```r
-highchart() %>%
-  hc_xAxis(min = 0, max = 10) %>%
-  hc_yAxis(min = 0, max = 10) %>%
-  hc_motion(enabled = TRUE) %>%
-  hc_add_series(
-    type = "bubble",
-    data = list(
-      list(
-        sequence = list(
-          list(x = 1, y = 1, z = 10),
-          list(x = 2, y = 3, z = 5),
-          list(x = 3, y = 5, z = 8)
-        )
-      )
-    )
-  )
-```
-
-
-
-```r
-highchart() %>%
-  hc_xAxis(min = 0, max = 10) %>%
-  hc_yAxis(min = 0, max = 10) %>%
-  hc_add_series(
-    type = "bubble", 
-    name = "气泡图",
-    data = list(
-      list(x = 1, y = 1, z = 10)
-    )
-  )
-```
-
-动态散点图
-
-
-```r
-library(highcharter)
-
-highchart() %>%
-  hc_chart(type = "scatter") %>%
-  hc_yAxis(max = 6, min = 0) %>%
-  hc_xAxis(max = 6, min = 0) %>%
-  hc_add_series(
-    name = "Australia",
-    data = list(
-      list(sequence = list(c(1, 1), c(2, 2), c(3, 3), c(4, 4)))
-    )
-  ) %>%
-  hc_add_series(
-    name = "United States",
-    data = list(
-      list(sequence = list(c(0, 0), c(3, 2), c(4, 3), c(4, 1)))
-    )
-  ) %>%
-  hc_add_series(
-    name = "China",
-    data = list(
-      list(sequence = list(c(3, 2), c(2, 2), c(1, 1), c(2, 5)))
-    )
-  ) %>%
-  hc_motion(
-    enabled = TRUE,
-    labels = 2000:2003,
-    series = c(0, 1, 2)
-  )
-```
-
-动态柱状图
-
-
-```r
-highchart() %>%
-  hc_chart(type = "column") %>%
-  hc_yAxis(max = 6, min = 0) %>%
-  hc_add_series(name = "A", data = c(2, 3, 4), zIndex = -10) %>%
-  hc_add_series(
-    name = "B",
-    data = list(
-      list(sequence = c(1, 2, 3, 4)),
-      list(sequence = c(3, 2, 1, 3)),
-      list(sequence = c(2, 5, 4, 3))
-    )
-  ) %>%
-  hc_add_series(
-    name = "C",
-    data = list(
-      list(sequence = c(3, 2, 1, 3)),
-      list(sequence = c(2, 5, 4, 3)),
-      list(sequence = c(1, 2, 3, 4))
-    )
-  ) %>%
-  hc_motion(
-    enabled = TRUE,
-    labels = 2000:2003,
-    series = c(1, 2),
-    playIcon = "fa fa-play",
-    pauseIcon = "fa fa-pause"
-  )
-```
-
-
 ## 时序图 {#sec-dygraphs}
 
 [dygraphs](https://github.com/rstudio/dygraphs) 专门用来绘制交互式时间序列图形，下面以美团股价为例，展示时间窗口筛选、坐标轴名称、刻度标签、注释、事件标注、缩放等功能
@@ -1500,7 +1308,7 @@ gg
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
 转化为 plotly 对象
 
@@ -1521,28 +1329,6 @@ ggplotly(gg, dynamicTicks = "y") %>%
 
 
 ## 地图 II {#sec-echarts4r-map}
-
-相比于 **plotly**，**echarts4r** 更加轻量，这得益于 JavaScript 库 [Apache ECharts](https://github.com/apache/echarts)。
-前者 MIT 协议，后者采用  Apache-2.0 协议，都可以商用。Apache ECharts 是 Apache 旗下顶级开源项目，由百度前端技术团队贡献，中文文档也比较全，学习起来门槛会低一些。
-
-
-```r
-library(echarts4r)
-quakes |> 
-  e_charts(long) |> 
-  e_geo(
-    roam = TRUE,
-    boundingCoords = list(
-      c(185, - 10),
-      c(165, -40)
-    )
-  )  |>  
-  e_scatter(
-    lat, mag, 
-    coord_system = "geo"
-  ) |> 
-  e_visual_map(mag, scale = e_scale)
-```
 
 **leaflet** 包制作地图，斐济是太平洋上的一个岛国，处于板块交界处，经常发生地震，如下图所示，展示 1964 年来 1000 次震级大于 4 级的地震活动。
 
@@ -1662,7 +1448,7 @@ leaflet(quakes) |>
 ```
 
 
-## 动画 II {#sec-echarts4r-animation}
+## 动画 {#sec-echarts4r-animation}
 
 
 
@@ -1852,7 +1638,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-24-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-19-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 

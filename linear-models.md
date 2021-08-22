@@ -428,7 +428,20 @@ data(rock)
 
 ## 1888 年瑞士生育率分析 {#sec-swiss}
 
-1888 年瑞士生育率和社会经济指标数据，各个指标都是百分比的形式，探索性分析
+1888 年，瑞士开始进入一个人口转变的阶段，从发展中国家的高出生率开始下滑。数据集 swiss 记录了 1888 年瑞士 47 个说法语的省份的生育率和社会经济指标数据，下面是数据集的部分
+
+
+```
+##              Fertility Agriculture Examination Education Catholic
+## Courtelary        80.2        17.0          15        12     9.96
+## Delemont          83.1        45.1           6         9    84.84
+## Franches-Mnt      92.5        39.7           5         5    93.40
+## Moutier           85.8        36.5          12         7    33.77
+## Neuveville        76.9        43.5          17        15     5.16
+....
+```
+
+Fertility（生育率，采用常见的标准生育率统计口径）、Agriculture（男性从事农业生产的比例）、Examination（应征者在军队考试中获得最高等级的比例）、Education（应征者有小学以上教育水平的比例）、Catholic（信仰天主教的比例）、Infant.Mortality（婴儿死亡率，仅考虑出生一年内死亡），各个指标都统一标准化为百分比的形式。其中，Examination 和 Education 是 1887 年、1888 年和 1889 年的平均值。瑞士 182 个地区 1888 年及其它年份的数据可从[网站](https://opr.princeton.edu/archive/pefp/switz.aspx)获得。
 
 
 \begin{figure}

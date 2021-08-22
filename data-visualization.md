@@ -586,7 +586,7 @@ sysfonts::font_add_google(name = "Noto Sans SC", family = "Noto Sans SC")
 ```
 
 ::: {.rmdwarn data-latex="{警告}"}
-在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。
+在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。extrafont 包提供的函数 `font_import()` 仅支持系统安装的 TrueType/Type1 字体
 :::
 
 
@@ -3724,7 +3724,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Sat"
+## [1] "Sun"
 ```
 
 ```r
@@ -3732,7 +3732,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 7
+## [1] 1
 ```
 
 :::
@@ -3920,7 +3920,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x564eabe0b728>
+## <bytecode: 0x55ca8bda2858>
 ## <environment: namespace:ggpubr>
 ```
 

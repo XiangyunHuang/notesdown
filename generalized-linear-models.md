@@ -130,7 +130,7 @@ str(esoph)
 
 
 ```r
-p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / ncontrols, color = agegp)) +
+p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / (ncases + ncontrols), color = agegp)) +
   geom_boxplot(show.legend = FALSE) +
   geom_jitter(show.legend = FALSE) +
   theme_minimal()
@@ -166,12 +166,6 @@ bottom_row <- plot_grid(p2, p3, labels = c('B', 'C'), label_size = 12)
 
 ```r
 plot_grid(p1, bottom_row, labels = c('A', ''), label_size = 12, ncol = 1)
-```
-
-```
-## Warning: Removed 12 rows containing non-finite values (stat_boxplot).
-
-## Warning: Removed 12 rows containing missing values (geom_point).
 ```
 
 \begin{figure}

@@ -1,4 +1,4 @@
-# 空间分析  {#chap-spatial-analysis}
+# 空间数据分析  {#chap-spatial-analysis}
 
 
 Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 [r-spatial](https://github.com/r-spatial/) 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 [sp](https://edzer.github.io/sp/)、 [sf](https://github.com/r-spatial/sf)、 [stars](https://github.com/r-spatial/stars)、 [mapedit](https://github.com/r-spatial/mapedit) 和
@@ -45,13 +45,15 @@ library(sfarrow) # https://github.com/wcjochem/sfarrow
 
 
 ```r
-library(leaflet)
 library(maps)
 library(mapdata)
 map("china", fill = F, col = terrain.colors(100))
 
+library(leaflet)
+
 mapChina = map("china", fill = F, plot = FALSE)
-leaflet(data = mapChina) %>% addTiles() %>%
+leaflet(data = mapChina) |> 
+  addTiles() |> 
   addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
 
 
@@ -192,66 +194,6 @@ gambia_agg <- aggregate(
 ```
 
 $Y \sim b(1,p)$ 每个人检验结果，就是感染 1 或是没有感染 0，感染率 $p$ 的建模分析，个体水平
-
-
-```r
-library(highcharter)
-hchart(gambia_agg, "bubble", hcaes(x = x, y = y, fill = pos, size = pos),
-  maxSize = "5%", name = "Gambia", showInLegend = FALSE
-) %>%
-  hc_yAxis(title = list(text = "Latitude")) %>%
-  hc_xAxis(title = list(text = "Longitude"), labels = list(align = "center")) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = hcl.colors(palette = "Plasma", n = 10))
-  ) %>%
-  hc_tooltip(
-    pointFormat = "({point.x:.2f}, {point.y:.2f}) <br/> Size: {point.z:.2f}"
-  )
-```
-
-
-
-```r
-# gm_data <- download_map_data("https://code.highcharts.com/mapdata/countries/gm/gm-all.js")
-# get_data_from_map(gm_data)
-
-hcmap("countries/gm/gm-all.js") %>%
-  hc_title(text = "Gambia")
-```
-
-
-```r
-data("USArrests", package = "datasets")
-data("usgeojson") # 加载地图数据 地图数据的结构
-
-USArrests <- transform(USArrests, state = rownames(USArrests))
-
-highchart() %>%
-  hc_title(text = "Violent Crime Rates by US State") %>%
-  hc_subtitle(text = "Source: USArrests data") %>%
-  hc_add_series_map(usgeojson, USArrests,
-    name = "Murder arrests (per 100,000)",
-    value = "Murder", joinBy = c("woename", "state"),
-    dataLabels = list(
-      enabled = TRUE,
-      format = "{point.properties.postalcode}"
-    )
-  ) %>%
-  hc_colorAxis(stops = color_stops()) %>%
-  hc_legend(valueDecimals = 0, valueSuffix = "%") %>%
-  hc_mapNavigation(enabled = TRUE)
-```
-
-highcharter 包含三个数据集分别是： worldgeojson 世界地图（国家级）、 usgeojson 美国地图（州级）、  uscountygeojson 美国地图（城镇级）。其它地图数据见 <https://code.highcharts.com/mapdata/>。
-
-
-
-```r
-# 添加地图数据
-hcmap(map = "countries/cn/custom/cn-all-sar-taiwan.js") %>%
-  hc_title(text = "中国地图")
-```
-
 
 
 ```r

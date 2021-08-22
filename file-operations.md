@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-08-21 12:57:35 2021-08-21 13:04:45
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-08-22 07:02:34 2021-08-22 07:09:50
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2021-08-21 13:36:41 2021-08-21 13:36:41 2021-08-21 13:36:42
+    ## . 20480  TRUE  755 2021-08-22 07:46:09 2021-08-22 07:46:09 2021-08-22 07:46:09
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-08-21 13:32:17 2021-08-21 13:32:17
+    ## ./_book/ 12288  TRUE  755 2021-08-22 07:41:35 2021-08-22 07:41:35
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-21 13:32:16 1001 121 runner docker
+    ## ./_book/ 2021-08-22 07:42:16 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 25641
+    ## [1] 25979
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##    0.06    0.00    0.06
+    ##   0.063   0.004   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.054   0.004   0.058
+    ##   0.062   0.004   0.065
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 06:36:42 PDT"
+    ## [1] "2021-08-22 00:46:10 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 09:36:42 EDT"
+    ## [1] "2021-08-22 03:46:10 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21"
+    ## [1] "2021-08-22"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 21 13:36:42 2021"
+    ## [1] "Sun Aug 22 07:46:10 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Aug 21 13:36:42 2021"
+    ## [1] "Sun Aug 22 07:46:10 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 13:36:42 GMT"
+    ## [1] "2021-08-22 07:46:10 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 13:36:42 UTC"
+    ## [1] "2021-08-22 07:46:10 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 12:36:42 UTC"
+    ## [1] "2021-08-22 06:46:10 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-21 13:12:08 2021-08-21 13:12:08
+    ## ./_common.R 1639 FALSE  644 2021-08-22 07:21:56 2021-08-22 07:21:56
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-21 13:32:17 1001 121 runner docker
+    ## ./_common.R 2021-08-22 07:41:35 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-21 13:36:42 2021-08-21 13:36:42
+    ## ./_common.R 1639 FALSE  644 2021-08-22 07:46:10 2021-08-22 07:46:10
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-21 13:36:42 1001 121 runner docker
+    ## ./_common.R 2021-08-22 07:46:10 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 13:36:42 CST"
+    ## [1] "2021-08-22 07:46:10 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 13:36:42"
+    ## [1] "2021-08-22 07:46:10"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-21 21:36:42 CST"
+    ## [1] "2021-08-22 15:46:10 CST"
     ```
 
 1. 设置时区
@@ -1356,7 +1356,7 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 450      13          13
+    ##   /home/runner/work/_temp/Library 448      15          13
     ##   /opt/R/4.1.1/lib/R/library       28       1           0
     ## 
     ## Number of available packages (each package counted only once):
@@ -1500,7 +1500,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x564aa0e2b000>
+## <bytecode: 0x557999793000>
 ## <environment: namespace:base>
 ```
 

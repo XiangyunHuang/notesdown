@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmp1JZTYe/file5cc81953e7c7.data"
+## [1] "/tmp/Rtmpni5e3g/file5e0628578d75.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmp1JZTYe/test5cc87f0d1ae3"
+## [1] "/tmp/Rtmpni5e3g/test5e066be69f01"
 ```
 
 ```r
@@ -496,15 +496,15 @@ yaml::read_yaml(file = '_bookdown.yml')
 ## [31] "generalized-linear-models.Rmd"   "bayesian-models.Rmd"            
 ## [33] "data-modeling.Rmd"               "text-analysis.Rmd"              
 ## [35] "survival-analysis.Rmd"           "time-series-analysis.Rmd"       
-## [37] "spatial-analysis.Rmd"            "spatial-modeling.Rmd"           
-## [39] "case-study.Rmd"                  "data-explorer.Rmd"              
-## [41] "machine-learning.Rmd"            "gradient-boosting-machine.Rmd"  
-## [43] "neural-networks.Rmd"             "numerical-optimization.Rmd"     
-## [45] "appendix.Rmd"                    "matrix-operations.Rmd"          
-## [47] "symbolic-computation.Rmd"        "mixed-programming.Rmd"          
-## [49] "object-oriented-programming.Rmd" "file-operations.Rmd"            
-## [51] "other-softwares.Rmd"             "notations.Rmd"                  
-## [53] "references.Rmd"
+## [37] "spatio-temporal-data.Rmd"        "spatial-analysis.Rmd"           
+## [39] "spatial-modeling.Rmd"            "spatial-viz.Rmd"                
+## [41] "case-study.Rmd"                  "data-explorer.Rmd"              
+## [43] "machine-learning.Rmd"            "gradient-boosting-machine.Rmd"  
+## [45] "numerical-optimization.Rmd"      "appendix.Rmd"                   
+## [47] "matrix-operations.Rmd"           "symbolic-computation.Rmd"       
+## [49] "mixed-programming.Rmd"           "object-oriented-programming.Rmd"
+## [51] "file-operations.Rmd"             "other-softwares.Rmd"            
+## [53] "notations.Rmd"                   "references.Rmd"
 ```
 
 Table: (\#tab:other-softwares) 导入来自其它数据分析软件产生的数据集
@@ -1624,12 +1624,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.71   Premium     F     VS2  62.1    58  2801 5.70 5.67 3.53
-## 2  0.77 Very Good     H     SI1  61.7    56  2830 5.84 5.89 3.62
-## 3  0.68   Premium     F    VVS2  61.7    57  2854 5.67 5.64 3.49
-## 4  0.90 Very Good     J     VS1  62.5    56  3188 6.11 6.21 3.85
-## 5  0.91     Ideal     G     SI2  62.7    57  3557 6.15 6.19 3.87
-## 6  0.83 Very Good     I    VVS1  61.8    56  3774 6.00 6.03 3.72
+## 1  1.00   Premium     G      I1  62.5    62  2984 6.42 6.35 3.99
+## 2  0.83     Ideal     G     SI1  61.8    55  3171 6.05 6.09 3.75
+## 3  1.04      Fair     G     SI2  66.1    60  3564 6.32 6.23 4.15
+## 4  0.90 Very Good     G     SI1  62.6    60  3919 6.09 6.14 3.83
+## 5  1.05 Very Good     G     SI2  63.2    54  4318 6.52 6.49 4.11
+## 6  1.15      Good     F     SI2  63.8    57  4437 6.65 6.60 4.23
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1647,13 +1647,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair 18242    1
-## 2 Good   473    1
-## 3 Good  2264    2
-## 4 Good  4334    3
-## 5 Good  4480    4
-## 6 Good  8736    5
+##     cut price rank
+## 1  Good  2130    1
+## 2  Good  6843    2
+## 3  Good 12615    3
+## 4 Ideal   421    1
+## 5 Ideal   715    2
+## 6 Ideal   743    3
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1726,7 +1726,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-08-21
+## 1     2021-08-22
 ```
 
 ```r
@@ -1736,7 +1736,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-08-20
+## 1                  2021-08-21
 ```
 
 ```r
@@ -1756,7 +1756,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         7
+## 1                         1
 ```
 
 最后，使用完记得关闭 Spark 连接

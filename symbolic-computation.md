@@ -1,6 +1,6 @@
 # 符号计算 {#chap-symbolic-computation}
 
-相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 `deriv()`、`D()` 等可以做一些简单的微分运算，扩展包 [Ryacas](https://github.com/r-cas/ryacas) 提供 [Yacas](https://github.com/grzegorzmazur/yacas/) 核心计算引擎，[symengine](https://github.com/symengine/symengine.R) 引入 C++ 符号计算库[SymEngine](https://github.com/symengine/)，相比于 **Ryacas**，**symengine** 不会和 Base R 函数冲突。Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/>。
+相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 `deriv()`、`D()` 等可以做一些简单的微分运算，扩展包 [Ryacas](https://github.com/r-cas/ryacas) 提供 [Yacas](https://github.com/grzegorzmazur/yacas/) 核心计算引擎，[symengine](https://github.com/symengine/symengine.R) 引入 C++ 符号计算库[SymEngine](https://github.com/symengine/)，相比于 **Ryacas**[@Ryacas]，**symengine** 不会和 Base R 函数冲突。Python 的符号计算模块 [sympy](https://github.com/sympy/sympy) [@SymPy] 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <https://sympy.org/>。
 
 16年在统计之都灌水[符号计算与R语言](https://cosx.org/2016/07/r-symbol-calculate)，相应的 Rmd 源文件放在[Github](https://github.com/XiangyunHuang/Symbolic-Computing)上。
 
