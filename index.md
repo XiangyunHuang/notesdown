@@ -2,7 +2,7 @@
 title: "现代应用统计与 R 语言"
 subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
-date: "2021-08-22"
+date: "2021-09-04"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -272,16 +272,6 @@ round(p, 3)
 \end{figure}
 
 
-两个二元正态分布的碰撞，点的密度估计值代表概率密度值，
-
-\begin{figure}
-
-{\centering \includegraphics{index_files/figure-latex/faithful-dens-1} 
-
-}
-
-\caption{散点图：faithful 数据集}(\#fig:faithful-dens)
-\end{figure}
 
 [统计检验，决策风险，显著性水平]{.todo}
 
@@ -350,6 +340,6 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-08-22 15:41:36。
+书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-04 13:01:31。
 
 

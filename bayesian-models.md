@@ -142,21 +142,21 @@ normal_fit$cmdstan_summary()
 ## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.014, 0.014, 0.013, 0.014) seconds, 0.055 seconds total
-## Sampling took (0.045, 0.041, 0.040, 0.038) seconds, 0.16 seconds total
+## Warmup took (0.013, 0.014, 0.013, 0.014) seconds, 0.054 seconds total
+## Sampling took (0.046, 0.041, 0.039, 0.037) seconds, 0.16 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    21898      1.0
-## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.4e+03  1.0e+00
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22032      1.0
+## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.5e+03  1.0e+00
 ## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
 ## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
-## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.4e+02  1.0e+00
+## n_leapfrog__     3.7  3.7e-01     1.8   1.0   3.0  7.0  2.4e+01  1.5e+02  1.0e+00
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
 ## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    34951     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    41981     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    35165     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42238     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -276,8 +276,8 @@ eight_schools_fit$cmdstan_summary()
 ## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.023, 0.026, 0.024, 0.027) seconds, 0.10 seconds total
-## Sampling took (0.071, 0.085, 0.082, 0.088) seconds, 0.33 seconds total
+## Warmup took (0.022, 0.026, 0.024, 0.027) seconds, 0.099 seconds total
+## Sampling took (0.071, 0.084, 0.083, 0.088) seconds, 0.33 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 

@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55b76b761f38>
+## <bytecode: 0x55dad84b74a8>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55b76b761f38>
+## <bytecode: 0x55dad84b74a8>
 ## <environment: namespace:stats>
 ```
 
@@ -167,7 +167,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f0b40a9b4c0>]
+## [<matplotlib.lines.Line2D object at 0x7fadccd166a0>]
 plt.show()
 ```
 
@@ -194,8 +194,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c6512393cd2f8.c -o c6512393cd2f8.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c6512393cd2f8.so c6512393cd2f8.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c246382da221ba.c -o c246382da221ba.o
+## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c246382da221ba.so c246382da221ba.o -L/opt/R/4.1.1/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -320,7 +320,7 @@ sessionInfo()
 ```
 ## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
@@ -344,9 +344,10 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
 ##  [5] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     tools_4.1.1      
-##  [9] grid_4.1.1        xfun_0.25         png_0.1-7         htmltools_0.5.1.1
-## [13] ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
-## [17] bookdown_0.23     Matrix_1.3-4      later_1.2.0       promises_1.2.0.1 
-## [21] curl_4.3.2        evaluate_0.14     mime_0.11         rmarkdown_2.10   
-## [25] stringi_1.7.3     compiler_4.1.1    jsonlite_1.7.2    httpuv_1.6.1
+##  [9] grid_4.1.1        xfun_0.25         png_0.1-7         tinytex_0.33     
+## [13] htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27    
+## [17] lifecycle_1.0.0   bookdown_0.23     Matrix_1.3-4      later_1.2.0      
+## [21] promises_1.2.0.1  curl_4.3.2        evaluate_0.14     mime_0.11        
+## [25] rmarkdown_2.10    stringi_1.7.3     compiler_4.1.1    jsonlite_1.7.2   
+## [29] httpuv_1.6.1
 ```

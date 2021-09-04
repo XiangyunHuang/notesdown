@@ -250,7 +250,7 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [583dad8] 2021-08-15: 拆分
+## Head:     [e3eb1ef] 2021-09-04: 添加 git 配置信息
 ## 
 ## Branches:         1
 ## Tags:             0
@@ -263,11 +263,11 @@ summary(git2r::repository())
 ## Staged files:     0
 ## 
 ## Latest commits:
-## [583dad8] 2021-08-15: 拆分
-## [2fc988c] 2021-08-14: 章节划分，分出几个部分
-## [02c60a0] 2021-08-14: upgrade to R 4.1.1
-## [2dee052] 2021-08-14: 添加副标题
-## [811d100] 2021-08-14: reorg
+## [e3eb1ef] 2021-09-04: 添加 git 配置信息
+## [6bf6c02] 2021-09-04: 移除 faithful 例子
+## [d0898bc] 2021-08-22: fix
+## [d6b20e4] 2021-08-22: fix
+## [b9767d5] 2021-08-22: mini update
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -1350,7 +1350,7 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7f61d4655a90>]
+## [<matplotlib.lines.Line2D object at 0x7fa4eaaccc70>]
 ## Text(0.5, 0, 'Coord $x$')
 ## Text(0, 0.5, 'Coord $y$')
 ```
@@ -1662,8 +1662,8 @@ clang                   5.0
 cycler                  0.10.0     
 flatbuffers             1.12       
 gast                    0.4.0      
-google-auth             1.34.0     
-google-auth-oauthlib    0.4.5      
+google-auth             1.35.0     
+google-auth-oauthlib    0.4.6      
 google-pasta            0.2.0      
 graphviz                0.8.4      
 grpcio                  1.39.0     
@@ -1673,20 +1673,20 @@ joblib                  1.0.1
 kaleido                 0.2.1      
 keras                   2.6.0      
 Keras-Preprocessing     1.1.2      
-kiwisolver              1.3.1      
+kiwisolver              1.3.2      
 Markdown                3.3.4      
 matplotlib              3.4.3      
 mpmath                  1.2.1      
 mxnet                   1.8.0.post0
-numpy                   1.21.1     
+numpy                   1.21.2     
 oauthlib                3.1.1      
 opt-einsum              3.3.0      
-pandas                  1.3.1      
+pandas                  1.3.2      
 patsy                   0.5.1      
-Pillow                  8.3.1      
+Pillow                  8.3.2      
 pip                     20.0.2     
 pkg-resources           0.0.0      
-plotly                  5.2.1      
+plotly                  5.3.1      
 protobuf                3.17.3     
 pyasn1                  0.4.8      
 pyasn1-modules          0.2.8      
@@ -1741,7 +1741,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['FETCH_HEAD', 'branches', 'HEAD', 'index', 'config', 'info', 'refs', 'shallow', 'objects', 'description', 'logs', 'hooks']
+## ['config', 'objects', 'refs', 'branches', 'info', 'logs', 'index', 'HEAD', 'hooks', 'shallow', 'FETCH_HEAD', 'description']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1769,7 +1769,7 @@ rcParams.update({'font.size': 10, 'text.usetex': True})
 #                  'font.serif':      ['DejaVu Serif']})
 plt.switch_backend('agg')
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7f61bc289190>]
+## [<matplotlib.lines.Line2D object at 0x7fa4d27bed30>]
 plt.xlabel(r'Coord $x$')
 ## Text(0.5, 0, 'Coord $x$')
 plt.ylabel(r'Coord $y$')
@@ -1797,14 +1797,14 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "FETCH_HEAD"  "branches"    "HEAD"        "index"       "config"     
-##  [6] "info"        "refs"        "shallow"     "objects"     "description"
-## [11] "logs"        "hooks"
+##  [1] "config"      "objects"     "refs"        "branches"    "info"       
+##  [6] "logs"        "index"       "HEAD"        "hooks"       "shallow"    
+## [11] "FETCH_HEAD"  "description"
 ```
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年08月22日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年09月04日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
 
 
 
@@ -1855,6 +1855,15 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Call iris from R")
 p1 + p2
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
+
+}
+
+\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
+\end{figure}
 
 以 NumPy 为例
 
@@ -2418,7 +2427,7 @@ sessionInfo(sort(.packages(T)))
 ```
 ## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
@@ -2604,7 +2613,7 @@ sessionInfo(sort(.packages(T)))
 ## [329] rbibutils_2.2.3            rcmdcheck_1.3.3           
 ## [331] RColorBrewer_1.1-2         Rcpp_1.0.7                
 ## [333] RcppArmadillo_0.10.6.0.0   RcppEigen_0.3.3.9.1       
-## [335] RcppParallel_5.1.4         RCurl_1.98-1.3            
+## [335] RcppParallel_5.1.4         RCurl_1.98-1.4            
 ## [337] Rdpack_2.1.2               reactable_0.2.3           
 ## [339] reactR_0.4.4               ReacTran_1.4.3.1          
 ## [341] readr_2.0.1                readxl_1.3.1              
@@ -2749,15 +2758,15 @@ Package                   Version        Title
 **bit64**                 4.0.5          A S3 Class for Vectors of 64bit Integers                                                                                    
 **bitops**                1.0-7          Bitwise Operations                                                                                                          
 **blob**                  1.2.2          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
-**bookdown**              0.23           Authoring Books and Technical Documents with R Markdown                                                                     
+**bookdown**              0.24           Authoring Books and Technical Documents with R Markdown                                                                     
 **boot**                  1.3-28         Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
 **bridgesampling**        1.1-2          Bridge Sampling for Marginal Likelihoods and Bayes Factors                                                                  
 **brio**                  1.1.2          Basic R Input Output                                                                                                        
-**brms**                  2.15.0         Bayesian Regression Models using Stan                                                                                       
+**brms**                  2.16.1         Bayesian Regression Models using Stan                                                                                       
 **broom**                 0.7.9          Convert Statistical Objects into Tidy Tibbles                                                                               
 **broom.mixed**           0.2.7          Tidying Methods for Mixed Models                                                                                            
-**bslib**                 0.2.5.1        Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
-**cachem**                1.0.5          Cache R Objects with Automatic Pruning                                                                                      
+**bslib**                 0.3.0          Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
+**cachem**                1.0.6          Cache R Objects with Automatic Pruning                                                                                      
 **callr**                 3.7.0          Call R from R                                                                                                               
 **checkmate**             2.0.0          Fast and Versatile Argument Checks                                                                                          
 **classInt**              0.4-3          Choose Univariate Class Intervals                                                                                           
@@ -2787,7 +2796,7 @@ Package                   Version        Title
 **downlit**               0.2.1          Syntax Highlighting and Automatic Linking                                                                                   
 **downloader**            0.4            Download Files over HTTP and HTTPS                                                                                          
 **dplyr**                 1.0.7          A Grammar of Data Manipulation                                                                                              
-**DT**                    0.18           A Wrapper of the JavaScript Library DataTables                                                                              
+**DT**                    0.19           A Wrapper of the JavaScript Library DataTables                                                                              
 **dtplyr**                1.1.0          Data Table Back-End for 'dplyr'                                                                                             
 **echarts4r**             0.4.1          Create Interactive Graphs with 'Echarts JavaScript' Version 5                                                               
 **egg**                   0.4.5          Extensions for ggplot2: Custom Geom, Custom Themes, Plot Alignment, Labelled Panels, Symmetric Scales, and Fixed Panel Size 
@@ -2805,7 +2814,7 @@ Package                   Version        Title
 **forge**                 0.2.0          Casting Values into Shape                                                                                                   
 **formatR**               1.11           Format R Code Automatically                                                                                                 
 **fs**                    1.5.0          Cross-Platform File System Operations Based on 'libuv'                                                                      
-**future**                1.21.0         Unified Parallel and Distributed Processing in R for Everyone                                                               
+**future**                1.22.1         Unified Parallel and Distributed Processing in R for Everyone                                                               
 **gapminder**             0.3.0          Data from Gapminder                                                                                                         
 **gdtools**               0.2.3          Utilities for Graphical Rendering                                                                                           
 **generics**              0.1.0          Common S3 Generics not Provided by Base R Methods Related to Model Fitting                                                  
@@ -2827,7 +2836,7 @@ Package                   Version        Title
 **ggstream**              0.1.0          Create Streamplots in ggplot2                                                                                               
 **gifski**                1.4.3-1        Highest Quality GIF Encoder                                                                                                 
 **git2r**                 0.28.0         Provides Access to Git Repositories                                                                                         
-**glmmTMB**               1.1.2          Generalized Linear Mixed Models using Template Model Builder                                                                
+**glmmTMB**               1.1.2.2        Generalized Linear Mixed Models using Template Model Builder                                                                
 **glmnet**                4.1-2          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
 **globals**               0.14.0         Identify Global Objects in R Expressions                                                                                    
 **glue**                  1.4.2          Interpreted String Literals                                                                                                 
@@ -2845,9 +2854,9 @@ Package                   Version        Title
 **Hmisc**                 4.5-0          Harrell Miscellaneous                                                                                                       
 **hms**                   1.1.0          Pretty Time of Day                                                                                                          
 **hrbrthemes**            0.8.0          Additional Themes, Theme Components and Utilities for ggplot2                                                               
-**htmltools**             0.5.1.1        Tools for HTML                                                                                                              
+**htmltools**             0.5.2          Tools for HTML                                                                                                              
 **htmlwidgets**           1.5.3          HTML Widgets for R                                                                                                          
-**httpuv**                1.6.1          HTTP and WebSocket Server Library                                                                                           
+**httpuv**                1.6.2          HTTP and WebSocket Server Library                                                                                           
 **httr**                  1.4.2          Tools for Working with URLs and HTTP                                                                                        
 **igraph**                1.2.6          Network Analysis and Visualization                                                                                          
 **influenceR**            0.1.0          Software Tools to Quantify Structural Importance of Nodes in a Network                                                      
@@ -2858,7 +2867,7 @@ Package                   Version        Title
 **kableExtra**            1.3.4          Construct Complex Table with kable and Pipe Syntax                                                                          
 **Kendall**               2.2            Kendall rank correlation and Mann-Kendall trend test                                                                        
 **knitr**                 1.33           A General-Purpose Package for Dynamic Report Generation in R                                                                
-**later**                 1.2.0          Utilities for Scheduling Functions to Execute Later with Event Loops                                                        
+**later**                 1.3.0          Utilities for Scheduling Functions to Execute Later with Event Loops                                                        
 **lattice**               0.20-44        Trellis Graphics for R                                                                                                      
 **latticeExtra**          0.6-29         Extra Graphical Utilities Based on Lattice                                                                                  
 **lazyeval**              0.2.2          Lazy (Non-Standard) Evaluation                                                                                              
@@ -2872,7 +2881,7 @@ Package                   Version        Title
 **lpSolve**               5.6.15         Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs                                                             
 **lpSolveAPI**            5.5.2.0-17.7   R Interface to 'lp_solve' Version 5.5.2.0                                                                                   
 **lubridate**             1.7.10         Make Dealing with Dates a Little Easier                                                                                     
-**magick**                2.7.2          Advanced Graphics and Image-Processing in R                                                                                 
+**magick**                2.7.3          Advanced Graphics and Image-Processing in R                                                                                 
 **magrittr**              2.0.1          A Forward-Pipe Operator for R                                                                                               
 **mapdata**               2.3.0          Extra Map Databases                                                                                                         
 **mapproj**               1.2.7          Map Projections                                                                                                             
@@ -2881,7 +2890,7 @@ Package                   Version        Title
 **MASS**                  7.3-54         Support Functions and Datasets for Venables and Ripley's MASS                                                               
 **Matrix**                1.3-4          Sparse and Dense Matrix Classes and Methods                                                                                 
 **MatrixModels**          0.5-0          Modelling with Sparse and Dense Matrices                                                                                    
-**matrixStats**           0.60.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
+**matrixStats**           0.60.1         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
 **maxLik**                1.5-2          Maximum Likelihood Estimation and Related Tools                                                                             
 **mcmc**                  0.9-7          Markov Chain Monte Carlo                                                                                                    
 **memoise**               2.0.0          Memoisation of Functions                                                                                                    
@@ -2897,7 +2906,7 @@ Package                   Version        Title
 **nomnoml**               0.2.3          Sassy 'UML' Diagrams                                                                                                        
 **numDeriv**              2016.8-1.1     Accurate Numerical Derivatives                                                                                              
 **odbc**                  1.3.2          Connect to ODBC Compatible Databases (using the DBI Interface)                                                              
-**openssl**               1.4.4          Toolkit for Encryption, Signatures and Certificates Based on OpenSSL                                                        
+**openssl**               1.4.5          Toolkit for Encryption, Signatures and Certificates Based on OpenSSL                                                        
 **palmerpenguins**        0.1.0          Palmer Archipelago (Antarctica) Penguin Data                                                                                
 **patchwork**             1.1.1          The Composer of Plots                                                                                                       
 **pdftools**              3.0.1          Text Extraction, Rendering and Converting of PDF Documents                                                                  
@@ -2911,6 +2920,7 @@ Package                   Version        Title
 **plyr**                  1.8.6          Tools for Splitting, Applying and Combining Data                                                                            
 **png**                   0.1-7          Read and write PNG images                                                                                                   
 **polynom**               1.4-0          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
+**posterior**             1.0.1          Tools for Working with Posterior Distributions                                                                              
 **prettydoc**             0.4.1          Creating Pretty Documents from R Markdown                                                                                   
 **PrevMap**               1.5.3          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
 **processx**              3.5.2          Execute and Control System Processes                                                                                        
@@ -2926,7 +2936,7 @@ Package                   Version        Title
 **quantmod**              0.4.18         Quantitative Financial Modelling Framework                                                                                  
 **quantreg**              5.86           Quantile Regression                                                                                                         
 **r2d3**                  0.2.5          Interface to 'D3' Visualizations                                                                                            
-**R6**                    2.5.0          Encapsulated Classes with Reference Semantics                                                                               
+**R6**                    2.5.1          Encapsulated Classes with Reference Semantics                                                                               
 **RandomFields**          3.3.8          Simulation and Analysis of Random Fields                                                                                    
 **rappdirs**              0.3.3          Application Directories: Determine Where to Save Data, Caches, and Logs                                                     
 **raster**                3.4-13         Geographic Data Analysis and Modeling                                                                                       
@@ -2951,7 +2961,7 @@ Package                   Version        Title
 **rgeos**                 0.5-5          Interface to Geometry Engine - Open Source ('GEOS')                                                                         
 **rjson**                 0.2.20         JSON for R                                                                                                                  
 **rlang**                 0.4.11         Functions for Base Types and Core R and Tidyverse Features                                                                  
-**rlist**                 0.4.6.1        A Toolbox for Non-Tabular Data Manipulation                                                                                 
+**rlist**                 0.4.6.2        A Toolbox for Non-Tabular Data Manipulation                                                                                 
 **rmarkdown**             2.10           Dynamic Documents for R                                                                                                     
 **ROI**                   1.0-0          R Optimization Infrastructure                                                                                               
 **ROI.plugin.alabama**    1.0-0          'alabama' Plug-in for the R Optimization Infrastructure                                                                     
@@ -2961,7 +2971,7 @@ Package                   Version        Title
 **rootSolve**             1.8.2.2        Nonlinear Root Finding, Equilibrium and Steady-State Analysis of Ordinary Differential Equations                            
 **roxygen2**              7.1.1          In-Line Documentation for R                                                                                                 
 **rprojroot**             2.0.2          Finding Files in Project Subdirectories                                                                                     
-**RSQLite**               2.2.7          'SQLite' Interface for R                                                                                                    
+**RSQLite**               2.2.8          'SQLite' Interface for R                                                                                                    
 **rstan**                 2.21.2         R Interface to Stan                                                                                                         
 **rstantools**            2.1.1          Tools for Developing R Packages Interfacing with Stan                                                                       
 **rstatix**               0.7.0          Pipe-Friendly Framework for Basic Statistical Tests                                                                         
@@ -2989,20 +2999,21 @@ Package                   Version        Title
 **sparklyr**              1.7.1          R Interface to Apache Spark                                                                                                 
 **SparseM**               1.81           Sparse Linear Algebra                                                                                                       
 **splancs**               2.01-42        Spatial and Space-Time Point Pattern Analysis                                                                               
-**splines2**              0.4.3          Regression Spline Functions and Classes                                                                                     
+**splines2**              0.4.4          Regression Spline Functions and Classes                                                                                     
 **StanHeaders**           2.21.0-7       C++ Header Files for Stan                                                                                                   
-**stringi**               1.7.3          Character String Processing Facilities                                                                                      
+**stringi**               1.7.4          Character String Processing Facilities                                                                                      
 **stringr**               1.4.0          Simple, Consistent Wrappers for Common String Operations                                                                    
 **SuppDists**             1.1-9.5        Supplementary Distributions                                                                                                 
-**survival**              3.2-12         Survival Analysis                                                                                                           
+**survival**              3.2-13         Survival Analysis                                                                                                           
 **svglite**               2.0.0          An 'SVG' Graphics Device                                                                                                    
 **symengine**             0.1.5          Interface to the 'SymEngine' Library                                                                                        
 **sysfonts**              0.8.5          Loading Fonts into R                                                                                                        
-**tensorflow**            2.5.0          R Interface to 'TensorFlow'                                                                                                 
-**terra**                 1.3-4          Spatial Data Analysis                                                                                                       
+**tensorflow**            2.6.0          R Interface to 'TensorFlow'                                                                                                 
+**terra**                 1.3-22         Spatial Data Analysis                                                                                                       
 **testthat**              3.0.4          Unit Testing for R                                                                                                          
+**tfautograph**           0.3.1          Autograph R for 'Tensorflow'                                                                                                
 **tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
-**tibble**                3.1.3          Simple Data Frames                                                                                                          
+**tibble**                3.1.4          Simple Data Frames                                                                                                          
 **tidyr**                 1.1.3          Tidy Messy Data                                                                                                             
 **tidyselect**            1.1.1          Select from a Set of Strings                                                                                                
 **tidyverse**             1.3.1          Easily Install and Load the Tidyverse                                                                                       
@@ -3013,7 +3024,7 @@ Package                   Version        Title
 **tinytex**               0.33           Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents                                              
 **TMB**                   1.7.20         Template Model Builder: A General Random Effect Tool Inspired by ADMB                                                       
 **transformr**            0.1.3          Polygon and Path Transformations                                                                                            
-**treemap**               2.4-2          Treemap Visualization                                                                                                       
+**treemap**               2.4-3          Treemap Visualization                                                                                                       
 **treemapify**            2.5.5          Draw Treemaps in ggplot2                                                                                                    
 **truncnorm**             1.0-8          Truncated Normal Distribution                                                                                               
 **TSP**                   1.1-10         Traveling Salesperson Problem (TSP)                                                                                         
@@ -3142,7 +3153,6 @@ Package             Title
 **pscl**            Political Science Computational Laboratory                                                      
 **QGglmm**          Estimate Quantitative Genetics Parameters from Generalised Linear Mixed Models                  
 **quantreg**        Quantile Regression                                                                             
-**R2BayesX**        Estimate Structured Additive Regression Models with BayesX                                      
 **r2glmm**          Computes R Squared for Mixed (Multilevel) Models                                                
 **R2OpenBUGS**      Running OpenBUGS from R                                                                         
 **rgl**             3D Visualization Using OpenGL                                                                   

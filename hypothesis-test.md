@@ -207,13 +207,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 13, number of trials = 100, p-value = 1.313e-14
+## number of successes = 15, number of trials = 100, p-value = 4.825e-13
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.07107305 0.21204068
+##  0.08645439 0.23530750
 ## sample estimates:
 ## probability of success 
-##                   0.13
+##                   0.15
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -228,13 +228,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 13, number of trials = 100, p-value = 0.08106
+## number of successes = 15, number of trials = 100, p-value = 0.2599
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.07107305 0.21204068
+##  0.08645439 0.23530750
 ## sample estimates:
 ## probability of success 
-##                   0.13
+##                   0.15
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -1667,7 +1667,7 @@ sessionInfo()
 ```
 ## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0

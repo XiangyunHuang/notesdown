@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-08-22 07:02:34 2021-08-22 07:09:50
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-09-04 02:41:08 2021-09-04 02:47:21
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 20480  TRUE  755 2021-08-22 07:46:09 2021-08-22 07:46:09 2021-08-22 07:46:09
+    ## . 16384  TRUE  755 2021-09-04 05:07:39 2021-09-04 05:07:39 2021-09-04 05:07:39
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-08-22 07:41:35 2021-08-22 07:41:35
+    ## ./_book/ 12288  TRUE  755 2021-09-04 05:01:26 2021-09-04 05:01:26
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-08-22 07:42:16 1001 121 runner docker
+    ## ./_book/ 2021-09-04 05:06:01 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 25979
+    ## [1] 149175
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.063   0.004   0.067
+    ##   0.064   0.004   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.062   0.004   0.065
+    ##   0.065   0.000   0.066
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 00:46:10 PDT"
+    ## [1] "2021-09-03 22:07:40 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 03:46:10 EDT"
+    ## [1] "2021-09-04 01:07:40 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22"
+    ## [1] "2021-09-04"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Aug 22 07:46:10 2021"
+    ## [1] "Sat Sep  4 05:07:40 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Aug 22 07:46:10 2021"
+    ## [1] "Sat Sep 04 05:07:40 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 07:46:10 GMT"
+    ## [1] "2021-09-04 05:07:40 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 07:46:10 UTC"
+    ## [1] "2021-09-04 05:07:40 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 06:46:10 UTC"
+    ## [1] "2021-09-04 04:07:40 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-22 07:21:56 2021-08-22 07:21:56
+    ## ./_common.R 1639 FALSE  644 2021-09-04 04:41:23 2021-09-04 04:41:23
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-22 07:41:35 1001 121 runner docker
+    ## ./_common.R 2021-09-04 04:41:31 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-08-22 07:46:10 2021-08-22 07:46:10
+    ## ./_common.R 1639 FALSE  644 2021-09-04 05:07:40 2021-09-04 05:07:40
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-08-22 07:46:10 1001 121 runner docker
+    ## ./_common.R 2021-09-04 05:07:40 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 07:46:10 CST"
+    ## [1] "2021-09-04 05:07:40 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 07:46:10"
+    ## [1] "2021-09-04 05:07:40"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-08-22 15:46:10 CST"
+    ## [1] "2021-09-04 13:07:40 CST"
     ```
 
 1. 设置时区
@@ -1318,20 +1318,20 @@ apropos('package')
     ```
     
     ```
-    ##        Package  LibPath                           Installed Built   ReposVer
-    ## brms   "brms"   "/home/runner/work/_temp/Library" "2.15.0"  "4.1.1" "2.16.0"
-    ## cachem "cachem" "/home/runner/work/_temp/Library" "1.0.5"   "4.1.1" "1.0.6" 
-    ## gert   "gert"   "/home/runner/work/_temp/Library" "1.3.1"   "4.1.1" "1.3.2" 
-    ## httpuv "httpuv" "/home/runner/work/_temp/Library" "1.6.1"   "4.1.1" "1.6.2" 
-    ## later  "later"  "/home/runner/work/_temp/Library" "1.2.0"   "4.1.1" "1.3.0" 
-    ## magick "magick" "/home/runner/work/_temp/Library" "2.7.2"   "4.1.1" "2.7.3" 
-    ##        Repository                               
-    ## brms   "https://cloud.r-project.org/src/contrib"
-    ## cachem "https://cloud.r-project.org/src/contrib"
-    ## gert   "https://cloud.r-project.org/src/contrib"
-    ## httpuv "https://cloud.r-project.org/src/contrib"
-    ## later  "https://cloud.r-project.org/src/contrib"
-    ## magick "https://cloud.r-project.org/src/contrib"
+    ##          Package    LibPath                           Installed Built  
+    ## bookdown "bookdown" "/home/runner/work/_temp/Library" "0.23"    "4.1.1"
+    ## brms     "brms"     "/home/runner/work/_temp/Library" "2.15.0"  "4.1.1"
+    ## bslib    "bslib"    "/home/runner/work/_temp/Library" "0.2.5.1" "4.1.1"
+    ## cachem   "cachem"   "/home/runner/work/_temp/Library" "1.0.5"   "4.1.1"
+    ## DT       "DT"       "/home/runner/work/_temp/Library" "0.18"    "4.1.1"
+    ## future   "future"   "/home/runner/work/_temp/Library" "1.21.0"  "4.1.1"
+    ##          ReposVer Repository                               
+    ## bookdown "0.24"   "https://cloud.r-project.org/src/contrib"
+    ## brms     "2.16.1" "https://cloud.r-project.org/src/contrib"
+    ## bslib    "0.3.0"  "https://cloud.r-project.org/src/contrib"
+    ## cachem   "1.0.6"  "https://cloud.r-project.org/src/contrib"
+    ## DT       "0.19"   "https://cloud.r-project.org/src/contrib"
+    ## future   "1.22.1" "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1356,13 +1356,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 448      15          13
+    ##   /home/runner/work/_temp/Library 436      27          13
     ##   /opt/R/4.1.1/lib/R/library       28       1           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       478         17582
+    ##   https://cloud.r-project.org/src/contrib       478         17597
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1394,8 +1394,8 @@ apropos('package')
     ## $rmarkdown
     ##  [1] "tools"     "utils"     "knitr"     "yaml"      "htmltools" "evaluate" 
     ##  [7] "jsonlite"  "tinytex"   "xfun"      "methods"   "stringr"   "digest"   
-    ## [13] "grDevices" "base64enc" "rlang"     "highr"     "markdown"  "glue"     
-    ## [19] "magrittr"  "stringi"   "stats"     "mime"
+    ## [13] "grDevices" "base64enc" "rlang"     "fastmap"   "highr"     "markdown" 
+    ## [19] "glue"      "magrittr"  "stringi"   "stats"     "mime"
     ```
     
     ```r
@@ -1454,15 +1454,16 @@ apropos('package')
     ##  [97] "ggrasp"            "ggrastr"           "ggrepel"          
     ## [100] "ggResidpanel"      "ggridges"          "ggrisk"           
     ## [103] "ggROC"             "ggsci"             "ggseas"           
-    ## [106] "ggseqlogo"         "ggshadow"          "ggside"           
-    ## [109] "ggsignif"          "ggsn"              "ggsoccer"         
-    ## [112] "ggsolvencyii"      "ggsom"             "ggspatial"        
-    ## [115] "ggspectra"         "ggstance"          "ggstar"           
-    ## [118] "ggstatsplot"       "ggstream"          "ggstudent"        
-    ## [121] "ggswissmaps"       "ggtern"            "ggtext"           
-    ## [124] "ggThemeAssist"     "ggthemes"          "ggtikz"           
-    ## [127] "ggupset"           "ggvenn"            "ggVennDiagram"    
-    ## [130] "ggvoronoi"         "ggwordcloud"       "ggx"
+    ## [106] "ggseg"             "ggseqlogo"         "ggshadow"         
+    ## [109] "ggside"            "ggsignif"          "ggsn"             
+    ## [112] "ggsoccer"          "ggsolvencyii"      "ggsom"            
+    ## [115] "ggspatial"         "ggspectra"         "ggstance"         
+    ## [118] "ggstar"            "ggstatsplot"       "ggstream"         
+    ## [121] "ggstudent"         "ggswissmaps"       "ggtern"           
+    ## [124] "ggtext"            "ggThemeAssist"     "ggthemes"         
+    ## [127] "ggtikz"            "ggupset"           "ggvenn"           
+    ## [130] "ggVennDiagram"     "ggvoronoi"         "ggwordcloud"      
+    ## [133] "ggx"
     ```
     
 
@@ -1500,7 +1501,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x557999793000>
+## <bytecode: 0x55c7a87d23d0>
 ## <environment: namespace:base>
 ```
 
@@ -1547,7 +1548,7 @@ sessionInfo()
 ```
 ## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
