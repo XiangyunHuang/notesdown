@@ -7,7 +7,7 @@
 <title>第 4 章 字符串操作 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="Handling Strings with R 和 R for Data Science 提供字符串入门介绍 ，Sara Stoudt 整理了 stringr 包与 Base R 正则表达式函数的对应表 https://stringr.tidyverse.org/articles/from-base.html stringr 基于 stringi 包字符串处理包， re2r 包基于...">
-<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="第 4 章 字符串操作 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><script src="libs/proj4js/proj4.js"></script><link href="libs/highcharts/css/motion.css" rel="stylesheet">
@@ -136,7 +136,7 @@
 <span class="header-section-number">第 4 章</span> 字符串操作<a class="anchor" aria-label="anchor" href="#chap-string-operations"><i class="fas fa-link"></i></a>
 </h1>
 <p><a href="https://www.gastonsanchez.com/r4strings/">Handling Strings with R</a> 和 <a href="https://r4ds.had.co.nz/strings.html">R for Data Science</a> 提供字符串入门介绍 ，Sara Stoudt 整理了 stringr 包与 Base R 正则表达式函数的对应表 <a href="https://stringr.tidyverse.org/articles/from-base.html" class="uri">https://stringr.tidyverse.org/articles/from-base.html</a></p>
-<p><a href="https://stringr.tidyverse.org/">stringr</a> 基于 <a href="https://github.com/gagolews/stringi">stringi</a> 包字符串处理包， <a href="https://github.com/qinwf/re2r/">re2r</a> 包基于 Google 开发的 C++ 库 <a href="https://github.com/google/re2">re2</a>，Google 编程之夏项目提供了一份 <a href="https://github.com/rstats-gsoc/gsoc2016/wiki/re2-regular-expressions">正则表达式性能综述</a>， <a href="https://github.com/markvanderloo/stringdist">stringdist</a> Approximate String Matching and String Distance Functions 近似字符串匹配和字符串距离计算函数 <span class="citation"><a href="#ref-stringdist2014" role="doc-biblioref">[14]</a></span></p>
+<p><a href="https://stringr.tidyverse.org/">stringr</a> 基于 <a href="https://github.com/gagolews/stringi">stringi</a> 包字符串处理包， <a href="https://github.com/qinwf/re2r/">re2r</a> 包基于 Google 开发的 C++ 库 <a href="https://github.com/google/re2">re2</a>，Google 编程之夏项目提供了一份 <a href="https://github.com/rstats-gsoc/gsoc2016/wiki/re2-regular-expressions">正则表达式性能综述</a>， <a href="https://github.com/markvanderloo/stringdist">stringdist</a> Approximate String Matching and String Distance Functions 近似字符串匹配和字符串距离计算函数 <span class="citation"><a href="#ref-stringdist2014" role="doc-biblioref">[13]</a></span></p>
 <ul>
 <li><a href="https://github.com/sfirke/janitor">janitor</a></li>
 <li><a href="https://www.brodrigues.co/blog/2019-02-10-stringr_package/">Manipulating strings with the stringr package</a></li>
@@ -365,33 +365,37 @@
 <code class="sourceCode R"><span class="co"># list.files(path = ".", pattern = "\\.Rmd$")</span>
 <span class="co"># 而不是 endsWith(list.files(), "\\.Rmd")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/startsWith.html">endsWith</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".Rmd"</span><span class="op">)</span></code></pre></div>
-<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-##  [13]  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-##  [25] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
-##  [37] FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [49]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-##  [61]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
-##  [73]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [85]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [97]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
-## [109]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
-## [121]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
-## [133]  TRUE FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [157] FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE</code></pre>
 <div class="sourceCode" id="cb317"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 或者</span>
 <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"\\.Rmd$"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-##  [13]  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-##  [25] FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE
-##  [37] FALSE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [49]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE
-##  [61]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE
-##  [73]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [85]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [97]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
-## [109]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
-## [121]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
-## [133]  TRUE FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [157] FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE</code></pre>
 <p>部分匹配(Partial String Matching)</p>
 <div class="sourceCode" id="cb319"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">table</span>, nomatch <span class="op">=</span> <span class="cn">NA_integer_</span>, incomparables <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
@@ -1472,13 +1476,30 @@
 
 <span class="fu">str_replace</span><span class="op">(</span><span class="va">shopping_list</span>, pattern <span class="op">=</span> <span class="st">"\\\\d"</span>, replace <span class="op">=</span> <span class="st">"aa"</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="tolower" class="section level3" number="4.14.5">
+<h3>
+<span class="header-section-number">4.14.5</span> tolower<a class="anchor" aria-label="anchor" href="#tolower"><i class="fas fa-link"></i></a>
+</h3>
+<p>tolower 和 toupper 是一对，将大写转小写，小写转大写</p>
+<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">simpleCap</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/tstrsplit.html">strsplit</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">" "</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html">substring</a></span><span class="op">(</span><span class="va">s</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substring</a></span><span class="op">(</span><span class="va">s</span>, <span class="fl">2</span><span class="op">)</span>,
+    sep <span class="op">=</span> <span class="st">""</span>, collapse <span class="op">=</span> <span class="st">" "</span>
+  <span class="op">)</span>
+<span class="op">}</span>
+<span class="co"># 参考文献条目里需要将每个英文单词的首字母大写</span>
+<span class="fu">simpleCap</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"THE USE OF MULTIPLE MEASUREMENTS IN TAXONOMIC PROBLEMS"</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "The Use Of Multiple Measurements In Taxonomic Problems"</code></pre>
+</div>
 </div>
 <div id="encode-string" class="section level2" number="4.15">
 <h2>
 <span class="header-section-number">4.15</span> 字符串加密<a class="anchor" aria-label="anchor" href="#encode-string"><i class="fas fa-link"></i></a>
 </h2>
 <p>字符串编码加密， <strong>openssl</strong> 包提供了 sha1 函数 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;参考刘思喆的两篇博文： &lt;a href="http://bjt.name/2019/09/28/secure-hash.html"&gt;利用 R 函数生成差异化密码&lt;/a&gt; 和 &lt;a href="http://bjt.name/2019/10/21/url-handle.html"&gt;在 R 中各种码的转换&lt;/a&gt;&lt;/p&gt;'><sup>14</sup></a></p>
-<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jeroen/openssl">openssl</a></span><span class="op">)</span>
 <span class="va">encode_mobile</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">phone_number</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"*"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/openssl/man/hash.html">sha1</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/openssl/man/hash.html">sha1</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">charToRaw</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">phone_number</span>, <span class="st">"$1$mobile$"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
 <span class="co"># 随意模拟两个手机号</span>
@@ -1497,12 +1518,12 @@
 <p>连接字符串，<code>paste/c/bfile/bracket</code> 函数性能比较
 <a href="https://wch.github.io/string_builder/index.html" class="uri">https://wch.github.io/string_builder/index.html</a></p>
 <p>R 内置的默认正则表达式匹配方式是基于 PCRE 的匹配，<code>options</code> 控制 PCRE 默认的三个选项 <code>PCRE_limit_recursion=NA</code> 、<code>PCRE_study=10</code> 和 <code>PCRE_use_JIT=TRUE</code>，当前系统环境下 PCRE 的支持情况</p>
-<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/pcre_config.html">pcre_config</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##              UTF-8 Unicode properties                JIT              stack 
 ##               TRUE               TRUE               TRUE              FALSE</code></pre>
 <p>查看R环境的 PCRE 配置</p>
-<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PCRE_limit_recursion"</span>, <span class="st">"PCRE_study"</span>, <span class="st">"PCRE_use_JIT"</span><span class="op">)</span>, <span class="va">getOption</span><span class="op">)</span></code></pre></div>
 <pre><code>## PCRE_limit_recursion           PCRE_study         PCRE_use_JIT 
 ##                   NA                FALSE                 TRUE</code></pre>
@@ -1512,7 +1533,7 @@
 <span class="header-section-number">4.17</span> 网络爬虫<a class="anchor" aria-label="anchor" href="#web-crawler"><i class="fas fa-link"></i></a>
 </h2>
 <p>用 R 语言写爬虫 <a href="https://github.com/jeroen/curl">curl</a>、<a href="https://github.com/r-lib/httr">httr</a>、 <a href="https://github.com/r-lib/xml2">xml2</a>、<a href="https://CRAN.R-project.org/package=XML">XML</a> 和 <a href="https://github.com/tidyverse/rvest">rvest</a> 解析网页<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Jeroen Ooms 已经确认 RCurl 早已经不再维护，取代它的是 curl/httr，不要使用不再维护的 R 包 &lt;a href="https://frie.codes/curl-vs-rcurl/" class="uri"&gt;https://frie.codes/curl-vs-rcurl/&lt;/a&gt;&lt;/p&gt;'><sup>15</sup></a></p>
-<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb519"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 查看 libcurl 库的版本</span>
 <span class="fu"><a href="https://rdrr.io/r/base/libcurlVersion.html">libcurlVersion</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "7.68.0"
@@ -1533,8 +1554,8 @@
 <span class="header-section-number">4.18</span> 文本挖掘<a class="anchor" aria-label="anchor" href="#text-mining"><i class="fas fa-link"></i></a>
 </h2>
 <p><a href="https://masalmon.eu/2019/02/11/trump-schedule/">How did Axios rectangle Trump’s PDF schedule? A try with R</a> 使用 pdftools 和 magick 处理表格，这两个 R 包分别依赖 Poppler C++ 和 ImageMagick++，在 Ubuntu 上安装 pdftools 和 magick 包</p>
-<div class="sourceCode" id="cb519"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb519-1"><a href="chap-string-operations.html#cb519-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install libpoppler-cpp-dev libmagick++-dev</span></code></pre></div>
-<div class="sourceCode" id="cb520"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb521"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb521-1"><a href="chap-string-operations.html#cb521-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install libpoppler-cpp-dev libmagick++-dev</span></code></pre></div>
+<div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pdftools"</span>, <span class="st">"magick"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>除了 pdftools 包外，PDF 文档中表格抽取工具还有 <a href="https://github.com/ropensci/tabulizer">tabulizer</a>。扫描版 PDF 文档需要OCR识别技术支持的 tesseract 包</p>
 </div>
@@ -1542,7 +1563,7 @@
 <h2>
 <span class="header-section-number">4.19</span> 运行环境<a class="anchor" aria-label="anchor" href="#string-session-info"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb521"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb523"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -1557,28 +1578,28 @@
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1       assertthat_0.2.1  base64enc_0.1.3   bookdown_0.23    
-##   brio_1.1.2        bslib_0.2.5.1     cli_3.0.1         compiler_4.1.1   
-##   cpp11_0.3.1       crayon_1.4.1      curl_4.3.2        DBI_1.1.1        
-##   digest_0.6.27     downlit_0.2.1     dplyr_1.0.7       ellipsis_0.3.2   
-##   evaluate_0.14     fansi_0.5.0       fs_1.5.0          generics_0.1.0   
-##   glue_1.4.2        graphics_4.1.1    grDevices_4.1.1   highr_0.9        
-##   htmltools_0.5.1.1 jquerylib_0.1.4   jsonlite_1.7.2    knitr_1.33       
-##   lifecycle_1.0.0   magrittr_2.0.1    markdown_1.1      methods_4.1.1    
-##   mime_0.11         openssl_1.4.4     pillar_1.6.2      pkgconfig_2.0.3  
-##   purrr_0.3.4       R6_2.5.0          rappdirs_0.3.3    rlang_0.4.11     
-##   rmarkdown_2.10    sass_0.4.0        stats_4.1.1       stringi_1.7.3    
-##   stringr_1.4.0     sys_3.4           tibble_3.1.3      tidyr_1.1.3      
-##   tidyselect_1.1.1  tinytex_0.33      tools_4.1.1       utf8_1.2.2       
-##   utils_4.1.1       vctrs_0.3.8       xfun_0.25         xml2_1.3.2       
-##   yaml_2.2.1</code></pre>
+##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.24   
+##   brio_1.1.2       bslib_0.3.0      cli_3.0.1        compiler_4.1.1  
+##   cpp11_0.3.1      crayon_1.4.1     curl_4.3.2       DBI_1.1.1       
+##   digest_0.6.27    downlit_0.2.1    dplyr_1.0.7      ellipsis_0.3.2  
+##   evaluate_0.14    fansi_0.5.0      fastmap_1.1.0    fs_1.5.0        
+##   generics_0.1.0   glue_1.4.2       graphics_4.1.1   grDevices_4.1.1 
+##   highr_0.9        htmltools_0.5.2  jquerylib_0.1.4  jsonlite_1.7.2  
+##   knitr_1.33       lifecycle_1.0.0  magrittr_2.0.1   markdown_1.1    
+##   methods_4.1.1    mime_0.11        openssl_1.4.5    pillar_1.6.2    
+##   pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1         rappdirs_0.3.3  
+##   rlang_0.4.11     rmarkdown_2.10   sass_0.4.0       stats_4.1.1     
+##   stringi_1.7.4    stringr_1.4.0    sys_3.4          tibble_3.1.4    
+##   tidyr_1.1.3      tidyselect_1.1.1 tinytex_0.33     tools_4.1.1     
+##   utf8_1.2.2       utils_4.1.1      vctrs_0.3.8      xfun_0.25       
+##   xml2_1.3.2       yaml_2.2.1</code></pre>
 
 </div>
 </div>
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-stringdist2014" class="csl-entry">
-<div class="csl-left-margin">[14] </div>
+<div class="csl-left-margin">[13] </div>
 <div class="csl-right-inline">M. P. J. van der Loo, <span>“The stringdist package for approximate string matching,”</span> <em>The <span>R</span> <span>J</span>ournal</em>, vol. 6, pp. 111–122, 2014,Available: <a href="https://CRAN.R-project.org/package=stringdist">https://CRAN.R-project.org/package=stringdist</a>
 </div>
 </div>
@@ -1610,6 +1631,7 @@
 <li><a class="nav-link" href="#strtrim"><span class="header-section-number">4.14.2</span> strtrim</a></li>
 <li><a class="nav-link" href="#strrep"><span class="header-section-number">4.14.3</span> strrep</a></li>
 <li><a class="nav-link" href="#trimws"><span class="header-section-number">4.14.4</span> trimws</a></li>
+<li><a class="nav-link" href="#tolower"><span class="header-section-number">4.14.5</span> tolower</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#encode-string"><span class="header-section-number">4.15</span> 字符串加密</a></li>
@@ -1634,7 +1656,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-09-04.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-09-06.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

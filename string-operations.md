@@ -453,18 +453,17 @@ endsWith(list.files(), ".Rmd")
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
 ##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
-##  [37] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
-##  [73] FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
-##  [85]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [145] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE
-## [169]  TRUE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [157]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE
 ```
 
 ```r
@@ -476,18 +475,17 @@ grepl("\\.Rmd$", list.files())
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
 ##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
-##  [37] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
-##  [73] FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
-##  [85]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [145] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE
-## [169]  TRUE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [157]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE
 ```
 
 部分匹配(Partial String Matching)
@@ -1946,7 +1944,7 @@ sapply(
 ## actual    22    23    24    25    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    37    38    39
+## actual    33    35    36    37    38    39
 ```
 
 ### strtrim
@@ -2089,6 +2087,26 @@ shopping_list
 str_replace(shopping_list, pattern = "\\\\d", replace = "aa")
 ```
 
+### tolower
+
+tolower 和 toupper 是一对，将大写转小写，小写转大写
+
+
+```r
+simpleCap <- function(x) {
+  x <- tolower(x)
+  s <- strsplit(x, " ")[[1]]
+  paste(toupper(substring(s, 1, 1)), substring(s, 2),
+    sep = "", collapse = " "
+  )
+}
+# 参考文献条目里需要将每个英文单词的首字母大写
+simpleCap(x = "THE USE OF MULTIPLE MEASUREMENTS IN TAXONOMIC PROBLEMS")
+```
+
+```
+## [1] "The Use Of Multiple Measurements In Taxonomic Problems"
+```
 
 ## 字符串加密 {#encode-string}
 
@@ -2212,19 +2230,19 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1       assertthat_0.2.1  base64enc_0.1.3   bookdown_0.23    
-##   cli_3.0.1         compiler_4.1.1    cpp11_0.3.1       crayon_1.4.1     
-##   curl_4.3.2        DBI_1.1.1         digest_0.6.27     dplyr_1.0.7      
-##   ellipsis_0.3.2    evaluate_0.14     fansi_0.5.0       generics_0.1.0   
-##   glue_1.4.2        graphics_4.1.1    grDevices_4.1.1   highr_0.9        
-##   htmltools_0.5.1.1 jquerylib_0.1.4   jsonlite_1.7.2    knitr_1.33       
-##   lifecycle_1.0.0   magrittr_2.0.1    markdown_1.1      methods_4.1.1    
-##   mime_0.11         openssl_1.4.4     pillar_1.6.2      pkgconfig_2.0.3  
-##   purrr_0.3.4       R6_2.5.0          rlang_0.4.11      rmarkdown_2.10   
-##   stats_4.1.1       stringi_1.7.3     stringr_1.4.0     sys_3.4          
-##   tibble_3.1.3      tidyr_1.1.3       tidyselect_1.1.1  tinytex_0.33     
-##   tools_4.1.1       utf8_1.2.2        utils_4.1.1       vctrs_0.3.8      
-##   xfun_0.25         yaml_2.2.1
+##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.24   
+##   cli_3.0.1        compiler_4.1.1   cpp11_0.3.1      crayon_1.4.1    
+##   curl_4.3.2       DBI_1.1.1        digest_0.6.27    dplyr_1.0.7     
+##   ellipsis_0.3.2   evaluate_0.14    fansi_0.5.0      fastmap_1.1.0   
+##   generics_0.1.0   glue_1.4.2       graphics_4.1.1   grDevices_4.1.1 
+##   highr_0.9        htmltools_0.5.2  jquerylib_0.1.4  jsonlite_1.7.2  
+##   knitr_1.33       lifecycle_1.0.0  magrittr_2.0.1   markdown_1.1    
+##   methods_4.1.1    mime_0.11        openssl_1.4.5    pillar_1.6.2    
+##   pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1         rlang_0.4.11    
+##   rmarkdown_2.10   stats_4.1.1      stringi_1.7.4    stringr_1.4.0   
+##   sys_3.4          tibble_3.1.4     tidyr_1.1.3      tidyselect_1.1.1
+##   tinytex_0.33     tools_4.1.1      utf8_1.2.2       utils_4.1.1     
+##   vctrs_0.3.8      xfun_0.25        yaml_2.2.1
 ```
 
 [^regexp]: https://homepage.divms.uiowa.edu/~luke/R/regexp.html

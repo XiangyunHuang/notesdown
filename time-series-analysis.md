@@ -331,10 +331,10 @@ ts(rnorm(20), start = c(1961, 1), frequency = 365.25/7)
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1] -0.48815588  0.31373549  1.81141170 -0.76863793 -0.64957971 -1.00961209
-##  [7]  1.50848506 -0.47998995  2.07179318  0.46750036 -0.59075434  0.96381936
-## [13] -0.79776729 -0.52787470 -0.65940885 -1.44921294 -1.27534081  0.55176101
-## [19]  1.51758705  0.08909434
+##  [1] -0.76789676  0.34855725  0.75804601  1.09564315 -0.63585602  0.52054828
+##  [7] -0.51075139  0.14886107  0.62157384 -0.12825045 -0.07525109  0.23097282
+## [13] -1.24138991  0.62186835  1.43587159  1.03046582  0.64486282 -0.89251947
+## [19] -0.20509632  0.61101601
 ```
 
 周数据，一周采一个点，采了 20 个点
@@ -719,17 +719,17 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.25         purrr_0.3.4      
 ##  [5] lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
-##  [9] htmltools_0.5.1.1 yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
+##  [9] htmltools_0.5.2   yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
 ## [13] pillar_1.6.2      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
 ## [17] TTR_0.24.2        lifecycle_1.0.0   quantmod_0.4.18   stringr_1.4.0    
 ## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.3 evaluate_0.14    
-## [25] labeling_0.4.2    knitr_1.33        curl_4.3.2        fansi_0.5.0      
-## [29] broom_0.7.9       xts_0.12.1        Rcpp_1.0.7        scales_1.1.1     
-## [33] backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2    sysfonts_0.8.5   
-## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.27     stringi_1.7.3    
-## [41] showtextdb_3.0    rlist_0.4.6.1     bookdown_0.23     dplyr_1.0.7      
-## [45] grid_4.1.1        tools_4.1.1       magrittr_2.0.1    tibble_3.1.3     
-## [49] crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3   ellipsis_0.3.2   
-## [53] data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1  rmarkdown_2.10   
-## [57] R6_2.5.0          igraph_1.2.6      compiler_4.1.1
+## [25] labeling_0.4.2    knitr_1.33        fastmap_1.1.0     curl_4.3.2       
+## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        Rcpp_1.0.7       
+## [33] scales_1.1.1      backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2   
+## [37] sysfonts_0.8.5    farver_2.1.0      gridExtra_2.3     digest_0.6.27    
+## [41] stringi_1.7.4     showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24    
+## [45] dplyr_1.0.7       grid_4.1.1        tools_4.1.1       magrittr_2.0.1   
+## [49] tibble_3.1.4      crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3  
+## [53] ellipsis_0.3.2    data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1 
+## [57] rmarkdown_2.10    R6_2.5.1          igraph_1.2.6      compiler_4.1.1
 ```

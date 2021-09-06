@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpSw7BQJ/file23eb04409c971.data"
+## [1] "/tmp/RtmpnYGJ7X/filec1b67251a1f0.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpSw7BQJ/test23eb07afe1269"
+## [1] "/tmp/RtmpnYGJ7X/testc1b65ec49efa"
 ```
 
 ```r
@@ -1624,12 +1624,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.52   Premium     F    VVS2  61.8    60  2870 5.16 5.13 3.18
-## 2  1.01   Premium     I     SI1  62.7    60  2885 6.36 6.27 3.96
-## 3  0.70 Very Good     F     VS1  61.8    59  2895 5.66 5.76 3.53
-## 4  0.90   Premium     F     SI2  61.9    62  3210 6.12 6.07 3.77
-## 5  0.91   Premium     E     SI2  60.0    60  3379 6.28 6.23 3.75
-## 6  0.72     Ideal     E     VS2  60.8    56  3601 5.78 5.82 3.53
+## 1  0.55     Ideal     G      IF  60.9    57  2789 5.28 5.30 3.22
+## 2  0.72     Ideal     H     VS1  62.3    55  2949 5.72 5.74 3.57
+## 3  1.01   Premium     F     SI2  60.0    60  3717 6.46 6.40 3.86
+## 4  1.14      Good     I     SI2  60.0    65  3735 6.80 6.75 4.06
+## 5  1.01      Good     I     VS2  62.5    59  4239 6.30 6.37 3.96
+## 6  0.90 Very Good     E     SI1  63.2    54  4382 6.10 6.17 3.88
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1648,12 +1648,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Fair  3282    1
-## 2 Fair  7950    2
-## 3 Good  1390    1
-## 4 Good  4221    2
-## 5 Good  4253    3
-## 6 Good  5606    4
+## 1 Fair  1114    1
+## 2 Good   734    1
+## 3 Good  1806    2
+## 4 Good  3895    3
+## 5 Good  6841    4
+## 6 Good  7143    5
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1688,10 +1688,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1708,12 +1708,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1726,7 +1726,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-09-04
+## 1     2021-09-06
 ```
 
 ```r
@@ -1736,7 +1736,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-09-03
+## 1                  2021-09-05
 ```
 
 ```r
@@ -1756,7 +1756,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         7
+## 1                         2
 ```
 
 最后，使用完记得关闭 Spark 连接
@@ -2013,26 +2013,26 @@ xfun::session_info()
 ## 
 ## Package version:
 ##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.2        
-##   bookdown_0.23      cli_3.0.1          codetools_0.2.18   colorspace_2.0-2  
+##   bookdown_0.24      cli_3.0.1          codetools_0.2.18   colorspace_2.0-2  
 ##   compiler_4.1.1     config_0.3.1       cpp11_0.3.1        crayon_1.4.1      
 ##   curl_4.3.2         data.table_1.14.0  DBI_1.1.1          dbplyr_2.1.1      
 ##   digest_0.6.27      dplyr_1.0.7        ellipsis_0.3.2     evaluate_0.14     
-##   fansi_0.5.0        farver_2.1.0       forge_0.2.0        generics_0.1.0    
-##   ggplot2_3.3.5      globals_0.14.0     glue_1.4.2         graphics_4.1.1    
-##   grDevices_4.1.1    grid_4.1.1         gtable_0.3.0       highr_0.9         
-##   htmltools_0.5.1.1  htmlwidgets_1.5.3  httr_1.4.2         isoband_0.2.5     
-##   jquerylib_0.1.4    jsonlite_1.7.2     knitr_1.33         labeling_0.4.2    
-##   lattice_0.20.44    lifecycle_1.0.0    magrittr_2.0.1     markdown_1.1      
-##   MASS_7.3.54        Matrix_1.3.4       methods_4.1.1      mgcv_1.8.36       
-##   mime_0.11          munsell_0.5.0      nlme_3.1.152       openssl_1.4.4     
-##   parallel_4.1.1     pillar_1.6.2       pkgconfig_2.0.3    png_0.1-7         
-##   purrr_0.3.4        r2d3_0.2.5         R6_2.5.0           rappdirs_0.3.3    
-##   RColorBrewer_1.1.2 rlang_0.4.11       rmarkdown_2.10     rprojroot_2.0.2   
-##   rstudioapi_0.13    scales_1.1.1       sparklyr_1.7.1     splines_4.1.1     
-##   stats_4.1.1        stringi_1.7.3      stringr_1.4.0      sys_3.4           
-##   tibble_3.1.3       tidyr_1.1.3        tidyselect_1.1.1   tinytex_0.33      
-##   tools_4.1.1        utf8_1.2.2         utils_4.1.1        uuid_0.1.4        
-##   vctrs_0.3.8        viridisLite_0.4.0  withr_2.4.2        xfun_0.25         
-##   xml2_1.3.2         yaml_2.2.1
+##   fansi_0.5.0        farver_2.1.0       fastmap_1.1.0      forge_0.2.0       
+##   generics_0.1.0     ggplot2_3.3.5      globals_0.14.0     glue_1.4.2        
+##   graphics_4.1.1     grDevices_4.1.1    grid_4.1.1         gtable_0.3.0      
+##   highr_0.9          htmltools_0.5.2    htmlwidgets_1.5.3  httr_1.4.2        
+##   isoband_0.2.5      jquerylib_0.1.4    jsonlite_1.7.2     knitr_1.33        
+##   labeling_0.4.2     lattice_0.20.44    lifecycle_1.0.0    magrittr_2.0.1    
+##   markdown_1.1       MASS_7.3.54        Matrix_1.3.4       methods_4.1.1     
+##   mgcv_1.8.36        mime_0.11          munsell_0.5.0      nlme_3.1.152      
+##   openssl_1.4.5      parallel_4.1.1     pillar_1.6.2       pkgconfig_2.0.3   
+##   png_0.1-7          purrr_0.3.4        r2d3_0.2.5         R6_2.5.1          
+##   rappdirs_0.3.3     RColorBrewer_1.1.2 rlang_0.4.11       rmarkdown_2.10    
+##   rprojroot_2.0.2    rstudioapi_0.13    scales_1.1.1       sparklyr_1.7.1    
+##   splines_4.1.1      stats_4.1.1        stringi_1.7.4      stringr_1.4.0     
+##   sys_3.4            tibble_3.1.4       tidyr_1.1.3        tidyselect_1.1.1  
+##   tinytex_0.33       tools_4.1.1        utf8_1.2.2         utils_4.1.1       
+##   uuid_0.1.4         vctrs_0.3.8        viridisLite_0.4.0  withr_2.4.2       
+##   xfun_0.25          xml2_1.3.2         yaml_2.2.1
 ```
 

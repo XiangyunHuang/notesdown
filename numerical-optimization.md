@@ -718,6 +718,14 @@ wireframe(
 \end{figure}
 
 
+
+```r
+r <- raster::rasterFromXYZ(df, crs = CRS("+proj=longlat +datum=WGS84"))
+rasterVis::vectorplot(r, par.settings = RdBuTheme())
+```
+
+
+
 ```r
 # 梯度函数
 gr <- function(x) {
@@ -808,6 +816,11 @@ wireframe(
 
 \caption{二维 Ackley 函数图像}(\#fig:ackley)
 \end{figure}
+
+
+<!-- 
+rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
+-->
 
 以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder–Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
@@ -1217,7 +1230,7 @@ nlp$solution
 ```
 
 ```
-## [1]   0.00000 -21.99115
+## [1]  0.00000 22.22222
 ```
 
 ```r
@@ -1225,7 +1238,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -1470,7 +1483,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1061
+## [1] 368.1059
 ```
 
 ```r
@@ -1480,7 +1493,7 @@ nlp$solution
 ```
 ##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
 ##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109096
 ## [25] 4.000000
 ```
 
@@ -1863,7 +1876,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.022764 4.855726 3.669891 1.382997
+## [1] 1.112248 4.769666 3.801934 1.247012
 ```
 
 ```r
@@ -1871,7 +1884,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.17588
+## [1] 17.23329
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -1999,7 +2012,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227974 4.245386
+## [1] 1.227970 4.245392
 ```
 
 ```r
@@ -2199,7 +2212,7 @@ nlp$solution
 ```
 
 ```
-## [1]  9.261688 16.086590
+## [1] 33.77556 18.51711
 ```
 
 ```r
@@ -2207,7 +2220,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.071681
+## [1] -3.237551
 ```
 比如下面三组
 
@@ -2989,7 +3002,7 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] quadprog_1.5-8            kableExtra_1.3.4         
-##  [3] tibble_3.1.3              Sim.DiffProc_4.8         
+##  [3] tibble_3.1.4              Sim.DiffProc_4.8         
 ##  [5] nlmeODE_1.1               nlme_3.1-152             
 ##  [7] PBSddesolve_1.12.6        ReacTran_1.4.3.1         
 ##  [9] shape_1.4.6               scatterplot3d_0.3-41     
@@ -3002,20 +3015,20 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] svglite_2.0.0           digest_0.6.27           utf8_1.2.2             
-##  [4] slam_0.1-48             R6_2.5.0                alabama_2015.3-1       
+##  [4] slam_0.1-48             R6_2.5.1                alabama_2015.3-1       
 ##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.2           
 ## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
 ## [13] nloptr_1.2.2.2          rmarkdown_2.10          webshot_0.5.2          
 ## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
 ## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.25              
-## [22] pkgconfig_2.0.3         systemfonts_1.0.2       htmltools_0.5.1.1      
-## [25] bookdown_0.23           viridisLite_0.4.0       fansi_0.5.0            
+## [22] systemfonts_1.0.2       pkgconfig_2.0.3         htmltools_0.5.2        
+## [25] bookdown_0.24           viridisLite_0.4.0       fansi_0.5.0            
 ## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.1             
 ## [31] lifecycle_1.0.0         registry_0.5-1          magrittr_2.0.1         
-## [34] scales_1.1.1            stringi_1.7.3           xml2_1.3.2             
+## [34] scales_1.1.1            stringi_1.7.4           xml2_1.3.2             
 ## [37] ellipsis_0.3.2          vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7
 ## [40] tools_4.1.1             glue_1.4.2              parallel_4.1.1         
-## [43] yaml_2.2.1              colorspace_2.0-2        rvest_1.0.1            
-## [46] knitr_1.33
+## [43] fastmap_1.1.0           yaml_2.2.1              colorspace_2.0-2       
+## [46] rvest_1.0.1             knitr_1.33
 ```
 

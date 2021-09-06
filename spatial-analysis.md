@@ -245,21 +245,22 @@ sessionInfo()
 ## 
 ## other attached packages:
 ## [1] sfarrow_0.4.0       sf_1.0-2            rasterVis_0.50.3   
-## [4] terra_1.3-4         latticeExtra_0.6-29 lattice_0.20-44    
+## [4] terra_1.3-22        latticeExtra_0.6-29 lattice_0.20-44    
 ## [7] raster_3.4-13       RColorBrewer_1.1-2  sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.25          purrr_0.3.4       
-##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.1.1  viridisLite_0.4.0 
+##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
 ##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-8       
 ## [13] hexbin_1.28.2      pillar_1.6.2       glue_1.4.2         DBI_1.1.1         
 ## [17] jpeg_0.1-9         lifecycle_1.0.0    stringr_1.4.0      codetools_0.2-18  
-## [21] evaluate_0.14      knitr_1.33         parallel_4.1.1     curl_4.3.2        
-## [25] class_7.3-19       fansi_0.5.0        Rcpp_1.0.7         KernSmooth_2.23-20
-## [29] classInt_0.4-3     png_0.1-7          digest_0.6.27      stringi_1.7.3     
-## [33] bookdown_0.23      dplyr_1.0.7        grid_4.1.1         rgdal_1.5-23      
-## [37] tools_4.1.1        magrittr_2.0.1     proxy_0.4-26       tibble_3.1.3      
-## [41] crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2     assertthat_0.2.1  
-## [45] rmarkdown_2.10     R6_2.5.0           units_0.7-2        compiler_4.1.1
+## [21] evaluate_0.14      knitr_1.33         fastmap_1.1.0      parallel_4.1.1    
+## [25] curl_4.3.2         class_7.3-19       fansi_0.5.0        Rcpp_1.0.7        
+## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.27     
+## [33] stringi_1.7.4      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
+## [37] rgdal_1.5-23       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
+## [41] tibble_3.1.4       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
+## [45] assertthat_0.2.1   rmarkdown_2.10     R6_2.5.1           units_0.7-2       
+## [49] compiler_4.1.1
 ```
 

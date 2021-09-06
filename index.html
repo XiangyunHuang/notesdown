@@ -7,7 +7,7 @@
 <title>欢迎 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。">
-<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="欢迎 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><script src="libs/proj4js/proj4.js"></script><link href="libs/highcharts/css/motion.css" rel="stylesheet">
@@ -160,15 +160,6 @@
 
 <p></p>
 <p>下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。</p>
-<p>1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 <span class="math inline">\(B(n, p)\)</span> 参数 <span class="math inline">\(p\)</span> 的置信带 <span class="citation"><a href="#ref-Test_1934_binom" role="doc-biblioref">[2]</a></span>，图 <a href="index.html#fig:confidence-belt">0.2</a> 提炼了文章的主要结果。</p>
-<div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:confidence-belt"></span>
-<img src="index_files/figure-html/confidence-belt-1.png" alt="给定置信系数 \(1- \alpha = 0.95\) 和样本量 \(n = 10\) 的情况下，二项分布参数 \(p\) 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 \(p\) 的精确区间估计为 \((p_1, p_2) = (0.03, 0.55)\)。" width="480"><p class="caption">
-图 0.2: 给定置信系数 <span class="math inline">\(1- \alpha = 0.95\)</span> 和样本量 <span class="math inline">\(n = 10\)</span> 的情况下，二项分布参数 <span class="math inline">\(p\)</span> 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 <span class="math inline">\(p\)</span> 的精确区间估计为 <span class="math inline">\((p_1, p_2) = (0.03, 0.55)\)</span>。
-</p>
-</div>
-
-
 <p>区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 <span class="math inline">\((5, 0.5)\)</span> 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？</p>
 <div class="rmdtip">
 <p>Base R 提供的 <code><a href="https://rdrr.io/r/stats/uniroot.html">uniroot()</a></code> 函数只能求取一元非线性方程的一个根，而 <strong>rootSolve</strong> 包提供的 <code>uniroot.all()</code> 函数可以求取所有的根。在给定分位点下，我们需要满足方程的最小的概率值。</p>
@@ -183,10 +174,10 @@
 <span class="co">##  1-sample proportions test with continuity correction</span>
 <span class="co">## </span>
 <span class="co">## data:  2 out of 10, null probability 0.95</span>
-<span class="co">## X-squared = 103, df = 1, p-value &lt;2e-16</span>
+<span class="co">## X-squared = 103.16, df = 1, p-value &lt; 2.2e-16</span>
 <span class="co">## alternative hypothesis: true p is not equal to 0.95</span>
 <span class="co">## 95 percent confidence interval:</span>
-<span class="co">##  0.03543 0.55782</span>
+<span class="co">##  0.03542694 0.55781858</span>
 <span class="co">## sample estimates:</span>
 <span class="co">##   p </span>
 <span class="co">## 0.2</span>
@@ -196,10 +187,10 @@
 <span class="co">##  Exact binomial test</span>
 <span class="co">## </span>
 <span class="co">## data:  2 and 10</span>
-<span class="co">## number of successes = 2, number of trials = 10, p-value = 2e-09</span>
+<span class="co">## number of successes = 2, number of trials = 10, p-value = 1.605e-09</span>
 <span class="co">## alternative hypothesis: true probability of success is not equal to 0.95</span>
 <span class="co">## 95 percent confidence interval:</span>
-<span class="co">##  0.02521 0.55610</span>
+<span class="co">##  0.02521073 0.55609546</span>
 <span class="co">## sample estimates:</span>
 <span class="co">## probability of success </span>
 <span class="co">##                    0.2</span></code></pre></div>
@@ -207,13 +198,12 @@
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:pbinom"></span>
 <img src="index_files/figure-html/pbinom-1.png" alt="二项分布 \(B(n,\theta)\) 成功概率 \(\theta\)，固定样本量 \(n = 10\)，分不同的分位点 \(q = 2, 4, 6\) 绘制概率随成功概率 \(\theta\) 的变化" width="480"><p class="caption">
-图 0.3: 二项分布 <span class="math inline">\(B(n,\theta)\)</span> 成功概率 <span class="math inline">\(\theta\)</span>，固定样本量 <span class="math inline">\(n = 10\)</span>，分不同的分位点 <span class="math inline">\(q = 2, 4, 6\)</span> 绘制概率随成功概率 <span class="math inline">\(\theta\)</span> 的变化
+图 0.2: 二项分布 <span class="math inline">\(B(n,\theta)\)</span> 成功概率 <span class="math inline">\(\theta\)</span>，固定样本量 <span class="math inline">\(n = 10\)</span>，分不同的分位点 <span class="math inline">\(q = 2, 4, 6\)</span> 绘制概率随成功概率 <span class="math inline">\(\theta\)</span> 的变化
 </p>
 </div>
 <p>实际达到的置信度水平随真实的未知参数值和样本量的变化而<strong>剧烈</strong>波动，这意味着这种参数估计方法在实际应用中不可靠、真实场景中参数真值是永远未知的，样本量是可控的，并且是可以变化的。根本原因在于这类分布是离散的，比如这里的二项分布。当数据 <span class="math inline">\(x\)</span> 是离散的情况，置信区间的端点<span class="math inline">\(\ell(x)\)</span> 和 <span class="math inline">\(u(x)\)</span> 也是离散的。这种缺陷是无法避免的，清晰的置信区间和离散的数据之间存在无法调和的冲突。</p>
 <!-- 机器学习和统计学习本质上是一回事，计算机和统计学家各有所表。 -->
-<p>覆盖概率 <span class="math inline">\(P_{\theta}(X = x)\)</span> 和参数真值 <span class="math inline">\(\theta\)</span> 的关系 <span class="citation"><a href="#ref-Lawrence2001" role="doc-biblioref">[3]</a>, <a href="#ref-Geyer2005" role="doc-biblioref">[4]</a></span></p>
-<p>比如总体为二项分布 <span class="math inline">\(B(n, \theta)\)</span> 其中 n = 10，在置信水平 <span class="math inline">\(\alpha = 0.95\)</span> 下，问参数 <span class="math inline">\(\theta\)</span> 的覆盖概率是多少？随参数 <span class="math inline">\(\theta\)</span> 的变化情况如何？<a href="https://d.cosx.org/d/421502-coverage-probability" class="uri">https://d.cosx.org/d/421502-coverage-probability</a></p>
+<p>覆盖概率 <span class="math inline">\(P_{\theta}(X = x)\)</span> 和参数真值 <span class="math inline">\(\theta\)</span> 的关系 <span class="citation"><a href="#ref-Lawrence2001" role="doc-biblioref">[2]</a>, <a href="#ref-Geyer2005" role="doc-biblioref">[3]</a></span></p>
 <p>以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2^10 = 1024 个结果，每个结果都可以用来估计未知的参数 <span class="math inline">\(p\)</span> 及其置信区间、覆盖概率。假设参数 <span class="math inline">\(p\)</span> 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 <span class="math inline">\(B(10, 0.7)\)</span>，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 <code><a href="https://rdrr.io/r/stats/Binomial.html">rbinom()</a></code>，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">)</span>
@@ -226,10 +216,10 @@
 ##  Exact binomial test
 ## 
 ## data:  6 and 10
-## number of successes = 6, number of trials = 10, p-value = 0.5
+## number of successes = 6, number of trials = 10, p-value = 0.4997
 ## alternative hypothesis: true probability of success is not equal to 0.7
 ## 95 percent confidence interval:
-##  0.2624 0.8784
+##  0.2623781 0.8784477
 ## sample estimates:
 ## probability of success 
 ##                    0.6</code></pre>
@@ -239,10 +229,10 @@
   <span class="fl">0.6</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">0.6</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,
   <span class="fl">0.6</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">0.6</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.2964 0.9036</code></pre>
+<pre><code>## [1] 0.2963637 0.9036363</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0.9036363</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0.2963637</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.2004</code></pre>
+<pre><code>## [1] 0.200382</code></pre>
 <p><span class="todo">多重比较与检验</span></p>
 <p>多重比较 <code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code> 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 <code><a href="https://rdrr.io/r/stats/oneway.test.html">oneway.test()</a></code></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -260,16 +250,16 @@
 <code class="sourceCode R"><span class="co"># round(p.adjust(p), 3)</span>
 <span class="co"># round(p.adjust(p, "BH"), 3)</span></code></pre></div>
 <p><span class="todo">混合正态分布的参数估计</span></p>
-<p>标准正态分布的概率密度函数 <span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\)</span> 的图像见图<a href="index.html#fig:god-play-games">0.4</a> 中的红线，非常的优美，然而，现实中的数据所呈现出来的却是另一翻景象，它们只是近似却永远也不会严丝合缝，这又是大自然神奇的地方，整体似乎有某种确定性的规律，局部又有不确定的随机扰动，横看成岭侧成峰，远近高低各不同。</p>
+<p>标准正态分布的概率密度函数 <span class="math inline">\(f(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\)</span> 的图像见图<a href="index.html#fig:god-play-games">0.3</a> 中的红线，非常的优美，然而，现实中的数据所呈现出来的却是另一翻景象，它们只是近似却永远也不会严丝合缝，这又是大自然神奇的地方，整体似乎有某种确定性的规律，局部又有不确定的随机扰动，横看成岭侧成峰，远近高低各不同。</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:god-play-games"></span>
 <img src="index_files/figure-html/god-play-games-1.png" alt="上帝在掷骰子吗？" width="75%"><p class="caption">
-图 0.4: 上帝在掷骰子吗？
+图 0.3: 上帝在掷骰子吗？
 </p>
 </div>
 <p><span class="todo">统计检验，决策风险，显著性水平</span></p>
 <div class="inline-figure"><img src="index_files/figure-html/ab-test-1.png" width="480" style="display: block; margin: auto;"></div>
-<p>Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values <span class="citation"><a href="#ref-Geyer2005" role="doc-biblioref">[4]</a></span> 文章中的图 1 名义覆盖概率的计算见 <span class="citation"><a href="#ref-Blyth1960" role="doc-biblioref">[5]</a></span></p>
+<p>Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values <span class="citation"><a href="#ref-Geyer2005" role="doc-biblioref">[3]</a></span> 文章中的图 1 名义覆盖概率的计算见 <span class="citation"><a href="#ref-Blyth1960" role="doc-biblioref">[4]</a></span></p>
 </div>
 <div id="sec-audience" class="section level2 unnumbered">
 <h2>本书定位<a class="anchor" aria-label="anchor" href="#sec-audience"><i class="fas fa-link"></i></a>
@@ -329,7 +319,7 @@
 <div id="sec-session-welcome" class="section level2 unnumbered">
 <h2>运行信息<a class="anchor" aria-label="anchor" href="#sec-session-welcome"><i class="fas fa-link"></i></a>
 </h2>
-<p>书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-04 12:12:42。</p>
+<p>书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-06 23:47:16。</p>
 
 </div>
 </div>
@@ -339,22 +329,18 @@
 <div class="csl-left-margin">[1] </div>
 <div class="csl-right-inline">茆诗松, 程依明, and 濮晓龙, <em>高等数理统计</em>, 2nd ed. 北京: 高等教育出版社, 2006.</div>
 </div>
-<div id="ref-Test_1934_binom" class="csl-entry">
-<div class="csl-left-margin">[2] </div>
-<div class="csl-right-inline">C. J. Clopper and E. S. Pearson, <span>“The use of confidence or fiducial limits illustrated in the case of the binomial,”</span> <em>Biometrika</em>, vol. 26, no. 4, pp. 404–413, Dec. 1934, doi: <a href="https://doi.org/10.1093/biomet/26.4.404">10.1093/biomet/26.4.404</a>.</div>
-</div>
 <div id="ref-Lawrence2001" class="csl-entry">
-<div class="csl-left-margin">[3] </div>
+<div class="csl-left-margin">[2] </div>
 <div class="csl-right-inline">L. D. Brown, T. T. Cai, and A. DasGupta, <span>“Interval estimation for a binomial proportion,”</span> <em>Statistical Science</em>, no. 2, pp. 101–133, 2001,Available: <a href="https://projecteuclid.org/euclid.ss/1009213286">https://projecteuclid.org/euclid.ss/1009213286</a>
 </div>
 </div>
 <div id="ref-Geyer2005" class="csl-entry">
-<div class="csl-left-margin">[4] </div>
+<div class="csl-left-margin">[3] </div>
 <div class="csl-right-inline">C. J. Geyer and G. D. Meeden, <span>“Fuzzy and randomized confidence intervals and p-values,”</span> <em>Statistical Science</em>, vol. 20, no. 4, pp. 358–366, Nov. 2005,Available: <a href="https://www.jstor.org/stable/20061193">https://www.jstor.org/stable/20061193</a>
 </div>
 </div>
 <div id="ref-Blyth1960" class="csl-entry">
-<div class="csl-left-margin">[5] </div>
+<div class="csl-left-margin">[4] </div>
 <div class="csl-right-inline">C. R. Blyth and D. W. Hutchinson, <span>“Table of neyman-shortest unbiased confidence intervals for the binomial parameter,”</span> <em>Biometrika</em>, vol. 47, no. 3/4, pp. 381–391, 1960,Available: <a href="https://www.jstor.org/stable/2333308">https://www.jstor.org/stable/2333308</a>
 </div>
 </div>
@@ -389,7 +375,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-09-04.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-09-06.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

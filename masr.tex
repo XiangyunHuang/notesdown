@@ -225,7 +225,7 @@
 \makeatother
 \subtitle{Modern Applied Statistics with R}
 \author{黄湘云}
-\date{2021-09-04}
+\date{2021-09-06}
 
 \begin{document}
 \maketitle
@@ -285,21 +285,6 @@ Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次
 
 下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
 
-1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 \(B(n, p)\) 参数 \(p\) 的置信带 \citep{Test_1934_binom}，图 \ref{fig:confidence-belt} 提炼了文章的主要结果。
-
-\begin{figure}
-
-{\centering \includegraphics{index_files/figure-latex/confidence-belt-1} 
-
-}
-
-\caption[二项分布参数 \(p\) 的置信带]{给定置信系数 \(1- \alpha = 0.95\) 和样本量 \(n = 10\) 的情况下，二项分布参数 \(p\) 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 \(p\) 的精确区间估计为 \((p_1, p_2) = (0.03, 0.55)\)。}\label{fig:confidence-belt}
-\end{figure}
-
-
-
-
-
 区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 \((5, 0.5)\) 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
 
 \begin{rmdtip}{提示}
@@ -319,10 +304,10 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 \DocumentationTok{\#\#  1{-}sample proportions test with continuity correction}
 \DocumentationTok{\#\# }
 \DocumentationTok{\#\# data:  2 out of 10, null probability 0.95}
-\DocumentationTok{\#\# X{-}squared = 103, df = 1, p{-}value \textless{}2e{-}16}
+\DocumentationTok{\#\# X{-}squared = 103.16, df = 1, p{-}value \textless{} 2.2e{-}16}
 \DocumentationTok{\#\# alternative hypothesis: true p is not equal to 0.95}
 \DocumentationTok{\#\# 95 percent confidence interval:}
-\DocumentationTok{\#\#  0.03543 0.55782}
+\DocumentationTok{\#\#  0.03542694 0.55781858}
 \DocumentationTok{\#\# sample estimates:}
 \DocumentationTok{\#\#   p }
 \DocumentationTok{\#\# 0.2}
@@ -332,10 +317,10 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 \DocumentationTok{\#\#  Exact binomial test}
 \DocumentationTok{\#\# }
 \DocumentationTok{\#\# data:  2 and 10}
-\DocumentationTok{\#\# number of successes = 2, number of trials = 10, p{-}value = 2e{-}09}
+\DocumentationTok{\#\# number of successes = 2, number of trials = 10, p{-}value = 1.605e{-}09}
 \DocumentationTok{\#\# alternative hypothesis: true probability of success is not equal to 0.95}
 \DocumentationTok{\#\# 95 percent confidence interval:}
-\DocumentationTok{\#\#  0.02521 0.55610}
+\DocumentationTok{\#\#  0.02521073 0.55609546}
 \DocumentationTok{\#\# sample estimates:}
 \DocumentationTok{\#\# probability of success }
 \DocumentationTok{\#\#                    0.2}
@@ -356,8 +341,6 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 实际达到的置信度水平随真实的未知参数值和样本量的变化而\textbf{剧烈}波动，这意味着这种参数估计方法在实际应用中不可靠、真实场景中参数真值是永远未知的，样本量是可控的，并且是可以变化的。根本原因在于这类分布是离散的，比如这里的二项分布。当数据 \(x\) 是离散的情况，置信区间的端点\(\ell(x)\) 和 \(u(x)\) 也是离散的。这种缺陷是无法避免的，清晰的置信区间和离散的数据之间存在无法调和的冲突。
 
 覆盖概率 \(P_{\theta}(X = x)\) 和参数真值 \(\theta\) 的关系 \citep{Lawrence2001, Geyer2005}
-
-比如总体为二项分布 \(B(n, \theta)\) 其中 n = 10，在置信水平 \(\alpha = 0.95\) 下，问参数 \(\theta\) 的覆盖概率是多少？随参数 \(\theta\) 的变化情况如何？\url{https://d.cosx.org/d/421502-coverage-probability}
 
 以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2\^{}10 = 1024 个结果，每个结果都可以用来估计未知的参数 \(p\) 及其置信区间、覆盖概率。假设参数 \(p\) 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 \(B(10, 0.7)\)，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 \texttt{rbinom()}，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。
 
@@ -385,10 +368,10 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 ##  Exact binomial test
 ## 
 ## data:  6 and 10
-## number of successes = 6, number of trials = 10, p-value = 0.5
+## number of successes = 6, number of trials = 10, p-value = 0.4997
 ## alternative hypothesis: true probability of success is not equal to 0.7
 ## 95 percent confidence interval:
-##  0.2624 0.8784
+##  0.2623781 0.8784477
 ## sample estimates:
 ## probability of success 
 ##                    0.6
@@ -406,7 +389,7 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2964 0.9036
+## [1] 0.2963637 0.9036363
 \end{verbatim}
 
 \begin{Shaded}
@@ -416,7 +399,7 @@ Base R 提供的 \texttt{binom.test()} 函数可以精确计算置信区间，�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2004
+## [1] 0.200382
 \end{verbatim}
 
 \textcolor{red}{\textbf{TODO: }{多重比较与检验}}
@@ -541,7 +524,7 @@ Yihui Xie & 1 \\
 \section*{运行信息}\label{sec-session-welcome}}
 \addcontentsline{toc}{section}{运行信息}
 
-书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-04 13:01:31。
+书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-07 00:13:57。
 
 \hypertarget{chap-preface}{%
 \chapter{前言}\label{chap-preface}}
@@ -675,7 +658,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 \caption{书籍项目架构图}\label{fig:book-workflow}
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年09月04日05时01分34秒，本书用 R version 4.1.1 (2021-08-10) 编译，完整运行环境如下：
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2021年09月06日16时13分57秒，本书用 R version 4.1.1 (2021-08-10) 编译，完整运行环境如下：
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -699,7 +682,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   bookdown_0.23  knitr_1.33     rmarkdown_2.10
+##   bookdown_0.24  knitr_1.33     rmarkdown_2.10
 ## 
 ## Pandoc version: 2.14.1
 \end{verbatim}
@@ -1001,7 +984,7 @@ There are probably others. Running your code I think the answer is the last one.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "730,638,638"
+## [1] "826,676,897"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1024,7 +1007,7 @@ There are probably others. Running your code I think the answer is the last one.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 00:00:00"
+## [1] "2021-09-06 00:00:00"
 \end{verbatim}
 
 从 POSIXt 数据对象中，抽取小时和分钟部分，返回字符串
@@ -1036,7 +1019,7 @@ There are probably others. Running your code I think the answer is the last one.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "05:01"
+## [1] "16:13"
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1404,7 +1387,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpSw7BQJ/file23eb04409c971.data"
+## [1] "/tmp/RtmpnYGJ7X/filec1b67251a1f0.data"
 \end{verbatim}
 
 设置参数 \texttt{n\ =\ -1} 表示将文件 fil 的内容从头读到尾
@@ -1449,7 +1432,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpSw7BQJ/test23eb07afe1269"
+## [1] "/tmp/RtmpnYGJ7X/testc1b65ec49efa"
 \end{verbatim}
 
 \begin{Shaded}
@@ -2886,12 +2869,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.52   Premium     F    VVS2  61.8    60  2870 5.16 5.13 3.18
-## 2  1.01   Premium     I     SI1  62.7    60  2885 6.36 6.27 3.96
-## 3  0.70 Very Good     F     VS1  61.8    59  2895 5.66 5.76 3.53
-## 4  0.90   Premium     F     SI2  61.9    62  3210 6.12 6.07 3.77
-## 5  0.91   Premium     E     SI2  60.0    60  3379 6.28 6.23 3.75
-## 6  0.72     Ideal     E     VS2  60.8    56  3601 5.78 5.82 3.53
+## 1  0.55     Ideal     G      IF  60.9    57  2789 5.28 5.30 3.22
+## 2  0.72     Ideal     H     VS1  62.3    55  2949 5.72 5.74 3.57
+## 3  1.01   Premium     F     SI2  60.0    60  3717 6.46 6.40 3.86
+## 4  1.14      Good     I     SI2  60.0    65  3735 6.80 6.75 4.06
+## 5  1.01      Good     I     VS2  62.5    59  4239 6.30 6.37 3.96
+## 6  0.90 Very Good     E     SI1  63.2    54  4382 6.10 6.17 3.88
 \end{verbatim}
 
 将抽样的结果用窗口函数 \texttt{RANK()} 排序，详见 \url{https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html}
@@ -2911,12 +2894,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##    cut price rank
-## 1 Fair  3282    1
-## 2 Fair  7950    2
-## 3 Good  1390    1
-## 4 Good  4221    2
-## 5 Good  4253    3
-## 6 Good  5606    4
+## 1 Fair  1114    1
+## 2 Good   734    1
+## 3 Good  1806    2
+## 4 Good  3895    3
+## 5 Good  6841    4
+## 6 Good  7143    5
 \end{verbatim}
 
 LATERAL VIEW 把一列拆成多行
@@ -2952,10 +2935,10 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 \end{verbatim}
 
 行列转换 \url{https://www.cnblogs.com/kimbo/p/6208973.html}，LATERAL VIEW 展开
@@ -2973,12 +2956,12 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 \end{verbatim}
 
 日期相关的函数 \url{https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html\#date-and-timestamp-functions}
@@ -2992,7 +2975,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   current_date()
-## 1     2021-09-04
+## 1     2021-09-06
 \end{verbatim}
 
 \begin{Shaded}
@@ -3004,7 +2987,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   date_sub(current_date(), 1)
-## 1                  2021-09-03
+## 1                  2021-09-05
 \end{verbatim}
 
 \begin{Shaded}
@@ -3028,7 +3011,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   dayofweek(current_date())
-## 1                         7
+## 1                         2
 \end{verbatim}
 
 最后，使用完记得关闭 Spark 连接
@@ -3320,27 +3303,27 @@ iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 cs
 ## 
 ## Package version:
 ##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.2        
-##   bookdown_0.23      cli_3.0.1          codetools_0.2.18   colorspace_2.0-2  
+##   bookdown_0.24      cli_3.0.1          codetools_0.2.18   colorspace_2.0-2  
 ##   compiler_4.1.1     config_0.3.1       cpp11_0.3.1        crayon_1.4.1      
 ##   curl_4.3.2         data.table_1.14.0  DBI_1.1.1          dbplyr_2.1.1      
 ##   digest_0.6.27      dplyr_1.0.7        ellipsis_0.3.2     evaluate_0.14     
-##   fansi_0.5.0        farver_2.1.0       forge_0.2.0        generics_0.1.0    
-##   ggplot2_3.3.5      globals_0.14.0     glue_1.4.2         graphics_4.1.1    
-##   grDevices_4.1.1    grid_4.1.1         gtable_0.3.0       highr_0.9         
-##   htmltools_0.5.1.1  htmlwidgets_1.5.3  httr_1.4.2         isoband_0.2.5     
-##   jquerylib_0.1.4    jsonlite_1.7.2     knitr_1.33         labeling_0.4.2    
-##   lattice_0.20.44    lifecycle_1.0.0    magrittr_2.0.1     markdown_1.1      
-##   MASS_7.3.54        Matrix_1.3.4       methods_4.1.1      mgcv_1.8.36       
-##   mime_0.11          munsell_0.5.0      nlme_3.1.152       openssl_1.4.4     
-##   parallel_4.1.1     pillar_1.6.2       pkgconfig_2.0.3    png_0.1-7         
-##   purrr_0.3.4        r2d3_0.2.5         R6_2.5.0           rappdirs_0.3.3    
-##   RColorBrewer_1.1.2 rlang_0.4.11       rmarkdown_2.10     rprojroot_2.0.2   
-##   rstudioapi_0.13    scales_1.1.1       sparklyr_1.7.1     splines_4.1.1     
-##   stats_4.1.1        stringi_1.7.3      stringr_1.4.0      sys_3.4           
-##   tibble_3.1.3       tidyr_1.1.3        tidyselect_1.1.1   tinytex_0.33      
-##   tools_4.1.1        utf8_1.2.2         utils_4.1.1        uuid_0.1.4        
-##   vctrs_0.3.8        viridisLite_0.4.0  withr_2.4.2        xfun_0.25         
-##   xml2_1.3.2         yaml_2.2.1
+##   fansi_0.5.0        farver_2.1.0       fastmap_1.1.0      forge_0.2.0       
+##   generics_0.1.0     ggplot2_3.3.5      globals_0.14.0     glue_1.4.2        
+##   graphics_4.1.1     grDevices_4.1.1    grid_4.1.1         gtable_0.3.0      
+##   highr_0.9          htmltools_0.5.2    htmlwidgets_1.5.3  httr_1.4.2        
+##   isoband_0.2.5      jquerylib_0.1.4    jsonlite_1.7.2     knitr_1.33        
+##   labeling_0.4.2     lattice_0.20.44    lifecycle_1.0.0    magrittr_2.0.1    
+##   markdown_1.1       MASS_7.3.54        Matrix_1.3.4       methods_4.1.1     
+##   mgcv_1.8.36        mime_0.11          munsell_0.5.0      nlme_3.1.152      
+##   openssl_1.4.5      parallel_4.1.1     pillar_1.6.2       pkgconfig_2.0.3   
+##   png_0.1-7          purrr_0.3.4        r2d3_0.2.5         R6_2.5.1          
+##   rappdirs_0.3.3     RColorBrewer_1.1.2 rlang_0.4.11       rmarkdown_2.10    
+##   rprojroot_2.0.2    rstudioapi_0.13    scales_1.1.1       sparklyr_1.7.1    
+##   splines_4.1.1      stats_4.1.1        stringi_1.7.4      stringr_1.4.0     
+##   sys_3.4            tibble_3.1.4       tidyr_1.1.3        tidyselect_1.1.1  
+##   tinytex_0.33       tools_4.1.1        utf8_1.2.2         utils_4.1.1       
+##   uuid_0.1.4         vctrs_0.3.8        viridisLite_0.4.0  withr_2.4.2       
+##   xfun_0.25          xml2_1.3.2         yaml_2.2.1
 \end{verbatim}
 
 \hypertarget{chap-string-operations}{%
@@ -3878,18 +3861,17 @@ iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 cs
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
 ##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
-##  [37] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
-##  [73] FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
-##  [85]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [145] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE
-## [169]  TRUE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [157]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE
 \end{verbatim}
 
 \begin{Shaded}
@@ -3903,18 +3885,17 @@ iris 数据转化为 data.table 类型，按照 Species 分组拆成单独的 cs
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
 ##  [13]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ##  [25]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE
-##  [37] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
 ##  [49]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE
-##  [61]  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
-##  [73] FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
-##  [85]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE
-##  [97] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE
-## [121]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-## [133]  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [145] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE
-## [169]  TRUE  TRUE
+##  [61]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE
+##  [97]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [109]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [121] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [133] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [157]  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE
 \end{verbatim}
 
 部分匹配(Partial String Matching)
@@ -5542,7 +5523,7 @@ R 语言是用字符串来表示正则表达式的，但是正则表达式不是
 ## actual    22    23    24    25    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    37    38    39
+## actual    33    35    36    37    38    39
 \end{verbatim}
 
 \hypertarget{strtrim}{%
@@ -5704,6 +5685,29 @@ R 语言是用字符串来表示正则表达式的，但是正则表达式不是
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{tolower}{%
+\subsection{tolower}\label{tolower}}
+
+tolower 和 toupper 是一对，将大写转小写，小写转大写
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{simpleCap }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{tolower}\NormalTok{(x)}
+\NormalTok{  s }\OtherTok{\textless{}{-}} \FunctionTok{strsplit}\NormalTok{(x, }\StringTok{" "}\NormalTok{)[[}\DecValTok{1}\NormalTok{]]}
+  \FunctionTok{paste}\NormalTok{(}\FunctionTok{toupper}\NormalTok{(}\FunctionTok{substring}\NormalTok{(s, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)), }\FunctionTok{substring}\NormalTok{(s, }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{sep =} \StringTok{""}\NormalTok{, }\AttributeTok{collapse =} \StringTok{" "}
+\NormalTok{  )}
+\NormalTok{\}}
+\CommentTok{\# 参考文献条目里需要将每个英文单词的首字母大写}
+\FunctionTok{simpleCap}\NormalTok{(}\AttributeTok{x =} \StringTok{"THE USE OF MULTIPLE MEASUREMENTS IN TAXONOMIC PROBLEMS"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "The Use Of Multiple Measurements In Taxonomic Problems"
+\end{verbatim}
+
 \hypertarget{encode-string}{%
 \section{字符串加密}\label{encode-string}}
 
@@ -5831,19 +5835,19 @@ R 内置的默认正则表达式匹配方式是基于 PCRE 的匹配，\texttt{o
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1       assertthat_0.2.1  base64enc_0.1.3   bookdown_0.23    
-##   cli_3.0.1         compiler_4.1.1    cpp11_0.3.1       crayon_1.4.1     
-##   curl_4.3.2        DBI_1.1.1         digest_0.6.27     dplyr_1.0.7      
-##   ellipsis_0.3.2    evaluate_0.14     fansi_0.5.0       generics_0.1.0   
-##   glue_1.4.2        graphics_4.1.1    grDevices_4.1.1   highr_0.9        
-##   htmltools_0.5.1.1 jquerylib_0.1.4   jsonlite_1.7.2    knitr_1.33       
-##   lifecycle_1.0.0   magrittr_2.0.1    markdown_1.1      methods_4.1.1    
-##   mime_0.11         openssl_1.4.4     pillar_1.6.2      pkgconfig_2.0.3  
-##   purrr_0.3.4       R6_2.5.0          rlang_0.4.11      rmarkdown_2.10   
-##   stats_4.1.1       stringi_1.7.3     stringr_1.4.0     sys_3.4          
-##   tibble_3.1.3      tidyr_1.1.3       tidyselect_1.1.1  tinytex_0.33     
-##   tools_4.1.1       utf8_1.2.2        utils_4.1.1       vctrs_0.3.8      
-##   xfun_0.25         yaml_2.2.1
+##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.24   
+##   cli_3.0.1        compiler_4.1.1   cpp11_0.3.1      crayon_1.4.1    
+##   curl_4.3.2       DBI_1.1.1        digest_0.6.27    dplyr_1.0.7     
+##   ellipsis_0.3.2   evaluate_0.14    fansi_0.5.0      fastmap_1.1.0   
+##   generics_0.1.0   glue_1.4.2       graphics_4.1.1   grDevices_4.1.1 
+##   highr_0.9        htmltools_0.5.2  jquerylib_0.1.4  jsonlite_1.7.2  
+##   knitr_1.33       lifecycle_1.0.0  magrittr_2.0.1   markdown_1.1    
+##   methods_4.1.1    mime_0.11        openssl_1.4.5    pillar_1.6.2    
+##   pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1         rlang_0.4.11    
+##   rmarkdown_2.10   stats_4.1.1      stringi_1.7.4    stringr_1.4.0   
+##   sys_3.4          tibble_3.1.4     tidyr_1.1.3      tidyselect_1.1.1
+##   tinytex_0.33     tools_4.1.1      utf8_1.2.2       utils_4.1.1     
+##   vctrs_0.3.8      xfun_0.25        yaml_2.2.1
 \end{verbatim}
 
 \hypertarget{chap-regular-expressions}{%
@@ -6450,7 +6454,7 @@ data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本�
 
 \begin{verbatim}
 ##      /home/runner/work/_temp/Library /opt/R/4.1.1/lib/R/library
-## [1,]                           FALSE                       TRUE
+## [1,]                            TRUE                       TRUE
 ## [2,]                            TRUE                      FALSE
 \end{verbatim}
 
@@ -13554,24 +13558,21 @@ Trellis Displays of Tukey's Hanging Rootograms
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1         base64enc_0.1.3     bookdown_0.23      
-##   codetools_0.2-18    compiler_4.1.1      curl_4.3.2         
-##   digest_0.6.27       evaluate_0.14       filehash_2.4-2     
-##   glue_1.4.2          graphics_4.1.1      grDevices_4.1.1    
-##   grid_4.1.1          highr_0.9           htmltools_0.5.1.1  
-##   jpeg_0.1-9          jquerylib_0.1.4     jsonlite_1.7.2     
-##   KernSmooth_2.23-20  knitr_1.33          lattice_0.20-44    
-##   latticeExtra_0.6-29 magick_2.7.2        magrittr_2.0.1     
+##   base64enc_0.1.3     bookdown_0.24       compiler_4.1.1     
+##   curl_4.3.2          digest_0.6.27       evaluate_0.14      
+##   fastmap_1.1.0       glue_1.4.2          graphics_4.1.1     
+##   grDevices_4.1.1     grid_4.1.1          highr_0.9          
+##   htmltools_0.5.2     jpeg_0.1-9          jquerylib_0.1.4    
+##   jsonlite_1.7.2      KernSmooth_2.23-20  knitr_1.33         
+##   lattice_0.20-44     latticeExtra_0.6-29 magrittr_2.0.1     
 ##   mapproj_1.2.7       maps_3.3.0          markdown_1.1       
 ##   MASS_7.3-54         Matrix_1.3-4        methods_4.1.1      
 ##   mgcv_1.8-36         mime_0.11           nlme_3.1-152       
-##   pdftools_3.0.1      png_0.1-7           qpdf_1.1           
-##   RColorBrewer_1.1-2  Rcpp_1.0.7          rlang_0.4.11       
+##   png_0.1-7           RColorBrewer_1.1-2  rlang_0.4.11       
 ##   rmarkdown_2.10      shape_1.4.6         splines_4.1.1      
-##   stats_4.1.1         stringi_1.7.3       stringr_1.4.0      
-##   survival_3.2-11     sys_3.4             tikzDevice_0.12.3.1
-##   tinytex_0.33        tools_4.1.1         utils_4.1.1        
-##   xfun_0.25           yaml_2.2.1
+##   stats_4.1.1         stringi_1.7.4       stringr_1.4.0      
+##   survival_3.2-13     tinytex_0.33        tools_4.1.1        
+##   utils_4.1.1         xfun_0.25           yaml_2.2.1
 \end{verbatim}
 
 \hypertarget{chap-data-visualization}{%
@@ -17526,7 +17527,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sat"
+## [1] "Mon"
 \end{verbatim}
 
 \begin{Shaded}
@@ -17536,7 +17537,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 7
+## [1] 2
 \end{verbatim}
 
 \end{rmdnote}
@@ -17732,7 +17733,7 @@ ggpubr 包提供了 \texttt{stat\_chull()} 图层
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55d3401db430>
+## <bytecode: 0x55d1061ca620>
 ## <environment: namespace:ggpubr>
 \end{verbatim}
 
@@ -20293,6 +20294,8 @@ orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形�
 \hypertarget{sec-rgl-3d}{%
 \section{三维图 (rgl)}\label{sec-rgl-3d}}
 
+\href{https://github.com/coolbutuseless/ggrgl}{ggrgl}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(rgl)}
@@ -20522,21 +20525,22 @@ orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形�
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.7        lubridate_1.7.10  lattice_0.20-44   tidyr_1.1.3      
 ##  [5] ps_1.6.0          png_0.1-7         zoo_1.8-9         assertthat_0.2.1 
-##  [9] digest_0.6.27     utf8_1.2.2        R6_2.5.0          backports_1.2.1  
+##  [9] digest_0.6.27     utf8_1.2.2        R6_2.5.1          backports_1.2.1  
 ## [13] evaluate_0.14     httr_1.4.2        highr_0.9         pillar_1.6.2     
 ## [17] rlang_0.4.11      lazyeval_0.2.2    curl_4.3.2        rstudioapi_0.13  
 ## [21] data.table_1.14.0 callr_3.7.0       TTR_0.24.2        Matrix_1.3-4     
 ## [25] rmarkdown_2.10    labeling_0.4.2    webshot_0.5.2     stringr_1.4.0    
 ## [29] htmlwidgets_1.5.3 igraph_1.2.6      munsell_0.5.0     broom_0.7.9      
-## [33] compiler_4.1.1    xfun_0.25         pkgconfig_2.0.3   htmltools_0.5.1.1
-## [37] tidyselect_1.1.1  tibble_3.1.3      bookdown_0.23     fansi_0.5.0      
+## [33] compiler_4.1.1    xfun_0.25         pkgconfig_2.0.3   htmltools_0.5.2  
+## [37] tidyselect_1.1.1  tibble_3.1.4      bookdown_0.24     fansi_0.5.0      
 ## [41] viridisLite_0.4.0 crayon_1.4.1      dplyr_1.0.7       withr_2.4.2      
 ## [45] MASS_7.3-54       grid_4.1.1        jsonlite_1.7.2    gtable_0.3.0     
 ## [49] lifecycle_1.0.0   DBI_1.1.1         magrittr_2.0.1    scales_1.1.1     
-## [53] rlist_0.4.6.1     quantmod_0.4.18   stringi_1.7.3     farver_2.1.0     
+## [53] rlist_0.4.6.2     quantmod_0.4.18   stringi_1.7.4     farver_2.1.0     
 ## [57] ellipsis_0.3.2    xts_0.12.1        generics_0.1.0    vctrs_0.3.8      
 ## [61] tools_4.1.1       glue_1.4.2        purrr_0.3.4       processx_3.5.2   
-## [65] yaml_2.2.1        colorspace_2.0-2  isoband_0.2.5     knitr_1.33
+## [65] fastmap_1.1.0     yaml_2.2.1        colorspace_2.0-2  isoband_0.2.5    
+## [69] knitr_1.33
 \end{verbatim}
 
 \hypertarget{part-ux52a8ux6001ux6587ux6863}{%
@@ -21494,17 +21498,17 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.18          magrittr_2.0.1  
+## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.19          magrittr_2.0.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] rstudioapi_0.13   knitr_1.33        xml2_1.3.2        rvest_1.0.1      
-##  [5] munsell_0.5.0     viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.0         
-##  [9] rlang_0.4.11      stringr_1.4.0     httr_1.4.2        tools_4.1.1      
-## [13] webshot_0.5.2     xfun_0.25         systemfonts_1.0.2 htmltools_0.5.1.1
-## [17] yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0   bookdown_0.23    
-## [21] htmlwidgets_1.5.3 curl_4.3.2        glue_1.4.2        evaluate_0.14    
-## [25] rmarkdown_2.10    stringi_1.7.3     compiler_4.1.1    scales_1.1.1     
-## [29] svglite_2.0.0
+##  [1] rstudioapi_0.13   knitr_1.33        xml2_1.3.2        munsell_0.5.0    
+##  [5] rvest_1.0.1       viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.1         
+##  [9] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     httr_1.4.2       
+## [13] tools_4.1.1       webshot_0.5.2     xfun_0.25         systemfonts_1.0.2
+## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
+## [21] bookdown_0.24     htmlwidgets_1.5.3 curl_4.3.2        glue_1.4.2       
+## [25] evaluate_0.14     rmarkdown_2.10    stringi_1.7.4     compiler_4.1.1   
+## [29] scales_1.1.1      svglite_2.0.0
 \end{verbatim}
 
 \hypertarget{chap-interactive-shiny-app}{%
@@ -22167,13 +22171,13 @@ miniUI 包
 ## [1] data.table_1.14.0 shiny_1.6.0      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        knitr_1.33        magrittr_2.0.1    xtable_1.8-4     
-##  [5] R6_2.5.0          rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0    
-##  [9] tools_4.1.1       xfun_0.25         png_0.1-7         htmltools_0.5.1.1
-## [13] ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
-## [17] bookdown_0.23     later_1.2.0       promises_1.2.0.1  curl_4.3.2       
-## [21] evaluate_0.14     mime_0.11         rmarkdown_2.10    stringi_1.7.3    
-## [25] compiler_4.1.1    httpuv_1.6.1
+##  [1] Rcpp_1.0.7       knitr_1.33       magrittr_2.0.1   xtable_1.8-4    
+##  [5] R6_2.5.1         rlang_0.4.11     fastmap_1.1.0    stringr_1.4.0   
+##  [9] tools_4.1.1      xfun_0.25        png_0.1-7        htmltools_0.5.2 
+## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.27    lifecycle_1.0.0 
+## [17] bookdown_0.24    later_1.3.0      promises_1.2.0.1 curl_4.3.2      
+## [21] evaluate_0.14    mime_0.11        rmarkdown_2.10   stringi_1.7.4   
+## [25] compiler_4.1.1   httpuv_1.6.2
 \end{verbatim}
 
 \hypertarget{part-ux7edfux8ba1ux57faux7840}{%
@@ -22298,10 +22302,10 @@ T(\mathbf{a},\mathbf{b},\Sigma,\nu)=\frac{2^{1-\frac{\nu}{2}}}{\Gamma(\frac{\nu}
 
 \begin{verbatim}
 ## $quantile
-## [1] 2.560413
+## [1] 2.561238
 ## 
 ## $f.quantile
-## [1] 2.114351e-07
+## [1] 2.149638e-07
 ## 
 ## attr(,"message")
 ## [1] "Normal Completion"
@@ -23409,13 +23413,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 15, number of trials = 100, p-value = 4.825e-13
+## number of successes = 20, number of trials = 100, p-value = 1.116e-09
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.08645439 0.23530750
+##  0.1266556 0.2918427
 ## sample estimates:
 ## probability of success 
-##                   0.15
+##                    0.2
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.5， P 值 \(6.148 \times 10^{-11}\) 结论是拒绝原假设
@@ -23431,13 +23435,13 @@ Bartlett 检验：检验各个组的方差是否有显著性差异，即方差�
 ##  Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 15, number of trials = 100, p-value = 0.2599
+## number of successes = 20, number of trials = 100, p-value = 1
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.08645439 0.23530750
+##  0.1266556 0.2918427
 ## sample estimates:
 ## probability of success 
-##                   0.15
+##                    0.2
 \end{verbatim}
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -24756,7 +24760,7 @@ ROC 曲线越往左上角拱越好， AUC 是 ROC 曲线下的面积，所以 AU
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.002   0.000   0.002
+##   0.001   0.001   0.002
 \end{verbatim}
 
 更多关于 auc 计算的讨论见统计之都论坛帖 \url{https://d.cosx.org/d/419436}，我感觉这个问题最后会归结到排序问题。
@@ -24955,19 +24959,19 @@ HairEyeColor 是一个 table 类型的数据对象，和数组的关系 array
 ## [5] formatR_1.11   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7         plyr_1.8.6         pillar_1.6.2       compiler_4.1.1    
-##  [5] tools_4.1.1        digest_0.6.27      viridisLite_0.4.0  jsonlite_1.7.2    
-##  [9] evaluate_0.14      lifecycle_1.0.0    tibble_3.1.3       gtable_0.3.0      
-## [13] pkgconfig_2.0.3    rlang_0.4.11       DBI_1.1.1          ggrepel_0.9.1     
-## [17] curl_4.3.2         yaml_2.2.1         xfun_0.25          httr_1.4.2        
-## [21] withr_2.4.2        stringr_1.4.0      dplyr_1.0.7        knitr_1.33        
-## [25] htmlwidgets_1.5.3  generics_0.1.0     vctrs_0.3.8        grid_4.1.1        
-## [29] tidyselect_1.1.1   data.table_1.14.0  glue_1.4.2         R6_2.5.0          
-## [33] plotly_4.9.4.1     fansi_0.5.0        rmarkdown_2.10     bookdown_0.23     
-## [37] tidyr_1.1.3        farver_2.1.0       purrr_0.3.4        productplots_0.1.1
-## [41] scales_1.1.1       ellipsis_0.3.2     htmltools_0.5.1.1  assertthat_0.2.1  
-## [45] colorspace_2.0-2   labeling_0.4.2     utf8_1.2.2         stringi_1.7.3     
-## [49] lazyeval_0.2.2     munsell_0.5.0      crayon_1.4.1
+##  [1] tidyselect_1.1.1   xfun_0.25          purrr_0.3.4        colorspace_2.0-2  
+##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
+##  [9] yaml_2.2.1         utf8_1.2.2         plotly_4.9.4.1     rlang_0.4.11      
+## [13] pillar_1.6.2       glue_1.4.2         withr_2.4.2        DBI_1.1.1         
+## [17] lifecycle_1.0.0    plyr_1.8.6         stringr_1.4.0      munsell_0.5.0     
+## [21] gtable_0.3.0       htmlwidgets_1.5.3  evaluate_0.14      labeling_0.4.2    
+## [25] knitr_1.33         fastmap_1.1.0      curl_4.3.2         fansi_0.5.0       
+## [29] Rcpp_1.0.7         scales_1.1.1       jsonlite_1.7.2     farver_2.1.0      
+## [33] digest_0.6.27      stringi_1.7.4      bookdown_0.24      dplyr_1.0.7       
+## [37] ggrepel_0.9.1      grid_4.1.1         tools_4.1.1        lazyeval_0.2.2    
+## [41] productplots_0.1.1 tibble_3.1.4       crayon_1.4.1       tidyr_1.1.3       
+## [45] pkgconfig_2.0.3    ellipsis_0.3.2     data.table_1.14.0  assertthat_0.2.1  
+## [49] rmarkdown_2.10     httr_1.4.2         R6_2.5.1           compiler_4.1.1
 \end{verbatim}
 
 \hypertarget{chap-power-Analysis}{%
@@ -25371,18 +25375,18 @@ fisher.test \url{https://en.wikipedia.org/wiki/Fisher's_exact_test}
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        compiler_4.1.1    pillar_1.6.2      nloptr_1.2.2.2   
-##  [5] tools_4.1.1       boot_1.3-28       digest_0.6.27     evaluate_0.14    
-##  [9] lifecycle_1.0.0   tibble_3.1.3      nlme_3.1-152      gtable_0.3.0     
-## [13] lattice_0.20-44   pkgconfig_2.0.3   rlang_0.4.11      DBI_1.1.1        
-## [17] curl_4.3.2        yaml_2.2.1        xfun_0.25         withr_2.4.2      
-## [21] dplyr_1.0.7       stringr_1.4.0     knitr_1.33        generics_0.1.0   
-## [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.1.1        glue_1.4.2       
-## [29] R6_2.5.0          fansi_0.5.0       rmarkdown_2.10    bookdown_0.23    
-## [33] minqa_1.2.4       farver_2.1.0      purrr_0.3.4       scales_1.1.1     
-## [37] htmltools_0.5.1.1 ellipsis_0.3.2    MASS_7.3-54       splines_4.1.1    
-## [41] assertthat_0.2.1  colorspace_2.0-2  labeling_0.4.2    utf8_1.2.2       
-## [45] stringi_1.7.3     munsell_0.5.0     crayon_1.4.1
+##  [1] Rcpp_1.0.7       pillar_1.6.2     compiler_4.1.1   nloptr_1.2.2.2  
+##  [5] tools_4.1.1      boot_1.3-28      digest_0.6.27    evaluate_0.14   
+##  [9] lifecycle_1.0.0  tibble_3.1.4     nlme_3.1-152     gtable_0.3.0    
+## [13] lattice_0.20-44  pkgconfig_2.0.3  rlang_0.4.11     DBI_1.1.1       
+## [17] curl_4.3.2       yaml_2.2.1       xfun_0.25        fastmap_1.1.0   
+## [21] withr_2.4.2      dplyr_1.0.7      stringr_1.4.0    knitr_1.33      
+## [25] generics_0.1.0   vctrs_0.3.8      tidyselect_1.1.1 grid_4.1.1      
+## [29] glue_1.4.2       R6_2.5.1         fansi_0.5.0      rmarkdown_2.10  
+## [33] bookdown_0.24    minqa_1.2.4      farver_2.1.0     purrr_0.3.4     
+## [37] scales_1.1.1     htmltools_0.5.2  ellipsis_0.3.2   MASS_7.3-54     
+## [41] splines_4.1.1    assertthat_0.2.1 colorspace_2.0-2 labeling_0.4.2  
+## [45] utf8_1.2.2       stringi_1.7.4    munsell_0.5.0    crayon_1.4.1
 \end{verbatim}
 
 \hypertarget{chap-experimental-design}{%
@@ -26137,37 +26141,6 @@ X^{\top}Y &= X^{\top}X\beta \\
 包括线性模型和广义线性模型
 
 Regression Deletion Diagnostics \texttt{?influence.measures}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(extrafont) }\CommentTok{\# 注册字体 CM Roman 到 PDF 设备}
-\FunctionTok{data}\NormalTok{(anscombe)}
-\NormalTok{form }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"y"}\NormalTok{, }\FunctionTok{seq}\NormalTok{(}\DecValTok{4}\NormalTok{)), }\FunctionTok{paste0}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\FunctionTok{seq}\NormalTok{(}\DecValTok{4}\NormalTok{)), }\AttributeTok{sep =} \StringTok{"\textasciitilde{}"}\NormalTok{) }\CommentTok{\# form \textless{}{-} sprintf(\textquotesingle{}y\%d \textasciitilde{} x\%d\textquotesingle{}, 1:4, 1:4)}
-\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(form, lm, }\AttributeTok{data =}\NormalTok{ anscombe)}
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{), }\AttributeTok{mar =} \FloatTok{0.1} \SpecialCharTok{+} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{), }\AttributeTok{oma =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{), }\AttributeTok{family =} \StringTok{"CM Roman"}\NormalTok{)}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{) \{}
-  \FunctionTok{plot}\NormalTok{(}\FunctionTok{as.formula}\NormalTok{(form[i]),}
-    \AttributeTok{data =}\NormalTok{ anscombe, }\AttributeTok{col =} \StringTok{"black"}\NormalTok{,}
-    \AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{cex =} \FloatTok{1.2}\NormalTok{,}
-    \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{19}\NormalTok{), }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{13}\NormalTok{),}
-    \AttributeTok{xlab =} \FunctionTok{as.expression}\NormalTok{(}\FunctionTok{substitute}\NormalTok{(}\FunctionTok{bold}\NormalTok{(x[i]), }\FunctionTok{list}\NormalTok{(}\AttributeTok{i =}\NormalTok{ i))),}
-    \AttributeTok{ylab =} \FunctionTok{as.expression}\NormalTok{(}\FunctionTok{substitute}\NormalTok{(}\FunctionTok{bold}\NormalTok{(y[i]), }\FunctionTok{list}\NormalTok{(}\AttributeTok{i =}\NormalTok{ i)))}
-\NormalTok{  )}
-  \FunctionTok{abline}\NormalTok{(fit[[i]], }\AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{)}
-  \FunctionTok{text}\NormalTok{(}\DecValTok{7}\NormalTok{, }\DecValTok{12}\NormalTok{, }\FunctionTok{bquote}\NormalTok{(}\FunctionTok{bold}\NormalTok{(R)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{==}\NormalTok{ .(}\FunctionTok{round}\NormalTok{(}\FunctionTok{summary}\NormalTok{(fit[[i]])}\SpecialCharTok{$}\NormalTok{r.squared, }\DecValTok{3}\NormalTok{))))}
-\NormalTok{\}}
-\FunctionTok{mtext}\NormalTok{(}\StringTok{"Anscombe\textquotesingle{}s 4 Regression data sets"}\NormalTok{, }\AttributeTok{outer =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{cex =} \FloatTok{1.2}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-
-{\centering \includegraphics{linear-models_files/figure-latex/anscombe-base-1} 
-
-}
-
-\caption{模型诊断很重要}\label{fig:anscombe-base}
-\end{figure}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -26979,24 +26952,22 @@ This is a bit like asking how should I tweak my sailboat so I can explore the oc
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] patchwork_1.1.1 extrafont_0.17  gganimate_1.0.7 ggplot2_3.3.5  
-## [5] magrittr_2.0.1 
+## [1] patchwork_1.1.1 gganimate_1.0.7 ggplot2_3.3.5   magrittr_2.0.1 
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] progress_1.2.2    tidyselect_1.1.1  xfun_0.25         purrr_0.3.4      
-##  [5] lattice_0.20-44   splines_4.1.1     colorspace_2.0-2  vctrs_0.3.8      
-##  [9] generics_0.1.0    htmltools_0.5.1.1 viridisLite_0.4.0 yaml_2.2.1       
+##  [5] splines_4.1.1     lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8      
+##  [9] generics_0.1.0    htmltools_0.5.2   viridisLite_0.4.0 yaml_2.2.1       
 ## [13] mgcv_1.8-36       utf8_1.2.2        rlang_0.4.11      pillar_1.6.2     
 ## [17] glue_1.4.2        withr_2.4.2       DBI_1.1.1         tweenr_1.0.2     
-## [21] plyr_1.8.6        lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0    
-## [25] gtable_0.3.0      codetools_0.2-18  evaluate_0.14     labeling_0.4.2   
-## [29] knitr_1.33        curl_4.3.2        fansi_0.5.0       gifski_1.4.3-1   
-## [33] Rttf2pt1_1.3.9    Rcpp_1.0.7        scales_1.1.1      farver_2.1.0     
-## [37] hms_1.1.0         digest_0.6.27     stringi_1.7.3     bookdown_0.23    
-## [41] dplyr_1.0.7       grid_4.1.1        tools_4.1.1       tibble_3.1.3     
-## [45] crayon_1.4.1      extrafontdb_1.0   pkgconfig_2.0.3   Matrix_1.3-4     
-## [49] ellipsis_0.3.2    prettyunits_1.1.1 assertthat_0.2.1  rmarkdown_2.10   
-## [53] R6_2.5.0          nlme_3.1-152      compiler_4.1.1
+## [21] lifecycle_1.0.0   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
+## [25] evaluate_0.14     labeling_0.4.2    knitr_1.33        fastmap_1.1.0    
+## [29] curl_4.3.2        fansi_0.5.0       gifski_1.4.3-1    Rcpp_1.0.7       
+## [33] scales_1.1.1      farver_2.1.0      hms_1.1.0         digest_0.6.27    
+## [37] stringi_1.7.4     bookdown_0.24     dplyr_1.0.7       grid_4.1.1       
+## [41] tools_4.1.1       tibble_3.1.4      crayon_1.4.1      pkgconfig_2.0.3  
+## [45] ellipsis_0.3.2    Matrix_1.3-4      prettyunits_1.1.1 assertthat_0.2.1 
+## [49] rmarkdown_2.10    R6_2.5.1          nlme_3.1-152      compiler_4.1.1
 \end{verbatim}
 
 \hypertarget{chap-generalized-linear-models}{%
@@ -28347,12 +28318,12 @@ AER 包是书籍 Applied Econometrics with R 的配套材料 \citep{AER_2008_Kle
 ## Inference for Stan model: normal_dist_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.013, 0.014, 0.013, 0.014) seconds, 0.054 seconds total
-## Sampling took (0.046, 0.041, 0.039, 0.037) seconds, 0.16 seconds total
+## Warmup took (0.014, 0.014, 0.014, 0.014) seconds, 0.056 seconds total
+## Sampling took (0.045, 0.041, 0.039, 0.037) seconds, 0.16 seconds total
 ## 
 ##                 Mean     MCSE  StdDev    5%   50%  95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22032      1.0
+## lp__            -602  1.7e-02     1.0  -604  -601 -601     3591    22168      1.0
 ## accept_stat__   0.92  3.3e-03    0.11  0.69  0.96  1.0  1.1e+03  6.5e+03  1.0e+00
 ## stepsize__      0.88  6.9e-02   0.098  0.73  0.90  1.0  2.0e+00  1.2e+01  1.5e+13
 ## treedepth__      1.9  1.2e-01    0.56   1.0   2.0  3.0  2.1e+01  1.3e+02  1.1e+00
@@ -28360,8 +28331,8 @@ AER 包是书籍 Applied Econometrics with R 的配套材料 \citep{AER_2008_Kle
 ## divergent__     0.00      nan    0.00  0.00  0.00 0.00      nan      nan      nan
 ## energy__         603  2.5e-02     1.4   601   602  605  3.3e+03  2.0e+04  1.0e+00
 ## 
-## mu                10  1.2e-03   0.092   9.9    10   10     5732    35165     1.00
-## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42238     1.00
+## mu                10  1.2e-03   0.092   9.9    10   10     5732    35382     1.00
+## sigma            2.0  7.7e-04   0.064   1.9   2.0  2.1     6885    42499     1.00
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -28484,37 +28455,37 @@ Multilevel Models 多水平模型、Hierarchical Models 层次模型
 ## Inference for Stan model: eight_schools_model
 ## 4 chains: each with iter=(2000,2000,2000,2000); warmup=(0,0,0,0); thin=(1,1,1,1); 8000 iterations saved.
 ## 
-## Warmup took (0.022, 0.026, 0.024, 0.027) seconds, 0.099 seconds total
-## Sampling took (0.071, 0.084, 0.083, 0.088) seconds, 0.33 seconds total
+## Warmup took (0.023, 0.027, 0.023, 0.026) seconds, 0.099 seconds total
+## Sampling took (0.072, 0.085, 0.082, 0.086) seconds, 0.32 seconds total
 ## 
 ##                     Mean     MCSE  StdDev     5%       50%   95%    N_Eff  N_Eff/s    R_hat
 ## 
-## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7507     1.00
+## lp__            -4.0e+01  5.4e-02     2.7    -44  -3.9e+01   -36     2447     7530     1.00
 ## accept_stat__       0.88  1.5e-02    0.20   0.40      0.96   1.0  1.8e+02  5.6e+02  1.0e+00
-## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.1e+00  1.8e+13
+## stepsize__          0.34  3.2e-02   0.045   0.28      0.33  0.41  2.0e+00  6.2e+00  1.8e+13
 ## treedepth__          3.5  1.8e-01    0.54    3.0       4.0   4.0  8.4e+00  2.6e+01  1.1e+00
 ## n_leapfrog__          12  1.3e+00     4.0    7.0        15    15  9.9e+00  3.0e+01  1.1e+00
 ## divergent__         0.00      nan    0.00   0.00      0.00  0.00      nan      nan      nan
 ## energy__              45  7.2e-02     3.5     39        44    51  2.4e+03  7.4e+03  1.0e+00
 ## 
-## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11920      1.0
-## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9399      1.0
-## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23668     1.00
-## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25849     1.00
-## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25520      1.0
-## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    25215      1.0
-## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22561      1.0
-## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25886      1.0
-## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    22253      1.0
-## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22563     1.00
-## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17386     1.00
-## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27424      1.0
-## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21352      1.0
-## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    26120      1.0
-## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    25207      1.0
-## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    26085     1.00
-## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    20052     1.00
-## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    18109      1.0
+## mu               8.0e+00  8.1e-02     5.0  0.015   7.9e+00    17     3886    11957      1.0
+## tau              6.6e+00  1.0e-01     5.6   0.48   5.3e+00    17     3064     9428      1.0
+## eta[1]           3.9e-01  1.1e-02    0.95   -1.2   4.2e-01   1.9     7716    23741     1.00
+## eta[2]          -4.0e-04  9.5e-03    0.88   -1.4   2.1e-04   1.4     8427    25929     1.00
+## eta[3]          -2.0e-01  1.0e-02    0.94   -1.7  -2.0e-01   1.4     8319    25598      1.0
+## eta[4]          -3.0e-02  9.7e-03    0.88   -1.5  -2.8e-02   1.4     8220    25292      1.0
+## eta[5]          -3.7e-01  1.0e-02    0.88   -1.8  -3.9e-01   1.1     7355    22631      1.0
+## eta[6]          -2.2e-01  9.8e-03    0.90   -1.7  -2.5e-01   1.3     8439    25966      1.0
+## eta[7]           3.5e-01  1.0e-02    0.88   -1.1   3.7e-01   1.8     7255    22322      1.0
+## eta[8]           5.4e-02  1.1e-02    0.93   -1.5   6.6e-02   1.6     7356    22633     1.00
+## theta[1]         1.1e+01  1.1e-01     8.4   0.10   1.0e+01    27     5668    17439     1.00
+## theta[2]         7.9e+00  6.8e-02     6.4   -2.5   7.9e+00    18     8940    27508      1.0
+## theta[3]         6.2e+00  9.3e-02     7.7   -7.5   6.6e+00    18     6961    21418      1.0
+## theta[4]         7.7e+00  7.1e-02     6.5   -3.0   7.7e+00    18     8515    26201      1.0
+## theta[5]         5.0e+00  7.0e-02     6.4   -6.4   5.5e+00    14     8218    25285      1.0
+## theta[6]         6.1e+00  7.3e-02     6.7   -5.7   6.5e+00    16     8504    26165     1.00
+## theta[7]         1.1e+01  8.4e-02     6.8   0.92   1.0e+01    23     6537    20113     1.00
+## theta[8]         8.5e+00  1.0e-01     7.8   -3.8   8.2e+00    22     5904    18165      1.0
 ## 
 ## Samples were drawn using hmc with nuts.
 ## For each parameter, N_Eff is a crude measure of effective sample size,
@@ -29170,10 +29141,10 @@ ts 和 seq 构造时间向量的关系是什么？
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1] -0.48815588  0.31373549  1.81141170 -0.76863793 -0.64957971 -1.00961209
-##  [7]  1.50848506 -0.47998995  2.07179318  0.46750036 -0.59075434  0.96381936
-## [13] -0.79776729 -0.52787470 -0.65940885 -1.44921294 -1.27534081  0.55176101
-## [19]  1.51758705  0.08909434
+##  [1] -0.76789676  0.34855725  0.75804601  1.09564315 -0.63585602  0.52054828
+##  [7] -0.51075139  0.14886107  0.62157384 -0.12825045 -0.07525109  0.23097282
+## [13] -1.24138991  0.62186835  1.43587159  1.03046582  0.64486282 -0.89251947
+## [19] -0.20509632  0.61101601
 \end{verbatim}
 
 周数据，一周采一个点，采了 20 个点
@@ -29577,19 +29548,19 @@ COE 股价变化趋势见下图，包含开盘价 Open、最低价 Low、最高�
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.25         purrr_0.3.4      
 ##  [5] lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
-##  [9] htmltools_0.5.1.1 yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
+##  [9] htmltools_0.5.2   yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
 ## [13] pillar_1.6.2      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
 ## [17] TTR_0.24.2        lifecycle_1.0.0   quantmod_0.4.18   stringr_1.4.0    
 ## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.3 evaluate_0.14    
-## [25] labeling_0.4.2    knitr_1.33        curl_4.3.2        fansi_0.5.0      
-## [29] broom_0.7.9       xts_0.12.1        Rcpp_1.0.7        scales_1.1.1     
-## [33] backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2    sysfonts_0.8.5   
-## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.27     stringi_1.7.3    
-## [41] showtextdb_3.0    rlist_0.4.6.1     bookdown_0.23     dplyr_1.0.7      
-## [45] grid_4.1.1        tools_4.1.1       magrittr_2.0.1    tibble_3.1.3     
-## [49] crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3   ellipsis_0.3.2   
-## [53] data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1  rmarkdown_2.10   
-## [57] R6_2.5.0          igraph_1.2.6      compiler_4.1.1
+## [25] labeling_0.4.2    knitr_1.33        fastmap_1.1.0     curl_4.3.2       
+## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        Rcpp_1.0.7       
+## [33] scales_1.1.1      backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2   
+## [37] sysfonts_0.8.5    farver_2.1.0      gridExtra_2.3     digest_0.6.27    
+## [41] stringi_1.7.4     showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24    
+## [45] dplyr_1.0.7       grid_4.1.1        tools_4.1.1       magrittr_2.0.1   
+## [49] tibble_3.1.4      crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3  
+## [53] ellipsis_0.3.2    data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1 
+## [57] rmarkdown_2.10    R6_2.5.1          igraph_1.2.6      compiler_4.1.1
 \end{verbatim}
 
 \hypertarget{part-ux65f6ux7a7aux6570ux636e}{%
@@ -29838,22 +29809,23 @@ Edzer Pebesma 和 Roger Bivand 合著的 \href{https://www.r-spatial.org/book}{S
 ## 
 ## other attached packages:
 ## [1] sfarrow_0.4.0       sf_1.0-2            rasterVis_0.50.3   
-## [4] terra_1.3-4         latticeExtra_0.6-29 lattice_0.20-44    
+## [4] terra_1.3-22        latticeExtra_0.6-29 lattice_0.20-44    
 ## [7] raster_3.4-13       RColorBrewer_1.1-2  sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.25          purrr_0.3.4       
-##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.1.1  viridisLite_0.4.0 
+##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
 ##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-8       
 ## [13] hexbin_1.28.2      pillar_1.6.2       glue_1.4.2         DBI_1.1.1         
 ## [17] jpeg_0.1-9         lifecycle_1.0.0    stringr_1.4.0      codetools_0.2-18  
-## [21] evaluate_0.14      knitr_1.33         parallel_4.1.1     curl_4.3.2        
-## [25] class_7.3-19       fansi_0.5.0        Rcpp_1.0.7         KernSmooth_2.23-20
-## [29] classInt_0.4-3     png_0.1-7          digest_0.6.27      stringi_1.7.3     
-## [33] bookdown_0.23      dplyr_1.0.7        grid_4.1.1         rgdal_1.5-23      
-## [37] tools_4.1.1        magrittr_2.0.1     proxy_0.4-26       tibble_3.1.3      
-## [41] crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2     assertthat_0.2.1  
-## [45] rmarkdown_2.10     R6_2.5.0           units_0.7-2        compiler_4.1.1
+## [21] evaluate_0.14      knitr_1.33         fastmap_1.1.0      parallel_4.1.1    
+## [25] curl_4.3.2         class_7.3-19       fansi_0.5.0        Rcpp_1.0.7        
+## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.27     
+## [33] stringi_1.7.4      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
+## [37] rgdal_1.5-23       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
+## [41] tibble_3.1.4       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
+## [45] assertthat_0.2.1   rmarkdown_2.10     R6_2.5.1           units_0.7-2       
+## [49] compiler_4.1.1
 \end{verbatim}
 
 \hypertarget{chap-spatial-modeling}{%
@@ -29921,33 +29893,83 @@ loaloa 眼线虫病，人群感染，村庄水平， 响应变量服从二项分
 ## [5] sp_1.4-5          foreach_1.5.1     Matrix_1.3-4     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9               tidyselect_1.1.1        xfun_0.25              
-##  [4] purrr_0.3.4             splines_4.1.1           lattice_0.20-44        
-##  [7] tcltk_4.1.1             vctrs_0.3.8             generics_0.1.0         
-## [10] htmltools_0.5.1.1       yaml_2.2.1              utf8_1.2.2             
-## [13] rlang_0.4.11            pillar_1.6.2            glue_1.4.2             
-## [16] DBI_1.1.1               TTR_0.24.2              lifecycle_1.0.0        
-## [19] quantmod_0.4.18         stringr_1.4.0           htmlwidgets_1.5.3      
-## [22] codetools_0.2-18        evaluate_0.14           knitr_1.33             
-## [25] crosstalk_1.1.1         curl_4.3.2              fansi_0.5.0            
-## [28] xts_0.12.1              Rcpp_1.0.7              broom_0.7.9            
-## [31] backports_1.2.1         jsonlite_1.7.2          digest_0.6.27          
-## [34] stringi_1.7.3           rlist_0.4.6.1           bookdown_0.23          
-## [37] dplyr_1.0.7             splancs_2.01-42         grid_4.1.1             
-## [40] tools_4.1.1             magrittr_2.0.1          tibble_3.1.3           
-## [43] crayon_1.4.1            tidyr_1.1.3             pkgconfig_2.0.3        
-## [46] MASS_7.3-54             ellipsis_0.3.2          data.table_1.14.0      
-## [49] RandomFieldsUtils_0.5.3 lubridate_1.7.10        RandomFields_3.3.8     
-## [52] assertthat_0.2.1        rmarkdown_2.10          iterators_1.0.13       
-## [55] R6_2.5.0                igraph_1.2.6            compiler_4.1.1
+##  [1] Rcpp_1.0.7              lubridate_1.7.10        lattice_0.20-44        
+##  [4] tidyr_1.1.3             zoo_1.8-9               assertthat_0.2.1       
+##  [7] digest_0.6.27           utf8_1.2.2              R6_2.5.1               
+## [10] RandomFields_3.3.8      backports_1.2.1         evaluate_0.14          
+## [13] pillar_1.6.2            rlang_0.4.11            curl_4.3.2             
+## [16] data.table_1.14.0       TTR_0.24.2              rmarkdown_2.10         
+## [19] splines_4.1.1           stringr_1.4.0           htmlwidgets_1.5.3      
+## [22] igraph_1.2.6            broom_0.7.9             compiler_4.1.1         
+## [25] xfun_0.25               pkgconfig_2.0.3         htmltools_0.5.2        
+## [28] tcltk_4.1.1             tidyselect_1.1.1        tibble_3.1.4           
+## [31] bookdown_0.24           codetools_0.2-18        fansi_0.5.0            
+## [34] crayon_1.4.1            dplyr_1.0.7             MASS_7.3-54            
+## [37] grid_4.1.1              jsonlite_1.7.2          lifecycle_1.0.0        
+## [40] DBI_1.1.1               magrittr_2.0.1          rlist_0.4.6.2          
+## [43] quantmod_0.4.18         stringi_1.7.4           ellipsis_0.3.2         
+## [46] xts_0.12.1              generics_0.1.0          vctrs_0.3.8            
+## [49] iterators_1.0.13        tools_4.1.1             glue_1.4.2             
+## [52] purrr_0.3.4             splancs_2.01-42         crosstalk_1.1.1        
+## [55] fastmap_1.1.0           yaml_2.2.1              knitr_1.33             
+## [58] RandomFieldsUtils_0.5.3
 \end{verbatim}
 
 \hypertarget{chap-spatial-viz}{%
 \chapter{空间数据可视化}\label{chap-spatial-viz}}
 
-相比于 \textbf{plotly}，\textbf{echarts4r} 更加轻量，这得益于 JavaScript 库 \href{https://github.com/apache/echarts}{Apache ECharts}。 前者 MIT 协议，后者采用 Apache-2.0 协议，都可以商用。Apache ECharts 是 Apache 旗下顶级开源项目，由百度前端技术团队贡献，中文文档也比较全，学习起来门槛会低一些。
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(sp)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(maps)}
+\FunctionTok{library}\NormalTok{(mapproj)}
+\FunctionTok{library}\NormalTok{(maptools)}
+\FunctionTok{library}\NormalTok{(sf)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(raster)}
+\FunctionTok{library}\NormalTok{(abind)}
+\FunctionTok{library}\NormalTok{(cubelyr)}
+\FunctionTok{library}\NormalTok{(stars)}
+\FunctionTok{library}\NormalTok{(echarts4r)}
+\FunctionTok{library}\NormalTok{(ggthemes)}
+\end{Highlighting}
+\end{Shaded}
 
-echarts4r 空间数据
+Robert J. Hijmans \footnote{Department of Environmental Science and Policy at the University of California, Davis. \href{https://biogeo.ucdavis.edu/}{Ecology, Geography, and Agriculture}} 开发了 \href{https://github.com/rspatial/raster}{raster} 包用于网格空间数据的读、写、操作、分析和建模，同时维护了空间数据分析的网站 \url{https://www.rspatial.org}。Edzer Pebesma \footnote{Institute for Geoinformatics of the University of Münster.} 和 Roger Bivand 等创建了 \href{https://github.com/edzer/sp/}{sp} 包定义了空间数据类型和方法，提供了大量的空间数据操作方法，同时维护了空间数据对象 sp 的绘图网站 \url{https://edzer.github.io/sp/}，他们也一起合作写了新书 \href{https://keen-swartz-3146c4.netlify.com/}{Spatial Data Science}，提供了在线 \href{https://www.r-spatial.org/book/}{网页版} 书籍及其 \href{https://github.com/edzer/sdsr}{源代码}。Edzer Pebesma 后来开发了 \href{https://github.com/r-spatial/sf/}{sf} 包重新定义了空间数据对象和操作方法，并维护了空间数据分析、建模和可视化网站 \url{https://www.r-spatial.org/}
+
+课程案例学习
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \href{https://datacarpentry.org/r-raster-vector-geospatial/}{2018-Introduction to Geospatial Raster and Vector Data with R} 空间数据分析课程
+\item
+  \href{http://freerangestats.info}{Peter Ellis} 新西兰大选和普查数据 \href{http://freerangestats.info/blog/nz.html}{More cartograms of New Zealand census data: district and city level}
+\item
+  \href{http://sharpsightlabs.com/blog/map-oil-production-country-r/}{2017-Mapping oil production by country in R} 石油产量在全球的分布
+\item
+  \href{https://www.sharpsightlabs.com/blog/highlight-countries-on-map/}{2017-How to highlight countries on a map} 高亮地图上的国家
+\item
+  \href{https://ryanpeek.github.io/2017-11-21-mapping-with-sf-part-3/}{2017-Mapping With Sf: Part 3}
+\item
+  \href{https://ignaciomsarmiento.github.io/software.html}{Data Visualization Shiny Apps} 数据可视化核密度估计 In this app I identify crime hotspots using a bivariate density estimation strategy
+\item
+  \href{http://www.rpubs.com/cgarey/ProjectOneFinal}{Association of Statisticians of American Religious Bodies (ASARB) viridis USA map}
+\item
+  \href{https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page}{出租车行车轨迹数据}
+\item
+  \href{https://carto.com/blog/geospatial-processing-with-clickhouse/}{Geospatial processing with Clickhouse-CARTO Blog}
+\end{enumerate}
+
+\hypertarget{sec-spatial-data}{%
+\section{空间数据}\label{sec-spatial-data}}
+
+空间数据存储在数据库中，比如 \href{https://postgis.net/}{PostGIS}，它是对象关系数据库 \href{https://postgresql.org/}{PostgreSQL} 在空间数据库方面的扩展。
+
+\hypertarget{subsec-dataframe}{%
+\subsection{data.frame}\label{subsec-dataframe}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -29965,6 +29987,395 @@ echarts4r 空间数据
 ## 5    -20.42 181.96   649 4.0       11
 ....
 \end{verbatim}
+
+\hypertarget{subsec-sp}{%
+\subsection{sp}\label{subsec-sp}}
+
+\href{https://edzer.github.io/sp/}{sp-gallery}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(sp)}
+\end{Highlighting}
+\end{Shaded}
+
+空间数据对象，以类 sp 方式存储 \citep{Pebesma_2005_sp}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(sp)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"meuse"}\NormalTok{)}
+\FunctionTok{coordinates}\NormalTok{(meuse) }\OtherTok{\textless{}{-}} \ErrorTok{\textasciitilde{}}\NormalTok{x}\SpecialCharTok{+}\NormalTok{y}
+\FunctionTok{proj4string}\NormalTok{(meuse) }\OtherTok{\textless{}{-}} \FunctionTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:28992"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj =
+## prefer_proj): Discarded datum Amersfoort in Proj4 definition
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(meuse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SpatialPointsDataFrame"
+## attr(,"package")
+## [1] "sp"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{proj4string}\NormalTok{(meuse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in proj4string(meuse): CRS object has comment, which is lost in output
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "+proj=sterea +lat_0=52.1561605555556 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(meuse, }\AttributeTok{axes =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5833\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-5-1} 
+
+}
+
+\caption{sp 对象}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(rgdal)}
+\NormalTok{crs.longlat }\OtherTok{\textless{}{-}} \FunctionTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{)}
+\NormalTok{meuse.longlat }\OtherTok{\textless{}{-}} \FunctionTok{spTransform}\NormalTok{(meuse, crs.longlat)}
+\FunctionTok{plot}\NormalTok{(meuse.longlat, }\AttributeTok{axes =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5833\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-6-1} 
+
+}
+
+\caption{sp 对象}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(maptools)}
+\NormalTok{fname }\OtherTok{\textless{}{-}} \FunctionTok{system.file}\NormalTok{(}\StringTok{"shapes/sids.shp"}\NormalTok{, }\AttributeTok{package =} \StringTok{"maptools"}\NormalTok{)}
+\NormalTok{p4s }\OtherTok{\textless{}{-}} \FunctionTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=NAD27"}\NormalTok{)}
+\NormalTok{nc }\OtherTok{\textless{}{-}} \FunctionTok{readShapePoly}\NormalTok{(fname, }\AttributeTok{proj4string =}\NormalTok{ p4s)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: readShapePoly is deprecated; use rgdal::readOGR or sf::st_read
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(nc, }\AttributeTok{axes =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{col =} \FunctionTok{grey}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ nc}\SpecialCharTok{$}\NormalTok{SID79 }\SpecialCharTok{/} \DecValTok{57}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-7-1} \end{center}
+
+\begin{rmdwarn}{警告}
+maptools 提供的 \texttt{readShapePoly} 函数去读取 shp 文件的方式已经过时，推荐使用 \texttt{rgdal::readOGR} 或者 \texttt{sf::st\_read} 方式读取
+
+\end{rmdwarn}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Trellis maps}
+\NormalTok{arrow }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{"SpatialPolygonsRescale"}\NormalTok{,}
+  \FunctionTok{layout.north.arrow}\NormalTok{(}\DecValTok{2}\NormalTok{),}
+  \AttributeTok{offset =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{76}\NormalTok{, }\DecValTok{34}\NormalTok{), }\AttributeTok{scale =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{which =} \DecValTok{2}
+\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(nc, }\FunctionTok{c}\NormalTok{(}\StringTok{"SID74"}\NormalTok{, }\StringTok{"SID79"}\NormalTok{),}
+  \AttributeTok{as.table =} \ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{scales =} \FunctionTok{list}\NormalTok{(}\AttributeTok{draw =}\NormalTok{ T), }\AttributeTok{sp.layout =}\NormalTok{ arrow}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-8-1} \end{center}
+
+\hypertarget{subsec-sf}{%
+\subsection{sf}\label{subsec-sf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(sf)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\NormalTok{nc }\OtherTok{\textless{}{-}} \FunctionTok{read\_sf}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"gpkg/nc.gpkg"}\NormalTok{, }\AttributeTok{package =} \StringTok{"sf"}\NormalTok{))}
+\NormalTok{nc2 }\OtherTok{\textless{}{-}}\NormalTok{ nc }\SpecialCharTok{|}\ErrorTok{\textgreater{}} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(SID74, SID79) }\SpecialCharTok{|}\ErrorTok{\textgreater{}} 
+\NormalTok{  tidyr}\SpecialCharTok{::}\FunctionTok{gather}\NormalTok{(VAR, SID, }\SpecialCharTok{{-}}\NormalTok{geom)}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ nc2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ SID)) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{VAR, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-9-1} \end{center}
+
+\hypertarget{subsec-raster}{%
+\subsection{raster}\label{subsec-raster}}
+
+raster 包定义了获取和操作空间 raster 类型数据集的类和方法，rasterVis 补充加强了 raster 包在数据可视化和交互方面的功能。可视化是基于 lattice 的
+
+\href{https://github.com/rspatial/raster}{raster} 包的开发已经被作者 \href{https://desp.ucdavis.edu/people/robert-j-hijmans}{Robert J. Hijmans} 迁移到 Github 上啦，官方文档 \url{https://www.rspatial.org/}
+
+星号 * 标记的是 S3 方法
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{methods}\NormalTok{(plot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] plot,ANY,ANY-method                       
+##  [2] plot,color,ANY-method                     
+##  [3] plot,Extent,missing-method                
+##  [4] plot,Raster,ANY-method                    
+##  [5] plot,Raster,Raster-method                 
+##  [6] plot,Spatial,missing-method               
+##  [7] plot,SpatialGrid,missing-method           
+##  [8] plot,SpatialGridDataFrame,missing-method  
+##  [9] plot,SpatialLines,missing-method          
+## [10] plot,SpatialMultiPoints,missing-method    
+## [11] plot,SpatialPixels,missing-method         
+## [12] plot,SpatialPixelsDataFrame,missing-method
+## [13] plot,SpatialPoints,missing-method         
+## [14] plot,SpatialPolygons,missing-method       
+## [15] plot.acf*                                 
+## [16] plot.bclust*                              
+## [17] plot.classIntervals*                      
+## [18] plot.data.frame*                          
+## [19] plot.decomposed.ts*                       
+## [20] plot.default                              
+## [21] plot.dendrogram*                          
+## [22] plot.density*                             
+## [23] plot.ecdf                                 
+## [24] plot.factor*                              
+## [25] plot.formula*                             
+## [26] plot.function                             
+## [27] plot.ggplot*                              
+## [28] plot.gtable*                              
+## [29] plot.hcl_palettes*                        
+## [30] plot.hclust*                              
+## [31] plot.histogram*                           
+## [32] plot.HoltWinters*                         
+## [33] plot.ica*                                 
+## [34] plot.isoreg*                              
+## [35] plot.lm*                                  
+## [36] plot.medpolish*                           
+## [37] plot.mlm*                                 
+## [38] plot.ppr*                                 
+## [39] plot.prcomp*                              
+## [40] plot.princomp*                            
+## [41] plot.profile.nls*                         
+## [42] plot.R6*                                  
+## [43] plot.raster*                              
+## [44] plot.sf*                                  
+## [45] plot.sfc_CIRCULARSTRING*                  
+## [46] plot.sfc_GEOMETRY*                        
+## [47] plot.sfc_GEOMETRYCOLLECTION*              
+## [48] plot.sfc_LINESTRING*                      
+## [49] plot.sfc_MULTILINESTRING*                 
+## [50] plot.sfc_MULTIPOINT*                      
+## [51] plot.sfc_MULTIPOLYGON*                    
+## [52] plot.sfc_POINT*                           
+## [53] plot.sfc_POLYGON*                         
+## [54] plot.sfg*                                 
+## [55] plot.shingle*                             
+## [56] plot.SOM*                                 
+## [57] plot.somgrid*                             
+## [58] plot.spec*                                
+## [59] plot.stars*                               
+## [60] plot.stars_proxy*                         
+## [61] plot.stepfun                              
+## [62] plot.stft*                                
+## [63] plot.stl*                                 
+## [64] plot.svm*                                 
+## [65] plot.table*                               
+## [66] plot.trans*                               
+## [67] plot.trellis*                             
+## [68] plot.ts                                   
+## [69] plot.tskernel*                            
+## [70] plot.TukeyHSD*                            
+## [71] plot.tune*                                
+## [72] plot.units*                               
+## [73] plot.wk_crc*                              
+## [74] plot.wk_rct*                              
+## [75] plot.wk_wkb*                              
+## [76] plot.wk_wkt*                              
+## [77] plot.wk_xy*                               
+## see '?methods' for accessing help and source code
+\end{verbatim}
+
+查看函数的定义
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getAnywhere}\NormalTok{(plot.raster)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## A single object matching 'plot.raster' was found
+## It was found in the following places
+##   registered S3 method for plot from namespace graphics
+##   namespace:graphics
+## with value
+## 
+## function (x, y, xlim = c(0, ncol(x)), ylim = c(0, nrow(x)), xaxs = "i", 
+##     yaxs = "i", asp = 1, add = FALSE, ...) 
+## {
+##     if (!add) {
+##         plot.new()
+##         plot.window(xlim = xlim, ylim = ylim, asp = asp, xaxs = xaxs, 
+##             yaxs = yaxs)
+##     }
+##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
+## }
+## <bytecode: 0x562558540898>
+## <environment: namespace:graphics>
+\end{verbatim}
+
+rasterImage 函数来绘制图像，如果想知道 \texttt{rasterImage} 的内容可以继续看 \texttt{getAnywhere(rasterImage)}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getAnywhere}\NormalTok{(rasterImage)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## A single object matching 'rasterImage' was found
+## It was found in the following places
+##   package:graphics
+##   namespace:graphics
+## with value
+## 
+## function (image, xleft, ybottom, xright, ytop, angle = 0, interpolate = TRUE, 
+##     ...) 
+## {
+##     .External.graphics(C_raster, if (inherits(image, "nativeRaster")) image else as.raster(image), 
+##         as.double(xleft), as.double(ybottom), as.double(xright), 
+##         as.double(ytop), as.double(angle), as.logical(interpolate), 
+##         ...)
+##     invisible()
+## }
+## <bytecode: 0x562558933148>
+## <environment: namespace:graphics>
+\end{verbatim}
+
+通过查看函数的帮助 \texttt{?rasterImage} ，我们需要重点关注一下 参数 \emph{image} 传递的 raster 对象
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{250}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\DecValTok{300}\NormalTok{, }\DecValTok{450}\NormalTok{), }\AttributeTok{type =} \StringTok{"n"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{""}\NormalTok{, }\AttributeTok{ylab =} \StringTok{""}\NormalTok{)}
+\NormalTok{image }\OtherTok{\textless{}{-}} \FunctionTok{as.raster}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{1}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{5}\NormalTok{, }\AttributeTok{nrow =} \DecValTok{3}\NormalTok{))}
+\FunctionTok{rasterImage}\NormalTok{(image, }\DecValTok{100}\NormalTok{, }\DecValTok{300}\NormalTok{, }\DecValTok{150}\NormalTok{, }\DecValTok{350}\NormalTok{, }\AttributeTok{interpolate =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{rasterImage}\NormalTok{(image, }\DecValTok{100}\NormalTok{, }\DecValTok{400}\NormalTok{, }\DecValTok{150}\NormalTok{, }\DecValTok{450}\NormalTok{)}
+\FunctionTok{rasterImage}\NormalTok{(image, }\DecValTok{200}\NormalTok{, }\DecValTok{300}\NormalTok{, }\DecValTok{200} \SpecialCharTok{+} \FunctionTok{xinch}\NormalTok{(.}\DecValTok{5}\NormalTok{), }\DecValTok{300} \SpecialCharTok{+} \FunctionTok{yinch}\NormalTok{(.}\DecValTok{3}\NormalTok{),}
+  \AttributeTok{interpolate =} \ConstantTok{FALSE}
+\NormalTok{)}
+\FunctionTok{rasterImage}\NormalTok{(image, }\DecValTok{200}\NormalTok{, }\DecValTok{400}\NormalTok{, }\DecValTok{250}\NormalTok{, }\DecValTok{450}\NormalTok{, }
+            \AttributeTok{angle =} \DecValTok{15}\NormalTok{, }\AttributeTok{interpolate =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-13-1} 
+
+}
+
+\caption{raster 图像}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(raster)}
+\NormalTok{meuse.test }\OtherTok{\textless{}{-}} \FunctionTok{raster}\NormalTok{(}\AttributeTok{x =} \FunctionTok{system.file}\NormalTok{(}\StringTok{"external/test.grd"}\NormalTok{, }\AttributeTok{package=}\StringTok{"raster"}\NormalTok{))}
+\FunctionTok{class}\NormalTok{(meuse.test)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "RasterLayer"
+## attr(,"package")
+## [1] "raster"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(meuse.test, }\AttributeTok{legend =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-15-1} 
+
+}
+
+\caption{raster 对象}\label{fig:unnamed-chunk-15}
+\end{figure}
+
+\hypertarget{subsec-stars}{%
+\subsection{stars}\label{subsec-stars}}
+
+Edzer Pebesma 开发了 stars 包
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# https://resources.rstudio.com/rstudio{-}conf{-}2019/spatial{-}data{-}science{-}in{-}the{-}tidyverse}
+\FunctionTok{library}\NormalTok{(abind)}
+\FunctionTok{library}\NormalTok{(sf)}
+\FunctionTok{library}\NormalTok{(cubelyr)}
+\FunctionTok{library}\NormalTok{(stars)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{read\_stars}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"tif/L7\_ETMs.tif"}\NormalTok{, }\AttributeTok{package =} \StringTok{"stars"}\NormalTok{))}
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_stars}\NormalTok{(}\AttributeTok{data =}\NormalTok{ x) }\SpecialCharTok{+}
+  \FunctionTok{coord\_equal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{band) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_viridis\_c}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_discrete}\NormalTok{(}\AttributeTok{expand =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-16-1} \end{center}
+
+\hypertarget{sec-viz-echarts4r}{%
+\section{可视化}\label{sec-viz-echarts4r}}
+
+\hypertarget{subsec-fiji-quakes}{%
+\subsection{斐济地震带分布}\label{subsec-fiji-quakes}}
+
+相比于 \textbf{plotly}，\textbf{echarts4r} 更加轻量，这得益于 JavaScript 库 \href{https://github.com/apache/echarts}{Apache ECharts}。 前者 MIT 协议，后者采用 Apache-2.0 协议，都可以商用。Apache ECharts 是 Apache 旗下顶级开源项目，由百度前端技术团队贡献，中文文档也比较全，学习起来门槛会低一些。
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -29992,6 +30403,103 @@ echarts4r 空间数据
   \FunctionTok{e\_tooltip}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{subsec-usa-unemp}{%
+\subsection{美国各城镇失业率}\label{subsec-usa-unemp}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 数据来源 https://datasets.flowingdata.com/unemployment09.csv}
+\NormalTok{unemp }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}
+  \AttributeTok{file =} \StringTok{"http://datasets.flowingdata.com/unemployment09.csv"}\NormalTok{,}
+  \AttributeTok{header =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{stringsAsFactors =} \ConstantTok{FALSE}
+\NormalTok{)}
+\FunctionTok{names}\NormalTok{(unemp) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"id"}\NormalTok{, }\StringTok{"state\_fips"}\NormalTok{, }\StringTok{"county\_fips"}\NormalTok{, }\StringTok{"name"}\NormalTok{, }\StringTok{"year"}\NormalTok{,}
+  \StringTok{"?"}\NormalTok{, }\StringTok{"?"}\NormalTok{, }\StringTok{"?"}\NormalTok{, }\StringTok{"rate"}
+\NormalTok{)}
+\NormalTok{unemp}\SpecialCharTok{$}\NormalTok{county }\OtherTok{\textless{}{-}} \FunctionTok{tolower}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{" County, [A{-}Z]\{2\}"}\NormalTok{, }\StringTok{""}\NormalTok{, unemp}\SpecialCharTok{$}\NormalTok{name))}
+\NormalTok{unemp}\SpecialCharTok{$}\NormalTok{state }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"\^{}.*([A{-}Z]\{2\}).*$"}\NormalTok{, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{1"}\NormalTok{, unemp}\SpecialCharTok{$}\NormalTok{name)}
+
+\NormalTok{county\_df }\OtherTok{\textless{}{-}} \FunctionTok{map\_data}\NormalTok{(}\StringTok{"county"}\NormalTok{)}
+\FunctionTok{names}\NormalTok{(county\_df) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"long"}\NormalTok{, }\StringTok{"lat"}\NormalTok{, }\StringTok{"group"}\NormalTok{, }\StringTok{"order"}\NormalTok{, }\StringTok{"state\_name"}\NormalTok{, }\StringTok{"county"}\NormalTok{)}
+\NormalTok{county\_df}\SpecialCharTok{$}\NormalTok{state }\OtherTok{\textless{}{-}}\NormalTok{ state.abb[}\FunctionTok{match}\NormalTok{(county\_df}\SpecialCharTok{$}\NormalTok{state\_name, }\FunctionTok{tolower}\NormalTok{(state.name))]}
+\NormalTok{county\_df}\SpecialCharTok{$}\NormalTok{state\_name }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+
+\NormalTok{state\_df }\OtherTok{\textless{}{-}} \FunctionTok{map\_data}\NormalTok{(}\StringTok{"state"}\NormalTok{)}
+\CommentTok{\# Combine together}
+\NormalTok{choropleth }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(county\_df, unemp, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"state"}\NormalTok{, }\StringTok{"county"}\NormalTok{))}
+\NormalTok{choropleth }\OtherTok{\textless{}{-}}\NormalTok{ choropleth[}\FunctionTok{order}\NormalTok{(choropleth}\SpecialCharTok{$}\NormalTok{order), ]}
+\NormalTok{choropleth}\SpecialCharTok{$}\NormalTok{rate\_d }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(choropleth}\SpecialCharTok{$}\NormalTok{rate, }\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{, }\AttributeTok{by =} \DecValTok{2}\NormalTok{), }\DecValTok{35}\NormalTok{))}
+
+\FunctionTok{library}\NormalTok{(ggthemes)}
+\FunctionTok{ggplot}\NormalTok{(choropleth, }\FunctionTok{aes}\NormalTok{(long, lat, }\AttributeTok{group =}\NormalTok{ group)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_polygon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ rate\_d), }\AttributeTok{colour =} \FunctionTok{alpha}\NormalTok{(}\StringTok{"white"}\NormalTok{, }\DecValTok{1} \SpecialCharTok{/} \DecValTok{4}\NormalTok{), }\AttributeTok{size =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_polygon}\NormalTok{(}\AttributeTok{data =}\NormalTok{ state\_df, }\AttributeTok{colour =} \StringTok{"white"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{NA}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"PuRd"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{fill =} \StringTok{"ratio"}\NormalTok{, }\AttributeTok{title =} \StringTok{"ratio of unemployment by county, 2009"}\NormalTok{,}
+    \AttributeTok{caption =} \StringTok{"data source: http://datasets.flowingdata.com/unemployment09.csv"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{coord\_map}\NormalTok{(}\StringTok{"polyconic"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_map}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{spatial-viz_files/figure-latex/unemploymentGG-1} 
+
+}
+
+\caption{2009年美国各城镇失业率}\label{fig:unemploymentGG}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 来自帮助文档 ?map }
+\FunctionTok{library}\NormalTok{(mapproj)    }\CommentTok{\# mapproj is used for  projection="polyconic"}
+\CommentTok{\# color US county map by 2009 unemployment rate}
+\CommentTok{\# match counties to map using FIPS county codes}
+\CommentTok{\# Based on J\textquotesingle{}s solution to the "Choropleth Challenge"}
+\CommentTok{\# http://blog.revolutionanalytics.com/2009/11/choropleth{-}challenge{-}result.html}
+
+\CommentTok{\# load data}
+\CommentTok{\# unemp includes data for some counties not on the "lower 48 states" county}
+\CommentTok{\# map, such as those in Alaska, Hawaii, Puerto Rico, and some tiny Virginia cities}
+\FunctionTok{data}\NormalTok{(unemp)}
+\FunctionTok{data}\NormalTok{(county.fips)}
+
+\CommentTok{\# define color buckets}
+\NormalTok{colors }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"\#F1EEF6"}\NormalTok{, }\StringTok{"\#D4B9DA"}\NormalTok{, }\StringTok{"\#C994C7"}\NormalTok{, }\StringTok{"\#DF65B0"}\NormalTok{, }\StringTok{"\#DD1C77"}\NormalTok{, }\StringTok{"\#980043"}\NormalTok{)}
+\NormalTok{unemp}\SpecialCharTok{$}\NormalTok{colorBuckets }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{cut}\NormalTok{(unemp}\SpecialCharTok{$}\NormalTok{unemp, }\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{100}\NormalTok{)))}
+\NormalTok{leg.txt }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"\textless{}2\%"}\NormalTok{, }\StringTok{"2{-}4\%"}\NormalTok{, }\StringTok{"4{-}6\%"}\NormalTok{, }\StringTok{"6{-}8\%"}\NormalTok{, }\StringTok{"8{-}10\%"}\NormalTok{, }\StringTok{"\textgreater{}10\%"}\NormalTok{)}
+
+\CommentTok{\# align data with map definitions by (partial) matching state,county}
+\CommentTok{\# names, which include multiple polygons for some counties}
+\NormalTok{cnty.fips }\OtherTok{\textless{}{-}}\NormalTok{ county.fips}\SpecialCharTok{$}\NormalTok{fips[}\FunctionTok{match}\NormalTok{(}
+  \FunctionTok{map}\NormalTok{(}\StringTok{"county"}\NormalTok{, }\AttributeTok{plot =} \ConstantTok{FALSE}\NormalTok{)}\SpecialCharTok{$}\NormalTok{names,}
+\NormalTok{  county.fips}\SpecialCharTok{$}\NormalTok{polyname}
+\NormalTok{)]}
+\NormalTok{colorsmatched }\OtherTok{\textless{}{-}}\NormalTok{ unemp}\SpecialCharTok{$}\NormalTok{colorBuckets[}\FunctionTok{match}\NormalTok{(cnty.fips, unemp}\SpecialCharTok{$}\NormalTok{fips)]}
+
+\CommentTok{\# draw map}
+\FunctionTok{map}\NormalTok{(}\StringTok{"county"}\NormalTok{,}
+  \AttributeTok{col =}\NormalTok{ colors[colorsmatched], }\AttributeTok{fill =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{resolution =} \DecValTok{0}\NormalTok{,}
+  \AttributeTok{lty =} \DecValTok{0}\NormalTok{, }\AttributeTok{projection =} \StringTok{"polyconic"}
+\NormalTok{)}
+\FunctionTok{map}\NormalTok{(}\StringTok{"state"}\NormalTok{,}
+  \AttributeTok{col =} \StringTok{"white"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{add =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{lty =} \DecValTok{1}\NormalTok{, }\AttributeTok{lwd =} \FloatTok{0.2}\NormalTok{,}
+  \AttributeTok{projection =} \StringTok{"polyconic"}
+\NormalTok{)}
+\FunctionTok{title}\NormalTok{(}\StringTok{"unemployment by county, 2009"}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{, leg.txt, }\AttributeTok{horiz =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{fill =}\NormalTok{ colors)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-17-1} \end{center}
+
+美国各地区失业率地图，配不同颜色， \href{https://github.com/bhaskarvk/colormap}{colormap} 适合给静态图配色
 
 \hypertarget{chap-case-study}{%
 \chapter{案例研究}\label{chap-case-study}}
@@ -30726,7 +31234,7 @@ Tree & 118 & 484 & 664 & 1004 & 1231 & 1372 & 1582\\
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 18105
+## [1] 18121
 \end{verbatim}
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -30753,7 +31261,7 @@ Tree & 118 & 484 & 664 & 1004 & 1231 & 1372 & 1582\\
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 18088
+## [1] 18104
 \end{verbatim}
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
@@ -30799,24 +31307,24 @@ R 核心团队除了维护开发 Base R 包以外，还开发了哪些 R 包，�
 
 \begin{verbatim}
 ##            Package                              Maintainer
-## 2487       compare Paul Murrell <p.murrell@auckland.ac.nz>
-## 5653         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
-## 6388      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
-## 6389    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
-## 6390     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
-## 6392  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
-## 6393  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 6394  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
-## 6398       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
-## 6401      grImport Paul Murrell <p.murrell@auckland.ac.nz>
-## 6402     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
-## 6721       hexView Paul Murrell <paul@stat.auckland.ac.nz>
-## 9100      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 12713    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 13435    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 13859        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 13860 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
-## 17632       vwline Paul Murrell <paul@stat.auckland.ac.nz>
+## 2488       compare Paul Murrell <p.murrell@auckland.ac.nz>
+## 5660         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
+## 6396      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
+## 6397    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
+## 6398     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
+## 6400  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
+## 6401  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 6402  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
+## 6406       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
+## 6409      grImport Paul Murrell <p.murrell@auckland.ac.nz>
+## 6410     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
+## 6730       hexView Paul Murrell <paul@stat.auckland.ac.nz>
+## 9112      metapost Paul Murrell <paul@stat.auckland.ac.nz>
+## 12726    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 13448    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 13872        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 13873 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 17647       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 \end{verbatim}
 
 所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 \texttt{contributors()} 函数已经收集了成员名单，不需要我们去官网找了。
@@ -31131,7 +31639,7 @@ Hadley Wickham 维护 tidyverse 生态
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 10560
+## [1] 10571
 \end{verbatim}
 
 可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。
@@ -31148,10 +31656,10 @@ Hadley Wickham 维护 tidyverse 生态
 \begin{verbatim}
 ##             Package                             Maintainer
 ## 600      assertthat    Hadley Wickham <hadley@rstudio.com>
-## 754       babynames    Hadley Wickham <hadley@rstudio.com>
-## 1200      bigrquery    Hadley Wickham <hadley@rstudio.com>
+## 755       babynames    Hadley Wickham <hadley@rstudio.com>
+## 1201      bigrquery    Hadley Wickham <hadley@rstudio.com>
 ## 2175      classifly   Hadley Wickham <h.wickham@gmail.com>
-## 2568     conflicted    Hadley Wickham <hadley@rstudio.com>
+## 2569     conflicted    Hadley Wickham <hadley@rstudio.com>
 ....
 \end{verbatim}
 
@@ -31165,7 +31673,7 @@ Hadley Wickham 维护 tidyverse 生态
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 9758
+## [1] 9768
 \end{verbatim}
 
 接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图\ref{fig:top-maintainers} 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。
@@ -31293,7 +31801,7 @@ Hadley Wickham 维护 tidyverse 生态
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 3203
+## [1] 3204
 \end{verbatim}
 
 总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有
@@ -31343,7 +31851,7 @@ Hadley Wickham 维护 tidyverse 生态
 \begin{verbatim}
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 2973 1366  920  560  272  161  106   55   43   27   13   10    6    8    4    4 
+## 2979 1367  921  561  272  161  106   55   43   27   13   10    6    8    4    4 
 ##   17   18   19   20   21   22   23   27   28   56   60  133 
 ##    8    5    1    3    1    1    3    1    1    1    1    1
 \end{verbatim}
@@ -31370,7 +31878,7 @@ Hadley Wickham 维护 tidyverse 生态
 
 \begin{verbatim}
 ##         Package
-## 3131 data.table
+## 3132 data.table
 \end{verbatim}
 
 哇，大名鼎鼎的 \href{https://github.com/Rdatatable/data.table}{data.table} 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 \href{https://github.com/mattdowle}{Github 主页} 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
@@ -31583,7 +32091,7 @@ Hadley Wickham 维护 tidyverse 生态
 
 \begin{verbatim}
 ## 2021-09-02 
-##        130
+##        126
 \end{verbatim}
 
 \begin{Shaded}
@@ -31623,7 +32131,7 @@ Hadley Wickham 维护 tidyverse 生态
 
 \begin{verbatim}
 ##        Package  Published
-## 2797 coxrobust 2006-03-15
+## 2798 coxrobust 2006-03-15
 \end{verbatim}
 
 \begin{Shaded}
@@ -32626,6 +33134,13 @@ Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{r }\OtherTok{\textless{}{-}}\NormalTok{ raster}\SpecialCharTok{::}\FunctionTok{rasterFromXYZ}\NormalTok{(df, }\AttributeTok{crs =} \FunctionTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=WGS84"}\NormalTok{))}
+\NormalTok{rasterVis}\SpecialCharTok{::}\FunctionTok{vectorplot}\NormalTok{(r, }\AttributeTok{par.settings =} \FunctionTok{RdBuTheme}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# 梯度函数}
 \NormalTok{gr }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
 \NormalTok{  numDeriv}\SpecialCharTok{::}\FunctionTok{grad}\NormalTok{(fn, }\FunctionTok{c}\NormalTok{(x[}\DecValTok{1}\NormalTok{], x[}\DecValTok{2}\NormalTok{])) }
@@ -33146,7 +33661,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \end{Shaded}
 
 \begin{verbatim}
-## [1]   0.00000 -21.99115
+## [1]  0.00000 22.22222
 \end{verbatim}
 
 \begin{Shaded}
@@ -33156,7 +33671,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -1
+## [1] -0.9734211
 \end{verbatim}
 
 实际上，还是陷入局部最优解。
@@ -33411,7 +33926,7 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 368.1061
+## [1] 368.1059
 \end{verbatim}
 
 \begin{Shaded}
@@ -33423,7 +33938,7 @@ b = (2, 2, -4, -4)
 \begin{verbatim}
 ##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
 ##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109096
 ## [25] 4.000000
 \end{verbatim}
 
@@ -33829,7 +34344,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.022764 4.855726 3.669891 1.382997
+## [1] 1.112248 4.769666 3.801934 1.247012
 \end{verbatim}
 
 \begin{Shaded}
@@ -33839,7 +34354,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 17.17588
+## [1] 17.23329
 \end{verbatim}
 
 可以看出，nloptr 提供的优化能力可以覆盖\href{https://github.com/coin-or/Ipopt}{Ipopt 求解器}，推荐使用 nloptr.slsqp 求解器。
@@ -33969,7 +34484,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.227974 4.245386
+## [1] 1.227970 4.245392
 \end{verbatim}
 
 \begin{Shaded}
@@ -34184,7 +34699,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  9.261688 16.086590
+## [1] 33.77556 18.51711
 \end{verbatim}
 
 \begin{Shaded}
@@ -34194,7 +34709,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -3.071681
+## [1] -3.237551
 \end{verbatim}
 
 比如下面三组
@@ -35000,7 +35515,7 @@ u(x,y) = \sin(\pi x)\cosh(\pi y)
 ## 
 ## other attached packages:
 ##  [1] quadprog_1.5-8            kableExtra_1.3.4         
-##  [3] tibble_3.1.3              Sim.DiffProc_4.8         
+##  [3] tibble_3.1.4              Sim.DiffProc_4.8         
 ##  [5] nlmeODE_1.1               nlme_3.1-152             
 ##  [7] PBSddesolve_1.12.6        ReacTran_1.4.3.1         
 ##  [9] shape_1.4.6               scatterplot3d_0.3-41     
@@ -35013,21 +35528,21 @@ u(x,y) = \sin(\pi x)\cosh(\pi y)
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] svglite_2.0.0           digest_0.6.27           utf8_1.2.2             
-##  [4] slam_0.1-48             R6_2.5.0                alabama_2015.3-1       
+##  [4] slam_0.1-48             R6_2.5.1                alabama_2015.3-1       
 ##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.2           
 ## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
 ## [13] nloptr_1.2.2.2          rmarkdown_2.10          webshot_0.5.2          
 ## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
 ## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.25              
-## [22] pkgconfig_2.0.3         systemfonts_1.0.2       htmltools_0.5.1.1      
-## [25] bookdown_0.23           viridisLite_0.4.0       fansi_0.5.0            
+## [22] systemfonts_1.0.2       pkgconfig_2.0.3         htmltools_0.5.2        
+## [25] bookdown_0.24           viridisLite_0.4.0       fansi_0.5.0            
 ## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.1             
 ## [31] lifecycle_1.0.0         registry_0.5-1          magrittr_2.0.1         
-## [34] scales_1.1.1            stringi_1.7.3           xml2_1.3.2             
+## [34] scales_1.1.1            stringi_1.7.4           xml2_1.3.2             
 ## [37] ellipsis_0.3.2          vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7
 ## [40] tools_4.1.1             glue_1.4.2              parallel_4.1.1         
-## [43] yaml_2.2.1              colorspace_2.0-2        rvest_1.0.1            
-## [46] knitr_1.33
+## [43] fastmap_1.1.0           yaml_2.2.1              colorspace_2.0-2       
+## [46] rvest_1.0.1             knitr_1.33
 \end{verbatim}
 
 \hypertarget{appendix}{%
@@ -37737,7 +38252,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55dad84b74a8>
+## <bytecode: 0x562352c0dd40>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -37766,7 +38281,7 @@ stats 包里找不到这个函数
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55dad84b74a8>
+## <bytecode: 0x562352c0dd40>
 ## <environment: namespace:stats>
 \end{verbatim}
 
@@ -37834,7 +38349,7 @@ R 包 knitr 和 reticulate 支持 R Markdown 文档中嵌入 Python 代码块，
 \NormalTok{plt.switch\_backend(}\StringTok{\textquotesingle{}agg\textquotesingle{}}\NormalTok{)}
 
 \NormalTok{plt.plot([}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{])}
-\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7fadccd166a0\textgreater{}]}
+\CommentTok{\#\# [\textless{}matplotlib.lines.Line2D object at 0x7f933a6e96a0\textgreater{}]}
 \NormalTok{plt.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -37863,8 +38378,8 @@ knitr 支持在 R Markdown 中嵌入 C 语言代码
 
 \begin{verbatim}
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c246382da221ba.c -o c246382da221ba.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c246382da221ba.so c246382da221ba.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c cc8d77b3f7cd8.c -o cc8d77b3f7cd8.o
+## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o cc8d77b3f7cd8.so cc8d77b3f7cd8.o -L/opt/R/4.1.1/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 \end{verbatim}
 
@@ -38027,14 +38542,13 @@ knitr 支持在 R Markdown 中嵌入 C 语言代码
 ## [5] magrittr_2.0.1   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] knitr_1.33        lattice_0.20-44   xtable_1.8-4      R6_2.5.0         
-##  [5] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     tools_4.1.1      
-##  [9] grid_4.1.1        xfun_0.25         png_0.1-7         tinytex_0.33     
-## [13] htmltools_0.5.1.1 ellipsis_0.3.2    yaml_2.2.1        digest_0.6.27    
-## [17] lifecycle_1.0.0   bookdown_0.23     Matrix_1.3-4      later_1.2.0      
-## [21] promises_1.2.0.1  curl_4.3.2        evaluate_0.14     mime_0.11        
-## [25] rmarkdown_2.10    stringi_1.7.3     compiler_4.1.1    jsonlite_1.7.2   
-## [29] httpuv_1.6.1
+##  [1] knitr_1.33       lattice_0.20-44  xtable_1.8-4     R6_2.5.1        
+##  [5] rlang_0.4.11     fastmap_1.1.0    stringr_1.4.0    tools_4.1.1     
+##  [9] grid_4.1.1       xfun_0.25        png_0.1-7        htmltools_0.5.2 
+## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.27    lifecycle_1.0.0 
+## [17] bookdown_0.24    Matrix_1.3-4     later_1.3.0      promises_1.2.0.1
+## [21] curl_4.3.2       evaluate_0.14    mime_0.11        rmarkdown_2.10  
+## [25] stringi_1.7.4    compiler_4.1.1   jsonlite_1.7.2   httpuv_1.6.2
 \end{verbatim}
 
 \hypertarget{chap-object-oriented-programming}{%
@@ -38422,7 +38936,7 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 ##                                          size isdir mode               mtime
 ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
 ##                                                       ctime               atime
-## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-09-04 02:41:08 2021-09-04 02:47:21
+## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-09-06 15:18:30 2021-09-06 15:25:42
 ##                                         uid gid uname grname
 ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
 \end{verbatim}
@@ -38466,7 +38980,7 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 
 \begin{verbatim}
 ##    size isdir mode               mtime               ctime               atime
-## . 16384  TRUE  755 2021-09-04 05:07:39 2021-09-04 05:07:39 2021-09-04 05:07:39
+## . 16384  TRUE  755 2021-09-06 16:18:43 2021-09-06 16:18:43 2021-09-06 16:18:43
 ##    uid gid  uname grname
 ## . 1001 121 runner docker
 \end{verbatim}
@@ -38480,9 +38994,9 @@ Github Action 提供的测试环境支持单元测试 testthat、静态代码检
 
 \begin{verbatim}
 ##           size isdir mode               mtime               ctime
-## ./_book/ 12288  TRUE  755 2021-09-04 05:01:26 2021-09-04 05:01:26
+## ./_book/ 12288  TRUE  755 2021-09-06 16:13:55 2021-09-06 16:13:55
 ##                        atime  uid gid  uname grname
-## ./_book/ 2021-09-04 05:06:01 1001 121 runner docker
+## ./_book/ 2021-09-06 16:18:11 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{file.access(names,\ mode\ =\ 0)}
@@ -39338,7 +39852,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 149175
+## [1] 51521
 \end{verbatim}
 \item
   \texttt{proc.time()} R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -39353,7 +39867,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##    user  system elapsed 
-##   0.064   0.004   0.067
+##   0.063   0.004   0.067
 \end{verbatim}
 \item
   \texttt{system.time} 计算 R 表达式/程序块运行耗费的CPU时间
@@ -39471,7 +39985,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-03 22:07:40 PDT"
+## [1] "2021-09-06 09:18:44 PDT"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39482,7 +39996,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 01:07:40 EDT"
+## [1] "2021-09-06 12:18:44 EDT"
 \end{verbatim}
 \item
   \texttt{Sys.Date} 显示当前时区下的日期，精确到日，返回数据类型为 \texttt{date}
@@ -39494,7 +40008,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04"
+## [1] "2021-09-06"
 \end{verbatim}
 \item
   \texttt{date} 返回当前系统日期和时间，数据类型是字符串
@@ -39506,7 +40020,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sat Sep  4 05:07:40 2021"
+## [1] "Mon Sep  6 16:18:44 2021"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39517,7 +40031,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Sat Sep 04 05:07:40 2021"
+## [1] "Mon Sep 06 16:18:44 2021"
 \end{verbatim}
 \item
   \texttt{as.POSIX*} 是一个 Date-time 转换函数
@@ -39529,7 +40043,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 05:07:40 GMT"
+## [1] "2021-09-06 16:18:44 GMT"
 \end{verbatim}
 \item
   时间计算
@@ -39541,7 +40055,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 05:07:40 UTC"
+## [1] "2021-09-06 16:18:44 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39551,7 +40065,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 04:07:40 UTC"
+## [1] "2021-09-06 15:18:44 UTC"
 \end{verbatim}
 \item
   \texttt{.leap.seconds} 是内置的日期序列
@@ -39623,9 +40137,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1639 FALSE  644 2021-09-04 04:41:23 2021-09-04 04:41:23
+## ./_common.R 1636 FALSE  644 2021-09-06 15:54:03 2021-09-06 15:54:03
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-09-04 04:41:31 1001 121 runner docker
+## ./_common.R 2021-09-06 16:13:55 1001 121 runner docker
 \end{verbatim}
 
 \begin{Shaded}
@@ -39638,9 +40152,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##             size isdir mode               mtime               ctime
-## ./_common.R 1639 FALSE  644 2021-09-04 05:07:40 2021-09-04 05:07:40
+## ./_common.R 1636 FALSE  644 2021-09-06 16:18:44 2021-09-06 16:18:44
 ##                           atime  uid gid  uname grname
-## ./_common.R 2021-09-04 05:07:40 1001 121 runner docker
+## ./_common.R 2021-09-06 16:18:44 1001 121 runner docker
 \end{verbatim}
 \item
   \texttt{strptime} 用于字符串与 \texttt{POSIXlt}、 \texttt{POSIXct} 类对象之间的转化，\texttt{format} 默认 \texttt{tz\ =\ ""} 且 \texttt{usetz\ =\ TRUE}
@@ -39664,7 +40178,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 05:07:40 CST"
+## [1] "2021-09-06 16:18:44 CST"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39674,7 +40188,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 05:07:40"
+## [1] "2021-09-06 16:18:44"
 \end{verbatim}
 
 \begin{Shaded}
@@ -39684,7 +40198,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2021-09-04 13:07:40 CST"
+## [1] "2021-09-07 00:18:44 CST"
 \end{verbatim}
 \item
   设置时区
@@ -39750,7 +40264,7 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 505
+## [1] 516
 \end{verbatim}
 \item
   \texttt{available.packages} 查询可用的 R 包
@@ -39826,19 +40340,11 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 
 \begin{verbatim}
 ##          Package    LibPath                           Installed Built  
-## bookdown "bookdown" "/home/runner/work/_temp/Library" "0.23"    "4.1.1"
-## brms     "brms"     "/home/runner/work/_temp/Library" "2.15.0"  "4.1.1"
-## bslib    "bslib"    "/home/runner/work/_temp/Library" "0.2.5.1" "4.1.1"
-## cachem   "cachem"   "/home/runner/work/_temp/Library" "1.0.5"   "4.1.1"
-## DT       "DT"       "/home/runner/work/_temp/Library" "0.18"    "4.1.1"
-## future   "future"   "/home/runner/work/_temp/Library" "1.21.0"  "4.1.1"
-##          ReposVer Repository                               
-## bookdown "0.24"   "https://cloud.r-project.org/src/contrib"
-## brms     "2.16.1" "https://cloud.r-project.org/src/contrib"
-## bslib    "0.3.0"  "https://cloud.r-project.org/src/contrib"
-## cachem   "1.0.6"  "https://cloud.r-project.org/src/contrib"
-## DT       "0.19"   "https://cloud.r-project.org/src/contrib"
-## future   "1.22.1" "https://cloud.r-project.org/src/contrib"
+## arrow    "arrow"    "/home/runner/work/_temp/Library" "5.0.0"   "4.1.1"
+## survival "survival" "/opt/R/4.1.1/lib/R/library"      "3.2-11"  "4.1.1"
+##          ReposVer  Repository                               
+## arrow    "5.0.0.2" "https://cloud.r-project.org/src/contrib"
+## survival "3.2-13"  "https://cloud.r-project.org/src/contrib"
 \end{verbatim}
 \item
   \texttt{new.packages} 还没有安装的 R 包
@@ -39865,13 +40371,13 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 ## Number of installed packages:
 ##                                  
 ##                                    ok upgrade unavailable
-##   /home/runner/work/_temp/Library 436      27          13
+##   /home/runner/work/_temp/Library 474       1          13
 ##   /opt/R/4.1.1/lib/R/library       28       1           0
 ## 
 ## Number of available packages (each package counted only once):
 ##                                          
 ##                                           installed not installed
-##   https://cloud.r-project.org/src/contrib       478         17597
+##   https://cloud.r-project.org/src/contrib       489         17602
 \end{verbatim}
 \item
   \texttt{packageDescription} 查询 R 包描述信息
@@ -39917,9 +40423,9 @@ tar 和 zip 是两种常见的压缩文件工具，具有免费和跨平台的�
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] "bookdown"       "formattable"    "hrbrthemes"     "kableExtra"    
-##  [5] "prettydoc"      "reprex"         "tint"           "packagemetrics"
-##  [9] "tidyverse"      "projpred"       "brms"
+##  [1] "bookdown"       "flexdashboard"  "formattable"    "hrbrthemes"    
+##  [5] "kableExtra"     "prettydoc"      "reprex"         "tint"          
+##  [9] "packagemetrics" "tidyverse"      "projpred"       "brms"
 \end{verbatim}
 
   ggplot2 生态，仅列出以 gg 开头的 R 包
@@ -40019,7 +40525,7 @@ R-level 的源代码都可以直接看
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55c7a87d23d0>
+## <bytecode: 0x55b33860b2f0>
 ## <environment: namespace:base>
 \end{verbatim}
 
@@ -40091,10 +40597,10 @@ SEXP attribute_hidden do_body(SEXP call, SEXP op, SEXP args, SEXP rho)
 ## [1] rmarkdown_2.10 fs_1.5.0       magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_4.1.1    bookdown_0.23     htmltools_0.5.1.1 tools_4.1.1      
-##  [5] yaml_2.2.1        curl_4.3.2        stringi_1.7.3     knitr_1.33       
-##  [9] stringr_1.4.0     digest_0.6.27     xfun_0.25         rlang_0.4.11     
-## [13] evaluate_0.14
+##  [1] compiler_4.1.1  fastmap_1.1.0   bookdown_0.24   htmltools_0.5.2
+##  [5] tools_4.1.1     yaml_2.2.1      curl_4.3.2      stringi_1.7.4  
+##  [9] knitr_1.33      stringr_1.4.0   digest_0.6.27   xfun_0.25      
+## [13] rlang_0.4.11    evaluate_0.14
 \end{verbatim}
 
 \hypertarget{chap-other-softwares}{%
@@ -42047,7 +42553,7 @@ wrapt & 1.12.1 \\
 ## <module 'posixpath' from '/usr/lib/python3.8/posixpath.py'>
 \end{verbatim}
 
-matplotlib 绘图，支持交叉引用\footnote{早些时候，在 R Markdown 中设置 \texttt{python.reticulate\ =\ TRUE} 调用 reticulate 包，带来的副作用是不支持交叉引用的 \url{https://d.cosx.org/d/420680-python-reticulate-true}。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了 \url{https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/}。截至本文写作时间 2021年09月04日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。}，如图 \ref{fig:matplotlib-copy} 所示
+matplotlib 绘图，支持交叉引用\footnote{早些时候，在 R Markdown 中设置 \texttt{python.reticulate\ =\ TRUE} 调用 reticulate 包，带来的副作用是不支持交叉引用的 \url{https://d.cosx.org/d/420680-python-reticulate-true}。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了 \url{https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/}。截至本文写作时间 2021年09月06日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。}，如图 \ref{fig:matplotlib-copy} 所示
 
 \begin{Shaded}
 \begin{Highlighting}[]

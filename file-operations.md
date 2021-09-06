@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-09-04 02:41:08 2021-09-04 02:47:21
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-09-06 15:18:30 2021-09-06 15:25:42
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2021-09-04 05:07:39 2021-09-04 05:07:39 2021-09-04 05:07:39
+    ## . 16384  TRUE  755 2021-09-06 16:18:43 2021-09-06 16:18:43 2021-09-06 16:18:43
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-09-04 05:01:26 2021-09-04 05:01:26
+    ## ./_book/ 12288  TRUE  755 2021-09-06 16:13:55 2021-09-06 16:13:55
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-09-04 05:06:01 1001 121 runner docker
+    ## ./_book/ 2021-09-06 16:18:11 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 149175
+    ## [1] 51521
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.064   0.004   0.067
+    ##   0.063   0.004   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-03 22:07:40 PDT"
+    ## [1] "2021-09-06 09:18:44 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 01:07:40 EDT"
+    ## [1] "2021-09-06 12:18:44 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04"
+    ## [1] "2021-09-06"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Sep  4 05:07:40 2021"
+    ## [1] "Mon Sep  6 16:18:44 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Sep 04 05:07:40 2021"
+    ## [1] "Mon Sep 06 16:18:44 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 05:07:40 GMT"
+    ## [1] "2021-09-06 16:18:44 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 05:07:40 UTC"
+    ## [1] "2021-09-06 16:18:44 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 04:07:40 UTC"
+    ## [1] "2021-09-06 15:18:44 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-09-04 04:41:23 2021-09-04 04:41:23
+    ## ./_common.R 1636 FALSE  644 2021-09-06 15:54:03 2021-09-06 15:54:03
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-09-04 04:41:31 1001 121 runner docker
+    ## ./_common.R 2021-09-06 16:13:55 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1639 FALSE  644 2021-09-04 05:07:40 2021-09-04 05:07:40
+    ## ./_common.R 1636 FALSE  644 2021-09-06 16:18:44 2021-09-06 16:18:44
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-09-04 05:07:40 1001 121 runner docker
+    ## ./_common.R 2021-09-06 16:18:44 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 05:07:40 CST"
+    ## [1] "2021-09-06 16:18:44 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 05:07:40"
+    ## [1] "2021-09-06 16:18:44"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-09-04 13:07:40 CST"
+    ## [1] "2021-09-07 00:18:44 CST"
     ```
 
 1. 设置时区
@@ -1251,7 +1251,7 @@ apropos('package')
     ```
     
     ```
-    ## [1] 505
+    ## [1] 516
     ```
    
 1. `available.packages` 查询可用的 R 包
@@ -1319,19 +1319,11 @@ apropos('package')
     
     ```
     ##          Package    LibPath                           Installed Built  
-    ## bookdown "bookdown" "/home/runner/work/_temp/Library" "0.23"    "4.1.1"
-    ## brms     "brms"     "/home/runner/work/_temp/Library" "2.15.0"  "4.1.1"
-    ## bslib    "bslib"    "/home/runner/work/_temp/Library" "0.2.5.1" "4.1.1"
-    ## cachem   "cachem"   "/home/runner/work/_temp/Library" "1.0.5"   "4.1.1"
-    ## DT       "DT"       "/home/runner/work/_temp/Library" "0.18"    "4.1.1"
-    ## future   "future"   "/home/runner/work/_temp/Library" "1.21.0"  "4.1.1"
-    ##          ReposVer Repository                               
-    ## bookdown "0.24"   "https://cloud.r-project.org/src/contrib"
-    ## brms     "2.16.1" "https://cloud.r-project.org/src/contrib"
-    ## bslib    "0.3.0"  "https://cloud.r-project.org/src/contrib"
-    ## cachem   "1.0.6"  "https://cloud.r-project.org/src/contrib"
-    ## DT       "0.19"   "https://cloud.r-project.org/src/contrib"
-    ## future   "1.22.1" "https://cloud.r-project.org/src/contrib"
+    ## arrow    "arrow"    "/home/runner/work/_temp/Library" "5.0.0"   "4.1.1"
+    ## survival "survival" "/opt/R/4.1.1/lib/R/library"      "3.2-11"  "4.1.1"
+    ##          ReposVer  Repository                               
+    ## arrow    "5.0.0.2" "https://cloud.r-project.org/src/contrib"
+    ## survival "3.2-13"  "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1356,13 +1348,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 436      27          13
+    ##   /home/runner/work/_temp/Library 474       1          13
     ##   /opt/R/4.1.1/lib/R/library       28       1           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       478         17597
+    ##   https://cloud.r-project.org/src/contrib       489         17602
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1404,9 +1396,9 @@ apropos('package')
     ```
     
     ```
-    ##  [1] "bookdown"       "formattable"    "hrbrthemes"     "kableExtra"    
-    ##  [5] "prettydoc"      "reprex"         "tint"           "packagemetrics"
-    ##  [9] "tidyverse"      "projpred"       "brms"
+    ##  [1] "bookdown"       "flexdashboard"  "formattable"    "hrbrthemes"    
+    ##  [5] "kableExtra"     "prettydoc"      "reprex"         "tint"          
+    ##  [9] "packagemetrics" "tidyverse"      "projpred"       "brms"
     ```
     
     ggplot2 生态，仅列出以 gg 开头的 R 包
@@ -1501,7 +1493,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55c7a87d23d0>
+## <bytecode: 0x55b33860b2f0>
 ## <environment: namespace:base>
 ```
 
@@ -1569,9 +1561,9 @@ sessionInfo()
 ## [1] rmarkdown_2.10 fs_1.5.0       magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_4.1.1    bookdown_0.23     htmltools_0.5.1.1 tools_4.1.1      
-##  [5] yaml_2.2.1        curl_4.3.2        stringi_1.7.3     knitr_1.33       
-##  [9] stringr_1.4.0     digest_0.6.27     xfun_0.25         rlang_0.4.11     
-## [13] evaluate_0.14
+##  [1] compiler_4.1.1  fastmap_1.1.0   bookdown_0.24   htmltools_0.5.2
+##  [5] tools_4.1.1     yaml_2.2.1      curl_4.3.2      stringi_1.7.4  
+##  [9] knitr_1.33      stringr_1.4.0   digest_0.6.27   xfun_0.25      
+## [13] rlang_0.4.11    evaluate_0.14
 ```
 

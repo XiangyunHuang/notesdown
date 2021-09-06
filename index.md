@@ -2,7 +2,7 @@
 title: "现代应用统计与 R 语言"
 subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
-date: "2021-09-04"
+date: "2021-09-06"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -96,21 +96,6 @@ Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次
 下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
 
 
-1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 $B(n, p)$ 参数 $p$ 的置信带 [@Test_1934_binom]，图 \@ref(fig:confidence-belt) 提炼了文章的主要结果。
-
-\begin{figure}
-
-{\centering \includegraphics{index_files/figure-latex/confidence-belt-1} 
-
-}
-
-\caption[(ref:confidence-belt-s)]{(ref:confidence-belt)}(\#fig:confidence-belt)
-\end{figure}
-
-(ref:confidence-belt) 给定置信系数 $1- \alpha = 0.95$ 和样本量 $n = 10$ 的情况下，二项分布参数 $p$ 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 $p$ 的精确区间估计为 $(p_1, p_2) = (0.03, 0.55)$。
-
-(ref:confidence-belt-s) 二项分布参数 $p$ 的置信带
-
 区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 $(5, 0.5)$ 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
 
 ::: {.rmdtip data-latex="{提示}"}
@@ -129,10 +114,10 @@ prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95, correct = TRUE)
 ## 	1-sample proportions test with continuity correction
 ## 
 ## data:  2 out of 10, null probability 0.95
-## X-squared = 103, df = 1, p-value <2e-16
+## X-squared = 103.16, df = 1, p-value < 2.2e-16
 ## alternative hypothesis: true p is not equal to 0.95
 ## 95 percent confidence interval:
-##  0.03543 0.55782
+##  0.03542694 0.55781858
 ## sample estimates:
 ##   p 
 ## 0.2
@@ -142,10 +127,10 @@ binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
 ## 	Exact binomial test
 ## 
 ## data:  2 and 10
-## number of successes = 2, number of trials = 10, p-value = 2e-09
+## number of successes = 2, number of trials = 10, p-value = 1.605e-09
 ## alternative hypothesis: true probability of success is not equal to 0.95
 ## 95 percent confidence interval:
-##  0.02521 0.55610
+##  0.02521073 0.55609546
 ## sample estimates:
 ## probability of success 
 ##                    0.2
@@ -170,7 +155,6 @@ binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
 
 覆盖概率 $P_{\theta}(X = x)$ 和参数真值 $\theta$ 的关系 [@Lawrence2001;@Geyer2005]
 
-比如总体为二项分布 $B(n, \theta)$ 其中 n = 10，在置信水平 $\alpha = 0.95$ 下，问参数 $\theta$ 的覆盖概率是多少？随参数 $\theta$ 的变化情况如何？<https://d.cosx.org/d/421502-coverage-probability>
 
 以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2^10 = 1024 个结果，每个结果都可以用来估计未知的参数 $p$ 及其置信区间、覆盖概率。假设参数 $p$ 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 $B(10, 0.7)$，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 `rbinom()`，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。
 
@@ -196,10 +180,10 @@ binom.test(x = 6, n = 10, p = 0.7, conf.level = 0.95)
 ## 	Exact binomial test
 ## 
 ## data:  6 and 10
-## number of successes = 6, number of trials = 10, p-value = 0.5
+## number of successes = 6, number of trials = 10, p-value = 0.4997
 ## alternative hypothesis: true probability of success is not equal to 0.7
 ## 95 percent confidence interval:
-##  0.2624 0.8784
+##  0.2623781 0.8784477
 ## sample estimates:
 ## probability of success 
 ##                    0.6
@@ -216,7 +200,7 @@ c(
 ```
 
 ```
-## [1] 0.2964 0.9036
+## [1] 0.2963637 0.9036363
 ```
 
 
@@ -227,7 +211,7 @@ pnorm(q = 0.9036363) - pnorm(q = 0.2963637)
 ```
 
 ```
-## [1] 0.2004
+## [1] 0.200382
 ```
 
 
@@ -340,6 +324,6 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-04 13:01:31。
+书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-09-07 00:13:57。
 
 
