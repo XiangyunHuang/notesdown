@@ -13,7 +13,7 @@ library(splines2)
 广义可加模型（Generalized Additive Models，简称 GAM 模型）在 R 中的实现
 
 - **gam** [@gam] 实现了《Statistical Models in S》[@Chambers_1992_Statistical] 中描述的所有广义可加模型
-- **mgcv** [@Wood_2017_Generalized]
+- **mgcv** [@Wood_2017_Generalized]  [**mgcViz**](https://github.com/mfasiolo/mgcViz)[@mgcViz] 模型开发和结果呈现
 - **gss** [@Gu_2014_jss]
 - **mda** [@mda]
 
@@ -47,9 +47,9 @@ demo("smooth", ask = FALSE)
 ```
 
 
-```{r,results='hide',eval=FALSE}
+```{r, eval=FALSE, fig.width=4, fig.height=4}
 library(ISLR)
-Income <- read.table("http://faculty.marshall.usc.edu/gareth-james/ISL/Income2.csv", sep = ",", header = TRUE)
+Income <- read.table("https://www.statlearning.com/s/Income2.csv", sep = ",", header = TRUE)
 mod <- loess(Income ~ Education + Seniority, data = Income)
 
 x_Edu <- seq(min(Income$Education), max(Income$Education), length.out = 30)
@@ -60,16 +60,15 @@ pred_func <- function(x1, x2) {
 }
 
 y_income <- outer(x_Edu, x_Sen, pred_func)
-
+# 绘图
 point_pmat <- persp(
-  x = x_Edu, y = x_Sen, z = y_income, theta = 45, phi = 35, col = "lightblue",
+  x = x_Edu, y = x_Sen, z = y_income, 
+  theta = 45, phi = 35, col = "lightblue", border = "blue",
   xlab = "Years of Education", ylab = "Seniority", zlab = "Income"
 )
 
-
 points(trans3d(x = Income$Education, y = Income$Seniority,
                z = Income$Income, pmat = point_pmat), col = "red", pch = 16)
-
 
 for (i in 1:dim(Income)[1]) {
   z <- seq(Income$Income[i], pred_func(Income$Education[i], Income$Seniority[i]), length.out = 10)

@@ -1486,16 +1486,6 @@ boxplotdbl: Double Box Plot for Two-Axes Correlation. Correlation chart of two s
 
 [复合箱线图](https://tomizonor.wordpress.com/2013/03/15/double-box-plot/)
 
-
-```{r boxplot}
-A <- c(
-  79.98, 80.04, 80.02, 80.04, 80.03, 80.03, 80.04, 79.97,
-  80.05, 80.03, 80.02, 80, 80.02
-)
-B <- c(80.02, 79.94, 79.98, 79.97, 79.97, 80.03, 79.95, 79.97)
-boxplot(A, B)
-```
-
 ```{r iris,fig.cap="安德森的鸢尾花数据",fig.asp=1}
 with(data = iris, {
   op <- par(mfrow = c(2, 2), mar = c(4, 4, 2, .5))
@@ -1510,49 +1500,30 @@ with(data = iris, {
 
 箱线图的花样也很多
 
-```{r}
-boxplot(longley$Unemployed)
-# 水平放置
-boxplot(longley$Unemployed,
-  horizontal = TRUE,
-  col = "pink",
-  main = ""
-)
-```
-
-```{r}
+```{r ,fig.cap="箱线图", fig.subcap=c("垂直放置", "水平放置"), fig.width=4, fig.height=3, fig.ncol=1}
 data(InsectSprays)
-boxplot(count ~ spray,
-  data = InsectSprays,
-  col = "pink",
-  xlab = "Spray",
-  ylab = "Count",
-  main = ""
+par(mar = c(4, 4, .5, .5))
+boxplot(
+  data = InsectSprays, count ~ spray,
+  col = "gray", xlab = "Spray", ylab = "Count"
+)
+
+boxplot(
+  data = InsectSprays, count ~ spray,
+  col = "gray", horizontal = TRUE,
+  las = 1, xlab = "Count", ylab = "Spray"
 )
 ```
 
-水平放置
-
-```{r}
-boxplot(count ~ spray,
-  data = InsectSprays,
-  col = "pink",
-  horizontal = TRUE,
-  las = 1, # Horizontal labels
-  xlab = "Count",
-  ylab = "Spray",
-  main = ""
-)
-```
 
 Notched Boxplots
 
-```{r}
+```{r, fig.width=4, fig.height=4}
 set.seed(1234)
 n <- 8
 g <- gl(n, 100, n * 100) # n水平个数 100是重复次数
 x <- rnorm(n * 100) + sqrt(as.numeric(g))
-boxplot(split(x, g), col = terrain.colors(n), notch = TRUE)
+boxplot(split(x, g), col = gray.colors(n), notch = TRUE)
 title(
   main = "Notched Boxplots", xlab = "Group",
   font.main = 4, font.lab = 1
@@ -1652,28 +1623,40 @@ box(col = "gray")
 
 ### 函数图 {#function}
 
-```{r,fig.asp=1,out.width="65%",fig.width=6.5}
-##  First zero on the critical line s = 0.5 + i t
-x <- seq(0, 20, len = 1001)
-z <- 0.5 + x * 1i
-fr <- Re(pracma::zeta(z))
-fi <- Im(pracma::zeta(z))
-fa <- abs(pracma::zeta(z))
-plot(x, fa,
-  type = "n", xlim = c(0, 20), ylim = c(-1.5, 2.5),
-  xlab = "Imaginary part (on critical line)", 
-  ylab = "Function value",
-  main = "Riemann's Zeta Function along the critical line"
+```{r bessel-function, dev='tikz', fig.cap="贝塞尔函数", fig.show='hold', out.width="65%", fig.width=4, fig.height=4, cache=TRUE, fig.process=to_png}
+x0 <- 2^(-20:10)
+nus <- c(0:5, 10, 20)
+x <- seq(0, 4, length.out = 501)
+
+plot(x0, x0^-8,
+  frame.plot = TRUE, # 添加绘图框
+  log = "xy", # x 和 y 轴都取对数尺度
+  axes = FALSE, # 去掉坐标轴
+  xlab = "$u$", ylab = "$\\mathcal{K}_{\\kappa}(u)$", # 设置坐标轴标签
+  type = "n", # 清除绘图区域的内容
+  ann = TRUE, # 添加标题 x和y轴标签
+  panel.first = grid() # 添加背景参考线
 )
-grid()
-lines(x, fr, col = "blue")
-lines(x, fi, col = "darkgreen")
-lines(x, fa, col = "red", lwd = 2)
-points(14.1347, 0, col = "darkred")
-legend(0, 2.4, c("real part", "imaginary part", "absolute value"),
-  lty = 1, lwd = c(1, 1, 2), col = c("blue", "darkgreen", "red")
+
+axis(1,
+  at = 10^seq(from = -8, to = 2, by = 2),
+  labels = paste0("$\\mathsf{10^{", seq(from = -8, to = 2, by = 2), "}}$")
+)
+axis(2,
+  at = 10^seq(from = -8, to = 56, by = 16),
+  labels = paste0("$\\mathsf{10^{", seq(from = -8, to = 56, by = 16), "}}$"), las = 1
+)
+
+for (i in seq(length(nus))) {
+  lines(x0, besselK(x0, nu = nus[i]), col = hcl.colors(9)[i], lwd = 2)
+}
+legend("topright",
+  legend = paste0("$\\kappa=", rev(nus), "$"),
+  col = hcl.colors(9, rev = T), lwd = 2, cex = 1
 )
 ```
+
+
 
 还有 eta 函数和 gammaz 函数
 
@@ -1681,7 +1664,7 @@ legend(0, 2.4, c("real part", "imaginary part", "absolute value"),
 
 马赛克图 mosaicplot
 
-```{r,fig.cap="马赛克图",fig.asp=1}
+```{r, fig.cap="马赛克图", fig.width=5, fig.height=5}
 plot(HairEyeColor, col = "lightblue", border = "white", main = "")
 ```
 
@@ -1787,7 +1770,8 @@ persp(x1, x2, z,
 
 ```{r}
 library(lattice)
-bwplot(voice.part ~ height, data = singer)
+# plot(data = InsectSprays, count ~ spray)
+bwplot(count ~ spray, data = InsectSprays)
 ```
 
 
@@ -1841,13 +1825,13 @@ plot(Orange,
   outer = ~1,
   key = list(
     space = "right", title = "Tree", cex.title = 1,
-    lines = list(lty = 1, col = hcl.colors(5)),
-    # points = list(pch = 1, col = hcl.colors(5)),
+    lines = list(lty = 1, col = gray.colors(5)),
+    # points = list(pch = 1, col = gray.colors(5)),
     text = list(c("3", "1", "5", "2", "4"))
   ),
   par.settings = list(
-    # plot.line = list(col = hcl.colors(5), border = "transparent"),
-    # plot.symbol = list(col = hcl.colors(5), border = "transparent"),
+    # plot.line = list(col = gray.colors(5), border = "transparent"),
+    # plot.symbol = list(col = gray.colors(5), border = "transparent"),
     strip.background = list(col = "white"),
     strip.border = list(col = "black")
   )
@@ -1870,7 +1854,10 @@ barchart(Claims / Holders ~ Age | Group,
 barchart(Claims / Holders ~ Age | Group,
   groups = District, data = Insurance,
   main = "Claims frequency",
-  auto.key = list(space = "top", columns = 4, title = "District", cex.title = 1)
+  auto.key = list(
+    space = "top", columns = 4,
+    title = "District", cex.title = 1
+  )
 )
 ```
 
@@ -1901,23 +1888,22 @@ trellis.par.set(my.settings)
 library(MASS)
 library(lattice)
 
-myColours <- terrain.colors(6)
-
 barchart(Claims / Holders * 100 ~ Age | Group,
   groups = District, data = Insurance,
   origin = 0, main = "Motor insurance claims frequency",
   xlab = "Age", ylab = "Claims frequency %",
   scales = list(alternating = 1),
   auto.key = list(
-    space = "top", columns = 4, points = FALSE, rectangles = TRUE,
+    space = "top", columns = 4, 
+    points = FALSE, rectangles = TRUE,
     title = "District", cex.title = 1
   ),
   par.settings = list(
-    superpose.polygon = list(col = myColours[2:5], border = "transparent"),
-    strip.background = list(col = myColours[6]),
+    superpose.polygon = list(col = gray.colors(4), border = "transparent"),
+    strip.background = list(col = "gray80"),
     strip.border = list(col = "black")
   ),
-  par.strip.text = list(col = "white", font = 2),
+  par.strip.text = list(col = "gray40", font = 2),
   panel = function(x, y, ...) {
     panel.grid(h = -1, v = 0)
     panel.barchart(x, y, ...)

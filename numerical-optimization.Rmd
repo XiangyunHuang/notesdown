@@ -546,6 +546,13 @@ wireframe(
 )
 ```
 
+
+```{r vector-field, eval=FALSE, fig.cap="香蕉函数的梯度向量场", fig.width=5.5, fig.height=5}
+r <- raster::rasterFromXYZ(df, crs = CRS("+proj=longlat +datum=WGS84"))
+rasterVis::vectorplot(r, par.settings = RdBuTheme())
+```
+
+
 ```{r}
 # 梯度函数
 gr <- function(x) {
@@ -596,6 +603,33 @@ wireframe(
   screen = list(z = 120, x = -70, y = 0)
 )
 ```
+```{r plot3D-Ackley, echo=FALSE, eval=FALSE, fig.cap="二维 Ackley 函数图像", fig.width=5.5, fig.height=5}
+# plot3D 也可以绘制不错的三维图形
+# 图形的视角和绘图代码需要简化
+library(plot3D)
+a <- 20
+b <- 0.2
+c <- 2 * pi
+M <- mesh(
+  seq(-10, 10, length.out = 201),
+  seq(-10, 10, length.out = 201)
+)
+u <- M$x
+v <- M$y
+x <- u
+y <- v
+z <- -a * exp(-b * sqrt(1 / 2 * (u^2 + v^2))) -
+  exp(1 / 2 * (cos(c * u) + cos(c * v))) + a + exp(1)
+
+surf3D(x, y, z,
+  colvar = z, colkey = F, phi = 30, ltheta = 30,
+  box = TRUE, ticktype = "detailed", bty = "b2"
+)
+```
+
+<!-- 
+rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
+-->
 
 以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder–Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
@@ -1649,6 +1683,7 @@ HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 
 简单线性回归
 
+[nlsr](https://cran.r-project.org/package=nlsr)
 
 是否能给大家提供一些思路？
 

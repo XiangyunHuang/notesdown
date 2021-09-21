@@ -1,5 +1,6 @@
 --- 
 title: "现代应用统计与 R 语言"
+subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -44,6 +45,7 @@ keywords:
   - R 语言
 subject: "现代应用统计与 R 语言"
 description: "线性模型理论及其应用，注意模型的适用范围、参数估计方法、模型检验和诊断，理论和应用并重，同时附以真实的案例分析。将线性模型、广义线性模型、广义可加模型、线性混合效应模型、广义线性混合效应模型和广义可加混合效应模型融合到同一框架下。应用层面，要考虑数据集的平衡问题、缺失问题和异常问题。应用场景包括环境污染、流行病学和风险控制等领域。"
+cover-image: images/cover.png
 ---
 
 
@@ -57,7 +59,7 @@ description: "线性模型理论及其应用，注意模型的适用范围、参
 Book in early development. Planned release in 202X. 
 :::
 
-```{r normal-dist,fig.cap="统计学的世界",eval=knitr::is_html_output(), echo=FALSE}
+```{r normal-dist, fig.cap="统计学的世界", eval=FALSE, echo=FALSE}
 x = seq(from = -4, to = 8, length.out = 193)
 y1 = dnorm(x, mean = 3, sd = 1) 
 y2 = dnorm(x, mean = 2, sd = 1.5)
@@ -89,45 +91,41 @@ vline <- function(x = 0, color = "red") {
 plotly::plot_ly(
   x = x, y = y1,
   type = "scatter", mode = "lines",
-  fill = "tozeroy", fillcolor = "rgba(92, 184, 92, 0.2)",
+  fill = "tozeroy", fillcolor = "rgba(102, 102, 102, 0.2)",
   text = ~ paste0(
     "x：", x, "<br>",
     "y：", round(y1, 3), "<br>"
   ),
   hoverinfo = "text",
-  name = "N(3, 1)",
-  # name = plotly::TeX("\\mathcal{N}(3,1^2)"),
-  line = list(shape = "spline", color = "#5CB85C")
+  name = plotly::TeX("\\mathcal{N}(3,1^2)"),
+  line = list(shape = "spline", color = "#666666")
 ) %>%
   plotly::add_trace(
     x = x, y = y2,
     type = "scatter", mode = "lines",
-    fill = "tozeroy", fillcolor = "rgba(91, 192, 222, 0.2)",
+    fill = "tozeroy", fillcolor = "rgba(153, 153, 153, 0.2)",
     text = ~ paste0(
       "x：", x, "<br>",
       "y：", round(y2, 3), "<br>"
     ),
     hoverinfo = "text",
-    name = "N(2, 2.25)",
-    # name = plotly::TeX("\\mathcal{N}(2, 1.5^2)"),
-    line = list(shape = "spline", color = "#5BC0DE")
+    name = plotly::TeX("\\mathcal{N}(2, 1.5^2)"),
+    line = list(shape = "spline", color = "#999999")
   ) %>%
   plotly::layout(
     xaxis = list(
       showgrid = F,
-      title = "x"
-      # title = plotly::TeX("x")
+      title = plotly::TeX("x")
     ),
     yaxis = list(
       showgrid = F,
-      title = "f(x)"
-      # title = plotly::TeX("f(x)")
+      title = plotly::TeX("f(x)")
     ),
     legend = list(x = 0.8, y = 1, orientation = "v")
   ) %>%
   plotly::config(
     staticPlot = TRUE,
-    # mathjax = "cdn",
+    mathjax = "cdn",
     displayModeBar = FALSE
   )
 ```
@@ -149,7 +147,7 @@ plotly::plot_ly(
 
 Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次是基于正态分布假设的，这种类型已经研究的很清楚了，往往可以得到精确的结果，第二层次是将正态分布推广到指数族，这种类型的也研究的比较多了，常见的情况都研究的比较清楚，罕见的情况也是大量存在的，特别是在实际应用当中，总的来说只能得到部分精确的结果，第三层次对分布没有任何限定，只要满足成为一个统计分布的条件，这种情况下就只能求助于一般的数学工具和渐进理论。
 
-```{r stats-level, opts.label='fig.small', fig.cap="(ref:stats-level)", fig.scap="(ref:stats-level-s)", echo=FALSE}
+```{r stats-level, fig.cap="(ref:stats-level)", fig.scap="(ref:stats-level-s)", fig.width=4, fig.height=4, echo=FALSE}
 par(mar = rep(0.5, 4))
 plot(c(0, 10), c(0, 10), ann = F, axes = F, type = "n")
 symbols(c(5, 5, 5), c(2.8, 4.0, 4.8),
@@ -175,46 +173,6 @@ box()
 
 下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
 
-
-1934 年 C. J. Clopper 和 E. S. Pearson 给出二项分布 $B(n, p)$ 参数 $p$ 的置信带 [@Test_1934_binom]，图 \@ref(fig:confidence-belt) 提炼了文章的主要结果。
-
-```{r confidence-belt,fig.cap="(ref:confidence-belt)",fig.scap="(ref:confidence-belt-s)",echo=FALSE,fig.width=5,fig.height=5}
-library(rootSolve) # uniroot.all
-options(digits = 4)
-# r 为上分位点
-p_fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = F) - r # 上分位点
-l_fun <- function(p, r = 9) qbinom(0.025, size = 10, prob = p, lower.tail = T) - r # 下分位点
-
-# 计算每个分位点对应的最小的概率 p
-p <- sapply(0:10, function(x) min(uniroot.all(p_fun, lower = 0, upper = 1, r = x)))
-
-# 计算每个分位点对应的最大的概率 l
-l <- sapply(0:10, function(x) max(uniroot.all(l_fun, lower = 0, upper = 1, r = x)))
-
-plot(
-  x = seq(from = 0, to = 10, length.out = 11), y = seq(from = 0, to = 1, length.out = 11),
-  type = "n", xlab = "x", ylab = "p", panel.first = grid()
-)
-lines(x = 0:10, y = p, type = "s") # 朝下的阶梯线
-lines(x = 0:10, y = p, type = "l") # 折线
-points(x = 0:10, y = p, pch = 16, cex = .8) # 散点
-
-abline(a = 0, b = 0.1, col = "gray", lwd = 2, lty = 2) # 添加对称线
-points(x = 5, y = 0.5, col = "black", pch = 16) # 中心对称点
-points(x = 5, y = 0.5, col = "black", pch = 3) # 中心对称点
-
-lines(x = 0:10, y = l, type = "S") # 朝上的阶梯线
-lines(x = 0:10, y = l, type = "l") # 折线
-points(x = 0:10, y = l, pch = 16, cex = .8) # 散点
-
-points(x = c(2, 2), y = c(0.03, 0.55), pch = 8, col = "black")
-text(x = 2, y = 0.55, labels = "p2", pos = 1)
-text(x = 2, y = 0.03, labels = "p1", pos = 3)
-```
-
-(ref:confidence-belt) 给定置信系数 $1- \alpha = 0.95$ 和样本量 $n = 10$ 的情况下，二项分布参数 $p$ 的置信带。样本量为 10，正面朝上的次数为 2，置信水平为 0.95 的情况下，参数 $p$ 的精确区间估计为 $(p_1, p_2) = (0.03, 0.55)$。
-
-(ref:confidence-belt-s) 二项分布参数 $p$ 的置信带
 
 区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 $(5, 0.5)$ 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
 
@@ -266,7 +224,6 @@ ggplot(data.frame(x = c(0, 1)), aes(x)) +
 
 覆盖概率 $P_{\theta}(X = x)$ 和参数真值 $\theta$ 的关系 [@Lawrence2001;@Geyer2005]
 
-比如总体为二项分布 $B(n, \theta)$ 其中 n = 10，在置信水平 $\alpha = 0.95$ 下，问参数 $\theta$ 的覆盖概率是多少？随参数 $\theta$ 的变化情况如何？<https://d.cosx.org/d/421502-coverage-probability>
 
 以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2^10 = 1024 个结果，每个结果都可以用来估计未知的参数 $p$ 及其置信区间、覆盖概率。假设参数 $p$ 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 $B(10, 0.7)$，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 `rbinom()`，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。
 
@@ -336,32 +293,24 @@ text(2, 0.35, "$\\frac{1}{\\sqrt{2\\pi}}$", cex = 2)
 ```
 
 
-两个二元正态分布的碰撞，点的密度估计值代表概率密度值，
-
-```{r faithful-dens, fig.cap="散点图：faithful 数据集", fig.width=5, fig.height=5, echo=FALSE}
-plot(faithful,
-  pch = 20, panel.first = grid(), cex = 1,
-  col = densCols(faithful, colramp = terrain.colors)
-)
-```
 
 [统计检验，决策风险，显著性水平]{.todo}
 
-```{r ab-test,fig.asp="A/B 测试：功效", fig.width=5, fig.height=4, echo=FALSE}
+```{r ab-test, fig.asp="A/B 测试：功效", fig.width=5, fig.height=4, echo=FALSE}
 ggplot(data.frame(x = c(-4, 10)), aes(x)) +
   stat_function(
     fun = dnorm, geom = "area", 
     args = list(mean = 2, sd = 1),
-    fill = "gray70", alpha = .8
+    fill = "gray80", alpha = .8
   ) +
   stat_function(
     fun = dnorm, geom = "area",
     args = list(mean = 4, sd = 2),
-    fill = "gray50", alpha = .8
+    fill = "gray40", alpha = .8
   ) +
-  geom_vline(xintercept = 4, col = "gray40", lty = 2, lwd = 1.2) +
-  geom_vline(xintercept = 2, col = "gray40", lty = 2, lwd = 1.2) +
-  theme_minimal(base_size = 16)
+  geom_vline(xintercept = 4, col = "gray40", lty = 2, lwd = 1) +
+  geom_vline(xintercept = 2, col = "gray40", lty = 2, lwd = 1) +
+  theme_void()
 ```
 
 Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values [@Geyer2005] 文章中的图 1 名义覆盖概率的计算见 [@Blyth1960]
@@ -387,7 +336,7 @@ Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Value
 
 第 \@ref(chap-data-visualization) 章介绍数据可视化，分四个部分，基础元素、常用图形、字体和颜色设置。
 
-第 \@ref(chap-dynamic-documents) 章介绍动态文档，即 R Markdown 及其生态系统。
+第 \@ref(chap-document-elements) 章介绍动态文档，即 R Markdown 及其生态系统。
 
 第 \@ref(chap-interactive-web-graphics) 章介绍交互图形，以常用的 **plotly** 和 **highcharter** 为主，重点介绍 R 和 JavaScript 库的对应关系。
 
@@ -440,14 +389,6 @@ knitr::include_graphics(path = "images/cc-by-nc-nd.png")
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 `r R.version.string` 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 `r Sys.time()`。
+书籍在 `r R.version.string` 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 `r format(Sys.time(), tz = "Asia/Shanghai")`。
 
-```{r}
-xfun::session_info(packages = c(
-  "knitr", "rmarkdown", "bookdown", "equatiomatic",
-  "data.table", "DT", "kableExtra", "reactable",
-  "patchwork", "plotly", "shiny",
-  "ggplot2", "dplyr", "tidyverse"
-), dependencies = FALSE)
-```
 

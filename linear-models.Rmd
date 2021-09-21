@@ -1,6 +1,7 @@
 # 线性模型 {#chap-linear-models}
 
 ```{r,include=FALSE}
+source("_common.R")
 library(magrittr)
 library(ggplot2)
 library(gganimate)
@@ -171,25 +172,7 @@ Regression Deletion Diagnostics `?influence.measures`
 
 
 
-```{r anscombe-base,fig.cap="模型诊断很重要", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.asp=1}
-library(extrafont) # 注册字体 CM Roman 到 PDF 设备
-data(anscombe)
-form <- paste(paste0("y", seq(4)), paste0("x", seq(4)), sep = "~") # form <- sprintf('y%d ~ x%d', 1:4, 1:4)
-fit <- lapply(form, lm, data = anscombe)
-par(mfrow = c(2, 2), mar = 0.1 + c(4, 4, 1, 1), oma = c(0, 0, 2, 0), family = "CM Roman")
-for (i in 1:4) {
-  plot(as.formula(form[i]),
-    data = anscombe, col = "black",
-    pch = 19, cex = 1.2,
-    xlim = c(3, 19), ylim = c(3, 13),
-    xlab = as.expression(substitute(bold(x[i]), list(i = i))),
-    ylab = as.expression(substitute(bold(y[i]), list(i = i)))
-  )
-  abline(fit[[i]], col = "red", lwd = 2)
-  text(7, 12, bquote(bold(R)^2 == .(round(summary(fit[[i]])$r.squared, 3))))
-}
-mtext("Anscombe's 4 Regression data sets", outer = TRUE, cex = 1.2)
-```
+
 ```{r anscombe,fig.cap="线性模型可能在欺骗你",fig.asp=1}
 library(ggplot2)
 library(patchwork)
@@ -238,7 +221,13 @@ data(rock)
 
 ## 1888 年瑞士生育率分析 {#sec-swiss}
 
-1888 年瑞士生育率和社会经济指标数据，各个指标都是百分比的形式，探索性分析
+1888 年，瑞士开始进入一个人口转变的阶段，从发展中国家的高出生率开始下滑。数据集 swiss 记录了 1888 年瑞士 47 个说法语的省份的生育率和社会经济指标数据，下面是数据集的部分
+
+```{r view-swiss-data, out.lines=6, echo=FALSE}
+swiss
+```
+
+Fertility（生育率，采用常见的标准生育率统计口径）、Agriculture（男性从事农业生产的比例）、Examination（应征者在军队考试中获得最高等级的比例）、Education（应征者有小学以上教育水平的比例）、Catholic（信仰天主教的比例）、Infant.Mortality（婴儿死亡率，仅考虑出生一年内死亡），各个指标都统一标准化为百分比的形式。其中，Examination 和 Education 是 1887 年、1888 年和 1889 年的平均值。瑞士 182 个地区 1888 年及其它年份的数据可从[网站](https://opr.princeton.edu/archive/pefp/switz.aspx)获得。
 
 ```{r parcoord-swiss,eval=FALSE,echo=FALSE}
 # GGally 依赖 reshape 和 plyr，reshape 和 plyr 不再开发新特性了，但是 Hadley 仍然在为其续命，同时也意味着稳定，只要还能保证在新的 R 软件中安装运行。如果有更稳定更好的 R 包替换 GGally，我会欣然采纳

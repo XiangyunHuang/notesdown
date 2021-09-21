@@ -1,12 +1,14 @@
 # 广义线性模型 {#chap-generalized-linear-models}
 
 ```{r,include=FALSE}
-library(ggplot2)
-library(cowplot) 
+library(ggplot2)   # 图形
+library(cowplot)   # 图形组合布局
 library(MASS)      # 惩罚极大似然估计
+library(stats4)
 library(bbmle)     # 极大似然估计
 library(nnet)      # 多项分布
 library(survival)  # 生存分析
+library(Matrix)
 library(lme4)      # 广义线性和线性混合效应模型
 library(glmnet)    # Lasso / 弹性网络模型
 ```
@@ -115,7 +117,7 @@ str(esoph)
 ```
 
 ```{r esoph-data,fig.cap="吸烟喝酒和食道癌的关系"}
-p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / ncontrols, color = agegp)) +
+p1 <- ggplot(data = esoph, aes(x = agegp, y = ncases / (ncases + ncontrols), color = agegp)) +
   geom_boxplot(show.legend = FALSE) +
   geom_jitter(show.legend = FALSE) +
   theme_minimal()

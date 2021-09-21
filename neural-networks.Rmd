@@ -16,6 +16,90 @@ reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), req
 
 Norm Matloff 等开发的 [polyreg](https://github.com/matloff/polyreg) 包以多元多项式回归替代神经网络，Brian Ripley 开发的 nnet 包以单层前馈神经网络用于多项对数线性模型。
 
+以 MacOS 系统为例，首先需要配置 Python 开发环境，这里采用 virtualenv 创建一个虚拟环境，然后安装本章需要的两个 Python 模块：tensorflow 和 mxnet。
+
+```bash
+brew install virtualenv
+RETICULATE_PYTHON_ENV=/opt/.virtualenvs/r-tensorflow
+virtualenv -p /usr/bin/python3 $RETICULATE_PYTHON_ENV
+pip3 install tensorflow mxnet
+```
+
+
+## tensorflow  {#sec-tensorflow}
+
+```{r}
+library(tensorflow)
+library(keras)
+```
+
+```{r}
+mnist <- dataset_mnist()
+```
+
+
+```{r}
+x_train <- mnist$train$x
+y_train <- mnist$train$y
+x_test <- mnist$test$x
+y_test <- mnist$test$y
+```
+
+
+```{r}
+# reshape
+x_train <- array_reshape(x_train, c(nrow(x_train), 784))
+x_test <- array_reshape(x_test, c(nrow(x_test), 784))
+# rescale
+x_train <- x_train / 255
+x_test <- x_test / 255
+```
+
+
+```{r}
+y_train <- to_categorical(y_train, 10)
+y_test <- to_categorical(y_test, 10)
+```
+
+
+```{r}
+model <- keras_model_sequential()
+model %>% 
+  layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 128, activation = 'relu') %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units = 10, activation = 'softmax')
+```
+
+
+```{r}
+summary(model)
+```
+
+
+```{r}
+model %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy')
+)
+```
+
+
+```{r}
+history <- model %>% fit(
+  x_train, y_train, 
+  epochs = 30, batch_size = 128, 
+  validation_split = 0.2
+)
+```
+
+
+```{r}
+plot(history)
+```
+
 ## mxnet {#sec-mxnet}
 
 ::: {.rmdinfo data-latex="{信息}"}

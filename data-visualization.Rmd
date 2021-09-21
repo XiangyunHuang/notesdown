@@ -48,7 +48,6 @@ ggplot(mpg, aes(displ, hwy)) +
 故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
 
 1. Pablo Barberá 的 [Data Visualization with R and ggplot2](https://github.com/pablobarbera/Rdataviz)
-2. Kieran Healy 的新书 [Data Visualization: A Practical Introduction](https://kieranhealy.org/publications/dataviz/)
 3. Matt Leonawicz 的新作 [mapmate](https://github.com/leonawicz/mapmate), 可以去其主页欣赏系列作品^[<https://leonawicz.github.io/>]
 4. [tidytuesday 可视化挑战官方项目](https://github.com/rfordatascience/tidytuesday) 还有 [tidytuesday](https://github.com/abichat/tidytuesday)
 5. [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot) 可视化统计检验、模型的结果
@@ -362,7 +361,7 @@ sysfonts::font_add_google(name = "Noto Sans SC", family = "Noto Sans SC")
 ```
 
 ::: {.rmdwarn data-latex="{警告}"}
-在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。
+在本书中，不要全局加载 showtext 包或调用 `showtext::showtext_auto()`，会和 extrafont 冲突，使得绘图时默认就只能使用 showtext 提供的字体。extrafont 包提供的函数 `font_import()` 仅支持系统安装的 TrueType/Type1 字体
 :::
 
 ```{r font-in-ggplot, fig.width=6, fig.height=6, fig.showtext=TRUE, fig.cap="在 ggplot2 绘图系统中设置中英文字体", out.width="100%"}
@@ -725,6 +724,24 @@ data.frame(
   theme_minimal()
 ```
 
+Noto Color Emoji 字体在 MacOS 上有问题，为了跨平台的便携性，提供 emojifont 包的例子，要引入更多的依赖。
+
+```{r,eval=FALSE}
+library(ggplot2)
+library(emojifont)
+
+names <- c("smile", "school", "office", "blush", "smirk", "heart_eyes")
+n <- length(names):1
+e <- sapply(names, emojifont::emoji)
+dat <- data.frame(emoji_name = names, n = n, emoji = e, stringsAsFactors = F)
+
+ggplot(data = dat, aes(emoji_name, n)) +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(breaks = dat$emoji_name, labels = dat$emoji) +
+  theme(axis.text.y = element_text(size = 20, family = "EmojiOne")) +
+  coord_flip()
+```
+
 ## 配色 {#sec-colors}
 
 配色真的是一门学问，有的人功力非常深厚，仅用黑白灰就可以创造出一个世界，如中国的水墨画，科波拉执导的《教父》，沃卓斯基姐妹执导的《黑客帝国》等。黑西装、白衬衫和黑领带是《黑客帝国》的经典元素，《教父》开场的黑西装、黑领结和白衬衫，尤其胸前的红玫瑰更是点睛之笔。导演将黑白灰和光影混合形成了层次丰富立体的画面，打造了一场视觉盛宴，无论是呈现在纸上还是银幕上都可以给人留下深刻的印象。正所谓食色性也，花花世界，岂能都是法印眼中的白骨！再说《红楼梦》里，芍药丛中，桃花树下，滴翠亭边，栊翠庵里，处处都是湘云、黛玉、宝钗、妙玉留下的四季诗歌。
@@ -785,14 +802,19 @@ barplot(1:8, col = gray_colors, border = NA)
 gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式英语的差别，且看
 
 ```{r,echo=TRUE}
-all.equal(col2rgb(paste0("gray", seq(100))), col2rgb(paste0("grey", seq(100))))
+all.equal(
+  col2rgb(paste0("gray", seq(100))),
+  col2rgb(paste0("grey", seq(100)))
+)
 ```
 
 `gray100` 代表白色，`gray0` 代表黑色，提取灰色调色板，去掉首尾部分是必要的
 
 ```{r gray-colors, fig.cap="提取 10 种灰色做调色板"}
-barplot(1:8, col = gray.colors(8, start = .3, end = .9), 
-        main = "gray.colors function", border = NA)
+barplot(1:8,
+  col = gray.colors(8, start = .3, end = .9),
+  main = "gray.colors function", border = NA
+)
 ```
 
 首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
@@ -1042,7 +1064,7 @@ swatch(palette1)[[1]]
 
 不同的颜色模式，从 RGB 到 HCL 的基本操作 <https://stat545.com/block018_colors.html>
 
-```{r,fig.cap="HCL调色",R.options=list(tidyverse.quiet = TRUE)}
+```{r, fig.cap="HCL调色", R.options=list(tidyverse.quiet = TRUE)}
 # https://github.com/hadley/ggplot2-book
 hcl <- expand.grid(x = seq(-1, 1, length = 100), y = seq(-1, 1, length = 100)) |>
   subset(subset = x^2 + y^2 < 1) |>
@@ -1093,7 +1115,7 @@ R 包 grDevices 提供 hcl 调色板[^hcl-palettes] 调制两个色板
 
 [^hcl-palettes]: https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/index.html
 
-```{r color-pal, fig.cap = "桃色至梨色的渐变"}
+```{r color-pal, fig.cap = "桃色至梨色的渐变", fig.width=4, fig.height=4}
 # Colors from https://github.com/johannesbjork/LaCroixColoR
 color_pal <- c("#FF3200", "#E9A17C", "#E9E4A6", "#1BB6AF", "#0076BB", "#172869")
 n <- 16
@@ -1101,7 +1123,7 @@ more_colors <- (grDevices::colorRampPalette(color_pal))(n)
 scales::show_col(colours = more_colors)
 ```
 
-```{r fish-hsv-pal, fig.cap="Hue-Saturation-Value (HSV) color model"}
+```{r fish-hsv-pal, fig.cap="Hue-Saturation-Value (HSV) 颜色模型", fig.width=4, fig.height=4}
 # colors in colortools from http://www.gastonsanchez.com/
 fish_pal <- c(
   "#69D2E7", "#6993E7", "#7E69E7", "#BD69E7",
@@ -2238,6 +2260,8 @@ data.table::wday(Sys.Date())
 ```{r}
 library(gert)
 library(ggplot2)
+git_config_set("user.name", "XiangyunHuang")
+git_config_set("user.email", "xiangyunfaith@outlook.com")
 
 dat <- git_log(max = 1000)
 
@@ -2553,6 +2577,8 @@ ggplot(cohort, aes(x = week, y = cohort, fill = value)) +
   scale_fill_binned(type = "viridis")
 ```
 
+留存是 [Cohort 分析](https://en.wikipedia.org/wiki/Cohort_analysis) 中的一种情况，还有转化等，首先
+定义你的问题，确定度量问题的指标，确定和问题相关的 Cohort （比如时间、空间和用户属性等关键的影响因素），然后数据处理、可视化获得 Cohort 分析结果，最后在实际决策和行动中检验分析结论。
 
 ### 瀑布图 {#sec-ggplot2-waterfall}
 
@@ -2595,6 +2621,17 @@ ggplot(balance) +
   ) +
   scale_fill_brewer(palette = "Spectral") +
   theme_minimal()
+```
+
+
+```{r,eval=FALSE}
+library(ggplot2)
+# AtherEnergy/ggTimeSeries
+# 个人收入，国家地区收入
+library(ggTimeSeries) # https://github.com/AtherEnergy/ggTimeSeries
+dat <- data.frame(year = 2000:2021, dpc = 10:31)
+ggplot(data = dat, aes(x = year, y = dpc)) +
+  stat_waterfall()
 ```
 
 ### 桑基图 {#sec-ggplot2-sankey}
