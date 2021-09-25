@@ -19,6 +19,8 @@ library(echarts4r)
 library(ggthemes)
 ```
 
+[王江浩](https://github.com/Jianghao)
+[北京城市实验室](https://www.beijingcitylab.com/)
 <!-- https://segmentfault.com/a/1190000015048613 -->
 
 Robert J. Hijmans [^Robert-Hijmans] 开发了 [raster](https://github.com/rspatial/raster) 包用于网格空间数据的读、写、操作、分析和建模，同时维护了空间数据分析的网站 <https://www.rspatial.org>。Edzer Pebesma [^Edzer-Pebesma] 和 Roger Bivand 等创建了 [sp](https://github.com/edzer/sp/) 包定义了空间数据类型和方法，提供了大量的空间数据操作方法，同时维护了空间数据对象 sp 的绘图网站 <https://edzer.github.io/sp/>，他们也一起合作写了新书 [Spatial Data Science](https://keen-swartz-3146c4.netlify.com/)，提供了在线 [网页版](https://www.r-spatial.org/book/) 书籍及其 [源代码](https://github.com/edzer/sdsr)。Edzer Pebesma 后来开发了 [sf](https://github.com/r-spatial/sf/) 包重新定义了空间数据对象和操作方法，并维护了空间数据分析、建模和可视化网站 <https://www.r-spatial.org/>
@@ -326,7 +328,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x562558540898>
+## <bytecode: 0x55e04012e9e0>
 ## <environment: namespace:graphics>
 ```
 
@@ -353,7 +355,7 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x562558933148>
+## <bytecode: 0x55e040523098>
 ## <environment: namespace:graphics>
 ```
 

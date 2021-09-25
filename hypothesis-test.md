@@ -207,13 +207,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1.116e-09
+## number of successes = 19, number of trials = 100, p-value = 2.703e-10
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.1184432 0.2806980
 ## sample estimates:
 ## probability of success 
-##                    0.2
+##                   0.19
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -228,13 +228,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 20, number of trials = 100, p-value = 1
+## number of successes = 19, number of trials = 100, p-value = 0.9007
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1266556 0.2918427
+##  0.1184432 0.2806980
 ## sample estimates:
 ## probability of success 
-##                    0.2
+##                   0.19
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -1497,7 +1497,7 @@ system.time(comp_auc(dat = dat2, show_roc = FALSE))
 
 ```
 ##    user  system elapsed 
-##   0.001   0.001   0.002
+##   0.002   0.000   0.002
 ```
 
 更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。

@@ -279,14 +279,14 @@ Iñaki Ucar 开发的 [cran2copr](https://github.com/Enchufa2/cran2copr) 项目�
    ## [26] "glue"        "crayon"      "rprojroot"   "methods"     "curl"       
    ## [31] "jsonlite"    "mime"        "openssl"     "cachem"      "prettyunits"
    ## [36] "digest"      "xopen"       "brew"        "commonmark"  "knitr"      
-   ## [41] "purrr"       "Rcpp"        "stringi"     "stringr"     "xml2"       
+   ## [41] "purrr"       "stringi"     "stringr"     "xml2"        "cpp11"      
    ## [46] "brio"        "evaluate"    "magrittr"    "praise"      "ps"         
    ## [51] "waldo"       "clipr"       "gert"        "gh"          "rappdirs"   
    ## [56] "whisker"     "yaml"        "graphics"    "grDevices"   "fastmap"    
    ## [61] "askpass"     "credentials" "sys"         "zip"         "gitcreds"   
-   ## [66] "ini"         "highr"       "markdown"    "xfun"        "diffobj"    
-   ## [71] "fansi"       "rematch2"    "tibble"      "pillar"      "pkgconfig"  
-   ## [76] "vctrs"       "utf8"
+   ## [66] "ini"         "highr"       "xfun"        "diffobj"     "fansi"      
+   ## [71] "rematch2"    "tibble"      "pillar"      "pkgconfig"   "vctrs"      
+   ## [76] "utf8"
    ```
 
    其中，依赖关系见表 \@ref(tab:devtools-sys-dep)

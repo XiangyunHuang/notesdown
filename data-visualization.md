@@ -59,7 +59,6 @@ ggplot(mpg, aes(displ, hwy)) +
 故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
 
 1. Pablo Barberá 的 [Data Visualization with R and ggplot2](https://github.com/pablobarbera/Rdataviz)
-2. Kieran Healy 的新书 [Data Visualization: A Practical Introduction](https://kieranhealy.org/publications/dataviz/)
 3. Matt Leonawicz 的新作 [mapmate](https://github.com/leonawicz/mapmate), 可以去其主页欣赏系列作品^[<https://leonawicz.github.io/>]
 4. [tidytuesday 可视化挑战官方项目](https://github.com/rfordatascience/tidytuesday) 还有 [tidytuesday](https://github.com/abichat/tidytuesday)
 5. [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot) 可视化统计检验、模型的结果
@@ -2910,16 +2909,20 @@ ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
   geom_bar(position = "dodge2") +
   scale_fill_brewer(palette = "Spectral")
 
+# 百分比堆积条形图
 plotly::plot_ly(dat,
-  y = ~cut, color = ~clarity, x = ~cnt,
+  x = ~cut, color = ~clarity, y = ~pct,
   colors = "Spectral", type = "bar",
   text = ~ paste0(
     cnt, "颗 <br>",
     "占比：", scales::percent(pct, accuracy = 0.1), "<br>"
-  ), 
+  ),
   hoverinfo = "text"
 ) %>%
-  plotly::layout(barmode = "stack", barnorm = "percent") %>%
+  plotly::layout(
+    barmode = "stack",
+    yaxis = list(tickformat = ".0%")
+  ) %>%
   plotly::config(displayModeBar = FALSE)
 
 # `type = "histogram"` 以 cut 和 clarity 分组计数
@@ -2937,18 +2940,6 @@ plotly::plot_ly(diamonds,
   plotly::layout(
     barmode = "stack", 
     yaxis = list(title = "cnt"),
-    legend = list(title = list(text = "clarity"))
-  ) %>%
-  plotly::config(displayModeBar = FALSE)
-
-# 百分比堆积图
-plotly::plot_ly(diamonds,
-  x = ~cut, color = ~clarity,
-  colors = "Spectral", type = "histogram"
-) %>%
-  plotly::layout(
-    barmode = "stack", barnorm = "percent",
-    yaxis = list(title = "percent"),
     legend = list(title = list(text = "clarity"))
   ) %>%
   plotly::config(displayModeBar = FALSE)
@@ -3743,7 +3734,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Mon"
+## [1] "Sat"
 ```
 
 ```r
@@ -3751,7 +3742,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 2
+## [1] 7
 ```
 
 :::
@@ -3941,7 +3932,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55d1061ca620>
+## <bytecode: 0x56106ffc56c0>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -4223,6 +4214,8 @@ ggplot(cohort, aes(x = week, y = cohort, fill = value)) +
 
 \begin{center}\includegraphics{data-visualization_files/figure-latex/cohort-ggplot2-1} \end{center}
 
+留存是 [Cohort 分析](https://en.wikipedia.org/wiki/Cohort_analysis) 中的一种情况，还有转化等，首先
+定义你的问题，确定度量问题的指标，确定和问题相关的 Cohort （比如时间、空间和用户属性等关键的影响因素），然后数据处理、可视化获得 Cohort 分析结果，最后在实际决策和行动中检验分析结论。
 
 ### 瀑布图 {#sec-ggplot2-waterfall}
 
@@ -4343,6 +4336,11 @@ ggplot(data = titanic_wide,
 ### 词云图 {#ggplot2-wordcloud}
 
 词云 [ggwordcloud](https://github.com/lepennec/ggwordcloud)
+
+### 甘特图 {#ggplot2-gantt}
+
+描述项目进展的甘特图
+[ganttrify](https://github.com/giocomai/ganttrify)
 
 
 ### 马赛克图 {#sec-ggplot2-ggmosaic}

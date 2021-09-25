@@ -199,11 +199,22 @@ p13 <- plot_ly(diamonds,
   config(displayModeBar = F)
 
 # 百分比堆积条形图
-p14 <- plot_ly(diamonds,
-  x = ~cut, color = ~clarity,
-  colors = "Accent", type = "histogram"
+# p14 <- plot_ly(diamonds,
+#   x = ~cut, color = ~clarity,
+#   colors = "Accent", type = "histogram"
+# ) %>%
+#   layout(barmode = "stack", barnorm = "percent") %>%
+#   config(displayModeBar = F)
+
+# 推荐使用如下方式绘制堆积条形图
+dat = diamonds[, .(cnt = length(carat)), by = .(clarity, cut)] %>%
+  .[, pct := round(100 * cnt / sum(cnt), 2), by = .(cut)]
+
+p14 <- plot_ly(
+  data = dat, x = ~cut, y = ~pct, color = ~clarity,
+  colors = "Set3", type = "bar"
 ) %>%
-  layout(barmode = "stack", barnorm = "percent") %>%
+  layout(barmode = "stack") %>%
   config(displayModeBar = F)
 
 htmltools::tagList(p11, p12, p13, p14)

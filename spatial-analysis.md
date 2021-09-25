@@ -215,6 +215,43 @@ mapdeck( location = c(145, -37.8), zoom = 10) %>%
 
 
 
+```r
+# https://github.com/geodacenter/rgeoda/
+library(rgeoda)
+library(sf)
+
+guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+guerry <- st_read(guerry_path)
+
+crm_prp = guerry["Crm_prp"]
+queen_w <- queen_weights(guerry)
+
+lisa <- local_moran(queen_w, crm_prp)
+
+lisa_colors <- lisa_colors(lisa)
+lisa_labels <- lisa_labels(lisa)
+lisa_clusters <- lisa_clusters(lisa)
+
+plot(st_geometry(guerry),
+     col = sapply(lisa_clusters, function(x) {
+       return(lisa_colors[[x + 1]])
+     }),
+     border = "#333333", lwd = 0.2
+)
+title(main = "Local Moran Map of Crm_prs")
+legend("bottomleft",
+       legend = lisa_labels,
+       fill = lisa_colors, border = "#eeeeee"
+)
+
+
+library(spData)
+
+library(sf)
+wheat <- st_read(system.file("shapes/wheat.shp", package="spData"))
+plot(wheat)
+```
+
 
 ## 运行环境 {#sec-spatial-analysis-session}
 
