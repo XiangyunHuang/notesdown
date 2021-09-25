@@ -1747,16 +1747,20 @@ ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
   geom_bar(position = "dodge2") +
   scale_fill_brewer(palette = "Spectral")
 
+# 百分比堆积条形图
 plotly::plot_ly(dat,
-  y = ~cut, color = ~clarity, x = ~cnt,
+  x = ~cut, color = ~clarity, y = ~pct,
   colors = "Spectral", type = "bar",
   text = ~ paste0(
     cnt, "颗 <br>",
     "占比：", scales::percent(pct, accuracy = 0.1), "<br>"
-  ), 
+  ),
   hoverinfo = "text"
 ) %>%
-  plotly::layout(barmode = "stack", barnorm = "percent") %>%
+  plotly::layout(
+    barmode = "stack",
+    yaxis = list(tickformat = ".0%")
+  ) %>%
   plotly::config(displayModeBar = FALSE)
 
 # `type = "histogram"` 以 cut 和 clarity 分组计数
@@ -1774,18 +1778,6 @@ plotly::plot_ly(diamonds,
   plotly::layout(
     barmode = "stack", 
     yaxis = list(title = "cnt"),
-    legend = list(title = list(text = "clarity"))
-  ) %>%
-  plotly::config(displayModeBar = FALSE)
-
-# 百分比堆积图
-plotly::plot_ly(diamonds,
-  x = ~cut, color = ~clarity,
-  colors = "Spectral", type = "histogram"
-) %>%
-  plotly::layout(
-    barmode = "stack", barnorm = "percent",
-    yaxis = list(title = "percent"),
     legend = list(title = list(text = "clarity"))
   ) %>%
   plotly::config(displayModeBar = FALSE)
@@ -2666,6 +2658,11 @@ ggplot(data = titanic_wide,
 ### 词云图 {#ggplot2-wordcloud}
 
 词云 [ggwordcloud](https://github.com/lepennec/ggwordcloud)
+
+### 甘特图 {#ggplot2-gantt}
+
+描述项目进展的甘特图
+[ganttrify](https://github.com/giocomai/ganttrify)
 
 
 ### 马赛克图 {#sec-ggplot2-ggmosaic}
