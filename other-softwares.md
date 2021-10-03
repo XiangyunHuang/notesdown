@@ -1350,7 +1350,7 @@ tlmgr update --self --all
 
 
 ```
-## [<matplotlib.lines.Line2D object at 0x7fa0d023cd60>]
+## [<matplotlib.lines.Line2D object at 0x7ff12f546d60>]
 ## Text(0.5, 0, 'Coord $x$')
 ## Text(0, 0.5, 'Coord $y$')
 ```
@@ -1666,7 +1666,7 @@ google-auth             1.35.0
 google-auth-oauthlib    0.4.6      
 google-pasta            0.2.0      
 graphviz                0.8.4      
-grpcio                  1.40.0     
+grpcio                  1.41.0     
 h5py                    3.1.0      
 idna                    3.2        
 joblib                  1.0.1      
@@ -1682,7 +1682,7 @@ numpy                   1.21.2
 oauthlib                3.1.1      
 opt-einsum              3.3.0      
 pandas                  1.3.3      
-patsy                   0.5.1      
+patsy                   0.5.2      
 Pillow                  8.3.2      
 pip                     20.0.2     
 pkg-resources           0.0.0      
@@ -1769,7 +1769,7 @@ rcParams.update({'font.size': 10, 'text.usetex': True})
 #                  'font.serif':      ['DejaVu Serif']})
 plt.switch_backend('agg')
 plt.plot([0, 2, 1, 4])
-## [<matplotlib.lines.Line2D object at 0x7fa0b81330a0>]
+## [<matplotlib.lines.Line2D object at 0x7ff11743d0a0>]
 plt.xlabel(r'Coord $x$')
 ## Text(0.5, 0, 'Coord $x$')
 plt.ylabel(r'Coord $y$')
@@ -1804,7 +1804,7 @@ x # 得到 python 中的向量 vector 或数组 array
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年09月25日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年10月03日 使用 reticulate 版本 1.20，本文没有对之前的版本进行测试。
 
 
 
@@ -2631,7 +2631,7 @@ sessionInfo(sort(.packages(T)))
 ## [365] rjson_0.2.20               rlang_0.4.11              
 ## [367] rlist_0.4.6.2              rmarkdown_2.10            
 ## [369] rnaturalearthdata_0.1.0    rngtools_1.5              
-## [371] robustbase_0.93-8          ROI_1.0-0                 
+## [371] robustbase_0.93-9          ROI_1.0-0                 
 ## [373] ROI.plugin.alabama_1.0-0   ROI.plugin.lpsolve_1.0-1  
 ## [375] ROI.plugin.nloptr_1.0-0    ROI.plugin.quadprog_1.0-0 
 ## [377] rootSolve_1.8.2.2          roxygen2_7.1.1            
@@ -2787,7 +2787,7 @@ Package                   Version        Title
 **crayon**                1.4.1          Colored Terminal Output                                                                                                     
 **crosstalk**             1.1.1          Inter-Widget Interactivity for HTML Widgets                                                                                 
 **curl**                  4.3.2          A Modern and Flexible Web Client for R                                                                                      
-**data.table**            1.14.0         Extension of `data.frame`                                                                                                   
+**data.table**            1.14.2         Extension of `data.frame`                                                                                                   
 **DBI**                   1.1.1          R Database Interface                                                                                                        
 **dbplyr**                2.1.1          A 'dplyr' Back End for Databases                                                                                            
 **dendextend**            1.15.1         Extending 'dendrogram' Functionality in R                                                                                   
@@ -2805,7 +2805,7 @@ Package                   Version        Title
 **echarts4r**             0.4.1          Create Interactive Graphs with 'Echarts JavaScript' Version 5                                                               
 **egg**                   0.4.5          Extensions for ggplot2: Custom Geom, Custom Themes, Plot Alignment, Labelled Panels, Symmetric Scales, and Fixed Panel Size 
 **ellipsis**              0.3.2          Tools for Working with ...                                                                                                  
-**equatiomatic**          0.2.0          Transform Models into LaTeX Equations                                                                                       
+**equatiomatic**          0.3.0          Transform Models into LaTeX Equations                                                                                       
 **evaluate**              0.14           Parsing and Evaluation Tools that Provide More Details than the Default                                                     
 **extrafont**             0.17           Tools for using fonts                                                                                                       
 **extrafontdb**           1.0            Package for holding the database for the extrafont package                                                                  
@@ -2858,7 +2858,7 @@ Package                   Version        Title
 **highcharter**           0.8.2          A Wrapper for the Highcharts Library                                                                                        
 **highr**                 0.9            Syntax Highlighting for R Source Code                                                                                       
 **Hmisc**                 4.5-0          Harrell Miscellaneous                                                                                                       
-**hms**                   1.1.0          Pretty Time of Day                                                                                                          
+**hms**                   1.1.1          Pretty Time of Day                                                                                                          
 **hrbrthemes**            0.8.0          Additional Themes, Theme Components and Utilities for ggplot2                                                               
 **htmltools**             0.5.2          Tools for HTML                                                                                                              
 **htmlwidgets**           1.5.4          HTML Widgets for R                                                                                                          
@@ -2891,7 +2891,7 @@ Package                   Version        Title
 **magrittr**              2.0.1          A Forward-Pipe Operator for R                                                                                               
 **mapdata**               2.3.0          Extra Map Databases                                                                                                         
 **mapproj**               1.2.7          Map Projections                                                                                                             
-**maps**                  3.3.0          Draw Geographical Maps                                                                                                      
+**maps**                  3.4.0          Draw Geographical Maps                                                                                                      
 **markdown**              1.1            Render Markdown with the C Library Sundown                                                                                  
 **MASS**                  7.3-54         Support Functions and Datasets for Venables and Ripley's MASS                                                               
 **Matrix**                1.3-4          Sparse and Dense Matrix Classes and Methods                                                                                 
@@ -2917,7 +2917,7 @@ Package                   Version        Title
 **patchwork**             1.1.1          The Composer of Plots                                                                                                       
 **pdftools**              3.0.1          Text Extraction, Rendering and Converting of PDF Documents                                                                  
 **pdist**                 1.2            Partitioned Distance Function                                                                                               
-**pillar**                1.6.2          Coloured Formatting for Columns                                                                                             
+**pillar**                1.6.3          Coloured Formatting for Columns                                                                                             
 **pkgbuild**              1.2.0          Find Tools Needed to Build R Packages                                                                                       
 **pkgconfig**             2.0.3          Private Configuration for R Packages                                                                                        
 **pkgload**               1.2.2          Simulate Package Installation and Attach                                                                                    
@@ -2948,7 +2948,7 @@ Package                   Version        Title
 **raster**                3.4-13         Geographic Data Analysis and Modeling                                                                                       
 **rasterly**              0.2.0          Easily and Rapidly Generate Raster Image Data with Support for 'Plotly.js'                                                  
 **rasterVis**             0.50.3         Visualization Methods for Raster Data                                                                                       
-**rcmdcheck**             1.3.3          Run 'R CMD check' from R and Capture Results                                                                                
+**rcmdcheck**             1.4.0          Run 'R CMD check' from R and Capture Results                                                                                
 **RColorBrewer**          1.1-2          ColorBrewer Palettes                                                                                                        
 **Rcpp**                  1.0.7          Seamless R and C++ Integration                                                                                              
 **RcppArmadillo**         0.10.6.0.0     Rcpp Integration for the Armadillo Templated Linear Algebra Library                                                         
@@ -2956,7 +2956,7 @@ Package                   Version        Title
 **RcppParallel**          5.1.4          Parallel Programming Tools for Rcpp                                                                                         
 **reactable**             0.2.3          Interactive Data Tables Based on 'React Table'                                                                              
 **reactR**                0.4.4          React Helpers                                                                                                               
-**readr**                 2.0.1          Read Rectangular Text Data                                                                                                  
+**readr**                 2.0.2          Read Rectangular Text Data                                                                                                  
 **readxl**                1.3.1          Read Excel Files                                                                                                            
 **registry**              0.5-1          Infrastructure for R Package Registries                                                                                     
 **remotes**               2.4.0          R Package Installation from Remote Repositories, Including 'GitHub'                                                         
@@ -3020,7 +3020,7 @@ Package                   Version        Title
 **tfautograph**           0.3.2          Autograph R for 'Tensorflow'                                                                                                
 **tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
 **tibble**                3.1.4          Simple Data Frames                                                                                                          
-**tidyr**                 1.1.3          Tidy Messy Data                                                                                                             
+**tidyr**                 1.1.4          Tidy Messy Data                                                                                                             
 **tidyselect**            1.1.1          Select from a Set of Strings                                                                                                
 **tidyverse**             1.3.1          Easily Install and Load the Tidyverse                                                                                       
 **tikzDevice**            0.12.3.1       R Graphics Output in LaTeX Format                                                                                           

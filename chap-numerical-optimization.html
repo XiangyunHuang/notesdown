@@ -1179,10 +1179,10 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 22.22222  0.00000</code></pre>
+<pre><code>## [1]   0.00000 -21.99115</code></pre>
 <div class="sourceCode" id="cb2240"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -0.9734211</code></pre>
+<pre><code>## [1] -1</code></pre>
 <p>实际上，还是陷入局部最优解。</p>
 <pre><code>SETS:
 P/1..5/;
@@ -1377,9 +1377,10 @@ b = (2, 2, -4, -4)
 <pre><code>## [1] 368.1059</code></pre>
 <div class="sourceCode" id="cb2258"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000</code></pre>
+<pre><code>##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109096
+## [25] 4.000000</code></pre>
 <p>下面再与函数 <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> 提供的 L-BFGS-B 算法比较</p>
 <div class="sourceCode" id="cb2260"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optim.html">optim</a></span><span class="op">(</span>
@@ -1674,10 +1675,10 @@ b = (2, 2, -4, -4)
 <div class="sourceCode" id="cb2286"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.185519 4.346222 4.289763 1.141815</code></pre>
+<pre><code>## [1] 1.101736 4.429156 4.022768 1.728128</code></pre>
 <div class="sourceCode" id="cb2288"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] 17.58457</code></pre>
+<pre><code>## [1] 22.21238</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>，推荐使用 nloptr.slsqp 求解器。</p>
 </div>
 <div id="nonlinear-mixed-integer-constrained" class="section level4" number="35.4.3.4">
@@ -1783,7 +1784,7 @@ b = (2, 2, -4, -4)
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="va">p0</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.22797 4.24537</code></pre>
+<pre><code>## [1] 1.227968 4.245369</code></pre>
 <div class="sourceCode" id="cb2296"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
@@ -1923,10 +1924,10 @@ x - (( @cos(y) )^x - x)^y = 0;
 <div class="sourceCode" id="cb2313"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1]  8.374684 48.359815</code></pre>
+<pre><code>## [1] -46.419175   3.197589</code></pre>
 <div class="sourceCode" id="cb2315"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -3.174567</code></pre>
+<pre><code>## [1] -3.037359</code></pre>
 <p>比如下面三组</p>
 <div class="sourceCode" id="cb2317"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">40.95941</span>, <span class="fl">41.52914</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -2725,7 +2726,7 @@ u(x,y) = \sin(\pi x)\cosh(\pi y)
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-09-25.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-10-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
