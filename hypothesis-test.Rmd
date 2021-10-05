@@ -4,11 +4,67 @@
 library(formatR)
 library(magrittr)
 library(ggplot2)
+# UML
+library(nomnoml)
 ```
 
 > The Earth is Round ($p < 0.05$)
 > 
 > --- Jacob Cohen [@Cohen_1994_Earth]
+
+
+
+```{nomnoml, echo=FALSE, eval=FALSE}
+#stroke: black
+#.box: fill=#8f8 dashed visual=ellipse
+
+[假设检验]-[A1|两样本比较]
+[假设检验]-[A2|多样本比较]
+[假设检验]-[A3|列联表分析]
+
+[A1]-[B1|配对样本]
+[A1]-[B2|非配对样本]
+
+[B1]-[C1|正态分布]
+[C1]-[D1|配对T检验]
+[B1]-[C2|非正态分布]
+[C2]-[D2|配对Wilcoxon检验]
+
+[B2]-[C3|正态分布]
+[C3]-[D3|同方差（F检验）]
+[C3]-[D4|异方差（F检验）]
+
+[D3]-[F1|样本量都大于30]
+[F1]-[G1|Z检验]
+[D3]-[F2|样本量都小于30]
+[F2]-[G2|T检验]
+
+[B2]-[C4|非正态分布]
+[C4]-[D5|Mann-Whitney U检验]
+
+[D4]-[F3|T检验]
+[D4]-[F4|Mann-Whitney U检验]
+
+[A2]-[B3|正态分布]
+[B3]-[C5|同方差（F检验）]
+[C5]-[D6|ANOVA 方差分析]
+
+[B3]-[C6|异方差（F检验）]
+[C6]-[D7|Kruskal-Wallis 秩和检验]
+
+[A2]-[B4|非正态分布]
+[B4]-[C7|Kruskal-Wallis 秩和检验]
+
+[A3]-[B5|单因素]
+[A3]-[B6|多因素]
+
+[B5]-[C8|简单卡方检验]
+
+[B6]-[C9|两水平]
+[C9]-[D8|2X2列联表]
+[B6]-[C10|多水平]
+[C10]-[D9|RxC列联表]
+```
 
 ```{r hypothesis-test,fig.cap="假设检验",eval=knitr::is_html_output()}
 x = seq(from = -4, to = 8, length.out = 193)

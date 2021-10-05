@@ -1,0 +1,356 @@
+# 净土化操作 {#dplyr-manipulation}
+
+> 常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算
+> 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作
+
+在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形
+
+::: sidebar
+更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入 tidyverse，数据处理或者叫特征工程 Base R vs data.table vs dplyr 它们各有优点，所以都加以介绍 参考 [Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
+
+关于 tidyverse 提供的数据操作不要移动到 Base R 对应的章节，这二者已经越行越远，本章主要讲并行或分布式数据操作工具，如 sparklyr 针对大数据集上的操
+
+Base R 的数据操作的一致性问题参见统计之都帖子 <https://d.cosx.org/d/420763>
+
+[Malcolm Barrett](https://malco.io/) 以幻灯片的形式呈现 [dplyr](https://malco.io/slides/hs_dplyr/) 和 [purrr](https://malco.io/slides/hs_purrr/) 的基础用法
+
+Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://github.com/cwickham/purrr-tutorial)
+
+关于引用 [quotation](https://github.com/cwickham/quotation)
+
+相比于 SQL， dplyr 在数据库操作的不足，这是一些比较难的部分 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
+:::
+
+函数式编程 Functional Programming Languages 用于数据处理
+
+- [rpivotTable](https://github.com/smartinsightsfromdata/rpivotTable) 动态数据透视表
+- [fuzzyjoin](https://github.com/dgrtwo/fuzzyjoin) Join tables together on inexact matching
+- [dtplyr](https://github.com/hadley/dtplyr) dtplyr is the data.table backend for dplyr. It provides S3 methods for data.table objects so that dplyr works the way you expect.
+- [bplyr](https://github.com/yonicd/bplyr) basic dplyr and tidyr functionality without the tidyverse dependencies 
+- [SqlRender](https://github.com/OHDSI/SqlRender) 基于 Java 语言，借助 rJava 包支持参数化的 SQL 语句，并且可以将一种 SQL 语句（如 Microsoft SQL Server）转化为多种SQL语句（如Oracle, PostgreSQL, Amazon RedShift, Impala, IBM Netezza, Google BigQuery, Microsoft PDW, and SQLite）
+- [fastmap](https://github.com/wch/fastmap) 实现键值存储，提供新的数据结构
+- [Roaring bitmaps](https://github.com/RoaringBitmap/CRoaring) Bitsets, also called bitmaps, are commonly used as fast data structures.
+
+```{r}
+library(tidyverse)
+```
+
+数据操作的语法
+
+第一代
+
+1. Base R 数据操作已在第 \@ref(data-manipulator) 章详细介绍
+
+第二代
+
+1. reshape （退休）使用函数 `melt` 和 `cast` 重构(restructure)和聚合(aggregate)数据 
+1. reshape2 （退休）是 reshape 的继任者，功能和 reshape 类似，提供两个函数 `melt` 和 `cast` 聚合数据，因此不再介绍 reshape，而鉴于 reshape2 还在活跃使用中，故而以它为例介绍  `melt` 和 `cast` 函数
+1. plyr （退休）统一拆分(split)，计算(apply)，合并(combine)的数据处理流，由 dplyr（用于data.frame） 和 purrr （用于 list）继任
+
+第三代
+
+1. dplyr 操作数据的语法及其扩展
+1. sparklyr 给 dplyr 提供 Spark 接口支持
+1. dbplyr 给 dplyr 提供 DBI 数据库接口支持
+1. dtplyr 给 dplyr 提供 data.table 支持
+1. tidyr 提供 `spread` 和 `gather` 两个函数清洗数据
+
+Garrett Grolemund 在 RStudio 主要从事教育教学，参考 [Materials for the Tidyverse Train-the-trainer workshop](https://github.com/rstudio-education/teach-tidy) 和 [The Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/)
+
+Dirk Eddelbuettel 的 [Getting Started in R -- Tinyverse Edition](https://github.com/eddelbuettel/gsir-te)
+
+
+## 常用操作 {#common-operations}
+
+dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称“数据操作的语法”，与 ggplot2 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 [这里](https://dplyr.tidyverse.org)，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。
+
+dplyr 常用的函数是 7 个： `arrange` 排序 `filter` 过滤行 `select` 选择列 `mutate` 变换 `summarise` 汇总 `group_by` 分组 `distinct` 去重
+
+以 ggplot2 包自带的钻石数据集 diamonds 为例介绍
+
+### 查看 {#tibble-show}
+
+除了直接打印数据集的前几行，tibble 包还提供 glimpse 函数查看数据集，而 Base R 默认查看方式是调用 str 函数
+
+```{r}
+diamonds
+glimpse(diamonds)
+```
+
+Table: (\#tab:dplyr-object-type) dplyr 定义的数据对象类型
+
+| 类型 | 含义                   |
+| :--- | :--------------------- |
+| int  | 整型 integer           |
+| dbl  | （单）双精度浮点类型   |
+| chr  | 字符（串）类型         |
+| dttm | data-time 类型         |
+| lgl  | 布尔类型               |
+| fctr | 因子类型 factor        |
+| date | 日期类型               |
+
+表 \@ref(tab:dplyr-object-type) 中 dttm 和 date 类型代指 lubridate 包指定的日期对象 POSIXct、 POSIXlt、 Date、 chron、 yearmon、 yearqtr、 zoo、 zooreg、 timeDate、 xts、 its、 ti、 jul、 timeSeries 和 fts。
+
+### 筛选 {#dplyr-filter}
+
+按条件筛选数据的子集，按行筛选
+
+```{r}
+diamonds %>% filter(cut == "Ideal" , carat >= 3)
+```
+
+先按行，再按列筛选
+
+```{r}
+diamonds %>% 
+  filter(carat >= 3, color == "I") %>% 
+  select(cut, carat)
+```
+
+### 排序 {#dplyr-arrange}
+
+arrange 默认升序排列，按钻石重量升序，按价格降序
+
+```{r}
+diamonds %>% 
+  filter(cut == "Ideal" , carat >= 3) %>% 
+  arrange(carat, desc(price))
+```
+
+### 聚合 {#dplyr-summarise}
+
+分组求和，求平均，计数
+
+```{r}
+diamonds %>% 
+  filter(carat > 3, color == "I") %>% 
+  group_by(cut, clarity) %>% 
+  summarise(sum_carat = sum(carat), mean_carat = mean(carat), n_count = n())
+```
+
+
+### 合并 {#dplyr-merge}
+
+按行合并
+
+```{r}
+set.seed(2018)
+one <- diamonds %>% 
+  filter(color == "I") %>% 
+  sample_n(5)
+two <- diamonds %>% 
+  filter(color == "J") %>% 
+  sample_n(5)
+# 按行合并数据框 one 和 two
+bind_rows(one, two)
+```
+
+按列合并
+
+```{r}
+set.seed(2018)
+three <- diamonds %>% 
+  select(carat, color) %>% 
+  sample_n(5)
+four <- diamonds %>% 
+  select(carat, color) %>% 
+  sample_n(5)
+bind_cols(three, four)
+```
+
+
+### 变换 {#dplyr-mutate}
+
+添加一列，新的列或者改变原来的列
+
+```{r}
+diamonds %>% 
+  filter(carat > 3, color == "I") %>% 
+  select(cut, carat) %>% 
+  mutate(vol = if_else(carat > 3.5, "A", "B"))
+```
+
+
+
+### 去重 {#dplyr-duplicated}
+
+数据去重在 dplyr 中的实现[^dplyr-duplicated]。
+
+```{r}
+set.seed(123)
+df <- data.frame(
+  x = sample(0:1, 10, replace = T),
+  y = sample(0:1, 10, replace = T),
+  z = 1:10
+)
+df
+```
+
+去掉列重复的数据点 (x, y) 
+
+```{r}
+df %>%
+  group_by(x, y) %>%
+  filter(row_number(z) == 1)
+# 此处不对，没有了 z 
+df %>%
+  distinct(x, y)
+# 应该为
+df %>%
+  distinct(x, y, .keep_all = TRUE)
+```
+
+[^dplyr-duplicated]: https://stackoverflow.com/questions/22959635/
+
+
+## 高频问题 {#common-dataframe-operations}
+
+常用的数据操作包含
+
+1. 创建空的数据框或者说初始化一个数据框，
+1. 按指定的列对数据框排序，
+1. 选择特定的一些列，复杂情况是可能需要正则表达式从列名或者值中筛选
+1. 合并两个数据框，分为 (inner outer left right) 四种情况
+1. 宽格式和长格式互相转换，即重塑操作 reshape，单独的 tidyr 包操作，是 reshape2 包的进化版，提供 `spread` 和 `gather` 两个主要函数
+
+### 初始化数据框 {#create-empty-dataframe}
+
+创建空的数据框，就是不包含任何行、记录
+
+```{r}
+empty_df <- data.frame(
+  Doubles = double(),
+  Ints = integer(),
+  Factors = factor(),
+  Logicals = logical(),
+  Characters = character(),
+  stringsAsFactors = FALSE
+)
+str(empty_df)
+```
+
+如果数据框 df 包含数据，现在要依据它创建一个空的数据框
+
+```{r,eval=FALSE}
+empty_df = df[FALSE,]
+```
+
+还可以使用 structure 构造一个数据框，并且我们发现它的效率更高
+
+```{r}
+s <- function() structure(list(
+    Date = as.Date(character()),
+    File = character(),
+    User = character()
+  ),
+  class = "data.frame"
+  )
+d <- function() data.frame(
+    Date = as.Date(character()),
+    File = character(),
+    User = character(),
+    stringsAsFactors = FALSE
+  )
+microbenchmark::microbenchmark(s(), d())
+```
+
+### 移除缺失记录 {#remove-missing-values}
+
+只要行中包含缺失值，我们就把这样的行移除出去
+
+```{r,out.lines=10}
+airquality[complete.cases(airquality), ]
+```
+
+### 数据类型转化 {#coerce-data-type}
+
+```{r}
+str(PlantGrowth)
+bob <- PlantGrowth
+i <- sapply(bob, is.factor)
+bob[i] <- lapply(bob[i], as.character)
+str(bob)
+```
+
+### 跨列分组求和 {#cross-group-by}
+
+输入是一个数据框 data.frame，按照其中某一变量分组，然后计算任意数量的变量的行和和列和。
+
+空气质量数据集 airquality 按月份 Month 分组，然后求取满足条件的列的和
+
+```{r}
+Reduce(rbind, lapply(unique(airquality$Month), function(gv) {
+  subdta <- subset(airquality, subset = Month == gv)
+  data.frame(
+    Colsum = as.numeric(
+      colSums(subdta[, grepl("[mM]", names(airquality))], na.rm = TRUE)
+    ),
+    Month = gv
+  )
+}))
+```
+
+什么是函数式编程，R 语言环境下的函数式编程是如何操作的
+
+
+## 管道操作 {#pipe-manipulation}
+
+[Stefan Milton Bache](http://stefanbache.dk/) 开发了 [magrittr](https://github.com/tidyverse/magrittr) 包实现管道操作，增加代码的可读性和维护性，但是这个 R 包的名字取的太奇葩，因为 [记不住](https://d.cosx.org/d/420697/21)，它其实是一个复杂的[法语发音][pronounce-magrittr]，中式英语就叫它马格里特吧！这下应该好记多了吧！
+
+[pronounce-magrittr]: https://magrittr.tidyverse.org/articles/magrittr.html
+
+我要查看是否需要新添加一个 R 包依赖，假设该 R 包是 reticulate 没有出现在 DESCRIPTION 文件中，但是可能已经被其中某（个）些 R 包依赖了
+
+```{r}
+"reticulate" %in% sort(unique(unlist(tools::package_dependencies(desc::desc_get_deps()$package, recursive = TRUE))))
+```
+
+安装 pkg 的依赖
+
+```{r}
+pkg <- c(
+  "bookdown",
+  "e1071",
+  "formatR",
+  "lme4",
+  "mvtnorm",
+  "prettydoc", "psych",
+  "reticulate", "rstan", "rstanarm", "rticles",
+  "svglite",
+  "TMB", "glmmTMB"
+)
+# 获取 pkg 的所有依赖
+dep_pkg <- tools::package_dependencies(pkg, recursive = TRUE)
+# 将列表 list 合并为向量 vector
+merge_pkg <- Reduce("c", dep_pkg, accumulate = FALSE)
+# 所有未安装的 R 包
+miss_pkg <- setdiff(unique(merge_pkg), unique(.packages(TRUE)))
+# 除了 pkg 外，未安装的 R 包，安装 pkg 的依赖
+sort(setdiff(miss_pkg, pkg))
+```
+
+转化为管道操作，增加可读性
+
+> 再举一个关于数据模拟的例子
+
+模拟 0-1 序列，
+
+```{r}
+set.seed(2019)
+binom_sample <- function(n) {
+  sum(sample(x = c(0,1), size = n, prob = c(0.8, 0.2), replace = TRUE))/n
+}
+# 频率估计概率
+one_prob <- sapply(10^(seq(8)), binom_sample)
+# 估计的误差
+one_abs <- abs(one_prob - 0.2)
+one_abs
+```
+
+似然估计
+
+## 运行环境 {#dm-dplyr-rsession}
+
+```{r}
+xfun::session_info()
+```

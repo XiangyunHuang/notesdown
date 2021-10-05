@@ -2331,6 +2331,26 @@ p1 / p2
 
 [ridgeline](https://github.com/R-CoderDotCom/ridgeline) 提供 Base R 绘图方案
 
+
+```{r ridge, echo=FALSE, fig.cap="岭线图", fig.width=4, fig.height=4, out.width="65%"}
+# http://karolis.koncevicius.lt/posts/r_base_plotting_without_wrappers/
+dens <- tapply(iris$Sepal.Length, iris$Species, density)
+
+xs <- Map(getElement, dens, "x")
+ys <- Map(getElement, dens, "y")
+ys <- Map(function(x) (x - min(x)) / max(x - min(x)) * 1.5, ys)
+ys <- Map(`+`, ys, length(ys):1)
+
+plot.new()
+plot.window(xlim = range(xs), ylim = c(1, length(ys) + 1.5))
+abline(h = length(ys):1, col = "grey")
+
+invisible(Map(polygon, xs, ys, col = hcl.colors(length(ys), "Zissou", alpha = 0.8)))
+
+axis(1, tck = -0.01)
+mtext(names(dens), 2, at = length(ys):1, las = 2, padj = 0)
+```
+
 ### 椭圆图 {#sec-ggplot2-ellipse}
 
 type 指定多元分布的类型，`type = "t"` 和 `type = "norm"` 分别表示 t 分布和正态分布，`geom = "polygon"`，以 `eruptions > 3` 分为两组
