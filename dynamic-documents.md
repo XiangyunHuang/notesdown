@@ -39,4 +39,8 @@
 - 基于 thematic 和 bslib 包美化 Rmd 文档 <https://www.tillac-data.com/2020-fast-rmd-theming-with-thematic-and-bootstraplib/>
 - 借助 flipbookr 在 xaringan 制作的幻灯片里逐行展示代码执行的效果，特别适合用于 ggplot2 的教学 <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
 - 制作 note/tips 等自定义块 <https://desiree.rbind.io/post/2019/making-tip-boxes-with-bookdown-and-rmarkdown/>
-
+- learnr: Interactive Tutorials with R Markdown <https://rstudio.github.com/learnr/>
+- r2d3: R Interface to D3 Visualizations <https://rstudio.github.io/r2d3/>
+- radix: Radix combines the technical authoring features of Distill with R Markdown, enabling a fully reproducible workflow based on literate programming <https://github.com/radixpub/radix-r>
+- revealjs: R Markdown Format for reveal.js Presentations <https://github.com/rstudio/revealjs>
+- xaringan: Presentation Ninja 幻灯忍者写轮眼 <https://slides.yihui.name/xaringan/>

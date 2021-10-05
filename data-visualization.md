@@ -3734,7 +3734,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Sun"
+## [1] "Tue"
 ```
 
 ```r
@@ -3742,7 +3742,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 1
+## [1] 3
 ```
 
 :::
@@ -3867,6 +3867,16 @@ p1 / p2
 
 [ridgeline](https://github.com/R-CoderDotCom/ridgeline) 提供 Base R 绘图方案
 
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.65\linewidth]{data-visualization_files/figure-latex/ridge-1} 
+
+}
+
+\caption{岭线图}(\#fig:ridge)
+\end{figure}
+
 ### 椭圆图 {#sec-ggplot2-ellipse}
 
 type 指定多元分布的类型，`type = "t"` 和 `type = "norm"` 分别表示 t 分布和正态分布，`geom = "polygon"`，以 `eruptions > 3` 分为两组
@@ -3932,7 +3942,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x5633e8ebd610>
+## <bytecode: 0x56509116ee08>
 ## <environment: namespace:ggpubr>
 ```
 

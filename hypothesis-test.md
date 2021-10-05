@@ -7,6 +7,11 @@
 > --- Jacob Cohen [@Cohen_1994_Earth]
 
 
+
+
+\begin{center}\includegraphics{hypothesis-test_files/figure-latex/unnamed-chunk-2-1} \end{center}
+
+
 ```r
 x = seq(from = -4, to = 8, length.out = 193)
 y1 = dnorm(x, mean = 3, sd = 1) 
@@ -207,13 +212,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 24, number of trials = 100, p-value = 1.81e-07
+## number of successes = 28, number of trials = 100, p-value = 1.258e-05
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1602246 0.3357355
+##  0.1947936 0.3786670
 ## sample estimates:
 ## probability of success 
-##                   0.24
+##                   0.28
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -228,13 +233,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 24, number of trials = 100, p-value = 0.3176
+## number of successes = 28, number of trials = 100, p-value = 0.05948
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1602246 0.3357355
+##  0.1947936 0.3786670
 ## sample estimates:
 ## probability of success 
-##                   0.24
+##                   0.28
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设
@@ -1497,7 +1502,7 @@ system.time(comp_auc(dat = dat2, show_roc = FALSE))
 
 ```
 ##    user  system elapsed 
-##   0.002   0.000   0.002
+##   0.001   0.000   0.002
 ```
 
 更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。
@@ -1685,22 +1690,23 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggmosaic_0.3.3  patchwork_1.1.1 ggplot2_3.3.5   magrittr_2.0.1 
-## [5] formatR_1.11   
+## [1] ggmosaic_0.3.3  patchwork_1.1.1 nomnoml_0.2.3   ggplot2_3.3.5  
+## [5] magrittr_2.0.1  formatR_1.11   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.1   xfun_0.25          purrr_0.3.4        colorspace_2.0-2  
-##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
+##  [1] tidyselect_1.1.1   xfun_0.26          purrr_0.3.4        colorspace_2.0-2  
+##  [5] vctrs_0.3.8        generics_0.1.0     viridisLite_0.4.0  htmltools_0.5.2   
 ##  [9] yaml_2.2.1         utf8_1.2.2         plotly_4.9.4.1     rlang_0.4.11      
-## [13] pillar_1.6.2       glue_1.4.2         withr_2.4.2        DBI_1.1.1         
-## [17] lifecycle_1.0.0    plyr_1.8.6         stringr_1.4.0      munsell_0.5.0     
-## [21] gtable_0.3.0       htmlwidgets_1.5.3  evaluate_0.14      labeling_0.4.2    
-## [25] knitr_1.33         fastmap_1.1.0      curl_4.3.2         fansi_0.5.0       
-## [29] Rcpp_1.0.7         scales_1.1.1       jsonlite_1.7.2     farver_2.1.0      
-## [33] digest_0.6.27      stringi_1.7.4      bookdown_0.24      dplyr_1.0.7       
-## [37] ggrepel_0.9.1      grid_4.1.1         tools_4.1.1        lazyeval_0.2.2    
-## [41] productplots_0.1.1 tibble_3.1.4       crayon_1.4.1       tidyr_1.1.3       
-## [45] pkgconfig_2.0.3    ellipsis_0.3.2     data.table_1.14.0  assertthat_0.2.1  
-## [49] rmarkdown_2.10     httr_1.4.2         R6_2.5.1           compiler_4.1.1
+## [13] pillar_1.6.3       glue_1.4.2         withr_2.4.2        DBI_1.1.1         
+## [17] plyr_1.8.6         lifecycle_1.0.1    stringr_1.4.0      munsell_0.5.0     
+## [21] gtable_0.3.0       htmlwidgets_1.5.4  evaluate_0.14      labeling_0.4.2    
+## [25] knitr_1.36         callr_3.7.0        fastmap_1.1.0      ps_1.6.0          
+## [29] curl_4.3.2         fansi_0.5.0        Rcpp_1.0.7         scales_1.1.1      
+## [33] webshot_0.5.2      jsonlite_1.7.2     farver_2.1.0       digest_0.6.28     
+## [37] stringi_1.7.4      bookdown_0.24      processx_3.5.2     dplyr_1.0.7       
+## [41] ggrepel_0.9.1      grid_4.1.1         tools_4.1.1        productplots_0.1.1
+## [45] lazyeval_0.2.2     tibble_3.1.5       tidyr_1.1.4        crayon_1.4.1      
+## [49] pkgconfig_2.0.3    ellipsis_0.3.2     data.table_1.14.2  assertthat_0.2.1  
+## [53] rmarkdown_2.11     httr_1.4.2         R6_2.5.1           compiler_4.1.1
 ```
 

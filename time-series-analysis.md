@@ -331,10 +331,10 @@ ts(rnorm(20), start = c(1961, 1), frequency = 365.25/7)
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1] -2.20126358 -0.75248920 -0.11684879  0.41355902  0.98321678 -1.10095994
-##  [7]  1.13359204 -1.64647205 -0.65665817 -1.08787204  0.44304131 -0.02989517
-## [13]  0.45889219 -0.50190564 -1.07721070  1.25963397 -0.96683935 -1.14615639
-## [19]  0.17062514  0.08285087
+##  [1] -0.44021231  0.80094706 -0.46946422  1.24030728 -0.62299352  0.03338371
+##  [7]  0.43744907 -1.18495649 -0.83943090  1.83015189 -0.21806832  0.89690710
+## [13] -0.79384850 -0.69578553  0.55509629  0.10128423 -1.18784469 -0.52445056
+## [19] -0.59235331  0.34218749
 ```
 
 周数据，一周采一个点，采了 20 个点
@@ -717,19 +717,19 @@ sessionInfo()
 ## [5] formatR_1.11     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.25         purrr_0.3.4      
-##  [5] lattice_0.20-44   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
+##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.26         purrr_0.3.4      
+##  [5] lattice_0.20-45   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
 ##  [9] htmltools_0.5.2   yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
-## [13] pillar_1.6.2      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
-## [17] TTR_0.24.2        lifecycle_1.0.0   quantmod_0.4.18   stringr_1.4.0    
-## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.3 evaluate_0.14    
-## [25] labeling_0.4.2    knitr_1.33        fastmap_1.1.0     curl_4.3.2       
+## [13] pillar_1.6.3      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
+## [17] TTR_0.24.2        lifecycle_1.0.1   quantmod_0.4.18   stringr_1.4.0    
+## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.4 evaluate_0.14    
+## [25] labeling_0.4.2    knitr_1.36        fastmap_1.1.0     curl_4.3.2       
 ## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        Rcpp_1.0.7       
 ## [33] scales_1.1.1      backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2   
-## [37] sysfonts_0.8.5    farver_2.1.0      gridExtra_2.3     digest_0.6.27    
+## [37] sysfonts_0.8.5    farver_2.1.0      gridExtra_2.3     digest_0.6.28    
 ## [41] stringi_1.7.4     showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24    
 ## [45] dplyr_1.0.7       grid_4.1.1        tools_4.1.1       magrittr_2.0.1   
-## [49] tibble_3.1.4      crayon_1.4.1      tidyr_1.1.3       pkgconfig_2.0.3  
-## [53] ellipsis_0.3.2    data.table_1.14.0 lubridate_1.7.10  assertthat_0.2.1 
-## [57] rmarkdown_2.10    R6_2.5.1          igraph_1.2.6      compiler_4.1.1
+## [49] tibble_3.1.5      crayon_1.4.1      tidyr_1.1.4       pkgconfig_2.0.3  
+## [53] ellipsis_0.3.2    data.table_1.14.2 lubridate_1.7.10  assertthat_0.2.1 
+## [57] rmarkdown_2.11    R6_2.5.1          igraph_1.2.6      compiler_4.1.1
 ```

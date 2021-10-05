@@ -8,6 +8,10 @@ Richard Iannone 开发的 [gt](https://github.com/rstudio/gt) 包覆盖测试 78
 
 朱昊开发的 [kableExtra](https://github.com/haozhu233/kableExtra) 大大扩展了 **knitr** 包的 `kable()` 函数的功能，虽没有覆盖测试，但中英文文档特别详细，见官网 <https://haozhu233.github.io/kableExtra/>。
 
+<!-- 
+[gtExtras](https://github.com/jthomasmock/gtExtras/) 扩展 gt 包的能力 
+-->
+
 目前，Greg Lin、 谢益辉和 Richard Iannone 都是 RStudio 公司雇员，他们背靠开源组织和大公司，开发的这些 R 包的生命力都比较强。 **gt** 和 **kableExtra** 摆脱了 JavaScript 库的依赖，网页形式的表格可以嵌入到邮件内容中，这是一个不太引人注意的优势。**kableExtra** 还支持高度自定义的 LaTeX 输出，详见案例 <https://github.com/XiangyunHuang/bookdown-kableExtra>，**gt** 包据说未来也会支持，拭目以待吧，也许在成书之日能看到！
 
 此外，还有任坤开发的 [**formattable**](https://github.com/renkun-ken/formattable) 和 David Gohel 开发的 [**flextable**](https://github.com/davidgohel/flextable) 包等，一份综合介绍见博文 [How to Make Beautiful Tables in R](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/)。
@@ -394,12 +398,12 @@ sessionInfo()
 ## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.19          magrittr_2.0.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] rstudioapi_0.13   knitr_1.33        xml2_1.3.2        munsell_0.5.0    
+##  [1] rstudioapi_0.13   knitr_1.36        xml2_1.3.2        munsell_0.5.0    
 ##  [5] rvest_1.0.1       viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.1         
 ##  [9] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     httr_1.4.2       
-## [13] tools_4.1.1       webshot_0.5.2     xfun_0.25         systemfonts_1.0.2
-## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.27     lifecycle_1.0.0  
-## [21] bookdown_0.24     htmlwidgets_1.5.3 curl_4.3.2        glue_1.4.2       
-## [25] evaluate_0.14     rmarkdown_2.10    stringi_1.7.4     compiler_4.1.1   
+## [13] tools_4.1.1       webshot_0.5.2     xfun_0.26         systemfonts_1.0.2
+## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.28     lifecycle_1.0.1  
+## [21] bookdown_0.24     htmlwidgets_1.5.4 curl_4.3.2        glue_1.4.2       
+## [25] evaluate_0.14     rmarkdown_2.11    stringi_1.7.4     compiler_4.1.1   
 ## [29] scales_1.1.1      svglite_2.0.0
 ```

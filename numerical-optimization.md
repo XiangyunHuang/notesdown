@@ -1,5 +1,10 @@
 # 数值优化 {#chap-numerical-optimization}
 
+<!-- 
+Optimization Packages for R
+https://github.com/r-opt 
+-->
+
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
 
 商业优化求解器的能力都覆盖非线性规划（NLP），线性（LP）、二次（QP）和锥规划（SOCP），混合整数线性规划（MILP），多目标优化，最小二乘和方程求解。此外，还有很多文档介绍，
@@ -1230,7 +1235,7 @@ nlp$solution
 ```
 
 ```
-## [1] -21.99115   0.00000
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -1238,7 +1243,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -1483,7 +1488,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1061
+## [1] 368.1059
 ```
 
 ```r
@@ -1491,10 +1496,9 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000
+##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -1876,7 +1880,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.043078 4.915028 3.534608 1.504008
+## [1] 1.160664 4.593461 4.018491 1.189610
 ```
 
 ```r
@@ -1884,7 +1888,7 @@ nlp$objval
 ```
 
 ```
-## [1] 18.42676
+## [1] 17.51191
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2012,7 +2016,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227973 4.245374
+## [1] 1.227969 4.245375
 ```
 
 ```r
@@ -2212,7 +2216,7 @@ nlp$solution
 ```
 
 ```
-## [1] 15.058932 -1.661011
+## [1] 19.9253682 -0.3396662
 ```
 
 ```r
@@ -2220,7 +2224,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.106636
+## [1] -2.833693
 ```
 比如下面三组
 
@@ -3002,33 +3006,33 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] quadprog_1.5-8            kableExtra_1.3.4         
-##  [3] tibble_3.1.4              Sim.DiffProc_4.8         
-##  [5] nlmeODE_1.1               nlme_3.1-152             
+##  [3] tibble_3.1.5              Sim.DiffProc_4.8         
+##  [5] nlmeODE_1.1               nlme_3.1-153             
 ##  [7] PBSddesolve_1.12.6        ReacTran_1.4.3.1         
 ##  [9] shape_1.4.6               scatterplot3d_0.3-41     
-## [11] deSolve_1.28              BB_2019.10-1             
-## [13] rootSolve_1.8.2.2         kernlab_0.9-29           
-## [15] lattice_0.20-44           ROI.plugin.quadprog_1.0-0
+## [11] deSolve_1.29              BB_2019.10-1             
+## [13] rootSolve_1.8.2.3         kernlab_0.9-29           
+## [15] lattice_0.20-45           ROI.plugin.quadprog_1.0-0
 ## [17] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
 ## [19] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
 ## [21] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] svglite_2.0.0           digest_0.6.27           utf8_1.2.2             
+##  [1] svglite_2.0.0           digest_0.6.28           utf8_1.2.2             
 ##  [4] slam_0.1-48             R6_2.5.1                alabama_2015.3-1       
-##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.2           
+##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.3           
 ## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
-## [13] nloptr_1.2.2.2          rmarkdown_2.10          webshot_0.5.2          
+## [13] nloptr_1.2.2.2          rmarkdown_2.11          webshot_0.5.2          
 ## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
-## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.25              
+## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.26              
 ## [22] systemfonts_1.0.2       pkgconfig_2.0.3         htmltools_0.5.2        
 ## [25] bookdown_0.24           viridisLite_0.4.0       fansi_0.5.0            
 ## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.1             
-## [31] lifecycle_1.0.0         registry_0.5-1          magrittr_2.0.1         
+## [31] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.1         
 ## [34] scales_1.1.1            stringi_1.7.4           xml2_1.3.2             
 ## [37] ellipsis_0.3.2          vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7
 ## [40] tools_4.1.1             glue_1.4.2              parallel_4.1.1         
 ## [43] fastmap_1.1.0           yaml_2.2.1              colorspace_2.0-2       
-## [46] rvest_1.0.1             knitr_1.33
+## [46] rvest_1.0.1             knitr_1.36
 ```
 

@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-10-03 07:10:09 2021-10-03 07:18:35
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-10-05 07:45:56 2021-10-05 07:54:38
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2021-10-03 07:55:08 2021-10-03 07:55:08 2021-10-03 07:55:09
+    ## . 16384  TRUE  755 2021-10-05 09:04:53 2021-10-05 09:04:53 2021-10-05 09:04:54
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-10-03 07:49:40 2021-10-03 07:49:40
+    ## ./_book/ 12288  TRUE  755 2021-10-05 08:57:49 2021-10-05 08:57:49
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-10-03 07:54:14 1001 121 runner docker
+    ## ./_book/ 2021-10-05 09:00:31 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 28998
+    ## [1] 58222
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.075   0.000   0.075
+    ##   0.064   0.004   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.075   0.000   0.075
+    ##   0.062   0.004   0.066
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 00:55:09 PDT"
+    ## [1] "2021-10-05 02:04:54 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 03:55:09 EDT"
+    ## [1] "2021-10-05 05:04:54 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03"
+    ## [1] "2021-10-05"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Oct  3 07:55:09 2021"
+    ## [1] "Tue Oct  5 09:04:54 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sun Oct 03 07:55:09 2021"
+    ## [1] "Tue Oct 05 09:04:54 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 07:55:09 GMT"
+    ## [1] "2021-10-05 09:04:54 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 07:55:09 UTC"
+    ## [1] "2021-10-05 09:04:54 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 06:55:09 UTC"
+    ## [1] "2021-10-05 08:04:54 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-10-03 07:28:08 2021-10-03 07:28:08
+    ## ./_common.R 1636 FALSE  644 2021-10-05 08:36:44 2021-10-05 08:36:44
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-10-03 07:49:40 1001 121 runner docker
+    ## ./_common.R 2021-10-05 08:36:52 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-10-03 07:55:09 2021-10-03 07:55:09
+    ## ./_common.R 1636 FALSE  644 2021-10-05 09:04:54 2021-10-05 09:04:54
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-10-03 07:55:09 1001 121 runner docker
+    ## ./_common.R 2021-10-05 09:04:54 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 07:55:09 CST"
+    ## [1] "2021-10-05 09:04:54 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 07:55:09"
+    ## [1] "2021-10-05 09:04:54"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-03 15:55:09 CST"
+    ## [1] "2021-10-05 17:04:54 CST"
     ```
 
 1. 设置时区
@@ -1251,7 +1251,7 @@ apropos('package')
     ```
     
     ```
-    ## [1] 516
+    ## [1] 519
     ```
    
 1. `available.packages` 查询可用的 R 包
@@ -1318,20 +1318,20 @@ apropos('package')
     ```
     
     ```
-    ##            Package      LibPath                           Installed Built  
-    ## arrow      "arrow"      "/home/runner/work/_temp/Library" "5.0.0"   "4.1.1"
-    ## cpp11      "cpp11"      "/home/runner/work/_temp/Library" "0.3.1"   "4.1.1"
-    ## data.table "data.table" "/home/runner/work/_temp/Library" "1.14.0"  "4.1.1"
-    ## desc       "desc"       "/home/runner/work/_temp/Library" "1.3.0"   "4.1.1"
-    ## deSolve    "deSolve"    "/home/runner/work/_temp/Library" "1.28"    "4.1.1"
-    ## digest     "digest"     "/home/runner/work/_temp/Library" "0.6.27"  "4.1.1"
-    ##            ReposVer  Repository                               
-    ## arrow      "5.0.0.2" "https://cloud.r-project.org/src/contrib"
-    ## cpp11      "0.4.0"   "https://cloud.r-project.org/src/contrib"
-    ## data.table "1.14.2"  "https://cloud.r-project.org/src/contrib"
-    ## desc       "1.4.0"   "https://cloud.r-project.org/src/contrib"
-    ## deSolve    "1.29"    "https://cloud.r-project.org/src/contrib"
-    ## digest     "0.6.28"  "https://cloud.r-project.org/src/contrib"
+    ##              Package        LibPath                           Installed Built  
+    ## colourpicker "colourpicker" "/home/runner/work/_temp/Library" "1.1.0"   "4.1.1"
+    ## deldir       "deldir"       "/home/runner/work/_temp/Library" "0.2-10"  "4.1.1"
+    ## diffobj      "diffobj"      "/home/runner/work/_temp/Library" "0.3.4"   "4.1.1"
+    ## echarts4r    "echarts4r"    "/home/runner/work/_temp/Library" "0.4.1"   "4.1.1"
+    ## fda          "fda"          "/home/runner/work/_temp/Library" "5.1.9"   "4.1.1"
+    ## keras        "keras"        "/home/runner/work/_temp/Library" "2.6.0"   "4.1.1"
+    ##              ReposVer Repository                               
+    ## colourpicker "1.1.1"  "https://cloud.r-project.org/src/contrib"
+    ## deldir       "1.0-2"  "https://cloud.r-project.org/src/contrib"
+    ## diffobj      "0.3.5"  "https://cloud.r-project.org/src/contrib"
+    ## echarts4r    "0.4.2"  "https://cloud.r-project.org/src/contrib"
+    ## fda          "5.4.0"  "https://cloud.r-project.org/src/contrib"
+    ## keras        "2.6.1"  "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1356,13 +1356,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 418      57          13
+    ##   /home/runner/work/_temp/Library 468      13          13
     ##   /opt/R/4.1.1/lib/R/library       25       4           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       489         17805
+    ##   https://cloud.r-project.org/src/contrib       492         17823
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1501,7 +1501,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55a3786fd860>
+## <bytecode: 0x5639ef77db70>
 ## <environment: namespace:base>
 ```
 
@@ -1566,12 +1566,12 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] rmarkdown_2.10 fs_1.5.0       magrittr_2.0.1
+## [1] rmarkdown_2.11 fs_1.5.0       magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] compiler_4.1.1  fastmap_1.1.0   bookdown_0.24   htmltools_0.5.2
 ##  [5] tools_4.1.1     yaml_2.2.1      curl_4.3.2      stringi_1.7.4  
-##  [9] knitr_1.33      stringr_1.4.0   digest_0.6.27   xfun_0.25      
+##  [9] knitr_1.36      stringr_1.4.0   digest_0.6.28   xfun_0.26      
 ## [13] rlang_0.4.11    evaluate_0.14
 ```
 

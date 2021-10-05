@@ -1,5 +1,18 @@
 # 空间数据分析  {#chap-spatial-analysis}
 
+<!-- 
+Long list of geospatial tools and resources 
+https://github.com/sacridini/Awesome-Geospatial 
+Julia 空间统计
+Fostering statistics research in Earth sciences 
+https://github.com/JuliaEarth
+
+Spatial Data Science with applications in R
+Edzer Pebesma, Roger Bivand
+https://keen-swartz-3146c4.netlify.app/
+
+[Spatial Modelling for Data Scientists](https://gdsl-ul.github.io/san/) 空间数据建模课程
+-->
 
 Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 [r-spatial](https://github.com/r-spatial/) 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 [sp](https://edzer.github.io/sp/)、 [sf](https://github.com/r-spatial/sf)、 [stars](https://github.com/r-spatial/stars)、 [mapedit](https://github.com/r-spatial/mapedit) 和
 [mapview](https://github.com/r-spatial/mapview)。Edzer Pebesma 长期致力于地理信息和空间统计的软件开发，可以说目前已打造了一个生态。
@@ -282,22 +295,22 @@ sessionInfo()
 ## 
 ## other attached packages:
 ## [1] sfarrow_0.4.0       sf_1.0-2            rasterVis_0.50.3   
-## [4] terra_1.3-22        latticeExtra_0.6-29 lattice_0.20-44    
+## [4] terra_1.3-22        latticeExtra_0.6-29 lattice_0.20-45    
 ## [7] raster_3.4-13       RColorBrewer_1.1-2  sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.25          purrr_0.3.4       
+##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.26          purrr_0.3.4       
 ##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
-##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-8       
-## [13] hexbin_1.28.2      pillar_1.6.2       glue_1.4.2         DBI_1.1.1         
-## [17] jpeg_0.1-9         lifecycle_1.0.0    stringr_1.4.0      codetools_0.2-18  
-## [21] evaluate_0.14      knitr_1.33         fastmap_1.1.0      parallel_4.1.1    
+##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-9       
+## [13] hexbin_1.28.2      pillar_1.6.3       glue_1.4.2         DBI_1.1.1         
+## [17] jpeg_0.1-9         lifecycle_1.0.1    stringr_1.4.0      codetools_0.2-18  
+## [21] evaluate_0.14      knitr_1.36         fastmap_1.1.0      parallel_4.1.1    
 ## [25] curl_4.3.2         class_7.3-19       fansi_0.5.0        Rcpp_1.0.7        
-## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.27     
+## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.28     
 ## [33] stringi_1.7.4      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
-## [37] rgdal_1.5-23       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
-## [41] tibble_3.1.4       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
-## [45] assertthat_0.2.1   rmarkdown_2.10     R6_2.5.1           units_0.7-2       
+## [37] rgdal_1.5-27       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
+## [41] tibble_3.1.5       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
+## [45] assertthat_0.2.1   rmarkdown_2.11     R6_2.5.1           units_0.7-2       
 ## [49] compiler_4.1.1
 ```
 

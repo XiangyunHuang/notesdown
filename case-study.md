@@ -311,18 +311,22 @@ $\beta_2$ & 0.494 & 0.2788 & 1.7720 & 0.0877\\
 equatiomatic::extract_eq(fit_lm)
 ```
 
-$$
+
+
+\begin{equation}
 \operatorname{weight} = \alpha + \beta_{1}(\operatorname{group}_{\operatorname{trt1}}) + \beta_{2}(\operatorname{group}_{\operatorname{trt2}}) + \epsilon
-$$
+\end{equation}
 
 ```r
 # 拟合模型
 equatiomatic::extract_eq(fit_lm, use_coefs = TRUE)
 ```
 
-$$
+
+
+\begin{equation}
 \operatorname{\widehat{weight}} = 5.03 - 0.37(\operatorname{group}_{\operatorname{trt1}}) + 0.49(\operatorname{group}_{\operatorname{trt2}})
-$$
+\end{equation}
 
 进一步地，我们在线性模型的基础上考虑每个实验组有不同的方差，先做方差齐性检验。
 
@@ -701,7 +705,7 @@ length(pdb[, "Package"])
 ```
 
 ```
-## [1] 18324
+## [1] 18349
 ```
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -726,7 +730,7 @@ dim(subset(pdb, subset = !duplicated(pdb[, "Package"])))[1]
 ```
 
 ```
-## [1] 18307
+## [1] 18332
 ```
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
@@ -768,24 +772,24 @@ subset(pdb,
 
 ```
 ##            Package                              Maintainer
-## 2515       compare Paul Murrell <p.murrell@auckland.ac.nz>
-## 5718         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
-## 6464      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
-## 6465    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
-## 6466     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
-## 6468  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
-## 6469  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 6470  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
-## 6474       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
-## 6477      grImport Paul Murrell <p.murrell@auckland.ac.nz>
-## 6478     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
-## 6799       hexView Paul Murrell <paul@stat.auckland.ac.nz>
-## 9209      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 12868    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 13599    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 14027        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 14028 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
-## 17846       vwline Paul Murrell <paul@stat.auckland.ac.nz>
+## 2517       compare Paul Murrell <p.murrell@auckland.ac.nz>
+## 5725         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
+## 6472      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
+## 6473    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
+## 6474     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
+## 6476  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
+## 6477  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 6478  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
+## 6482       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
+## 6485      grImport Paul Murrell <p.murrell@auckland.ac.nz>
+## 6486     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
+## 6808       hexView Paul Murrell <paul@stat.auckland.ac.nz>
+## 9223      metapost Paul Murrell <paul@stat.auckland.ac.nz>
+## 12884    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 13618    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 14049        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 14050 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 17870       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 
 所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 `contributors()` 函数已经收集了成员名单，不需要我们去官网找了。
@@ -1087,7 +1091,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10679
+## [1] 10691
 ```
 
 可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。
@@ -1102,11 +1106,11 @@ subset(pdb,
 
 ```
 ##             Package                             Maintainer
-## 603      assertthat    Hadley Wickham <hadley@rstudio.com>
-## 760       babynames    Hadley Wickham <hadley@rstudio.com>
-## 1210      bigrquery    Hadley Wickham <hadley@rstudio.com>
-## 2198      classifly   Hadley Wickham <h.wickham@gmail.com>
-## 2596     conflicted    Hadley Wickham <hadley@rstudio.com>
+## 604      assertthat    Hadley Wickham <hadley@rstudio.com>
+## 761       babynames    Hadley Wickham <hadley@rstudio.com>
+## 1211      bigrquery    Hadley Wickham <hadley@rstudio.com>
+## 2200      classifly   Hadley Wickham <h.wickham@gmail.com>
+## 2598     conflicted    Hadley Wickham <hadley@rstudio.com>
 ....
 ```
 
@@ -1119,7 +1123,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 9874
+## [1] 9885
 ```
 
 接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图\@ref(fig:top-maintainers) 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。
@@ -1245,7 +1249,7 @@ length(unique(sub_pdb[, "Maintainer"][duplicated(sub_pdb[, "Maintainer"])]))
 ```
 
 ```
-## [1] 3237
+## [1] 3239
 ```
 
 总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有 
@@ -1294,7 +1298,7 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3001 1382  928  578  279  162  105   57   41   28   15   10    7    8    5    4 
+## 3004 1384  930  580  279  162  105   57   41   28   15   10    7    8    5    4 
 ##   17   18   19   20   21   22   23   27   28   56   60  133 
 ##    7    5    2    3    1    1    3    1    1    1    1    1
 ```
@@ -1522,7 +1526,7 @@ sort(table(update_pdb[,"Published"]), decreasing = TRUE)[1]
 
 ```
 ## 2021-09-02 
-##        104
+##        103
 ```
 
 ```r
@@ -1559,7 +1563,7 @@ subset(update_pdb, subset = update_pdb[, "Published"] == min(update_pdb[, "Publi
 
 ```
 ##        Package  Published
-## 2828 coxrobust 2006-03-15
+## 2830 coxrobust 2006-03-15
 ```
 
 ```r
