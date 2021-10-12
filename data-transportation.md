@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpVDylq1/filedb2f4a186843.data"
+## [1] "/tmp/Rtmpq0qlr5/filed7d47e814a36.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpVDylq1/testdb2f32ef29ea"
+## [1] "/tmp/Rtmpq0qlr5/testd7d434c15d7c"
 ```
 
 ```r
@@ -1626,12 +1626,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.73 Very Good     E     VS2  63.1    55  3066 5.77 5.71 3.62
-## 2  0.68 Very Good     G      IF  62.7    56  3143 5.56 5.60 3.50
-## 3  0.90      Fair     G     SI1  65.2    59  3250 6.05 6.01 3.93
-## 4  0.83     Ideal     F     SI1  62.8    56  3482 5.97 6.01 3.76
-## 5  1.03   Premium     D     SI2  62.3    58  3675 6.50 6.40 4.03
-## 6  1.03 Very Good     J     SI2  58.0    60  3729 6.64 6.67 3.86
+## 1  0.72 Very Good     F     VS1  62.2    58  2804 5.75 5.70 3.56
+## 2  0.71     Ideal     D     SI2  62.0    54  2934 5.77 5.74 3.57
+## 3  0.76     Ideal     H     VS2  61.9    55  3016 5.85 5.88 3.64
+## 4  0.78     Ideal     G     VS2  62.0    57  3590 5.90 5.86 3.65
+## 5  0.31   Premium     D     SI1  60.9    60   571 4.38 4.39 2.67
+## 6  0.91 Very Good     G     VS2  62.7    63  3776 6.05 6.00 3.78
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1649,13 +1649,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  3011    1
-## 2 Fair  4277    2
-## 3 Good  1316    1
-## 4 Good  1613    2
-## 5 Good  2281    3
-## 6 Good  2318    4
+##     cut price rank
+## 1  Good   489    1
+## 2  Good   974    2
+## 3  Good  3107    3
+## 4  Good  4223    4
+## 5  Good  6177    5
+## 6 Ideal   561    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1728,7 +1728,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-10-05
+## 1     2021-10-12
 ```
 
 ```r
@@ -1738,7 +1738,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-10-04
+## 1                  2021-10-11
 ```
 
 ```r

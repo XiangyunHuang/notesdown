@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55da9fe55e58>
+## <bytecode: 0x56254a2e2730>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55da9fe55e58>
+## <bytecode: 0x56254a2e2730>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c ce2f157e03b95.c -o ce2f157e03b95.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o ce2f157e03b95.so ce2f157e03b95.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c cdf12bdbb7bc.c -o cdf12bdbb7bc.o
+## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o cdf12bdbb7bc.so cdf12bdbb7bc.o -L/opt/R/4.1.1/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -343,10 +343,9 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] knitr_1.36       lattice_0.20-45  xtable_1.8-4     R6_2.5.1        
 ##  [5] rlang_0.4.11     fastmap_1.1.0    stringr_1.4.0    tools_4.1.1     
-##  [9] grid_4.1.1       xfun_0.26        png_0.1-7        tinytex_0.34    
-## [13] htmltools_0.5.2  ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28   
-## [17] lifecycle_1.0.1  bookdown_0.24    Matrix_1.3-4     later_1.3.0     
-## [21] promises_1.2.0.1 curl_4.3.2       evaluate_0.14    mime_0.12       
-## [25] rmarkdown_2.11   stringi_1.7.4    compiler_4.1.1   jsonlite_1.7.2  
-## [29] httpuv_1.6.3
+##  [9] grid_4.1.1       xfun_0.26        png_0.1-7        htmltools_0.5.2 
+## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28    lifecycle_1.0.1 
+## [17] bookdown_0.24    Matrix_1.3-4     later_1.3.0      promises_1.2.0.1
+## [21] curl_4.3.2       evaluate_0.14    mime_0.12        rmarkdown_2.11  
+## [25] stringi_1.7.4    compiler_4.1.1   jsonlite_1.7.2   httpuv_1.6.3
 ```

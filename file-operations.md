@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-08-10 08:11:27
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-10-05 07:45:56 2021-10-05 07:54:38
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-10-12 13:29:39 2021-10-12 13:37:22
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2021-10-05 09:04:53 2021-10-05 09:04:53 2021-10-05 09:04:54
+    ## . 16384  TRUE  755 2021-10-12 14:36:47 2021-10-12 14:36:47 2021-10-12 14:36:48
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-10-05 08:57:49 2021-10-05 08:57:49
+    ## ./_book/ 12288  TRUE  755 2021-10-12 14:31:02 2021-10-12 14:31:02
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-10-05 09:00:31 1001 121 runner docker
+    ## ./_book/ 2021-10-12 14:34:05 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 58222
+    ## [1] 57210
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.064   0.004   0.067
+    ##   0.069   0.000   0.068
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.062   0.004   0.066
+    ##   0.066   0.000   0.065
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 02:04:54 PDT"
+    ## [1] "2021-10-12 07:36:48 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 05:04:54 EDT"
+    ## [1] "2021-10-12 10:36:48 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05"
+    ## [1] "2021-10-12"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Tue Oct  5 09:04:54 2021"
+    ## [1] "Tue Oct 12 14:36:48 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Tue Oct 05 09:04:54 2021"
+    ## [1] "Tue Oct 12 14:36:48 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 09:04:54 GMT"
+    ## [1] "2021-10-12 14:36:48 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 09:04:54 UTC"
+    ## [1] "2021-10-12 14:36:48 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 08:04:54 UTC"
+    ## [1] "2021-10-12 13:36:48 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-10-05 08:36:44 2021-10-05 08:36:44
+    ## ./_common.R 1636 FALSE  644 2021-10-12 14:10:16 2021-10-12 14:10:16
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-10-05 08:36:52 1001 121 runner docker
+    ## ./_common.R 2021-10-12 14:31:02 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-10-05 09:04:54 2021-10-05 09:04:54
+    ## ./_common.R 1636 FALSE  644 2021-10-12 14:36:48 2021-10-12 14:36:48
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-10-05 09:04:54 1001 121 runner docker
+    ## ./_common.R 2021-10-12 14:36:48 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 09:04:54 CST"
+    ## [1] "2021-10-12 14:36:48 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 09:04:54"
+    ## [1] "2021-10-12 14:36:48"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-10-05 17:04:54 CST"
+    ## [1] "2021-10-12 22:36:48 CST"
     ```
 
 1. 设置时区
@@ -1319,19 +1319,19 @@ apropos('package')
     
     ```
     ##              Package        LibPath                           Installed Built  
+    ## bslib        "bslib"        "/home/runner/work/_temp/Library" "0.3.0"   "4.1.1"
+    ## clue         "clue"         "/home/runner/work/_temp/Library" "0.3-59"  "4.1.1"
     ## colourpicker "colourpicker" "/home/runner/work/_temp/Library" "1.1.0"   "4.1.1"
     ## deldir       "deldir"       "/home/runner/work/_temp/Library" "0.2-10"  "4.1.1"
+    ## deSolve      "deSolve"      "/home/runner/work/_temp/Library" "1.29"    "4.1.1"
     ## diffobj      "diffobj"      "/home/runner/work/_temp/Library" "0.3.4"   "4.1.1"
-    ## echarts4r    "echarts4r"    "/home/runner/work/_temp/Library" "0.4.1"   "4.1.1"
-    ## fda          "fda"          "/home/runner/work/_temp/Library" "5.1.9"   "4.1.1"
-    ## keras        "keras"        "/home/runner/work/_temp/Library" "2.6.0"   "4.1.1"
     ##              ReposVer Repository                               
+    ## bslib        "0.3.1"  "https://cloud.r-project.org/src/contrib"
+    ## clue         "0.3-60" "https://cloud.r-project.org/src/contrib"
     ## colourpicker "1.1.1"  "https://cloud.r-project.org/src/contrib"
-    ## deldir       "1.0-2"  "https://cloud.r-project.org/src/contrib"
+    ## deldir       "1.0-5"  "https://cloud.r-project.org/src/contrib"
+    ## deSolve      "1.30"   "https://cloud.r-project.org/src/contrib"
     ## diffobj      "0.3.5"  "https://cloud.r-project.org/src/contrib"
-    ## echarts4r    "0.4.2"  "https://cloud.r-project.org/src/contrib"
-    ## fda          "5.4.0"  "https://cloud.r-project.org/src/contrib"
-    ## keras        "2.6.1"  "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1356,13 +1356,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 468      13          13
+    ##   /home/runner/work/_temp/Library 448      33          13
     ##   /opt/R/4.1.1/lib/R/library       25       4           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       492         17823
+    ##   https://cloud.r-project.org/src/contrib       492         17795
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1419,51 +1419,52 @@ apropos('package')
     ```
     
     ```
-    ##   [1] "gg.gap"            "ggallin"           "ggalluvial"       
-    ##   [4] "ggalt"             "gganimate"         "ggasym"           
-    ##   [7] "ggbeeswarm"        "ggborderline"      "ggbreak"          
-    ##  [10] "ggBubbles"         "ggbuildr"          "ggbump"           
-    ##  [13] "ggcharts"          "ggChernoff"        "ggcleveland"      
-    ##  [16] "ggconf"            "ggcorrplot"        "ggdag"            
-    ##  [19] "ggdark"            "ggDCA"             "ggdemetra"        
-    ##  [22] "ggdendro"          "ggdist"            "ggdmc"            
-    ##  [25] "ggeasy"            "ggedit"            "ggenealogy"       
-    ##  [28] "ggetho"            "ggExtra"           "ggfan"            
-    ##  [31] "ggfittext"         "ggfocus"           "ggforce"          
-    ##  [34] "ggformula"         "ggfortify"         "ggfun"            
-    ##  [37] "ggfx"              "gggap"             "gggenes"          
-    ##  [40] "ggghost"           "gggibbous"         "ggguitar"         
-    ##  [43] "ggh4x"             "gghalfnorm"        "gghalves"         
-    ##  [46] "ggheatmap"         "gghighlight"       "gghilbertstrings" 
-    ##  [49] "ggHoriPlot"        "ggimage"           "ggimg"            
-    ##  [52] "gginference"       "gginnards"         "ggip"             
-    ##  [55] "ggiraph"           "ggiraphExtra"      "ggjoy"            
-    ##  [58] "gglm"              "gglogo"            "ggloop"           
-    ##  [61] "gglorenz"          "ggmap"             "ggmcmc"           
-    ##  [64] "ggmosaic"          "ggmotif"           "ggmuller"         
-    ##  [67] "ggmulti"           "ggnetwork"         "ggnewscale"       
-    ##  [70] "ggnormalviolin"    "ggnuplot"          "ggpacman"         
-    ##  [73] "ggpage"            "ggparallel"        "ggparliament"     
-    ##  [76] "ggparty"           "ggperiodic"        "ggplot.multistats"
-    ##  [79] "ggplotAssist"      "ggplotgui"         "ggplotify"        
-    ##  [82] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
-    ##  [85] "ggpointdensity"    "ggpol"             "ggpolypath"       
-    ##  [88] "ggpp"              "ggprism"           "ggpubr"           
-    ##  [91] "ggpval"            "ggQC"              "ggQQunif"         
-    ##  [94] "ggquickeda"        "ggquiver"          "ggRandomForests"  
-    ##  [97] "ggraph"            "ggraptR"           "ggrasp"           
-    ## [100] "ggrastr"           "ggrepel"           "ggResidpanel"     
-    ## [103] "ggridges"          "ggrisk"            "ggROC"            
-    ## [106] "ggsci"             "ggseas"            "ggseg"            
-    ## [109] "ggseqlogo"         "ggshadow"          "ggside"           
-    ## [112] "ggsignif"          "ggsn"              "ggsoccer"         
-    ## [115] "ggsolvencyii"      "ggsom"             "ggspatial"        
-    ## [118] "ggspectra"         "ggstance"          "ggstar"           
-    ## [121] "ggstatsplot"       "ggstream"          "ggstudent"        
-    ## [124] "ggswissmaps"       "ggtern"            "ggtext"           
-    ## [127] "ggThemeAssist"     "ggthemes"          "ggtikz"           
-    ## [130] "ggupset"           "ggvenn"            "ggVennDiagram"    
-    ## [133] "ggvoronoi"         "ggwordcloud"       "ggx"
+    ##   [1] "gg.gap"            "ggalignment"       "ggallin"          
+    ##   [4] "ggalluvial"        "ggalt"             "gganimate"        
+    ##   [7] "ggasym"            "ggbeeswarm"        "ggborderline"     
+    ##  [10] "ggbreak"           "ggBubbles"         "ggbuildr"         
+    ##  [13] "ggbump"            "ggcharts"          "ggChernoff"       
+    ##  [16] "ggcleveland"       "ggconf"            "ggcorrplot"       
+    ##  [19] "ggdag"             "ggdark"            "ggDCA"            
+    ##  [22] "ggdemetra"         "ggdendro"          "ggdist"           
+    ##  [25] "ggdmc"             "ggeasy"            "ggedit"           
+    ##  [28] "ggenealogy"        "ggetho"            "ggExtra"          
+    ##  [31] "ggfan"             "ggfittext"         "ggfocus"          
+    ##  [34] "ggforce"           "ggformula"         "ggfortify"        
+    ##  [37] "ggfun"             "ggfx"              "gggap"            
+    ##  [40] "gggenes"           "ggghost"           "gggibbous"        
+    ##  [43] "ggguitar"          "ggh4x"             "gghalfnorm"       
+    ##  [46] "gghalves"          "ggheatmap"         "gghighlight"      
+    ##  [49] "gghilbertstrings"  "ggHoriPlot"        "ggimage"          
+    ##  [52] "ggimg"             "gginference"       "gginnards"        
+    ##  [55] "ggip"              "ggiraph"           "ggiraphExtra"     
+    ##  [58] "ggjoy"             "gglm"              "gglogo"           
+    ##  [61] "ggloop"            "gglorenz"          "ggmap"            
+    ##  [64] "ggmcmc"            "ggmosaic"          "ggmotif"          
+    ##  [67] "ggmuller"          "ggmulti"           "ggnetwork"        
+    ##  [70] "ggnewscale"        "ggnormalviolin"    "ggnuplot"         
+    ##  [73] "ggpacman"          "ggpage"            "ggparallel"       
+    ##  [76] "ggparliament"      "ggparty"           "ggperiodic"       
+    ##  [79] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
+    ##  [82] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
+    ##  [85] "ggPMX"             "ggpointdensity"    "ggpol"            
+    ##  [88] "ggpolypath"        "ggpp"              "ggprism"          
+    ##  [91] "ggpubr"            "ggpval"            "ggQC"             
+    ##  [94] "ggQQunif"          "ggquickeda"        "ggquiver"         
+    ##  [97] "ggRandomForests"   "ggraph"            "ggraptR"          
+    ## [100] "ggrasp"            "ggrastr"           "ggrepel"          
+    ## [103] "ggResidpanel"      "ggridges"          "ggrisk"           
+    ## [106] "ggROC"             "ggsci"             "ggseas"           
+    ## [109] "ggseg"             "ggseqlogo"         "ggshadow"         
+    ## [112] "ggside"            "ggsignif"          "ggsn"             
+    ## [115] "ggsoccer"          "ggsolvencyii"      "ggsom"            
+    ## [118] "ggspatial"         "ggspectra"         "ggstance"         
+    ## [121] "ggstar"            "ggstatsplot"       "ggstream"         
+    ## [124] "ggstudent"         "ggswissmaps"       "ggtern"           
+    ## [127] "ggtext"            "ggThemeAssist"     "ggthemes"         
+    ## [130] "ggtikz"            "ggupset"           "ggvenn"           
+    ## [133] "ggVennDiagram"     "ggvoronoi"         "ggwordcloud"      
+    ## [136] "ggx"
     ```
     
 
@@ -1501,7 +1502,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5639ef77db70>
+## <bytecode: 0x55965a20eb70>
 ## <environment: namespace:base>
 ```
 

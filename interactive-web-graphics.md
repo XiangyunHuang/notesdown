@@ -7,6 +7,8 @@
 
 
 
+
+
 ::: {.rmdtip data-latex="{提示}"}
 plotly 包的函数使用起来还是比较复杂的，特别是需要打磨细节以打造数据产品时，此外，其依赖相当重，仅数据处理就包含两套方法 --- dplyr 和 data.table，引起很多函数冲突，可谓「苦其久矣」！因此，准备另起炉灶，开发一个新的 R 包 qplotly，取意 quick plotly，以 `qplot_ly()` 替代 `plot_ly()`。类似简化 API 的工作有 [simplevis](https://github.com/StatisticsNZ/simplevis)、
 [autoplotly](https://github.com/terrytangyuan/autoplotly)、
@@ -184,24 +186,18 @@ p11 <- diamonds[, .(cnt = .N), by = .(cut)] %>%
     text = ~ scales::comma(cnt), y = ~cnt,
     textposition = "top middle",
     cliponaxis = FALSE, showlegend = FALSE
-  ) %>%
-  config(displayModeBar = F)
-
+  )
 # 分组条形图
 p12 <- plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Accent", type = "histogram"
-) %>%
-  config(displayModeBar = F)
-
+) 
 # 堆积条形图
 p13 <- plot_ly(diamonds,
   x = ~cut, color = ~clarity,
   colors = "Accent", type = "histogram"
 ) %>%
-  layout(barmode = "stack") %>%
-  config(displayModeBar = F)
-
+  layout(barmode = "stack")
 # 百分比堆积条形图
 # p14 <- plot_ly(diamonds,
 #   x = ~cut, color = ~clarity,
@@ -218,8 +214,7 @@ p14 <- plot_ly(
   data = dat, x = ~cut, y = ~pct, color = ~clarity,
   colors = "Set3", type = "bar"
 ) %>%
-  layout(barmode = "stack") %>%
-  config(displayModeBar = F)
+  layout(barmode = "stack")
 
 htmltools::tagList(p11, p12, p13, p14)
 ```
@@ -304,8 +299,7 @@ plot_ly(data = dat) %>%
       x = 0, y = 1, orientation = "h",
       title = list(text = " ")
     )
-  ) %>%
-  config(displayModeBar = F)
+  )
 ```
 
 
@@ -409,8 +403,7 @@ plot_ly(
   layout(
     xaxis = list(hoverformat = ".2f"),
     yaxis = list(hoverformat = ".0f")
-  ) %>%
-  config(displayModeBar = F)
+  )
 ```
 
 ## 曲线图 {#sec-plotly-spline}
@@ -430,7 +423,7 @@ plot_ly(
     xaxis = list(showgrid = F, title = TeX("\\mu")),
     yaxis = list(showgrid = F, title = TeX("\\alpha"))
   ) %>% 
-  config(displayModeBar = FALSE, mathjax = 'cdn')
+  config(mathjax = 'cdn')
 ```
 
 
@@ -485,8 +478,7 @@ plot_mapbox(
     )
   ) %>%
   config(
-    mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN"),
-    displayModeBar = FALSE
+    mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN")
   )
 ```
 
@@ -525,10 +517,7 @@ plot_ly(
       range = c(-40, -10),
       dtick = 5
     )
-  )) %>%
-  config(
-    displayModeBar = FALSE
-  )
+  ))
 ```
 
 
@@ -730,9 +719,6 @@ plot_ly(data = df) %>%
         showarrow = FALSE
       )
     )
-  ) %>%
-  config(
-    displayModeBar = FALSE
   )
 ```
 
@@ -777,9 +763,6 @@ plot_ly(data = dat) %>%
     ),
     xaxis = list(title = "投诉类型", showgrid = F, showline = F),
     yaxis = list(title = "数量", showgrid = F, showline = F)
-  ) %>%
-  config(
-    displayModeBar = FALSE
   )
 ```
 
@@ -804,10 +787,7 @@ pres <- data.frame(
   fontcolor = c("black", "white", "black")
 )
 
-vistime(pres, col.event = "Position", col.group = "Name") %>%
-  config(
-    displayModeBar = FALSE
-  )
+vistime(pres, col.event = "Position", col.group = "Name")
 ```
 
 ## 漏斗图 {#sec-plotly-funnel}
@@ -834,10 +814,7 @@ plot_ly(data = dat) %>%
   layout(yaxis = list(
     categoryarray = ~category,
     title = ""
-  )) %>%
-  config(
-    displayModeBar = FALSE
-  )
+  ))
 ```
 
 
@@ -853,8 +830,7 @@ plotly::plot_ly(data = dat) %>%
     textinfo = "value+percent previous",
     hoverinfo = "none"
   ) %>%
-  plotly::layout(yaxis = list(categoryarray = ~category, title = "")) %>%
-  plotly::config(displayModeBar = FALSE)
+  plotly::layout(yaxis = list(categoryarray = ~category, title = ""))
 ```
 
 ## 雷达图 {#sec-plotly-radar}
@@ -933,8 +909,7 @@ plotly::plot_ly(dat,
     xaxis = list(title = "业务"),
     yaxis = list(title = "金额"),
     showlegend = FALSE
-  ) %>%
-  plotly::config(displayModeBar = FALSE)
+  )
 ```
 
 ## 树状图 {#sec-plotly-treemap}
@@ -1325,7 +1300,7 @@ gg
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-10-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
 转化为 plotly 对象
 
@@ -1467,6 +1442,7 @@ leaflet(quakes) |>
 
 ## 动画 {#sec-echarts4r-animation}
 
+[袁凡](https://yuanfan.vercel.app/) 用 R 中 echarts4r 包绘制柱状图的[笔记](https://yuanfan.vercel.app/posts/echarts4r-e-bar/)
 
 
 ```r
@@ -1658,7 +1634,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-19-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-20-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 
