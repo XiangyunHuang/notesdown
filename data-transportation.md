@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpq0qlr5/filed7d47e814a36.data"
+## [1] "/tmp/Rtmp1Q559g/filed99838ea3514.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpq0qlr5/testd7d434c15d7c"
+## [1] "/tmp/Rtmp1Q559g/testd9986441a1b2"
 ```
 
 ```r
@@ -1626,12 +1626,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.72 Very Good     F     VS1  62.2    58  2804 5.75 5.70 3.56
-## 2  0.71     Ideal     D     SI2  62.0    54  2934 5.77 5.74 3.57
-## 3  0.76     Ideal     H     VS2  61.9    55  3016 5.85 5.88 3.64
-## 4  0.78     Ideal     G     VS2  62.0    57  3590 5.90 5.86 3.65
-## 5  0.31   Premium     D     SI1  60.9    60   571 4.38 4.39 2.67
-## 6  0.91 Very Good     G     VS2  62.7    63  3776 6.05 6.00 3.78
+## 1  0.33     Ideal     J     VS1  62.1    55   557 4.44 4.41 2.75
+## 2  0.77     Ideal     G     VS2  61.7    55  3154 5.87 5.90 3.63
+## 3  0.84     Ideal     I     VS1  61.4    57  3201 6.03 6.09 3.72
+## 4  1.06     Ideal     F     SI2  62.7    56  3461 6.52 6.47 4.07
+## 5  0.80 Very Good     F     VS2  61.3    55  3954 5.93 6.01 3.66
+## 6  0.33     Ideal     H     VS1  61.8    56   579 4.41 4.46 2.74
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1649,13 +1649,13 @@ diamonds_rank
 ```
 
 ```
-##     cut price rank
-## 1  Good   489    1
-## 2  Good   974    2
-## 3  Good  3107    3
-## 4  Good  4223    4
-## 5  Good  6177    5
-## 6 Ideal   561    1
+##    cut price rank
+## 1 Fair  2088    1
+## 2 Fair  4648    2
+## 3 Good   717    1
+## 4 Good  1404    2
+## 5 Good  2247    3
+## 6 Good  4710    4
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1690,10 +1690,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1710,12 +1710,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1728,7 +1728,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2021-10-12
+## 1     2021-10-19
 ```
 
 ```r
@@ -1738,7 +1738,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2021-10-11
+## 1                  2021-10-18
 ```
 
 ```r

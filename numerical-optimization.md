@@ -599,7 +599,11 @@ Vectorize(f, "y")(c(1, 2))
 
 <!-- ?nlm -->
 
+
+
 下面这些用来测试优化算法的函数来自[维基百科](https://en.wikipedia.org/wiki/Test_functions_for_optimization)
+
+
 
 #### Himmelblau 函数 {#himmelblau}
 
@@ -682,6 +686,148 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## $message
 ## NULL
 ```
+
+
+#### Peaks 函数 {#peaks}
+
+测试函数
+
+$$
+f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mathrm{e}^{-x^2-y^2} - \frac{1}{3}*\mathrm{e}^{-(x+1)^2-y^2}
+$$
+
+
+```r
+peaks <- expression(3*(1-x)*exp^(-x^2 - (y+1)^2) - 10*(x/5 - x^3 - y^5)*exp^(-x^2-y^2) -1/3*exp^(-(x+1)^2-y^2))
+```
+
+
+```r
+D(peaks, "x")
+```
+
+```
+## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * x))) + 
+##     3 * exp^(-x^2 - (y + 1)^2) + (10 * (1/5 - 3 * x^2) * exp^(-x^2 - 
+##     y^2) - 10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
+##     (2 * x)))) - 1/3 * (exp^(-(x + 1)^2 - y^2) * (log(exp) * 
+##     (2 * (x + 1)))))
+```
+
+```r
+D(peaks, "y")
+```
+
+```
+## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * (y + 
+##     1)))) - (10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
+##     (2 * y))) + 10 * (5 * y^4) * exp^(-x^2 - y^2)) - 1/3 * (exp^(-(x + 
+##     1)^2 - y^2) * (log(exp) * (2 * y))))
+```
+
+```r
+library(Deriv)
+Simplify(D(peaks, "x"))
+```
+
+```
+## -(10 * ((0.2 - 3 * x^2)/exp^(x^2 + y^2)) + 3/exp^((1 + y)^2 + 
+##     x^2) + log(exp) * (x * (6 * ((1 - x)/exp^((1 + y)^2 + x^2)) - 
+##     20 * ((x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2))) - 0.666666666666667 * 
+##     ((1 + x)/exp^((1 + x)^2 + y^2))))
+```
+
+```r
+Simplify(D(peaks, "y"))
+```
+
+```
+## -((6 * ((1 - x) * (1 + y)/exp^((1 + y)^2 + x^2)) - 0.666666666666667 * 
+##     (y/exp^((1 + x)^2 + y^2))) * log(exp) - y * (20 * (log(exp) * 
+##     (x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2)) + 50 * (y^3/exp^(x^2 + 
+##     y^2))))
+```
+
+
+```r
+fn <- function(x) {
+  3 * (1 - x[1])^2 * exp(-x[1]^2 - (x[2] + 1)^2)
+  -10 * (x[1] / 5 - x[1]^3 - x[2]^5) * exp(-x[1]^2 - x[2]^2)
+  -1 / 3 * exp(-(x[1] + 1)^2 - x[2]^2)
+}
+# 梯度函数
+gr <- function(x) {
+  numDeriv::grad(fn, c(x[1], x[2]))
+}
+
+optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
+```
+
+```
+## $par
+## [1] -1.000000e+00  2.578246e-08
+## 
+## $value
+## [1] -0.3333333
+## 
+## $counts
+## function gradient 
+##        9        7 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+```
+
+
+
+```r
+fn(x = c(-1,0))
+```
+
+```
+## [1] -0.3333333
+```
+
+
+
+
+```r
+df <- expand.grid(
+  x = seq(-3, 3, length = 101),
+  y = seq(-3, 3, length = 101)
+)
+
+df$fnxy = apply(df, 1, fn)
+
+library(lattice)
+wireframe(
+  data = df, fnxy ~ x * y,
+  shade = TRUE, drape = FALSE,
+  xlab = expression(x[1]),
+  ylab = expression(x[2]),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  scales = list(arrows = FALSE, col = "black"),
+  par.settings = list(axis.line = list(col = "transparent")),
+  screen = list(z = -240, x = -70, y = 0)
+)
+```
+
+\begin{figure}
+
+{\centering \includegraphics{numerical-optimization_files/figure-latex/peaks-1} 
+
+}
+
+\caption{Peaks 多峰图像}(\#fig:peaks)
+\end{figure}
+
+
+函数来自 Octave 内置的 `peaks()` 函数，它有很多的局部极大值和极小值，可在 [Octave Online](https://octave-online.net/) 上输入命令 `help peaks` 查看其帮助文档。
+
+
 
 #### Rosenbrock 函数 {#rosenbrock}
 
@@ -1235,7 +1381,7 @@ nlp$solution
 ```
 
 ```
-## [1]   0.00000 -21.99115
+## [1]  0.00000 22.22222
 ```
 
 ```r
@@ -1243,7 +1389,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -1496,10 +1642,9 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109096
-## [25] 4.000000
+##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
+## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -1881,7 +2026,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.045976 4.981431 3.477328 1.414248
+## [1] 1.025724 4.738270 3.829274 1.354009
 ```
 
 ```r
@@ -1889,7 +2034,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.5374
+## [1] 17.15278
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2017,7 +2162,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245373
+## [1] 1.227972 4.245371
 ```
 
 ```r
@@ -2217,7 +2362,7 @@ nlp$solution
 ```
 
 ```
-## [1] 29.262525  4.843366
+## [1] 41.826560  4.218748
 ```
 
 ```r
@@ -2225,7 +2370,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.215189
+## [1] -3.113947
 ```
 比如下面三组
 
@@ -2967,6 +3112,8 @@ library(PBSddesolve)    # DAE 延迟微分方程
 
 [Sim.DiffProc](https://github.com/acguidoum/Sim.DiffProc)
 
+[随机微分方程入门：基于 R 语言的模拟和推断](https://uploads.cosx.org/2008/12/stochastic-differential-equation-with-r.pdf)
+
 
 ```r
 library(Sim.DiffProc)
@@ -3006,17 +3153,17 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] quadprog_1.5-8            kableExtra_1.3.4         
-##  [3] tibble_3.1.5              Sim.DiffProc_4.8         
-##  [5] nlmeODE_1.1               nlme_3.1-153             
-##  [7] PBSddesolve_1.12.6        ReacTran_1.4.3.1         
-##  [9] shape_1.4.6               scatterplot3d_0.3-41     
-## [11] deSolve_1.29              BB_2019.10-1             
-## [13] rootSolve_1.8.2.3         kernlab_0.9-29           
-## [15] lattice_0.20-45           ROI.plugin.quadprog_1.0-0
-## [17] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
-## [19] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
-## [21] lpSolve_5.6.15           
+##  [1] Deriv_4.1.3               quadprog_1.5-8           
+##  [3] kableExtra_1.3.4          tibble_3.1.5             
+##  [5] Sim.DiffProc_4.8          nlmeODE_1.1              
+##  [7] nlme_3.1-153              PBSddesolve_1.12.6       
+##  [9] ReacTran_1.4.3.1          shape_1.4.6              
+## [11] scatterplot3d_0.3-41      deSolve_1.29             
+## [13] BB_2019.10-1              rootSolve_1.8.2.3        
+## [15] kernlab_0.9-29            lattice_0.20-45          
+## [17] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
+## [19] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
+## [21] ROI_1.0-0                 lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] svglite_2.0.0           digest_0.6.28           utf8_1.2.2             
@@ -3025,15 +3172,15 @@ sessionInfo()
 ## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
 ## [13] nloptr_1.2.2.2          rmarkdown_2.11          webshot_0.5.2          
 ## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
-## [19] numDeriv_2016.8-1.1     Deriv_4.1.3             xfun_0.26              
-## [22] systemfonts_1.0.2       pkgconfig_2.0.3         htmltools_0.5.2        
-## [25] bookdown_0.24           viridisLite_0.4.0       fansi_0.5.0            
-## [28] crayon_1.4.1            MASS_7.3-54             grid_4.1.1             
-## [31] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.1         
-## [34] scales_1.1.1            stringi_1.7.4           xml2_1.3.2             
-## [37] ellipsis_0.3.2          vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7
-## [40] tools_4.1.1             glue_1.4.2              parallel_4.1.1         
-## [43] fastmap_1.1.0           yaml_2.2.1              colorspace_2.0-2       
-## [46] rvest_1.0.1             knitr_1.36
+## [19] numDeriv_2016.8-1.1     xfun_0.26               systemfonts_1.0.2      
+## [22] pkgconfig_2.0.3         htmltools_0.5.2         bookdown_0.24          
+## [25] viridisLite_0.4.0       fansi_0.5.0             crayon_1.4.1           
+## [28] MASS_7.3-54             grid_4.1.1              lifecycle_1.0.1        
+## [31] registry_0.5-1          magrittr_2.0.1          scales_1.1.1           
+## [34] stringi_1.7.4           xml2_1.3.2              ellipsis_0.3.2         
+## [37] vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7 tools_4.1.1            
+## [40] glue_1.4.2              parallel_4.1.1          fastmap_1.1.0          
+## [43] yaml_2.2.1              colorspace_2.0-2        rvest_1.0.1            
+## [46] knitr_1.36
 ```
 
