@@ -3096,10 +3096,10 @@ xfun::session_info()
 ##   jsonlite_1.7.2      KernSmooth_2.23-20  knitr_1.36         
 ##   lattice_0.20-45     latticeExtra_0.6-29 magrittr_2.0.1     
 ##   mapproj_1.2.7       maps_3.4.0          MASS_7.3-54        
-##   Matrix_1.3-4        methods_4.1.1       mgcv_1.8-37        
+##   Matrix_1.3-4        methods_4.1.1       mgcv_1.8-38        
 ##   nlme_3.1-153        png_0.1-7           RColorBrewer_1.1-2 
 ##   rlang_0.4.11        rmarkdown_2.11      shape_1.4.6        
-##   splines_4.1.1       stats_4.1.1         stringi_1.7.4      
+##   splines_4.1.1       stats_4.1.1         stringi_1.7.5      
 ##   stringr_1.4.0       survival_3.2-13     tinytex_0.34       
 ##   tools_4.1.1         utils_4.1.1         xfun_0.26          
 ##   yaml_2.2.1

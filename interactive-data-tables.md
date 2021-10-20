@@ -272,8 +272,7 @@ iris[1:10, ] %>%
     Sepal.Length =
       cell_spec(Sepal.Length,
         bold = T,
-        color = spec_color(Sepal.Length, end = 0.9),
-        font_size = spec_font_size(Sepal.Length)
+        color = spec_color(Sepal.Length, end = 0.9)
       )
   ) %>%
   transform(Species = cell_spec(
@@ -302,17 +301,17 @@ iris[1:10, ] %>%
 \toprule
 Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 \midrule
-\cellcolor{gray!6}{\bgroup\fontsize{14}{16}\selectfont \textcolor[HTML]{28AE80}{\textbf{5.1}}\egroup{}} & \cellcolor{gray!6}{3.5} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
-\bgroup\fontsize{12}{14}\selectfont \textcolor[HTML]{25838E}{\textbf{4.9}}\egroup{} & 3.0 & 1.4 & 0.2 & \cellcolor[HTML]{FEA06D}{\textcolor{white}{\textbf{setosa}}}\\
-\cellcolor{gray!6}{\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{39578C}{\textbf{4.7}}\egroup{}} & \cellcolor{gray!6}{3.2} & \cellcolor{gray!6}{1.3} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
-\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{433E85}{\textbf{4.6}}\egroup{} & 3.1 & 1.5 & 0.2 & \cellcolor[HTML]{DE4968}{\textcolor{white}{\textbf{setosa}}}\\
-\cellcolor{gray!6}{\bgroup\fontsize{13}{15}\selectfont \textcolor[HTML]{1F9A8A}{\textbf{5}}\egroup{}} & \cellcolor{gray!6}{3.6} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\textcolor[HTML]{28AE80}{\textbf{5.1}}} & \cellcolor{gray!6}{3.5} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\textcolor[HTML]{25838E}{\textbf{4.9}} & 3.0 & 1.4 & 0.2 & \cellcolor[HTML]{FEA06D}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\textcolor[HTML]{39578C}{\textbf{4.7}}} & \cellcolor{gray!6}{3.2} & \cellcolor{gray!6}{1.3} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\textcolor[HTML]{433E85}{\textbf{4.6}} & 3.1 & 1.5 & 0.2 & \cellcolor[HTML]{DE4968}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\textcolor[HTML]{1F9A8A}{\textbf{5}}} & \cellcolor{gray!6}{3.6} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
 \addlinespace
-\bgroup\fontsize{16}{18}\selectfont \textcolor[HTML]{BBDF27}{\textbf{5.4}}\egroup{} & 3.9 & 1.7 & 0.4 & \cellcolor[HTML]{8C2981}{\textcolor{white}{\textbf{setosa}}}\\
-\cellcolor{gray!6}{\bgroup\fontsize{10}{12}\selectfont \textcolor[HTML]{433E85}{\textbf{4.6}}\egroup{}} & \cellcolor{gray!6}{3.4} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.3} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
-\bgroup\fontsize{13}{15}\selectfont \textcolor[HTML]{1F9A8A}{\textbf{5}}\egroup{} & 3.4 & 1.5 & 0.2 & \cellcolor[HTML]{3C0F70}{\textcolor{white}{\textbf{setosa}}}\\
-\cellcolor{gray!6}{\bgroup\fontsize{8}{10}\selectfont \textcolor[HTML]{440154}{\textbf{4.4}}\egroup{}} & \cellcolor{gray!6}{2.9} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
-\bgroup\fontsize{12}{14}\selectfont \textcolor[HTML]{25838E}{\textbf{4.9}}\egroup{} & 3.1 & 1.5 & 0.1 & \cellcolor[HTML]{000004}{\textcolor{white}{\textbf{setosa}}}\\
+\textcolor[HTML]{BBDF27}{\textbf{5.4}} & 3.9 & 1.7 & 0.4 & \cellcolor[HTML]{8C2981}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\textcolor[HTML]{433E85}{\textbf{4.6}}} & \cellcolor{gray!6}{3.4} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.3} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\textcolor[HTML]{1F9A8A}{\textbf{5}} & 3.4 & 1.5 & 0.2 & \cellcolor[HTML]{3C0F70}{\textcolor{white}{\textbf{setosa}}}\\
+\cellcolor{gray!6}{\textcolor[HTML]{440154}{\textbf{4.4}}} & \cellcolor{gray!6}{2.9} & \cellcolor{gray!6}{1.4} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{\textcolor{white}{\textbf{setosa}}}\\
+\textcolor[HTML]{25838E}{\textbf{4.9}} & 3.1 & 1.5 & 0.1 & \cellcolor[HTML]{000004}{\textcolor{white}{\textbf{setosa}}}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -399,11 +398,11 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] rstudioapi_0.13   knitr_1.36        xml2_1.3.2        munsell_0.5.0    
-##  [5] rvest_1.0.1       viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.1         
+##  [5] rvest_1.0.2       viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.1         
 ##  [9] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     httr_1.4.2       
-## [13] tools_4.1.1       webshot_0.5.2     xfun_0.26         systemfonts_1.0.2
+## [13] tools_4.1.1       webshot_0.5.2     xfun_0.26         systemfonts_1.0.3
 ## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.28     lifecycle_1.0.1  
 ## [21] bookdown_0.24     htmlwidgets_1.5.4 curl_4.3.2        glue_1.4.2       
-## [25] evaluate_0.14     rmarkdown_2.11    stringi_1.7.4     compiler_4.1.1   
+## [25] evaluate_0.14     rmarkdown_2.11    stringi_1.7.5     compiler_4.1.1   
 ## [29] scales_1.1.1      svglite_2.0.0
 ```

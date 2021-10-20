@@ -464,9 +464,9 @@ microbenchmark::microbenchmark(s(), d())
 
 ```
 ## Unit: microseconds
-##  expr   min     lq    mean median    uq    max neval
-##   s()  22.9  25.55  78.213  33.05  37.6 4042.4   100
-##   d() 244.1 253.20 322.770 257.35 286.7 3779.4   100
+##  expr   min    lq   mean median     uq    max neval
+##   s()  19.8  22.1  64.47   27.9  32.20 3356.4   100
+##   d() 214.5 218.7 252.67  221.3 224.85 2878.7   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}
@@ -766,9 +766,9 @@ xfun::session_info()
 ##   htmltools_0.5.2      httr_1.4.2           ids_1.0.1           
 ##   isoband_0.2.5        jquerylib_0.1.4      jsonlite_1.7.2      
 ##   knitr_1.36           labeling_0.4.2       lattice_0.20.45     
-##   lifecycle_1.0.1      lubridate_1.7.10     magrittr_2.0.1      
+##   lifecycle_1.0.1      lubridate_1.8.0      magrittr_2.0.1      
 ##   MASS_7.3.54          Matrix_1.3.4         methods_4.1.1       
-##   mgcv_1.8.37          microbenchmark_1.4-7 mime_0.12           
+##   mgcv_1.8.38          microbenchmark_1.4-7 mime_0.12           
 ##   modelr_0.1.8         munsell_0.5.0        nlme_3.1.153        
 ##   openssl_1.4.5        pillar_1.6.3         pkgconfig_2.0.3     
 ##   prettyunits_1.1.1    processx_3.5.2       progress_1.2.2      
@@ -777,8 +777,8 @@ xfun::session_info()
 ##   readr_2.0.2          readxl_1.3.1         rematch_1.0.1       
 ##   rematch2_2.1.2       reprex_2.0.1         rlang_0.4.11        
 ##   rmarkdown_2.11       rprojroot_2.0.2      rstudioapi_0.13     
-##   rvest_1.0.1          scales_1.1.1         selectr_0.4.2       
-##   splines_4.1.1        stats_4.1.1          stringi_1.7.4       
+##   rvest_1.0.2          scales_1.1.1         selectr_0.4.2       
+##   splines_4.1.1        stats_4.1.1          stringi_1.7.5       
 ##   stringr_1.4.0        sys_3.4              tibble_3.1.5        
 ##   tidyr_1.1.4          tidyselect_1.1.1     tidyverse_1.3.1     
 ##   tinytex_0.34         tools_4.1.1          tzdb_0.1.2          

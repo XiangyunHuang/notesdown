@@ -150,10 +150,10 @@
 <p><a href="https://web.evanchen.cc/">Evan Chen</a> 的书<a href="https://github.com/vEnhance/napkin">An Infinitely Large Napkin</a> 介绍矩阵代数的内积空间、群、环、域等高级内容，作者提供免费的电子书。</p>
 <!-- 解释基本的矩阵概念，比如秩、迹、行列式、直积等 -->
 <p>分块矩阵操作，各类分解算法，及其 R 实现</p>
-<div class="sourceCode" id="cb2825"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2823"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://Matrix.R-forge.R-project.org/">Matrix</a></span><span class="op">)</span></code></pre></div>
 <p>以 attitude 数据集为例介绍各种矩阵操作</p>
-<div class="sourceCode" id="cb2826"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2824"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">attitude</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rating complaints privileges learning raises critical advance
 ## 1     43         51         30       39     61       92      45
@@ -169,7 +169,7 @@ learning 学习机会
 raises 根据表现晋升
 critical 批评
 advancel 进步</p>
-<div class="sourceCode" id="cb2828"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2826"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span><span class="va">.</span> , data <span class="op">=</span> <span class="va">attitude</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="co"># 模型是显著的，很多变量的系数不显著</span></code></pre></div>
 <pre><code>## 
@@ -195,7 +195,7 @@ advancel 进步</p>
 ## Residual standard error: 7.068 on 23 degrees of freedom
 ## Multiple R-squared:  0.7326, Adjusted R-squared:  0.6628 
 ## F-statistic:  10.5 on 6 and 23 DF,  p-value: 1.24e-05</code></pre>
-<div class="sourceCode" id="cb2830"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2828"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -211,7 +211,7 @@ advancel 进步</p>
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <!-- 矩阵变换对应的几何意义，和实际数据对应的意义 -->
-<div class="sourceCode" id="cb2832"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2830"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">attitude_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix.data.frame</a></span><span class="op">(</span><span class="va">attitude</span><span class="op">)</span>
 <span class="co"># 生成演示用的矩阵</span>
 <span class="va">demo_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span><span class="va">attitude_mat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">attitude_mat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
@@ -219,35 +219,35 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.1</span> 矩阵乘法<a class="anchor" aria-label="anchor" href="#subsec-matrix-multiplication"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2833"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2831"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2835"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2833"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, nrow <span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">B</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    1    3    5
 ## [2,]    2    4    6</code></pre>
 <p>通常的矩阵乘法也叫矩阵内积</p>
-<div class="sourceCode" id="cb2837"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2835"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%*%</span> <span class="va">B</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    5   11   17
 ## [2,]    8   18   28</code></pre>
-<div class="sourceCode" id="cb2839"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2837"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">**</span> <span class="fl">2</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
 ## [2,]    4    9</code></pre>
-<div class="sourceCode" id="cb2841"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2839"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">^</span> <span class="fl">2</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
 ## [2,]    4    9</code></pre>
-<div class="sourceCode" id="cb2843"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2841"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">**</span> <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
@@ -280,7 +280,7 @@ advancel 进步</p>
  a_{31}b_{31} &amp; a_{32}b_{32}  &amp; a_{33}b_{33} 
 \end{bmatrix}
 \]</span></p>
-<div class="sourceCode" id="cb2845"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2843"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">^</span><span class="fl">2</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    4
@@ -290,7 +290,7 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.3</span> 矩阵转置<a class="anchor" aria-label="anchor" href="#subsec-matrix-transpose"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2847"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2845"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
@@ -301,7 +301,7 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.4</span> 矩阵外积<a class="anchor" aria-label="anchor" href="#subsec-outer-product"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2849"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2847"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%o%</span> <span class="va">B</span> <span class="co"># outer(A, B, FUN = "*")</span></code></pre></div>
 <pre><code>## , , 1, 1
 ## 
@@ -339,7 +339,7 @@ advancel 进步</p>
 ## [1,]    6   12
 ## [2,]   12   18</code></pre>
 <p>直积/克罗内克积</p>
-<div class="sourceCode" id="cb2851"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2849"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%x%</span> <span class="va">B</span> <span class="co"># kronecker(A, B, FUN = "*")</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    1    3    5    2    6   10
@@ -353,7 +353,7 @@ advancel 进步</p>
 </h2>
 <p>矩阵 A 首先是一个方阵，对称性和正定性未知，n 个 矩阵 A 相乘</p>
 <p>统计之都论坛讨论如何求矩阵的乘方 <a href="https://d.cosx.org/d/5619-svd" class="uri">https://d.cosx.org/d/5619-svd</a></p>
-<div class="sourceCode" id="cb2853"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2851"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="st">"%^%"</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mat</span>, <span class="va">pow</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">is.matrix</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span> <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/diff.html">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/dimensions.html">dim</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
@@ -374,12 +374,12 @@ advancel 进步</p>
   <span class="va">ans</span>
 <span class="op">}</span></code></pre></div>
 <p>奇异值分解</p>
-<div class="sourceCode" id="cb2854"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2852"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/svd.html">svd</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html">all.equal</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">u</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">d</span><span class="op">)</span><span class="op">%*%</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span><span class="va">s</span><span class="op">$</span><span class="va">v</span><span class="op">)</span>,<span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>特征值及分解 <span class="math inline">\(A = V \Lambda V^{-1}\)</span> 求解矩阵 A 的 n 次方</p>
-<div class="sourceCode" id="cb2856"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2854"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
@@ -389,17 +389,17 @@ advancel 进步</p>
 ##           [,1]       [,2]
 ## [1,] 0.5257311 -0.8506508
 ## [2,] 0.8506508  0.5257311</code></pre>
-<div class="sourceCode" id="cb2858"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2856"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2860"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2858"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">^</span><span class="fl">3</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   21   34
 ## [2,]   34   55</code></pre>
-<div class="sourceCode" id="cb2862"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2860"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%*%</span> <span class="va">A</span> <span class="op">%*%</span> <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   21   34
@@ -409,12 +409,12 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.6</span> 矩阵求幂<a class="anchor" aria-label="anchor" href="#subsec-matrix-power"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2864"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2862"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fl">2</span><span class="op">^</span><span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    2    4
 ## [2,]    4    8</code></pre>
-<div class="sourceCode" id="cb2866"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2864"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##          [,1]      [,2]
 ## [1,] 2.718282  7.389056
@@ -426,12 +426,12 @@ advancel 进步</p>
 <span class="header-section-number">B.7</span> 矩阵交叉积<a class="anchor" aria-label="anchor" href="#subsec-matrix-crossproduct"><i class="fas fa-link"></i></a>
 </h2>
 <p>交叉积 <span class="math inline">\(A^{\top}A\)</span></p>
-<div class="sourceCode" id="cb2868"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2866"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html">crossprod</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">A</span><span class="op">)</span>  <span class="co">#  t(x) %*% y</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    5    8
 ## [2,]    8   13</code></pre>
-<div class="sourceCode" id="cb2870"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2868"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/matrix-products.html">tcrossprod</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">A</span><span class="op">)</span> <span class="co">#  x %*% t(y)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    5    8
@@ -441,7 +441,7 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.8</span> 矩阵行列式<a class="anchor" aria-label="anchor" href="#subsec-matrix-determinant"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2872"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2870"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/Matrix-class.html">det</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -1</code></pre>
 <p>expm 包计算矩阵 <span class="math inline">\(e^{\mathbf{A}}\)</span></p>
@@ -450,17 +450,17 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.9</span> 矩阵条件数<a class="anchor" aria-label="anchor" href="#subsec-matrix-cond-num"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2874"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2872"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://Matrix.R-forge.R-project.org/">Matrix</a></span><span class="op">)</span>
 <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/kappa.html">rcond</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.04</code></pre>
-<div class="sourceCode" id="cb2876"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2874"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/kappa.html">kappa</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 21.85714</code></pre>
-<div class="sourceCode" id="cb2878"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2876"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">Matrix</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/rcond.html">rcond</a></span><span class="op">(</span><span class="fu">Matrix</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/Hilbert.html">Hilbert</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 3.439939e-08</code></pre>
-<div class="sourceCode" id="cb2880"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2878"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">Matrix</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/rcond.html">rcond</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.04</code></pre>
 </div>
@@ -468,13 +468,13 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.10</span> 矩阵求逆<a class="anchor" aria-label="anchor" href="#subsec-matrix-inverse"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2882"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2880"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html">solve</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   -3    2
 ## [2,]    2   -1</code></pre>
 <p>应用之线性方程组</p>
-<div class="sourceCode" id="cb2884"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2882"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/Hilbert.html">Hilbert</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span>
 <span class="co"># not inv</span>
@@ -487,7 +487,7 @@ advancel 进步</p>
 ## [4,]    1
 ## [5,]    1
 ## [6,]    1</code></pre>
-<div class="sourceCode" id="cb2886"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2884"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># inv</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html">solve</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">b</span></code></pre></div>
 <pre><code>## 6 x 1 Matrix of class "dgeMatrix"
@@ -499,38 +499,38 @@ advancel 进步</p>
 ## [5,]    1
 ## [6,]    1</code></pre>
 <p>Moore-Penrose generalized inverse 广义逆，如果 A 可逆则，广义逆就是逆</p>
-<div class="sourceCode" id="cb2888"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2886"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span> <span class="co"># ginv 来自 MASS 包</span>
 <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   -3    2
 ## [2,]    2   -1</code></pre>
-<div class="sourceCode" id="cb2890"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2888"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2892"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2890"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">A</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   -3    2
 ## [2,]    2   -1</code></pre>
-<div class="sourceCode" id="cb2894"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2892"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span><span class="va">A</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##               [,1]         [,2]
 ## [1,]  1.000000e+00 8.881784e-16
 ## [2,] -8.881784e-16 1.000000e+00</code></pre>
-<div class="sourceCode" id="cb2896"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2894"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##              [,1]          [,2]
 ## [1,] 1.000000e+00 -8.881784e-16
 ## [2,] 8.881784e-16  1.000000e+00</code></pre>
-<div class="sourceCode" id="cb2898"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2896"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/transpose.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##              [,1]          [,2]
 ## [1,] 1.000000e+00 -8.881784e-16
 ## [2,] 8.881784e-16  1.000000e+00</code></pre>
-<div class="sourceCode" id="cb2900"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2898"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/ginv.html">ginv</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">%*%</span> <span class="va">A</span></code></pre></div>
 <pre><code>##               [,1]         [,2]
 ## [1,]  1.000000e+00 8.881784e-16
@@ -547,7 +547,7 @@ advancel 进步</p>
 <li>
 <span class="math inline">\((A^{\star})^{\star}\)</span> A 的 n 次伴随是？</li>
 </ul>
-<div class="sourceCode" id="cb2902"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2900"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/Matrix-class.html">det</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/solve-methods.html">solve</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    3   -2
@@ -579,19 +579,19 @@ advancel 进步</p>
 <dd>又称谱范数，矩阵最大的奇异值，如果是方阵，就是最大的特征值
 </dd>
 </dl>
-<div class="sourceCode" id="cb2904"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2902"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/norm.html">norm</a></span><span class="op">(</span><span class="va">A</span>, type <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span> <span class="co"># max(abs(colSums(A)))</span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
-<div class="sourceCode" id="cb2906"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2904"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/norm.html">norm</a></span><span class="op">(</span><span class="va">A</span>, type <span class="op">=</span> <span class="st">"I"</span><span class="op">)</span> <span class="co"># max(abs(rowSums(A)))</span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
-<div class="sourceCode" id="cb2908"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2906"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/norm.html">norm</a></span><span class="op">(</span><span class="va">A</span>, type <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 4.242641</code></pre>
-<div class="sourceCode" id="cb2910"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2908"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/norm.html">norm</a></span><span class="op">(</span><span class="va">A</span>, type <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span> <span class="co">#</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb2912"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2910"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/norm.html">norm</a></span><span class="op">(</span><span class="va">A</span>, type <span class="op">=</span> <span class="st">"2"</span><span class="op">)</span> <span class="co"># max(svd(A)$d)</span></code></pre></div>
 <pre><code>## [1] 4.236068</code></pre>
 <div class="rmdinfo">
@@ -602,7 +602,7 @@ advancel 进步</p>
 <h2>
 <span class="header-section-number">B.13</span> 矩阵求秩<a class="anchor" aria-label="anchor" href="#subsec-matrix-rank"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2914"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2912"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/qr-methods.html">qr</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">rank</span> <span class="co"># or qr.default(A)$rank</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 </div>
@@ -619,7 +619,7 @@ A = \begin{bmatrix}
 \end{bmatrix}
 \]</span></p>
 <p>则矩阵 <span class="math inline">\(A\)</span> 的迹 <span class="math inline">\(\operatorname{tr}(A) = \sum_{i=1}^{n}a_{ii}\)</span></p>
-<div class="sourceCode" id="cb2916"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2914"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>特殊矩阵的构造</p>
@@ -636,14 +636,14 @@ A = \begin{bmatrix}
  0 &amp; 0  &amp; 1 
 \end{bmatrix}
 \]</span></p>
-<div class="sourceCode" id="cb2918"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2916"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    1    0    0
 ## [2,]    0    1    0
 ## [3,]    0    0    1</code></pre>
 <p>而全1矩阵是所有元素都是1的矩阵，可以借助外积运算构造，如3阶全1矩阵</p>
-<div class="sourceCode" id="cb2920"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2918"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span> <span class="op">%o%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span> </code></pre></div>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    1    1    1
@@ -654,10 +654,10 @@ A = \begin{bmatrix}
 <h2>
 <span class="header-section-number">B.16</span> 对角矩阵<a class="anchor" aria-label="anchor" href="#subsec-matrix-diagonals"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2922"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2920"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>       <span class="co"># diagonal of a matrix</span></code></pre></div>
 <pre><code>## [1] 1 3</code></pre>
-<div class="sourceCode" id="cb2924"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2922"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span> <span class="co"># construct a diagonal matrix</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    0
@@ -669,28 +669,28 @@ A = \begin{bmatrix}
 </h2>
 <p>矩阵下三角</p>
 <p>row 和 col</p>
-<div class="sourceCode" id="cb2926"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2924"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/row.html">row</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    1
 ## [2,]    2    2</code></pre>
-<div class="sourceCode" id="cb2928"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2926"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/col.html">col</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    1    2</code></pre>
-<div class="sourceCode" id="cb2930"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2928"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/row.html">row</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 1 3</code></pre>
-<div class="sourceCode" id="cb2932"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2930"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">upper.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="co"># 矩阵上三角</span></code></pre></div>
 <pre><code>##       [,1]  [,2]
 ## [1,] FALSE  TRUE
 ## [2,] FALSE FALSE</code></pre>
-<div class="sourceCode" id="cb2934"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2932"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">upper.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb2936"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2934"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">lower.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># 获得上三角矩阵</span>
 <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
@@ -699,27 +699,27 @@ A = \begin{bmatrix}
 <ul>
 <li>下三角矩阵</li>
 </ul>
-<div class="sourceCode" id="cb2938"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2936"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2940"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2938"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">lower.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>##       [,1]  [,2]
 ## [1,] FALSE FALSE
 ## [2,]  TRUE FALSE</code></pre>
-<div class="sourceCode" id="cb2942"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2940"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">lower.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb2944"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2942"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html">upper.tri</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># 获得下三角矩阵</span>
 <span class="va">A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    0
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2946"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2944"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/row.html">row</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fu"><a href="https://rdrr.io/r/base/col.html">col</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span>
 <span class="va">A</span></code></pre></div>
@@ -731,7 +731,7 @@ A = \begin{bmatrix}
 <h2>
 <span class="header-section-number">B.18</span> 稀疏矩阵<a class="anchor" aria-label="anchor" href="#subsec-sparse-matrix"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2948"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2946"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>
 <span class="co">## pointer vectors can be used, and the (i,x) slots are sorted if necessary:</span>
 <span class="co">## 使用指针构造</span>
@@ -742,7 +742,7 @@ A = \begin{bmatrix}
 ## A . 2 . . 6
 ## B . . 4 . 5
 ## C 1 . 3 . .</code></pre>
-<div class="sourceCode" id="cb2950"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2948"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 典型构造方式</span>
 <span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span>; <span class="va">j</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">9</span>,<span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>; <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">7</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>
 <span class="op">(</span><span class="va">AA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/sparseMatrix.html">sparseMatrix</a></span><span class="op">(</span><span class="va">i</span>, <span class="va">j</span>, x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span>                    <span class="co">##  8 x 10 "dgCMatrix"</span></code></pre></div>
@@ -778,12 +778,12 @@ A = \begin{bmatrix}
 <span class="header-section-number">B.22</span> Cholesky 分解<a class="anchor" aria-label="anchor" href="#subsec-choleski-decomposition"><i class="fas fa-link"></i></a>
 </h2>
 <p>实对称正定矩阵的 Choleski 分解</p>
-<div class="sourceCode" id="cb2952"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2950"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/chol.html">chol</a></span><span class="op">(</span><span class="va">A</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##          [,1] [,2]
 ## [1,] 1.414214    0
 ## [2,] 0.000000    2</code></pre>
-<div class="sourceCode" id="cb2954"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2952"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Inverse from Choleski (or QR) Decomposition</span>
 <span class="fu">Matrix</span><span class="fu">::</span><span class="fu">chol2inv</span><span class="op">(</span><span class="va">A</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1]   [,2]
@@ -796,7 +796,7 @@ A = \begin{bmatrix}
 <span class="header-section-number">B.23</span> 特征值分解<a class="anchor" aria-label="anchor" href="#subsec-eigenvalues-decomposition"><i class="fas fa-link"></i></a>
 </h2>
 <p>特征值分解（Eigenvalues Decomposition）也叫谱分解（Spectral Decomposition）</p>
-<div class="sourceCode" id="cb2956"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2954"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
@@ -813,7 +813,7 @@ A = \begin{bmatrix}
 </h2>
 <p><a href="https://github.com/bwlewis/irlba">Fast truncated singular value decompositions</a>
 奇异值分解是特征值分解的推广</p>
-<div class="sourceCode" id="cb2958"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2956"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/svd.html">svd</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## $d
 ## [1] 3.6502815 0.8218544
@@ -827,7 +827,7 @@ A = \begin{bmatrix}
 ##            [,1]       [,2]
 ## [1,] -0.5847103 -0.8112422
 ## [2,] -0.8112422  0.5847103</code></pre>
-<div class="sourceCode" id="cb2960"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2958"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/svd.html">svd</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">$</span><span class="va">d</span></code></pre></div>
 <pre><code>## [1] 3.6502815 0.8218544</code></pre>
 <p>邱怡轩将奇异值分解用于图像压缩 <a href="https://cosx.org/2014/02/svd-and-image-compression" class="uri">https://cosx.org/2014/02/svd-and-image-compression</a> 并制作了 <a href="https://yihui.shinyapps.io/imgsvd/">Shiny App</a> 交互式演示</p>
@@ -836,7 +836,7 @@ A = \begin{bmatrix}
 <h2>
 <span class="header-section-number">B.25</span> QR 分解<a class="anchor" aria-label="anchor" href="#subsec-QR-Decomposition"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2962"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2960"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
 <pre><code>## $qr
 ##            [,1]      [,2]
@@ -854,22 +854,22 @@ A = \begin{bmatrix}
 ## 
 ## attr(,"class")
 ## [1] "qr"</code></pre>
-<div class="sourceCode" id="cb2964"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2962"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/qraux.html">qr.X</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    0
 ## [2,]    2    3</code></pre>
-<div class="sourceCode" id="cb2966"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2964"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/sparseQR-class.html">qr.Q</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] -0.4472136 -0.8944272
 ## [2,] -0.8944272  0.4472136</code></pre>
-<div class="sourceCode" id="cb2968"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2966"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/qraux.html">qr.R</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##           [,1]      [,2]
 ## [1,] -2.236068 -2.683282
 ## [2,]  0.000000  1.341641</code></pre>
-<div class="sourceCode" id="cb2970"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2968"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/sparseQR-class.html">qr.Q</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span> <span class="op">%*%</span> <span class="fu"><a href="https://rdrr.io/r/base/qraux.html">qr.R</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/qr.html">qr.default</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##      [,1]          [,2]
 ## [1,]    1 -2.220446e-16
@@ -939,22 +939,22 @@ A = \begin{bmatrix}
 <li>双阶乘 <span class="math inline">\((2n+1)!! = 1 \times 3\times 5 \times \cdots \times (2n+1), n = 0,1,2,\cdots\)</span>
 </li>
 </ul>
-<div class="sourceCode" id="cb2972"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2970"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">factorial</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="co"># 阶乘</span></code></pre></div>
 <pre><code>## [1] 120</code></pre>
-<div class="sourceCode" id="cb2974"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2972"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1 3 5</code></pre>
-<div class="sourceCode" id="cb2976"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2974"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/prod.html">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="co"># 连乘 双阶乘</span></code></pre></div>
 <pre><code>## [1] 15</code></pre>
-<div class="sourceCode" id="cb2978"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2976"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1 2 3 4 5</code></pre>
-<div class="sourceCode" id="cb2980"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2978"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumprod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 累积</span></code></pre></div>
 <pre><code>## [1]   1   2   6  24 120</code></pre>
-<div class="sourceCode" id="cb2982"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2980"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="co"># 累和</span></code></pre></div>
 <pre><code>## [1]  1  3  6 10 15</code></pre>
 <p>此外还有 <code>cummax</code> 和 <code>cummin</code></p>
@@ -963,7 +963,7 @@ A = \begin{bmatrix}
 </li>
 </ul>
 <p><span class="math inline">\(C_{5}^{3} = \frac{5 \times 4 \times 3}{3 \times 2 \times 1}\)</span></p>
-<div class="sourceCode" id="cb2984"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2982"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">choose</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <blockquote>
@@ -976,13 +976,13 @@ A = \begin{bmatrix}
 </h3>
 <p><span class="math inline">\(\Gamma(x) = \int_{0}^{\infty} t^{x-1}\exp(-t)dt\)</span>
 <span class="math inline">\(\Gamma(n) = (n-1)!, n \in \mathbb{Z}^{+}\)</span></p>
-<div class="sourceCode" id="cb2986"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2984"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">gamma</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb2988"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2986"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">gamma</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 362880</code></pre>
-<div class="sourceCode" id="cb2990"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2988"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gamma2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">x</span><span class="op">)</span><span class="op">{</span>
   <span class="va">t</span><span class="op">^</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">t</span><span class="op">)</span>
 <span class="op">}</span>
@@ -992,7 +992,7 @@ A = \begin{bmatrix}
 <li>psigamma(x, deriv) 表示 <span class="math inline">\(\psi(x)\)</span> 的 <code>deriv</code> 阶导数</li>
 </ul>
 <p><span class="math inline">\(\mathrm{digamma}(x) \triangleq \psi(x) = \frac{d}{dx}{\ln \Gamma(x)} = \Gamma'(x) / \Gamma(x)\)</span></p>
-<div class="sourceCode" id="cb2992"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2990"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 例1</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span>
 <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">deriv</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html">gamma</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html">gamma</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
@@ -1000,28 +1000,28 @@ A = \begin{bmatrix}
 ## attr(,"gradient")
 ##              x
 ## [1,] 0.4227843</code></pre>
-<div class="sourceCode" id="cb2994"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2992"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 与此等价</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Special.html">psigamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.4227843</code></pre>
-<div class="sourceCode" id="cb2996"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2994"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">digamma</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># psi(x) 的一阶导数</span></code></pre></div>
 <pre><code>## [1] 0.4227843</code></pre>
-<div class="sourceCode" id="cb2998"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2996"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">trigamma</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># psi(x) 的二阶导数</span></code></pre></div>
 <pre><code>## [1] 0.6449341</code></pre>
-<div class="sourceCode" id="cb3000"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2998"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 例2</span>
 <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">deriv</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html">psigamma</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.6449341
 ## attr(,"gradient")
 ##               x
 ## [1,] -0.4041138</code></pre>
-<div class="sourceCode" id="cb3002"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3000"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 与此等价</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Special.html">psigamma</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.4041138</code></pre>
-<div class="sourceCode" id="cb3004"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3002"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 注意与下面这个例子比较</span>
 <span class="va">dx2x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">deriv</a></span><span class="op">(</span><span class="op">~</span> <span class="va">x</span><span class="op">^</span><span class="fl">3</span>, <span class="st">"x"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">dx2x</span><span class="op">)</span></code></pre></div>
@@ -1035,13 +1035,13 @@ A = \begin{bmatrix}
 <span class="header-section-number">B.28.3</span> 贝塔函数<a class="anchor" aria-label="anchor" href="#beta"><i class="fas fa-link"></i></a>
 </h3>
 <p><span class="math inline">\(B(a,b) = \Gamma(a)\Gamma(b)/\Gamma(a+b) = \int_{0}^{1} t^{a-1} (1-t)^{b-1} dt\)</span></p>
-<div class="sourceCode" id="cb3006"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3004"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">beta</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb3008"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3006"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Special.html">beta</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.08333333</code></pre>
-<div class="sourceCode" id="cb3010"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3008"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beta2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">t</span><span class="op">^</span><span class="op">(</span><span class="va">a</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">t</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="va">b</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">}</span>
@@ -1052,7 +1052,7 @@ A = \begin{bmatrix}
 <h3>
 <span class="header-section-number">B.28.4</span> 贝塞尔函数<a class="anchor" aria-label="anchor" href="#bessel"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb3012"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3010"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Bessel.html">besselI</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">nu</span>, expon.scaled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># 修正的第一类</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Bessel.html">besselK</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">nu</span>, expon.scaled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># 修正的第二类</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Bessel.html">besselJ</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">nu</span><span class="op">)</span> <span class="co"># 第一类</span>
@@ -1062,7 +1062,7 @@ A = \begin{bmatrix}
 <span class="math inline">\(\nu\)</span> 贝塞尔函数的阶，可以是分数</li>
 <li>expon.scaled 是否使用指数表示</li>
 </ul>
-<div class="sourceCode" id="cb3013"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3011"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span>, length.out <span class="op">=</span> <span class="fl">501</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>,
@@ -1073,7 +1073,7 @@ A = \begin{bmatrix}
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"nu="</span>, <span class="va">nus</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">nus</span> <span class="op">+</span> <span class="fl">2</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="matrix-operations_files/figure-html/modified-bessel-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>介绍复数矩阵的计算，矩阵的指数计算，介绍一点分形</p>
-<div class="sourceCode" id="cb3014"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3012"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 考虑用 gganimate 实现，去掉 caTools 依赖</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">caTools</span><span class="op">)</span>
 <span class="va">jet.colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span>
@@ -1180,7 +1180,7 @@ A = \begin{bmatrix}
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-10-19.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-10-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

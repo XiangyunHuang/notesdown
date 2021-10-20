@@ -203,7 +203,7 @@ xfun::session_info()
 ##   graphics_4.1.1  grDevices_4.1.1 highr_0.9       htmltools_0.5.2
 ##   jquerylib_0.1.4 jsonlite_1.7.2  knitr_1.36      magrittr_2.0.1 
 ##   methods_4.1.1   rlang_0.4.11    rmarkdown_2.11  stats_4.1.1    
-##   stringi_1.7.4   stringr_1.4.0   tinytex_0.34    tools_4.1.1    
+##   stringi_1.7.5   stringr_1.4.0   tinytex_0.34    tools_4.1.1    
 ##   utils_4.1.1     xfun_0.26       yaml_2.2.1
 ```
 

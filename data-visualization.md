@@ -3734,7 +3734,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Tue"
+## [1] "Wed"
 ```
 
 ```r
@@ -3742,7 +3742,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 3
+## [1] 4
 ```
 
 :::
@@ -3942,7 +3942,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x559e9b614600>
+## <bytecode: 0x55ca603334c0>
 ## <environment: namespace:ggpubr>
 ```
 

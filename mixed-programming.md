@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5562e6117bd0>
+## <bytecode: 0x55a10dcd4220>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x5562e6117bd0>
+## <bytecode: 0x55a10dcd4220>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c ce0ee741b13ac.c -o ce0ee741b13ac.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o ce0ee741b13ac.so ce0ee741b13ac.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c1084f1739662f.c -o c1084f1739662f.o
+## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c1084f1739662f.so c1084f1739662f.o -L/opt/R/4.1.1/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -337,7 +337,7 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] Rcpp_1.0.7        reticulate_1.22   htmlwidgets_1.5.4 shiny_1.7.0      
+## [1] Rcpp_1.0.7        reticulate_1.22   htmlwidgets_1.5.4 shiny_1.7.1      
 ## [5] magrittr_2.0.1   
 ## 
 ## loaded via a namespace (and not attached):
@@ -347,5 +347,5 @@ sessionInfo()
 ## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28    lifecycle_1.0.1 
 ## [17] bookdown_0.24    Matrix_1.3-4     later_1.3.0      promises_1.2.0.1
 ## [21] curl_4.3.2       evaluate_0.14    mime_0.12        rmarkdown_2.11  
-## [25] stringi_1.7.4    compiler_4.1.1   jsonlite_1.7.2   httpuv_1.6.3
+## [25] stringi_1.7.5    compiler_4.1.1   jsonlite_1.7.2   httpuv_1.6.3
 ```

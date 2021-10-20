@@ -396,6 +396,6 @@ sessionInfo()
 ## [33] bookdown_0.24    minqa_1.2.4      farver_2.1.0     purrr_0.3.4     
 ## [37] scales_1.1.1     htmltools_0.5.2  ellipsis_0.3.2   MASS_7.3-54     
 ## [41] splines_4.1.1    assertthat_0.2.1 colorspace_2.0-2 labeling_0.4.2  
-## [45] utf8_1.2.2       stringi_1.7.4    munsell_0.5.0    crayon_1.4.1
+## [45] utf8_1.2.2       stringi_1.7.5    munsell_0.5.0    crayon_1.4.1
 ```
 

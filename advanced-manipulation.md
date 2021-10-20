@@ -630,10 +630,10 @@ DT[, .(i_1, i_2, f_1, f_2)]
 ##    i_1 i_2  f_1 f_2
 ## 1:   1  NA    a   z
 ## 2:   2   6 <NA>   a
-## 3:   3   7    c   x
-## 4:   4   8    b   c
-## 5:   5   9    b   x
-## 6:  NA  10    a   x
+## 3:   3   7    a   x
+## 4:   4   8 <NA>   c
+## 5:   5   9    a   x
+## 6:  NA  10    b   x
 ```
 
 
@@ -646,10 +646,10 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 ##     i_1 i_2 variable value
 ##  1:   1  NA      f_1     a
 ##  2:   2   6      f_1  <NA>
-##  3:   3   7      f_1     c
-##  4:   4   8      f_1     b
-##  5:   5   9      f_1     b
-##  6:  NA  10      f_1     a
+##  3:   3   7      f_1     a
+##  4:   4   8      f_1  <NA>
+##  5:   5   9      f_1     a
+##  6:  NA  10      f_1     b
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -1938,6 +1938,6 @@ sessionInfo()
 ## [17] assertthat_0.2.1 yaml_2.2.1       digest_0.6.28    tibble_3.1.5    
 ## [21] lifecycle_1.0.1  crayon_1.4.1     bookdown_0.24    tidyr_1.1.4     
 ## [25] purrr_0.3.4      vctrs_0.3.8      curl_4.3.2       glue_1.4.2      
-## [29] evaluate_0.14    rmarkdown_2.11   stringi_1.7.4    compiler_4.1.1  
+## [29] evaluate_0.14    rmarkdown_2.11   stringi_1.7.5    compiler_4.1.1  
 ## [33] pillar_1.6.3     backports_1.2.1  generics_0.1.0   pkgconfig_2.0.3
 ```

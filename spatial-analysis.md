@@ -294,9 +294,9 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] sfarrow_0.4.0       sf_1.0-2            rasterVis_0.50.3   
-## [4] terra_1.3-22        latticeExtra_0.6-29 lattice_0.20-45    
-## [7] raster_3.4-13       RColorBrewer_1.1-2  sp_1.4-5           
+## [1] sfarrow_0.4.0       sf_1.0-3            rasterVis_0.51.0   
+## [4] terra_1.4-11        latticeExtra_0.6-29 lattice_0.20-45    
+## [7] raster_3.5-2        RColorBrewer_1.1-2  sp_1.4-5           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.26          purrr_0.3.4       
@@ -307,7 +307,7 @@ sessionInfo()
 ## [21] evaluate_0.14      knitr_1.36         fastmap_1.1.0      parallel_4.1.1    
 ## [25] curl_4.3.2         class_7.3-19       fansi_0.5.0        Rcpp_1.0.7        
 ## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.28     
-## [33] stringi_1.7.4      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
+## [33] stringi_1.7.5      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
 ## [37] rgdal_1.5-27       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
 ## [41] tibble_3.1.5       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
 ## [45] assertthat_0.2.1   rmarkdown_2.11     R6_2.5.1           units_0.7-2       

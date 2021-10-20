@@ -331,10 +331,10 @@ ts(rnorm(20), start = c(1961, 1), frequency = 365.25/7)
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1]  1.2066283  1.2432261 -0.7642003  0.6687491  0.4831032 -0.9651977
-##  [7]  0.4359496 -0.8228357  1.4393840  1.8590696 -0.8494600 -0.6319245
-## [13]  1.3838264  0.3413293  1.2178465  0.4741651 -0.9370855 -1.0470227
-## [19]  2.2442535  0.2889851
+##  [1] -0.10976060  0.07216867  0.52574343  0.18430874  1.21034719 -0.97200333
+##  [7] -0.16643699  0.60869914  0.41984062  0.96188486 -1.05155887  0.17739820
+## [13] -0.11920152  1.53313469 -1.72664773 -0.67007444  0.61899714 -1.26972555
+## [19]  0.30961380  1.26904562
 ```
 
 周数据，一周采一个点，采了 20 个点
@@ -724,12 +724,12 @@ sessionInfo()
 ## [17] TTR_0.24.2        lifecycle_1.0.1   quantmod_0.4.18   stringr_1.4.0    
 ## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.4 evaluate_0.14    
 ## [25] labeling_0.4.2    knitr_1.36        fastmap_1.1.0     curl_4.3.2       
-## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        Rcpp_1.0.7       
-## [33] scales_1.1.1      backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2   
-## [37] sysfonts_0.8.5    farver_2.1.0      gridExtra_2.3     digest_0.6.28    
-## [41] stringi_1.7.4     showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24    
-## [45] dplyr_1.0.7       grid_4.1.1        tools_4.1.1       magrittr_2.0.1   
-## [49] tibble_3.1.5      crayon_1.4.1      tidyr_1.1.4       pkgconfig_2.0.3  
-## [53] ellipsis_0.3.2    data.table_1.14.2 lubridate_1.7.10  assertthat_0.2.1 
-## [57] rmarkdown_2.11    R6_2.5.1          igraph_1.2.6      compiler_4.1.1
+## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        scales_1.1.1     
+## [33] backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2    sysfonts_0.8.5   
+## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.28     stringi_1.7.5    
+## [41] showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24     dplyr_1.0.7      
+## [45] grid_4.1.1        tools_4.1.1       magrittr_2.0.1    tibble_3.1.5     
+## [49] crayon_1.4.1      tidyr_1.1.4       pkgconfig_2.0.3   ellipsis_0.3.2   
+## [53] data.table_1.14.2 lubridate_1.8.0   assertthat_0.2.1  rmarkdown_2.11   
+## [57] R6_2.5.1          igraph_1.2.7      compiler_4.1.1
 ```

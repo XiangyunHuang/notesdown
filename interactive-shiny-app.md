@@ -627,7 +627,7 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] data.table_1.14.2 shiny_1.7.0      
+## [1] data.table_1.14.2 shiny_1.7.1      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.7       knitr_1.36       magrittr_2.0.1   xtable_1.8-4    
@@ -635,7 +635,7 @@ sessionInfo()
 ##  [9] tools_4.1.1      xfun_0.26        png_0.1-7        htmltools_0.5.2 
 ## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28    lifecycle_1.0.1 
 ## [17] bookdown_0.24    later_1.3.0      promises_1.2.0.1 curl_4.3.2      
-## [21] evaluate_0.14    mime_0.12        rmarkdown_2.11   stringi_1.7.4   
+## [21] evaluate_0.14    mime_0.12        rmarkdown_2.11   stringi_1.7.5   
 ## [25] compiler_4.1.1   httpuv_1.6.3
 ```
 

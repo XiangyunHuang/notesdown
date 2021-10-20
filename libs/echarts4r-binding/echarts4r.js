@@ -56,7 +56,7 @@ HTMLWidgets.widget({
           mapboxgl.accessToken = x.mapboxToken;
         }
         
-        chart = echarts.init(document.getElementById(el.id), x.theme, {renderer: x.renderer});
+        chart = echarts.init(document.getElementById(el.id), x.theme, x.mainOpts);
         
         opts = evalFun(x.opts);
         
@@ -372,12 +372,25 @@ if (HTMLWidgets.shinyMode) {
         if(!opts.series)
           opts.series = [];
 
-        data.opts.series.forEach(function(serie){
-          opts.series.push(serie);
-        })
+        if(data.opts.series)
+          data.opts.series.forEach(function(serie){
+            opts.series.push(serie);
+          });
+
+        if(data.opts.color){
+          if(data.opts.appendColor)
+            data.opts.color.forEach(function(color){
+              opts.color.push(color);
+            });
+          else 
+            opts.color = data.opts.color;
+        }
+        
+        if(data.opts.backgroundColor)
+          opts.color = data.opts.backgroundColor;
 
         // legend
-        if(opts.legend.length > 0)
+        if(data.opts.legend && opts.legend.length > 0)
           if(data.opts.legend.data)
             opts.legend[0].data = opts.legend[0].data.concat(data.opts.legend.data);
         

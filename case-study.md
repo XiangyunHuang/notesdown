@@ -705,7 +705,7 @@ length(pdb[, "Package"])
 ```
 
 ```
-## [1] 18324
+## [1] 18339
 ```
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -719,7 +719,10 @@ pdb[, "Package"][duplicated(pdb[, "Package"])]
 ##  [1] "boot"       "class"      "cluster"    "codetools"  "foreign"   
 ##  [6] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
 ## [11] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
-## [16] "RODBC"      "XML"
+## [16] "boot"       "class"      "cluster"    "codetools"  "foreign"   
+## [21] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
+## [26] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
+## [31] "RODBC"      "XML"
 ```
 
 不难发现，果然有！所以去掉重复的 R 包信息，就是 CRAN 上实际发布的 R 包数量
@@ -785,10 +788,10 @@ subset(pdb,
 ## 6473     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
 ## 6796       hexView Paul Murrell <paul@stat.auckland.ac.nz>
 ## 9208      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 12853    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 13590    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 14022        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 14023 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 12866    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 13599    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 14027        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 14028 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
 ## 17848       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 
@@ -1298,7 +1301,7 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3003 1386  926  581  275  163  102   58   41   27   16   11    7    9    5    4 
+## 3002 1387  926  581  275  163  102   58   41   27   16   11    7    9    5    4 
 ##   17   18   19   20   22   23   24   27   28   56   60  133 
 ##    7    4    3    3    1    3    1    1    1    1    1    1
 ```
@@ -1322,7 +1325,7 @@ subset(sub_pdb, subset = grepl("Matt Dowle", sub_pdb[, "Maintainer"]), select = 
 
 ```
 ##         Package
-## 3214 data.table
+## 3162 data.table
 ```
 
 哇，大名鼎鼎的 [data.table](https://github.com/Rdatatable/data.table) 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 [Github 主页](https://github.com/mattdowle) 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
