@@ -1502,7 +1502,7 @@ system.time(comp_auc(dat = dat2, show_roc = FALSE))
 
 ```
 ##    user  system elapsed 
-##   0.001   0.000   0.002
+##   0.002   0.000   0.002
 ```
 
 更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。

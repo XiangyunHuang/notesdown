@@ -1649,8 +1649,8 @@ Package                 Version
 absl-py                 0.14.1     
 astunparse              1.6.3      
 cachetools              4.2.4      
-certifi                 2021.5.30  
-charset-normalizer      2.0.6      
+certifi                 2021.10.8  
+charset-normalizer      2.0.7      
 clang                   5.0        
 cycler                  0.10.0     
 flatbuffers             1.12       
@@ -1662,7 +1662,7 @@ graphviz                0.8.4
 grpcio                  1.41.0     
 h5py                    3.1.0      
 idna                    3.2        
-joblib                  1.0.1      
+joblib                  1.1.0      
 kaleido                 0.2.1      
 keras                   2.6.0      
 Keras-Preprocessing     1.1.2      
@@ -1680,7 +1680,7 @@ Pillow                  8.3.2
 pip                     20.0.2     
 pkg-resources           0.0.0      
 plotly                  5.3.1      
-protobuf                3.18.0     
+protobuf                3.18.1     
 pyasn1                  0.4.8      
 pyasn1-modules          0.2.8      
 pyparsing               2.4.7      
@@ -1694,7 +1694,7 @@ scipy                   1.7.1
 setuptools              44.0.0     
 six                     1.15.0     
 statsmodels             0.13.0     
-sympy                   1.8        
+sympy                   1.9        
 tenacity                8.0.1      
 tensorboard             2.6.0      
 tensorboard-data-server 0.6.1      
@@ -1705,7 +1705,7 @@ termcolor               1.1.0
 threadpoolctl           3.0.0      
 typing-extensions       3.7.4.3    
 urllib3                 1.26.7     
-Werkzeug                2.0.1      
+Werkzeug                2.0.2      
 wheel                   0.37.0     
 wrapt                   1.12.1     
 
@@ -1734,7 +1734,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['info', 'logs', 'branches', 'config', 'HEAD', 'hooks', 'objects', 'description', 'FETCH_HEAD', 'shallow', 'index', 'refs']
+## ['index', 'hooks', 'description', 'config', 'shallow', 'HEAD', 'logs', 'refs', 'info', 'FETCH_HEAD', 'objects', 'branches']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1787,14 +1787,14 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "info"        "logs"        "branches"    "config"      "HEAD"       
-##  [6] "hooks"       "objects"     "description" "FETCH_HEAD"  "shallow"    
-## [11] "index"       "refs"
+##  [1] "index"       "hooks"       "description" "config"      "shallow"    
+##  [6] "HEAD"        "logs"        "refs"        "info"        "FETCH_HEAD" 
+## [11] "objects"     "branches"
 ```
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年10月20日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年11月04日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
 
 
 
@@ -2753,7 +2753,7 @@ Package                   Version        Title
 **brms**                  2.16.1         Bayesian Regression Models using Stan                                                                                       
 **broom**                 0.7.9          Convert Statistical Objects into Tidy Tibbles                                                                               
 **broom.mixed**           0.2.7          Tidying Methods for Mixed Models                                                                                            
-**bslib**                 0.3.0          Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
+**bslib**                 0.3.1          Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
 **cachem**                1.0.6          Cache R Objects with Automatic Pruning                                                                                      
 **callr**                 3.7.0          Call R from R                                                                                                               
 **checkmate**             2.0.0          Fast and Versatile Argument Checks                                                                                          
@@ -2776,7 +2776,7 @@ Package                   Version        Title
 **dendextend**            1.15.1         Extending 'dendrogram' Functionality in R                                                                                   
 **Deriv**                 4.1.3          Symbolic Differentiation                                                                                                    
 **desc**                  1.4.0          Manipulate DESCRIPTION Files                                                                                                
-**deSolve**               1.29           Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')                                          
+**deSolve**               1.30           Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')                                          
 **devtools**              2.4.2          Tools to Make Developing R Packages Easier                                                                                  
 **DiagrammeR**            1.0.6.1        Graph/Network Visualization                                                                                                 
 **digest**                0.6.28         Create Compact Hash Digests of R Objects                                                                                    
@@ -2835,12 +2835,12 @@ Package                   Version        Title
 **gt**                    0.3.1          Easily Create Presentation-Ready Display Tables                                                                             
 **gtable**                0.3.0          Arrange Grobs in Tables                                                                                                     
 **haven**                 2.4.3          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
-**heatmaply**             1.2.1          Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
+**heatmaply**             1.3.0          Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
 **here**                  1.0.1          A Simpler Way to Find Your Files                                                                                            
 **hexbin**                1.28.2         Hexagonal Binning Routines                                                                                                  
 **highcharter**           0.8.2          A Wrapper for the Highcharts Library                                                                                        
 **highr**                 0.9            Syntax Highlighting for R Source Code                                                                                       
-**Hmisc**                 4.5-0          Harrell Miscellaneous                                                                                                       
+**Hmisc**                 4.6-0          Harrell Miscellaneous                                                                                                       
 **hms**                   1.1.1          Pretty Time of Day                                                                                                          
 **hrbrthemes**            0.8.0          Additional Themes, Theme Components and Utilities for ggplot2                                                               
 **htmltools**             0.5.2          Tools for HTML                                                                                                              
@@ -2864,12 +2864,12 @@ Package                   Version        Title
 **leaflet.providers**     1.9.0          Leaflet Providers                                                                                                           
 **leafletCN**             0.2.1          An R Gallery for China and Other Geojson Choropleth Map in Leaflet                                                          
 **lifecycle**             1.0.1          Manage the Life Cycle of your Package Functions                                                                             
-**lightgbm**              3.2.1          Light Gradient Boosting Machine                                                                                             
+**lightgbm**              3.3.0          Light Gradient Boosting Machine                                                                                             
 **lme4**                  1.1-27.1       Linear Mixed-Effects Models using Eigen and S4                                                                              
 **loo**                   2.4.1          Efficient Leave-One-Out Cross-Validation and WAIC for Bayesian Models                                                       
 **lpSolve**               5.6.15         Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs                                                             
 **lpSolveAPI**            5.5.2.0-17.7   R Interface to 'lp_solve' Version 5.5.2.0                                                                                   
-**lubridate**             1.7.10         Make Dealing with Dates a Little Easier                                                                                     
+**lubridate**             1.8.0          Make Dealing with Dates a Little Easier                                                                                     
 **magick**                2.7.3          Advanced Graphics and Image-Processing in R                                                                                 
 **magrittr**              2.0.1          A Forward-Pipe Operator for R                                                                                               
 **mapdata**               2.3.0          Extra Map Databases                                                                                                         
@@ -2883,11 +2883,11 @@ Package                   Version        Title
 **maxLik**                1.5-2          Maximum Likelihood Estimation and Related Tools                                                                             
 **mcmc**                  0.9-7          Markov Chain Monte Carlo                                                                                                    
 **memoise**               2.0.0          Memoisation of Functions                                                                                                    
-**mgcv**                  1.8-37         Mixed GAM Computation Vehicle with Automatic Smoothness Estimation                                                          
+**mgcv**                  1.8-38         Mixed GAM Computation Vehicle with Automatic Smoothness Estimation                                                          
 **mime**                  0.12           Map Filenames to MIME Types                                                                                                 
 **minqa**                 1.2.4          Derivative-free optimization algorithms by quadratic approximation                                                          
 **modelr**                0.1.8          Modelling Functions that Work with the Pipe                                                                                 
-**mvtnorm**               1.1-2          Multivariate Normal and t Distributions                                                                                     
+**mvtnorm**               1.1-3          Multivariate Normal and t Distributions                                                                                     
 **networkD3**             0.4            D3 JavaScript Network Graphs from R                                                                                         
 **nleqslv**               3.3.2          Solve Systems of Nonlinear Equations                                                                                        
 **nlme**                  3.1-153        Linear and Nonlinear Mixed Effects Models                                                                                   
@@ -2905,13 +2905,13 @@ Package                   Version        Title
 **pkgconfig**             2.0.3          Private Configuration for R Packages                                                                                        
 **pkgload**               1.2.2          Simulate Package Installation and Attach                                                                                    
 **plogr**                 0.2.0          The plog C++ Logging Library                                                                                                
-**plotly**                4.9.4.1        Create Interactive Web Graphics via plotly.js                                                                               
+**plotly**                4.10.0         Create Interactive Web Graphics via plotly.js                                                                               
 **plyr**                  1.8.6          Tools for Splitting, Applying and Combining Data                                                                            
 **png**                   0.1-7          Read and write PNG images                                                                                                   
 **polynom**               1.4-0          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
 **posterior**             1.1.0          Tools for Working with Posterior Distributions                                                                              
 **prettydoc**             0.4.1          Creating Pretty Documents from R Markdown                                                                                   
-**PrevMap**               1.5.3          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
+**PrevMap**               1.5.4          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
 **processx**              3.5.2          Execute and Control System Processes                                                                                        
 **productplots**          0.1.1          Product Plots for R                                                                                                         
 **progress**              1.2.2          Terminal Progress Bars                                                                                                      
@@ -2928,9 +2928,9 @@ Package                   Version        Title
 **R6**                    2.5.1          Encapsulated Classes with Reference Semantics                                                                               
 **RandomFields**          3.3.10         Simulation and Analysis of Random Fields                                                                                    
 **rappdirs**              0.3.3          Application Directories: Determine Where to Save Data, Caches, and Logs                                                     
-**raster**                3.4-13         Geographic Data Analysis and Modeling                                                                                       
+**raster**                3.5-2          Geographic Data Analysis and Modeling                                                                                       
 **rasterly**              0.2.0          Easily and Rapidly Generate Raster Image Data with Support for 'Plotly.js'                                                  
-**rasterVis**             0.50.3         Visualization Methods for Raster Data                                                                                       
+**rasterVis**             0.51.0         Visualization Methods for Raster Data                                                                                       
 **rcmdcheck**             1.4.0          Run 'R CMD check' from R and Capture Results                                                                                
 **RColorBrewer**          1.1-2          ColorBrewer Palettes                                                                                                        
 **Rcpp**                  1.0.7          Seamless R and C++ Integration                                                                                              
@@ -2974,7 +2974,7 @@ Package                   Version        Title
 **scatterplot3d**         0.3-41         3D Scatter Plot                                                                                                             
 **seriation**             1.3.0          Infrastructure for Ordering Objects Using Seriation                                                                         
 **sessioninfo**           1.1.1          R Session Information                                                                                                       
-**sf**                    1.0-2          Simple Features for R                                                                                                       
+**sf**                    1.0-3          Simple Features for R                                                                                                       
 **shape**                 1.4.6          Functions for Plotting Graphical Shapes, Colors                                                                             
 **shiny**                 1.7.1          Web Application Framework for R                                                                                             
 **shinystan**             2.5.0          Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models                                     
@@ -2998,7 +2998,7 @@ Package                   Version        Title
 **symengine**             0.1.5          Interface to the 'SymEngine' Library                                                                                        
 **sysfonts**              0.8.5          Loading Fonts into R                                                                                                        
 **tensorflow**            2.6.0          R Interface to 'TensorFlow'                                                                                                 
-**terra**                 1.4-7          Spatial Data Analysis                                                                                                       
+**terra**                 1.4-11         Spatial Data Analysis                                                                                                       
 **testthat**              3.1.0          Unit Testing for R                                                                                                          
 **tfautograph**           0.3.2          Autograph R for 'Tensorflow'                                                                                                
 **tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
@@ -3016,7 +3016,7 @@ Package                   Version        Title
 **treemap**               2.4-3          Treemap Visualization                                                                                                       
 **treemapify**            2.5.5          Draw Treemaps in ggplot2                                                                                                    
 **truncnorm**             1.0-8          Truncated Normal Distribution                                                                                               
-**TSP**                   1.1-10         Traveling Salesperson Problem (TSP)                                                                                         
+**TSP**                   1.1-11         Traveling Salesperson Problem (TSP)                                                                                         
 **tweenr**                1.0.2          Interpolate Data for Smooth Animations                                                                                      
 **units**                 0.7-2          Measurement Units for R Vectors                                                                                             
 **usethis**               2.0.1          Automate Package and Project Setup                                                                                          

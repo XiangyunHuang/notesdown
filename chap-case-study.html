@@ -738,7 +738,7 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 </div>
 <div class="sourceCode" id="cb2449"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com">gganimate</a></span><span class="op">)</span>
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://gganimate.com/reference/transition_reveal.html">transition_reveal</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></code></pre></div>
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/gganimate/man/transition_reveal.html">transition_reveal</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="case-study_files/figure-html/unnamed-chunk-9-1.gif" style="display: block; margin: auto;"></div>
 </div>
 <div id="pkg-network" class="section level2" number="35.5">
@@ -751,21 +751,18 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 <p>接着，我们可以看看CRAN 上发布的 R 包数量</p>
 <div class="sourceCode" id="cb2451"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">length</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 18339</code></pre>
+<pre><code>## [1] 18390</code></pre>
 <p>经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息</p>
 <div class="sourceCode" id="cb2453"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##  [1] "boot"       "class"      "cluster"    "codetools"  "foreign"   
 ##  [6] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
 ## [11] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
-## [16] "boot"       "class"      "cluster"    "codetools"  "foreign"   
-## [21] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
-## [26] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
-## [31] "RODBC"      "XML"</code></pre>
+## [16] "RODBC"      "XML"</code></pre>
 <p>不难发现，果然有！所以去掉重复的 R 包信息，就是 CRAN 上实际发布的 R 包数量</p>
 <div class="sourceCode" id="cb2455"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/dimensions.html">dim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>, subset <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>## [1] 18307</code></pre>
+<pre><code>## [1] 18373</code></pre>
 <p>接下来就是分析去掉重复信息后的数据矩阵 pdb</p>
 <div class="sourceCode" id="cb2457"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>, subset <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -792,23 +789,23 @@ y_{ij}&amp; = \mu_i + \epsilon_{ij}, \\
 <span class="op">)</span></code></pre></div>
 <pre><code>##            Package                              Maintainer
 ## 2511       compare Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 5718         gdiff Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6459      gridBase Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6460    gridBezier Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6461     gridDebug Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6463  gridGeometry Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6464  gridGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6465  gridGraphviz Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6469       gridSVG Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6472      grImport Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
-## 6473     grImport2 Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 6796       hexView Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 9208      metapost Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 12866    rasterize Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 13599    RGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 14027        roloc Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 14028 rolocISCCNBS Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
-## 17848       vwline Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;</code></pre>
+## 5730         gdiff Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6477      gridBase Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6478    gridBezier Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6479     gridDebug Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6481  gridGeometry Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6482  gridGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6483  gridGraphviz Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6487       gridSVG Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6490      grImport Paul Murrell &lt;p.murrell@auckland.ac.nz&gt;
+## 6491     grImport2 Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 6811       hexView Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 9229      metapost Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 12901    rasterize Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 13641    RGraphics Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 14070        roloc Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 14071 rolocISCCNBS Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;
+## 17913       vwline Paul Murrell &lt;paul@stat.auckland.ac.nz&gt;</code></pre>
 <p>所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 <code><a href="https://rdrr.io/r/base/contributors.html">contributors()</a></code> 函数已经收集了成员名单，不需要我们去官网找了。</p>
 <div class="sourceCode" id="cb2462"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core_team</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span>
@@ -864,10 +861,10 @@ Simon Wood
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">" +$"</span>, <span class="st">""</span>, <span class="va">x</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">clean_maintainer</span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<p>我们可以看到 R 核心团队总共开发维护有 173 个 R 包</p>
+<p>我们可以看到 R 核心团队总共开发维护有 172 个 R 包</p>
 <div class="sourceCode" id="cb2465"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/dimensions.html">dim</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 173   3</code></pre>
+<pre><code>## [1] 172   3</code></pre>
 <p>篇幅所限，就展示部分人和R包，见表 <a href="chap-case-study.html#tab:r-core-team">35.4</a> 按照拼音顺序 Brian Ripley 是第一位</p>
 <div class="sourceCode" id="cb2467"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="va">core_pdb</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span>
@@ -1139,7 +1136,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <p>接下来，我们想看看 R 包维护者数量有多少</p>
 <div class="sourceCode" id="cb2478"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/unique.html">unique</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 10674</code></pre>
+<pre><code>## [1] 10723</code></pre>
 <p>可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。</p>
 <div class="sourceCode" id="cb2480"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">pdb</span>,
@@ -1147,17 +1144,17 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
   select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Maintainer"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>##             Package                             Maintainer
-## 596      assertthat    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 753       babynames    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 1205      bigrquery    Hadley Wickham &lt;hadley@rstudio.com&gt;
-## 2193      classifly   Hadley Wickham &lt;h.wickham@gmail.com&gt;
-## 2592     conflicted    Hadley Wickham &lt;hadley@rstudio.com&gt;
+## 591      assertthat    Hadley Wickham &lt;hadley@rstudio.com&gt;
+## 748       babynames    Hadley Wickham &lt;hadley@rstudio.com&gt;
+## 1199      bigrquery    Hadley Wickham &lt;hadley@rstudio.com&gt;
+## 2190      classifly   Hadley Wickham &lt;h.wickham@gmail.com&gt;
+## 2591     conflicted    Hadley Wickham &lt;hadley@rstudio.com&gt;
 ....</code></pre>
 <p>因此，有必要先把 Maintainer 字段中的邮箱部分去掉，这样我们可以得到比较靠谱的R包维护者数量了！</p>
 <div class="sourceCode" id="cb2482"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">clean_maintainer</span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/unique.html">unique</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 9872</code></pre>
+<pre><code>## [1] 9919</code></pre>
 <p>接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图<a href="chap-case-study.html#fig:top-maintainers">35.3</a> 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。</p>
 <div class="sourceCode" id="cb2484"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">top_maintainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/headtail.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span>
@@ -1242,7 +1239,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <p>维护多个 R 包的开发者数量</p>
 <div class="sourceCode" id="cb2490"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/unique.html">unique</a></span><span class="op">(</span><span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 3231</code></pre>
+<pre><code>## [1] 3239</code></pre>
 <p>总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有</p>
 <div class="sourceCode" id="cb2492"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">first_ctb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span>
@@ -1273,7 +1270,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">ctb_num</span><span class="op">)</span></code></pre></div>
 <pre><code>## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3002 1387  926  581  275  163  102   58   41   27   16   11    7    9    5    4 
+## 3022 1400  927  582  277  163  101   59   42   27   15   12    6   10    5    5 
 ##   17   18   19   20   22   23   24   27   28   56   60  133 
 ##    7    4    3    3    1    3    1    1    1    1    1    1</code></pre>
 <p>有意思的是，有一个开发者虽然只开发了一个 R 包，但是却引来37位贡献者（包括开发者本人在内），下面把这个颇受欢迎的 R 包找出来</p>
@@ -1285,7 +1282,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <code class="sourceCode R"><span class="co"># 找到 R 包</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">sub_pdb</span>, subset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Matt Dowle"</span>, <span class="va">sub_pdb</span><span class="op">[</span>, <span class="st">"Maintainer"</span><span class="op">]</span><span class="op">)</span>, select <span class="op">=</span> <span class="st">"Package"</span><span class="op">)</span></code></pre></div>
 <pre><code>##         Package
-## 3162 data.table</code></pre>
+## 3165 data.table</code></pre>
 <p>哇，大名鼎鼎的 <a href="https://github.com/Rdatatable/data.table">data.table</a> 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 <a href="https://github.com/mattdowle">Github 主页</a> 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！</p>
 </div>
 <div id="Contribution-Network" class="section level3" number="35.5.5">
@@ -1333,7 +1330,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <span class="co"># 非零元素最多的列</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">maintainer_author</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <blockquote>
-<p>用稀疏索引的方式重新编码矩阵，然后用<a href="https://bommaritollc.com/2012/06/17/summary-community-detection-algorithms-igraph-0-6/">社群检测的算法</a>找到其中的结构，网络关系图用 Gephi 画，igraph 肯定是不行了，参考文献 <a href="https://cosx.org/2011/04/exploring-renren-social-network">社会网络分析：探索人人网好友推荐系统</a> 网络的统计建模分析 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Statistical Modeling of Networks in R &lt;a href="https://user2010.org/Invited/handcockuser2010.pdf" class="uri"&gt;https://user2010.org/Invited/handcockuser2010.pdf&lt;/a&gt;&lt;/p&gt;'><sup>77</sup></a></p>
+<p>用稀疏索引的方式重新编码矩阵，然后用<a href="https://bommaritollc.com/2012/06/17/summary-community-detection-algorithms-igraph-0-6/">社群检测的算法</a>找到其中的结构，网络关系图用 Gephi 画，igraph 肯定是不行了，参考文献 <a href="https://cosx.org/2011/04/exploring-renren-social-network">社会网络分析：探索人人网好友推荐系统</a> 网络的统计建模分析 <a href="references.html#fn77" class="footnote-ref" id="fnref77"><sup>77</sup></a></p>
 </blockquote>
 <p>重新获取 <code>maintainer_author</code> 矩阵，存储指标向量，然后调用 Matrix 生成稀疏矩阵，后续的数据操作就好办了，因为 Matrix 包是内置的，它定义的稀疏矩阵类其它 R 包也都支持。先以一个简单的例子说明构造稀疏矩阵的过程</p>
 <div class="sourceCode" id="cb2508"><pre class="downlit sourceCode r">
@@ -1357,7 +1354,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 </div>
 <p><code>i</code> 和 <code>j</code> 表示矩阵中有值的位置，<code>x</code> 表示对应位置上的值，<code>i</code>，<code>j</code> 和 <code>x</code> 是三个长度相等的数值型向量，我们还可以调用 <code>image</code>函数，把稀疏矩阵可视化出来，对于大型稀疏矩阵可视化其稀疏模式是重要的。</p>
 <blockquote>
-<p>贡献网络可视化 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Network Analysis and Visualization with R and igraph &lt;a href="https://kateto.net/networks-r-igraph" class="uri"&gt;https://kateto.net/networks-r-igraph&lt;/a&gt; with &lt;a href="https://kateto.net/wp-content/uploads/2016/01/NetSciX_2016_Workshop.pdf"&gt;PDF&lt;/a&gt;&lt;/p&gt;'><sup>78</sup></a></p>
+<p>贡献网络可视化 <a href="references.html#fn78" class="footnote-ref" id="fnref78"><sup>78</sup></a></p>
 </blockquote>
 <div class="sourceCode" id="cb2511"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clean_net_pdb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">maintainer</span><span class="op">)</span> <span class="op">{</span>
@@ -1417,8 +1414,8 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <code class="sourceCode R"><span class="va">update_pdb</span> <span class="op">&lt;-</span> <span class="va">pdb</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Published"</span><span class="op">)</span><span class="op">]</span>
 <span class="co"># 这天要更新的R包最多</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">update_pdb</span><span class="op">[</span>,<span class="st">"Published"</span><span class="op">]</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>## 2021-09-02 
-##         90</code></pre>
+<pre><code>## 2012-10-29 
+##         87</code></pre>
 <div class="sourceCode" id="cb2517"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">update_pdb</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="va">Published</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"skyblue4"</span><span class="op">)</span> <span class="op">+</span>
@@ -1443,7 +1440,7 @@ booktabs <span class="op">=</span> <span class="cn">TRUE</span>, row.names <span
 <div class="sourceCode" id="cb2518"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">update_pdb</span>, subset <span class="op">=</span> <span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html">min</a></span><span class="op">(</span><span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##        Package  Published
-## 2821 coxrobust 2006-03-15</code></pre>
+## 2822 coxrobust 2006-03-15</code></pre>
 <div class="sourceCode" id="cb2520"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">update_pdb</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/which.minmax.html">which.min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="va">update_pdb</span><span class="op">[</span>, <span class="st">"Published"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] "coxrobust"</code></pre>
@@ -1664,7 +1661,6 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 <div class="csl-right-inline">A. J. Dobson, <em>An introduction to statistical modelling</em>, 1st ed. London: Chapman; Hall/CRC, 1983. doi: <a href="https://doi.org/10.1007/978-1-4899-3174-0">10.1007/978-1-4899-3174-0</a>.</div>
 </div>
 </div>
-
   <div class="chapter-nav">
 <div class="prev"><a href="chap-spatial-viz.html"><span class="header-section-number">34</span> 空间数据可视化</a></div>
 <div class="next"><a href="chap-data-explorer.html"><span class="header-section-number">36</span> 数据探索</a></div>
@@ -1706,7 +1702,7 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-10-20.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-11-04.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

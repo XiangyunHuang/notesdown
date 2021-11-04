@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55a10dcd4220>
+## <bytecode: 0x55a8f0b8d390>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55a10dcd4220>
+## <bytecode: 0x55a8f0b8d390>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c1084f1739662f.c -o c1084f1739662f.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c1084f1739662f.so c1084f1739662f.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c681a5c2df935.c -o c681a5c2df935.o
+## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c681a5c2df935.so c681a5c2df935.o -L/opt/R/4.1.1/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
