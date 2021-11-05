@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-11-01 17:13:30
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-11-04 11:56:20 2021-11-04 12:05:23
+    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-11-05 14:45:22 2021-11-05 14:53:05
     ##                                         uid gid uname grname
     ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 20480  TRUE  755 2021-11-04 12:46:42 2021-11-04 12:46:42 2021-11-04 12:46:42
+    ## . 20480  TRUE  755 2021-11-05 15:26:50 2021-11-05 15:26:50 2021-11-05 15:26:50
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-11-04 12:40:08 2021-11-04 12:40:08
+    ## ./_book/ 12288  TRUE  755 2021-11-05 15:21:43 2021-11-05 15:21:43
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-11-04 12:40:40 1001 121 runner docker
+    ## ./_book/ 2021-11-05 15:24:51 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 26756
+    ## [1] 26273
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.067   0.011   0.079
+    ##   0.056   0.004   0.060
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.077   0.000   0.077
+    ##   0.054   0.004   0.058
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 05:46:43 PDT"
+    ## [1] "2021-11-05 08:26:51 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 08:46:43 EDT"
+    ## [1] "2021-11-05 11:26:51 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04"
+    ## [1] "2021-11-05"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Thu Nov  4 12:46:43 2021"
+    ## [1] "Fri Nov  5 15:26:51 2021"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Thu Nov 04 12:46:43 2021"
+    ## [1] "Fri Nov 05 15:26:51 2021"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 12:46:43 GMT"
+    ## [1] "2021-11-05 15:26:51 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 12:46:43 UTC"
+    ## [1] "2021-11-05 15:26:51 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 11:46:43 UTC"
+    ## [1] "2021-11-05 14:26:51 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-11-04 12:15:54 2021-11-04 12:15:54
+    ## ./_common.R 1636 FALSE  644 2021-11-05 15:01:47 2021-11-05 15:01:47
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-11-04 12:40:08 1001 121 runner docker
+    ## ./_common.R 2021-11-05 15:21:43 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-11-04 12:46:43 2021-11-04 12:46:43
+    ## ./_common.R 1636 FALSE  644 2021-11-05 15:26:51 2021-11-05 15:26:51
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-11-04 12:46:43 1001 121 runner docker
+    ## ./_common.R 2021-11-05 15:26:51 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 12:46:43 CST"
+    ## [1] "2021-11-05 15:26:51 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 12:46:43"
+    ## [1] "2021-11-05 15:26:51"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-11-04 20:46:43 CST"
+    ## [1] "2021-11-05 23:26:51 CST"
     ```
 
 1. 设置时区
@@ -1356,13 +1356,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 445      40          13
+    ##   /home/runner/work/_temp/Library 441      44          13
     ##   /opt/R/4.1.1/lib/R/library       25       4           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       496         17864
+    ##   https://cloud.r-project.org/src/contrib       496         17854
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1503,7 +1503,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5602e9203b70>
+## <bytecode: 0x55adee2f0bc0>
 ## <environment: namespace:base>
 ```
 

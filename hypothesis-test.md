@@ -212,13 +212,13 @@ binom.test(sum(x), n = 100, p = 0.5)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 21, number of trials = 100, p-value = 4.337e-09
+## number of successes = 16, number of trials = 100, p-value = 2.606e-12
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
-##  0.1349437 0.3029154
+##  0.09431029 0.24678760
 ## sample estimates:
 ## probability of success 
-##                   0.21
+##                   0.16
 ```
 
 检验成功概率 p 是否等于 0.5， P 值 $6.148 \times 10^{-11}$ 结论是拒绝原假设
@@ -233,13 +233,13 @@ binom.test(sum(x), n = 100, p = 0.2)
 ## 	Exact binomial test
 ## 
 ## data:  sum(x) and 100
-## number of successes = 21, number of trials = 100, p-value = 0.8026
+## number of successes = 16, number of trials = 100, p-value = 0.3814
 ## alternative hypothesis: true probability of success is not equal to 0.2
 ## 95 percent confidence interval:
-##  0.1349437 0.3029154
+##  0.09431029 0.24678760
 ## sample estimates:
 ## probability of success 
-##                   0.21
+##                   0.16
 ```
 
 检验成功概率 p 是否等于 0.2， P 值 0.7081 结论是不能拒绝原假设

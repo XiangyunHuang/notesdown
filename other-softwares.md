@@ -750,35 +750,59 @@ asy -f jpg test.asy
 指定分辨率
 
 ```bash
-convert -geometry 1000x3000 -density 300 -units PixelsPerInch example.eps example.png
+convert -geometry 1000x3000 -density 300 -units PixelsPerInch INPUT.eps OUTPUT.png
 ```
 
 这样不改变图像的像素数，只是给出一个每个像素应该显示多大的提示。
 
 ```bash
-convert -quality 100 -density 300x300 filename.pdf filename.png
+convert -quality 100 -density 300x300 INPUT.pdf OUTPUT.png
 ```
 
 高质量大图，给定像素，转化 eps 格式图片，需要先安装 Ghostscript
 
 ```bash
-convert -geometry 1000x3000 example.eps example.png
+convert -geometry 1000x3000 INPUT.eps OUTPUT.png
 ```
+
+
+```bash
+convert -quality 100 -antialias -density 96 -transparent white -trim INPUT.pdf OUTPUT.png 
+```
+ 
+|选项            |作用             |
+|:---------------|:----------------|
+|trim                          |  裁剪图像四周空白区域 |
+|transparent color             |  去除图像中指定的颜色 |
+|density geometry              |  设定图像的 DPI 值    |
+|antialias                     |  让图像具有抗锯齿的效果 |
+|quality                       |  图像压缩等级 |
+
+
+像素、点等常见术语
+
+|符号         |含义                                                  |
+|:------------|:-----------------------------------------------------|
+| px          | pixel 像素，电子屏幕上组成一幅图画或照片的最基本单元 |
+| pt          | point，点，印刷行业常用单位，等于1/72英寸            |
+| ppi         | pixel per inch，每英寸像素数，该值越高，则屏幕越细腻 |
+| dpi         | dot per inch，每英寸多少点，该值越高，则图片越细腻   |
+
 
 多页的 PDF 文件转化为多张 PNG 图片
 
 ```bash
-convert -quality 100 -density 300x300  input.pdf output.png
+convert -quality 100 -density 300x300  INPUT.pdf OUTPUT.png 
 ```
 
 将多页 PDF 文件合成为 GIF 动图
 
 ```bash
 convert -delay 60 -density 300x300 -background white -alpha remove \
-  -dispose previous pdf-mobile.pdf -layers coalesce pdf-mobile.gif
+  -dispose previous INPUT.pdf -layers coalesce OUTPUT.gif
 ```
 
-
+见益辉博客[一些 ImageMagick 命令](https://yihui.org/cn/2018/04/imagemagick/)
 
 ## OptiPNG 图片优化 {#sec-optipng}
 
@@ -1794,7 +1818,7 @@ x # 得到 python 中的向量 vector 或数组 array
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年11月04日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2021年11月05日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
 
 
 
