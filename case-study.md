@@ -669,7 +669,7 @@ p
 
 \begin{figure}
 
-{\centering \includegraphics{case-study_files/figure-latex/orange-tree-1} 
+{\centering \includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/orange-tree-1} 
 
 }
 
@@ -684,7 +684,7 @@ p + transition_reveal(age)
 
 
 
-\begin{center}\animategraphics[,controls,loop]{10}{case-study_files/figure-latex/orange-animate-}{1}{100}\end{center}
+\begin{center}\animategraphics[width=0.75\linewidth,controls,loop]{10}{case-study_files/figure-latex/orange-animate-}{1}{100}\end{center}
 
 
 
@@ -697,7 +697,7 @@ p + transition_reveal(age)
 pdb <- tools::CRAN_package_db()
 ```
 
-接着，我们可以看看CRAN 上发布的 R 包数量
+接着，我们可以看看 CRAN 上发布的 R 包数量
 
 
 ```r
@@ -726,7 +726,7 @@ pdb[, "Package"][duplicated(pdb[, "Package"])]
 
 
 ```r
-dim(subset(pdb, subset = !duplicated(pdb[, "Package"])))[1]
+dim(subset(pdb, subset = !duplicated(Package)))[1]
 ```
 
 ```
@@ -737,7 +737,7 @@ dim(subset(pdb, subset = !duplicated(pdb[, "Package"])))[1]
 
 
 ```r
-pdb <- subset(pdb, subset = !duplicated(pdb[, "Package"]))
+pdb <- subset(pdb, subset = !duplicated(Package))
 ```
 
 ### R 核心团队 {#R-Core-Team}
@@ -748,8 +748,8 @@ R 核心团队除了维护开发 Base R 包以外，还开发了哪些 R 包，�
 ```r
 core_pdb <- subset(pdb,
   subset = grepl(
-    x = pdb[, "Maintainer"],
-    pattern = "(@R-project\\.org)"
+    x = Maintainer,
+    pattern = "(@[Rr]-project\\.org)"
   ),
   select = c("Package", "Maintainer")
 )
@@ -757,7 +757,7 @@ dim(core_pdb[order(core_pdb[, "Maintainer"]), ])
 ```
 
 ```
-## [1] 105   2
+## [1] 153   2
 ```
 
 这么少，是不是有点意外，看来很多大佬更喜欢用自己的邮箱，比如 Paul Murrell， 他的邮箱是 <paul@stat.auckland.ac.nz>
@@ -765,7 +765,7 @@ dim(core_pdb[order(core_pdb[, "Maintainer"]), ])
 
 ```r
 subset(pdb,
-  subset = grepl(x = pdb[, "Maintainer"], pattern = "(Paul Murrell)"),
+  subset = grepl(x = Maintainer, pattern = "(Paul Murrell)"),
   select = c("Package", "Maintainer")
 )
 ```
@@ -838,7 +838,7 @@ R 核心团队维护的 R 包及其最新发布的日期
 ```r
 core_pdb <- subset(pdb,
   subset = grepl(
-    x = pdb[, "Maintainer"],
+    x = Maintainer,
     pattern = paste("(", core_team$name, ")", collapse = "|", sep = "")
   ),
   select = c("Package", "Maintainer", "Published")
@@ -929,7 +929,7 @@ aggregate(data = core_pdb, Package ~ Maintainer, FUN = length) |>
 
 ```r
 yihui_pdb <- subset(pdb,
-  subset = grepl("Yihui Xie", pdb[, "Maintainer"]),
+  subset = grepl("Yihui Xie", Maintainer),
   select = c("Package", "Title")
 )
 yihui_pdb[, "Title"] <- gsub("(\\\n)", " ", yihui_pdb[, "Title"])
@@ -983,7 +983,7 @@ Jeroen Ooms 维护从 C++ 世界搬运进来的库，如图像处理 magick 包�
 
 
 ```r
-subset(pdb, subset = grepl("Jeroen Ooms", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Jeroen Ooms", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
@@ -1004,7 +1004,7 @@ Dirk Eddelbuettel 维护 Rcpp 生态
 
 
 ```r
-subset(pdb, subset = grepl("Dirk Eddelbuettel", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Dirk Eddelbuettel", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
@@ -1037,7 +1037,7 @@ Hadley Wickham 维护 tidyverse 生态
 
 
 ```r
-subset(pdb, subset = grepl("Hadley Wickham", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Hadley Wickham", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
@@ -1061,7 +1061,7 @@ subset(pdb, subset = grepl("Hadley Wickham", pdb[, "Maintainer"]),
 
 
 ```r
-subset(pdb, subset = grepl("Scott Chamberlain", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Scott Chamberlain", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
@@ -1100,7 +1100,7 @@ length(unique(pdb[, "Maintainer"]))
 
 ```r
 subset(pdb,
-  subset = grepl("Hadley Wickham", pdb[, "Maintainer"]),
+  subset = grepl("Hadley Wickham", Maintainer),
   select = c("Package", "Maintainer")
 )
 ```
@@ -1174,7 +1174,7 @@ ggplot(top_maintainer) +
 
 
 
-\begin{center}\includegraphics{case-study_files/figure-latex/unnamed-chunk-29-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/unnamed-chunk-29-1} \end{center}
 
 条形图在柱子很多的情况下，点线图是一种更加简洁的替代方式
 
@@ -1188,7 +1188,7 @@ ggplot(top_maintainer, aes(x = Freq, y = Maintainer)) +
 
 
 
-\begin{center}\includegraphics{case-study_files/figure-latex/unnamed-chunk-30-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/unnamed-chunk-30-1} \end{center}
 
 接下来，我们想看看开发者维护的 R 包数量的分布，仅从上图，我们知道有的人能维护 80 多个 R 包，总体的分布情况又是如何呢？如图所示，我们将纵轴刻度设置为 log 模式，随着开发的R包数量的增加，开发者人数是指数级递减，可见开发R包依然是一个门槛很高的工作！
 
@@ -1203,7 +1203,7 @@ barplot(table(table(pdb[, "Maintainer"])),
 
 
 
-\begin{center}\includegraphics{case-study_files/figure-latex/unnamed-chunk-31-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/unnamed-chunk-31-1} \end{center}
 
 只开发一个 R 包的人数达到 5276 人，占开发者总数的 67.31\%，约为2/3。
 
@@ -1271,7 +1271,7 @@ ctb_num <- unlist(
   lapply(
     strsplit(
       subset(sub_pdb,
-             subset = sub_pdb[, "Maintainer"] %in% first_ctb,
+             subset = Maintainer %in% first_ctb,
              select = "Author", drop = TRUE # drop out data.frame return vector
       ),
       split = ","
@@ -1287,7 +1287,7 @@ hist(ctb_num, col = "lightblue", border = "white",
 
 
 
-\begin{center}\includegraphics{case-study_files/figure-latex/unnamed-chunk-36-1} \end{center}
+\begin{center}\includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/unnamed-chunk-36-1} \end{center}
 
 这些基本单干的R包开发者是否参与其它 R 包的贡献？如果不参与，则他们对社区的贡献非常有限，仅限于为社区带来数量上的堆积！
 
@@ -1299,7 +1299,7 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3039 1411  938  580  284  164  106   59   43   28   15   11    6   10    5    4 
+## 3039 1411  938  580  284  163  106   60   43   28   15   11    6   10    5    4 
 ##   17   18   19   20   22   23   24   26   27   28   56   60  133 
 ##    7    4    3    3    1    3    1    1    1    1    1    1    1
 ```
@@ -1318,7 +1318,7 @@ first_ctb[which.max(ctb_num)]
 
 ```r
 # 找到 R 包
-subset(sub_pdb, subset = grepl("Matt Dowle", sub_pdb[, "Maintainer"]), select = "Package")
+subset(sub_pdb, subset = grepl("Matt Dowle", Maintainer), select = "Package")
 ```
 
 ```
@@ -1548,7 +1548,7 @@ ggplot(update_pdb, aes(as.Date(Published))) +
 
 \begin{figure}
 
-{\centering \includegraphics{case-study_files/figure-latex/pdb-update-history-1} 
+{\centering \includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/pdb-update-history-1} 
 
 }
 
@@ -1559,7 +1559,7 @@ ggplot(update_pdb, aes(as.Date(Published))) +
 
 
 ```r
-subset(update_pdb, subset = update_pdb[, "Published"] == min(update_pdb[, "Published"]))
+subset(update_pdb, subset = Published == min(Published))
 ```
 
 ```
@@ -1606,7 +1606,7 @@ segments(x0 = 1, y0 = seq(length(license_pdb)),
 
 \begin{figure}
 
-{\centering \includegraphics{case-study_files/figure-latex/license-cran-1} 
+{\centering \includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/license-cran-1} 
 
 }
 
@@ -1640,7 +1640,7 @@ segments(x0 = 1, y0 = seq(length(license_rforge_pdb)),
 
 \begin{figure}
 
-{\centering \includegraphics{case-study_files/figure-latex/license-rforge-1} 
+{\centering \includegraphics[width=0.75\linewidth]{case-study_files/figure-latex/license-rforge-1} 
 
 }
 
