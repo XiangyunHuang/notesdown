@@ -335,7 +335,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x55efe6c48320>
+## <bytecode: 0x559ae03fc2b0>
 ## <environment: namespace:graphics>
 ```
 
@@ -362,7 +362,7 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x55efe6e06258>
+## <bytecode: 0x559ae05b9f78>
 ## <environment: namespace:graphics>
 ```
 

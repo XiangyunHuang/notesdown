@@ -627,7 +627,6 @@ Package              Title
 **prereg**           R Markdown Templates to Preregister Scientific Studies                                
 **prettydoc**        Creating Pretty Documents from R Markdown                                             
 **quarto**           R Interface to 'Quarto' Markdown Publishing System                                    
-**radix**            R Markdown Format for Scientific and Technical Writing                                
 **reportfactory**    Lightweight Infrastructure for Handling Multiple R Markdown Documents                 
 **revealjs**         R Markdown Format for reveal.js Presentations                                         
 **rmdfiltr**         Lua-Filters for R Markdown                                                            
