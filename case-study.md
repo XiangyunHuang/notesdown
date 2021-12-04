@@ -16,10 +16,10 @@ library(packagemetrics)
 提升回归模型的10个提示
 [10 quick tips to improve your regression modeling](https://statmodeling.stat.columbia.edu/wp-content/uploads/2020/07/raos_tips.pdf)
 
-[tidymodels](https://github.com/tidymodels/tidymodels) 和 [easystats](https://github.com/easystats/easystats) 都是基于 [tidyverse](https://github.com/tidyverse/tidyverse) [@Hadley_2019_tidyverse] 的统计模型套件，[strengejacke](https://github.com/strengejacke/strengejacke)、 [mlr3verse](https://github.com/mlr-org/mlr3verse) 目的和 tidymodels 差不多，都是提供做数据建模的完整解决方案，区别在于它不基于 tidyverse 这套东西。
+
 
 [easystats](https://github.com/easystats/easystats) 包含 [insight](https://github.com/easystats/insight) [@ludecke2019insight] 和 [bayestestR](https://github.com/easystats/bayestestR) [@makowski2019bayestestr] 等共 9 个R 包，[tidymodels](https://github.com/tidymodels/tidymodels) 也包含差不多量的 R 包。
-[DrWhy](https://github.com/ModelOriented/DrWhy)
+
 [rms](https://github.com/harrelfe/rms) Regression Modeling Strategies
 
 [gtsummary](https://github.com/ddsjoberg/gtsummary)
@@ -705,7 +705,7 @@ length(pdb[, "Package"])
 ```
 
 ```
-## [1] 18548
+## [1] 18567
 ```
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -730,7 +730,7 @@ dim(subset(pdb, subset = !duplicated(Package)))[1]
 ```
 
 ```
-## [1] 18531
+## [1] 18550
 ```
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
@@ -772,25 +772,25 @@ subset(pdb,
 
 ```
 ##            Package                              Maintainer
-## 2524       compare Paul Murrell <p.murrell@auckland.ac.nz>
-## 5774         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
-## 6074        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
-## 6532      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
-## 6533    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
-## 6534     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
-## 6536  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
-## 6537  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 6538  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
-## 6542       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
-## 6545      grImport Paul Murrell <p.murrell@auckland.ac.nz>
-## 6546     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
-## 6870       hexView Paul Murrell <paul@stat.auckland.ac.nz>
-## 9306      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 12998    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 13742    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 14177        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 14178 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
-## 18061       vwline Paul Murrell <paul@stat.auckland.ac.nz>
+## 2528       compare Paul Murrell <p.murrell@auckland.ac.nz>
+## 5782         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
+## 6082        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
+## 6540      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
+## 6541    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
+## 6542     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
+## 6544  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
+## 6545  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 6546  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
+## 6550       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
+## 6553      grImport Paul Murrell <p.murrell@auckland.ac.nz>
+## 6554     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
+## 6878       hexView Paul Murrell <paul@stat.auckland.ac.nz>
+## 9319      metapost Paul Murrell <paul@stat.auckland.ac.nz>
+## 13013    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 13758    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 14193        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 14194 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 18080       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 
 所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 `contributors()` 函数已经收集了成员名单，不需要我们去官网找了。
@@ -1092,7 +1092,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10811
+## [1] 10821
 ```
 
 可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。
@@ -1107,11 +1107,11 @@ subset(pdb,
 
 ```
 ##             Package                             Maintainer
-## 593      assertthat    Hadley Wickham <hadley@rstudio.com>
-## 752       babynames    Hadley Wickham <hadley@rstudio.com>
-## 1205      bigrquery    Hadley Wickham <hadley@rstudio.com>
-## 2202      classifly   Hadley Wickham <h.wickham@gmail.com>
-## 2604     conflicted    Hadley Wickham <hadley@rstudio.com>
+## 596      assertthat    Hadley Wickham <hadley@rstudio.com>
+## 755       babynames    Hadley Wickham <hadley@rstudio.com>
+## 1208      bigrquery    Hadley Wickham <hadley@rstudio.com>
+## 2206      classifly   Hadley Wickham <h.wickham@gmail.com>
+## 2608     conflicted    Hadley Wickham <hadley@rstudio.com>
 ....
 ```
 
@@ -1124,7 +1124,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10001
+## [1] 10008
 ```
 
 接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图\@ref(fig:top-maintainers) 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。
@@ -1250,7 +1250,7 @@ length(unique(sub_pdb[, "Maintainer"][duplicated(sub_pdb[, "Maintainer"])]))
 ```
 
 ```
-## [1] 3270
+## [1] 3274
 ```
 
 总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有 
@@ -1299,7 +1299,7 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3039 1411  938  580  284  163  106   60   43   28   15   11    6   10    5    4 
+## 3043 1410  938  581  283  163  106   60   43   28   15   11    6   10    5    4 
 ##   17   18   19   20   22   23   24   26   27   28   56   60  133 
 ##    7    4    3    3    1    3    1    1    1    1    1    1    1
 ```
@@ -1323,7 +1323,7 @@ subset(sub_pdb, subset = grepl("Matt Dowle", Maintainer), select = "Package")
 
 ```
 ##         Package
-## 3184 data.table
+## 3189 data.table
 ```
 
 哇，大名鼎鼎的 [data.table](https://github.com/Rdatatable/data.table) 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 [Github 主页](https://github.com/mattdowle) 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
@@ -1564,7 +1564,7 @@ subset(update_pdb, subset = Published == min(Published))
 
 ```
 ##        Package  Published
-## 2835 coxrobust 2006-03-15
+## 2839 coxrobust 2006-03-15
 ```
 
 ```r
@@ -1651,128 +1651,4 @@ segments(x0 = 1, y0 = seq(length(license_rforge_pdb)),
 > 改进的方向是含义相同的进行合并，这需要研究一下各个许可证，然后使用对比型条形图合并上面两个图
 
 CRAN 会检测 R 包的授权，只有授权协议包含在数据库中的才可以在 CRAN 上发布 <https://svn.r-project.org/R/trunk/share/licenses/license.db>
-
-### 选择 R 包 {#Choose-Package}
-
-R 社区开发的 R 包实在太多了，重复造的轮子也很多，哪个轮子结实好用就选哪个，挑选合适的 R 包
-
-
-```r
-# remotes::install_github("ropenscilabs/packagemetrics")
-library(formattable)
-library(packagemetrics)
-packages <- subset(pdb, Maintainer == maintainer("rmarkdown"), select = "Package")
-
-pdb_metrics <- apply(packages, 1, combine_metrics)
-pdb_metrics <- data.table::rbindlist(pdb_metrics, fill = TRUE)
-
-pd = subset(pdb_metrics, select = c("package", "published", "dl_last_month",
-    "stars", "forks", "last_commit",
-    "depends_count", "watchers")
-  ) |> 
-  transform(last_commit = round(last_commit, 1))
-
-pd[is.na(pd)] <- ""
-
-formattable(
-  pd,
-  list(
-    package = formatter("span",
-      style = x ~ style(font.weight = "bold")
-    ),
-    contributors = color_tile("white", "#1CC2E3"),
-    depends_count = color_tile("white", "#1CC2E3"),
-    reverse_count = color_tile("white", "#1CC2E3"),
-    tidyverse_happy = formatter("span",
-      style = x ~ style(color = ifelse(x, "purple", "white")),
-      x ~ icontext(ifelse(x, "glass", "glass"))
-    ),
-    vignette = formatter("span",
-      style = x ~ style(color = ifelse(x, "green", "white")),
-      x ~ icontext(ifelse(x, "ok", "ok"))
-    ),
-    has_tests = formatter("span",
-      style = x ~ style(color = ifelse(x, "green", "red")),
-      x ~ icontext(ifelse(x, "ok", "remove"))
-    ),
-    dl_last_month = color_bar("#56A33E"),
-    forks = color_tile("white", "#56A33E"),
-    stars = color_tile("white", "#56A33E"),
-    last_commit = color_tile("#F06B13", "white", na.rm = T)
-  )
-)
-```
-
-
-
-
-### R 包增长速度 {#pkg-growth}
-
-
-```r
-# 抓取网页数据
-pkgs <- pdb |>
-  transform(count = rev(1:nrow(pdb)), Date = as.Date(Date)) |>
-  transform(Month = format(Date, format = "%Y-%m"))
-
-pkgs <- aggregate(formula = count ~ Month, data = pkgs, FUN = min)
-
-pkgs <- transform(pkgs, Date = as.Date(paste(Month, "-01", sep = ""))) %>%
-  subset(Date > as.Date("2012-12-31"))
-
-# 计算自2013年以来 R 包增长速度
-new_pkgs <- pkgs %>%
-  subset(Date > as.Date("2012-12-31")) %>%
-  transform(publishedGrowth = c(tail(.$count, -1), NA) / count) %>%
-  transform(counter = 1:nrow(.))
-
-# 绘图
-library(ggplot2)
-library(grid)
-
-gg <- ggplot(pkgs, aes(x = Date, y = count)) +
-  geom_line(size = 1.5) +
-  scale_y_log10(
-    breaks = c(0, 10, 100, 1000, 10000),
-    labels = c("1", "10", "100", "1.000", "10.000")
-  ) +
-  labs(
-    x = "", y = "# Packages (log)",
-    title = "Packages published on CRAN ever since"
-  ) +
-  theme_minimal(base_size = 14, base_family = "sans") +
-  theme(panel.grid.major.x = element_blank()) +
-  geom_hline(yintercept = 0, size = 1, colour = "#535353")
-
-gg2 <- ggplot(new_pkgs, aes(x = Date, y = count)) +
-  geom_line(size = 1) +
-  geom_line(
-    data = new_pkgs, aes(y = (min(count) * 1.048^counter)),
-    color = "red", size = .7, linetype = 1
-  ) +
-  annotate("segment",
-    x = as.Date("2015-04-01"), xend = as.Date("2015-08-01"),
-    y = 1000, yend = 1000, colour = "red", size = 1
-  ) +
-  annotate("text",
-    x = as.Date("2016-12-01"),
-    y = 1000, label = "4.6% growth estimation", size = 3.5
-  ) +
-  scale_y_continuous(
-    breaks = seq(from = 0, to = 12000, by = 2000),
-    labels = seq(from = 0, to = 12000, by = 2000)
-  ) +
-  labs(
-    y = "# Packages", x = "",
-    subtitle = "Packages published on CRAN since 2013"
-  ) +
-  theme_minimal(
-    base_size = 11, base_family = "sans"
-  ) +
-  theme(panel.grid.major.x = element_blank()) +
-  geom_hline(yintercept = 0, size = .6, colour = "#535353")
-
-gg
-print(gg2, vp = viewport(.70, .31, .43, .43))
-```
 
