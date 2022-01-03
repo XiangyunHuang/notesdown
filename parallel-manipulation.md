@@ -185,7 +185,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -198,13 +198,13 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3 bookdown_0.24   compiler_4.1.1  curl_4.3.2     
-##   digest_0.6.28   evaluate_0.14   fastmap_1.1.0   glue_1.4.2     
-##   graphics_4.1.1  grDevices_4.1.1 highr_0.9       htmltools_0.5.2
-##   jquerylib_0.1.4 jsonlite_1.7.2  knitr_1.36      magrittr_2.0.1 
-##   methods_4.1.1   rlang_0.4.11    rmarkdown_2.11  stats_4.1.1    
-##   stringi_1.7.5   stringr_1.4.0   tinytex_0.34    tools_4.1.1    
-##   utils_4.1.1     xfun_0.26       yaml_2.2.1
+##   base64enc_0.1.3 bookdown_0.24   compiler_4.1.2  curl_4.3.2     
+##   digest_0.6.29   evaluate_0.14   fastmap_1.1.0   glue_1.6.0     
+##   graphics_4.1.2  grDevices_4.1.2 highr_0.9       htmltools_0.5.2
+##   jquerylib_0.1.4 jsonlite_1.7.2  knitr_1.37      magrittr_2.0.1 
+##   methods_4.1.2   rlang_0.4.12    rmarkdown_2.11  stats_4.1.2    
+##   stringi_1.7.6   stringr_1.4.0   tinytex_0.36    tools_4.1.2    
+##   utils_4.1.2     xfun_0.29       yaml_2.2.1
 ```
 
 [create-an-empty-data-frame](https://stackoverflow.com/questions/10689055)

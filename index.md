@@ -2,7 +2,7 @@
 title: "现代应用统计与 R 语言"
 subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
-date: "2021-12-04"
+date: "2022-01-03"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: b5
@@ -91,178 +91,6 @@ Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次
 
 (ref:stats-level) 现代统计建模的三重境界：修改自 2019 年冬季 Bradley Efron 的课程笔记（第一部分） <http://statweb.stanford.edu/~ckirby/brad/STATS305B_Part-1_corrected-2.pdf>
 
-\index{区间估计}
-
-下面以区间估计为例，希望能为传道做一点事情。区间估计的意义是解决点估计可靠性问题，它用置信系数解决了对估计结果的信心问题，弥补了点估计的不足。置信系数是最大的置信水平。
-
-
-区间半径这么长，区间估计的意义何在？增加样本量可以使得半径更短，那么至少应该有多少样本量才可以让估计变得有意义呢？就是说用估计比不用估计更好呢？答案是 39 个，留给读者思考一下为什么？读者可能已经注意到，置信带是关于点 $(5, 0.5)$ 中心对称的，这又是为什么，并且两头窄中间胖，像个酒桶？
-
-::: {.rmdtip data-latex="{提示}"}
-Base R 提供的 `uniroot()` 函数只能求取一元非线性方程的一个根，而 **rootSolve** 包提供的 `uniroot.all()` 函数可以求取所有的根。在给定分位点下，我们需要满足方程的最小的概率值。
-:::
-
-Base R 提供的 `binom.test()` 函数可以精确计算置信区间，而 `prop.test()` 函数可近似计算置信区间。
-
-
-```r
-# 近似计算 Wilson 区间
-prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95, correct = TRUE)
-## Warning in prop.test(x = 2, n = 10, p = 0.95, conf.level = 0.95, correct =
-## TRUE): Chi-squared approximation may be incorrect
-## 
-## 	1-sample proportions test with continuity correction
-## 
-## data:  2 out of 10, null probability 0.95
-## X-squared = 103.16, df = 1, p-value < 2.2e-16
-## alternative hypothesis: true p is not equal to 0.95
-## 95 percent confidence interval:
-##  0.03542694 0.55781858
-## sample estimates:
-##   p 
-## 0.2
-# 精确计算
-binom.test(x = 2, n = 10, p = 0.95, conf.level = 0.95)
-## 
-## 	Exact binomial test
-## 
-## data:  2 and 10
-## number of successes = 2, number of trials = 10, p-value = 1.605e-09
-## alternative hypothesis: true probability of success is not equal to 0.95
-## 95 percent confidence interval:
-##  0.02521073 0.55609546
-## sample estimates:
-## probability of success 
-##                    0.2
-```
-
-
-(ref:pbinom) 二项分布 $B(n,\theta)$ 成功概率 $\theta$，固定样本量 $n = 10$，分不同的分位点 $q = 2, 4, 6$ 绘制概率随成功概率 $\theta$ 的变化
-
-\begin{figure}
-
-{\centering \includegraphics{index_files/figure-latex/pbinom-1} 
-
-}
-
-\caption{(ref:pbinom)}(\#fig:pbinom)
-\end{figure}
-
-实际达到的置信度水平随真实的未知参数值和样本量的变化而**剧烈**波动，这意味着这种参数估计方法在实际应用中不可靠、真实场景中参数真值是永远未知的，样本量是可控的，并且是可以变化的。根本原因在于这类分布是离散的，比如这里的二项分布。当数据 $x$ 是离散的情况，置信区间的端点$\ell(x)$ 和 $u(x)$ 也是离散的。这种缺陷是无法避免的，清晰的置信区间和离散的数据之间存在无法调和的冲突。
-
-
-<!-- 机器学习和统计学习本质上是一回事，计算机和统计学家各有所表。 -->
-
-覆盖概率 $P_{\theta}(X = x)$ 和参数真值 $\theta$ 的关系 [@Lawrence2001;@Geyer2005]
-
-
-以抛硬币为例，我来做这个实验，抛10次，7 次正面朝上，他做这个实验，也抛10 次，4 次正面朝上。换不同的人来做这个实验，结果会有所不同，实际上，总共有 2^10 = 1024 个结果，每个结果都可以用来估计未知的参数 $p$ 及其置信区间、覆盖概率。假设参数 $p$ 的真值是 0.7，抛10次，6 次正面朝上。先来模拟这个抛硬币的过程，重复抛了10次，是 10 重伯努利实验，正面朝上的累计次数服从二项分布 $B(10, 0.7)$，从此二项分布里抽样一次，相当于抛10次硬币，R 提供了模拟二项分布的函数 `rbinom()`，实现起来非常方便，为了模拟过程可重复，设置随机数种子为 2019。
-
-
-```r
-set.seed(2019)
-rbinom(n = 1, size = 10, prob = 0.7)
-```
-
-```
-## [1] 6
-```
-
-假设只知道抛了 10 次硬币，有 6 次正面朝上的结果，并不知道参数 $p$ 的真实值，现在做个假设，假设 $p = 0.7$，我们看看基于这样一次实验的数据，检验一下该假设是否成立。这是一个典型的二项检验，R 已经提供内置的函数 `binom.test()` 来实现，经计算，检验的 P 值，即样本落在拒绝域的概率是 0.4997，大于 0.05，所以原假设有一定合理性，不能拒绝。
-
-
-```r
-binom.test(x = 6, n = 10, p = 0.7, conf.level = 0.95)
-```
-
-```
-## 
-## 	Exact binomial test
-## 
-## data:  6 and 10
-## number of successes = 6, number of trials = 10, p-value = 0.4997
-## alternative hypothesis: true probability of success is not equal to 0.7
-## 95 percent confidence interval:
-##  0.2623781 0.8784477
-## sample estimates:
-## probability of success 
-##                    0.6
-```
-
-比例的真实值 $p$ 落在区间 $(\hat{p} - Z_{1-\alpha/2} * \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}, \hat{p} + Z_{1-\alpha/2} * \sqrt{\frac{\hat{p}(1-\hat{p})}{n}})$ 的概率是 0.95。
-
-
-```r
-c(
-  0.6 - qnorm(p = 1 - 0.05 / 2, mean = 0, sd = 1) * sqrt(0.6 * (1 - 0.6) / 10),
-  0.6 + qnorm(p = 1 - 0.05 / 2, mean = 0, sd = 1) * sqrt(0.6 * (1 - 0.6) / 10)
-)
-```
-
-```
-## [1] 0.2963637 0.9036363
-```
-
-
-
-
-```r
-pnorm(q = 0.9036363) - pnorm(q = 0.2963637)
-```
-
-```
-## [1] 0.200382
-```
-
-
-
-[多重比较与检验]{.todo}
-
-多重比较 `p.adjust()` 函数 Adjust P-values for Multiple Comparisons 单因素多重比较 `oneway.test()`
-
-
-```r
-set.seed(123)
-x <- rnorm(50, mean = c(rep(0, 25), rep(3, 25)))
-p <- 2 * pnorm(sort(-abs(x)))
-# ?p.adjust
-round(p, 3)
-```
-
-```
-##  [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.001 0.002
-## [13] 0.003 0.004 0.005 0.007 0.007 0.009 0.009 0.011 0.021 0.049 0.061 0.063
-## [25] 0.074 0.083 0.086 0.119 0.189 0.206 0.221 0.286 0.305 0.466 0.483 0.492
-## [37] 0.532 0.575 0.578 0.619 0.636 0.645 0.656 0.689 0.719 0.818 0.827 0.897
-## [49] 0.912 0.944
-```
-
-```r
-# round(p.adjust(p), 3)
-# round(p.adjust(p, "BH"), 3)
-```
-
-[混合正态分布的参数估计]{.todo}
-
-标准正态分布的概率密度函数 $f(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$ 的图像见图\@ref(fig:god-play-games) 中的红线，非常的优美，然而，现实中的数据所呈现出来的却是另一翻景象，它们只是近似却永远也不会严丝合缝，这又是大自然神奇的地方，整体似乎有某种确定性的规律，局部又有不确定的随机扰动，横看成岭侧成峰，远近高低各不同。
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{index_files/figure-latex/god-play-games-1} 
-
-}
-
-\caption{上帝在掷骰子吗？}(\#fig:god-play-games)
-\end{figure}
-
-
-
-[统计检验，决策风险，显著性水平]{.todo}
-
-
-\begin{center}\includegraphics{index_files/figure-latex/ab-test-1} \end{center}
-
-Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Values [@Geyer2005] 文章中的图 1 名义覆盖概率的计算见 [@Blyth1960]
 
 
 ## 本书定位 {#sec-audience .unnumbered}
@@ -272,10 +100,6 @@ Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Value
 ## 内容概要 {#sec-abstract .unnumbered}
 
 第 \@ref(chap-preface) 章介绍本书的写作背景、语言环境、全书的记号约定、如何获取帮助、作者简介等信息。
-
-第 \@ref(chap-notations) 章介绍全书的数学公式符号。
-
-第 \@ref(chap-file-operations) 章介绍文件操作。
 
 第 \@ref(chap-data-structure) 章介绍 R 语言的数据结构。
 
@@ -293,19 +117,16 @@ Charles J. Geyer 的文章 Fuzzy and Randomized Confidence Intervals and P-Value
 
 第 \@ref(chap-interactive-shiny-app) 章介绍交互报表开发，符合工业标准的最佳实践。
 
+第 \@ref(chap-notations) 章介绍全书的数学公式符号。
+
+第 \@ref(chap-file-operations) 章介绍文件操作。
+
 
 ## 致谢名单 {#sec-acknowledgments .unnumbered}
 
-特别感谢 XX，还有很多人通过提交 PR 或 Issues 的方式参与了本书的创作过程，没有这一点一滴的持续改进，本书不会达到现在的样子，所以我将他们列在致谢名单中，详见表 \@ref(tab:acknowledgments)，人名按照提交量（commit 的个数）降序排列。
+特别感谢 XX，还有很多人通过提交 PR 或 Issues 的方式参与了本书的创作过程，没有这一点一滴的持续改进，本书不会达到现在的样子。
 
 
-
-Table: (\#tab:acknowledgments) 致谢名单
-
-贡献者        提交量
------------  -------
-Yadong Liu         1
-Yihui Xie          1
 
 ::: {.flushright data-latex=""}
 黄湘云  
@@ -324,6 +145,6 @@ Yihui Xie          1
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.1 (2021-08-10) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2021-12-04 10:57:11。
+书籍在 R version 4.1.2 (2021-11-01) 下编译，Pandoc 版本 2.14.1，最新一次编译发生在 2022-01-03 19:46:10。
 
 

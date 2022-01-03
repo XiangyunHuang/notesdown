@@ -331,10 +331,10 @@ ts(rnorm(20), start = c(1961, 1), frequency = 365.25/7)
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1]  1.34143896 -0.51264899 -0.62403740 -2.71005529 -2.44351649 -0.34103920
-##  [7]  1.67897668 -0.02596541  0.15737042  0.72777705 -0.38742607 -1.59363002
-## [13] -0.31713815  1.42020763  1.14782610  0.30224868 -0.25471054  0.20838199
-## [19] -0.48124446 -1.01482692
+##  [1]  1.26003644  1.87114796  0.60061268 -1.17035080 -0.37241360  0.15553804
+##  [7] -0.06505205  0.51014616  1.20995538  0.06015877  0.31920218  0.35029797
+## [13] -0.28201680 -2.05437157  0.92636117 -0.73203467 -0.61821095 -1.14606293
+## [19]  0.56743101 -0.19239746
 ```
 
 周数据，一周采一个点，采了 20 个点
@@ -693,7 +693,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -713,23 +713,23 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dygraphs_1.1.1.6  highcharter_0.8.2 ggfortify_0.4.12  ggplot2_3.3.5    
+## [1] dygraphs_1.1.1.6  highcharter_0.8.2 ggfortify_0.4.13  ggplot2_3.3.5    
 ## [5] formatR_1.11     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.26         purrr_0.3.4      
-##  [5] lattice_0.20-45   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0   
-##  [9] htmltools_0.5.2   yaml_2.2.1        utf8_1.2.2        rlang_0.4.11     
-## [13] pillar_1.6.3      glue_1.4.2        withr_2.4.2       DBI_1.1.1        
-## [17] TTR_0.24.2        lifecycle_1.0.1   quantmod_0.4.18   stringr_1.4.0    
+##  [1] zoo_1.8-9         tidyselect_1.1.1  xfun_0.29         purrr_0.3.4      
+##  [5] lattice_0.20-45   colorspace_2.0-2  vctrs_0.3.8       generics_0.1.1   
+##  [9] htmltools_0.5.2   yaml_2.2.1        utf8_1.2.2        rlang_0.4.12     
+## [13] pillar_1.6.4      glue_1.6.0        withr_2.4.3       DBI_1.1.2        
+## [17] TTR_0.24.3        lifecycle_1.0.1   quantmod_0.4.18   stringr_1.4.0    
 ## [21] munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.4 evaluate_0.14    
-## [25] labeling_0.4.2    knitr_1.36        fastmap_1.1.0     curl_4.3.2       
-## [29] fansi_0.5.0       broom_0.7.9       xts_0.12.1        scales_1.1.1     
-## [33] backports_1.2.1   showtext_0.9-4    jsonlite_1.7.2    sysfonts_0.8.5   
-## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.28     stringi_1.7.5    
+## [25] labeling_0.4.2    knitr_1.37        fastmap_1.1.0     curl_4.3.2       
+## [29] fansi_0.5.0       broom_0.7.10      xts_0.12.1        scales_1.1.1     
+## [33] backports_1.4.1   showtext_0.9-4    jsonlite_1.7.2    sysfonts_0.8.5   
+## [37] farver_2.1.0      gridExtra_2.3     digest_0.6.29     stringi_1.7.6    
 ## [41] showtextdb_3.0    rlist_0.4.6.2     bookdown_0.24     dplyr_1.0.7      
-## [45] grid_4.1.1        tools_4.1.1       magrittr_2.0.1    tibble_3.1.5     
-## [49] crayon_1.4.1      tidyr_1.1.4       pkgconfig_2.0.3   ellipsis_0.3.2   
+## [45] grid_4.1.2        tools_4.1.2       magrittr_2.0.1    tibble_3.1.6     
+## [49] crayon_1.4.2      tidyr_1.1.4       pkgconfig_2.0.3   ellipsis_0.3.2   
 ## [53] data.table_1.14.2 lubridate_1.8.0   assertthat_0.2.1  rmarkdown_2.11   
-## [57] R6_2.5.1          igraph_1.2.7      compiler_4.1.1
+## [57] R6_2.5.1          igraph_1.2.10     compiler_4.1.2
 ```

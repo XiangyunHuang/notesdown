@@ -1502,7 +1502,7 @@ system.time(comp_auc(dat = dat2, show_roc = FALSE))
 
 ```
 ##    user  system elapsed 
-##   0.003   0.000   0.002
+##   0.002   0.000   0.002
 ```
 
 更多关于 auc 计算的讨论见统计之都论坛帖 <https://d.cosx.org/d/419436>，我感觉这个问题最后会归结到排序问题。
@@ -1670,7 +1670,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -1694,19 +1694,19 @@ sessionInfo()
 ## [5] magrittr_2.0.1  formatR_1.11   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.1   xfun_0.26          purrr_0.3.4        colorspace_2.0-2  
-##  [5] vctrs_0.3.8        generics_0.1.0     viridisLite_0.4.0  htmltools_0.5.2   
-##  [9] yaml_2.2.1         utf8_1.2.2         plotly_4.10.0      rlang_0.4.11      
-## [13] pillar_1.6.3       glue_1.4.2         withr_2.4.2        DBI_1.1.1         
+##  [1] tidyselect_1.1.1   xfun_0.29          purrr_0.3.4        colorspace_2.0-2  
+##  [5] vctrs_0.3.8        generics_0.1.1     viridisLite_0.4.0  htmltools_0.5.2   
+##  [9] yaml_2.2.1         utf8_1.2.2         plotly_4.10.0      rlang_0.4.12      
+## [13] pillar_1.6.4       glue_1.6.0         withr_2.4.3        DBI_1.1.2         
 ## [17] plyr_1.8.6         lifecycle_1.0.1    stringr_1.4.0      munsell_0.5.0     
 ## [21] gtable_0.3.0       htmlwidgets_1.5.4  evaluate_0.14      labeling_0.4.2    
-## [25] knitr_1.36         callr_3.7.0        fastmap_1.1.0      ps_1.6.0          
+## [25] knitr_1.37         callr_3.7.0        fastmap_1.1.0      ps_1.6.0          
 ## [29] curl_4.3.2         fansi_0.5.0        Rcpp_1.0.7         scales_1.1.1      
-## [33] webshot_0.5.2      jsonlite_1.7.2     farver_2.1.0       digest_0.6.28     
-## [37] stringi_1.7.5      bookdown_0.24      processx_3.5.2     dplyr_1.0.7       
-## [41] ggrepel_0.9.1      grid_4.1.1         tools_4.1.1        productplots_0.1.1
-## [45] lazyeval_0.2.2     tibble_3.1.5       tidyr_1.1.4        crayon_1.4.1      
+## [33] webshot_0.5.2      jsonlite_1.7.2     farver_2.1.0       digest_0.6.29     
+## [37] stringi_1.7.6      bookdown_0.24      processx_3.5.2     dplyr_1.0.7       
+## [41] ggrepel_0.9.1      grid_4.1.2         tools_4.1.2        productplots_0.1.1
+## [45] lazyeval_0.2.2     tibble_3.1.6       tidyr_1.1.4        crayon_1.4.2      
 ## [49] pkgconfig_2.0.3    ellipsis_0.3.2     data.table_1.14.2  assertthat_0.2.1  
-## [53] rmarkdown_2.11     httr_1.4.2         R6_2.5.1           compiler_4.1.1
+## [53] rmarkdown_2.11     httr_1.4.2         R6_2.5.1           compiler_4.1.2
 ```
 

@@ -5,6 +5,9 @@ Optimization Packages for R
 https://github.com/r-opt 
 数值优化 经典教材 [@Nocedal2006]
 https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
+[gslnls](https://github.com/JorisChau/gslnls) GSL 库做非线性回归
+
+https://www.lindo.com/downloads/LINGO-OSX-64x86-19.0.dmg
 -->
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
@@ -32,10 +35,11 @@ Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadpr
 Sys.setenv(ROI_LOAD_PLUGINS = FALSE)
 library(lpSolve)    # 线性规划求解器
 library(ROI)        # 优化工具箱
-library(ROI.plugin.alabama)  # 注册 alabama 求解器
-library(ROI.plugin.nloptr)   # 注册 nloptr 求解器
-library(ROI.plugin.lpsolve)  # 注册 lpsolve 求解器
-library(ROI.plugin.quadprog) # 注册 quadprog 求解器
+library(ROI.plugin.alabama)  # 注册 alabama 求解非线性规划
+library(ROI.plugin.nloptr)   # 注册 nloptr 求解非线性规划
+library(ROI.plugin.lpsolve)  # 注册 lpsolve 求解线性规划
+library(ROI.plugin.quadprog) # 注册 quadprog 求解二次规划
+library(ROI.plugin.scs)      # 注册 scs 求解凸锥规划
 library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
 
@@ -246,6 +250,57 @@ res$solution
 ```
 
 ### 混合整数规划 {#mixed-integer-programming}
+
+[Rsymphony](https://cran.r-project.org/package=Rsymphony) 是混合整数规划求解器 [SYMPHONY](https://github.com/coin-or/SYMPHONY) 的 R 语言接口[^symphony]。
+
+[^symphony]: 以 MacOS 为例安装 symphony 软件
+
+    ```bash
+    brew tap coin-or-tools/coinor
+    brew install symphony
+    ```
+
+
+```r
+library(Rsymphony)
+## Simple linear program.
+## maximize: 2 x_1 + 4 x_2 + 3 x_3
+## subject to: 3 x_1 + 4 x_2 + 2 x_3 <= 60
+## 2 x_1 + x_2 + x_3 <= 40
+## x_1 + 3 x_2 + 2 x_3 <= 80
+## x_1, x_2, x_3 are non-negative real numbers
+
+# 简单线性规划
+obj <- c(2, 4, 3)
+mat <- matrix(c(3, 2, 1, 4, 1, 3, 2, 1, 2), nrow = 3)
+dir <- c("<=", "<=", "<=")
+rhs <- c(60, 40, 80)
+max <- TRUE
+Rsymphony_solve_LP(obj, mat, dir, rhs, max = max)
+
+# 混合整数规划
+obj <- c(3, 1, 3)
+mat <- matrix(c(-1, 0, 1, 2, 4, -3, 1, -3, 2), nrow = 3)
+dir <- c("<=", "<=", "<=")
+rhs <- c(4, 2, 3)
+max <- TRUE
+types <- c("I", "C", "I")
+Rsymphony_solve_LP(obj, mat, dir, rhs, types = types, max = max)
+
+# 有边界约束的混合整数规划
+## Same as before but with bounds replaced by
+## -Inf < x_1 <= 4
+## 0 <= x_2 <= 100
+## 2 <= x_3 < Inf
+bounds <- list(
+  lower = list(ind = c(1L, 3L), val = c(-Inf, 2)),
+  upper = list(ind = c(1L, 2L), val = c(4, 100))
+)
+Rsymphony_solve_LP(obj, mat, dir, rhs,
+  types = types, max = max,
+  bounds = bounds
+)
+```
 
 一部分变量要求是整数
 
@@ -2019,7 +2074,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.268237 4.750151 3.815802 1.125340
+## [1] 1.013155 4.525326 4.082173 1.353161
 ```
 
 ```r
@@ -2027,7 +2082,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.85114
+## [1] 17.27173
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2155,7 +2210,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227970 4.245373
+## [1] 1.227972 4.245372
 ```
 
 ```r
@@ -2355,7 +2410,7 @@ nlp$solution
 ```
 
 ```
-## [1] -8.588687 -2.528973
+## [1] 11.39200 12.00582
 ```
 
 ```r
@@ -2363,7 +2418,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.285194
+## [1] -3.165002
 ```
 比如下面三组
 
@@ -3126,7 +3181,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -3147,33 +3202,34 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] Deriv_4.1.3               quadprog_1.5-8           
-##  [3] kableExtra_1.3.4          tibble_3.1.5             
+##  [3] kableExtra_1.3.4          tibble_3.1.6             
 ##  [5] Sim.DiffProc_4.8          nlmeODE_1.1              
 ##  [7] nlme_3.1-153              PBSddesolve_1.12.6       
 ##  [9] ReacTran_1.4.3.1          shape_1.4.6              
 ## [11] scatterplot3d_0.3-41      deSolve_1.30             
 ## [13] BB_2019.10-1              rootSolve_1.8.2.3        
 ## [15] kernlab_0.9-29            lattice_0.20-45          
-## [17] ROI.plugin.quadprog_1.0-0 ROI.plugin.lpsolve_1.0-1 
-## [19] ROI.plugin.nloptr_1.0-0   ROI.plugin.alabama_1.0-0 
-## [21] ROI_1.0-0                 lpSolve_5.6.15           
+## [17] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
+## [19] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
+## [21] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
+## [23] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] svglite_2.0.0           digest_0.6.28           utf8_1.2.2             
-##  [4] slam_0.1-48             R6_2.5.1                alabama_2015.3-1       
-##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.3           
-## [10] rlang_0.4.11            curl_4.3.2              rstudioapi_0.13        
-## [13] nloptr_1.2.2.2          rmarkdown_2.11          webshot_0.5.2          
-## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.1         
-## [19] numDeriv_2016.8-1.1     xfun_0.26               systemfonts_1.0.3      
+##  [1] svglite_2.0.0           digest_0.6.29           utf8_1.2.2             
+##  [4] slam_0.1-49             R6_2.5.1                alabama_2015.3-1       
+##  [7] evaluate_0.14           httr_1.4.2              pillar_1.6.4           
+## [10] rlang_0.4.12            curl_4.3.2              rstudioapi_0.13        
+## [13] nloptr_1.2.2.3          rmarkdown_2.11          webshot_0.5.2          
+## [16] stringr_1.4.0           munsell_0.5.0           compiler_4.1.2         
+## [19] numDeriv_2016.8-1.1     xfun_0.29               systemfonts_1.0.3      
 ## [22] pkgconfig_2.0.3         htmltools_0.5.2         bookdown_0.24          
-## [25] viridisLite_0.4.0       fansi_0.5.0             crayon_1.4.1           
-## [28] MASS_7.3-54             grid_4.1.1              lifecycle_1.0.1        
+## [25] viridisLite_0.4.0       fansi_0.5.0             crayon_1.4.2           
+## [28] MASS_7.3-54             grid_4.1.2              lifecycle_1.0.1        
 ## [31] registry_0.5-1          magrittr_2.0.1          scales_1.1.1           
-## [34] stringi_1.7.5           xml2_1.3.2              ellipsis_0.3.2         
-## [37] vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7 tools_4.1.1            
-## [40] glue_1.4.2              parallel_4.1.1          fastmap_1.1.0          
-## [43] yaml_2.2.1              colorspace_2.0-2        rvest_1.0.2            
-## [46] knitr_1.36
+## [34] stringi_1.7.6           xml2_1.3.3              ellipsis_0.3.2         
+## [37] vctrs_0.3.8             lpSolveAPI_5.5.2.0-17.7 tools_4.1.2            
+## [40] glue_1.6.0              parallel_4.1.2          fastmap_1.1.0          
+## [43] yaml_2.2.1              colorspace_2.0-2        scs_3.0-0              
+## [46] rvest_1.0.2             knitr_1.37
 ```
 

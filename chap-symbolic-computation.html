@@ -6,23 +6,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>附录 C 符号计算 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
-<meta name="description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[117]，symengine 不会和 Base R...">
+<meta name="description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[114]，symengine 不会和 Base R...">
 <meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="附录 C 符号计算 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[117]，symengine 不会和 Base R...">
+<meta property="og:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[114]，symengine 不会和 Base R...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="附录 C 符号计算 | 现代应用统计与 R 语言">
-<meta name="twitter:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[117]，symengine 不会和 Base R...">
+<meta name="twitter:description" content="相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 deriv()、D() 等可以做一些简单的微分运算，扩展包 Ryacas 提供 Yacas 核心计算引擎，symengine 引入 C++ 符号计算库SymEngine，相比于 Ryacas[114]，symengine 不会和 Base R...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="libs/plotly-main/plotly-latest.min.js"></script><script src="libs/proj4js/proj4.js"></script><link href="libs/highcharts/css/motion.css" rel="stylesheet">
-<script src="libs/highcharts/highcharts.js"></script><script src="libs/highcharts/highcharts-3d.js"></script><script src="libs/highcharts/highcharts-more.js"></script><script src="libs/highcharts/modules/stock.js"></script><script src="libs/highcharts/modules/map.js"></script><script src="libs/highcharts/modules/annotations.js"></script><script src="libs/highcharts/modules/data.js"></script><script src="libs/highcharts/modules/drilldown.js"></script><script src="libs/highcharts/modules/item-series.js"></script><script src="libs/highcharts/modules/offline-exporting.js"></script><script src="libs/highcharts/modules/overlapping-datalabels.js"></script><script src="libs/highcharts/modules/exporting.js"></script><script src="libs/highcharts/modules/export-data.js"></script><script src="libs/highcharts/modules/funnel.js"></script><script src="libs/highcharts/modules/heatmap.js"></script><script src="libs/highcharts/modules/treemap.js"></script><script src="libs/highcharts/modules/sankey.js"></script><script src="libs/highcharts/modules/dependency-wheel.js"></script><script src="libs/highcharts/modules/organization.js"></script><script src="libs/highcharts/modules/solid-gauge.js"></script><script src="libs/highcharts/modules/streamgraph.js"></script><script src="libs/highcharts/modules/sunburst.js"></script><script src="libs/highcharts/modules/vector.js"></script><script src="libs/highcharts/modules/wordcloud.js"></script><script src="libs/highcharts/modules/xrange.js"></script><script src="libs/highcharts/modules/tilemap.js"></script><script src="libs/highcharts/modules/venn.js"></script><script src="libs/highcharts/modules/gantt.js"></script><script src="libs/highcharts/modules/timeline.js"></script><script src="libs/highcharts/modules/parallel-coordinates.js"></script><script src="libs/highcharts/modules/bullet.js"></script><script src="libs/highcharts/modules/coloraxis.js"></script><script src="libs/highcharts/modules/dumbbell.js"></script><script src="libs/highcharts/modules/lollipop.js"></script><script src="libs/highcharts/modules/series-label.js"></script><script src="libs/highcharts/plugins/motion.js"></script><script src="libs/highcharts/custom/reset.js"></script><script src="libs/highcharts/modules/boost.js"></script><script src="libs/highchart-binding/highchart.js"></script><script src="libs/plotly-locale-zh-CN/zh-cn.js"></script><script src="libs/mathjax/cdn.js"></script><link href="libs/dygraphs/dygraph.css" rel="stylesheet">
+<script src="libs/plotly-main/plotly-latest.min.js"></script><script src="libs/plotly-locale-zh-CN/zh-cn.js"></script><script src="libs/mathjax/cdn.js"></script><script src="libs/proj4js/proj4.js"></script><link href="libs/highcharts/css/motion.css" rel="stylesheet">
+<script src="libs/highcharts/highcharts.js"></script><script src="libs/highcharts/highcharts-3d.js"></script><script src="libs/highcharts/highcharts-more.js"></script><script src="libs/highcharts/modules/stock.js"></script><script src="libs/highcharts/modules/map.js"></script><script src="libs/highcharts/modules/annotations.js"></script><script src="libs/highcharts/modules/data.js"></script><script src="libs/highcharts/modules/drilldown.js"></script><script src="libs/highcharts/modules/item-series.js"></script><script src="libs/highcharts/modules/offline-exporting.js"></script><script src="libs/highcharts/modules/overlapping-datalabels.js"></script><script src="libs/highcharts/modules/exporting.js"></script><script src="libs/highcharts/modules/export-data.js"></script><script src="libs/highcharts/modules/funnel.js"></script><script src="libs/highcharts/modules/heatmap.js"></script><script src="libs/highcharts/modules/treemap.js"></script><script src="libs/highcharts/modules/sankey.js"></script><script src="libs/highcharts/modules/dependency-wheel.js"></script><script src="libs/highcharts/modules/organization.js"></script><script src="libs/highcharts/modules/solid-gauge.js"></script><script src="libs/highcharts/modules/streamgraph.js"></script><script src="libs/highcharts/modules/sunburst.js"></script><script src="libs/highcharts/modules/vector.js"></script><script src="libs/highcharts/modules/wordcloud.js"></script><script src="libs/highcharts/modules/xrange.js"></script><script src="libs/highcharts/modules/tilemap.js"></script><script src="libs/highcharts/modules/venn.js"></script><script src="libs/highcharts/modules/gantt.js"></script><script src="libs/highcharts/modules/timeline.js"></script><script src="libs/highcharts/modules/parallel-coordinates.js"></script><script src="libs/highcharts/modules/bullet.js"></script><script src="libs/highcharts/modules/coloraxis.js"></script><script src="libs/highcharts/modules/dumbbell.js"></script><script src="libs/highcharts/modules/lollipop.js"></script><script src="libs/highcharts/modules/series-label.js"></script><script src="libs/highcharts/plugins/motion.js"></script><script src="libs/highcharts/custom/reset.js"></script><script src="libs/highcharts/modules/boost.js"></script><script src="libs/highchart-binding/highchart.js"></script><link href="libs/dygraphs/dygraph.css" rel="stylesheet">
 <script src="libs/dygraphs/dygraph-combined.js"></script><script src="libs/dygraphs/shapes.js"></script><script src="libs/moment/moment.js"></script><script src="libs/moment-timezone/moment-timezone-with-data.js"></script><script src="libs/moment-fquarter/moment-fquarter.min.js"></script><script src="libs/dygraphs-binding/dygraphs.js"></script><script src="libs/Dygraph.Plugins.Unzoom/unzoom.js"></script><script src="libs/echarts4r/echarts-en.min.js"></script><script src="libs/echarts4r/ecStat.min.js"></script><script src="libs/echarts4r/dataTool.min.js"></script><script src="libs/echarts4r-binding/echarts4r.js"></script><script src="libs/d3/d3.min.js"></script><script src="libs/forceNetwork-binding/forceNetwork.js"></script><link href="libs/vis/vis-network.min.css" rel="stylesheet">
 <script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="libs/FileSaver/FileSaver.min.js"></script><script src="libs/Blob/Blob.js"></script><script src="libs/canvas-toBlob/canvas-toBlob.js"></script><script src="libs/html2canvas/html2canvas.js"></script><script src="libs/jspdf/jspdf.debug.js"></script><link href="libs/jquery-sparkline/jquery.sparkline.css" rel="stylesheet">
 <script src="libs/jquery-sparkline/jquery.sparkline.js"></script><script src="libs/sparkline-binding/sparkline.js"></script><script src="libs/r2d3-render/r2d3-render.js"></script><script src="libs/webcomponents/webcomponents.js"></script><script src="libs/r2d3-binding/r2d3.js"></script><script src="libs/d3v6/d3.min.js"></script><script src="libs/es6shim/es6shim.js"></script><script src="libs/es7shim/es7shim.js"></script><script src="libs/graphre/graphre.js"></script><script src="libs/nomnoml/nomnoml.js"></script><script src="libs/nomnoml-binding/nomnoml.js"></script><script src="libs/d3-bundle/d3-bundle.min.js"></script><script src="libs/d3-lasso/d3-lasso.min.js"></script><script src="libs/save-svg-as-png/save-svg-as-png.min.js"></script><link href="libs/ggiraphjs/ggiraphjs.min.css" rel="stylesheet">
@@ -30,7 +30,7 @@
 <script src="libs/datatables-binding/datatables.js"></script><link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet">
 <script src="libs/dt-core/js/jquery.dataTables.min.js"></script><script src="libs/jszip/jszip.min.js"></script><script src="libs/pdfmake/pdfmake.js"></script><script src="libs/pdfmake/vfs_fonts.js"></script><link href="libs/dt-ext-buttons/css/buttons.dataTables.min.css" rel="stylesheet">
-<script src="libs/dt-ext-buttons/js/dataTables.buttons.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.flash.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.html5.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.colVis.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.print.min.js"></script><link href="libs/dt-ext-rowgroup/css/rowGroup.dataTables.min.css" rel="stylesheet">
+<script src="libs/dt-ext-buttons/js/dataTables.buttons.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.html5.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.colVis.min.js"></script><script src="libs/dt-ext-buttons/js/buttons.print.min.js"></script><link href="libs/dt-ext-rowgroup/css/rowGroup.dataTables.min.css" rel="stylesheet">
 <script src="libs/dt-ext-rowgroup/js/dataTables.rowGroup.min.js"></script><script src="libs/kePrint/kePrint.js"></script><link href="libs/lightable/lightable.css" rel="stylesheet">
 <script src="libs/echarts-world/world.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-54GQKWF7VP"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -139,9 +139,9 @@
 <h1>
 <span class="header-section-number">附录 C</span> 符号计算<a class="anchor" aria-label="anchor" href="#chap-symbolic-computation"><i class="fas fa-link"></i></a>
 </h1>
-<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong><span class="citation"><a href="#ref-Ryacas" role="doc-biblioref">[117]</a></span>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation"><a href="#ref-SymPy" role="doc-biblioref">[118]</a></span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
+<p>相比于数值计算，符号计算可以无限精度，包括微分、积分运法，求解线性、非线性方程（组），常微分、偏微分方程（组）等，R 自带几个函数如 <code><a href="https://rdrr.io/r/stats/deriv.html">deriv()</a></code>、<code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> 等可以做一些简单的微分运算，扩展包 <a href="https://github.com/r-cas/ryacas">Ryacas</a> 提供 <a href="https://github.com/grzegorzmazur/yacas/">Yacas</a> 核心计算引擎，<a href="https://github.com/symengine/symengine.R">symengine</a> 引入 C++ 符号计算库<a href="https://github.com/symengine/">SymEngine</a>，相比于 <strong>Ryacas</strong><span class="citation"><a href="#ref-Ryacas" role="doc-biblioref">[114]</a></span>，<strong>symengine</strong> 不会和 Base R 函数冲突。Python 的符号计算模块 <a href="https://github.com/sympy/sympy">sympy</a> <span class="citation"><a href="#ref-SymPy" role="doc-biblioref">[115]</a></span> 不仅支持简单的四则运算，还支持微分、积分、解方程等，详见官方文档 <a href="https://sympy.org/" class="uri">https://sympy.org/</a>。</p>
 <p>16年在统计之都灌水<a href="https://cosx.org/2016/07/r-symbol-calculate">符号计算与R语言</a>，相应的 Rmd 源文件放在<a href="https://github.com/XiangyunHuang/Symbolic-Computing">Github</a>上。</p>
-<div class="sourceCode" id="cb3011"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3018"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 多元函数求偏导</span>
 <span class="va">ft</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">deriv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fl">3</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">*</span> <span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x1</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x2</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,
   namevec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x1"</span>, <span class="st">"x2"</span><span class="op">)</span>, function.arg <span class="op">=</span> <span class="cn">TRUE</span>
@@ -162,7 +162,7 @@
 ##     .value
 ## }</code></pre>
 <p>下面以标准正态分布的密度函数为例，</p>
-<div class="sourceCode" id="cb3013"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3020"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">NormDensity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># 递归的方法求高阶倒数</span>
 <span class="va">DD</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">name</span>, <span class="va">order</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
@@ -181,13 +181,13 @@
 ##     (2/2) - exp(-x^2/2) * (2 * x/2) * (2 * x/2)) * (2 * x/2) + 
 ##     exp(-x^2/2) * (2 * x/2) * (2/2)))</code></pre>
 <p>Deriv 可以将 R 表达式简化</p>
-<div class="sourceCode" id="cb3015"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3022"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Deriv</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## x * (3 - x^2) * exp(-(x^2/2))/sqrt(2 * pi)</code></pre>
 <p>即 <span class="math inline">\(x (3 - x^2) \mathrm{e}^{-x^2/2}/\sqrt{2 \pi}\)</span>，<code><a href="https://rdrr.io/r/base/eval.html">eval()</a></code> 将表达式转为函数，代入数值运算。</p>
 <p><span class="math display">\[\tau(x) = \frac{(-1)^{j-1}}{\sqrt{j!}}\phi^{(j)}(x)\]</span></p>
-<div class="sourceCode" id="cb3017"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3024"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Tetrachoric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">j</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html">factorial</a></span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="va">j</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
@@ -200,32 +200,32 @@
 </p>
 </div>
 <p>表达式转函数</p>
-<div class="sourceCode" id="cb3019"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3026"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ExpToFun</span><span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu">DD</span><span class="op">(</span><span class="va">NormDensity</span>, <span class="st">"x"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">ExpToFun</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.2699548</code></pre>
 <p>函数求积分</p>
-<div class="sourceCode" id="cb3021"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3028"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/integrate.html">integrate</a></span><span class="op">(</span><span class="va">ExpToFun</span>, <span class="fl">0</span>, <span class="va">pi</span><span class="op">)</span></code></pre></div>
 <pre><code>## -0.06192048 with absolute error &lt; 5.8e-12</code></pre>
 <p>对函数求微分</p>
-<div class="sourceCode" id="cb3023"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3030"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co"># D(body(fun),'x')</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 0.5 * pi/sqrt(x)</code></pre>
-<div class="sourceCode" id="cb3025"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3032"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Dfun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
 <span class="op">}</span>
 <span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">Dfun</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/body.html">body</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">Dfun</span></code></pre></div>
 <pre><code>## function (x) 
 ## 0.5 * pi/sqrt(x)</code></pre>
-<div class="sourceCode" id="cb3027"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3034"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">Dfun</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.7853982</code></pre>
 <p>下面简单介绍 symengine 的符号计算能力</p>
-<div class="sourceCode" id="cb3029"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3036"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/symengine/symengine.R">symengine</a></span><span class="op">)</span>
 <span class="co"># 声明几个符号变量</span>
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/use_vars.html">use_vars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span><span class="op">)</span>
@@ -234,7 +234,7 @@
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/expand.html">expand</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre></div>
 <pre><code>## (Add)    -42 + 2*x*y + 2*x*z + 2*y*z + x^2 + y^2 + z^2</code></pre>
 <p>变量替换</p>
-<div class="sourceCode" id="cb3031"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3038"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/S.html">S</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>
 <span class="co"># z 用 a 替换</span>
 <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/subs.html">subs</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">z</span>, <span class="va">a</span><span class="op">)</span>
@@ -243,12 +243,12 @@
 <span class="va">expr</span></code></pre></div>
 <pre><code>## (Add)    -42 + (a + x + x^2)^2</code></pre>
 <p>表达式求 2 阶偏导</p>
-<div class="sourceCode" id="cb3033"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3040"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d1_expr</span> <span class="op">&lt;-</span> <span class="fu">DD</span><span class="op">(</span><span class="va">expr</span>, <span class="st">"x"</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/expand.html">expand</a></span><span class="op">(</span><span class="va">d1_expr</span><span class="op">)</span></code></pre></div>
 <pre><code>## (Add)    2 + 4*a + 12*x + 12*x^2</code></pre>
 <p>求解带参数 <span class="math inline">\(a\)</span> 的一元二次方程</p>
-<div class="sourceCode" id="cb3035"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3042"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">solutions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/symengine/man/solve.html">solve</a></span><span class="op">(</span><span class="va">d1_expr</span>, <span class="st">"x"</span><span class="op">)</span>
 <span class="va">solutions</span></code></pre></div>
 <pre><code>## VecBasic of length 2
@@ -258,12 +258,12 @@
 <h3>参考文献</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-Ryacas" class="csl-entry">
-<div class="csl-left-margin">[117] </div>
+<div class="csl-left-margin">[114] </div>
 <div class="csl-right-inline">M. M. Andersen and S. Højsgaard, <span>“<span class="nocase">Ryacas: A computer algebra system in R</span>,”</span> <em>Journal of Open Source Software</em>, vol. 4, no. 42, 2019,Available: <a href="https://doi.org/10.21105/joss.01763">https://doi.org/10.21105/joss.01763</a>
 </div>
 </div>
 <div id="ref-SymPy" class="csl-entry">
-<div class="csl-left-margin">[118] </div>
+<div class="csl-left-margin">[115] </div>
 <div class="csl-right-inline">A. Meurer <em>et al.</em>, <span>“<span>SymPy</span>: Symbolic computing in python,”</span> <em>PeerJ Computer Science</em>, vol. 3, p. e103, Jan. 2017, doi: <a href="https://doi.org/10.7717/peerj-cs.103">10.7717/peerj-cs.103</a>.</div>
 </div>
 </div>
@@ -289,7 +289,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2021-12-04.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-01-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

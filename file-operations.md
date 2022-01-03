@@ -89,11 +89,11 @@ library(fs)
     
     ```
     ##                                          size isdir mode               mtime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 63180 FALSE  644 2021-11-01 17:13:30
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 63180 FALSE  644 2021-11-03 22:31:06
     ##                                                       ctime               atime
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 2021-12-04 02:14:38 2021-12-04 02:23:12
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 2022-01-03 09:24:19 2022-01-03 09:31:14
     ##                                         uid gid uname grname
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h   0   0  root   root
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h   0   0  root   root
     ```
     
     ```r
@@ -109,7 +109,7 @@ library(fs)
     ```
     
     ```
-    ## [1] "2021-11-01 17:13:30 UTC"
+    ## [1] "2021-11-03 22:31:06 UTC"
     ```
     
     ```r
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2021-12-04 03:03:19 2021-12-04 03:03:19 2021-12-04 03:03:20
+    ## . 20480  TRUE  755 2022-01-03 11:53:09 2022-01-03 11:53:09 2022-01-03 11:53:09
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2021-12-04 02:57:10 2021-12-04 02:57:10
+    ## ./_book/ 12288  TRUE  755 2022-01-03 11:46:09 2022-01-03 11:46:09
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2021-12-04 02:58:58 1001 121 runner docker
+    ## ./_book/ 2022-01-03 11:48:45 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -154,7 +154,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 
     ##                                       0
     ```
     
@@ -163,7 +163,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 
     ##                                      -1
     ```
     
@@ -172,7 +172,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 
     ##                                      -1
     ```
     
@@ -181,7 +181,7 @@ library(fs)
     ```
     
     ```
-    ## /opt/R/4.1.1/lib/R/include/Rinternals.h 
+    ## /opt/R/4.1.2/lib/R/include/Rinternals.h 
     ##                                       0
     ```
 
@@ -200,7 +200,7 @@ library(fs)
     ## [11] "dir.exists" "dirname"
     ```
     
-   显而易见，`dir.create` 和 `dir.exists` 分别是创建目录和查看目录的存在性。`dirname` 和 `basename` 是一对函数用来操作文件路径。以当前目录/home/runner/work/masr/masr为例，`dirname(getwd())` 返回 /home/runner/work/masr 而 `basename(getwd())` 返回 masr。对于文件路径而言，`dirname(rinternals)` 返回文件所在的目录/opt/R/4.1.1/lib/R/include， `basename(rinternals)` 返回文件名Rinternals.h。`dir` 函数查看指定路径或目录下的文件，支持以模式匹配和递归的方式查找目录下的文件
+   显而易见，`dir.create` 和 `dir.exists` 分别是创建目录和查看目录的存在性。`dirname` 和 `basename` 是一对函数用来操作文件路径。以当前目录/home/runner/work/masr/masr为例，`dirname(getwd())` 返回 /home/runner/work/masr 而 `basename(getwd())` 返回 masr。对于文件路径而言，`dirname(rinternals)` 返回文件所在的目录/opt/R/4.1.2/lib/R/include， `basename(rinternals)` 返回文件名Rinternals.h。`dir` 函数查看指定路径或目录下的文件，支持以模式匹配和递归的方式查找目录下的文件
 
     
     ```r
@@ -263,10 +263,10 @@ library(fs)
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/AMD.txt"    
-    ## [2] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/CHOLMOD.txt"
-    ## [3] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/COLAMD.txt" 
-    ## [4] "/opt/R/4.1.1/lib/R/library/Matrix/doc/SuiteSparse/SPQR.txt"
+    ## [1] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/AMD.txt"    
+    ## [2] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/CHOLMOD.txt"
+    ## [3] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/COLAMD.txt" 
+    ## [4] "/home/runner/work/_temp/Library/Matrix/doc/SuiteSparse/SPQR.txt"
     ```
     
     ```r
@@ -566,7 +566,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/library/compiler/R/compiler.rdx"
+    ## [1] "/opt/R/4.1.2/lib/R/library/compiler/R/compiler.rdx"
     ```
 
 ## 查找文件 {#find}
@@ -593,7 +593,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/library/base/CITATION"
+    ## [1] "/opt/R/4.1.2/lib/R/library/base/CITATION"
     ```
 
 1. `R.home`
@@ -605,7 +605,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R"
+    ## [1] "/opt/R/4.1.2/lib/R"
     ```
     
     ```r
@@ -614,7 +614,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/bin"
+    ## [1] "/opt/R/4.1.2/lib/R/bin"
     ```
     
     ```r
@@ -623,7 +623,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/etc"
+    ## [1] "/opt/R/4.1.2/lib/R/etc"
     ```
     
     ```r
@@ -632,7 +632,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/library"
+    ## [1] "/opt/R/4.1.2/lib/R/library"
     ```
 
 1. `.libPaths()` R 包存放的路径有哪些
@@ -643,7 +643,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/home/runner/work/_temp/Library" "/opt/R/4.1.1/lib/R/library"
+    ## [1] "/home/runner/work/_temp/Library" "/opt/R/4.1.2/lib/R/library"
     ```
 
 1. `find.package` 查找R包所在目录
@@ -654,7 +654,7 @@ if (Sys.which("pandoc") == "" && !is.na(pandoc_path)) {
     ```
     
     ```
-    ## [1] "/opt/R/4.1.1/lib/R/library/MASS"
+    ## [1] "/opt/R/4.1.2/lib/R/library/MASS"
     ```
 
 1. `file.exist` 检查文件是否存在
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 26040
+    ## [1] 142357
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##    0.08    0.00    0.08
+    ##   0.067   0.000   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.066   0.011   0.078
+    ##   0.065   0.000   0.065
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-03 19:03:21 PST"
+    ## [1] "2022-01-03 03:53:10 PST"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-03 22:03:21 EST"
+    ## [1] "2022-01-03 06:53:10 EST"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04"
+    ## [1] "2022-01-03"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Dec  4 03:03:21 2021"
+    ## [1] "Mon Jan  3 11:53:10 2022"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Sat Dec 04 03:03:21 2021"
+    ## [1] "Mon Jan 03 11:53:10 2022"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 03:03:21 GMT"
+    ## [1] "2022-01-03 11:53:10 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 03:03:21 UTC"
+    ## [1] "2022-01-03 11:53:10 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 02:03:21 UTC"
+    ## [1] "2022-01-03 10:53:10 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-12-04 02:33:26 2021-12-04 02:33:26
+    ## ./_common.R 1636 FALSE  644 2022-01-03 11:26:34 2022-01-03 11:26:34
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-12-04 02:57:10 1001 121 runner docker
+    ## ./_common.R 2022-01-03 11:26:42 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 1636 FALSE  644 2021-12-04 03:03:21 2021-12-04 03:03:21
+    ## ./_common.R 1636 FALSE  644 2022-01-03 11:53:10 2022-01-03 11:53:10
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2021-12-04 03:03:21 1001 121 runner docker
+    ## ./_common.R 2022-01-03 11:53:10 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 03:03:21 CST"
+    ## [1] "2022-01-03 11:53:10 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 03:03:21"
+    ## [1] "2022-01-03 11:53:10"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2021-12-04 11:03:21 CST"
+    ## [1] "2022-01-03 19:53:10 CST"
     ```
 
 1. 设置时区
@@ -1217,7 +1217,7 @@ system2(command = 'pdflatex', args = '--version')
     ## [1] "Asia/Shanghai"
     ```
     
-    全局修改，在文件 /opt/R/4.1.1/lib/R/etc/Rprofile.site 内添加`Sys.setenv(TZ="Asia/Shanghai")`。 局部修改，就是在本地R项目下，创建 `.Rprofile`，然后同样添加 `Sys.setenv(TZ="Asia/Shanghai")`。
+    全局修改，在文件 /opt/R/4.1.2/lib/R/etc/Rprofile.site 内添加`Sys.setenv(TZ="Asia/Shanghai")`。 局部修改，就是在本地R项目下，创建 `.Rprofile`，然后同样添加 `Sys.setenv(TZ="Asia/Shanghai")`。
 
 
 ## R 包管理 {#package}
@@ -1251,7 +1251,7 @@ apropos('package')
     ```
     
     ```
-    ## [1] 523
+    ## [1] 460
     ```
    
 1. `available.packages` 查询可用的 R 包
@@ -1262,8 +1262,8 @@ apropos('package')
     ```
     
     ```
-    ##         A3      aaSEA   AATtools     ABACUS     abbyyR        abc 
-    ##       "A3"    "aaSEA" "AATtools"   "ABACUS"   "abbyyR"      "abc"
+    ##           A3        aaSEA     AATtools          aba       ABACUS   abbreviate 
+    ##         "A3"      "aaSEA"   "AATtools"        "aba"     "ABACUS" "abbreviate"
     ```
     
     查询 repos 的 R 包
@@ -1318,20 +1318,10 @@ apropos('package')
     ```
     
     ```
-    ##           Package     LibPath                           Installed Built  
-    ## arrow     "arrow"     "/home/runner/work/_temp/Library" "5.0.0.2" "4.1.1"
-    ## arules    "arules"    "/home/runner/work/_temp/Library" "1.6-8"   "4.1.1"
-    ## backports "backports" "/home/runner/work/_temp/Library" "1.2.1"   "4.1.1"
-    ## brio      "brio"      "/home/runner/work/_temp/Library" "1.1.2"   "4.1.1"
-    ## brms      "brms"      "/home/runner/work/_temp/Library" "2.16.1"  "4.1.1"
-    ## broom     "broom"     "/home/runner/work/_temp/Library" "0.7.9"   "4.1.1"
-    ##           ReposVer Repository                               
-    ## arrow     "6.0.1"  "https://cloud.r-project.org/src/contrib"
-    ## arules    "1.7-1"  "https://cloud.r-project.org/src/contrib"
-    ## backports "1.4.0"  "https://cloud.r-project.org/src/contrib"
-    ## brio      "1.1.3"  "https://cloud.r-project.org/src/contrib"
-    ## brms      "2.16.3" "https://cloud.r-project.org/src/contrib"
-    ## broom     "0.7.10" "https://cloud.r-project.org/src/contrib"
+    ##        Package  LibPath                      Installed Built   ReposVer
+    ## Matrix "Matrix" "/opt/R/4.1.2/lib/R/library" "1.3-4"   "4.1.2" "1.4-0" 
+    ##        Repository                               
+    ## Matrix "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1342,7 +1332,8 @@ apropos('package')
     ```
     
     ```
-    ## [1] "A3"       "aaSEA"    "AATtools" "ABACUS"   "abbyyR"   "abc"
+    ## [1] "A3"         "aaSEA"      "AATtools"   "aba"        "ABACUS"    
+    ## [6] "abbreviate"
     ```
 
 1. `packageStatus` 查看已安装的 R 包状态，可更新、可下载等
@@ -1356,13 +1347,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 397      88          13
-    ##   /opt/R/4.1.1/lib/R/library       25       4           0
+    ##   /home/runner/work/_temp/Library 420       0          12
+    ##   /opt/R/4.1.2/lib/R/library       28       1           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       496         18041
+    ##   https://cloud.r-project.org/src/contrib       434         18203
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1374,7 +1365,7 @@ apropos('package')
     
     ```
     ## Package: graphics
-    ## Version: 4.1.1
+    ## Version: 4.1.2
     ## Priority: base
     ## Title: The R Graphics Package
     ## Author: R Core Team and contributors worldwide
@@ -1404,10 +1395,9 @@ apropos('package')
     ```
     
     ```
-    ##  [1] "bookdown"       "flexdashboard"  "formattable"    "hrbrthemes"    
-    ##  [5] "kableExtra"     "prettydoc"      "reprex"         "tint"          
-    ##  [9] "xaringan"       "packagemetrics" "tidyverse"      "projpred"      
-    ## [13] "brms"
+    ## [1] "bookdown"       "formattable"    "hrbrthemes"     "kableExtra"    
+    ## [5] "prettydoc"      "reprex"         "tint"           "packagemetrics"
+    ## [9] "tidyverse"
     ```
     
     ggplot2 生态，仅列出以 gg 开头的 R 包
@@ -1441,32 +1431,32 @@ apropos('package')
     ##  [55] "gginnards"         "ggip"              "ggiraph"          
     ##  [58] "ggiraphExtra"      "ggjoy"             "gglm"             
     ##  [61] "gglogo"            "ggloop"            "gglorenz"         
-    ##  [64] "ggmap"             "ggmcmc"            "ggmosaic"         
-    ##  [67] "ggmotif"           "ggmuller"          "ggmulti"          
-    ##  [70] "ggnetwork"         "ggnewscale"        "ggnormalviolin"   
-    ##  [73] "ggnuplot"          "ggokabeito"        "ggpacman"         
-    ##  [76] "ggpage"            "ggparallel"        "ggparliament"     
-    ##  [79] "ggparty"           "ggperiodic"        "ggplot.multistats"
-    ##  [82] "ggplotAssist"      "ggplotgui"         "ggplotify"        
-    ##  [85] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
-    ##  [88] "ggpointdensity"    "ggpol"             "ggpolar"          
-    ##  [91] "ggpolypath"        "ggpp"              "ggprism"          
-    ##  [94] "ggpubr"            "ggpval"            "ggQC"             
-    ##  [97] "ggQQunif"          "ggquickeda"        "ggquiver"         
-    ## [100] "ggRandomForests"   "ggraph"            "ggraptR"          
-    ## [103] "ggrasp"            "ggrastr"           "ggrepel"          
-    ## [106] "ggResidpanel"      "ggridges"          "ggrisk"           
-    ## [109] "ggROC"             "ggsci"             "ggseas"           
-    ## [112] "ggseg"             "ggseqlogo"         "ggshadow"         
-    ## [115] "ggside"            "ggsignif"          "ggsn"             
-    ## [118] "ggsoccer"          "ggsolvencyii"      "ggsom"            
-    ## [121] "ggspatial"         "ggspectra"         "ggstance"         
-    ## [124] "ggstar"            "ggstatsplot"       "ggstream"         
-    ## [127] "ggstudent"         "ggswissmaps"       "ggtea"            
-    ## [130] "ggtern"            "ggtext"            "ggThemeAssist"    
-    ## [133] "ggthemes"          "ggtikz"            "ggupset"          
-    ## [136] "ggvenn"            "ggVennDiagram"     "ggvoronoi"        
-    ## [139] "ggwordcloud"       "ggx"
+    ##  [64] "ggmap"             "ggmatplot"         "ggmcmc"           
+    ##  [67] "ggmosaic"          "ggmotif"           "ggmuller"         
+    ##  [70] "ggmulti"           "ggnetwork"         "ggnewscale"       
+    ##  [73] "ggnormalviolin"    "ggnuplot"          "ggokabeito"       
+    ##  [76] "ggpacman"          "ggpage"            "ggparallel"       
+    ##  [79] "ggparliament"      "ggparty"           "ggperiodic"       
+    ##  [82] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
+    ##  [85] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
+    ##  [88] "ggPMX"             "ggpointdensity"    "ggpol"            
+    ##  [91] "ggpolar"           "ggpolypath"        "ggpp"             
+    ##  [94] "ggprism"           "ggpubr"            "ggpval"           
+    ##  [97] "ggQC"              "ggQQunif"          "ggquickeda"       
+    ## [100] "ggquiver"          "ggRandomForests"   "ggraph"           
+    ## [103] "ggraptR"           "ggrasp"            "ggrastr"          
+    ## [106] "ggrepel"           "ggResidpanel"      "ggridges"         
+    ## [109] "ggrisk"            "ggROC"             "ggsci"            
+    ## [112] "ggseas"            "ggseg"             "ggseqlogo"        
+    ## [115] "ggshadow"          "ggside"            "ggsignif"         
+    ## [118] "ggsn"              "ggsoccer"          "ggsolvencyii"     
+    ## [121] "ggsom"             "ggspatial"         "ggspectra"        
+    ## [124] "ggstance"          "ggstar"            "ggstatsplot"      
+    ## [127] "ggstream"          "ggstudent"         "ggswissmaps"      
+    ## [130] "ggtea"             "ggtern"            "ggtext"           
+    ## [133] "ggThemeAssist"     "ggthemes"          "ggtikz"           
+    ## [136] "ggupset"           "ggvenn"            "ggVennDiagram"    
+    ## [139] "ggvoronoi"         "ggwordcloud"       "ggx"
     ```
     
 
@@ -1504,7 +1494,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5652e1644270>
+## <bytecode: 0x55922dd45848>
 ## <environment: namespace:base>
 ```
 
@@ -1549,7 +1539,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -1569,12 +1559,12 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] rmarkdown_2.11 fs_1.5.0       magrittr_2.0.1
+## [1] rmarkdown_2.11 fs_1.5.2       magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_4.1.1  fastmap_1.1.0   bookdown_0.24   htmltools_0.5.2
-##  [5] tools_4.1.1     yaml_2.2.1      curl_4.3.2      stringi_1.7.5  
-##  [9] knitr_1.36      stringr_1.4.0   digest_0.6.28   xfun_0.26      
-## [13] rlang_0.4.11    evaluate_0.14
+##  [1] compiler_4.1.2  fastmap_1.1.0   bookdown_0.24   htmltools_0.5.2
+##  [5] tools_4.1.2     yaml_2.2.1      curl_4.3.2      stringi_1.7.6  
+##  [9] knitr_1.37      stringr_1.4.0   digest_0.6.29   xfun_0.29      
+## [13] rlang_0.4.12    evaluate_0.14
 ```
 

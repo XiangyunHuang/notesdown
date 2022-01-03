@@ -374,7 +374,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -394,15 +394,15 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.19          magrittr_2.0.1  
+## [1] kableExtra_1.3.4 reactable_0.2.3  DT_0.20          magrittr_2.0.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] rstudioapi_0.13   knitr_1.36        xml2_1.3.2        munsell_0.5.0    
+##  [1] rstudioapi_0.13   knitr_1.37        xml2_1.3.3        munsell_0.5.0    
 ##  [5] rvest_1.0.2       viridisLite_0.4.0 colorspace_2.0-2  R6_2.5.1         
-##  [9] rlang_0.4.11      fastmap_1.1.0     stringr_1.4.0     httr_1.4.2       
-## [13] tools_4.1.1       webshot_0.5.2     xfun_0.26         systemfonts_1.0.3
-## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.28     lifecycle_1.0.1  
-## [21] bookdown_0.24     htmlwidgets_1.5.4 curl_4.3.2        glue_1.4.2       
-## [25] evaluate_0.14     rmarkdown_2.11    stringi_1.7.5     compiler_4.1.1   
+##  [9] rlang_0.4.12      fastmap_1.1.0     stringr_1.4.0     httr_1.4.2       
+## [13] tools_4.1.2       webshot_0.5.2     xfun_0.29         systemfonts_1.0.3
+## [17] htmltools_0.5.2   yaml_2.2.1        digest_0.6.29     lifecycle_1.0.1  
+## [21] bookdown_0.24     htmlwidgets_1.5.4 curl_4.3.2        glue_1.6.0       
+## [25] evaluate_0.14     rmarkdown_2.11    stringi_1.7.6     compiler_4.1.2   
 ## [29] scales_1.1.1      svglite_2.0.0
 ```

@@ -607,7 +607,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -630,12 +630,12 @@ sessionInfo()
 ## [1] data.table_1.14.2 shiny_1.7.1      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7       knitr_1.36       magrittr_2.0.1   xtable_1.8-4    
-##  [5] R6_2.5.1         rlang_0.4.11     fastmap_1.1.0    stringr_1.4.0   
-##  [9] tools_4.1.1      xfun_0.26        png_0.1-7        htmltools_0.5.2 
-## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28    lifecycle_1.0.1 
+##  [1] Rcpp_1.0.7       knitr_1.37       magrittr_2.0.1   xtable_1.8-4    
+##  [5] R6_2.5.1         rlang_0.4.12     fastmap_1.1.0    stringr_1.4.0   
+##  [9] tools_4.1.2      xfun_0.29        png_0.1-7        htmltools_0.5.2 
+## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.29    lifecycle_1.0.1 
 ## [17] bookdown_0.24    later_1.3.0      promises_1.2.0.1 curl_4.3.2      
-## [21] evaluate_0.14    mime_0.12        rmarkdown_2.11   stringi_1.7.5   
-## [25] compiler_4.1.1   httpuv_1.6.3
+## [21] evaluate_0.14    mime_0.12        rmarkdown_2.11   stringi_1.7.6   
+## [25] compiler_4.1.2   httpuv_1.6.4
 ```
 

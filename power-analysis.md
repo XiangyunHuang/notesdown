@@ -361,7 +361,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -381,21 +381,21 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] ggplot2_3.3.5  lme4_1.1-27.1  Matrix_1.3-4   pwr_1.3-0      formatR_1.11  
+## [1] ggplot2_3.3.5  lme4_1.1-27.1  Matrix_1.4-0   pwr_1.3-0      formatR_1.11  
 ## [6] magrittr_2.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7       pillar_1.6.3     compiler_4.1.1   nloptr_1.2.2.2  
-##  [5] tools_4.1.1      boot_1.3-28      digest_0.6.28    evaluate_0.14   
-##  [9] lifecycle_1.0.1  tibble_3.1.5     nlme_3.1-153     gtable_0.3.0    
-## [13] lattice_0.20-45  pkgconfig_2.0.3  rlang_0.4.11     DBI_1.1.1       
-## [17] curl_4.3.2       yaml_2.2.1       xfun_0.26        fastmap_1.1.0   
-## [21] withr_2.4.2      dplyr_1.0.7      stringr_1.4.0    knitr_1.36      
-## [25] generics_0.1.0   vctrs_0.3.8      tidyselect_1.1.1 grid_4.1.1      
-## [29] glue_1.4.2       R6_2.5.1         fansi_0.5.0      rmarkdown_2.11  
+##  [1] Rcpp_1.0.7       pillar_1.6.4     compiler_4.1.2   nloptr_1.2.2.3  
+##  [5] tools_4.1.2      boot_1.3-28      digest_0.6.29    evaluate_0.14   
+##  [9] lifecycle_1.0.1  tibble_3.1.6     nlme_3.1-153     gtable_0.3.0    
+## [13] lattice_0.20-45  pkgconfig_2.0.3  rlang_0.4.12     DBI_1.1.2       
+## [17] curl_4.3.2       yaml_2.2.1       xfun_0.29        fastmap_1.1.0   
+## [21] withr_2.4.3      dplyr_1.0.7      stringr_1.4.0    knitr_1.37      
+## [25] generics_0.1.1   vctrs_0.3.8      tidyselect_1.1.1 grid_4.1.2      
+## [29] glue_1.6.0       R6_2.5.1         fansi_0.5.0      rmarkdown_2.11  
 ## [33] bookdown_0.24    minqa_1.2.4      farver_2.1.0     purrr_0.3.4     
 ## [37] scales_1.1.1     htmltools_0.5.2  ellipsis_0.3.2   MASS_7.3-54     
-## [41] splines_4.1.1    assertthat_0.2.1 colorspace_2.0-2 labeling_0.4.2  
-## [45] utf8_1.2.2       stringi_1.7.5    munsell_0.5.0    crayon_1.4.1
+## [41] splines_4.1.2    assertthat_0.2.1 colorspace_2.0-2 labeling_0.4.2  
+## [45] utf8_1.2.2       stringi_1.7.6    munsell_0.5.0    crayon_1.4.2
 ```
 

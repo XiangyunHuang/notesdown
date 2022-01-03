@@ -274,7 +274,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -294,23 +294,23 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] sfarrow_0.4.0       sf_1.0-3            rasterVis_0.51.0   
-## [4] terra_1.4-11        latticeExtra_0.6-29 lattice_0.20-45    
-## [7] raster_3.5-2        RColorBrewer_1.1-2  sp_1.4-5           
+## [1] sfarrow_0.4.1       sf_1.0-5            rasterVis_0.51.1   
+## [4] terra_1.4-22        latticeExtra_0.6-29 lattice_0.20-45    
+## [7] raster_3.5-11       RColorBrewer_1.1-2  sp_1.4-6           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.26          purrr_0.3.4       
-##  [5] vctrs_0.3.8        generics_0.1.0     htmltools_0.5.2    viridisLite_0.4.0 
-##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.11       e1071_1.7-9       
-## [13] hexbin_1.28.2      pillar_1.6.3       glue_1.4.2         DBI_1.1.1         
+##  [1] zoo_1.8-9          tidyselect_1.1.1   xfun_0.29          purrr_0.3.4       
+##  [5] vctrs_0.3.8        generics_0.1.1     htmltools_0.5.2    viridisLite_0.4.0 
+##  [9] yaml_2.2.1         utf8_1.2.2         rlang_0.4.12       e1071_1.7-9       
+## [13] hexbin_1.28.2      pillar_1.6.4       glue_1.6.0         DBI_1.1.2         
 ## [17] jpeg_0.1-9         lifecycle_1.0.1    stringr_1.4.0      codetools_0.2-18  
-## [21] evaluate_0.14      knitr_1.36         fastmap_1.1.0      parallel_4.1.1    
+## [21] evaluate_0.14      knitr_1.37         fastmap_1.1.0      parallel_4.1.2    
 ## [25] curl_4.3.2         class_7.3-19       fansi_0.5.0        Rcpp_1.0.7        
-## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.28     
-## [33] stringi_1.7.5      bookdown_0.24      dplyr_1.0.7        grid_4.1.1        
-## [37] rgdal_1.5-27       tools_4.1.1        magrittr_2.0.1     proxy_0.4-26      
-## [41] tibble_3.1.5       crayon_1.4.1       pkgconfig_2.0.3    ellipsis_0.3.2    
+## [29] KernSmooth_2.23-20 classInt_0.4-3     png_0.1-7          digest_0.6.29     
+## [33] stringi_1.7.6      bookdown_0.24      dplyr_1.0.7        grid_4.1.2        
+## [37] rgdal_1.5-28       tools_4.1.2        magrittr_2.0.1     proxy_0.4-26      
+## [41] tibble_3.1.6       crayon_1.4.2       pkgconfig_2.0.3    ellipsis_0.3.2    
 ## [45] assertthat_0.2.1   rmarkdown_2.11     R6_2.5.1           units_0.7-2       
-## [49] compiler_4.1.1
+## [49] compiler_4.1.2
 ```
 

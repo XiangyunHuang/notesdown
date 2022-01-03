@@ -103,7 +103,8 @@ proj4string(meuse)
 ```
 
 ```
-## Warning in proj4string(meuse): CRS object has comment, which is lost in output
+## Warning in proj4string(meuse): CRS object has comment, which is lost in output; in tests, see
+## https://cran.r-project.org/web/packages/sp/vignettes/CRS_warnings.html
 ```
 
 ```
@@ -335,7 +336,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x56065368b968>
+## <bytecode: 0x5621ac75ce40>
 ## <environment: namespace:graphics>
 ```
 
@@ -362,7 +363,7 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x5606538498a0>
+## <bytecode: 0x5621ac96ab90>
 ## <environment: namespace:graphics>
 ```
 

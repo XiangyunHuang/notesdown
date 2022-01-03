@@ -1003,7 +1003,7 @@ Hmisc 包的 labcurve 函数可以在曲线上放置名称，而不是遥远的�
 
 \begin{figure}
 
-{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.1/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.1/lib/R/library/graphics/help/figures/oma} }
+{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.2/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.2/lib/R/library/graphics/help/figures/oma} }
 
 }
 
@@ -3075,7 +3075,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -3088,20 +3088,23 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3     bookdown_0.24       compiler_4.1.1     
-##   curl_4.3.2          digest_0.6.28       evaluate_0.14      
-##   fastmap_1.1.0       glue_1.4.2          graphics_4.1.1     
-##   grDevices_4.1.1     grid_4.1.1          highr_0.9          
+##   askpass_1.1         base64enc_0.1.3     bookdown_0.24      
+##   codetools_0.2-18    compiler_4.1.2      curl_4.3.2         
+##   digest_0.6.29       evaluate_0.14       fastmap_1.1.0      
+##   filehash_2.4-2      glue_1.6.0          graphics_4.1.2     
+##   grDevices_4.1.2     grid_4.1.2          highr_0.9          
 ##   htmltools_0.5.2     jpeg_0.1-9          jquerylib_0.1.4    
-##   jsonlite_1.7.2      KernSmooth_2.23-20  knitr_1.36         
-##   lattice_0.20-45     latticeExtra_0.6-29 magrittr_2.0.1     
-##   mapproj_1.2.7       maps_3.4.0          MASS_7.3-54        
-##   Matrix_1.3-4        methods_4.1.1       mgcv_1.8-38        
-##   nlme_3.1-153        png_0.1-7           RColorBrewer_1.1-2 
-##   rlang_0.4.11        rmarkdown_2.11      shape_1.4.6        
-##   splines_4.1.1       stats_4.1.1         stringi_1.7.5      
-##   stringr_1.4.0       survival_3.2-13     tinytex_0.34       
-##   tools_4.1.1         utils_4.1.1         xfun_0.26          
+##   jsonlite_1.7.2      KernSmooth_2.23-20  knitr_1.37         
+##   lattice_0.20-45     latticeExtra_0.6-29 magick_2.7.3       
+##   magrittr_2.0.1      mapproj_1.2.7       maps_3.4.0         
+##   MASS_7.3-54         Matrix_1.4-0        methods_4.1.2      
+##   mgcv_1.8-38         nlme_3.1-153        pdftools_3.0.1     
+##   png_0.1-7           qpdf_1.1            RColorBrewer_1.1-2 
+##   Rcpp_1.0.7          rlang_0.4.12        rmarkdown_2.11     
+##   shape_1.4.6         splines_4.1.2       stats_4.1.2        
+##   stringi_1.7.6       stringr_1.4.0       survival_3.2-13    
+##   sys_3.4             tikzDevice_0.12.3.1 tinytex_0.36       
+##   tools_4.1.2         utils_4.1.2         xfun_0.29          
 ##   yaml_2.2.1
 ```
 

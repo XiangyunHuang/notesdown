@@ -10,7 +10,7 @@ R 语言 [@Ross_1996_R] 是一个统计计算和绘图的环境，以下各个�
 ## 函数源码 {#sec-function-source}
 
 
-[funflow](https://github.com/moodymudskipper/funflow) 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码
+[flow](https://github.com/moodymudskipper/flow) 包可以将函数调用的过程以流程图的方式呈现，代码结构一目了然，快速理清源代码
 
 
 ```r
@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x562ecacbbe60>
+## <bytecode: 0x56497286fe00>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x562ecacbbe60>
+## <bytecode: 0x56497286fe00>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.1/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c65504c2f32b3.c -o c65504c2f32b3.o
-## gcc -shared -L/opt/R/4.1.1/lib/R/lib -L/usr/local/lib -o c65504c2f32b3.so c65504c2f32b3.o -L/opt/R/4.1.1/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.2/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c22b96613a37b1.c -o c22b96613a37b1.o
+## gcc -shared -L/opt/R/4.1.2/lib/R/lib -L/usr/local/lib -o c22b96613a37b1.so c22b96613a37b1.o -L/opt/R/4.1.2/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -317,7 +317,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -341,11 +341,12 @@ sessionInfo()
 ## [5] magrittr_2.0.1   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] knitr_1.36       lattice_0.20-45  xtable_1.8-4     R6_2.5.1        
-##  [5] rlang_0.4.11     fastmap_1.1.0    stringr_1.4.0    tools_4.1.1     
-##  [9] grid_4.1.1       xfun_0.26        png_0.1-7        htmltools_0.5.2 
-## [13] ellipsis_0.3.2   yaml_2.2.1       digest_0.6.28    lifecycle_1.0.1 
-## [17] bookdown_0.24    Matrix_1.3-4     later_1.3.0      promises_1.2.0.1
-## [21] curl_4.3.2       evaluate_0.14    mime_0.12        rmarkdown_2.11  
-## [25] stringi_1.7.5    compiler_4.1.1   jsonlite_1.7.2   httpuv_1.6.3
+##  [1] knitr_1.37       lattice_0.20-45  xtable_1.8-4     R6_2.5.1        
+##  [5] rlang_0.4.12     fastmap_1.1.0    stringr_1.4.0    tools_4.1.2     
+##  [9] grid_4.1.2       xfun_0.29        png_0.1-7        tinytex_0.36    
+## [13] htmltools_0.5.2  ellipsis_0.3.2   yaml_2.2.1       digest_0.6.29   
+## [17] lifecycle_1.0.1  bookdown_0.24    Matrix_1.4-0     later_1.3.0     
+## [21] promises_1.2.0.1 curl_4.3.2       evaluate_0.14    mime_0.12       
+## [25] rmarkdown_2.11   stringi_1.7.6    compiler_4.1.2   jsonlite_1.7.2  
+## [29] httpuv_1.6.4
 ```

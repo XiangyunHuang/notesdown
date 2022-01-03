@@ -289,7 +289,7 @@ Hornet Sportabout & 18.7 & 8 & 360\\
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.45\linewidth]{/opt/R/4.1.1/lib/R/library/graphics/help/figures/mai} 
+{\centering \includegraphics[width=0.45\linewidth]{/opt/R/4.1.2/lib/R/library/graphics/help/figures/mai} 
 
 }
 
@@ -476,7 +476,7 @@ nomnoml::nomnoml("
 
 ```
 ## Warning in matrix(names(knitr::knit_engines$get()), ncol = 3, byrow = TRUE):
-## data length [58] is not a sub-multiple or multiple of the number of rows [20]
+## data length [61] is not a sub-multiple or multiple of the number of rows [21]
 ```
 
 \begin{table}
@@ -497,23 +497,25 @@ Rscript & ruby & sas\\
 \hline
 scala & sed & sh\\
 \hline
-stata & zsh & highlight\\
+stata & zsh & asis\\
 \hline
-Rcpp & tikz & dot\\
+asy & block & block2\\
 \hline
-c & cc & fortran\\
+bslib & c & cat\\
 \hline
-fortran95 & asy & cat\\
+cc & comment & css\\
 \hline
-asis & stan & block\\
+dot & embed & fortran\\
 \hline
-block2 & js & css\\
+fortran95 & go & highlight\\
 \hline
-sql & go & python\\
+js & julia & python\\
 \hline
-julia & sass & scss\\
+R & Rcpp & sass\\
 \hline
-R & bslib & targets\\
+scss & sql & stan\\
+\hline
+targets & tikz & verbatim\\
 \hline
 theorem & lemma & corollary\\
 \hline
@@ -604,45 +606,44 @@ markdown 简洁设计哲学， Sweave 文学编程思想，期间各种工具粉
 
 Table: (\#tab:rmarkdown-eco)R Markdown 生态系统
 
-Package              Title                                                                                 
--------------------  --------------------------------------------------------------------------------------
-**addinsOutline**    RStudio Addins for Show Outline of a R Markdown/LaTeX Project                         
-**blogdown**         Create Blogs and Websites with R Markdown                                             
-**bookdown**         Authoring Books and Technical Documents with R Markdown                               
-**bsplus**           Adds Functionality to the R Markdown + Shiny Bootstrap Framework                      
-**chronicle**        Grammar for Creating R Markdown Reports                                               
-**distill**          R Markdown Format for Scientific and Technical Writing                                
-**flexdashboard**    R Markdown Format for Flexible Dashboards                                             
-**govdown**          GOV.UK Style Templates for R Markdown                                                 
-**jds.rmd**          R Markdown Templates for Journal of Data Science                                      
-**komaletter**       Simply Beautiful PDF Letters from Markdown                                            
-**liftr**            Containerize R Markdown Documents for Continuous Reproducibility                      
-**mailmerge**        Mail Merge Using R Markdown Documents and 'gmailr'                                    
-**memoiR**           R Markdown and Bookdown Templates to Publish Documents                                
-**memor**            A rmarkdown Template that Can be Highly Customized                                    
-**officedown**       Enhanced R Markdown Format for 'Word' and 'PowerPoint'                                
-**pagedown**         Paginate the HTML Output of R Markdown with CSS for Print                             
-**parsermd**         Formal Parser and Related Tools for R Markdown Documents                              
-**posterdown**       Generate PDF Conference Posters Using R Markdown                                      
-**prereg**           R Markdown Templates to Preregister Scientific Studies                                
-**prettydoc**        Creating Pretty Documents from R Markdown                                             
-**quarto**           R Interface to 'Quarto' Markdown Publishing System                                    
-**reportfactory**    Lightweight Infrastructure for Handling Multiple R Markdown Documents                 
-**revealjs**         R Markdown Format for reveal.js Presentations                                         
-**rmdfiltr**         Lua-Filters for R Markdown                                                            
-**rmdformats**       HTML Output Formats and Templates for rmarkdown Documents                             
-**rmdplugr**         Plugins for R Markdown Formats                                                        
-**rmdshower**        R Markdown Format for shower Presentations                                            
-**rticles**          Article Formats for R Markdown                                                        
-**siteymlgen**       Automatically Generate _site.yml File for R Markdown                                  
-**stevetemplates**   Steve's R Markdown Templates                                                          
-**trackdown**        Collaborative Writing and Editing of R Markdown (or Sweave) Documents in Google Drive 
-**tufte**            Tufte's Styles for R Markdown Documents                                               
-**tufterhandout**    Tufte-style html document format for rmarkdown                                        
-**uiucthemes**       R Markdown Themes for UIUC Documents and Presentations                                
-**vitae**            Curriculum Vitae for R Markdown                                                       
-**webexercises**     Create Interactive Web Exercises in R Markdown (Formerly 'webex')                     
-**ymlthis**          Write YAML for R Markdown, bookdown, blogdown, and More                               
+Package              Title                                                                 
+-------------------  ----------------------------------------------------------------------
+**addinsOutline**    RStudio Addins for Show Outline of a R Markdown/LaTeX Project         
+**blogdown**         Create Blogs and Websites with R Markdown                             
+**bookdown**         Authoring Books and Technical Documents with R Markdown               
+**bsplus**           Adds Functionality to the R Markdown + Shiny Bootstrap Framework      
+**chronicle**        Grammar for Creating R Markdown Reports                               
+**distill**          R Markdown Format for Scientific and Technical Writing                
+**flexdashboard**    R Markdown Format for Flexible Dashboards                             
+**govdown**          GOV.UK Style Templates for R Markdown                                 
+**jds.rmd**          R Markdown Templates for Journal of Data Science                      
+**komaletter**       Simply Beautiful PDF Letters from Markdown                            
+**liftr**            Containerize R Markdown Documents for Continuous Reproducibility      
+**mailmerge**        Mail Merge Using R Markdown Documents and 'gmailr'                    
+**memoiR**           R Markdown and Bookdown Templates to Publish Documents                
+**memor**            A rmarkdown Template that Can be Highly Customized                    
+**officedown**       Enhanced R Markdown Format for 'Word' and 'PowerPoint'                
+**pagedown**         Paginate the HTML Output of R Markdown with CSS for Print             
+**parsermd**         Formal Parser and Related Tools for R Markdown Documents              
+**posterdown**       Generate PDF Conference Posters Using R Markdown                      
+**prereg**           R Markdown Templates to Preregister Scientific Studies                
+**prettydoc**        Creating Pretty Documents from R Markdown                             
+**quarto**           R Interface to 'Quarto' Markdown Publishing System                    
+**reportfactory**    Lightweight Infrastructure for Handling Multiple R Markdown Documents 
+**revealjs**         R Markdown Format for reveal.js Presentations                         
+**rmdfiltr**         Lua-Filters for R Markdown                                            
+**rmdformats**       HTML Output Formats and Templates for rmarkdown Documents             
+**rmdplugr**         Plugins for R Markdown Formats                                        
+**rmdshower**        R Markdown Format for shower Presentations                            
+**rticles**          Article Formats for R Markdown                                        
+**siteymlgen**       Automatically Generate _site.yml File for R Markdown                  
+**stevetemplates**   Steve's R Markdown Templates                                          
+**tufte**            Tufte's Styles for R Markdown Documents                               
+**tufterhandout**    Tufte-style html document format for rmarkdown                        
+**uiucthemes**       R Markdown Themes for UIUC Documents and Presentations                
+**vitae**            Curriculum Vitae for R Markdown                                       
+**webexercises**     Create Interactive Web Exercises in R Markdown (Formerly 'webex')     
+**ymlthis**          Write YAML for R Markdown, bookdown, blogdown, and More               
 
 ## 支持网页图形 {#sec-web-graphics}
 

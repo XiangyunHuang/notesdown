@@ -465,8 +465,8 @@ microbenchmark::microbenchmark(s(), d())
 ```
 ## Unit: microseconds
 ##  expr   min     lq    mean median     uq    max neval
-##   s()  22.7  25.45  74.042  30.20  36.70 3916.6   100
-##   d() 248.6 251.85 292.677 254.65 258.95 3410.3   100
+##   s()  19.6  22.95  64.159   27.7  32.35 3378.4   100
+##   d() 215.4 220.30 255.319  224.5 229.50 2861.8   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}
@@ -698,7 +698,7 @@ sort(setdiff(miss_pkg, pkg))
 ```
 
 ```
-## character(0)
+## [1] "mnormt"  "tmvnsim"
 ```
 
 转化为管道操作，增加可读性
@@ -735,7 +735,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -748,42 +748,42 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1          assertthat_0.2.1     backports_1.2.1     
+##   askpass_1.1          assertthat_0.2.1     backports_1.4.1     
 ##   base64enc_0.1.3      bit_4.0.4            bit64_4.0.5         
-##   blob_1.2.2           bookdown_0.24        broom_0.7.9         
-##   callr_3.7.0          cellranger_1.1.0     cli_3.0.1           
-##   clipr_0.7.1          colorspace_2.0-2     compiler_4.1.1      
-##   cpp11_0.4.0          crayon_1.4.1         curl_4.3.2          
-##   data.table_1.14.2    DBI_1.1.1            dbplyr_2.1.1        
-##   desc_1.4.0           digest_0.6.28        dplyr_1.0.7         
-##   dtplyr_1.1.0         ellipsis_0.3.2       evaluate_0.14       
+##   blob_1.2.2           bookdown_0.24        broom_0.7.10        
+##   callr_3.7.0          cellranger_1.1.0     cli_3.1.0           
+##   clipr_0.7.1          colorspace_2.0-2     compiler_4.1.2      
+##   cpp11_0.4.2          crayon_1.4.2         curl_4.3.2          
+##   data.table_1.14.2    DBI_1.1.2            dbplyr_2.1.1        
+##   desc_1.4.0           digest_0.6.29        dplyr_1.0.7         
+##   dtplyr_1.2.0         ellipsis_0.3.2       evaluate_0.14       
 ##   fansi_0.5.0          farver_2.1.0         fastmap_1.1.0       
-##   forcats_0.5.1        fs_1.5.0             gargle_1.2.0        
-##   generics_0.1.0       ggplot2_3.3.5        glue_1.4.2          
-##   googledrive_2.0.0    googlesheets4_1.0.0  graphics_4.1.1      
-##   grDevices_4.1.1      grid_4.1.1           gtable_0.3.0        
+##   forcats_0.5.1        fs_1.5.2             gargle_1.2.0        
+##   generics_0.1.1       ggplot2_3.3.5        glue_1.6.0          
+##   googledrive_2.0.0    googlesheets4_1.0.0  graphics_4.1.2      
+##   grDevices_4.1.2      grid_4.1.2           gtable_0.3.0        
 ##   haven_2.4.3          highr_0.9            hms_1.1.1           
 ##   htmltools_0.5.2      httr_1.4.2           ids_1.0.1           
 ##   isoband_0.2.5        jquerylib_0.1.4      jsonlite_1.7.2      
-##   knitr_1.36           labeling_0.4.2       lattice_0.20.45     
+##   knitr_1.37           labeling_0.4.2       lattice_0.20.45     
 ##   lifecycle_1.0.1      lubridate_1.8.0      magrittr_2.0.1      
-##   MASS_7.3.54          Matrix_1.3.4         methods_4.1.1       
-##   mgcv_1.8.38          microbenchmark_1.4-7 mime_0.12           
+##   MASS_7.3.54          Matrix_1.4.0         methods_4.1.2       
+##   mgcv_1.8.38          microbenchmark_1.4.9 mime_0.12           
 ##   modelr_0.1.8         munsell_0.5.0        nlme_3.1.153        
-##   openssl_1.4.5        pillar_1.6.3         pkgconfig_2.0.3     
+##   openssl_1.4.6        pillar_1.6.4         pkgconfig_2.0.3     
 ##   prettyunits_1.1.1    processx_3.5.2       progress_1.2.2      
 ##   ps_1.6.0             purrr_0.3.4          R6_2.5.1            
 ##   rappdirs_0.3.3       RColorBrewer_1.1.2   Rcpp_1.0.7          
-##   readr_2.0.2          readxl_1.3.1         rematch_1.0.1       
-##   rematch2_2.1.2       reprex_2.0.1         rlang_0.4.11        
+##   readr_2.1.1          readxl_1.3.1         rematch_1.0.1       
+##   rematch2_2.1.2       reprex_2.0.1         rlang_0.4.12        
 ##   rmarkdown_2.11       rprojroot_2.0.2      rstudioapi_0.13     
 ##   rvest_1.0.2          scales_1.1.1         selectr_0.4.2       
-##   splines_4.1.1        stats_4.1.1          stringi_1.7.5       
-##   stringr_1.4.0        sys_3.4              tibble_3.1.5        
+##   splines_4.1.2        stats_4.1.2          stringi_1.7.6       
+##   stringr_1.4.0        sys_3.4              tibble_3.1.6        
 ##   tidyr_1.1.4          tidyselect_1.1.1     tidyverse_1.3.1     
-##   tinytex_0.34         tools_4.1.1          tzdb_0.1.2          
-##   utf8_1.2.2           utils_4.1.1          uuid_0.1.4          
-##   vctrs_0.3.8          viridisLite_0.4.0    vroom_1.5.5         
-##   withr_2.4.2          xfun_0.26            xml2_1.3.2          
+##   tinytex_0.36         tools_4.1.2          tzdb_0.2.0          
+##   utf8_1.2.2           utils_4.1.2          uuid_1.0.3          
+##   vctrs_0.3.8          viridisLite_0.4.0    vroom_1.5.7         
+##   withr_2.4.3          xfun_0.29            xml2_1.3.3          
 ##   yaml_2.2.1
 ```

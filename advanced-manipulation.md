@@ -627,13 +627,13 @@ DT[, .(i_1, i_2, f_1, f_2)]
 ```
 
 ```
-##    i_1 i_2 f_1 f_2
-## 1:   1  NA   b   z
-## 2:   2   6   a   a
-## 3:   3   7   a   x
-## 4:   4   8   c   c
-## 5:   5   9   a   x
-## 6:  NA  10   c   x
+##    i_1 i_2  f_1 f_2
+## 1:   1  NA    a   z
+## 2:   2   6 <NA>   a
+## 3:   3   7 <NA>   x
+## 4:   4   8    b   c
+## 5:   5   9    a   x
+## 6:  NA  10    c   x
 ```
 
 
@@ -644,10 +644,10 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 
 ```
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     b
-##  2:   2   6      f_1     a
-##  3:   3   7      f_1     a
-##  4:   4   8      f_1     c
+##  1:   1  NA      f_1     a
+##  2:   2   6      f_1  <NA>
+##  3:   3   7      f_1  <NA>
+##  4:   4   8      f_1     b
 ##  5:   5   9      f_1     a
 ##  6:  NA  10      f_1     c
 ##  7:   1  NA      f_2     z
@@ -1908,7 +1908,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.1 (2021-08-10)
+## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.3 LTS
 ## 
@@ -1931,13 +1931,13 @@ sessionInfo()
 ## [1] magrittr_2.0.1    data.table_1.14.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] knitr_1.36       tidyselect_1.1.1 R6_2.5.1         rlang_0.4.11    
+##  [1] knitr_1.37       tidyselect_1.1.1 R6_2.5.1         rlang_0.4.12    
 ##  [5] fastmap_1.1.0    fansi_0.5.0      stringr_1.4.0    dplyr_1.0.7     
-##  [9] tools_4.1.1      broom_0.7.9      xfun_0.26        utf8_1.2.2      
-## [13] cli_3.0.1        DBI_1.1.1        htmltools_0.5.2  ellipsis_0.3.2  
-## [17] assertthat_0.2.1 yaml_2.2.1       digest_0.6.28    tibble_3.1.5    
-## [21] lifecycle_1.0.1  crayon_1.4.1     bookdown_0.24    tidyr_1.1.4     
-## [25] purrr_0.3.4      vctrs_0.3.8      curl_4.3.2       glue_1.4.2      
-## [29] evaluate_0.14    rmarkdown_2.11   stringi_1.7.5    compiler_4.1.1  
-## [33] pillar_1.6.3     backports_1.2.1  generics_0.1.0   pkgconfig_2.0.3
+##  [9] tools_4.1.2      broom_0.7.10     xfun_0.29        utf8_1.2.2      
+## [13] cli_3.1.0        DBI_1.1.2        htmltools_0.5.2  ellipsis_0.3.2  
+## [17] assertthat_0.2.1 yaml_2.2.1       digest_0.6.29    tibble_3.1.6    
+## [21] lifecycle_1.0.1  crayon_1.4.2     bookdown_0.24    tidyr_1.1.4     
+## [25] purrr_0.3.4      vctrs_0.3.8      curl_4.3.2       glue_1.6.0      
+## [29] evaluate_0.14    rmarkdown_2.11   stringi_1.7.6    compiler_4.1.2  
+## [33] pillar_1.6.4     backports_1.4.1  generics_0.1.1   pkgconfig_2.0.3
 ```
