@@ -1,0 +1,46 @@
+# (PART) 动态文档 {-}
+
+# 介绍 {#chap-dynamic-documents .unnumbered}
+
+<!-- 本章组织形式要参考书籍 <https://bookdown.org/yihui/rmarkdown-cookbook/> -->
+
+<!-- 第一节介绍通用的 R Markdown 语法，本章的组织最好按照使用场景来分 -->
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/rmarkdown} 
+
+}
+
+\caption{R Markdown 极其周边生态}(\#fig:rmarkdown-hex)
+\end{figure}
+
+[WrapRmd](https://github.com/tjmahr/WrapRmd) 将 R Markdown 里很长的文本自动断行，但不产生空行。 [regexplain](https://github.com/gadenbuie/regexplain) 帮助检查正则表达式，[rdoc](https://github.com/mdequeljoe/rdoc) 支持 R 帮助文档的语法高亮。[shinyComponents](https://github.com/gadenbuie/shinyComponents) 实现在 R Markdown 中写 shiny 。[wordcountaddin](https://github.com/benmarwick/wordcountaddin) 统计 R Markdown 文档中的单词数量。[styler](https://github.com/r-lib/styler) 格式化 R Markdown 文档中的代码块。[reprex](https://github.com/tidyverse/reprex) 添加代码执行的软件环境，提供可重复的例子，方便在论坛/Github上发问。[carbonate](https://github.com/yonicd/carbonate) 将源代码截图。[downloadthis](https://github.com/fmmattioni/downloadthis) 在 R Markdown 文档中添加下载按钮。[icon](https://github.com/ropenscilabs/icon) 添加各种各样的图标，[thematic](https://github.com/rstudio/thematic/) 定制 R Markdown 主题。 [datadrivencv](https://github.com/nstrayer/datadrivencv)、[vitae](https://github.com/mitchelloharawild/vitae) 制作基于 R Markdown 文档的简历。[addinslist](https://github.com/daattali/addinslist) 收集了一系列 RStudio 插件，提高写作和编码的效率。[posterdown](https://github.com/brentthorne/posterdown) 写宣传海报，[redoc](https://github.com/noamross/redoc) 实现 R Markdown 和 Microsoft Word 两种文档格式之间互相转化，[rrtools](https://github.com/benmarwick/rrtools) 写可重复性的研究论文和报告，提供一套自动化的软件环境的配置，节省科研人员的时间。[butteRfly](https://github.com/jonocarroll/butteRfly) 快速获取 Github 等社交网络上活动记录，以日历图的形式展现出来。[flow](https://github.com/moodymudskipper/flow) 可以非常方便地制作函数内部调用执行的流程图。
+
+[minidown](https://github.com/atusy/minidown) 提供轻量级的 CSS 框架打磨的网页模版，[rmdformats](https://github.com/juba/rmdformats) 和 [prettydoc](https://github.com/yixuan/prettydoc) 提供不同主题样式的网页输出，[govdown](https://github.com/ukgovdatascience/govdown) 提供 [GOV.UK](https://design-system.service.gov.uk/) 风格的网页模版。
+
+[uiucthemes](https://github.com/illinois-r/uiucthemes) 伊利诺伊大学主题的 R Markdown 模版，
+[rmdshower](https://github.com/mangothecat/rmdshower) 提供 [shower](https://github.com/shower/shower) 引擎打造的幻灯片，而 [xaringan](https://github.com/yihui/xaringan) 是基于 [remark.js](https://remarkjs.com/)。[xaringanthemer](https://github.com/gadenbuie/xaringanthemer) 和 [xaringanExtra](https://github.com/gadenbuie/xaringanExtra) 包含丰富的 xaringan 的主题。
+
+[slidex](https://github.com/datalorax/slidex) 可以将 PowerPoint 幻灯片转化为粗燥的 xaringan 幻灯片。
+
+[gluedown](https://github.com/kiernann/gluedown) 用 R 代码写格式化的 Markdown 文本，
+
+- Reproducible Research Data and Project Management in R <https://annakrystalli.me/rrresearchACCE20/>
+- Higher, further, faster with Marvelous R Markdown <https://bit.ly/marvelRMD>
+- R Markdown for Scientists <https://rmd4sci.njtierney.com/>
+- Getting Used to R, RStudio, and R Markdown <https://rbasics.netlify.app/>
+- R Markdown 指南手册 <https://www.dataquest.io/blog/r-markdown-guide-cheatsheet/>
+- Statistical Inference via Data Science: A ModernDive into R and the tidyverse <https://moderndive.com/>
+- 参数化报告 <https://github.com/jenniferthompson/ParamRmdExample> 和 <https://elastic-lovelace-155848.netlify.app/gallery/themes/flatly.html>
+- Sharing analyses with R Markdown <https://andrewbtran.github.io/NICAR/2018/workflow/docs/02-rmarkdown.html>
+- Introduction to the Normal Distribution <https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html>
+- 混合效应模型的 workshop <https://github.com/singmann/mixed_model_workshop>
+- 基于 thematic 和 bslib 包美化 Rmd 文档 <https://www.tillac-data.com/2020-fast-rmd-theming-with-thematic-and-bootstraplib/>
+- 借助 flipbookr 在 xaringan 制作的幻灯片里逐行展示代码执行的效果，特别适合用于 ggplot2 的教学 <https://evamaerey.github.io/little_flipbooks_library/flipbookr/skeleton>
+- 制作 note/tips 等自定义块 <https://desiree.rbind.io/post/2019/making-tip-boxes-with-bookdown-and-rmarkdown/>
+- learnr: Interactive Tutorials with R Markdown <https://rstudio.github.com/learnr/>
+- r2d3: R Interface to D3 Visualizations <https://rstudio.github.io/r2d3/>
+- radix: Radix combines the technical authoring features of Distill with R Markdown, enabling a fully reproducible workflow based on literate programming <https://github.com/radixpub/radix-r>
+- revealjs: R Markdown Format for reveal.js Presentations <https://github.com/rstudio/revealjs>
+- xaringan: Presentation Ninja 幻灯忍者写轮眼 <https://slides.yihui.name/xaringan/>
