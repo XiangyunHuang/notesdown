@@ -5,7 +5,6 @@ library(formatR)
 `%>%` <- magrittr::`%>%`
 library(ggplot2)
 library(ggfortify) # **ggfortify** 包提供的 `autoplot()` 函数可以根据数据对象的不同绘制不同的图形。
-library(highcharter)
 library(dygraphs) 
 # library(robustbase) # Robust Statistics
 # library(timeDate) # 日期处理
@@ -29,9 +28,6 @@ library(dygraphs)
 
 [AnomalyDetection](https://github.com/twitter/AnomalyDetection) 时间序列数据中的异常值检测
 
-<!-- 
-都用 dygraphs 这个 R 包来绘制时间序列图像，highcharter 是依赖商业软件，而且依赖的 R 包很多，另外提供的接口不太友好，没有设计好。
--->
 
 ## 时序数据 {#sec-ts-data}
 
@@ -80,7 +76,7 @@ diff(AirPassengers, lag = 1, differences = 2)
 美国纽黑文自1912年至1971年的年平均气温变化见图 \@ref(fig:new-haven-temp)。
 
 ```{r new-haven-temp, fig.cap="美国纽黑文的年平均气温，单位：华氏温度", fig.showtext=TRUE}
-plot(nhtemp, main = "美国纽黑文的年平均气温", family = "source-han-sans-cn")
+plot(nhtemp, main = "美国纽黑文的年平均气温", family = "Noto Serif CJK SC")
 ```
 
 
@@ -291,8 +287,8 @@ dygraph(predicted, main = "Predicted sunspot numbers") %>%
 ```
 
 
-```{r sunspot, fig.showtext=TRUE, fig.cap="月均太阳黑子数"}
-par(family = "source-han-sans-cn")
+```{r sunspot, fig.showtext=TRUE, fig.cap="月均太阳黑子数", fig.showtext=TRUE}
+par(family = "Noto Serif CJK SC")
 plot(sunspot.month, col = "black")
 lines(sunspots, col = "red")
 legend("topright", legend = c("1749 至今", "1749-1983"), col = c("black", "red"), lty = 1)
@@ -365,13 +361,6 @@ sw <- quantmod::getSymbols("9618.HK", auto.assign = FALSE, src = "yahoo", from =
 # 腾讯
 tx <- quantmod::getSymbols("0700.HK", auto.assign = FALSE, src = "yahoo", from = '2019-06-30')
 ```
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)), fig.cap="港股走势"}
-highchart(type = "stock") %>% 
-  hc_add_series(meituan, type = "ohlc", name = '美团') %>% 
-  hc_add_series(ali, type = "ohlc", name = '阿里巴巴') %>% 
-  hc_add_series(sw, type = "ohlc", name = '京东') %>% 
-  hc_add_series(tx, type = "ohlc", name = '腾讯')
-```
 ```{r,eval=FALSE}
 # 如何共 x 轴，右对齐
 plot(as.ts(meituan[, "3690.HK.Close"]), col = "orange", ylab = "股价")
@@ -395,13 +384,6 @@ jd <- quantmod::getSymbols("JD", auto.assign = FALSE, src = "yahoo")
 baba <- quantmod::getSymbols("BABA", auto.assign = FALSE, src = "yahoo")
 # 51Talk
 coe <- quantmod::getSymbols("COE", auto.assign = FALSE, src = "yahoo", from = '2016-06-30')
-```
-```{r, echo=knitr::is_html_output(), eval=knitr::is_html_output() & !is.na(Sys.getenv('CI', NA)), fig.cap="美股走势"}
-highchart(type = "stock") %>% 
-  hc_add_series(pdd, type = "ohlc", name = '拼多多') %>% 
-  hc_add_series(jd, type = "ohlc", name = '京东') %>% 
-  hc_add_series(baba, type = "ohlc", name = '阿里巴巴') %>% 
-  hc_add_series(coe, type = "ohlc", name = '51Talk')
 ```
 
 

@@ -17,10 +17,10 @@ library(packagemetrics)
 提升回归模型的10个提示
 [10 quick tips to improve your regression modeling](https://statmodeling.stat.columbia.edu/wp-content/uploads/2020/07/raos_tips.pdf)
 
-[tidymodels](https://github.com/tidymodels/tidymodels) 和 [easystats](https://github.com/easystats/easystats) 都是基于 [tidyverse](https://github.com/tidyverse/tidyverse) [@Hadley_2019_tidyverse] 的统计模型套件，[strengejacke](https://github.com/strengejacke/strengejacke)、 [mlr3verse](https://github.com/mlr-org/mlr3verse) 目的和 tidymodels 差不多，都是提供做数据建模的完整解决方案，区别在于它不基于 tidyverse 这套东西。
+
 
 [easystats](https://github.com/easystats/easystats) 包含 [insight](https://github.com/easystats/insight) [@ludecke2019insight] 和 [bayestestR](https://github.com/easystats/bayestestR) [@makowski2019bayestestr] 等共 9 个R 包，[tidymodels](https://github.com/tidymodels/tidymodels) 也包含差不多量的 R 包。
-[DrWhy](https://github.com/ModelOriented/DrWhy)
+
 [rms](https://github.com/harrelfe/rms) Regression Modeling Strategies
 
 [gtsummary](https://github.com/ddsjoberg/gtsummary)
@@ -98,7 +98,7 @@ summary(PlantGrowth)
 
 每个组都有10颗植物，生长情况如图\@ref(fig:plant-growth-fig)所示
 
-```{r plant-growth-fig,echo=FALSE,fig.width=4,fig.height=4,fig.cap="植物干重",fig.show='hold',out.width='45%'}
+```{r plant-growth-fig, echo=FALSE, fig.width=4, fig.height=4, fig.cap="植物干重", fig.show='hold', out.width='45%'}
 ## Annette J. Dobson 扩展的 Plant Weight Data 数据，见 59 页
 boxplot(weight ~ group,
   data = PlantGrowth, main = "PlantGrowth data",
@@ -307,7 +307,7 @@ reshape(
 
 图 \@ref(fig:orange-tree) 以直观的方式展示 5 颗橘树的生长变化，相比于表 \@ref(tab:orange-data) 我们能更加明确读取数据中的变化
 
-```{r orange-tree,fig.cap="橘树生长模型"}
+```{r orange-tree, fig.cap="橘树生长模型", out.width="75%", fig.width=5.5, fig.height=5}
 library(ggplot2)
 p <- ggplot(data = Orange, aes(x = age, y = circumference, color = Tree)) +
   geom_point() +
@@ -317,12 +317,12 @@ p <- ggplot(data = Orange, aes(x = age, y = circumference, color = Tree)) +
 p
 ```
 
-```{r orange-animate, fig.show='animate', interval=1/10, eval=knitr::is_latex_output(),cache=TRUE}
+```{r orange-animate, fig.show='animate', interval=1/10, out.width="75%", eval=knitr::is_latex_output(), cache=TRUE, fig.width=5.5,fig.height=5}
 library(gganimate)
 p + transition_reveal(age)
 ```
 
-```{r, ref.label='orange-animate', echo=FALSE, eval=knitr::is_html_output(),cache=TRUE}
+```{r, ref.label='orange-animate', echo=FALSE, out.width="75%", eval=knitr::is_html_output(), cache=TRUE, fig.width=5.5, fig.height=5}
 # 在 PDF 里必须指定参数 `fig.show='animate'` 否则插入的只是图片而不是动画
 # 在 HTML 里就不必指定参数，默认会生成 gif 图片
 # 嵌入 PDF 里面的动画需要 Acrobat Reader 阅读器才能正确地显示
@@ -336,7 +336,7 @@ p + transition_reveal(age)
 pdb <- tools::CRAN_package_db()
 ```
 
-接着，我们可以看看CRAN 上发布的 R 包数量
+接着，我们可以看看 CRAN 上发布的 R 包数量
 
 ```{r}
 length(pdb[, "Package"])
@@ -351,13 +351,13 @@ pdb[, "Package"][duplicated(pdb[, "Package"])]
 不难发现，果然有！所以去掉重复的 R 包信息，就是 CRAN 上实际发布的 R 包数量
 
 ```{r}
-dim(subset(pdb, subset = !duplicated(pdb[, "Package"])))[1]
+dim(subset(pdb, subset = !duplicated(Package)))[1]
 ```
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
 
 ```{r}
-pdb <- subset(pdb, subset = !duplicated(pdb[, "Package"]))
+pdb <- subset(pdb, subset = !duplicated(Package))
 ```
 
 ### R 核心团队 {#R-Core-Team}
@@ -367,8 +367,8 @@ R 核心团队除了维护开发 Base R 包以外，还开发了哪些 R 包，�
 ```{r}
 core_pdb <- subset(pdb,
   subset = grepl(
-    x = pdb[, "Maintainer"],
-    pattern = "(@R-project\\.org)"
+    x = Maintainer,
+    pattern = "(@[Rr]-project\\.org)"
   ),
   select = c("Package", "Maintainer")
 )
@@ -379,7 +379,7 @@ dim(core_pdb[order(core_pdb[, "Maintainer"]), ])
 
 ```{r}
 subset(pdb,
-  subset = grepl(x = pdb[, "Maintainer"], pattern = "(Paul Murrell)"),
+  subset = grepl(x = Maintainer, pattern = "(Paul Murrell)"),
   select = c("Package", "Maintainer")
 )
 ```
@@ -427,7 +427,7 @@ R 核心团队维护的 R 包及其最新发布的日期
 ```{r}
 core_pdb <- subset(pdb,
   subset = grepl(
-    x = pdb[, "Maintainer"],
+    x = Maintainer,
     pattern = paste("(", core_team$name, ")", collapse = "|", sep = "")
   ),
   select = c("Package", "Maintainer", "Published")
@@ -474,7 +474,7 @@ aggregate(data = core_pdb, Package ~ Maintainer, FUN = length) |>
   geom_col() +
   coord_flip() +
   labs(x = "R 核心团队", y = "R 包数量") +
-  theme_minimal(base_family = "source-han-serif-cn")
+  theme_minimal(base_family = "Noto Serif CJK SC")
 ```
 
 
@@ -486,7 +486,7 @@ aggregate(data = core_pdb, Package ~ Maintainer, FUN = length) |>
 
 ```{r rmarkdown-ecology}
 yihui_pdb <- subset(pdb,
-  subset = grepl("Yihui Xie", pdb[, "Maintainer"]),
+  subset = grepl("Yihui Xie", Maintainer),
   select = c("Package", "Title")
 )
 yihui_pdb[, "Title"] <- gsub("(\\\n)", " ", yihui_pdb[, "Title"])
@@ -499,28 +499,28 @@ knitr::kable(yihui_pdb,
 Jeroen Ooms 维护从 C++ 世界搬运进来的库，如图像处理 magick 包、 视频处理 av 包、 PDF 文档操作 qpdf 包
 
 ```{r}
-subset(pdb, subset = grepl("Jeroen Ooms", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Jeroen Ooms", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
 Dirk Eddelbuettel 维护 Rcpp 生态
 
 ```{r}
-subset(pdb, subset = grepl("Dirk Eddelbuettel", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Dirk Eddelbuettel", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
 Hadley Wickham 维护 tidyverse 生态 
 
 ```{r}
-subset(pdb, subset = grepl("Hadley Wickham", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Hadley Wickham", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
 [Scott Chamberlain](https://scottchamberlain.info/) 是非营利性组织 [rOpenSci](https://ropensci.org/) 的联合创始人，但是没几个 R 包听说过
 
 ```{r}
-subset(pdb, subset = grepl("Scott Chamberlain", pdb[, "Maintainer"]),
+subset(pdb, subset = grepl("Scott Chamberlain", Maintainer),
        select = 'Package', drop = TRUE)
 ```
 
@@ -536,7 +536,7 @@ length(unique(pdb[, "Maintainer"]))
 
 ```{r,out.lines=6}
 subset(pdb,
-  subset = grepl("Hadley Wickham", pdb[, "Maintainer"]),
+  subset = grepl("Hadley Wickham", Maintainer),
   select = c("Package", "Maintainer")
 )
 ```
@@ -571,7 +571,7 @@ grid()
 
 调用 ggplot2 包绘图要求输入的数据类型是 `data.frame`，所以我们首先将 `top_maintainer` 转化为数据框类型
 
-```{r}
+```{r, out.width="75%"}
 top_maintainer <- as.data.frame(top_maintainer)
 colnames(top_maintainer) <- c("Maintainer", "Freq")
 
@@ -584,7 +584,7 @@ ggplot(top_maintainer) +
 
 条形图在柱子很多的情况下，点线图是一种更加简洁的替代方式
 
-```{r}
+```{r, out.width="75%"}
 ggplot(top_maintainer, aes(x = Freq, y = Maintainer)) +
   geom_segment(aes(x = 20, xend = Freq, yend = Maintainer), colour = "grey50") +
   geom_point(size = 2, colour = "red") +
@@ -593,7 +593,7 @@ ggplot(top_maintainer, aes(x = Freq, y = Maintainer)) +
 
 接下来，我们想看看开发者维护的 R 包数量的分布，仅从上图，我们知道有的人能维护 80 多个 R 包，总体的分布情况又是如何呢？如图所示，我们将纵轴刻度设置为 log 模式，随着开发的R包数量的增加，开发者人数是指数级递减，可见开发R包依然是一个门槛很高的工作！
 
-```{r}
+```{r, out.width="75%"}
 barplot(table(table(pdb[, "Maintainer"])),
   col = "lightblue", log = "y", border = "white",
   xlab = "# of Packages", ylab = "# of Maintainers (log)",
@@ -653,12 +653,12 @@ first_ctb <- setdiff(
 
 按照每个R包贡献者的数量分组，如图所示，有一个或者没有贡献者的占总数占 70.60\%，说明这些 R 包的开发者基本在单干，有 4 个及以下的贡献者占总数（这个总数是指只开发了一个R包的那些开发者）的 90.85\%。
 
-```{r}
+```{r, out.width="75%"}
 ctb_num <- unlist(
   lapply(
     strsplit(
       subset(sub_pdb,
-             subset = sub_pdb[, "Maintainer"] %in% first_ctb,
+             subset = Maintainer %in% first_ctb,
              select = "Author", drop = TRUE # drop out data.frame return vector
       ),
       split = ","
@@ -684,7 +684,7 @@ table(ctb_num)
 # 找到开发者
 first_ctb[which.max(ctb_num)]
 # 找到 R 包
-subset(sub_pdb, subset = grepl("Matt Dowle", sub_pdb[, "Maintainer"]), select = "Package")
+subset(sub_pdb, subset = grepl("Matt Dowle", Maintainer), select = "Package")
 ```
 
 哇，大名鼎鼎的 [data.table](https://github.com/Rdatatable/data.table) 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 [Github 主页](https://github.com/mattdowle) 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
@@ -822,7 +822,7 @@ ggplot(data = dup_edges, aes(from_id = from_id, to_id = to_id)) +
 
 
 ```{r,eval=FALSE}
-# https://smallstats.blogspot.jp/2012/12/loading-huge-graphs-with-igraph-and-r.html
+# https://smallstats.blogspot.com/2012/12/loading-huge-graphs-with-igraph-and-r.html
 library(igraph)
 # 贡献矩阵
 ctb_df <- graph.data.frame(maintainer_author, directed = TRUE)
@@ -850,7 +850,7 @@ ctb_net <- add.edges(ctb_net, edges)
 
 这节标题取其字面意思表达 CRAN 服务器的特殊日子 2012-10-29，那天 CRAN 更新了一大波 R 包，像一根擎天柱一样支撑这幅图！
 
-```{r pdb-update-history, fig.cap="R 包更新历史"}
+```{r pdb-update-history, fig.cap="R 包更新历史", out.width="75%"}
 update_pdb <- pdb[, c("Package", "Published")]
 # 这天要更新的R包最多
 sort(table(update_pdb[,"Published"]), decreasing = TRUE)[1]
@@ -873,7 +873,7 @@ ggplot(update_pdb, aes(as.Date(Published))) +
 当日发布的R包，不论是新增还是更新之前发布的R包都视为最新版，当日之前的都是旧版本，它们可能存在已经修复的 BUG！这句子好奇怪是吧，因为很多 R 包要么托管在 Github 上，要么托管在 [R-Forge](https://r-forge.r-project.org/) 上开发，而 CRAN 上的版本除了发布日外，一般来讲都会落后。如图所示待更新的 R 包在日期上的分布，有的已经10来年没有更新了，最老的 R 包可以追溯到 `r min(pdb[, "Published"])`，它是 `r update_pdb[which.min(as.Date(update_pdb[, "Published"])), 1]`！！
 
 ```{r}
-subset(update_pdb, subset = update_pdb[, "Published"] == min(update_pdb[, "Published"]))
+subset(update_pdb, subset = Published == min(Published))
 update_pdb[which.min(as.Date(update_pdb[, "Published"])), 1]
 ```
 
@@ -884,7 +884,7 @@ R 开源还体现在许可证信息，顺便谈谈美国和中国技术封锁，
 
 社区主要使用 GPL 及其相关授权协议，因为 R 软件本身也是授权在 GPL-2 或 GPL-3 下
 
-```{r license-cran, fig.cap="CRAN 上采用的发布协议"}
+```{r license-cran, fig.cap="CRAN 上采用的发布协议", out.width="75%"}
 license_pdb <- head(sort(table(pdb[, "License"]), decreasing = TRUE), 20)
 par(mar = c(2, 12, 0.5, 0))
 plot(c(1, 1e1, 1e2, 1e3, 1e4), c(1, 5, 10, 15, 20),
@@ -906,7 +906,7 @@ segments(x0 = 1, y0 = seq(length(license_pdb)),
 ```
 
 
-```{r license-rforge, fig.cap="R-Forge 开发者采用的发布协议"}
+```{r license-rforge, fig.cap="R-Forge 开发者采用的发布协议", out.width="75%"}
 rforge_pdb <- available.packages(repos = "https://R-Forge.R-project.org")
 license_rforge_pdb <- head(sort(table(rforge_pdb[, "License"]), decreasing = TRUE), 20)
 par(mar = c(2, 12, 0.5, 0))
@@ -933,126 +933,4 @@ segments(x0 = 1, y0 = seq(length(license_rforge_pdb)),
 > 改进的方向是含义相同的进行合并，这需要研究一下各个许可证，然后使用对比型条形图合并上面两个图
 
 CRAN 会检测 R 包的授权，只有授权协议包含在数据库中的才可以在 CRAN 上发布 <https://svn.r-project.org/R/trunk/share/licenses/license.db>
-
-### 选择 R 包 {#Choose-Package}
-
-R 社区开发的 R 包实在太多了，重复造的轮子也很多，哪个轮子结实好用就选哪个，挑选合适的 R 包
-
-```{r, eval=F}
-# remotes::install_github("ropenscilabs/packagemetrics")
-library(formattable)
-library(packagemetrics)
-packages <- subset(pdb, Maintainer == maintainer("rmarkdown"), select = "Package")
-
-pdb_metrics <- apply(packages, 1, combine_metrics)
-pdb_metrics <- data.table::rbindlist(pdb_metrics, fill = TRUE)
-
-pd = subset(pdb_metrics, select = c("package", "published", "dl_last_month",
-    "stars", "forks", "last_commit",
-    "depends_count", "watchers")
-  ) |> 
-  transform(last_commit = round(last_commit, 1))
-
-pd[is.na(pd)] <- ""
-
-formattable(
-  pd,
-  list(
-    package = formatter("span",
-      style = x ~ style(font.weight = "bold")
-    ),
-    contributors = color_tile("white", "#1CC2E3"),
-    depends_count = color_tile("white", "#1CC2E3"),
-    reverse_count = color_tile("white", "#1CC2E3"),
-    tidyverse_happy = formatter("span",
-      style = x ~ style(color = ifelse(x, "purple", "white")),
-      x ~ icontext(ifelse(x, "glass", "glass"))
-    ),
-    vignette = formatter("span",
-      style = x ~ style(color = ifelse(x, "green", "white")),
-      x ~ icontext(ifelse(x, "ok", "ok"))
-    ),
-    has_tests = formatter("span",
-      style = x ~ style(color = ifelse(x, "green", "red")),
-      x ~ icontext(ifelse(x, "ok", "remove"))
-    ),
-    dl_last_month = color_bar("#56A33E"),
-    forks = color_tile("white", "#56A33E"),
-    stars = color_tile("white", "#56A33E"),
-    last_commit = color_tile("#F06B13", "white", na.rm = T)
-  )
-)
-```
-
-
-
-
-### R 包增长速度 {#pkg-growth}
-
-```{r,eval=FALSE}
-# 抓取网页数据
-pkgs <- pdb |>
-  transform(count = rev(1:nrow(pdb)), Date = as.Date(Date)) |>
-  transform(Month = format(Date, format = "%Y-%m"))
-
-pkgs <- aggregate(formula = count ~ Month, data = pkgs, FUN = min)
-
-pkgs <- transform(pkgs, Date = as.Date(paste(Month, "-01", sep = ""))) %>%
-  subset(Date > as.Date("2012-12-31"))
-
-# 计算自2013年以来 R 包增长速度
-new_pkgs <- pkgs %>%
-  subset(Date > as.Date("2012-12-31")) %>%
-  transform(publishedGrowth = c(tail(.$count, -1), NA) / count) %>%
-  transform(counter = 1:nrow(.))
-
-# 绘图
-library(ggplot2)
-library(grid)
-
-gg <- ggplot(pkgs, aes(x = Date, y = count)) +
-  geom_line(size = 1.5) +
-  scale_y_log10(
-    breaks = c(0, 10, 100, 1000, 10000),
-    labels = c("1", "10", "100", "1.000", "10.000")
-  ) +
-  labs(
-    x = "", y = "# Packages (log)",
-    title = "Packages published on CRAN ever since"
-  ) +
-  theme_minimal(base_size = 14, base_family = "sans") +
-  theme(panel.grid.major.x = element_blank()) +
-  geom_hline(yintercept = 0, size = 1, colour = "#535353")
-
-gg2 <- ggplot(new_pkgs, aes(x = Date, y = count)) +
-  geom_line(size = 1) +
-  geom_line(
-    data = new_pkgs, aes(y = (min(count) * 1.048^counter)),
-    color = "red", size = .7, linetype = 1
-  ) +
-  annotate("segment",
-    x = as.Date("2015-04-01"), xend = as.Date("2015-08-01"),
-    y = 1000, yend = 1000, colour = "red", size = 1
-  ) +
-  annotate("text",
-    x = as.Date("2016-12-01"),
-    y = 1000, label = "4.6% growth estimation", size = 3.5
-  ) +
-  scale_y_continuous(
-    breaks = seq(from = 0, to = 12000, by = 2000),
-    labels = seq(from = 0, to = 12000, by = 2000)
-  ) +
-  labs(
-    y = "# Packages", x = "",
-    subtitle = "Packages published on CRAN since 2013"
-  ) +
-  theme_minimal(
-    base_size = 11, base_family = "sans"
-  ) +
-  theme(panel.grid.major.x = element_blank()) +
-  geom_hline(yintercept = 0, size = .6, colour = "#535353")
-
-gg
-print(gg2, vp = viewport(.70, .31, .43, .43))
-```
 

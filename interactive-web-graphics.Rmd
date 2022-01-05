@@ -4,34 +4,12 @@
 library(reticulate)
 knitr::opts_chunk$set(python.reticulate = TRUE)
 reticulate::use_virtualenv(virtualenv = Sys.getenv("RETICULATE_PYTHON_ENV"), required = TRUE)
-```
 
-<!-- plotly highcharter echart4r 都太重了。 -->
-
-```{r,include=FALSE}
 options(warn = -1)
 library(ggplot2)
 library(plotly, warn.conflicts = FALSE)
-library(highcharter)
 library(dygraphs)
 library(r2d3)
-
-# library(scatterD3)
-# library(dygraphs)
-# plot_ly <- plotly::plot_ly
-# add_trace <- plotly::add_trace
-# 
-# add_bars <- plotly::add_bars
-# add_lines <- plotly::add_lines
-# add_boxplot <- plotly::add_boxplot
-# add_annotations <- plotly::add_annotations
-# 
-# config <- plotly::config
-# layout <- plotly::layout
-# style  <- plotly::style
-# 
-# orca <- plotly::orca
-# ggplotly <- plotly::ggplotly
 ```
 
 ```{css, echo=FALSE}
@@ -479,7 +457,7 @@ plot_mapbox(
 ```
 
 ```{r bubble-map, eval=knitr::is_html_output(), fig.cap="斐济地震带分布"}
-plot_ly(
+plotly::plot_ly(
   data = quakes,
   lon = ~long, lat = ~lat,
   type = "scattergeo", mode = "markers",
@@ -493,11 +471,11 @@ plot_ly(
     line = list(color = "white", width = 1)
   )
 ) %>%
-  layout(geo = list(
+  plotly::layout(geo = list(
     showland = TRUE,
-    landcolor = toRGB("gray95"),
-    subunitcolor = toRGB("gray85"),
-    countrycolor = toRGB("gray85"),
+    landcolor = plotly::toRGB("gray95"),
+    subunitcolor = plotly::toRGB("gray85"),
+    countrycolor = plotly::toRGB("gray85"),
     countrywidth = 0.5,
     subunitwidth = 0.5,
     lonaxis = list(
@@ -517,15 +495,25 @@ plot_ly(
 
 
 ```{r choropleth-map, eval=knitr::is_html_output(), fig.cap="美国各州收入"}
-dat = data.frame(state.x77, stats = rownames(state.x77), stats_abbr = state.abb)
-plot_ly(data = dat,
+dat <- data.frame(state.x77,
+  stats = rownames(state.x77),
+  stats_abbr = state.abb
+)
+
+plotly::plot_ly(
+  data = dat,
   type = "choropleth",
   locations = ~stats_abbr,
   locationmode = "USA-states",
-  colorscale = "Greys", 
+  colorscale = "Viridis",
   z = ~Income
-) %>%
-  layout(geo = list(scope = "usa"))
+) |>
+  plotly::layout(
+    geo = list(scope = "usa"),
+    title = "1974年美国各州的人均收入",
+    legend = list(title = "收入")
+  ) |>
+  plotly::config(displayModeBar = FALSE)
 ```
 
 
@@ -941,251 +929,6 @@ plot_ly(dat,
   mode = "markers", type = "scatter", colors = "viridis"
 )
 ```
-
-
-
-
-## 堆积图 (highcharter) {#sec-highcharter}
-
-Joshua Kunst 在他的博客里 <https://jkunst.com/> 补充了很多数据可视化案例，另一个关键的参考资料是 [highcharts API 文档](https://api.highcharts.com/highcharts/)，文档主要分两部分全局选项 `Highcharts.setOptions` 和绘图函数 `Highcharts.chart`。下面以 `data_to_boxplot()` 为例解析 R 中的数据结构是如何和 highcharts 的 JSON 以及绘图函数对应的。
-
-```{r mapping-data, eval=knitr::is_html_output(), fig.cap="两种从数据到图形的映射方式"}
-library(highcharter)
-highchart() %>%
-  hc_xAxis(type = "category") %>%
-  hc_add_series_list(x = data_to_boxplot(
-    data = iris,
-    variable = Sepal.Length,
-    group_var = Species,
-    add_outliers = TRUE,
-    name = "iris"
-  ))
-```
-
-除了箱线图 boxplot 还有折线图、条形图、密度图等一系列常用图形，共计 50 余种，详见表\@ref(tab:hc-charts)，各类图形示例见 <https://www.highcharts.com/demo>。
-
-```{r hc-charts,echo=FALSE}
-knitr::kable(matrix(c(
-  "area", "arearange", "areaspline", "areasplinerange",
-  "bar", "bellcurve", "boxplot", "bubble",
-  "column", "columnpyramid", "columnrange",
-  "cylinder", "dependencywheel", "dumbbell", "errorbar",
-  "funnel", "funnel3d", "gauge", "heatmap",
-  "histogram", "item", "line", "lollipop", "networkgraph",
-  "organization", "packedbubble", "pareto", "pie", "polygon",
-  "pyramid", "pyramid3d", "sankey", "scatter", "scatter3d",
-  "solidgauge", "spline", "streamgraph", "sunburst", "tilemap",
-  "timeline", "treemap", "variablepie", "variwide", "vector", "venn",
-  "waterfall", "windbarb", "wordcound", "xrange", NA
-), ncol = 5), "pandoc", col.names = c("A", "B", "C", "D", "E"), caption = "图形种类")
-```
-```{r,eval=knitr::is_html_output()}
-library(highcharter)
-hchart(iris, "scatter", 
-       hcaes(x = Sepal.Length, y = Sepal.Width, group = Species))
-```
-
-
-有的图形种类包含多个变体，如 area 面积图，还有 arearange 、areaspline 和 areasplinerange，而 area 图其实是折线图，只是线与坐标轴围成的区域用颜色填充了。一个基本示例见[基础面积图](https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/area-basic/)，数据结构如下：
-
-```JavaScript
-Highcharts.chart('container', {
-    chart: {
-        type: 'area'
-    },
-    accessibility: {
-        description: 'Image description: An area chart compares the nuclear stockpiles of the USA and the USSR/Russia between 1945 and 2017. The number of nuclear weapons is plotted on the Y-axis and the years on the X-axis. The chart is interactive, and the year-on-year stockpile levels can be traced for each country. The US has a stockpile of 6 nuclear weapons at the dawn of the nuclear age in 1945. This number has gradually increased to 369 by 1950 when the USSR enters the arms race with 6 weapons. At this point, the US starts to rapidly build its stockpile culminating in 32,040 warheads by 1966 compared to the USSR’s 7,089. From this peak in 1966, the US stockpile gradually decreases as the USSR’s stockpile expands. By 1978 the USSR has closed the nuclear gap at 25,393. The USSR stockpile continues to grow until it reaches a peak of 45,000 in 1986 compared to the US arsenal of 24,401. From 1986, the nuclear stockpiles of both countries start to fall. By 2000, the numbers have fallen to 10,577 and 21,000 for the US and Russia, respectively. The decreases continue until 2017 at which point the US holds 4,018 weapons compared to Russia’s 4,500.'
-    },
-    title: {
-        text: 'US and USSR nuclear stockpiles'
-    },
-    subtitle: {
-        text: 'Sources: <a href="https://thebulletin.org/2006/july/global-nuclear-stockpiles-1945-2006">' +
-            'thebulletin.org</a> &amp; <a href="https://www.armscontrol.org/factsheets/Nuclearweaponswhohaswhat">' +
-            'armscontrol.org</a>'
-    },
-    xAxis: {
-        allowDecimals: false,
-        labels: {
-            formatter: function () {
-                return this.value; // clean, unformatted number for year
-            }
-        },
-        accessibility: {
-            rangeDescription: 'Range: 1940 to 2017.'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Nuclear weapon states'
-        },
-        labels: {
-            formatter: function () {
-                return this.value / 1000 + 'k';
-            }
-        }
-    },
-    tooltip: {
-        pointFormat: '{series.name} had stockpiled <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
-    },
-    plotOptions: {
-        area: {
-            pointStart: 1940,
-            marker: {
-                enabled: false,
-                symbol: 'circle',
-                radius: 2,
-                states: {
-                    hover: {
-                        enabled: true
-                    }
-                }
-            }
-        }
-    },
-    series: [{
-        name: 'USA',
-        data: [
-            null, null, null, null, null, 6, 11, 32, 110, 235,
-            369, 640, 1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468,
-            20434, 24126, 27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342,
-            26662, 26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-            24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586, 22380,
-            21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950, 10871, 10824,
-            10577, 10527, 10475, 10421, 10358, 10295, 10104, 9914, 9620, 9326,
-            5113, 5113, 4954, 4804, 4761, 4717, 4368, 4018
-        ]
-    }, {
-        name: 'USSR/Russia',
-        data: [null, null, null, null, null, null, null, null, null, null,
-            5, 25, 50, 120, 150, 200, 426, 660, 869, 1060,
-            1605, 2471, 3322, 4238, 5221, 6129, 7089, 8339, 9399, 10538,
-            11643, 13092, 14478, 15915, 17385, 19055, 21205, 23044, 25393, 27935,
-            30062, 32049, 33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000,
-            37000, 35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-            21000, 20000, 19000, 18000, 18000, 17000, 16000, 15537, 14162, 12787,
-            12600, 11400, 5500, 4512, 4502, 4502, 4500, 4500
-        ]
-    }]
-});
-```
-
-对应到 R 包 **highcharter** 中，绘图代码如下：
-
-```{r hc-area, eval=knitr::is_html_output(), fig.cap="1940年至2017年美国和俄罗斯核武器数量变化"}
-library(highcharter)
-options(highcharter.theme = hc_theme_hcrt(tooltip = list(valueDecimals = 2)))
-
-usa <- ts(
-  data = c(
-    NA, NA, NA, NA, NA, 6, 11, 32, 110, 235,
-    369, 640, 1005, 1436, 2063, 3057, 4618, 6444, 9822, 15468,
-    20434, 24126, 27387, 29459, 31056, 31982, 32040, 31233, 29224, 27342,
-    26662, 26956, 27912, 28999, 28965, 27826, 25579, 25722, 24826, 24605,
-    24304, 23464, 23708, 24099, 24357, 24237, 24401, 24344, 23586, 22380,
-    21004, 17287, 14747, 13076, 12555, 12144, 11009, 10950, 10871, 10824,
-    10577, 10527, 10475, 10421, 10358, 10295, 10104, 9914, 9620, 9326,
-    5113, 5113, 4954, 4804, 4761, 4717, 4368, 4018
-  ),
-  start = 1940, end = 2017
-)
-
-russia <- ts(
-  data = c(
-    NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
-    5, 25, 50, 120, 150, 200, 426, 660, 869, 1060,
-    1605, 2471, 3322, 4238, 5221, 6129, 7089, 8339, 9399, 10538,
-    11643, 13092, 14478, 15915, 17385, 19055, 21205, 23044, 25393, 27935,
-    30062, 32049, 33952, 35804, 37431, 39197, 45000, 43000, 41000, 39000,
-    37000, 35000, 33000, 31000, 29000, 27000, 25000, 24000, 23000, 22000,
-    21000, 20000, 19000, 18000, 18000, 17000, 16000, 15537, 14162, 12787,
-    12600, 11400, 5500, 4512, 4502, 4502, 4500, 4500
-  ),
-  start = 1940, end = 2017
-)
-
-unit_format <- JS("function(){
-  return this.value / 10000 + 'M';
-}")
-
-highchart() %>%
-  hc_xAxis(type = "datetime") %>%
-  hc_yAxis(
-    title = list(text = "Nuclear weapon states"),
-    labels = list(formatter = unit_format)
-  ) %>%
-  hc_title(text = "US and USSR nuclear stockpiles") %>%
-  hc_subtitle(text = paste(
-    'Sources: <a href="https://thebulletin.org/2006/july/global-nuclear-stockpiles-1945-2006">',
-    'thebulletin.org</a> &amp; <a href="https://www.armscontrol.org/factsheets/Nuclearweaponswhohaswhat">',
-    "armscontrol.org</a>"
-  )) %>%
-  hc_add_series(data = russia, type = "area", name = "USSR/Russia") %>%
-  hc_add_series(data = usa, type = "area", name = "USA") %>%
-  hc_exporting(
-    enabled = TRUE,
-    filename = paste(Sys.Date(), "nuclear", sep = "-")
-  )
-```
-
-可以看出来，JS API 文档里 `chart -> plotOptions` 对应于 R 包 API 的 `hc_plotOptions()` 函数，`hchart()` 函数对应于 <https://api.highcharts.com/highcharts/series> ，为了绘图方便起见，作者还直接支持 R 中一些数据对象，比如数据框 data.frame 和时间序列 ts 等，完整的支持列表见：
-
-```{r}
-library(highcharter)
-methods(hchart)
-```
-
-更多 API 细节描述见 <https://jkunst.com/highcharter/articles/modules.html>。 桑基图描述能量的流动 [^sankey]
-
-```{r, eval=knitr::is_html_output(), fig.cap="桑基图"}
-library(jsonlite)
-# 转化为 JSON 格式的字符串
-dat <- toJSON(data.frame(
-  from = c("AT", "DE", "CH", "DE"),
-  to = c("DE", "CH", "DE", "FI"),
-  weight = c(10, 5, 15, 5)
-))
-
-highchart() %>%
-  hc_chart(type = "sankey") %>%
-  hc_add_series(data = dat)
-```
-
-[^sankey]: <https://antv-2018.alipay.com/zh-cn/vis/chart/sankey.html>
-
-此外，highcharter 提供 `highchartOutput()` 和 `renderHighchart()` 函数支持在 shiny 中使用 highcharts 图形。
-
-```{r,eval=FALSE}
-library(shiny)
-library(highcharter)
-
-shinyApp(
-  ui = fluidPage(
-    highchartOutput("plot_hc")
-  ),
-  server = function(input, output) {
-    output$plot_hc <- renderHighchart({
-      hchart(PlantGrowth, "area", hcaes(y = weight, group = group))
-    })
-  }
-)
-```
-
-借助 htmlwidgets 和 reactR 创建新的基于 JS 库的 R 包，这样就快速将可视化图形库赋能 R 环境，关于网页可视化，JS 一定是优于 R 的，毕竟人家是专业前端工具，我们做的就是快速套模板，让 R 数据操作和分析的结果以非常精美的方式展现出来。这里有一篇基于 reactR 框架引入 React.js 衍生 JS 库到 R 环境中的资料 <https://github.com/react-R/nivocal>，一读就懂，非常适合上手。
-
-::: {.rmdtip data-latex="{提示}"}
-点击图例隐藏某一类别，可以看到图形纵轴会自适应展示区域的大小，这个特性对于所有图形都是支持的。
-
-```{r hc-sleep,fig.cap="折线图",eval=knitr::is_html_output()}
-library(highcharter)
-# 折线图
-hchart(sleep, "line", hcaes(ID, extra, group = group))
-# 堆积区域图
-# 堆积折线图
-
-```
-:::
-
 
 
 ## 时序图 {#sec-dygraphs}

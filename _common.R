@@ -55,3 +55,65 @@ is_unix <- identical(.Platform$OS.type, "unix")
 
 # 创建临时的目录存放数据集
 if (!dir.exists(paths = "./data")) dir.create(path = "./data")
+
+if (is.na(Sys.getenv("CI", NA))) {
+  # 准备 Noto 中英文字体
+  sysfonts::font_paths(new = "~/Library/Fonts/")
+  ## 宋体
+  sysfonts::font_add(
+    family = "Noto Serif CJK SC",
+    regular = "NotoSerifCJKsc-Regular.otf",
+    bold = "NotoSerifCJKsc-Bold.otf"
+  )
+  ## 黑体
+  sysfonts::font_add(
+    family = "Noto Sans CJK SC",
+    regular = "NotoSansCJKsc-Regular.otf",
+    bold = "NotoSansCJKsc-Bold.otf"
+  )
+  sysfonts::font_add(
+    family = "Noto Serif",
+    regular = "NotoSerif-Regular.ttf",
+    bold = "NotoSerif-Bold.ttf",
+    italic = "NotoSerif-Italic.ttf",
+    bolditalic = "NotoSerif-BoldItalic.ttf"
+  )
+  sysfonts::font_add(
+    family = "Noto Sans",
+    regular = "NotoSans-Regular.ttf",
+    bold = "NotoSans-Bold.ttf",
+    italic = "NotoSans-Italic.ttf",
+    bolditalic = "NotoSans-BoldItalic.ttf"
+  )
+} else {
+  sysfonts::font_paths(new = c(
+    "/usr/share/fonts/opentype/noto/",
+    "/usr/share/fonts/truetype/noto/"
+  ))
+  ## 宋体
+  sysfonts::font_add(
+    family = "Noto Serif CJK SC",
+    regular = "NotoSerifCJK-Regular.ttc",
+    bold = "NotoSerifCJK-Bold.ttc"
+  )
+  ## 黑体
+  sysfonts::font_add(
+    family = "Noto Sans CJK SC",
+    regular = "NotoSansCJK-Regular.ttc",
+    bold = "NotoSansCJK-Bold.ttc"
+  )
+  sysfonts::font_add(
+    family = "Noto Serif",
+    regular = "NotoSerif-Regular.ttf",
+    bold = "NotoSerif-Bold.ttf",
+    italic = "NotoSerif-Italic.ttf",
+    bolditalic = "NotoSerif-BoldItalic.ttf"
+  )
+  sysfonts::font_add(
+    family = "Noto Sans",
+    regular = "NotoSans-Regular.ttf",
+    bold = "NotoSans-Bold.ttf",
+    italic = "NotoSans-Italic.ttf",
+    bolditalic = "NotoSans-BoldItalic.ttf"
+  )
+}

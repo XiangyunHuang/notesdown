@@ -21,6 +21,7 @@ library(ggpubr)            # 组合图
 library(treemap)           # 树状图
 library(treemapify)        # 树状图
 library(ggalluvial)        # 桑基图
+library(ggquiver)          # 向量场图
 library(ggmosaic)          # 马赛克图
 library(ggbump)            # 凹凸图
 library(ggstream)          # 水流图
@@ -113,7 +114,7 @@ data.frame(
     x = "年份", y = "支持率 (%)",
     caption = "数据源: R 包 datasets"
   ) +
-  theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn")
+  theme_minimal(base_size = 10.54, base_family = "Noto Serif SC")
 ```
 
 <!-- 每个点给出总统的人名，部分给出图片
@@ -175,6 +176,13 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) +
     bolditalic(x)[italic(t)] == alpha * (theta - bolditalic(x)[italic(t)]) *
     d * italic(t) + lambda * d * italic(B)[italic(t)]), list(lambda = 4)))
 ```
+
+
+
+[geomtextpath](https://github.com/AllanCameron/geomtextpath) 曲线上的文字随曲线弯曲变化
+
+[ggsvg](https://github.com/coolbutuseless/ggsvg) 曲线上散点以图片、彩色图标表示
+
 
 ### 刻度 {#ggplot2-scale}
 
@@ -417,7 +425,7 @@ sysfonts::font_add_google(name = "Roboto Condensed", family = "Roboto Condensed"
 ```
 
 
-```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", fig.width=6, fig.height=5, out.width="75%"}
+```{r hrbrthemes, fig.cap="调用 hrbrthemes 包设置字体主题", fig.width=6, fig.height=5, out.width="75%", fig.showtext=TRUE}
 library(hrbrthemes)
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
@@ -432,7 +440,7 @@ ggplot(mtcars, aes(mpg, wt)) +
 
 如果系统没有安装 Arial Narrow 字体，可以导入 hrbrthemes 包自带的一些字体，比如 `hrbrthemes::import_roboto_condensed()`，然后调用字体主题 `theme_ipsum_rc()` 。如果不想使用这个包自带的字体，可以用系统中安装的字体去修改主题 `theme_ipsum()` 和 `theme_ipsum_rc()` 中的字体设置。如图 \@ref(fig:arial-narrow) 使用了 `theme_ipsum()` 中的 Arial Narrow 字体。
 
-```{r arial-narrow, fig.cap="默认字体 Arial Narrow", fig.width=6, fig.height=5, out.width="75%"}
+```{r arial-narrow, fig.cap="默认字体 Arial Narrow", fig.width=6, fig.height=5, out.width="75%", fig.showtext=TRUE}
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point() +
   labs(
@@ -441,7 +449,7 @@ ggplot(mtcars, aes(mpg, wt)) +
     subtitle = "A plot that is only useful for demonstration purposes",
     caption = "Brought to you by the letter 'g'"
   ) +
-  theme_ipsum()
+  theme_ipsum(base_family = "Noto Sans")
 ```
 
 ::: {.rmdtip data-latex="{提示}"}
@@ -462,6 +470,19 @@ showtextdb::font_install(showtextdb::source_han_sans())
 ```
 
 ```{r showtext, fig.cap="showtext 包处理图里的中文", fig.width=5, fig.height=4, fig.showtext=TRUE, out.width="75%"}
+# ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+#   geom_point(aes(colour = Species)) +
+#   scale_colour_brewer(palette = "Set1") +
+#   labs(
+#     title = "鸢尾花数据的散点图",
+#     x = "萼片长度", y = "萼片宽度", colour = "鸢尾花类别",
+#     caption = "鸢尾花数据集最早见于 Edgar Anderson (1935) "
+#   ) +
+#   theme(
+#     title = element_text(family = "source-han-sans-cn"),
+#     axis.title = element_text(family = "source-han-serif-cn"),
+#     legend.title = element_text(family = "source-han-serif-cn")
+#   )
 ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
   geom_point(aes(colour = Species)) +
   scale_colour_brewer(palette = "Set1") +
@@ -471,9 +492,9 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
     caption = "鸢尾花数据集最早见于 Edgar Anderson (1935) "
   ) +
   theme(
-    title = element_text(family = "source-han-sans-cn"),
-    axis.title = element_text(family = "source-han-serif-cn"),
-    legend.title = element_text(family = "source-han-serif-cn")
+    title = element_text(family = "Noto Sans SC"),
+    axis.title = element_text(family = "Noto Serif SC"),
+    legend.title = element_text(family = "Noto Serif SC")
   )
 ```
 
@@ -491,13 +512,7 @@ ggplot(FijiMap, aes(x = long, y = lat)) +
   scale_y_continuous(breaks = (-18:18) * 5) +
   coord_map("ortho", orientation = c(-10, 180, 0)) +
   labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
-  theme_minimal() +
-  theme(
-    title = element_text(family = "source-han-sans-cn"),
-    axis.title = element_text(family = "source-han-serif-cn"),
-    legend.title = element_text(family = "source-han-sans-cn"),
-    legend.position = c(1, 0), legend.justification = c(1, 0)
-  )
+  theme_minimal(base_family = "Noto Serif SC")
 ```
 
 ### 数学字体 {#subsec-fontcm}
@@ -671,10 +686,9 @@ fc-cache -fsv
 R -e 'library(extrafont);font_import(pattern="[X/x]kcd.ttf", prompt = FALSE)'
 ```
 
-图 \@ref(fig:xkcd-graph) 是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
+下图是一个使用 xkcd 字体的简单例子，更多高级特性请看 **xkcd** 包文档 [@xkcd]
 
-```{r xkcd-graph, fig.cap = "漫画风格的字体方案", dev = if (knitr::is_html_output()) "svg" else if (knitr::is_latex_output()) "cairo_pdf" else "png", out.width="75%", fig.width=5, fig.height=4}
-library(extrafont)
+```{r xkcd-graph, fig.cap = "漫画风格的字体方案", fig.showtext=TRUE, out.width="75%", fig.width=5, fig.height=4, eval=FALSE}
 library(xkcd)
 ggplot(aes(mpg, wt), data = mtcars) +
   geom_point() +
@@ -999,7 +1013,7 @@ expand.grid(months = month.abb, years = 1949:1960) |>
   ) +
   theme_minimal(
     base_size = 10.54,
-    base_family = "source-han-serif-cn"
+    base_family = "Noto Serif SC"
   ) +
   labs(x = "年", y = "月", fill = "人数")
 ```
@@ -2121,6 +2135,13 @@ ggplot(diamonds, aes(x = color, y = price, color = color)) +
   geom_boxplot()
 ```
 
+设置随机数种子，抖动图是可重复的。
+
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Width, color = Species)) +
+  geom_boxplot(width = 0.65) +
+  geom_point(position = position_jitter(seed = 37, width = 0.25))
+```
 
 ### 蜂群图 {#sec-ggplot2-beeswarm}
 
@@ -2189,7 +2210,7 @@ p1 <- expand.grid(months = month.abb, years = 1949:1960) %>%
     expand = c(0.01, 0.01),
     breaks = seq(1949, 1960, by = 1), labels = 1949:1960
   ) +
-  theme_minimal(base_size = 10.54, base_family = "source-han-serif-cn") +
+  theme_minimal(base_size = 10.54, base_family = "Noto Serif SC") +
   theme(legend.position = "top") +
   labs(x = "年", y = "月", fill = "人数")
 
@@ -2202,7 +2223,7 @@ p2 <- expand.grid(months = month.abb, years = 1949:1960) %>%
     expand = c(0.01, 0.01),
     breaks = seq(1949, 1960, by = 1), labels = 1949:1960
   ) +
-  theme_minimal(base_size = 10.54, base_family = "source-han-sans-cn") +
+  theme_minimal(base_size = 10.54, base_family = "Noto Serif SC") +
   theme(legend.position = "top") +
   labs(x = "年", y = "月", color = "人数")
 p1 + p2
@@ -2256,14 +2277,19 @@ git_config_set("user.name", "XiangyunHuang")
 git_config_set("user.email", "xiangyunfaith@outlook.com")
 
 dat <- git_log(max = 1000)
+# format(time, "%a") 本地 MacOS 环境 "六" "四" "五" 表示星期
+# Sys.getlocale("LC_TIME") # "zh_CN.UTF-8"
+lvls <- if(!is.na(Sys.getenv("CI", NA))) {
+  c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+} else {
+  c("日", "一", "二", "三", "四", "五", "六")
+}
 
 dat <- transform(dat,
   date = format(time, "%Y-%m-%d"),
   year = format(time, "%Y") ,
   month = format(time, "%m"),
-  weekday = factor(format(time, "%a"),
-    levels = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-  ),
+  weekday = factor(format(time, "%a"), levels = lvls),
   week = as.integer(format(time, "%W"))
 )
 ```
@@ -2278,7 +2304,7 @@ ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
 ```
 
 
-```{r calendar-masr, fig.cap="《现代统计图形》的活跃情况", fig.width=8, fig.height=4}
+```{r calendar-masr, fig.cap="《现代统计图形》的活跃情况", fig.width=8, fig.height=4, fig.showtext=TRUE}
 # 日历图
 dat2 <- aggregate(formula = commit ~ year + week + weekday, data = dat, FUN = length)
 
@@ -2293,7 +2319,8 @@ ggplot(data = dat2, aes(x = week, y = weekday, fill = colorBin)) +
     breaks = seq(1, 52, length = 12),
     labels = month.abb
   ) +
-  labs(x = "", y = "")
+  labs(x = "", y = "") +
+  theme_minimal(base_family = "Noto Sans SC")
 ```
 
 ### 岭线图 {#sec-ggplot2-ridgeline}
@@ -2370,6 +2397,15 @@ ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
   stat_ellipse(geom = "polygon") +
   theme(legend.position = "none")
 ```
+
+
+### Q-Q 图 {#sec-ggplot2-qq}
+
+quantile-quantile Q-Q 正态分布图的 ggplot2 实现 [qqplotr](https://github.com/aloy/qqplotr)
+
+
+
+
 
 ### 包络图 {#sec-ggplot2-chull}
 
@@ -2485,16 +2521,22 @@ filled.contour(volcano,
 
 美国西南部犹他州锡安国家公园的高程珊格数据 elevation，该数据集由 [Jakub Nowosad](https://nowosad.github.io/) 收集于 [spDataLarge](https://github.com/Nowosad/spDataLarge) 包内，由于该 R 包收集的地理信息数据很多又很大，超出了 CRAN 对 R 包的大小限制，需要从作者制作的 drat 站点下载。
 
-```{r check-spDataLarge, eval=!require("spDataLarge")}
+```{r check-spDataLarge, eval=FALSE}
 install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/")
 ```
 
-elevation 数据集通过雷达地形测绘 SRTM (Shuttle Radar Topography Mission) 获得，其分辨率为 90m $\times$ 90m，属于高精度地形网格数据，更多细节描述见 <http://srtm.csi.cgiar.org/>，图 \@ref(fig:elevation-zion) 将公园的地形清晰地展示出来了，读者不妨再借助维基百科词条 (<https://en.wikipedia.org/wiki/Zion_National_Park>) 从整体上了解该公园的情况，结合丰富的实景图可以获得更加直观的感受。
+elevation 数据集通过雷达地形测绘 SRTM (Shuttle Radar Topography Mission) 获得，其分辨率为 90m $\times$ 90m，属于高精度地形网格数据，更多细节描述见 <http://srtm.csi.cgiar.org/>，下图将公园的地形清晰地展示出来了，读者不妨再借助维基百科词条 (<https://en.wikipedia.org/wiki/Zion_National_Park>) 从整体上了解该公园的情况，结合丰富的实景图可以获得更加直观的感受。
 
-```{r elevation-zion,fig.cap="锡安国家公园的高程珊格数据",fig.height=5,fig.width=5.5}
+```{r elevation-zion,fig.cap="锡安国家公园的高程珊格数据",fig.height=5,fig.width=5.5, eval=FALSE}
 data("elevation", package = "spDataLarge")
 raster::plot(elevation, asp = NA)
 ```
+
+```{r,eval=FALSE}
+data(grain, package = 'spData')
+raster::plot(grain, asp = NA)
+```
+
 
 ### 树状图 {#sec-ggplot2-treemap}
 
@@ -2517,32 +2559,6 @@ treemap(GNI2014,
   format.legend = list(scientific = FALSE, big.mark = " ")
 )
 ```
-
-::: {.rmdtip data-latex="{提示}"}
-数据集 GNI2014 的另一种呈现方式是将数据铺到地图上，可以借助 **highcharter** 包的 `hcmap()` 函数来实现`r if(knitr::is_html_output()) "，如图\\@ref(fig:hc-treemap)所示"`。
-
-```{r hc-treemap,eval=knitr::is_html_output(),fig.cap="国民人均收入"}
-# 代码块不要启用缓存
-data(GNI2014, package = "treemap")
-library(highcharter)
-hcmap(
-  "custom/world-robinson-lowres",
-  data = GNI2014,
-  name = "Gross national income per capita",
-  value = "GNI",
-  borderWidth = 0,
-  nullColor = "gray",
-  joinBy = c("iso-a3", "iso3")
-) %>%
-  hc_colorAxis(
-    stops = color_stops(
-      colors = terrain.colors(n = 10)
-    ),
-    type = "logarithmic"
-  )
-```
-
-:::
 
 [**treemapify**](https://github.com/wilkox/treemapify) 包基于 ggplot2 制作树状图，类似地，该 R 包内置了数据集 G20，记录了世界主要经济体 G20 (<https://en.wikipedia.org/wiki/G20>) 的经济和人口信息，国家 GDP （单位：百万美元）`gdp_mil_usd` 和人类发展指数 `hdi`。相比于 GNI2014，它还包含了两列标签信息：经济发展阶段和所处的半球。图@(fig:treemap-ggplot2)以南北半球 hemisphere 分面，以色彩填充区域 region，以 `gdp_mil_usd` 表示区域大小
 
@@ -2833,6 +2849,14 @@ ggtern(Fragments, aes(
   theme_bw() +
   theme_legend_position("tr")
 ```
+
+### 向量场图 {#sec-vector-fields}
+
+
+```{r}
+library(ggquiver)
+```
+
 
 ### 四象限图 {#sec-ggplot2-eisenhower}
 
