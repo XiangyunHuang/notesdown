@@ -1120,13 +1120,13 @@ sessionInfo()
 ##  [9] generics_0.1.1    htmltools_0.5.2   viridisLite_0.4.0 yaml_2.2.1       
 ## [13] mgcv_1.8-38       utf8_1.2.2        rlang_0.4.12      pillar_1.6.4     
 ## [17] glue_1.6.0        withr_2.4.3       DBI_1.1.2         tweenr_1.0.2     
-## [21] plyr_1.8.6        lifecycle_1.0.1   stringr_1.4.0     munsell_0.5.0    
-## [25] gtable_0.3.0      codetools_0.2-18  evaluate_0.14     labeling_0.4.2   
-## [29] knitr_1.37        fastmap_1.1.0     curl_4.3.2        fansi_0.5.0      
-## [33] gifski_1.4.3-1    Rcpp_1.0.7        scales_1.1.1      sysfonts_0.8.5   
-## [37] farver_2.1.0      hms_1.1.1         digest_0.6.29     stringi_1.7.6    
-## [41] bookdown_0.24     dplyr_1.0.7       grid_4.1.2        tools_4.1.2      
-## [45] tibble_3.1.6      crayon_1.4.2      pkgconfig_2.0.3   ellipsis_0.3.2   
-## [49] Matrix_1.4-0      prettyunits_1.1.1 assertthat_0.2.1  rmarkdown_2.11   
-## [53] R6_2.5.1          nlme_3.1-153      compiler_4.1.2
+## [21] lifecycle_1.0.1   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
+## [25] evaluate_0.14     labeling_0.4.2    knitr_1.37        fastmap_1.1.0    
+## [29] curl_4.3.2        fansi_0.5.0       gifski_1.4.3-1    Rcpp_1.0.7       
+## [33] scales_1.1.1      sysfonts_0.8.5    farver_2.1.0      hms_1.1.1        
+## [37] digest_0.6.29     stringi_1.7.6     bookdown_0.24     dplyr_1.0.7      
+## [41] grid_4.1.2        tools_4.1.2       tibble_3.1.6      crayon_1.4.2     
+## [45] pkgconfig_2.0.3   ellipsis_0.3.2    Matrix_1.4-0      prettyunits_1.1.1
+## [49] assertthat_0.2.1  rmarkdown_2.11    R6_2.5.1          nlme_3.1-153     
+## [53] compiler_4.1.2
 ```

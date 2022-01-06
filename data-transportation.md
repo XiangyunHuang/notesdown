@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpwk4bHD/fileb3551eaf3683.data"
+## [1] "/tmp/RtmpH6YFcp/file5d917f4b2acf.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpwk4bHD/testb35570ef32ef"
+## [1] "/tmp/RtmpH6YFcp/test5d9167c3fb9"
 ```
 
 ```r
@@ -1626,12 +1626,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.70 Very Good     E     SI1  63.2    60  2777 5.60 5.51 3.51
-## 2  0.90 Very Good     I     SI2  61.3    56  2800 6.17 6.23 3.80
-## 3  0.82     Ideal     H     VS2  61.5    56  2804 6.01 6.08 3.72
-## 4  0.30     Ideal     F     VS1  61.3    55   570 4.32 4.36 2.66
-## 5  1.15   Premium     G      I1  61.2    58  3574 6.80 6.74 4.14
-## 6  0.89     Ideal     F     SI1  62.1    55  4127 6.15 6.18 3.83
+## 1  0.73     Ideal     E     SI2  61.8    58  2805 5.77 5.81 3.58
+## 2  0.72     Ideal     E     SI1  61.0    57  3012 5.77 5.80 3.53
+## 3  1.00   Premium     F     SI2  60.4    58  3858 6.47 6.44 3.90
+## 4  0.91 Very Good     H     VS2  61.6    60  3887 6.19 6.21 3.82
+## 5  1.12   Premium     J     SI1  62.7    55  4064 6.65 6.61 4.16
+## 6  1.00   Premium     F     SI2  61.5    59  4144 6.47 6.44 3.97
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1649,13 +1649,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  3991    1
-## 2 Fair 13622    2
-## 3 Good   439    1
-## 4 Good  2821    2
-## 5 Good  3929    3
-## 6 Good  4226    4
+##     cut price rank
+## 1  Fair  1998    1
+## 2  Good  1384    1
+## 3  Good  2130    2
+## 4  Good  4326    3
+## 5  Good 12308    4
+## 6 Ideal   642    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1728,7 +1728,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2022-01-05
+## 1     2022-01-06
 ```
 
 ```r
@@ -1738,7 +1738,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2022-01-04
+## 1                  2022-01-05
 ```
 
 ```r
@@ -1758,7 +1758,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         4
+## 1                         5
 ```
 
 最后，使用完记得关闭 Spark 连接

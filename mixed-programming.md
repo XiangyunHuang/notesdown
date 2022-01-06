@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55e345b84950>
+## <bytecode: 0x562107bba950>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x55e345b84950>
+## <bytecode: 0x562107bba950>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.2/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c cbb437553ae60.c -o cbb437553ae60.o
-## gcc -shared -L/opt/R/4.1.2/lib/R/lib -L/usr/local/lib -o cbb437553ae60.so cbb437553ae60.o -L/opt/R/4.1.2/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.2/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c643b2c5fc550.c -o c643b2c5fc550.o
+## gcc -shared -L/opt/R/4.1.2/lib/R/lib -L/usr/local/lib -o c643b2c5fc550.so c643b2c5fc550.o -L/opt/R/4.1.2/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -344,9 +344,9 @@ sessionInfo()
 ##  [1] knitr_1.37       sysfonts_0.8.5   lattice_0.20-45  xtable_1.8-4    
 ##  [5] R6_2.5.1         rlang_0.4.12     fastmap_1.1.0    stringr_1.4.0   
 ##  [9] tools_4.1.2      grid_4.1.2       xfun_0.29        png_0.1-7       
-## [13] tinytex_0.36     htmltools_0.5.2  ellipsis_0.3.2   yaml_2.2.1      
-## [17] digest_0.6.29    lifecycle_1.0.1  bookdown_0.24    Matrix_1.4-0    
-## [21] later_1.3.0      promises_1.2.0.1 curl_4.3.2       evaluate_0.14   
-## [25] mime_0.12        rmarkdown_2.11   stringi_1.7.6    compiler_4.1.2  
-## [29] jsonlite_1.7.2   httpuv_1.6.5
+## [13] htmltools_0.5.2  ellipsis_0.3.2   yaml_2.2.1       digest_0.6.29   
+## [17] lifecycle_1.0.1  bookdown_0.24    Matrix_1.4-0     later_1.3.0     
+## [21] promises_1.2.0.1 curl_4.3.2       evaluate_0.14    mime_0.12       
+## [25] rmarkdown_2.11   stringi_1.7.6    compiler_4.1.2   jsonlite_1.7.2  
+## [29] httpuv_1.6.5
 ```

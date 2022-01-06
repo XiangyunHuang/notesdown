@@ -3088,22 +3088,19 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1         base64enc_0.1.3     bookdown_0.24      
-##   codetools_0.2-18    compiler_4.1.2      curl_4.3.2         
-##   digest_0.6.29       evaluate_0.14       fastmap_1.1.0      
-##   filehash_2.4-2      glue_1.6.0          graphics_4.1.2     
+##   base64enc_0.1.3     bookdown_0.24       compiler_4.1.2     
+##   curl_4.3.2          digest_0.6.29       evaluate_0.14      
+##   fastmap_1.1.0       glue_1.6.0          graphics_4.1.2     
 ##   grDevices_4.1.2     grid_4.1.2          highr_0.9          
 ##   htmltools_0.5.2     jpeg_0.1-9          jquerylib_0.1.4    
 ##   jsonlite_1.7.2      KernSmooth_2.23-20  knitr_1.37         
-##   lattice_0.20-45     latticeExtra_0.6-29 magick_2.7.3       
-##   magrittr_2.0.1      mapproj_1.2.7       maps_3.4.0         
-##   MASS_7.3-54         Matrix_1.4-0        methods_4.1.2      
-##   mgcv_1.8-38         nlme_3.1-153        pdftools_3.0.1     
-##   png_0.1-7           qpdf_1.1            RColorBrewer_1.1-2 
-##   Rcpp_1.0.7          rlang_0.4.12        rmarkdown_2.11     
-##   shape_1.4.6         splines_4.1.2       stats_4.1.2        
-##   stringi_1.7.6       stringr_1.4.0       survival_3.2-13    
-##   sys_3.4             sysfonts_0.8.5      tikzDevice_0.12.3.1
+##   lattice_0.20-45     latticeExtra_0.6-29 magrittr_2.0.1     
+##   mapproj_1.2.7       maps_3.4.0          MASS_7.3-54        
+##   Matrix_1.4-0        methods_4.1.2       mgcv_1.8-38        
+##   nlme_3.1-153        png_0.1-7           RColorBrewer_1.1-2 
+##   rlang_0.4.12        rmarkdown_2.11      shape_1.4.6        
+##   splines_4.1.2       stats_4.1.2         stringi_1.7.6      
+##   stringr_1.4.0       survival_3.2-13     sysfonts_0.8.5     
 ##   tinytex_0.36        tools_4.1.2         utils_4.1.2        
 ##   xfun_0.29           yaml_2.2.1
 ```
