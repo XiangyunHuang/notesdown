@@ -8,6 +8,7 @@ source(file = "_common.R")
 library(sp)
 library(rgdal)
 library(maps)
+library(mapdata)
 library(mapproj)
 library(maptools)
 library(sf)
@@ -86,47 +87,6 @@ plot(meuse.longlat, axes = TRUE)
 ```
 
 
-```{r}
-library(maptools)
-fname <- system.file("shapes/sids.shp", package = "maptools")
-p4s <- CRS("+proj=longlat +datum=NAD27")
-nc <- readShapePoly(fname, proj4string = p4s)
-plot(nc, axes = TRUE, col = grey(1 - nc$SID79 / 57))
-```
-
-::: {.rmdwarn data-latex="{警告}"}
-maptools 提供的 `readShapePoly` 函数去读取 shp 文件的方式已经过时，推荐使用 `rgdal::readOGR` 或者 `sf::st_read` 方式读取
-:::
-
-
-```{r}
-# Trellis maps
-arrow <- list("SpatialPolygonsRescale",
-  layout.north.arrow(2),
-  offset = c(-76, 34), scale = 0.5, which = 2
-)
-spplot(nc, c("SID74", "SID79"),
-  as.table = TRUE,
-  scales = list(draw = T), sp.layout = arrow
-)
-```
-
-
-### sf {#subsec-sf}
-
-```{r}
-library(sf)
-library(ggplot2)
-nc <- read_sf(system.file("gpkg/nc.gpkg", package = "sf"))
-nc2 <- nc |> 
-  dplyr::select(SID74, SID79) |> 
-  tidyr::gather(VAR, SID, -geom)
-ggplot() +
-  geom_sf(data = nc2, aes(fill = SID)) +
-  facet_wrap(~VAR, ncol = 1)
-```
-
-
 ### raster {#subsec-raster}
 
 raster 包定义了获取和操作空间 raster 类型数据集的类和方法，rasterVis 补充加强了 raster 包在数据可视化和交互方面的功能。可视化是基于 lattice 的
@@ -170,16 +130,6 @@ rasterImage(image, 200, 400, 250, 450,
             angle = 15, interpolate = FALSE)
 ```
 
-```{r}
-library(raster)
-meuse.test <- raster(x = system.file("external/test.grd", package="raster"))
-class(meuse.test)
-```
-
-
-```{r,fig.cap="raster 对象",fig.asp=.8}
-plot(meuse.test, legend = F)
-```
 
 ### stars {#subsec-stars}
 
