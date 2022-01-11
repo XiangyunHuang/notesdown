@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpH6YFcp/file5d917f4b2acf.data"
+## [1] "/tmp/RtmpcyGRW8/file5f0d54b9a7c2.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpH6YFcp/test5d9167c3fb9"
+## [1] "/tmp/RtmpcyGRW8/test5f0d620e994b"
 ```
 
 ```r
@@ -498,15 +498,14 @@ yaml::read_yaml(file = '_bookdown.yml')
 ## [35] "bayesian-models.Rmd"             "data-modeling.Rmd"              
 ## [37] "text-analysis.Rmd"               "survival-analysis.Rmd"          
 ## [39] "time-series-analysis.Rmd"        "spatio-temporal-data.Rmd"       
-## [41] "spatial-analysis.Rmd"            "spatial-modeling.Rmd"           
-## [43] "spatial-viz.Rmd"                 "case-study.Rmd"                 
-## [45] "data-explorer.Rmd"               "machine-learning.Rmd"           
-## [47] "gradient-boosting-machine.Rmd"   "numerical-optimization.Rmd"     
-## [49] "appendix.Rmd"                    "matrix-operations.Rmd"          
-## [51] "symbolic-computation.Rmd"        "mixed-programming.Rmd"          
-## [53] "object-oriented-programming.Rmd" "file-operations.Rmd"            
-## [55] "other-softwares.Rmd"             "notations.Rmd"                  
-## [57] "references.Rmd"
+## [41] "spatial-analysis.Rmd"            "spatial-viz.Rmd"                
+## [43] "case-study.Rmd"                  "data-explorer.Rmd"              
+## [45] "machine-learning.Rmd"            "gradient-boosting-machine.Rmd"  
+## [47] "numerical-optimization.Rmd"      "appendix.Rmd"                   
+## [49] "matrix-operations.Rmd"           "symbolic-computation.Rmd"       
+## [51] "mixed-programming.Rmd"           "object-oriented-programming.Rmd"
+## [53] "file-operations.Rmd"             "other-softwares.Rmd"            
+## [55] "notations.Rmd"                   "references.Rmd"
 ```
 
 Table: (\#tab:other-softwares) 导入来自其它数据分析软件产生的数据集
@@ -1626,12 +1625,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.73     Ideal     E     SI2  61.8    58  2805 5.77 5.81 3.58
-## 2  0.72     Ideal     E     SI1  61.0    57  3012 5.77 5.80 3.53
-## 3  1.00   Premium     F     SI2  60.4    58  3858 6.47 6.44 3.90
-## 4  0.91 Very Good     H     VS2  61.6    60  3887 6.19 6.21 3.82
-## 5  1.12   Premium     J     SI1  62.7    55  4064 6.65 6.61 4.16
-## 6  1.00   Premium     F     SI2  61.5    59  4144 6.47 6.44 3.97
+## 1  0.80   Premium     E     SI2  59.9    58  2939 6.03 5.96 3.59
+## 2  0.71 Very Good     E     VS2  59.6    60  2954 5.80 5.85 3.47
+## 3  0.71     Ideal     F     VS1  61.1    56  3199 5.71 5.74 3.50
+## 4  0.35     Ideal     H     VS2  61.7    56   571 4.55 4.59 2.82
+## 5  0.90 Very Good     F     SI2  63.4    58  3556 6.08 6.01 3.83
+## 6  0.90 Very Good     G     VS2  61.3    59  4269 6.15 6.21 3.79
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1649,13 +1648,13 @@ diamonds_rank
 ```
 
 ```
-##     cut price rank
-## 1  Fair  1998    1
-## 2  Good  1384    1
-## 3  Good  2130    2
-## 4  Good  4326    3
-## 5  Good 12308    4
-## 6 Ideal   642    1
+##    cut price rank
+## 1 Fair  2885    1
+## 2 Fair  3160    2
+## 3 Fair  4873    3
+## 4 Good  2697    1
+## 5 Good  3781    2
+## 6 Good  6037    3
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1690,10 +1689,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1710,12 +1709,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1728,7 +1727,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2022-01-06
+## 1     2022-01-11
 ```
 
 ```r
@@ -1738,7 +1737,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2022-01-05
+## 1                  2022-01-10
 ```
 
 ```r
@@ -1758,7 +1757,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         5
+## 1                         3
 ```
 
 最后，使用完记得关闭 Spark 连接

@@ -4719,7 +4719,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Thu"
+## [1] "Tue"
 ```
 
 ```r
@@ -4727,7 +4727,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 5
+## [1] 3
 ```
 
 :::
@@ -4942,7 +4942,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x555f02a668e8>
+## <bytecode: 0x562f55e8bb50>
 ## <environment: namespace:ggpubr>
 ```
 
@@ -5072,27 +5072,6 @@ filled.contour(volcano,
 
 \caption{image 图形}(\#fig:elevation-volcano)
 \end{figure}
-
-美国西南部犹他州锡安国家公园的高程珊格数据 elevation，该数据集由 [Jakub Nowosad](https://nowosad.github.io/) 收集于 [spDataLarge](https://github.com/Nowosad/spDataLarge) 包内，由于该 R 包收集的地理信息数据很多又很大，超出了 CRAN 对 R 包的大小限制，需要从作者制作的 drat 站点下载。
-
-
-```r
-install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/")
-```
-
-elevation 数据集通过雷达地形测绘 SRTM (Shuttle Radar Topography Mission) 获得，其分辨率为 90m $\times$ 90m，属于高精度地形网格数据，更多细节描述见 <http://srtm.csi.cgiar.org/>，下图将公园的地形清晰地展示出来了，读者不妨再借助维基百科词条 (<https://en.wikipedia.org/wiki/Zion_National_Park>) 从整体上了解该公园的情况，结合丰富的实景图可以获得更加直观的感受。
-
-
-```r
-data("elevation", package = "spDataLarge")
-raster::plot(elevation, asp = NA)
-```
-
-
-```r
-data(grain, package = 'spData')
-raster::plot(grain, asp = NA)
-```
 
 
 ### 树状图 {#sec-ggplot2-treemap}
@@ -5625,7 +5604,7 @@ ggplot() +
 
 
 
-\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-73-1} \end{center}
+\begin{center}\includegraphics{data-visualization_files/figure-latex/unnamed-chunk-72-1} \end{center}
 
 ### 主成分图 {#sec-ggplot2-prcomp}
 

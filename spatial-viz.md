@@ -7,6 +7,7 @@
 library(sp)
 library(rgdal)
 library(maps)
+library(mapdata)
 library(mapproj)
 library(maptools)
 library(sf)
@@ -144,69 +145,6 @@ plot(meuse.longlat, axes = TRUE)
 \end{figure}
 
 
-
-```r
-library(maptools)
-fname <- system.file("shapes/sids.shp", package = "maptools")
-p4s <- CRS("+proj=longlat +datum=NAD27")
-nc <- readShapePoly(fname, proj4string = p4s)
-```
-
-```
-## Warning: readShapePoly is deprecated; use rgdal::readOGR or sf::st_read
-```
-
-```r
-plot(nc, axes = TRUE, col = grey(1 - nc$SID79 / 57))
-```
-
-
-
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-7-1} \end{center}
-
-::: {.rmdwarn data-latex="{警告}"}
-maptools 提供的 `readShapePoly` 函数去读取 shp 文件的方式已经过时，推荐使用 `rgdal::readOGR` 或者 `sf::st_read` 方式读取
-:::
-
-
-
-```r
-# Trellis maps
-arrow <- list("SpatialPolygonsRescale",
-  layout.north.arrow(2),
-  offset = c(-76, 34), scale = 0.5, which = 2
-)
-spplot(nc, c("SID74", "SID79"),
-  as.table = TRUE,
-  scales = list(draw = T), sp.layout = arrow
-)
-```
-
-
-
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-8-1} \end{center}
-
-
-### sf {#subsec-sf}
-
-
-```r
-library(sf)
-library(ggplot2)
-nc <- read_sf(system.file("gpkg/nc.gpkg", package = "sf"))
-nc2 <- nc |> 
-  dplyr::select(SID74, SID79) |> 
-  tidyr::gather(VAR, SID, -geom)
-ggplot() +
-  geom_sf(data = nc2, aes(fill = SID)) +
-  facet_wrap(~VAR, ncol = 1)
-```
-
-
-
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-9-1} \end{center}
-
-
 ### raster {#subsec-raster}
 
 raster 包定义了获取和操作空间 raster 类型数据集的类和方法，rasterVis 补充加强了 raster 包在数据可视化和交互方面的功能。可视化是基于 lattice 的
@@ -304,11 +242,6 @@ methods(plot)
 ## [77] plot.TukeyHSD*                            
 ## [78] plot.tune*                                
 ## [79] plot.units*                               
-## [80] plot.wk_crc*                              
-## [81] plot.wk_rct*                              
-## [82] plot.wk_wkb*                              
-## [83] plot.wk_wkt*                              
-## [84] plot.wk_xy*                               
 ## see '?methods' for accessing help and source code
 ```
 
@@ -336,7 +269,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x559198cbbcb0>
+## <bytecode: 0x55860f1cfdd8>
 ## <environment: namespace:graphics>
 ```
 
@@ -363,7 +296,7 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x559198f97858>
+## <bytecode: 0x55860f394440>
 ## <environment: namespace:graphics>
 ```
 
@@ -385,40 +318,13 @@ rasterImage(image, 200, 400, 250, 450,
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-13-1} 
+{\centering \includegraphics[width=0.5\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-10-1} 
 
 }
 
-\caption{raster 图像}(\#fig:unnamed-chunk-13)
+\caption{raster 图像}(\#fig:unnamed-chunk-10)
 \end{figure}
 
-
-```r
-library(raster)
-meuse.test <- raster(x = system.file("external/test.grd", package="raster"))
-class(meuse.test)
-```
-
-```
-## [1] "RasterLayer"
-## attr(,"package")
-## [1] "raster"
-```
-
-
-
-```r
-plot(meuse.test, legend = F)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-15-1} 
-
-}
-
-\caption{raster 对象}(\#fig:unnamed-chunk-15)
-\end{figure}
 
 ### stars {#subsec-stars}
 
@@ -445,7 +351,7 @@ ggplot() +
 
 
 
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-16-1} \end{center}
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
 
 ## 可视化 {#sec-viz-echarts4r}
@@ -576,6 +482,6 @@ legend("topright", leg.txt, horiz = TRUE, fill = colors)
 
 
 
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-17-1} \end{center}
+\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-12-1} \end{center}
 
 美国各地区失业率地图，配不同颜色， [colormap](https://github.com/bhaskarvk/colormap) 适合给静态图配色
