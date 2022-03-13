@@ -20,23 +20,6 @@ Edzer Pebesma 和 Roger Bivand 合著的 [Spatial Data Science with applications
 2016 年的[Handling and Analyzing Spatial, Spatiotemporal and Movement Data](https://edzer.github.io/UseR2016/)。
 
 
-```{r}
-library(sp)
-library(RColorBrewer)
-library(raster)
-library(lattice)
-library(latticeExtra)
-library(terra) # 
-library(rasterVis) # https://oscarperpinan.github.io/rastervis/
-# https://oscarperpinan.github.io/rastervis/FAQ.html
-library(sf)
-library(sfarrow) # https://github.com/wcjochem/sfarrow
-# library(arrow) # 列式存储
-# library(rgdal) # 要替换掉
-```
-
-
-
 ```{r,eval=FALSE}
 library(sp)
 data(meuse)
@@ -45,78 +28,23 @@ proj4string(meuse) <- CRS("+init=epsg:28992")
 plot(meuse)
 ```
 
-```{r,eval=FALSE}
-library(sp)
-demo(meuse, ask = FALSE, echo = FALSE) # loads the meuse data sets
-library(maptools)
-crs.longlat = CRS("+init=epsg:4326")
-meuse.longlat = spTransform(meuse, crs.longlat)
-plot(meuse.longlat, axes = TRUE)
 
+```{r,eval=FALSE}
+meuse = st_as_sf(meuse)
+meuse.longlat = st_transform(meuse, crs = "EPSG:4326")
+plot(meuse.longlat["zinc"], axes = TRUE)
+```
+
+
+```{r,eval=FALSE}
+library(sf)
+# North Carolina 城镇
+nc <- st_read(system.file("shape/nc.shp", package = "sf"))
 library(mapview)
-library(rgdal) # for readOGR
-nc <- readOGR(system.file("shapes/", package="maptools"), "sids")
-proj4string(nc) <- CRS("+proj=longlat +datum=NAD27")
-class(nc)
 mapview(nc, zcol = c("SID74", "SID79"), alpha.regions = 1.0, legend = TRUE)
 ```
 
-
-
-## 冈比亚儿童疟疾 {#sec-gambia-malaria}
-
-冈比亚地形
-
-```{r gambia-altitude, fig.cap="冈比亚地形海拔数据", fig.width=8, fig.height=4, message=FALSE, warning=FALSE, cache=TRUE}
-sp_path <- "data/" # 存储临时地形文件
-if (!dir.exists(sp_path)) dir.create(sp_path, recursive = TRUE)
-# Gambia 海拔数据
-gambia_alt <- raster::getData(name = "alt", country = "GMB", mask = TRUE, path = sp_path)
-# Gambia 市级行政边界数据
-gambia_map <- raster::getData("GADM", country = "GMB", level = 2, path = sp_path)
-# 绘制冈比亚地形
-rasterVis::levelplot(gambia_alt,
-  margin = FALSE,
-  main = "Elevation",
-  colorkey = list(
-    space = "top",
-    labels = list(at = seq(from = -5, to = 65, by = 10)),
-    axis.line = list(col = "black")
-  ),
-  par.settings = list(
-    axis.line = list(col = "transparent")
-  ),
-  scales = list(draw = FALSE),
-  col.regions = hcl.colors,
-  at = seq(-5, 65, len = 101)
-) +
-  latticeExtra::layer(sp::sp.polygons(gambia_map, lwd = 1.5))
-```
-
 [rgdal](https://rgdal.r-forge.r-project.org/) 包可以实现坐标变换
-
-```{r}
-# 加载数据
-data(gambia, package = "geoR")
-# 坐标变换
-library(sp)
-sps <- SpatialPoints(gambia[, c("x", "y")],
-  proj4string = CRS("+proj=utm +zone=28")
-)
-spst <- spTransform(sps, CRS("+proj=longlat +datum=WGS84"))
-gambia[, c("x", "y")] <- coordinates(spst)
-# 聚合数据
-gambia_agg <- aggregate(
-  formula = cbind(pos, netuse, treated) ~ x + y + green + phc,
-  data = gambia, FUN = function(x) sum(x) / length(x)
-)
-# 抽取指定位置的海拔数据
-# raster::extract(gambia_alt, gambia[, c("x", "y")])
-```
-
-$Y \sim b(1,p)$ 每个人检验结果，就是感染 1 或是没有感染 0，感染率 $p$ 的建模分析，个体水平
-
-
 
 ```{r,eval=FALSE}
 # https://github.com/geodacenter/rgeoda/
@@ -147,14 +75,3 @@ legend("bottomleft",
   border = "#eeeeee"
 )
 ```
-
-
-
-
-
-## 运行环境 {#sec-spatial-analysis-session}
-
-```{r}
-sessionInfo()
-```
-
