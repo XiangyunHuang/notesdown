@@ -7,18 +7,8 @@ source(file = "_common.R")
 ```{r}
 library(sp)
 library(rgdal)
-library(maps)
-library(mapdata)
-library(mapproj)
-library(maptools)
-library(sf)
-library(ggplot2)
 library(raster)
-library(abind)
-library(cubelyr)
-library(stars)
 library(echarts4r)
-library(ggthemes)
 ```
 
 [王江浩](https://github.com/Jianghao)
@@ -49,9 +39,9 @@ Robert J. Hijmans [^Robert-Hijmans] 开发了 [raster](https://github.com/rspati
 
 ### data.frame {#subsec-dataframe}
 
-```{r view-quakes-data, out.lines=6}
+```{r view-quakes-data}
 data("quakes")
-quakes
+head(quakes)
 ```
 
 ### sp {#subsec-sp}
@@ -66,7 +56,6 @@ library(sp)
 空间数据对象，以类 sp 方式存储 [@Pebesma_2005_sp]
 
 ```{r}
-library(sp)
 data("meuse")
 coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
@@ -116,41 +105,31 @@ getAnywhere(rasterImage)
 ```
 
 通过查看函数的帮助 `?rasterImage` ，我们需要重点关注一下
-参数 *image* 传递的 raster 对象
+参数 *image* 传递的 raster 对象。
 
-```{r,fig.cap="raster 图像",dev.args=list(bg = "thistle"),warning=FALSE,fig.asp=1,out.width="50%",fig.width=30/7}
+
+```{r raster-image}
+#| fig.cap="raster 图像",
+#| dev.args=list(bg = "thistle"),
+#| out.width="50%",
+#| fig.width=5,
+#| fig.height=4
+
 plot(c(100, 250), c(300, 450), type = "n", xlab = "", ylab = "")
-image <- as.raster(matrix(0:1, ncol = 5, nrow = 3))
+x <- rep(0, 15)
+x[seq(from = 2, to = 14, by = 2)] <- 1
+image <- as.raster(matrix(x, ncol = 5, nrow = 3))
 rasterImage(image, 100, 300, 150, 350, interpolate = FALSE)
+# 插值平滑
 rasterImage(image, 100, 400, 150, 450)
+# 缩小比例
 rasterImage(image, 200, 300, 200 + xinch(.5), 300 + yinch(.3),
   interpolate = FALSE
 )
-rasterImage(image, 200, 400, 250, 450, 
-            angle = 15, interpolate = FALSE)
-```
-
-
-### stars {#subsec-stars}
-
-Edzer Pebesma 开发了 stars 包
-
-```{r}
-# https://resources.rstudio.com/rstudio-conf-2019/spatial-data-science-in-the-tidyverse
-library(abind)
-library(sf)
-library(cubelyr)
-library(stars)
-x <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars"))
-
-ggplot() +
-  geom_stars(data = x) +
-  coord_equal() +
-  facet_wrap(~band) +
-  theme_bw() +
-  scale_fill_viridis_c() +
-  scale_x_discrete(expand = c(0, 0)) +
-  scale_y_discrete(expand = c(0, 0))
+# 旋转图像
+rasterImage(image, 200, 400, 250, 450,
+  angle = 15, interpolate = FALSE
+)
 ```
 
 
@@ -185,87 +164,3 @@ quakes |>
   ) |>
   e_tooltip()
 ```
-
-
-
-### 美国各城镇失业率 {#subsec-usa-unemp}
-
-```{r unemploymentGG,fig.cap="2009年美国各城镇失业率"}
-# 数据来源 https://datasets.flowingdata.com/unemployment09.csv
-unemp <- read.csv(
-  file = "http://datasets.flowingdata.com/unemployment09.csv",
-  header = FALSE, stringsAsFactors = FALSE
-)
-names(unemp) <- c(
-  "id", "state_fips", "county_fips", "name", "year",
-  "?", "?", "?", "rate"
-)
-unemp$county <- tolower(gsub(" County, [A-Z]{2}", "", unemp$name))
-unemp$state <- gsub("^.*([A-Z]{2}).*$", "\\1", unemp$name)
-
-county_df <- map_data("county")
-names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
-county_df$state <- state.abb[match(county_df$state_name, tolower(state.name))]
-county_df$state_name <- NULL
-
-state_df <- map_data("state")
-# Combine together
-choropleth <- merge(county_df, unemp, by = c("state", "county"))
-choropleth <- choropleth[order(choropleth$order), ]
-choropleth$rate_d <- cut(choropleth$rate, breaks = c(seq(0, 10, by = 2), 35))
-
-library(ggthemes)
-ggplot(choropleth, aes(long, lat, group = group)) +
-  geom_polygon(aes(fill = rate_d), colour = alpha("white", 1 / 4), size = 0.2) +
-  geom_polygon(data = state_df, colour = "white", fill = NA) +
-  scale_fill_brewer(palette = "PuRd") +
-  labs(
-    fill = "ratio", title = "ratio of unemployment by county, 2009",
-    caption = "data source: http://datasets.flowingdata.com/unemployment09.csv"
-  ) +
-  coord_map("polyconic") +
-  theme_map()
-```
-
-
-```{r}
-# 来自帮助文档 ?map 
-library(mapproj) 	# mapproj is used for  projection="polyconic"
-# color US county map by 2009 unemployment rate
-# match counties to map using FIPS county codes
-# Based on J's solution to the "Choropleth Challenge"
-# http://blog.revolutionanalytics.com/2009/11/choropleth-challenge-result.html
-
-# load data
-# unemp includes data for some counties not on the "lower 48 states" county
-# map, such as those in Alaska, Hawaii, Puerto Rico, and some tiny Virginia cities
-data(unemp)
-data(county.fips)
-
-# define color buckets
-colors <- c("#F1EEF6", "#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043")
-unemp$colorBuckets <- as.numeric(cut(unemp$unemp, c(0, 2, 4, 6, 8, 10, 100)))
-leg.txt <- c("<2%", "2-4%", "4-6%", "6-8%", "8-10%", ">10%")
-
-# align data with map definitions by (partial) matching state,county
-# names, which include multiple polygons for some counties
-cnty.fips <- county.fips$fips[match(
-  map("county", plot = FALSE)$names,
-  county.fips$polyname
-)]
-colorsmatched <- unemp$colorBuckets[match(cnty.fips, unemp$fips)]
-
-# draw map
-map("county",
-  col = colors[colorsmatched], fill = TRUE, resolution = 0,
-  lty = 0, projection = "polyconic"
-)
-map("state",
-  col = "white", fill = FALSE, add = TRUE, lty = 1, lwd = 0.2,
-  projection = "polyconic"
-)
-title("unemployment by county, 2009")
-legend("topright", leg.txt, horiz = TRUE, fill = colors)
-```
-
-美国各地区失业率地图，配不同颜色， [colormap](https://github.com/bhaskarvk/colormap) 适合给静态图配色
