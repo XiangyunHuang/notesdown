@@ -1943,10 +1943,10 @@ sapply(
 ## actual   10   10   11   12   13   14   15   16   17    18    19    20    21
 ##        [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 ## target    23    24    25    26    27    28    29    30    31    32    33    34
-## actual    22    23    24    25    26    27    28    29    30    31    32    33
+## actual    22    23    24    24    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    36    38    39
+## actual    34    35    36    37    38    39
 ```
 
 ### strtrim
@@ -2221,7 +2221,7 @@ xfun::session_info()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Locale:
 ##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              

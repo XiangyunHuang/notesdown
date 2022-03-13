@@ -464,9 +464,9 @@ microbenchmark::microbenchmark(s(), d())
 
 ```
 ## Unit: microseconds
-##  expr   min     lq    mean median     uq  max neval
-##   s()  18.8  23.55  64.918  29.05  33.10 3394   100
-##   d() 199.5 206.90 261.371 232.55 246.75 3152   100
+##  expr   min     lq    mean median     uq    max neval
+##   s()  19.9  23.05  63.339  26.75  32.30 3311.0   100
+##   d() 215.0 219.50 254.514 223.10 226.65 2920.3   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}
@@ -698,7 +698,7 @@ sort(setdiff(miss_pkg, pkg))
 ```
 
 ```
-## [1] "mnormt"  "tmvnsim"
+## [1] "mnormt"   "RcppTOML" "tmvnsim"
 ```
 
 转化为管道操作，增加可读性
@@ -737,7 +737,7 @@ xfun::session_info()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Locale:
 ##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              

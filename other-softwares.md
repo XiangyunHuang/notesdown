@@ -250,24 +250,24 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [a7fa4a9] 2022-01-05: clean up
+## Head:     [d380792] 2022-01-09: clean up spatial part
 ## 
 ## Branches:         1
 ## Tags:             0
 ## Commits:          5
-## Contributors:     1
+## Contributors:     2
 ## Stashes:          0
 ## Ignored files:   15
-## Untracked files: 93
+## Untracked files: 92
 ## Unstaged files:   0
 ## Staged files:     0
 ## 
 ## Latest commits:
-## [a7fa4a9] 2022-01-05: clean up
-## [4929371] 2022-01-03: disable xkcd fonts
-## [0816c55] 2022-01-03: use noto fonts
-## [eea250f] 2022-01-03: use noto fonts
-## [f55b0b4] 2022-01-03: upgrade to R 4.1.2
+## [d380792] 2022-01-09: clean up spatial part
+## [177f6ae] 2022-01-06: a4 paper
+## [74dbbe1] 2022-01-05: 维护性更新
+## [31df249] 2021-11-05: some minors
+## [d0e22ba] 2021-11-04: upgrade pandoc to 2.16.1
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -1691,13 +1691,13 @@ Pillow                       9.0.0
 pip                          20.0.2   
 pkg-resources                0.0.0    
 plotly                       5.5.0    
-protobuf                     3.19.1   
+protobuf                     3.19.2   
 pyasn1                       0.4.8    
 pyasn1-modules               0.2.8    
 pyparsing                    3.0.6    
 python-dateutil              2.8.2    
 pytz                         2021.3   
-requests                     2.27.0   
+requests                     2.27.1   
 requests-oauthlib            1.3.0    
 rsa                          4.8      
 scikit-learn                 1.0.2    
@@ -1709,14 +1709,14 @@ sympy                        1.9
 tenacity                     8.0.1    
 tensorboard                  2.7.0    
 tensorboard-data-server      0.6.1    
-tensorboard-plugin-wit       1.8.0    
+tensorboard-plugin-wit       1.8.1    
 tensorflow                   2.7.0    
 tensorflow-estimator         2.7.0    
 tensorflow-io-gcs-filesystem 0.23.1   
 termcolor                    1.1.0    
 threadpoolctl                3.0.0    
 typing-extensions            4.0.1    
-urllib3                      1.26.7   
+urllib3                      1.26.8   
 Werkzeug                     2.0.2    
 wheel                        0.34.2   
 wrapt                        1.13.3   
@@ -1798,7 +1798,7 @@ x # 得到 python 中的向量 vector 或数组 array
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年01月11日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年03月13日 使用 reticulate 版本 1.22，本文没有对之前的版本进行测试。
 
 
 
@@ -1849,6 +1849,15 @@ p2 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Call iris from R")
 p1 + p2
 ```
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{other-softwares_files/figure-latex/plot-iris-1} 
+
+}
+
+\caption{从 R 调用 Python 数据对象}(\#fig:plot-iris)
+\end{figure}
 
 以 NumPy 为例
 
@@ -2704,7 +2713,7 @@ Package                   Version        Title
 **agridat**               1.20           Agricultural Datasets                                                                                                       
 **alabama**               2015.3-1       Constrained Nonlinear Optimization                                                                                          
 **arrow**                 6.0.1          Integration to 'Apache' 'Arrow'                                                                                             
-**arules**                1.7-2          Mining Association Rules and Frequent Itemsets                                                                              
+**arules**                1.7-3          Mining Association Rules and Frequent Itemsets                                                                              
 **assertive.types**       0.0-3          Assertions to Check Types of Variables                                                                                      
 **assertthat**            0.2.1          Easy Pre and Post Assertions                                                                                                
 **autoplotly**            0.1.4          Automatic Generation of Interactive Visualizations for Statistical Results                                                  
@@ -2767,7 +2776,7 @@ Package                   Version        Title
 **evaluate**              0.14           Parsing and Evaluation Tools that Provide More Details than the Default                                                     
 **extrafont**             0.17           Tools for using fonts                                                                                                       
 **extrafontdb**           1.0            Package for holding the database for the extrafont package                                                                  
-**fansi**                 0.5.0          ANSI Control Sequence Aware String Functions                                                                                
+**fansi**                 1.0.0          ANSI Control Sequence Aware String Functions                                                                                
 **fastmap**               1.1.0          Fast Data Structures                                                                                                        
 **filehash**              2.4-2          Simple Key-Value Database                                                                                                   
 **fontawesome**           0.2.2          Easily Work with 'Font Awesome' Icons                                                                                       
@@ -2885,7 +2894,7 @@ Package                   Version        Title
 **plyr**                  1.8.6          Tools for Splitting, Applying and Combining Data                                                                            
 **png**                   0.1-7          Read and write PNG images                                                                                                   
 **polynom**               1.4-0          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
-**posterior**             1.1.0          Tools for Working with Posterior Distributions                                                                              
+**posterior**             1.2.0          Tools for Working with Posterior Distributions                                                                              
 **prettydoc**             0.4.1          Creating Pretty Documents from R Markdown                                                                                   
 **PrevMap**               1.5.4          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
 **processx**              3.5.2          Execute and Control System Processes                                                                                        
@@ -2953,12 +2962,12 @@ Package                   Version        Title
 **shinystan**             2.5.0          Interactive Visual and Numerical Diagnostics and Posterior Analysis for Bayesian Models                                     
 **showtext**              0.9-4          Using Fonts More Easily in R Graphs                                                                                         
 **showtextdb**            3.0            Font Files for the 'showtext' Package                                                                                       
-**slam**                  0.1-49         Sparse Lightweight Arrays and Matrices                                                                                      
+**slam**                  0.1-50         Sparse Lightweight Arrays and Matrices                                                                                      
 **sm**                    2.2-5.7        Smoothing Methods for Nonparametric Regression and Density Estimation                                                       
 **sourcetools**           0.1.7          Tools for Reading, Tokenizing and Parsing R Code                                                                            
 **sp**                    1.4-6          Classes and Methods for Spatial Data                                                                                        
 **sparkline**             2.0            'jQuery' Sparkline 'htmlwidget'                                                                                             
-**sparklyr**              1.7.3          R Interface to Apache Spark                                                                                                 
+**sparklyr**              1.7.4          R Interface to Apache Spark                                                                                                 
 **SparseM**               1.81           Sparse Linear Algebra                                                                                                       
 **splancs**               2.01-42        Spatial and Space-Time Point Pattern Analysis                                                                               
 **splines2**              0.4.5          Regression Spline Functions and Classes                                                                                     

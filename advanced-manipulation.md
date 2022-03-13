@@ -628,12 +628,12 @@ DT[, .(i_1, i_2, f_1, f_2)]
 
 ```
 ##    i_1 i_2  f_1 f_2
-## 1:   1  NA    a   z
-## 2:   2   6 <NA>   a
-## 3:   3   7    a   x
-## 4:   4   8    c   c
-## 5:   5   9 <NA>   x
-## 6:  NA  10    a   x
+## 1:   1  NA    b   z
+## 2:   2   6    c   a
+## 3:   3   7    c   x
+## 4:   4   8 <NA>   c
+## 5:   5   9    b   x
+## 6:  NA  10 <NA>   x
 ```
 
 
@@ -644,12 +644,12 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 
 ```
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     a
-##  2:   2   6      f_1  <NA>
-##  3:   3   7      f_1     a
-##  4:   4   8      f_1     c
-##  5:   5   9      f_1  <NA>
-##  6:  NA  10      f_1     a
+##  1:   1  NA      f_1     b
+##  2:   2   6      f_1     c
+##  3:   3   7      f_1     c
+##  4:   4   8      f_1  <NA>
+##  5:   5   9      f_1     b
+##  6:  NA  10      f_1  <NA>
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -1910,7 +1910,7 @@ sessionInfo()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0

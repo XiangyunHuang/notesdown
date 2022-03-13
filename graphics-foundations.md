@@ -2975,70 +2975,6 @@ persp(volcano,
 \end{figure}
 
 
-```r
-wireframe(volcano,
-  shade = TRUE,
-  xlab = expression(x[1]),
-  ylab = expression(x[2]),
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = -45, x = -50, y = 0)
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{graphics-foundations_files/figure-latex/volcano-shade-1} 
-
-}
-
-\caption{(ref:volcano-topo)}(\#fig:volcano-shade)
-\end{figure}
-
-(ref:volcano-topo) Auckland Maunga Whau 火山地形图 $10m\times 10m$。火山的实况地形图 <https://en.wikipedia.org/wiki/Maungawhau_/_Mount_Eden>。
-
-
-### 地图 {#lattice-map}
-
-
-```r
-library(maps)
-library(mapproj)
-library(latticeExtra)
-# 找一个新的 map 包含夏威夷和阿拉斯加
-## this generates warnings with both USCancerRates and ancestry.
-data(USCancerRates)
-mapplot(rownames(USCancerRates) ~ log(rate.male) + log(rate.female),
-  data = USCancerRates,
-  map = map("county",
-    plot = FALSE, fill = TRUE,
-    projection = "mercator"
-  )
-)
-```
-
-```
-## Warning in (function (x, y, map, breaks, colramp, exact = FALSE, lwd = 0.5, : 65
-## unmatched regions: alaska,nome, alaska,wade hampton, alaska,haines, alaska,....
-```
-
-```
-## Warning in (function (x, y, map, breaks, colramp, exact = FALSE, lwd = 0.5, : 65
-## unmatched regions: alaska,nome, alaska,wade hampton, alaska,haines, alaska,....
-```
-
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{graphics-foundations_files/figure-latex/map-1} 
-
-}
-
-\caption{(ref:county-map)}(\#fig:map)
-\end{figure}
-
-(ref:county-map)  maps 包提供的 county 数据集不包含阿拉斯加和夏威夷两个州。
-
 
 ### 聚类图 {#lattice-cluster}
 
@@ -3067,6 +3003,51 @@ xyplot(Sepal.Length ~ Petal.Length,
 
 
 
+```r
+# lattice 书 6.3.1 节 参数曲面
+
+kx <- function(u, v) cos(u) * (r + cos(u / 2))
+ky <- function(u, v) {
+  sin(u) * (r + cos(u / 2) * sin(t * v) -
+    sin(u / 2) * sin(2 * t * v)) * sin(t * v) -
+    sin(u / 2) * sin(2 * t * v)
+}
+
+
+kz <- function(u, v) sin(u / 2) * sin(t * v) + cos(u / 2) * sin(t * v)
+n <- 50
+u <- seq(0.3, 1.25, length = n) * 2 * pi
+v <- seq(0, 1, length = n) * 2 * pi
+um <- matrix(u, length(u), length(u))
+vm <- matrix(v, length(v), length(v), byrow = TRUE)
+r <- 2
+t <- 1
+
+wireframe(kz(um, vm) ~ kx(um, vm) + ky(um, vm),
+  shade = TRUE, xlab = expression(x[1]),
+  ylab = expression(x[2]),
+  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  screen = list(z = 170, x = -60),
+  alpha = 0.75, panel.aspect = 0.6, aspect = c(1, 0.4),
+  scales = list(arrows = FALSE, col = "black"),
+  lattice.options = list(
+    layout.widths = list(
+      left.padding = list(x = -.6, units = "inches"),
+      right.padding = list(x = -1.0, units = "inches")
+    ),
+    layout.heights = list(
+      bottom.padding = list(x = -.8, units = "inches"),
+      top.padding = list(x = -1.0, units = "inches")
+    )
+  ),
+  par.settings = list(
+    axis.line = list(col = "transparent")
+  )
+)
+```
+
+
+
 ## 运行环境 {#graphics-sessioninfo}
 
 
@@ -3077,7 +3058,7 @@ xfun::session_info()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Locale:
 ##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              

@@ -705,7 +705,7 @@ length(pdb[, "Package"])
 ```
 
 ```
-## [1] 18706
+## [1] 19002
 ```
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -730,7 +730,7 @@ dim(subset(pdb, subset = !duplicated(Package)))[1]
 ```
 
 ```
-## [1] 18689
+## [1] 18985
 ```
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
@@ -757,7 +757,7 @@ dim(core_pdb[order(core_pdb[, "Maintainer"]), ])
 ```
 
 ```
-## [1] 153   2
+## [1] 156   2
 ```
 
 这么少，是不是有点意外，看来很多大佬更喜欢用自己的邮箱，比如 Paul Murrell， 他的邮箱是 <paul@stat.auckland.ac.nz>
@@ -772,25 +772,25 @@ subset(pdb,
 
 ```
 ##            Package                              Maintainer
-## 2545       compare Paul Murrell <p.murrell@auckland.ac.nz>
-## 5819         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
-## 6121        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
-## 6588      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
-## 6589    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
-## 6590     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
-## 6592  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
-## 6593  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 6594  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
-## 6598       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
-## 6601      grImport Paul Murrell <p.murrell@auckland.ac.nz>
-## 6602     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
-## 6929       hexView Paul Murrell <paul@stat.auckland.ac.nz>
-## 9393      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 13117    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 13872    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 14307        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 14308 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
-## 18217       vwline Paul Murrell <paul@stat.auckland.ac.nz>
+## 2591       compare Paul Murrell <p.murrell@auckland.ac.nz>
+## 5920         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
+## 6229        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
+## 6712      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
+## 6713    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
+## 6714     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
+## 6716  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
+## 6717  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 6718  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
+## 6722       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
+## 6725      grImport Paul Murrell <p.murrell@auckland.ac.nz>
+## 6726     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
+## 7056       hexView Paul Murrell <paul@stat.auckland.ac.nz>
+## 9544      metapost Paul Murrell <paul@stat.auckland.ac.nz>
+## 13333    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 14094    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 14536        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 14537 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 18507       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 
 所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 `contributors()` 函数已经收集了成员名单，不需要我们去官网找了。
@@ -860,7 +860,7 @@ clean_maintainer <- function(x) {
 core_pdb[, "Maintainer"] <- clean_maintainer(core_pdb[, "Maintainer"])
 ```
 
-我们可以看到 R 核心团队总共开发维护有 175 个 R 包
+我们可以看到 R 核心团队总共开发维护有 173 个 R 包
 
 
 ```r
@@ -868,7 +868,7 @@ dim(core_pdb)
 ```
 
 ```
-## [1] 175   3
+## [1] 173   3
 ```
 
 篇幅所限，就展示部分人和R包，见表 \@ref(tab:r-core-team) 按照拼音顺序 Brian Ripley 是第一位
@@ -893,12 +893,12 @@ booktabs = TRUE, row.names = FALSE
 Package & Maintainer & Published\\
 \midrule
 mix & Brian Ripley & 2017-06-12\\
-pspline & Brian Ripley & 2017-06-12\\
-gee & Brian Ripley & 2019-11-07\\
 boot & Brian Ripley & 2021-05-03\\
-class & Brian Ripley & 2021-05-03\\
-\addlinespace
 KernSmooth & Brian Ripley & 2021-05-03\\
+tree & Brian Ripley & 2021-08-17\\
+RODBC & Brian Ripley & 2021-09-16\\
+\addlinespace
+fastICA & Brian Ripley & 2021-09-25\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -971,7 +971,6 @@ servr & A Simple HTTP Server to Serve Static Files or Dynamic Documents\\
 testit & A Simple Package for Testing R Packages\\
 tinytex & Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents\\
 \addlinespace
-tufte & Tufte's Styles for R Markdown Documents\\
 xaringan & Presentation Ninja\\
 xfun & Supporting Functions for Packages Maintained by 'Yihui Xie'\\
 \bottomrule
@@ -990,13 +989,13 @@ subset(pdb, subset = grepl("Jeroen Ooms", Maintainer),
 ##  [1] "antiword"    "askpass"     "av"          "base64"      "bcrypt"     
 ##  [6] "brotli"      "cld2"        "cld3"        "commonmark"  "credentials"
 ## [11] "curl"        "gert"        "gifski"      "gpg"         "graphql"    
-## [16] "hunspell"    "jose"        "js"          "jsonld"      "jsonlite"   
-## [21] "katex"       "magick"      "maketools"   "minimist"    "mongolite"  
-## [26] "opencpu"     "opencv"      "openssl"     "pdftools"    "protolite"  
-## [31] "qpdf"        "RAppArmor"   "rjade"       "RMySQL"      "rsvg"       
-## [36] "rzmq"        "sodium"      "spelling"    "ssh"         "sys"        
-## [41] "tesseract"   "unix"        "unrtf"       "V8"          "webp"       
-## [46] "webutils"    "writexl"     "xslt"
+## [16] "hunspell"    "jose"        "jqr"         "js"          "jsonld"     
+## [21] "jsonlite"    "katex"       "magick"      "maketools"   "minimist"   
+## [26] "mongolite"   "opencpu"     "opencv"      "openssl"     "pdftools"   
+## [31] "protolite"   "qpdf"        "RAppArmor"   "rjade"       "RMySQL"     
+## [36] "rsvg"        "rzmq"        "sodium"      "spelling"    "ssh"        
+## [41] "sys"         "tesseract"   "unix"        "unrtf"       "V8"         
+## [46] "webp"        "webutils"    "writexl"     "xslt"
 ```
 
 Dirk Eddelbuettel 维护 Rcpp 生态
@@ -1010,27 +1009,27 @@ subset(pdb, subset = grepl("Dirk Eddelbuettel", Maintainer),
 ```
 ##  [1] "anytime"             "AsioHeaders"         "BH"                 
 ##  [4] "binb"                "corels"              "dang"               
-##  [7] "digest"              "drat"                "gaussfacts"         
-## [10] "gcbd"                "gettz"               "gunsales"           
-## [13] "inline"              "linl"                "littler"            
-## [16] "nanotime"            "pinp"                "pkgKitten"          
-## [19] "prrd"                "qlcal"               "random"             
-## [22] "RApiDatetime"        "RApiSerialize"       "Rblpapi"            
-## [25] "Rcpp"                "RcppAnnoy"           "RcppAPT"            
-## [28] "RcppArmadillo"       "RcppBDT"             "RcppCCTZ"           
-## [31] "RcppClassic"         "RcppClassicExamples" "RcppCNPy"           
-## [34] "RcppDate"            "RcppDE"              "RcppEigen"          
-## [37] "RcppExamples"        "RcppFarmHash"        "RcppFastFloat"      
-## [40] "RcppGetconf"         "RcppGSL"             "RcppMsgPack"        
-## [43] "RcppNLoptExample"    "RcppQuantuccia"      "RcppRedis"          
-## [46] "RcppSimdJson"        "RcppSMC"             "RcppSpdlog"         
-## [49] "RcppStreams"         "RcppTOML"            "RcppXts"            
-## [52] "RcppZiggurat"        "RDieHarder"          "rfoaas"             
-## [55] "RInside"             "rmsfact"             "RProtoBuf"          
-## [58] "RPushbullet"         "RQuantLib"           "RVowpalWabbit"      
-## [61] "sanitizers"          "td"                  "tidyCpp"            
-## [64] "tiledb"              "tint"                "ttdo"               
-## [67] "x13binary"
+##  [7] "digest"              "drat"                "dtts"               
+## [10] "gaussfacts"          "gcbd"                "gettz"              
+## [13] "gunsales"            "inline"              "linl"               
+## [16] "littler"             "nanotime"            "pinp"               
+## [19] "pkgKitten"           "prrd"                "qlcal"              
+## [22] "random"              "RApiDatetime"        "RApiSerialize"      
+## [25] "Rblpapi"             "Rcpp"                "RcppAnnoy"          
+## [28] "RcppAPT"             "RcppArmadillo"       "RcppBDT"            
+## [31] "RcppCCTZ"            "RcppClassic"         "RcppClassicExamples"
+## [34] "RcppCNPy"            "RcppDate"            "RcppDE"             
+## [37] "RcppEigen"           "RcppExamples"        "RcppFarmHash"       
+## [40] "RcppFastFloat"       "RcppGetconf"         "RcppGSL"            
+## [43] "RcppMsgPack"         "RcppNLoptExample"    "RcppQuantuccia"     
+## [46] "RcppRedis"           "RcppSimdJson"        "RcppSMC"            
+## [49] "RcppSpdlog"          "RcppStreams"         "RcppTOML"           
+## [52] "RcppXts"             "RcppZiggurat"        "RDieHarder"         
+## [55] "rfoaas"              "RInside"             "rmsfact"            
+## [58] "RProtoBuf"           "RPushbullet"         "RQuantLib"          
+## [61] "RVowpalWabbit"       "sanitizers"          "td"                 
+## [64] "tidyCpp"             "tiledb"              "tint"               
+## [67] "ttdo"                "x13binary"
 ```
 
 Hadley Wickham 维护 tidyverse 生态 
@@ -1048,13 +1047,14 @@ subset(pdb, subset = grepl("Hadley Wickham", Maintainer),
 ## [13] "feather"       "forcats"       "fueleconomy"   "generics"     
 ## [17] "ggplot2movies" "gtable"        "haven"         "hflights"     
 ## [21] "highlight"     "httr"          "httr2"         "lazyeval"     
-## [25] "lobstr"        "lvplot"        "meifly"        "modelr"       
-## [29] "multidplyr"    "nasaweather"   "nycflights13"  "odbc"         
-## [33] "pins"          "pkgdown"       "plyr"          "productplots" 
-## [37] "profr"         "proto"         "pryr"          "rappdirs"     
-## [41] "reshape"       "reshape2"      "roxygen2"      "rvest"        
-## [45] "scales"        "sloop"         "stringr"       "testthat"     
-## [49] "tidyr"         "tidyverse"     "waldo"         "xml2"
+## [25] "lobstr"        "lvplot"        "meifly"        "mockery"      
+## [29] "modelr"        "multidplyr"    "nasaweather"   "nycflights13" 
+## [33] "odbc"          "pins"          "pkgdown"       "plyr"         
+## [37] "productplots"  "profr"         "proto"         "pryr"         
+## [41] "rappdirs"      "reshape"       "reshape2"      "roxygen2"     
+## [45] "rvest"         "scales"        "sloop"         "stringr"      
+## [49] "testthat"      "tidyr"         "tidyverse"     "waldo"        
+## [53] "xml2"
 ```
 
 [Scott Chamberlain](https://scottchamberlain.info/) 是非营利性组织 [rOpenSci](https://ropensci.org/) 的联合创始人，但是没几个 R 包听说过
@@ -1070,15 +1070,15 @@ subset(pdb, subset = grepl("Scott Chamberlain", Maintainer),
 ##  [6] "conditionz"  "cowsay"      "crul"        "discgolf"    "elastic"    
 ## [11] "fauxpas"     "finch"       "geojson"     "geojsonio"   "geojsonlint"
 ## [16] "getlandsat"  "ghql"        "gistr"       "handlr"      "hoardr"     
-## [21] "httpcode"    "httping"     "isdparser"   "jaod"        "jqr"        
-## [26] "mapr"        "microdemic"  "mregions"    "natserv"     "oai"        
-## [31] "openadds"    "pangaear"    "phylocomr"   "pubchunks"   "randgeo"    
-## [36] "rbace"       "rbhl"        "rbison"      "rcitoid"     "rcol"       
-## [41] "rcoreoa"     "rcrossref"   "rdatacite"   "rdryad"      "request"    
-## [46] "rgbif"       "rgnparser"   "ritis"       "rorcid"      "rphylopic"  
-## [51] "rplos"       "rredlist"    "rvertnet"    "sofa"        "solrium"    
-## [56] "spocc"       "taxize"      "taxizedb"    "traits"      "vcr"        
-## [61] "webmockr"    "wellknown"   "wikitaxa"    "worrms"      "zbank"
+## [21] "httpcode"    "httping"     "isdparser"   "jaod"        "mapr"       
+## [26] "microdemic"  "mregions"    "natserv"     "oai"         "openadds"   
+## [31] "pangaear"    "phylocomr"   "pubchunks"   "randgeo"     "rbace"      
+## [36] "rbhl"        "rbison"      "rcitoid"     "rcoreoa"     "rcrossref"  
+## [41] "rdatacite"   "rdryad"      "request"     "rgnparser"   "ritis"      
+## [46] "rorcid"      "rphylopic"   "rplos"       "rredlist"    "rvertnet"   
+## [51] "sofa"        "solrium"     "spocc"       "taxize"      "taxizedb"   
+## [56] "traits"      "vcr"         "webmockr"    "wellknown"   "wikitaxa"   
+## [61] "worrms"      "zbank"
 ```
 
 ### 社区开发者 {#R-Package-Developers}
@@ -1091,7 +1091,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10901
+## [1] 11023
 ```
 
 可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。
@@ -1106,11 +1106,11 @@ subset(pdb,
 
 ```
 ##             Package                             Maintainer
-## 599      assertthat    Hadley Wickham <hadley@rstudio.com>
-## 761       babynames    Hadley Wickham <hadley@rstudio.com>
-## 1215      bigrquery    Hadley Wickham <hadley@rstudio.com>
-## 2221      classifly   Hadley Wickham <h.wickham@gmail.com>
-## 2625     conflicted    Hadley Wickham <hadley@rstudio.com>
+## 616      assertthat    Hadley Wickham <hadley@rstudio.com>
+## 782       babynames    Hadley Wickham <hadley@rstudio.com>
+## 1239      bigrquery    Hadley Wickham <hadley@rstudio.com>
+## 2262      classifly   Hadley Wickham <h.wickham@gmail.com>
+## 2672     conflicted    Hadley Wickham <hadley@rstudio.com>
 ....
 ```
 
@@ -1123,7 +1123,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10078
+## [1] 10192
 ```
 
 接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图\@ref(fig:top-maintainers) 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。
@@ -1249,7 +1249,7 @@ length(unique(sub_pdb[, "Maintainer"][duplicated(sub_pdb[, "Maintainer"])]))
 ```
 
 ```
-## [1] 3298
+## [1] 3354
 ```
 
 总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有 
@@ -1298,9 +1298,9 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3058 1432  946  581  287  163  102   59   43   28   14   11    7   10    5    4 
-##   17   18   19   20   22   23   24   26   27   28   29   48   56   60  133 
-##    7    4    3    3    1    3    1    1    1    1    1    1    1    1    1
+## 3057 1450  962  596  289  163  106   62   44   25   15   10    7   11    5    5 
+##   17   18   19   20   22   23   24   26   27   28   29   56   60  133 
+##    8    4    2    4    2    2    1    2    1    1    1    1    1    1
 ```
 
 有意思的是，有一个开发者虽然只开发了一个 R 包，但是却引来37位贡献者（包括开发者本人在内），下面把这个颇受欢迎的 R 包找出来
@@ -1322,7 +1322,7 @@ subset(sub_pdb, subset = grepl("Matt Dowle", Maintainer), select = "Package")
 
 ```
 ##         Package
-## 3210 data.table
+## 3273 data.table
 ```
 
 哇，大名鼎鼎的 [data.table](https://github.com/Rdatatable/data.table) 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 [Github 主页](https://github.com/mattdowle) 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
@@ -1525,8 +1525,8 @@ sort(table(update_pdb[,"Published"]), decreasing = TRUE)[1]
 ```
 
 ```
-## 2022-01-04 
-##         96
+## 2012-10-29 
+##         78
 ```
 
 ```r
@@ -1563,7 +1563,7 @@ subset(update_pdb, subset = Published == min(Published))
 
 ```
 ##        Package  Published
-## 2859 coxrobust 2006-03-15
+## 2913 coxrobust 2006-03-15
 ```
 
 ```r

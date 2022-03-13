@@ -6,18 +6,8 @@
 ```r
 library(sp)
 library(rgdal)
-library(maps)
-library(mapdata)
-library(mapproj)
-library(maptools)
-library(sf)
-library(ggplot2)
 library(raster)
-library(abind)
-library(cubelyr)
-library(stars)
 library(echarts4r)
-library(ggthemes)
 ```
 
 [王江浩](https://github.com/Jianghao)
@@ -51,17 +41,17 @@ Robert J. Hijmans [^Robert-Hijmans] 开发了 [raster](https://github.com/rspati
 
 ```r
 data("quakes")
-quakes
+head(quakes)
 ```
 
 ```
-##         lat   long depth mag stations
-## 1    -20.42 181.62   562 4.8       41
-## 2    -20.62 181.03   650 4.2       15
-## 3    -26.00 184.10    42 5.4       43
-## 4    -17.97 181.66   626 4.1       19
-## 5    -20.42 181.96   649 4.0       11
-....
+##      lat   long depth mag stations
+## 1 -20.42 181.62   562 4.8       41
+## 2 -20.62 181.03   650 4.2       15
+## 3 -26.00 184.10    42 5.4       43
+## 4 -17.97 181.66   626 4.1       19
+## 5 -20.42 181.96   649 4.0       11
+## 6 -19.68 184.31   195 4.0       12
 ```
 
 ### sp {#subsec-sp}
@@ -78,7 +68,6 @@ library(sp)
 
 
 ```r
-library(sp)
 data("meuse")
 coordinates(meuse) <- ~x+y
 proj4string(meuse) <- CRS("+init=epsg:28992")
@@ -164,84 +153,57 @@ methods(plot)
 
 ```
 ##  [1] plot,ANY,ANY-method                       
-##  [2] plot,color,ANY-method                     
-##  [3] plot,Extent,missing-method                
-##  [4] plot,Raster,ANY-method                    
-##  [5] plot,Raster,Raster-method                 
-##  [6] plot,SpatExtent,missing-method            
-##  [7] plot,Spatial,missing-method               
-##  [8] plot,SpatialGrid,missing-method           
-##  [9] plot,SpatialGridDataFrame,missing-method  
-## [10] plot,SpatialLines,missing-method          
-## [11] plot,SpatialMultiPoints,missing-method    
-## [12] plot,SpatialPixels,missing-method         
-## [13] plot,SpatialPixelsDataFrame,missing-method
-## [14] plot,SpatialPoints,missing-method         
-## [15] plot,SpatialPolygons,missing-method       
-## [16] plot,SpatRaster,missing-method            
-## [17] plot,SpatRaster,numeric-method            
-## [18] plot,SpatRaster,SpatRaster-method         
-## [19] plot,SpatVector,character-method          
-## [20] plot,SpatVector,missing-method            
-## [21] plot,SpatVector,numeric-method            
-## [22] plot.acf*                                 
-## [23] plot.bclust*                              
-## [24] plot.classIntervals*                      
-## [25] plot.data.frame*                          
-## [26] plot.decomposed.ts*                       
-## [27] plot.default                              
-## [28] plot.dendrogram*                          
-## [29] plot.density*                             
-## [30] plot.ecdf                                 
-## [31] plot.factor*                              
-## [32] plot.formula*                             
-## [33] plot.function                             
-## [34] plot.ggplot*                              
-## [35] plot.gtable*                              
-## [36] plot.hcl_palettes*                        
-## [37] plot.hclust*                              
-## [38] plot.histogram*                           
-## [39] plot.HoltWinters*                         
-## [40] plot.ica*                                 
-## [41] plot.isoreg*                              
-## [42] plot.lm*                                  
-## [43] plot.medpolish*                           
-## [44] plot.mlm*                                 
-## [45] plot.ppr*                                 
-## [46] plot.prcomp*                              
-## [47] plot.princomp*                            
-## [48] plot.profile.nls*                         
-## [49] plot.R6*                                  
-## [50] plot.raster*                              
-## [51] plot.sf*                                  
-## [52] plot.sfc_CIRCULARSTRING*                  
-## [53] plot.sfc_GEOMETRY*                        
-## [54] plot.sfc_GEOMETRYCOLLECTION*              
-## [55] plot.sfc_LINESTRING*                      
-## [56] plot.sfc_MULTILINESTRING*                 
-## [57] plot.sfc_MULTIPOINT*                      
-## [58] plot.sfc_MULTIPOLYGON*                    
-## [59] plot.sfc_POINT*                           
-## [60] plot.sfc_POLYGON*                         
-## [61] plot.sfg*                                 
-## [62] plot.shingle*                             
-## [63] plot.SOM*                                 
-## [64] plot.somgrid*                             
-## [65] plot.spec*                                
-## [66] plot.stars*                               
-## [67] plot.stars_proxy*                         
-## [68] plot.stepfun                              
-## [69] plot.stft*                                
-## [70] plot.stl*                                 
-## [71] plot.svm*                                 
-## [72] plot.table*                               
-## [73] plot.trans*                               
-## [74] plot.trellis*                             
-## [75] plot.ts                                   
-## [76] plot.tskernel*                            
-## [77] plot.TukeyHSD*                            
-## [78] plot.tune*                                
-## [79] plot.units*                               
+##  [2] plot,Extent,missing-method                
+##  [3] plot,Raster,ANY-method                    
+##  [4] plot,Raster,Raster-method                 
+##  [5] plot,SpatExtent,missing-method            
+##  [6] plot,Spatial,missing-method               
+##  [7] plot,SpatialGrid,missing-method           
+##  [8] plot,SpatialGridDataFrame,missing-method  
+##  [9] plot,SpatialLines,missing-method          
+## [10] plot,SpatialMultiPoints,missing-method    
+## [11] plot,SpatialPixels,missing-method         
+## [12] plot,SpatialPixelsDataFrame,missing-method
+## [13] plot,SpatialPoints,missing-method         
+## [14] plot,SpatialPolygons,missing-method       
+## [15] plot,SpatRaster,missing-method            
+## [16] plot,SpatRaster,numeric-method            
+## [17] plot,SpatRaster,SpatRaster-method         
+## [18] plot,SpatVector,character-method          
+## [19] plot,SpatVector,missing-method            
+## [20] plot,SpatVector,numeric-method            
+## [21] plot.acf*                                 
+## [22] plot.data.frame*                          
+## [23] plot.decomposed.ts*                       
+## [24] plot.default                              
+## [25] plot.dendrogram*                          
+## [26] plot.density*                             
+## [27] plot.ecdf                                 
+## [28] plot.factor*                              
+## [29] plot.formula*                             
+## [30] plot.function                             
+## [31] plot.hclust*                              
+## [32] plot.histogram*                           
+## [33] plot.HoltWinters*                         
+## [34] plot.isoreg*                              
+## [35] plot.lm*                                  
+## [36] plot.medpolish*                           
+## [37] plot.mlm*                                 
+## [38] plot.ppr*                                 
+## [39] plot.prcomp*                              
+## [40] plot.princomp*                            
+## [41] plot.profile.nls*                         
+## [42] plot.R6*                                  
+## [43] plot.raster*                              
+## [44] plot.shingle*                             
+## [45] plot.spec*                                
+## [46] plot.stepfun                              
+## [47] plot.stl*                                 
+## [48] plot.table*                               
+## [49] plot.trellis*                             
+## [50] plot.ts                                   
+## [51] plot.tskernel*                            
+## [52] plot.TukeyHSD*                            
 ## see '?methods' for accessing help and source code
 ```
 
@@ -269,7 +231,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x55860f1cfdd8>
+## <bytecode: 0x56428637a368>
 ## <environment: namespace:graphics>
 ```
 
@@ -296,62 +258,41 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x55860f394440>
+## <bytecode: 0x5642864e62c0>
 ## <environment: namespace:graphics>
 ```
 
 通过查看函数的帮助 `?rasterImage` ，我们需要重点关注一下
-参数 *image* 传递的 raster 对象
+参数 *image* 传递的 raster 对象。
+
 
 
 ```r
 plot(c(100, 250), c(300, 450), type = "n", xlab = "", ylab = "")
-image <- as.raster(matrix(0:1, ncol = 5, nrow = 3))
+x <- rep(0, 15)
+x[seq(from = 2, to = 14, by = 2)] <- 1
+image <- as.raster(matrix(x, ncol = 5, nrow = 3))
 rasterImage(image, 100, 300, 150, 350, interpolate = FALSE)
+# 插值平滑
 rasterImage(image, 100, 400, 150, 450)
+# 缩小比例
 rasterImage(image, 200, 300, 200 + xinch(.5), 300 + yinch(.3),
   interpolate = FALSE
 )
-rasterImage(image, 200, 400, 250, 450, 
-            angle = 15, interpolate = FALSE)
+# 旋转图像
+rasterImage(image, 200, 400, 250, 450,
+  angle = 15, interpolate = FALSE
+)
 ```
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{spatial-viz_files/figure-latex/unnamed-chunk-10-1} 
+{\centering \includegraphics[width=0.5\linewidth]{spatial-viz_files/figure-latex/raster-image-1} 
 
 }
 
-\caption{raster 图像}(\#fig:unnamed-chunk-10)
+\caption{raster 图像}(\#fig:raster-image)
 \end{figure}
-
-
-### stars {#subsec-stars}
-
-Edzer Pebesma 开发了 stars 包
-
-
-```r
-# https://resources.rstudio.com/rstudio-conf-2019/spatial-data-science-in-the-tidyverse
-library(abind)
-library(sf)
-library(cubelyr)
-library(stars)
-x <- read_stars(system.file("tif/L7_ETMs.tif", package = "stars"))
-
-ggplot() +
-  geom_stars(data = x) +
-  coord_equal() +
-  facet_wrap(~band) +
-  theme_bw() +
-  scale_fill_viridis_c() +
-  scale_x_discrete(expand = c(0, 0)) +
-  scale_y_discrete(expand = c(0, 0))
-```
-
-
-
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-11-1} \end{center}
 
 
 ## 可视化 {#sec-viz-echarts4r}
@@ -386,102 +327,3 @@ quakes |>
   ) |>
   e_tooltip()
 ```
-
-
-
-### 美国各城镇失业率 {#subsec-usa-unemp}
-
-
-```r
-# 数据来源 https://datasets.flowingdata.com/unemployment09.csv
-unemp <- read.csv(
-  file = "http://datasets.flowingdata.com/unemployment09.csv",
-  header = FALSE, stringsAsFactors = FALSE
-)
-names(unemp) <- c(
-  "id", "state_fips", "county_fips", "name", "year",
-  "?", "?", "?", "rate"
-)
-unemp$county <- tolower(gsub(" County, [A-Z]{2}", "", unemp$name))
-unemp$state <- gsub("^.*([A-Z]{2}).*$", "\\1", unemp$name)
-
-county_df <- map_data("county")
-names(county_df) <- c("long", "lat", "group", "order", "state_name", "county")
-county_df$state <- state.abb[match(county_df$state_name, tolower(state.name))]
-county_df$state_name <- NULL
-
-state_df <- map_data("state")
-# Combine together
-choropleth <- merge(county_df, unemp, by = c("state", "county"))
-choropleth <- choropleth[order(choropleth$order), ]
-choropleth$rate_d <- cut(choropleth$rate, breaks = c(seq(0, 10, by = 2), 35))
-
-library(ggthemes)
-ggplot(choropleth, aes(long, lat, group = group)) +
-  geom_polygon(aes(fill = rate_d), colour = alpha("white", 1 / 4), size = 0.2) +
-  geom_polygon(data = state_df, colour = "white", fill = NA) +
-  scale_fill_brewer(palette = "PuRd") +
-  labs(
-    fill = "ratio", title = "ratio of unemployment by county, 2009",
-    caption = "data source: http://datasets.flowingdata.com/unemployment09.csv"
-  ) +
-  coord_map("polyconic") +
-  theme_map()
-```
-
-\begin{figure}
-
-{\centering \includegraphics{spatial-viz_files/figure-latex/unemploymentGG-1} 
-
-}
-
-\caption{2009年美国各城镇失业率}(\#fig:unemploymentGG)
-\end{figure}
-
-
-
-```r
-# 来自帮助文档 ?map 
-library(mapproj) 	# mapproj is used for  projection="polyconic"
-# color US county map by 2009 unemployment rate
-# match counties to map using FIPS county codes
-# Based on J's solution to the "Choropleth Challenge"
-# http://blog.revolutionanalytics.com/2009/11/choropleth-challenge-result.html
-
-# load data
-# unemp includes data for some counties not on the "lower 48 states" county
-# map, such as those in Alaska, Hawaii, Puerto Rico, and some tiny Virginia cities
-data(unemp)
-data(county.fips)
-
-# define color buckets
-colors <- c("#F1EEF6", "#D4B9DA", "#C994C7", "#DF65B0", "#DD1C77", "#980043")
-unemp$colorBuckets <- as.numeric(cut(unemp$unemp, c(0, 2, 4, 6, 8, 10, 100)))
-leg.txt <- c("<2%", "2-4%", "4-6%", "6-8%", "8-10%", ">10%")
-
-# align data with map definitions by (partial) matching state,county
-# names, which include multiple polygons for some counties
-cnty.fips <- county.fips$fips[match(
-  map("county", plot = FALSE)$names,
-  county.fips$polyname
-)]
-colorsmatched <- unemp$colorBuckets[match(cnty.fips, unemp$fips)]
-
-# draw map
-map("county",
-  col = colors[colorsmatched], fill = TRUE, resolution = 0,
-  lty = 0, projection = "polyconic"
-)
-map("state",
-  col = "white", fill = FALSE, add = TRUE, lty = 1, lwd = 0.2,
-  projection = "polyconic"
-)
-title("unemployment by county, 2009")
-legend("topright", leg.txt, horiz = TRUE, fill = colors)
-```
-
-
-
-\begin{center}\includegraphics{spatial-viz_files/figure-latex/unnamed-chunk-12-1} \end{center}
-
-美国各地区失业率地图，配不同颜色， [colormap](https://github.com/bhaskarvk/colormap) 适合给静态图配色

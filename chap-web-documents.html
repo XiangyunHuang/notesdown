@@ -160,21 +160,21 @@ Subject: 测试邮件
 
 这是一封测试邮件！</code></pre>
 <p>将邮件内容保存为 mail.txt 文件，然后使用 curl 命令行工具将邮件内容发出去。</p>
-<div class="sourceCode" id="cb1849"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1849-1"><a href="chap-web-documents.html#cb1849-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--url</span> <span class="st">'smtp://公司邮件服务器地址:开放的端口号'</span> <span class="dt">\</span></span>
-<span id="cb1849-2"><a href="chap-web-documents.html#cb1849-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--ssl-reqd</span> <span class="at">--mail-from</span> <span class="st">'发件人邮箱地址'</span> <span class="dt">\</span></span>
-<span id="cb1849-3"><a href="chap-web-documents.html#cb1849-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--mail-rcpt</span> <span class="st">'收件人邮箱地址'</span> <span class="dt">\</span></span>
-<span id="cb1849-4"><a href="chap-web-documents.html#cb1849-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--upload-file</span> data/mail.txt <span class="dt">\</span></span>
-<span id="cb1849-5"><a href="chap-web-documents.html#cb1849-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--user</span> <span class="st">'发件人邮箱地址:邮箱登陆密码'</span></span></code></pre></div>
+<div class="sourceCode" id="cb1846"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1846-1"><a href="chap-web-documents.html#cb1846-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--url</span> <span class="st">'smtp://公司邮件服务器地址:开放的端口号'</span> <span class="dt">\</span></span>
+<span id="cb1846-2"><a href="chap-web-documents.html#cb1846-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--ssl-reqd</span> <span class="at">--mail-from</span> <span class="st">'发件人邮箱地址'</span> <span class="dt">\</span></span>
+<span id="cb1846-3"><a href="chap-web-documents.html#cb1846-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--mail-rcpt</span> <span class="st">'收件人邮箱地址'</span> <span class="dt">\</span></span>
+<span id="cb1846-4"><a href="chap-web-documents.html#cb1846-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--upload-file</span> data/mail.txt <span class="dt">\</span></span>
+<span id="cb1846-5"><a href="chap-web-documents.html#cb1846-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--user</span> <span class="st">'发件人邮箱地址:邮箱登陆密码'</span></span></code></pre></div>
 <div class="rmdnote">
 <p>Gmail 出于安全性考虑，不支持这种发送邮件的方式，会将邮件内容阻挡，进而接收不到邮件。</p>
 </div>
 <p>下面以 blastula 包为例怎么支持 Gmail/Outlook/QQ 等邮件发送，先安装系统软件依赖，CentOS 8 上安装依赖</p>
-<div class="sourceCode" id="cb1850"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1850-1"><a href="chap-web-documents.html#cb1850-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> libsecret-devel libsodium-devel</span></code></pre></div>
+<div class="sourceCode" id="cb1847"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1847-1"><a href="chap-web-documents.html#cb1847-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> dnf install <span class="at">-y</span> libsecret-devel libsodium-devel</span></code></pre></div>
 <p>然后安装 <a href=""><strong>keyring</strong></a> 和 <a href=""><strong>blastula</strong></a></p>
-<div class="sourceCode" id="cb1851"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1848"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"keyring"</span>, <span class="st">"blastula"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>接着配置邮件帐户，这一步需要邮件账户名和登陆密码，配置一次就够了，不需要每次发送邮件的时候都配置一次</p>
-<div class="sourceCode" id="cb1852"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1849"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rich-iannone/blastula">blastula</a></span><span class="op">)</span>
 <span class="fu">create_smtp_creds_key</span><span class="op">(</span>
   id <span class="op">=</span> <span class="st">"outlook"</span>, 
@@ -182,7 +182,7 @@ Subject: 测试邮件
   provider <span class="op">=</span> <span class="st">"outlook"</span>
 <span class="op">)</span></code></pre></div>
 <p>第二步，准备邮件内容，包括邮件主题、发件人、收件人、抄送人、密送人、邮件主体和附件等。</p>
-<div class="sourceCode" id="cb1853"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1850"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">attachment</span> <span class="op">&lt;-</span> <span class="st">"data/mail.txt"</span> <span class="co"># 如果没有附件，引号内留空即可。</span>
 <span class="co"># 这个Rmd文件渲染后就是邮件的正文，交互图形和交互表格不适用</span>
 <span class="va">body</span> <span class="op">&lt;-</span> <span class="st">"examples/html-document.Rmd"</span> 
@@ -191,7 +191,7 @@ Subject: 测试邮件
   <span class="fu">add_attachment</span><span class="op">(</span>file <span class="op">=</span> <span class="va">attachment</span><span class="op">)</span>
 <span class="va">email</span></code></pre></div>
 <p>最后，发送邮件</p>
-<div class="sourceCode" id="cb1854"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1851"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">smtp_send</span><span class="op">(</span>
   from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"张三"</span> <span class="op">=</span> <span class="st">"xxx@outlook.com"</span><span class="op">)</span>, <span class="co"># 发件人</span>
   to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"李四"</span> <span class="op">=</span> <span class="st">"xxx@foxmail.com"</span>,
@@ -202,7 +202,7 @@ Subject: 测试邮件
   credentials <span class="op">=</span> <span class="fu">creds_key</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"outlook"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>密送人实现群发单显，即一封邮件同时发送给多个人，每个收件人只能看到发件人地址而看不到其它收件人地址。</p>
-<div class="sourceCode" id="cb1855"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1852"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">email</span> <span class="op">&lt;-</span> <span class="fu">compose_email</span><span class="op">(</span>
   body <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"
 Markdown 格式的邮件内容
@@ -248,7 +248,7 @@ Markdown 格式的邮件内容
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-01-11.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

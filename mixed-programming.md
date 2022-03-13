@@ -74,7 +74,7 @@ stats:::predict.poly
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x563e3b0273a0>
+## <bytecode: 0x55e000481370>
 ## <environment: namespace:stats>
 ```
 
@@ -102,7 +102,7 @@ getAnywhere(predict.poly)
 ##     else poly(newdata, degree = max(attr(object, "degree")), 
 ##         coefs = attr(object, "coefs"), simple = TRUE)
 ## }
-## <bytecode: 0x563e3b0273a0>
+## <bytecode: 0x55e000481370>
 ## <environment: namespace:stats>
 ```
 
@@ -193,8 +193,8 @@ void useC(int *i){
 
 ```
 ## make[1]: Entering directory '/home/runner/work/masr/masr'
-## gcc -I"/opt/R/4.1.2/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c65b3450f3fd8.c -o c65b3450f3fd8.o
-## gcc -shared -L/opt/R/4.1.2/lib/R/lib -L/usr/local/lib -o c65b3450f3fd8.so c65b3450f3fd8.o -L/opt/R/4.1.2/lib/R/lib -lR
+## gcc -I"/opt/R/4.1.2/lib/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2  -c c64556d8aa0c0.c -o c64556d8aa0c0.o
+## gcc -shared -L/opt/R/4.1.2/lib/R/lib -L/usr/local/lib -o c64556d8aa0c0.so c64556d8aa0c0.o -L/opt/R/4.1.2/lib/R/lib -lR
 ## make[1]: Leaving directory '/home/runner/work/masr/masr'
 ```
 
@@ -319,7 +319,7 @@ sessionInfo()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0

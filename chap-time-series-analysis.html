@@ -137,7 +137,7 @@
 <h1>
 <span class="header-section-number">第 31 章</span> 时序分析<a class="anchor" aria-label="anchor" href="#chap-time-series-analysis"><i class="fas fa-link"></i></a>
 </h1>
-<div class="sourceCode" id="cb2321"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2318"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yihui/formatR">formatR</a></span><span class="op">)</span>
 <span class="va">`%&gt;%`</span> <span class="op">&lt;-</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="va">`%&gt;%`</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
@@ -161,24 +161,24 @@
 <span class="header-section-number">31.1</span> 时序数据<a class="anchor" aria-label="anchor" href="#sec-ts-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>以数据集 AirPassengers 为例说明一下 R 内置的存储时间序列数据的数据结构 — ts 数据对象。函数 <code><a href="https://rdrr.io/r/base/class.html">class()</a></code> 、 <code><a href="https://rdrr.io/r/base/mode.html">mode()</a></code> 和 <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> 分别可以查看其数据类型、存储类型和数据结构。</p>
-<div class="sourceCode" id="cb2322"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2319"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 数据类型</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "ts"</code></pre>
-<div class="sourceCode" id="cb2324"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2321"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 存储类型</span>
 <span class="fu"><a href="https://rdrr.io/r/base/mode.html">mode</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "numeric"</code></pre>
-<div class="sourceCode" id="cb2326"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2323"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 数据结构</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>##  Time-Series [1:144] from 1949 to 1961: 112 118 132 129 121 135 148 148 136 119 ...</code></pre>
 <p>查看该数据集开始和结束的时间点</p>
-<div class="sourceCode" id="cb2328"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2325"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/start.html">start</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/start.html">end</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1949    1 1960   12</code></pre>
 <p>数据集 AirPassengers 在以上时间区间的划分</p>
-<div class="sourceCode" id="cb2330"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2327"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/time.html">time</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>##           Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
 ## 1949 1949.000 1949.083 1949.167 1949.250 1949.333 1949.417 1949.500 1949.583
@@ -207,11 +207,11 @@
 ## 1959 1959.667 1959.750 1959.833 1959.917
 ## 1960 1960.667 1960.750 1960.833 1960.917</code></pre>
 <p>期初和期末的周期</p>
-<div class="sourceCode" id="cb2332"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2329"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/tsp.html">tsp</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1949.000 1960.917   12.000</code></pre>
 <p>函数 <code><a href="https://rdrr.io/pkg/timeDate/man/base-diff.html">diff()</a></code> 实现差分算子，默认参数 <code>lag = 1</code> ，<code>differences = 1</code> 表示延迟期数为 1 的一阶差分。</p>
-<div class="sourceCode" id="cb2334"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2331"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 差分前</span>
 <span class="va">AirPassengers</span></code></pre></div>
 <pre><code>##      Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
@@ -227,7 +227,7 @@
 ## 1958 340 318 362 348 363 435 491 505 404 359 310 337
 ## 1959 360 342 406 396 420 472 548 559 463 407 362 405
 ## 1960 417 391 419 461 472 535 622 606 508 461 390 432</code></pre>
-<div class="sourceCode" id="cb2336"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2333"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 差分后</span>
 <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-diff.html">diff</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></code></pre></div>
 <pre><code>##       Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec
@@ -243,7 +243,7 @@
 ## 1958    4  -22   44  -14   15   72   56   14 -101  -45  -49   27
 ## 1959   23  -18   64  -10   24   52   76   11  -96  -56  -45   43
 ## 1960   12  -26   28   42   11   63   87  -16  -98  -47  -71   42</code></pre>
-<div class="sourceCode" id="cb2338"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2335"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 延迟一期的二阶差分</span>
 <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-diff.html">diff</a></span><span class="op">(</span><span class="va">AirPassengers</span>, lag <span class="op">=</span> <span class="fl">1</span>, differences <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>##       Jan  Feb  Mar  Apr  May  Jun  Jul  Aug  Sep  Oct  Nov  Dec
@@ -265,7 +265,7 @@
 <span class="header-section-number">31.2</span> 时序图<a class="anchor" aria-label="anchor" href="#sec-ts-plot"><i class="fas fa-link"></i></a>
 </h2>
 <p>美国纽黑文自1912年至1971年的年平均气温变化见图 <a href="chap-time-series-analysis.html#fig:new-haven-temp">31.1</a>。</p>
-<div class="sourceCode" id="cb2340"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2337"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">nhtemp</span>, main <span class="op">=</span> <span class="st">"美国纽黑文的年平均气温"</span>, family <span class="op">=</span> <span class="st">"Noto Serif CJK SC"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:new-haven-temp"></span>
@@ -273,7 +273,7 @@
 图 31.1: 美国纽黑文的年平均气温，单位：华氏温度
 </p>
 </div>
-<div class="sourceCode" id="cb2341"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2338"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 构造多个 ts 序列</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
@@ -286,7 +286,7 @@
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tmp</span>, main <span class="op">=</span> <span class="st">"pay cnt"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="time-series-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2342"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2339"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tmp</span>, plot.type <span class="op">=</span> <span class="st">"single"</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, ylab <span class="op">=</span> <span class="st">"pay cnt"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="time-series-analysis_files/figure-html/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;"></div>
 </div>
@@ -294,7 +294,7 @@
 <h2>
 <span class="header-section-number">31.3</span> 基本概念<a class="anchor" aria-label="anchor" href="#sec:frequency"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2343"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2340"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 从某个完整的一天开始统计数据</span>
 <span class="co"># 分钟级 ts 数据</span>
 <span class="va">time_min</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.POSIXt.html">seq.POSIXt</a></span><span class="op">(</span>
@@ -311,7 +311,7 @@ format <span class="op">=</span> <span class="st">"%H:%M"</span>
 <p>frequency 里面乘以 365.25 而不是 365 是因为每隔 4 年出现一次 366 天，多出的这一天分摊到每一年。
 frequency 表示单位时间内发生的次数，ts 对象的时间基准为 1 年，所以，frequency = 4 表示一年出现四次，依此类推。关于季节性周期的说明 <a href="https://robjhyndman.com/hyndsight/seasonal-periods/" class="uri">https://robjhyndman.com/hyndsight/seasonal-periods/</a>。</p>
 <p>序列长度一样，但是周期不一样，这里的单位时间指的是1年</p>
-<div class="sourceCode" id="cb2344"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2341"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 季数据</span>
 <span class="va">op</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1961</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
@@ -326,32 +326,32 @@ frequency 表示单位时间内发生的次数，ts 对象的时间基准为 1 �
 <span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1961</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">24</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">365.25</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tmp</span>, main <span class="op">=</span> <span class="st">"Minutely"</span>, type <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="time-series-analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2345"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2342"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></code></pre></div>
 <p>默认情况下，自然时间周期是一年，每月采样。那可不可以设置自然时间周期是一周，每天采样呢？
 当然可以，只是 Base R 暂不支持，其实表达数据粒度的能力没有变化，以年或周为基准，都可以表达上面的季、月、日、分钟数据。</p>
 <p>deltat 和 frequency 只需提供一个参数值即可 deltat = 1/12 和 frequency = 12 表示同样的含义。</p>
 <p>R 4.0.0 开始，frequency 不必是整数，还可以是小数，frequency = .2 表示每 5 个时间单位抽样一次，根据周期 T 和频率 f 的关系 T = 1/f</p>
-<div class="sourceCode" id="cb2346"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2343"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1961</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">tmp</span>, type <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="time-series-analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>ts 和 seq 构造时间向量的关系是什么？</p>
-<div class="sourceCode" id="cb2347"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2344"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">1961</span>, to <span class="op">=</span> <span class="fl">2056</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] 1961 1966 1971 1976 1981 1986 1991 1996 2001 2006 2011 2016 2021 2026 2031
 ## [16] 2036 2041 2046 2051 2056</code></pre>
 <p>即每隔5年抽样一次，采一个数据点</p>
-<div class="sourceCode" id="cb2349"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2346"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1961</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">365.25</span><span class="op">/</span><span class="fl">7</span><span class="op">)</span></code></pre></div>
 <pre><code>## Time Series:
 ## Start = 1961 
 ## End = 1961.36413415469 
 ## Frequency = 52.1785714285714 
-##  [1] -0.3703224 -0.2850158  1.8310235  2.0783972  1.7614450  0.4437924
-##  [7] -0.3671979  0.1028756  0.1106160  0.4093652  1.3947761  2.2105394
-## [13] -1.1493326  1.4753369 -0.3780533 -0.4116026 -0.1578923  0.6075200
-## [19] -0.3592726 -0.7107374</code></pre>
+##  [1] -0.63330240 -1.22686674 -0.39431070  0.55937107  1.80096432 -1.71271047
+##  [7] -1.05552485  0.93258727 -0.85579720  1.83501166 -0.50218598 -0.06953427
+## [13] -1.11473737  0.60628044 -0.93107880 -0.13551142  0.66851022  0.19312566
+## [19]  0.75405854  0.30840568</code></pre>
 <p>周数据，一周采一个点，采了 20 个点</p>
 </div>
 <div id="sec-ts-tests" class="section level2" number="31.4">
@@ -372,7 +372,7 @@ y[i] = f[1]*x[i+o] + \ldots + f[p]*x[i+o-(p-1)]
 <p>其中 <span class="math inline">\(o\)</span> 代表 offset</p>
 <p>介绍 FTT 算法细节</p>
 <p>不同的方法对时间序列平滑的影响 FTT 快速傅里叶变换算法</p>
-<div class="sourceCode" id="cb2351"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2348"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/formatR/man/usage.html">usage</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## filter(x, filter, method = c("convolution", "recursive"), sides = 2L,
 ##     circular = FALSE, init = NULL)</code></pre>
@@ -413,7 +413,7 @@ b[t] &amp;= \beta (a[t] - a[t-1]) + (1-\beta) b[t-1] \\
 s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 \end{align}\]</span></p>
 <p><code><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters()</a></code> 用 Shiny App / 动画的形式展示 <span class="math inline">\(\alpha, \beta, \gamma\)</span> 三个参数对模型预测的影响，参数的确定通过最小化预测均方误差</p>
-<div class="sourceCode" id="cb2353"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2350"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Seasonal Holt-Winters</span>
 <span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters</a></span><span class="op">(</span><span class="va">co2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>
@@ -434,7 +434,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <span class="header-section-number">31.7</span> 1749-2013 年太阳黑子数据<a class="anchor" aria-label="anchor" href="#sec-sunspots"><i class="fas fa-link"></i></a>
 </h2>
 <p>再从官网拿到最近的数据</p>
-<div class="sourceCode" id="cb2354"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2351"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sunspot.month</span>, xlab <span class="op">=</span> <span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Monthly sunspot numbers"</span>,
      main <span class="op">=</span> <span class="st">"Monthly mean relative sunspot numbers from 1749 to 2013"</span><span class="op">)</span>
 
@@ -448,10 +448,10 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 图 31.2: 时序图：太阳黑子月均数量
 </p>
 </div>
-<div class="sourceCode" id="cb2355"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2352"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">sunspots</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="time-series-analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2356"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2353"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">sunspot.year</span>, xlab <span class="op">=</span> <span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Yearly Sunspot Data, 1700-1988"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
@@ -460,7 +460,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 图 31.3: 太阳黑子数量年平均时序图
 </p>
 </div>
-<div class="sourceCode" id="cb2357"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2354"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/dygraphs">dygraphs</a></span><span class="op">)</span>
 <span class="va">hw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters</a></span><span class="op">(</span><span class="va">sunspot.month</span><span class="op">)</span>
 <span class="va">predicted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">hw</span>, n.ahead <span class="op">=</span> <span class="fl">72</span>, prediction.interval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -469,8 +469,8 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
   <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyAxis.html">dyAxis</a></span><span class="op">(</span><span class="st">"x"</span>, drawGrid <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/dygraphs/man/dygraphs-exports.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dySeries.html">dySeries</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"lwr"</span>, <span class="st">"fit"</span>, <span class="st">"upr"</span><span class="op">)</span>, label <span class="op">=</span> <span class="st">"sunspot"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/dygraphs/man/dygraphs-exports.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyOptions.html">dyOptions</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">hcl.colors</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div id="htmlwidget-131c5075950ec381cb60" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
-<script type="application/json" data-for="htmlwidget-131c5075950ec381cb60">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false,"drawAxis":true},"y":{"drawAxis":true}},"title":"Predicted sunspot numbers","labels":["month","sunspot"],"legend":"auto","retainDateWindow":false,"customBars":true,"series":{"sunspot":{"axis":"y"}},"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":false,"pointSize":1,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":1,"strokeBorderColor":"white","colors":["#4B0055","#009B95","#FDE333"],"colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false},"scale":"monthly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2013-10-01T00:00:00.000Z","2013-11-01T00:00:00.000Z","2013-12-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-02-01T00:00:00.000Z","2014-03-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-05-01T00:00:00.000Z","2014-06-01T00:00:00.000Z","2014-07-01T00:00:00.000Z","2014-08-01T00:00:00.000Z","2014-09-01T00:00:00.000Z","2014-10-01T00:00:00.000Z","2014-11-01T00:00:00.000Z","2014-12-01T00:00:00.000Z","2015-01-01T00:00:00.000Z","2015-02-01T00:00:00.000Z","2015-03-01T00:00:00.000Z","2015-04-01T00:00:00.000Z","2015-05-01T00:00:00.000Z","2015-06-01T00:00:00.000Z","2015-07-01T00:00:00.000Z","2015-08-01T00:00:00.000Z","2015-09-01T00:00:00.000Z","2015-10-01T00:00:00.000Z","2015-11-01T00:00:00.000Z","2015-12-01T00:00:00.000Z","2016-01-01T00:00:00.000Z","2016-02-01T00:00:00.000Z","2016-03-01T00:00:00.000Z","2016-04-01T00:00:00.000Z","2016-05-01T00:00:00.000Z","2016-06-01T00:00:00.000Z","2016-07-01T00:00:00.000Z","2016-08-01T00:00:00.000Z","2016-09-01T00:00:00.000Z","2016-10-01T00:00:00.000Z","2016-11-01T00:00:00.000Z","2016-12-01T00:00:00.000Z","2017-01-01T00:00:00.000Z","2017-02-01T00:00:00.000Z","2017-03-01T00:00:00.000Z","2017-04-01T00:00:00.000Z","2017-05-01T00:00:00.000Z","2017-06-01T00:00:00.000Z","2017-07-01T00:00:00.000Z","2017-08-01T00:00:00.000Z","2017-09-01T00:00:00.000Z","2017-10-01T00:00:00.000Z","2017-11-01T00:00:00.000Z","2017-12-01T00:00:00.000Z","2018-01-01T00:00:00.000Z","2018-02-01T00:00:00.000Z","2018-03-01T00:00:00.000Z","2018-04-01T00:00:00.000Z","2018-05-01T00:00:00.000Z","2018-06-01T00:00:00.000Z","2018-07-01T00:00:00.000Z","2018-08-01T00:00:00.000Z","2018-09-01T00:00:00.000Z","2018-10-01T00:00:00.000Z","2018-11-01T00:00:00.000Z","2018-12-01T00:00:00.000Z","2019-01-01T00:00:00.000Z","2019-02-01T00:00:00.000Z","2019-03-01T00:00:00.000Z","2019-04-01T00:00:00.000Z","2019-05-01T00:00:00.000Z","2019-06-01T00:00:00.000Z","2019-07-01T00:00:00.000Z","2019-08-01T00:00:00.000Z","2019-09-01T00:00:00.000Z"],[[17.132528632674,50.2357681319726,83.3390076312712],[14.3298475165923,51.2079764150803,88.0861053135683],[5.84413039414104,46.1535922042659,86.4630540143908],[2.14362651582584,45.6222915349252,89.1009565540246],[-4.33572014637315,42.1037251313946,88.5431704091623],[1.46098184816437,50.6904130291456,99.9198442101269],[-3.13625371037402,48.7399416717229,100.61613705382],[-5.31219350929583,49.0884610993779,103.489115708052],[-8.99347636193467,47.8256445691833,104.644765500301],[-9.00953383014712,50.1350718182951,109.279677466737],[-10.4168168698536,50.9708669846159,112.358550839085],[-15.5357881341561,48.021299935504,111.578388005164],[-16.1631457407242,50.1890733464048,116.541292433534],[-17.2131293381704,51.1612816295125,119.535692597195],[-24.2365329206741,46.1068974186981,116.45032775807],[-26.6880331994198,45.5755967493574,117.839226698135],[-32.0817788229111,42.0570303458267,116.195839514565],[-25.328589290511,50.6437182435778,126.616025777667],[-29.073832010063,48.693246886155,126.460325782373],[-30.4839845744254,49.04176631381,128.567517202045],[-33.4717233231673,47.7789497836154,129.029622890398],[-32.8555794881868,50.0883770327272,133.032333553641],[-33.6833337850047,50.9241721990481,135.531678183101],[-38.2684421187564,47.9746051499361,134.217652418629],[-38.2355763466169,50.142378560837,138.520333468291],[-38.8382045459963,51.1145868439446,141.067378233886],[-45.4441802568727,46.0602026331303,137.564585523133],[-47.5049952281906,45.5289019637895,138.56279915577],[-52.5320749240051,42.0103355602589,136.552746044523],[-45.4338936146265,50.59702345801,146.627940530646],[-48.8537857092241,48.6465521005872,146.146889910398],[-49.9564559142999,48.9950715282422,147.946598970784],[-52.6530260433282,47.7322549980476,148.117536039423],[-51.7606574020287,50.0416822471594,151.844021896348],[-52.3259178479163,50.8774774134803,154.080872674877],[-56.6611848675918,47.9279103643683,152.517005596328],[-56.3068172599867,50.0956837752691,156.498184810525],[-56.6858092968174,51.0678920583768,158.821593413571],[-63.0779416506881,46.0135078475624,155.104957345813],[-64.9340312362542,45.4822071782217,155.898445592698],[-69.7648922732881,41.9636407746911,153.69217382267],[-62.4784438298379,50.5503286724421,163.579101174722],[-65.7175146804418,48.5998573150193,162.91722931048],[-66.6463478868375,48.9483767426744,164.543101372186],[-69.1756427825012,47.6855602124798,164.546763207461],[-68.1221731676874,49.9949874615916,168.112148090871],[-68.5321507166934,50.8307826279124,170.193715972518],[-72.7176248606573,47.8812155788005,168.480056018258],[-72.1665373164288,50.0489889897013,172.264515295831],[-72.4075532660385,51.021197272809,174.449947811656],[-78.666268189551,45.9668130619946,170.59989431354],[-80.3932649346896,45.4355123926539,171.264289719997],[-85.0991401153164,41.9169459891232,168.933032093563],[-77.6916101919639,50.5036338868743,178.698877965713],[-80.8133150237057,48.5531625294515,177.919640082609],[-81.6283212793761,48.9016819571065,179.431685193589],[-84.0471633727929,47.6388654269119,179.324894226617],[-82.8864607142805,49.9482926760237,182.783046066328],[-83.1922802677995,50.7840878423446,184.760455952489],[-87.2765356662304,47.8345207932326,182.945577252696],[-86.5906075093202,50.0022942041335,186.595195917587],[-86.7368751982979,50.9745024872411,188.68588017278],[-92.903380482437,45.9201182764268,184.743617035291],[-94.540602011164,45.388817607086,185.318237225336],[-99.1590380614167,41.8702512035554,182.899540468528],[-91.6663122008319,50.4569391013065,192.580190403445],[-94.7049764580829,48.5064677438837,191.71791194585],[-95.4390143847964,48.8549871715387,193.148988727874],[-97.7788816705265,47.5921706413441,192.963222953215],[-96.5411231002638,49.9015978904559,196.344318881176],[-96.7717348412792,50.7373930567768,198.246520954833],[-100.782563309615,47.7878260076648,196.358215324945]]],"fixedtz":false,"tzone":""},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb2358"><pre class="downlit sourceCode r">
+<div id="htmlwidget-fce43d71b46c3fabf180" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fce43d71b46c3fabf180">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false,"drawAxis":true},"y":{"drawAxis":true}},"title":"Predicted sunspot numbers","labels":["month","sunspot"],"legend":"auto","retainDateWindow":false,"customBars":true,"series":{"sunspot":{"axis":"y"}},"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":false,"pointSize":1,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":1,"strokeBorderColor":"white","colors":["#4B0055","#009B95","#FDE333"],"colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false},"scale":"monthly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2013-10-01T00:00:00.000Z","2013-11-01T00:00:00.000Z","2013-12-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-02-01T00:00:00.000Z","2014-03-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-05-01T00:00:00.000Z","2014-06-01T00:00:00.000Z","2014-07-01T00:00:00.000Z","2014-08-01T00:00:00.000Z","2014-09-01T00:00:00.000Z","2014-10-01T00:00:00.000Z","2014-11-01T00:00:00.000Z","2014-12-01T00:00:00.000Z","2015-01-01T00:00:00.000Z","2015-02-01T00:00:00.000Z","2015-03-01T00:00:00.000Z","2015-04-01T00:00:00.000Z","2015-05-01T00:00:00.000Z","2015-06-01T00:00:00.000Z","2015-07-01T00:00:00.000Z","2015-08-01T00:00:00.000Z","2015-09-01T00:00:00.000Z","2015-10-01T00:00:00.000Z","2015-11-01T00:00:00.000Z","2015-12-01T00:00:00.000Z","2016-01-01T00:00:00.000Z","2016-02-01T00:00:00.000Z","2016-03-01T00:00:00.000Z","2016-04-01T00:00:00.000Z","2016-05-01T00:00:00.000Z","2016-06-01T00:00:00.000Z","2016-07-01T00:00:00.000Z","2016-08-01T00:00:00.000Z","2016-09-01T00:00:00.000Z","2016-10-01T00:00:00.000Z","2016-11-01T00:00:00.000Z","2016-12-01T00:00:00.000Z","2017-01-01T00:00:00.000Z","2017-02-01T00:00:00.000Z","2017-03-01T00:00:00.000Z","2017-04-01T00:00:00.000Z","2017-05-01T00:00:00.000Z","2017-06-01T00:00:00.000Z","2017-07-01T00:00:00.000Z","2017-08-01T00:00:00.000Z","2017-09-01T00:00:00.000Z","2017-10-01T00:00:00.000Z","2017-11-01T00:00:00.000Z","2017-12-01T00:00:00.000Z","2018-01-01T00:00:00.000Z","2018-02-01T00:00:00.000Z","2018-03-01T00:00:00.000Z","2018-04-01T00:00:00.000Z","2018-05-01T00:00:00.000Z","2018-06-01T00:00:00.000Z","2018-07-01T00:00:00.000Z","2018-08-01T00:00:00.000Z","2018-09-01T00:00:00.000Z","2018-10-01T00:00:00.000Z","2018-11-01T00:00:00.000Z","2018-12-01T00:00:00.000Z","2019-01-01T00:00:00.000Z","2019-02-01T00:00:00.000Z","2019-03-01T00:00:00.000Z","2019-04-01T00:00:00.000Z","2019-05-01T00:00:00.000Z","2019-06-01T00:00:00.000Z","2019-07-01T00:00:00.000Z","2019-08-01T00:00:00.000Z","2019-09-01T00:00:00.000Z"],[[17.132528632674,50.2357681319726,83.3390076312712],[14.3298475165923,51.2079764150803,88.0861053135683],[5.84413039414104,46.1535922042659,86.4630540143908],[2.14362651582584,45.6222915349252,89.1009565540246],[-4.33572014637315,42.1037251313946,88.5431704091623],[1.46098184816437,50.6904130291456,99.9198442101269],[-3.13625371037402,48.7399416717229,100.61613705382],[-5.31219350929583,49.0884610993779,103.489115708052],[-8.99347636193467,47.8256445691833,104.644765500301],[-9.00953383014712,50.1350718182951,109.279677466737],[-10.4168168698536,50.9708669846159,112.358550839085],[-15.5357881341561,48.021299935504,111.578388005164],[-16.1631457407242,50.1890733464048,116.541292433534],[-17.2131293381704,51.1612816295125,119.535692597195],[-24.2365329206741,46.1068974186981,116.45032775807],[-26.6880331994198,45.5755967493574,117.839226698135],[-32.0817788229111,42.0570303458267,116.195839514565],[-25.328589290511,50.6437182435778,126.616025777667],[-29.073832010063,48.693246886155,126.460325782373],[-30.4839845744254,49.04176631381,128.567517202045],[-33.4717233231673,47.7789497836154,129.029622890398],[-32.8555794881868,50.0883770327272,133.032333553641],[-33.6833337850047,50.9241721990481,135.531678183101],[-38.2684421187564,47.9746051499361,134.217652418629],[-38.2355763466169,50.142378560837,138.520333468291],[-38.8382045459963,51.1145868439446,141.067378233886],[-45.4441802568727,46.0602026331303,137.564585523133],[-47.5049952281906,45.5289019637895,138.56279915577],[-52.5320749240051,42.0103355602589,136.552746044523],[-45.4338936146265,50.59702345801,146.627940530646],[-48.8537857092241,48.6465521005872,146.146889910398],[-49.9564559142999,48.9950715282422,147.946598970784],[-52.6530260433282,47.7322549980476,148.117536039423],[-51.7606574020287,50.0416822471594,151.844021896348],[-52.3259178479163,50.8774774134803,154.080872674877],[-56.6611848675918,47.9279103643683,152.517005596328],[-56.3068172599867,50.0956837752691,156.498184810525],[-56.6858092968174,51.0678920583768,158.821593413571],[-63.0779416506881,46.0135078475624,155.104957345813],[-64.9340312362542,45.4822071782217,155.898445592698],[-69.7648922732881,41.9636407746911,153.69217382267],[-62.4784438298379,50.5503286724421,163.579101174722],[-65.7175146804418,48.5998573150193,162.91722931048],[-66.6463478868375,48.9483767426744,164.543101372186],[-69.1756427825012,47.6855602124798,164.546763207461],[-68.1221731676874,49.9949874615916,168.112148090871],[-68.5321507166934,50.8307826279124,170.193715972518],[-72.7176248606573,47.8812155788005,168.480056018258],[-72.1665373164288,50.0489889897013,172.264515295831],[-72.4075532660385,51.021197272809,174.449947811656],[-78.666268189551,45.9668130619946,170.59989431354],[-80.3932649346896,45.4355123926539,171.264289719997],[-85.0991401153164,41.9169459891232,168.933032093563],[-77.6916101919639,50.5036338868743,178.698877965713],[-80.8133150237057,48.5531625294515,177.919640082609],[-81.6283212793761,48.9016819571065,179.431685193589],[-84.0471633727929,47.6388654269119,179.324894226617],[-82.8864607142805,49.9482926760237,182.783046066328],[-83.1922802677995,50.7840878423446,184.760455952489],[-87.2765356662304,47.8345207932326,182.945577252696],[-86.5906075093202,50.0022942041335,186.595195917587],[-86.7368751982979,50.9745024872411,188.68588017278],[-92.903380482437,45.9201182764268,184.743617035291],[-94.540602011164,45.388817607086,185.318237225336],[-99.1590380614167,41.8702512035554,182.899540468528],[-91.6663122008319,50.4569391013065,192.580190403445],[-94.7049764580829,48.5064677438837,191.71791194585],[-95.4390143847964,48.8549871715387,193.148988727874],[-97.7788816705265,47.5921706413441,192.963222953215],[-96.5411231002638,49.9015978904559,196.344318881176],[-96.7717348412792,50.7373930567768,198.246520954833],[-100.782563309615,47.7878260076648,196.358215324945]]],"fixedtz":false,"tzone":""},"evals":[],"jsHooks":[]}</script><div class="sourceCode" id="cb2355"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"Noto Serif CJK SC"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sunspot.month</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">sunspots</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
@@ -486,7 +486,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <h2>
 <span class="header-section-number">31.8</span> 1991-1998 年欧洲主要股票市场日闭市价格指数<a class="anchor" aria-label="anchor" href="#sec-EuStockMarkets"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2359"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2356"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/time.html">time</a></span><span class="op">(</span><span class="va">EuStockMarkets</span><span class="op">)</span>, <span class="va">EuStockMarkets</span>,
   main <span class="op">=</span> <span class="st">""</span>,
   xlab <span class="op">=</span> <span class="st">"Date"</span>, ylab <span class="op">=</span> <span class="st">"closing prices"</span>,
@@ -501,7 +501,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 德国 DAX (Ibis), Switzerland SMI, 法国 CAC 和 英国 FTSE
 </p>
 </div>
-<div class="sourceCode" id="cb2360"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2357"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 考虑收集加入最新的数据 1991~1998年的数据</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">EuStockMarkets</span>, plot.type <span class="op">=</span> <span class="st">"single"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">hcl.colors</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">EuStockMarkets</span><span class="op">)</span>,
@@ -544,7 +544,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <h2>
 <span class="header-section-number">31.14</span> 其它特征的时间序列<a class="anchor" aria-label="anchor" href="#sec-other-ts"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2361"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2358"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">JohnsonJohnson</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">nottem</span><span class="op">)</span>
@@ -561,7 +561,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <span class="header-section-number">31.15</span> 港股走势<a class="anchor" aria-label="anchor" href="#sec-hk-stock"><i class="fas fa-link"></i></a>
 </h2>
 <p>美团、阿里巴巴在香港上市</p>
-<div class="sourceCode" id="cb2362"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2359"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 美团</span>
 <span class="va">meituan</span> <span class="op">&lt;-</span> <span class="fu">quantmod</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="st">"3690.HK"</span>, auto.assign <span class="op">=</span> <span class="cn">FALSE</span>, src <span class="op">=</span> <span class="st">"yahoo"</span>, from <span class="op">=</span> <span class="st">'2019-06-30'</span><span class="op">)</span>
 <span class="co"># 阿里</span>
@@ -570,7 +570,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <span class="va">sw</span> <span class="op">&lt;-</span> <span class="fu">quantmod</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="st">"9618.HK"</span>, auto.assign <span class="op">=</span> <span class="cn">FALSE</span>, src <span class="op">=</span> <span class="st">"yahoo"</span>, from <span class="op">=</span> <span class="st">'2019-06-30'</span><span class="op">)</span>
 <span class="co"># 腾讯</span>
 <span class="va">tx</span> <span class="op">&lt;-</span> <span class="fu">quantmod</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="st">"0700.HK"</span>, auto.assign <span class="op">=</span> <span class="cn">FALSE</span>, src <span class="op">=</span> <span class="st">"yahoo"</span>, from <span class="op">=</span> <span class="st">'2019-06-30'</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb2363"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2360"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 如何共 x 轴，右对齐</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/ts.html">as.ts</a></span><span class="op">(</span><span class="va">meituan</span><span class="op">[</span>, <span class="st">"3690.HK.Close"</span><span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"orange"</span>, ylab <span class="op">=</span> <span class="st">"股价"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/ts.html">as.ts</a></span><span class="op">(</span><span class="va">ali</span><span class="op">[</span>, <span class="st">"9988.HK.Close"</span><span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"springgreen4"</span><span class="op">)</span>
@@ -584,7 +584,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <span class="header-section-number">31.16</span> 美股走势<a class="anchor" aria-label="anchor" href="#sec-us-stock"><i class="fas fa-link"></i></a>
 </h2>
 <p>拼多多、京东、阿里巴巴、51Talk 在美股上市</p>
-<div class="sourceCode" id="cb2364"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2361"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 拼多多</span>
 <span class="va">pdd</span> <span class="op">&lt;-</span> <span class="fu">quantmod</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="st">"PDD"</span>, auto.assign <span class="op">=</span> <span class="cn">FALSE</span>, src <span class="op">=</span> <span class="st">"yahoo"</span><span class="op">)</span>
 <span class="co"># 京东</span>
@@ -600,11 +600,11 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 </h2>
 <p>Joshua M. Ulrich 开发维护的 <a href="https://github.com/joshuaulrich/quantmod">quantmod</a> 包可以下载国内外股票市场的数据</p>
 <p>51talk 于 2016年6月10日在美国纽交所上市，股票代码 COE， 2020年1月22日，武汉封城，受新冠肺炎病毒影响，政府停课不停学的号召，线下教育纷纷转线上，线上教育的春天来临，股价开始回升到发行价的水平，在公司将资源转变为能力后，预期公司股价继续翻倍，回到理性的水平。</p>
-<div class="sourceCode" id="cb2365"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2362"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">coe</span> <span class="op">&lt;-</span> <span class="fu">quantmod</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="st">"COE"</span>, auto.assign <span class="op">=</span> <span class="cn">FALSE</span>, src <span class="op">=</span> <span class="st">"yahoo"</span>, from <span class="op">=</span> <span class="st">'2016-06-30'</span><span class="op">)</span></code></pre></div>
 <p>读者可以从雅虎财经获取数据源 <a href="https://finance.yahoo.com/" class="uri">https://finance.yahoo.com/</a></p>
 <p>COE 股价变化趋势见下图，包含开盘价 Open、最低价 Low、最高价 High、闭市价 Close 和调整价 Adjust 和交易额 Volume</p>
-<div class="sourceCode" id="cb2366"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2363"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">coe</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:coe-price"></span>
@@ -617,11 +617,11 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <h2>
 <span class="header-section-number">31.18</span> 运行环境<a class="anchor" aria-label="anchor" href="#sec-tsa-sessioninfo"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb2367"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2364"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
@@ -725,7 +725,7 @@ s[t] &amp;= \gamma (Y[t] / a[t]) + (1-\gamma) s[t-p]
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-01-11.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -1,18 +1,5 @@
 # 空间数据分析  {#chap-spatial-analysis}
 
-<!-- 
-Long list of geospatial tools and resources 
-https://github.com/sacridini/Awesome-Geospatial 
-Julia 空间统计
-Fostering statistics research in Earth sciences 
-https://github.com/JuliaEarth
-
-Spatial Data Science with applications in R
-Edzer Pebesma, Roger Bivand
-https://keen-swartz-3146c4.netlify.app/
-
-[Spatial Modelling for Data Scientists](https://gdsl-ul.github.io/san/) 空间数据建模课程
--->
 
 Robert Hijmans 开发的 [terra](https://github.com/rspatial/terra) 用以替代 [raster](https://github.com/rspatial/raster)，提供栅格数据和向量数据处理，基于回归和机器学习方法的空间差值和预测，能够处理相当大的数据集，包括卫星遥感数据，新的 R 包更加简洁、速度更快、功能更强。Edzer Pebesma 创建的 [r-spatial](https://github.com/r-spatial/) 开源组织提供了一系列非常流行的空间分析相关的 R 包，如 [sp](https://edzer.github.io/sp/)、 [sf](https://github.com/r-spatial/sf)、 [stars](https://github.com/r-spatial/stars)、 [mapedit](https://github.com/r-spatial/mapedit) 和
 [mapview](https://github.com/r-spatial/mapview)。Edzer Pebesma 长期致力于地理信息和空间统计的软件开发，可以说目前已打造了一个生态。
@@ -32,12 +19,6 @@ Edzer Pebesma 和 Roger Bivand 合著的 [Spatial Data Science with applications
 2017 年的[Spatial Data in R: New Directions](https://edzer.github.io/UseR2017/)
 2016 年的[Handling and Analyzing Spatial, Spatiotemporal and Movement Data](https://edzer.github.io/UseR2016/)。
 
-<!-- 
-1. 静态可视化和动态可视化
-1. Google 地图和开源地图服务需要介绍，国内的地图服务也需要介绍
-1. 介绍空间基础对象，及其数据操作和分析
--->
-
 
 
 ```r
@@ -55,58 +36,6 @@ library(sfarrow) # https://github.com/wcjochem/sfarrow
 # library(rgdal) # 要替换掉
 ```
 
-
-```r
-library(maps)
-library(mapdata)
-map("china", fill = F, col = terrain.colors(100))
-
-library(leaflet)
-
-mapChina = map("china", fill = F, plot = FALSE)
-leaflet(data = mapChina) |> 
-  addTiles() |> 
-  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
-
-
-# From https://leafletjs.com/examples/choropleth/us-states.js
-# 返回 sp 对象
-states <- geojsonio::geojson_read("json/us-states.geojson", what = "sp")
-
-bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
-pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
-
-labels <- sprintf(
-  "<strong>%s</strong><br/>%g people / mi<sup>2</sup>",
-  states$name, states$density
-) %>% lapply(htmltools::HTML)
-
-leaflet(states) %>%
-  setView(-96, 37.8, 4) %>%
-  addProviderTiles("MapBox", options = providerTileOptions(
-    id = "mapbox.light",
-    accessToken = Sys.getenv('MAPBOX_ACCESS_TOKEN'))) %>%
-  addPolygons(
-    fillColor = ~pal(density),
-    weight = 2,
-    opacity = 1,
-    color = "white",
-    dashArray = "3",
-    fillOpacity = 0.7,
-    highlight = highlightOptions(
-      weight = 5,
-      color = "#666",
-      dashArray = "",
-      fillOpacity = 0.7,
-      bringToFront = TRUE),
-    label = labels,
-    labelOptions = labelOptions(
-      style = list("font-weight" = "normal", padding = "3px 8px"),
-      textsize = "15px",
-      direction = "auto")) %>%
-  addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
-    position = "bottomright")
-```
 
 
 
@@ -136,12 +65,6 @@ mapview(nc, zcol = c("SID74", "SID79"), alpha.regions = 1.0, legend = TRUE)
 ```
 
 
-
-```r
-library(RgoogleMaps)
-library(mapdeck)
-library(mapsf)
-```
 
 ## 冈比亚儿童疟疾 {#sec-gambia-malaria}
 
@@ -208,23 +131,6 @@ gambia_agg <- aggregate(
 $Y \sim b(1,p)$ 每个人检验结果，就是感染 1 或是没有感染 0，感染率 $p$ 的建模分析，个体水平
 
 
-```r
-library(mapdeck)
-# 多边形
-mapdeck() %>%
-  add_polygon(
-    data = spatialwidget::widget_melbourne, 
-    fill_colour = "SA2_NAME",
-    palette = "spectral"
-  )
-
-mapdeck( location = c(145, -37.8), zoom = 10) %>%
-  add_geojson(
-    data = mapdeck::geojson
-  )
-```
-
-
 
 
 ```r
@@ -232,10 +138,9 @@ mapdeck( location = c(145, -37.8), zoom = 10) %>%
 library(rgeoda)
 library(sf)
 
-guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- st_read(guerry_path)
+guerry <- st_read(system.file("extdata", "Guerry.shp", package = "rgeoda"))
 
-crm_prp = guerry["Crm_prp"]
+crm_prp <- guerry["Crm_prp"]
 queen_w <- queen_weights(guerry)
 
 lisa <- local_moran(queen_w, crm_prp)
@@ -246,32 +151,20 @@ lisa_clusters <- lisa_clusters(lisa)
 
 plot(st_geometry(guerry),
      col = sapply(lisa_clusters, function(x) {
-       return(lisa_colors[[x + 1]])
+       lisa_colors[[x + 1]]
      }),
      border = "#333333", lwd = 0.2
 )
 title(main = "Local Moran Map of Crm_prs")
 legend("bottomleft",
-       legend = lisa_labels,
-       fill = lisa_colors, border = "#eeeeee"
+  legend = lisa_labels,
+  fill = lisa_colors,
+  border = "#eeeeee"
 )
 ```
 
 
-## 西非眼线虫病 {#sec-cameroon-eyeworm}
 
-loaloa 眼线虫病，人群感染，村庄水平， 响应变量服从二项分布 $Y \sim b(n,p)$，每个村庄感染的人数 $Y_i \sim b(n_i, p_i)$ 其中 $n_i$ 是第 $i$ 个村庄调查的人数， $p_i$ 是观测的感染率
-
-
-```r
-data("loaloa", package = "PrevMap")
-```
-
-<!-- 
-大规模空间数据建模，低秩近似和最近邻算法 
-geoR
-leaflet
--->
 
 
 ## 运行环境 {#sec-spatial-analysis-session}
@@ -284,7 +177,7 @@ sessionInfo()
 ```
 ## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
+## Running under: Ubuntu 20.04.4 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
