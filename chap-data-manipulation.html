@@ -7,7 +7,7 @@
 <title>第 6 章 数据操作 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本时间为准），是基于 data.frame 的扩展和 Base R 的数据操作连贯一些，dplyr 诞生于2014年1月29日，号称数据操作的语法，其实二者套路一致，都是借用 SQL 语言的设计，实现方式不同罢了，前者主要依靠 C 语言完成底层数据操作，总代码量1.29M，C 占65.6%，后者主要依靠...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="第 6 章 数据操作 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="第 6 章 数据操作 | 现代应用统计与 R 语言">
 <meta name="twitter:description" content="data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本时间为准），是基于 data.frame 的扩展和 Base R 的数据操作连贯一些，dplyr 诞生于2014年1月29日，号称数据操作的语法，其实二者套路一致，都是借用 SQL 语言的设计，实现方式不同罢了，前者主要依靠 C 语言完成底层数据操作，总代码量1.29M，C 占65.6%，后者主要依靠...">
 <meta name="twitter:image" content="/images/cover.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
@@ -37,7 +37,33 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -100,22 +126,21 @@
 <li><a class="" href="chap-statistical-models.html">介绍</a></li>
 <li><a class="" href="chap-linear-models.html"><span class="header-section-number">26</span> 线性模型</a></li>
 <li><a class="" href="chap-generalized-linear-models.html"><span class="header-section-number">27</span> 广义线性模型</a></li>
-<li><a class="" href="chap-bayesian-models.html"><span class="header-section-number">28</span> 贝叶斯模型</a></li>
 <li class="book-part">数据建模</li>
 <li><a class="" href="chap-data-modeling.html">介绍</a></li>
-<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">29</span> 文本分析</a></li>
-<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">30</span> 生存分析</a></li>
-<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">31</span> 时序分析</a></li>
+<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">28</span> 文本分析</a></li>
+<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">29</span> 生存分析</a></li>
+<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">30</span> 时序分析</a></li>
 <li class="book-part">时空数据</li>
 <li><a class="" href="chap-spatio-temporal-data.html">介绍</a></li>
-<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">32</span> 空间数据分析</a></li>
-<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">33</span> 空间数据可视化</a></li>
-<li><a class="" href="chap-case-study.html"><span class="header-section-number">34</span> 案例研究</a></li>
-<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">35</span> 数据探索</a></li>
+<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">31</span> 空间数据分析</a></li>
+<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">32</span> 空间数据可视化</a></li>
+<li><a class="" href="chap-case-study.html"><span class="header-section-number">33</span> 案例研究</a></li>
+<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">34</span> 数据探索</a></li>
 <li class="book-part">机器学习</li>
 <li><a class="" href="chap-machine-learning.html">介绍</a></li>
-<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">36</span> 梯度提升机</a></li>
-<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">37</span> 数值优化</a></li>
+<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">35</span> 梯度提升机</a></li>
+<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">36</span> 数值优化</a></li>
 <li class="book-part">附录</li>
 <li><a class="" href="chap-linux-command-bash.html"><span class="header-section-number">A</span> 命令行操作</a></li>
 <li><a class="" href="chap-matrix-operations.html"><span class="header-section-number">B</span> 矩阵运算</a></li>
@@ -174,10 +199,10 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb631"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 给定一个/些 R 包名，返回该 R 包存放的位置</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/libPaths.html">.libPaths</a></span><span class="op">(</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">pkg_path</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"survival"</span>, <span class="st">"ggplot2"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/zpackages.html">.packages</a></span><span class="op">(</span><span class="cn">T</span>, lib.loc <span class="op">=</span> <span class="va">pkg_path</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"survival"</span>, <span class="st">"ggplot2"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/zpackages.html">.packages</a></span><span class="op">(</span><span class="cn">T</span>, lib.loc <span class="op">=</span> <span class="va">pkg_path</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
-<pre><code>##      /home/runner/work/_temp/Library /opt/R/4.1.2/lib/R/library
-## [1,]                           FALSE                       TRUE
+<pre><code>##      /home/runner/work/_temp/Library /opt/R/4.1.3/lib/R/library
+## [1,]                            TRUE                       TRUE
 ## [2,]                            TRUE                      FALSE</code></pre>
 <div id="dm-view" class="section level2" number="6.1">
 <h2>
@@ -233,7 +258,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">ls</span><span class="op">)</span></code></pre></div>
 <pre><code>## 89880 bytes</code></pre>
 <div class="sourceCode" id="cb652"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">library</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">library</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "1.8 Mb"</code></pre>
 </div>
 <div id="dm-subset" class="section level2" number="6.2">
@@ -264,7 +289,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 143          5.8         2.7          5.1         1.9 virginica</code></pre>
 <div class="sourceCode" id="cb659"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 在行的子集范围内</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">Species</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"virginica"</span>, <span class="st">"versicolor"</span><span class="op">)</span> <span class="op">&amp;</span>
+<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">Species</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"virginica"</span>, <span class="st">"versicolor"</span><span class="op">)</span> <span class="op">&amp;</span>
   <span class="va">Sepal.Length</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
 ## 68           5.8         2.7          4.1         1.0 versicolor
@@ -276,7 +301,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb661"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 在列的子集内 先选中列</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">Sepal.Length</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span>,
-  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Species"</span><span class="op">)</span>
+  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Species"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length    Species
 ## 15           5.8     setosa
@@ -326,7 +351,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## Missouri             0.8    70.69    9.3
 ## Montana              0.6    70.56    5.0</code></pre>
 <div class="rmdnote">
-<p>警告：这是一个为了交互使用打造的便捷函数。对于编程，最好使用标准的子集函数，如 <code>[</code>，特别地，参数 <code>subset</code> 的非标准计算(non-standard evaluation)<a href="references.html#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a> 可能带来意想不到的后果。</p>
+<p>警告：这是一个为了交互使用打造的便捷函数。对于编程，最好使用标准的子集函数，如 <code>[</code>，特别地，参数 <code>subset</code> 的非标准计算(non-standard evaluation)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Thomas Lumley (2003) Standard nonstandard evaluation rules. &lt;a href="https://developer.r-project.org/nonstandard-eval.pdf" class="uri"&gt;https://developer.r-project.org/nonstandard-eval.pdf&lt;/a&gt;&lt;/p&gt;'><sup>21</sup></a> 可能带来意想不到的后果。</p>
 </div>
 <p>使用索引 <code>[</code></p>
 <div class="sourceCode" id="cb669"><pre class="downlit sourceCode r">
@@ -346,7 +371,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="va">iris</span><span class="op">[</span>
   <span class="va">iris</span><span class="op">$</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"virginica"</span> <span class="op">&amp;</span>
     <span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>,
-  <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Species"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Species"</span><span class="op">)</span>
 <span class="op">]</span></code></pre></div>
 <pre><code>##     Sepal.Length   Species
 ## 102          5.8 virginica
@@ -451,8 +476,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb692"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">45</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-    name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Orange"</span>, <span class="st">"Apple"</span><span class="op">)</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,
-    numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,
+    name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Orange"</span>, <span class="st">"Apple"</span><span class="op">)</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,
+    numbers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,
     value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span>
 <span class="va">dat</span></code></pre></div>
 <pre><code>##     name numbers      value
@@ -471,8 +496,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 5  Apple -0.8981073 -0.3347941 -0.5013782 -0.1745357</code></pre>
 <div class="sourceCode" id="cb696"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## times need not be numeric</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
-                 visit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Before"</span>,<span class="st">"After"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
+                 visit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Before"</span>,<span class="st">"After"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,
                  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="va">df</span></code></pre></div>
 <pre><code>##   id  visit          x          y
@@ -515,7 +540,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gambia</span><span class="op">)</span>
 <span class="co"># Building a "village-level" data frame</span>
 <span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="va">gambia</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="st">"y"</span>, <span class="va">gambia</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
-<span class="va">village</span> <span class="op">&lt;-</span> <span class="va">gambia</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span>
+<span class="va">village</span> <span class="op">&lt;-</span> <span class="va">gambia</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">ind</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span>
 <span class="va">village</span><span class="op">$</span><span class="va">prev</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">gambia</span><span class="op">$</span><span class="va">pos</span>, <span class="va">ind</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">village</span><span class="op">)</span></code></pre></div>
 </div>
@@ -559,11 +584,11 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p>sort/ordered 排序， 默认是升序</p>
 <div class="sourceCode" id="cb710"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Hi"</span>, <span class="st">"Med"</span>, <span class="st">"Hi"</span>, <span class="st">"Low"</span><span class="op">)</span>,
-    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Med"</span>, <span class="st">"Hi"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>
+  b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hi"</span>, <span class="st">"Med"</span>, <span class="st">"Hi"</span>, <span class="st">"Low"</span><span class="op">)</span>,
+    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Med"</span>, <span class="st">"Hi"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span>,
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"D"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">3</span>, <span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span>,
-  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"D"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">3</span>, <span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span>,
+  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">dd</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    4 obs. of  4 variables:
@@ -711,20 +736,20 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb739"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">authors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   <span class="co">## I(*) : use character columns of names to get sensible sort order</span>
-  surname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Tukey"</span>, <span class="st">"Venables"</span>, <span class="st">"Tierney"</span>, <span class="st">"Ripley"</span>, <span class="st">"McNeil"</span><span class="op">)</span><span class="op">)</span>,
-  nationality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"Australia"</span>, <span class="st">"US"</span>, <span class="st">"UK"</span>, <span class="st">"Australia"</span><span class="op">)</span>,
-  deceased <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+  surname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Tukey"</span>, <span class="st">"Venables"</span>, <span class="st">"Tierney"</span>, <span class="st">"Ripley"</span>, <span class="st">"McNeil"</span><span class="op">)</span><span class="op">)</span>,
+  nationality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"Australia"</span>, <span class="st">"US"</span>, <span class="st">"UK"</span>, <span class="st">"Australia"</span><span class="op">)</span>,
+  deceased <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="va">authorN</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">within</a></span><span class="op">(</span><span class="va">authors</span>, <span class="op">{</span>
   <span class="va">name</span> <span class="op">&lt;-</span> <span class="va">surname</span>
   <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">surname</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="va">books</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>
+  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
     <span class="st">"Tukey"</span>, <span class="st">"Venables"</span>, <span class="st">"Tierney"</span>,
     <span class="st">"Ripley"</span>, <span class="st">"Ripley"</span>, <span class="st">"McNeil"</span>, <span class="st">"R Core"</span>
   <span class="op">)</span><span class="op">)</span>,
-  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>
+  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
     <span class="st">"Exploratory Data Analysis"</span>,
     <span class="st">"Modern Applied Statistics ..."</span>,
     <span class="st">"LISP-STAT"</span>,
@@ -732,7 +757,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
     <span class="st">"Interactive Data Analysis"</span>,
     <span class="st">"An Introduction to R"</span>
   <span class="op">)</span>,
-  other.author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>
+  other.author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
     <span class="cn">NA</span>, <span class="st">"Ripley"</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>,
     <span class="st">"Venables &amp; Smith"</span>
   <span class="op">)</span>
@@ -803,7 +828,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 </h2>
 <p>单个数值型向量去重，此时和 unique 函数作用一样</p>
 <div class="sourceCode" id="cb751"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">20</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">20</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">7</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1]  9 10 11 12 13 14 15 16 17 18 19 20  1  2  3  4  5  3  4  5  6  7  0  1  2
 ## [26]  3  4  5  6  7  8</code></pre>
 <div class="sourceCode" id="cb753"><pre class="downlit sourceCode r">
@@ -817,8 +842,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb757"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
   z <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>
 <span class="op">)</span>
 <span class="va">df</span></code></pre></div>
@@ -834,7 +859,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 9  0 0  9
 ## 10 1 0 10</code></pre>
 <div class="sourceCode" id="cb759"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##   x y z
 ## 1 0 0 1
 ## 2 0 1 2
@@ -842,7 +867,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="rmdtip">
 <p>去掉字段 cyl 和 gear 有重复的记录，data.table 方式</p>
 <div class="sourceCode" id="cb761"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>,<span class="fu">.</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl gear
 ## 1: 21.0   6    4
 ## 2: 22.8   4    4
@@ -868,7 +893,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## Ferrari Dino      19.7   6    5</code></pre>
 <p>dplyr 的去重操作不需要拷贝一个新的数据对象 mtcars_df，并且可以以管道的方式将后续的选择操作连接起来，代码更加具有可读性。</p>
 <div class="sourceCode" id="cb765"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>,<span class="st">"cyl"</span>,<span class="st">"gear"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>,<span class="st">"cyl"</span>,<span class="st">"gear"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl gear
 ## 1: 21.0   6    4
 ## 2: 22.8   4    4
@@ -1426,7 +1451,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ##   Sum   1.00000000 1.00000000 1.00000000 1.00000000 1.00000000</code></pre>
 <p>转换成百分比，将小数四舍五入转化为百分数，保留两位小数点</p>
 <div class="sourceCode" id="cb864"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-round.html">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">aiq.marprop</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">aiq.marprop</span>, <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>##        Month
 ## Oz.high      5      6      7      8      9
 ##   FALSE  96.15 100.00  76.92  73.08  93.10
@@ -1466,7 +1491,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ##        Rejected       19   8 391 244 299 317</code></pre>
 <p>将录取性别和院系进行对比</p>
 <div class="sourceCode" id="cb873"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/marginSums.html">margin.table</a></span><span class="op">(</span><span class="va">UCBA2DF.tab</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/marginSums.html">margin.table</a></span><span class="op">(</span><span class="va">UCBA2DF.tab</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>##         Dept
 ## Gender            A          B          C          D          E          F
 ##   Male   0.30657748 0.20810108 0.12077295 0.15496098 0.07097733 0.13861018
@@ -1482,7 +1507,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100000</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
 <span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html">logical</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-<span class="va">i</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+<span class="va">i</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">n</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
 <span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">]</span>, times <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></code></pre></div>
 <p><span class="todo">使用 <code>subset</code> 函数与 <code>[</code> 比较</span></p>
 </div>
@@ -1492,7 +1517,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 </h2>
 <p>多维数组的行列是怎么定义的 <code><a href="https://rdrr.io/r/base/array.html">?array</a></code> 轴的概念，画个图表示数组</p>
 <div class="sourceCode" id="cb876"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## , , 1
 ## 
 ##      [,1] [,2] [,3]
@@ -1515,7 +1540,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## [3,]   21   24   27</code></pre>
 <p>垂直于Z轴的平面去截三维立方体，3 代表 z 轴，得到三个截面（二维矩阵）</p>
 <div class="sourceCode" id="cb878"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/asplit.html">asplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/asplit.html">asplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [[1]]
 ##      [,1] [,2] [,3]
 ## [1,]    1    4    7
@@ -1535,7 +1560,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## [3,]   21   24   27</code></pre>
 <p>对每个二维矩阵按列求和</p>
 <div class="sourceCode" id="cb880"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/asplit.html">asplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, <span class="va">apply</span>, <span class="fl">2</span>, <span class="va">sum</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/asplit.html">asplit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, <span class="va">apply</span>, <span class="fl">2</span>, <span class="va">sum</span><span class="op">)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1]  6 15 24
 ## 
@@ -1576,7 +1601,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <span class="fu"><a href="https://rdrr.io/r/base/list.html">alist</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
 <p><code>list</code> 函数用来构造、转化和检查 R 列表对象。下面创建一个临时列表对象 tmp ，它包含两个元素 A 和 B，两个元素都是向量，前者是数值型，后者是字符型</p>
 <div class="sourceCode" id="cb883"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="op">(</span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## $A
 ## [1] 1 2 3
 ## 
@@ -1765,7 +1790,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="va">aq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">within</a></span><span class="op">(</span><span class="va">airquality</span>, <span class="op">{</span>
   <span class="va">lOzone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Ozone</span><span class="op">)</span> <span class="co"># 取对数</span>
   <span class="va">Month</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">month.abb</span><span class="op">[</span><span class="va">Month</span><span class="op">]</span><span class="op">)</span> <span class="co"># 字符串型转因子型</span>
-  <span class="va">cTemp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">Temp</span> <span class="op">-</span> <span class="fl">32</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">9</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># 从华氏温度到摄氏温度转化</span>
+  <span class="va">cTemp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">Temp</span> <span class="op">-</span> <span class="fl">32</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5</span> <span class="op">/</span> <span class="fl">9</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># 从华氏温度到摄氏温度转化</span>
   <span class="va">S.cT</span> <span class="op">&lt;-</span> <span class="va">Solar.R</span> <span class="op">/</span> <span class="va">cTemp</span> <span class="co"># 使用新创建的变量</span>
   <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">Day</span>, <span class="va">Temp</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
@@ -1786,14 +1811,14 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
     subset <span class="op">=</span> <span class="op">(</span><span class="va">supp</span> <span class="op">==</span> <span class="st">"VC"</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#4285f4"</span>,
     main <span class="op">=</span> <span class="st">"Guinea Pigs' Tooth Growth"</span>,
     xlab <span class="op">=</span> <span class="st">"Vitamin C dose mg"</span>,
-    ylab <span class="op">=</span> <span class="st">"tooth length"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>
+    ylab <span class="op">=</span> <span class="st">"tooth length"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>
   <span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">len</span> <span class="op">~</span> <span class="va">dose</span>,
     add <span class="op">=</span> <span class="cn">TRUE</span>, boxwex <span class="op">=</span> <span class="fl">0.25</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span> <span class="op">+</span> <span class="fl">0.2</span>,
     subset <span class="op">=</span> <span class="va">supp</span> <span class="op">==</span> <span class="st">"OJ"</span>, col <span class="op">=</span> <span class="st">"#EA4335"</span>
   <span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Ascorbic acid"</span>, <span class="st">"Orange juice"</span><span class="op">)</span>,
-    fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"#4285f4"</span>, <span class="st">"#EA4335"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Ascorbic acid"</span>, <span class="st">"Orange juice"</span><span class="op">)</span>,
+    fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#4285f4"</span>, <span class="st">"#EA4335"</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="data-manipulation_files/figure-html/subset-in-boxplot-1.png" width="75%" style="display: block; margin: auto;"></div>
@@ -1805,7 +1830,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
     boxwex <span class="op">=</span> <span class="fl">0.25</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span> <span class="op">-</span> <span class="fl">0.2</span>,
     col <span class="op">=</span> <span class="st">"#4285f4"</span>, main <span class="op">=</span> <span class="st">"Guinea Pigs' Tooth Growth"</span>,
     xlab <span class="op">=</span> <span class="st">"Vitamin C dose mg"</span>,
-    ylab <span class="op">=</span> <span class="st">"tooth length"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>
+    ylab <span class="op">=</span> <span class="st">"tooth length"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span>
@@ -1815,8 +1840,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
     col <span class="op">=</span> <span class="st">"#EA4335"</span>
   <span class="op">)</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Ascorbic acid"</span>, <span class="st">"Orange juice"</span><span class="op">)</span>,
-  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"#4285f4"</span>, <span class="st">"#EA4335"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Ascorbic acid"</span>, <span class="st">"Orange juice"</span><span class="op">)</span>,
+  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#4285f4"</span>, <span class="st">"#EA4335"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="data-manipulation_files/figure-html/subset-out-boxplot-1.png" width="75%" style="display: block; margin: auto;"></div>
 <p>可以作为数据变换 <code>transform</code> 的一种替代，它也比较像 <strong>dplyr</strong> 包的 <code>mutate</code> 函数</p>
@@ -1909,7 +1934,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p>除此之外，还有 <code><a href="https://rdrr.io/r/stats/dendrapply.html">dendrapply()</a></code> 专门处理层次聚类或分类回归树型结构， 而函数 <code><a href="https://rdrr.io/r/stats/kernapply.html">kernapply()</a></code> 用于时间序列的平滑处理</p>
 <div class="sourceCode" id="cb930"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Reproduce example 10.4.3 from Brockwell and Davis (1991) [@Brockwell_1991_Time]</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/spectrum.html">spectrum</a></span><span class="op">(</span><span class="va">sunspot.year</span>, kernel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kernel.html">kernel</a></span><span class="op">(</span><span class="st">"daniell"</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, log <span class="op">=</span> <span class="st">"no"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/stats/spectrum.html">spectrum</a></span><span class="op">(</span><span class="va">sunspot.year</span>, kernel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kernel.html">kernel</a></span><span class="op">(</span><span class="st">"daniell"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">7</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, log <span class="op">=</span> <span class="st">"no"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:spectrum-sunspot-year"></span>
 <img src="data-manipulation_files/figure-html/spectrum-sunspot-year-1.png" alt="太阳黑子的频谱" width="75%"><p class="caption">
@@ -1944,7 +1969,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ##  [7]  2.8576069  4.3040589  1.7588056  5.7887535</code></pre>
 <p>我们借用图<a href="chap-data-manipulation.html#fig:mapply-lapply">6.4</a>来看一下 mapply 的效果，多组随机数生成非常有助于快速模拟。</p>
 <div class="sourceCode" id="cb933"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">samples</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"darkorange"</span><span class="op">)</span>
@@ -1985,7 +2010,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 50% 1.2094576 1.9350433 4.728734 4.733285
 ## 75% 1.6346732 4.2491890 6.173450 5.729684</code></pre>
 <div class="sourceCode" id="cb940"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">fivenum</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>Min. <span class="op">=</span> <span class="fl">0</span>, <span class="st">"1st Qu."</span> <span class="op">=</span> <span class="fl">0</span>, Median <span class="op">=</span> <span class="fl">0</span>, <span class="st">"3rd Qu."</span> <span class="op">=</span> <span class="fl">0</span>, Max. <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">fivenum</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Min. <span class="op">=</span> <span class="fl">0</span>, <span class="st">"1st Qu."</span> <span class="op">=</span> <span class="fl">0</span>, Median <span class="op">=</span> <span class="fl">0</span>, <span class="st">"3rd Qu."</span> <span class="op">=</span> <span class="fl">0</span>, Max. <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                [,1]       [,2]     [,3]       [,4]
 ## Min.    -1.79653432 -4.0775292 2.557700  0.7499813
 ## 1st Qu. -0.09802317  0.2937544 3.331296  1.7588056
@@ -2077,7 +2102,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">df</span><span class="op">$</span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">z</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></code></pre></div>
 <pre><code>##    x y  z
 ## 7  7 1 50
@@ -2128,8 +2153,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 
 <span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
-  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
+  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="va">dt</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>x_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, y_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">z</span>, <span class="va">w</span><span class="op">)</span><span class="op">]</span></code></pre></div>
@@ -2141,7 +2166,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 5: B b     2     2
 ## 6: C b     2     3</code></pre>
 <div class="sourceCode" id="cb974"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dt</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>x_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, y_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">mget</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"z"</span>, <span class="st">"w"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dt</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>x_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, y_sum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/get.html">mget</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"z"</span>, <span class="st">"w"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    z w x_sum y_sum
 ## 1: A a     4     2
 ## 2: B a     4     4
@@ -2159,7 +2184,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
       <span class="fl">6</span>,
       <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span><span class="st">"input_vars"</span>,
         label <span class="op">=</span> <span class="st">"变量"</span>, <span class="co"># 给筛选框取名</span>
-        choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>z <span class="op">=</span> <span class="st">"z"</span>, w <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, <span class="co"># 待选的值</span>
+        choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>z <span class="op">=</span> <span class="st">"z"</span>, w <span class="op">=</span> <span class="st">"w"</span><span class="op">)</span>, <span class="co"># 待选的值</span>
         selected <span class="op">=</span> <span class="st">"z"</span>, <span class="co"># 指定默认值</span>
         multiple <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># 允许多选</span>
       <span class="op">)</span>,
@@ -2172,8 +2197,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 
 <span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
-  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
+  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
@@ -2194,8 +2219,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <span class="header-section-number">6.18</span> 合并操作<a class="anchor" aria-label="anchor" href="#sec-merge-two-tables"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb977"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="va">dat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">dat1</span>, z <span class="op">=</span> <span class="va">dat2</span><span class="op">$</span><span class="va">z</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">dat1</span><span class="op">$</span><span class="va">x</span>, <span class="va">dat2</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##    x y z
@@ -2237,7 +2262,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## NULL</code></pre>
 <p>PlantGrowth 数据集的重塑操作也可以使用内置的函数 <code><a href="https://rdrr.io/r/stats/reshape.html">reshape()</a></code> 实现</p>
 <div class="sourceCode" id="cb983"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">PlantGrowth</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">PlantGrowth</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">PlantGrowth</span>, idvar <span class="op">=</span> <span class="st">"group"</span>, v.names <span class="op">=</span> <span class="st">"weight"</span>,
   timevar <span class="op">=</span> <span class="st">"id"</span>, direction <span class="op">=</span> <span class="st">"wide"</span>,
@@ -2394,8 +2419,8 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p><code>CASE WHEN</code> 是 SQL 中的条件判断语句，<strong>data.table</strong> 中的函数 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> 可与之等价。值得注意的是，<code><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase()</a></code> 需要 <strong>data.table</strong> 版本 1.13.0 及以上。</p>
 <div class="sourceCode" id="cb997"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
-  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">56.8</span>, <span class="fl">57.2</span>, <span class="fl">46.3</span>, <span class="fl">38.5</span><span class="op">)</span>,
-  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"0"</span>, <span class="st">""</span>, <span class="st">"0"</span><span class="op">)</span>
+  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">56.8</span>, <span class="fl">57.2</span>, <span class="fl">46.3</span>, <span class="fl">38.5</span><span class="op">)</span>,
+  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"0"</span>, <span class="st">""</span>, <span class="st">"0"</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co"># 1 表示男，0表示女，空表示未知</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">transform</a></span><span class="op">(</span><span class="va">dat</span>, gender_cn <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fcase.html">fcase</a></span><span class="op">(</span>
@@ -2423,9 +2448,9 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <div class="sourceCode" id="cb999"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  num_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, num_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,
-  group_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">16</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-  group_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">16</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+  num_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, num_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,
+  group_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">16</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+  group_b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, size <span class="op">=</span> <span class="fl">16</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
 <span class="va">dat</span></code></pre></div>
@@ -2460,19 +2485,19 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <span class="header-section-number">6.23.2</span> 分组计数<a class="anchor" aria-label="anchor" href="#subsec-count-by-group"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb1001"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span> <span class="co"># dat[, .N , by = .(group_a)]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span> <span class="co"># dat[, .N , by = .(group_a)]</span></code></pre></div>
 <pre><code>##    group_a V1
 ## 1:       c  2
 ## 2:       b  8
 ## 3:       a  6</code></pre>
 <div class="sourceCode" id="cb1003"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_b</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_b</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    group_b V1
 ## 1:       B  9
 ## 2:       C  6
 ## 3:       A  1</code></pre>
 <div class="sourceCode" id="cb1005"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span>, <span class="va">group_b</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span>, <span class="va">group_b</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    group_a group_b V1
 ## 1:       c       B  2
 ## 2:       b       B  4
@@ -2488,12 +2513,12 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p>以 <code>group_a</code> 为组别， a、 b、 c 分别有 6、 8、 2 条记录</p>
 <div class="sourceCode" id="cb1007"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 无放回的抽样</span>
-<span class="va">dt_sample_1</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span>
+<span class="va">dt_sample_1</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span>
 <span class="co"># 有放回的随机抽样</span>
-<span class="va">dt_sample_2</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fl">3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span></code></pre></div>
+<span class="va">dt_sample_2</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fl">3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span></code></pre></div>
 <p>可能存在该组样本不平衡，有的组的样本量不足你想要的样本量。每个组无放回地抽取 4 个样本，如果该组样本量不足 4，则全部抽取全部样本量。</p>
 <div class="sourceCode" id="cb1008"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fl">4</span>, <span class="va">.N</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.N</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fl">4</span>, <span class="va">.N</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">group_a</span><span class="op">]</span></code></pre></div>
 <pre><code>##     group_a num_a num_b group_b
 ##  1:       c     1     1       B
 ##  2:       c     4     2       B
@@ -2505,7 +2530,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ##  8:       a     2     3       B
 ##  9:       a     2     4       A
 ## 10:       a     1     4       C</code></pre>
-<p>还可以按照指定的比例抽取样本量 <a href="references.html#fn22" class="footnote-ref" id="fnref22"><sup>22</sup></a></p>
+<p>还可以按照指定的比例抽取样本量 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stackoverflow.com/questions/18258690/take-randomly-sample-based-on-groups" class="uri"&gt;https://stackoverflow.com/questions/18258690/take-randomly-sample-based-on-groups&lt;/a&gt;&lt;/p&gt;'><sup>22</sup></a></p>
 </div>
 <div id="subsec-order-by-group" class="section level3" number="6.23.4">
 <h3>
@@ -2574,18 +2599,18 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p><code><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">setorder()</a></code> 函数直接修改原始数据记录的排序</p>
 <div class="sourceCode" id="cb1016"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">setorder</a></span><span class="op">(</span><span class="va">dat</span>, <span class="op">-</span><span class="va">num_a</span>, <span class="va">group_a</span><span class="op">)</span></code></pre></div>
-<p>参考多个列分组排序 <a href="references.html#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a></p>
+<p>参考多个列分组排序 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns" class="uri"&gt;https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns&lt;/a&gt;&lt;/p&gt;'><sup>23</sup></a></p>
 <div class="rmdtip">
 <p>如果数据集 dat 包含缺失值，考虑去掉缺失值</p>
 <div class="sourceCode" id="cb1017"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    group_a V1
 ## 1:       c  2
 ## 2:       b  8
 ## 3:       a  6</code></pre>
 <p>如果数据集 dat 包含重复值，考虑去掉重复值</p>
 <div class="sourceCode" id="cb1019"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dat</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">num_a</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">group_a</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    group_a V1
 ## 1:       c  2
 ## 2:       b  4
@@ -2608,7 +2633,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <p>对 iris 各个列排序</p>
 <div class="sourceCode" id="cb1023"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"order"</span>, args <span class="op">=</span> <span class="va">dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"order"</span>, args <span class="op">=</span> <span class="va">dat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="va">dat</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ## 1:          4.6         3.1          1.5         0.2  setosa
@@ -2633,7 +2658,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 ## 9:     setosa          5.7         3.8          1.7         0.3</code></pre>
 <p>对 iris 各个列排序，依次对第 5、1、2、3 列升序排列</p>
 <div class="sourceCode" id="cb1027"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"order"</span>, args <span class="op">=</span> <span class="va">iris</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="st">"order"</span>, args <span class="op">=</span> <span class="va">iris</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 ## 1:          4.3         3.0          1.1         0.1  setosa
@@ -2762,6 +2787,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 </div>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="chap-regular-expressions.html"><span class="header-section-number">5</span> 正则表达式</a></div>
 <div class="next"><a href="chap-advanced-manipulation.html"><span class="header-section-number">7</span> 高级数据操作</a></div>
@@ -2824,7 +2850,7 @@ Tabset 的方式支持展示 Base R dplyr data.table 三种
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

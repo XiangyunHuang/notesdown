@@ -7,7 +7,7 @@
 <title>第 7 章 高级数据操作 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content='library(data.table) library(magrittr) 介绍 data.table 处理数据的方式，对标 dplyr 的基本操作  7.1 基础介绍 # 用一个真实的数据集替换，让每一个操作都有实际含义和价值 mtcars DT &lt;- data.table(  x = rep(c("b", "a", "c"), each = 3),  v = c(1, 1, 1, 2,...'>
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="第 7 章 高级数据操作 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="第 7 章 高级数据操作 | 现代应用统计与 R 语言">
 <meta name="twitter:description" content='library(data.table) library(magrittr) 介绍 data.table 处理数据的方式，对标 dplyr 的基本操作  7.1 基础介绍 # 用一个真实的数据集替换，让每一个操作都有实际含义和价值 mtcars DT &lt;- data.table(  x = rep(c("b", "a", "c"), each = 3),  v = c(1, 1, 1, 2,...'>
 <meta name="twitter:image" content="/images/cover.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
@@ -37,7 +37,33 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -100,22 +126,21 @@
 <li><a class="" href="chap-statistical-models.html">介绍</a></li>
 <li><a class="" href="chap-linear-models.html"><span class="header-section-number">26</span> 线性模型</a></li>
 <li><a class="" href="chap-generalized-linear-models.html"><span class="header-section-number">27</span> 广义线性模型</a></li>
-<li><a class="" href="chap-bayesian-models.html"><span class="header-section-number">28</span> 贝叶斯模型</a></li>
 <li class="book-part">数据建模</li>
 <li><a class="" href="chap-data-modeling.html">介绍</a></li>
-<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">29</span> 文本分析</a></li>
-<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">30</span> 生存分析</a></li>
-<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">31</span> 时序分析</a></li>
+<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">28</span> 文本分析</a></li>
+<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">29</span> 生存分析</a></li>
+<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">30</span> 时序分析</a></li>
 <li class="book-part">时空数据</li>
 <li><a class="" href="chap-spatio-temporal-data.html">介绍</a></li>
-<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">32</span> 空间数据分析</a></li>
-<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">33</span> 空间数据可视化</a></li>
-<li><a class="" href="chap-case-study.html"><span class="header-section-number">34</span> 案例研究</a></li>
-<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">35</span> 数据探索</a></li>
+<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">31</span> 空间数据分析</a></li>
+<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">32</span> 空间数据可视化</a></li>
+<li><a class="" href="chap-case-study.html"><span class="header-section-number">33</span> 案例研究</a></li>
+<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">34</span> 数据探索</a></li>
 <li class="book-part">机器学习</li>
 <li><a class="" href="chap-machine-learning.html">介绍</a></li>
-<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">36</span> 梯度提升机</a></li>
-<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">37</span> 数值优化</a></li>
+<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">35</span> 梯度提升机</a></li>
+<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">36</span> 数值优化</a></li>
 <li class="book-part">附录</li>
 <li><a class="" href="chap-linux-command-bash.html"><span class="header-section-number">A</span> 命令行操作</a></li>
 <li><a class="" href="chap-matrix-operations.html"><span class="header-section-number">B</span> 矩阵运算</a></li>
@@ -148,9 +173,9 @@
 <div class="sourceCode" id="cb1030"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 用一个真实的数据集替换，让每一个操作都有实际含义和价值 mtcars</span>
 <span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"c"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
-  v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,
-  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">6</span><span class="op">)</span>, a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, b <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">1</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"c"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
+  v <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">6</span><span class="op">)</span>, a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, b <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">1</span>
 <span class="op">)</span>
 <span class="va">DT</span></code></pre></div>
 <pre><code>##    x v y a b
@@ -252,7 +277,7 @@
 ## 2: c  5
 ## 3: b  3</code></pre>
 <div class="sourceCode" id="cb1054"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">.N</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">sum</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 计算每一组的和，每一组的观测数</span></code></pre></div>
+<code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">.N</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">sum</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 计算每一组的和，每一组的观测数</span></code></pre></div>
 <pre><code>##    x N v  y  a  b
 ## 1: b 3 3 10  6 24
 ## 2: a 3 5 10 15 15
@@ -278,7 +303,7 @@
 ## 9: c  5.6666667 -2.3333333</code></pre>
 <div class="sourceCode" id="cb1058"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># using rleid, get max(y) and min of all cols in .SDcols for each consecutive run of 'v'</span>
-<span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu">.</span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rleid.html">rleid</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="va">v</span><span class="op">:</span><span class="va">b</span><span class="op">]</span></code></pre></div>
+<span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">.</span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rleid.html">rleid</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="va">v</span><span class="op">:</span><span class="va">b</span><span class="op">]</span></code></pre></div>
 <pre><code>##    rleid y v y a b
 ## 1:     1 6 1 1 1 7
 ## 2:     2 3 2 1 4 5
@@ -307,7 +332,7 @@
 ## 3: 19.2 167.6
 ## 4: 17.8 167.6</code></pre>
 <div class="sourceCode" id="cb1065"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars_df</span>, subset <span class="op">=</span> <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars_df</span>, subset <span class="op">=</span> <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg  disp
 ## 1: 21.0 160.0
 ## 2: 21.0 160.0
@@ -437,7 +462,7 @@
 <p>修改列名，另存一份生效</p>
 <div class="sourceCode" id="cb1089"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sub_mtcars_df</span> <span class="op">&lt;-</span> <span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span> 
-<span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear ave_mpg
 ## 1:   6    4  19.750
 ## 2:   4    4  26.925
@@ -461,7 +486,7 @@
 ## 8:   6    5   19.700</code></pre>
 <p>修改列名并直接起作用，在原来的数据集上生效</p>
 <div class="sourceCode" id="cb1093"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html">setnames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, old <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"mean_mpg"</span><span class="op">)</span>, new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html">setnames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, old <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mean_mpg"</span><span class="op">)</span>, new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># sub_mtcars_df 已经修改了列名</span>
 <span class="va">sub_mtcars_df</span></code></pre></div>
 <pre><code>##    cyl gear ave_mpg
@@ -521,32 +546,32 @@
 <p>melt 宽的变长的</p>
 <div class="sourceCode" id="cb1099"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
-  i_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="cn">NA</span><span class="op">)</span>,
-  i_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span>,
-  f_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="cn">NA</span><span class="op">)</span>, <span class="fl">6</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-  f_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"z"</span>, <span class="st">"a"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"x"</span>, <span class="st">"x"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
-  c_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="cn">NA</span><span class="op">)</span>, <span class="fl">6</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-  d_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, origin <span class="op">=</span> <span class="st">"2013-09-01"</span><span class="op">)</span>,
+  i_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="cn">NA</span><span class="op">)</span>,
+  i_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span>,
+  f_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="cn">NA</span><span class="op">)</span>, <span class="fl">6</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
+  f_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"z"</span>, <span class="st">"a"</span>, <span class="st">"x"</span>, <span class="st">"c"</span>, <span class="st">"x"</span>, <span class="st">"x"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+  c_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="cn">NA</span><span class="op">)</span>, <span class="fl">6</span>, <span class="cn">TRUE</span><span class="op">)</span>,
+  d_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, origin <span class="op">=</span> <span class="st">"2013-09-01"</span><span class="op">)</span>,
   d_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">1</span>, origin <span class="op">=</span> <span class="st">"2012-01-01"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb1100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">i_1</span>, <span class="va">i_2</span>, <span class="va">f_1</span>, <span class="va">f_2</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    i_1 i_2 f_1 f_2
-## 1:   1  NA   b   z
+## 1:   1  NA   c   z
 ## 2:   2   6   b   a
-## 3:   3   7   a   x
-## 4:   4   8   a   c
-## 5:   5   9   a   x
-## 6:  NA  10   c   x</code></pre>
+## 3:   3   7   b   x
+## 4:   4   8   c   c
+## 5:   5   9   b   x
+## 6:  NA  10   a   x</code></pre>
 <div class="sourceCode" id="cb1102"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span><span class="va">DT</span>, id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"f_1"</span>, <span class="st">"f_2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span><span class="va">DT</span>, id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"f_1"</span>, <span class="st">"f_2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     i_1 i_2 variable value
-##  1:   1  NA      f_1     b
+##  1:   1  NA      f_1     c
 ##  2:   2   6      f_1     b
-##  3:   3   7      f_1     a
-##  4:   4   8      f_1     a
-##  5:   5   9      f_1     a
-##  6:  NA  10      f_1     c
+##  3:   3   7      f_1     b
+##  4:   4   8      f_1     c
+##  5:   5   9      f_1     b
+##  6:  NA  10      f_1     a
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -611,8 +636,8 @@
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
 <div class="sourceCode" id="cb1116"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ToothGrowth</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">6</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span><span class="va">ToothGrowth</span>, v.names <span class="op">=</span> <span class="st">"len"</span>, idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"supp"</span>, <span class="st">"dose"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">ToothGrowth</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">6</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span><span class="va">ToothGrowth</span>, v.names <span class="op">=</span> <span class="st">"len"</span>, idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supp"</span>, <span class="st">"dose"</span><span class="op">)</span>,
         timevar <span class="op">=</span> <span class="st">"time"</span>, direction <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    supp dose len.1 len.2 len.3 len.4 len.5 len.6 len.7 len.8 len.9 len.10
 ## 1    VC  0.5   4.2  11.5   7.3   5.8   6.4  10.0  11.2  11.2   5.2    7.0
@@ -823,14 +848,14 @@
 </h3>
 <div class="sourceCode" id="cb1134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
-<span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
+<span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear
 ## 1:   6    4
 ## 2:   6    4
 ## 3:   4    4</code></pre>
 <div class="sourceCode" id="cb1136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
-<span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
+<span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear
 ## 1:   6    4
 ## 2:   6    4
@@ -845,10 +870,10 @@
 <p>反选多列，选择除了 cyl 和 gear 的列</p>
 <div class="sourceCode" id="cb1140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 或者 mtcars[, setdiff(names(mtcars), c("cyl", "gear"))]</span>
-<span class="va">mtcars</span><span class="op">[</span> , <span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>,<span class="st">"gear"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> </code></pre></div>
+<span class="va">mtcars</span><span class="op">[</span> , <span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>,<span class="st">"gear"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> </code></pre></div>
 <pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
 <div class="sourceCode" id="cb1142"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, select <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, select <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg disp  hp drat    wt  qsec vs am carb
 ## 1: 21.0  160 110 3.90 2.620 16.46  0  1    4
 ## 2: 21.0  160 110 3.90 2.875 17.02  0  1    4
@@ -896,7 +921,7 @@
 </h3>
 <div class="sourceCode" id="cb1152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
-<span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 ## 2: 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
@@ -908,7 +933,7 @@
 ## 8: 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
 <div class="sourceCode" id="cb1154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
-<span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
+<span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 ## 2: 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
@@ -919,7 +944,7 @@
 ## 7: 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
 ## 8: 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
 <div class="sourceCode" id="cb1156"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 ## 2: 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
@@ -991,7 +1016,7 @@
 <span class="header-section-number">7.2.7</span> 修改多列类型<a class="anchor" aria-label="anchor" href="#sec-modify-columns-type"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb1164"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">as.integer</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">as.integer</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
 <pre><code>## Classes 'data.table' and 'data.frame':   32 obs. of  11 variables:
 ##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
@@ -1049,7 +1074,7 @@
 <div class="sourceCode" id="cb1170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-rep.html">rep</a></span><span class="op">(</span><span class="fl">1949</span><span class="op">:</span><span class="fl">1960</span>, each <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,
+  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1949</span><span class="op">:</span><span class="fl">1960</span>, each <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,
   month <span class="op">=</span> <span class="va">month.abb</span>, num <span class="op">=</span> <span class="va">AirPassengers</span>
 <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span><span class="va">.</span>,
@@ -1269,7 +1294,7 @@
 <p>横向计算环比，如1949年2月相比1月增长多少、3月相比2月增长多少，以此类推，就是计算环比？纵向计算同比，如1950年1月相比1949年1月增长多少、1951年相比1950年1月增长多少？</p>
 <div class="sourceCode" id="cb1171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 环比横向/同比纵向</span>
-<span class="va">mom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-diff.html">diff</a></span><span class="op">(</span><span class="va">x</span>, lag <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># month to month</span>
+<span class="va">mom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">x</span>, lag <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># month to month</span>
 <span class="co"># 格式化输出</span>
 <span class="va">format_mom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="fu">mom</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"f"</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb1172"><pre class="downlit sourceCode r">
@@ -1292,9 +1317,9 @@
 </h3>
 <p>将所有列都保留，以 <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code> 方式合并</p>
 <div class="sourceCode" id="cb1173"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df1</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
-<span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
-<span class="va">df3</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">16</span><span class="op">:</span><span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">df1</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
+<span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
+<span class="va">df3</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">16</span><span class="op">:</span><span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
 <span class="va">all_dfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">df1</span>, <span class="va">df2</span>, <span class="va">df3</span><span class="op">)</span>
 <span class="co"># base</span>
 <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="va">all_dfs</span><span class="op">)</span></code></pre></div>
@@ -1431,7 +1456,7 @@
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>,
-  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>##   cyl mpg.mean mpg.median   hp.mean hp.median
 ## 1   4 26.66364   26.00000  82.63636  91.00000
@@ -1441,7 +1466,7 @@
 <code class="sourceCode R"><span class="co"># 数据一致性 https://d.cosx.org/d/420763-base-r</span>
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>, <span class="va">mtcars</span>,
-    FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+    FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>,
   <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind.data.frame</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
@@ -1457,7 +1482,7 @@
     median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"hp"</span><span class="op">)</span>
+by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"hp"</span><span class="op">)</span>
 <span class="op">]</span></code></pre></div>
 <pre><code>##    cyl mpg.mean mpg.median   hp.mean hp.median
 ## 1:   6 19.74286       19.7 122.28571     110.0
@@ -1486,7 +1511,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <code class="sourceCode R"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>,
           FUN <span class="op">=</span> <span class="va">median</span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html">setnames</a></span><span class="op">(</span><span class="va">tmp</span>, old <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"hp"</span><span class="op">)</span>, new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"median_mpg"</span>, <span class="st">"median_hp"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html">setnames</a></span><span class="op">(</span><span class="va">tmp</span>, old <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mpg"</span>, <span class="st">"hp"</span><span class="op">)</span>, new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"median_mpg"</span>, <span class="st">"median_hp"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tmp</span></code></pre></div>
 <pre><code>##    cyl median_mpg median_hp
 ## 1:   4       26.0      91.0
@@ -1521,7 +1546,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 </h3>
 <div class="sourceCode" id="cb1195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># https://stackoverflow.com/questions/19619666/change-column-position-of-data-table</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">setcolorder</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"median_mpg"</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>, <span class="st">"median_mpg"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">setcolorder</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"median_mpg"</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>, <span class="st">"median_mpg"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tmp</span></code></pre></div>
 <pre><code>##    median_mpg cyl median_hp
 ## 1:       15.2   8     192.5
@@ -1591,7 +1616,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="header-section-number">7.2.16</span> <code>:=</code> 和 <code>.()</code><a class="anchor" aria-label="anchor" href="#sec-assignment-by-reference"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb1205"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="va">mpg_rate</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-round.html">round</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="va">mpg_rate</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">mpg_rate</span>, <span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg_rate  mpg cyl vs am
 ##  1:    34.04 21.0   6  0  1
@@ -1628,7 +1653,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 32:    10.78 21.4   4  1  1
 ##     mpg_rate  mpg cyl vs am</code></pre>
 <div class="sourceCode" id="cb1207"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mpg_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-round.html">round</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mpg_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     cyl vs am mpg_rate
 ##  1:   6  0  1    34.04
 ##  2:   6  0  1    34.04
@@ -1727,7 +1752,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 </h2>
 <div class="sourceCode" id="cb1225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.2 (2021-11-01)
+<pre><code>## R version 4.1.3 (2022-03-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -1747,21 +1772,21 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] magrittr_2.0.1    data.table_1.14.2
+## [1] magrittr_2.0.3    data.table_1.14.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] highr_0.9        bslib_0.3.1      compiler_4.1.2   pillar_1.6.4    
-##  [5] jquerylib_0.1.4  tools_4.1.2      sysfonts_0.8.5   digest_0.6.29   
-##  [9] downlit_0.4.0    jsonlite_1.7.2   evaluate_0.14    memoise_2.0.1   
-## [13] lifecycle_1.0.1  tibble_3.1.6     pkgconfig_2.0.3  rlang_0.4.12    
-## [17] cli_3.1.0        DBI_1.1.2        curl_4.3.2       yaml_2.2.1      
-## [21] xfun_0.29        fastmap_1.1.0    stringr_1.4.0    dplyr_1.0.7     
-## [25] xml2_1.3.3       knitr_1.37       generics_0.1.1   fs_1.5.2        
-## [29] sass_0.4.0       vctrs_0.3.8      tidyselect_1.1.1 glue_1.6.0      
-## [33] R6_2.5.1         fansi_0.5.0      rmarkdown_2.11   bookdown_0.24   
-## [37] tidyr_1.1.4      purrr_0.3.4      backports_1.4.1  htmltools_0.5.2 
+##  [1] highr_0.9        bslib_0.3.1      compiler_4.1.3   pillar_1.7.0    
+##  [5] jquerylib_0.1.4  tools_4.1.3      sysfonts_0.8.8   digest_0.6.29   
+##  [9] downlit_0.4.0    jsonlite_1.8.0   evaluate_0.15    memoise_2.0.1   
+## [13] lifecycle_1.0.1  tibble_3.1.6     pkgconfig_2.0.3  rlang_1.0.2     
+## [17] DBI_1.1.2        cli_3.2.0        curl_4.3.2       yaml_2.3.5      
+## [21] xfun_0.30        fastmap_1.1.0    stringr_1.4.0    dplyr_1.0.8     
+## [25] xml2_1.3.3       knitr_1.38       generics_0.1.2   fs_1.5.2        
+## [29] sass_0.4.1       vctrs_0.4.0      tidyselect_1.1.2 glue_1.6.2      
+## [33] R6_2.5.1         fansi_1.0.3      rmarkdown_2.13   bookdown_0.25   
+## [37] tidyr_1.2.0      purrr_0.3.4      backports_1.4.1  htmltools_0.5.2 
 ## [41] ellipsis_0.3.2   assertthat_0.2.1 utf8_1.2.2       stringi_1.7.6   
-## [45] broom_0.7.11     cachem_1.0.6     crayon_1.4.2</code></pre>
+## [45] broom_0.7.12     cachem_1.0.6     crayon_1.5.1</code></pre>
 
 </div>
 </div>
@@ -1824,7 +1849,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -7,7 +7,7 @@
 <title>第 3 章 数据搬运 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="导入数据与导出数据，各种数据格式，数据库 处理 Excel 2003 (XLS) 和 Excel 2007 (XLSX) 文件还可以使用 WriteXLS 包，不过它依赖于 Perl，另一个 R 包 xlsx 与之功能类似，依赖 Java 环境。Jennifer Bryan 和 Hadley Wickham 开发的 readxl 包和 Jeroen Ooms 开发的 writexl...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="第 3 章 数据搬运 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="第 3 章 数据搬运 | 现代应用统计与 R 语言">
 <meta name="twitter:description" content="导入数据与导出数据，各种数据格式，数据库 处理 Excel 2003 (XLS) 和 Excel 2007 (XLSX) 文件还可以使用 WriteXLS 包，不过它依赖于 Perl，另一个 R 包 xlsx 与之功能类似，依赖 Java 环境。Jennifer Bryan 和 Hadley Wickham 开发的 readxl 包和 Jeroen Ooms 开发的 writexl...">
 <meta name="twitter:image" content="/images/cover.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
@@ -37,7 +37,33 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -100,22 +126,21 @@
 <li><a class="" href="chap-statistical-models.html">介绍</a></li>
 <li><a class="" href="chap-linear-models.html"><span class="header-section-number">26</span> 线性模型</a></li>
 <li><a class="" href="chap-generalized-linear-models.html"><span class="header-section-number">27</span> 广义线性模型</a></li>
-<li><a class="" href="chap-bayesian-models.html"><span class="header-section-number">28</span> 贝叶斯模型</a></li>
 <li class="book-part">数据建模</li>
 <li><a class="" href="chap-data-modeling.html">介绍</a></li>
-<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">29</span> 文本分析</a></li>
-<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">30</span> 生存分析</a></li>
-<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">31</span> 时序分析</a></li>
+<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">28</span> 文本分析</a></li>
+<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">29</span> 生存分析</a></li>
+<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">30</span> 时序分析</a></li>
 <li class="book-part">时空数据</li>
 <li><a class="" href="chap-spatio-temporal-data.html">介绍</a></li>
-<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">32</span> 空间数据分析</a></li>
-<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">33</span> 空间数据可视化</a></li>
-<li><a class="" href="chap-case-study.html"><span class="header-section-number">34</span> 案例研究</a></li>
-<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">35</span> 数据探索</a></li>
+<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">31</span> 空间数据分析</a></li>
+<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">32</span> 空间数据可视化</a></li>
+<li><a class="" href="chap-case-study.html"><span class="header-section-number">33</span> 案例研究</a></li>
+<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">34</span> 数据探索</a></li>
 <li class="book-part">机器学习</li>
 <li><a class="" href="chap-machine-learning.html">介绍</a></li>
-<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">36</span> 梯度提升机</a></li>
-<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">37</span> 数值优化</a></li>
+<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">35</span> 梯度提升机</a></li>
+<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">36</span> 数值优化</a></li>
 <li class="book-part">附录</li>
 <li><a class="" href="chap-linux-command-bash.html"><span class="header-section-number">A</span> 命令行操作</a></li>
 <li><a class="" href="chap-matrix-operations.html"><span class="header-section-number">B</span> 矩阵运算</a></li>
@@ -148,14 +173,14 @@
 <code class="sourceCode R"><span class="co"># 当前环境的搜索路径</span>
 <span class="fu"><a href="https://rdrr.io/r/base/search.html">searchpaths</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] ".GlobalEnv"                          
-## [2] "/opt/R/4.1.2/lib/R/library/stats"    
-## [3] "/opt/R/4.1.2/lib/R/library/graphics" 
-## [4] "/opt/R/4.1.2/lib/R/library/grDevices"
-## [5] "/opt/R/4.1.2/lib/R/library/utils"    
-## [6] "/opt/R/4.1.2/lib/R/library/datasets" 
-## [7] "/opt/R/4.1.2/lib/R/library/methods"  
+## [2] "/opt/R/4.1.3/lib/R/library/stats"    
+## [3] "/opt/R/4.1.3/lib/R/library/graphics" 
+## [4] "/opt/R/4.1.3/lib/R/library/grDevices"
+## [5] "/opt/R/4.1.3/lib/R/library/utils"    
+## [6] "/opt/R/4.1.3/lib/R/library/datasets" 
+## [7] "/opt/R/4.1.3/lib/R/library/methods"  
 ## [8] "Autoloads"                           
-## [9] "/opt/R/4.1.2/lib/R/library/base"</code></pre>
+## [9] "/opt/R/4.1.3/lib/R/library/base"</code></pre>
 <div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 返回匹配结果及其所在路径的编号</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/apropos.html">apropos</a></span><span class="op">(</span><span class="st">"^(read|write)"</span>, where <span class="op">=</span> <span class="cn">TRUE</span>, mode <span class="op">=</span> <span class="st">"function"</span><span class="op">)</span></code></pre></div>
@@ -241,7 +266,7 @@
 <div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="va">file</span>,
   header <span class="op">=</span> <span class="cn">FALSE</span>, sep <span class="op">=</span> <span class="st">""</span>, quote <span class="op">=</span> <span class="st">"\"'"</span>,
-  dec <span class="op">=</span> <span class="st">"."</span>, numerals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"allow.loss"</span>, <span class="st">"warn.loss"</span>, <span class="st">"no.loss"</span><span class="op">)</span>,
+  dec <span class="op">=</span> <span class="st">"."</span>, numerals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"allow.loss"</span>, <span class="st">"warn.loss"</span>, <span class="st">"no.loss"</span><span class="op">)</span>,
   <span class="va">row.names</span>, <span class="va">col.names</span>, as.is <span class="op">=</span> <span class="op">!</span><span class="va">stringsAsFactors</span>,
   na.strings <span class="op">=</span> <span class="st">"NA"</span>, colClasses <span class="op">=</span> <span class="cn">NA</span>, nrows <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
   skip <span class="op">=</span> <span class="fl">0</span>, check.names <span class="op">=</span> <span class="cn">TRUE</span>, fill <span class="op">=</span> <span class="op">!</span><span class="va">blank.lines.skip</span>,
@@ -327,7 +352,7 @@ _a _b _c
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"TITLE extra line"</span>, <span class="st">"2 3 5 7"</span>, <span class="st">""</span>, <span class="st">"11 13 17"</span>, file <span class="op">=</span> <span class="va">fil</span>,
     sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
 <span class="va">fil</span></code></pre></div>
-<pre><code>## [1] "/tmp/Rtmp83iLm4/file529967cd6025.data"</code></pre>
+<pre><code>## [1] "/tmp/Rtmpeun4eS/file249216b0b31be.data"</code></pre>
 <p>设置参数 <code>n = -1</code> 表示将文件 fil 的内容从头读到尾</p>
 <div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">fil</span>, n <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
@@ -344,7 +369,7 @@ _a _b _c
 <code class="sourceCode R"><span class="va">fil</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"123\nabc\n"</span>, file <span class="op">=</span> <span class="va">fil</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">fil</span></code></pre></div>
-<pre><code>## [1] "/tmp/Rtmp83iLm4/test52996dcfe90a"</code></pre>
+<pre><code>## [1] "/tmp/Rtmpeun4eS/test2492145a89d8e"</code></pre>
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">fil</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "123" "abc"</code></pre>
@@ -371,7 +396,7 @@ _a _b _c
 <p>序列化数据操作，Mark Klik 开发的 <a href="https://github.com/fstpackage/fst">fst</a> 和 <a href="https://travers.im/">Travers Ching</a> 开发的 <a href="https://github.com/traversc/qs">qs</a>， Hadley Wickham 开发的 <a href="https://github.com/wesm/feather/tree/master/R">feather</a> 包实现跨语言环境快速的读写数据</p>
 <div class="inline-table"><table class="table table-sm">
 <caption>
-<span id="tab:fst-vs-others">表 3.1: </span> fst 序列化数据框对象性能比较 BaseR、 data.table 和 feather <a href="references.html#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>
+<span id="tab:fst-vs-others">表 3.1: </span> fst 序列化数据框对象性能比较 BaseR、 data.table 和 feather <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://www.fstpackage.org/" class="uri"&gt;https://www.fstpackage.org/&lt;/a&gt;&lt;/p&gt;'><sup>9</sup></a>
 </caption>
 <thead><tr class="header">
 <th align="left">Method</th>
@@ -488,7 +513,7 @@ _a _b _c
 ## [1] "Bowser"</code></pre>
 <p>yaml 包读取 <code>*.yml</code> 格式文件，返回一个列表，<code><a href="https://rdrr.io/pkg/yaml/man/write_yaml.html">yaml::write_yaml</a></code> 函数将 R 对象写入 yaml 格式</p>
 <div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viking/r-yaml/">yaml</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vubiostat/r-yaml/">yaml</a></span><span class="op">)</span>
 <span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/yaml/man/read_yaml.html">read_yaml</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'_bookdown.yml'</span><span class="op">)</span></code></pre></div>
 <pre><code>## $book_filename
 ## [1] "masr"
@@ -541,17 +566,17 @@ _a _b _c
 ## [29] "hypothesis-test.Rmd"             "power-analysis.Rmd"             
 ## [31] "experimental-design.Rmd"         "statistical-models.Rmd"         
 ## [33] "linear-models.Rmd"               "generalized-linear-models.Rmd"  
-## [35] "bayesian-models.Rmd"             "data-modeling.Rmd"              
-## [37] "text-analysis.Rmd"               "survival-analysis.Rmd"          
-## [39] "time-series-analysis.Rmd"        "spatio-temporal-data.Rmd"       
-## [41] "spatial-analysis.Rmd"            "spatial-viz.Rmd"                
-## [43] "case-study.Rmd"                  "data-explorer.Rmd"              
-## [45] "machine-learning.Rmd"            "gradient-boosting-machine.Rmd"  
-## [47] "numerical-optimization.Rmd"      "appendix.Rmd"                   
-## [49] "matrix-operations.Rmd"           "symbolic-computation.Rmd"       
-## [51] "mixed-programming.Rmd"           "object-oriented-programming.Rmd"
-## [53] "file-operations.Rmd"             "other-softwares.Rmd"            
-## [55] "notations.Rmd"                   "references.Rmd"</code></pre>
+## [35] "data-modeling.Rmd"               "text-analysis.Rmd"              
+## [37] "survival-analysis.Rmd"           "time-series-analysis.Rmd"       
+## [39] "spatio-temporal-data.Rmd"        "spatial-analysis.Rmd"           
+## [41] "spatial-viz.Rmd"                 "case-study.Rmd"                 
+## [43] "data-explorer.Rmd"               "machine-learning.Rmd"           
+## [45] "gradient-boosting-machine.Rmd"   "numerical-optimization.Rmd"     
+## [47] "appendix.Rmd"                    "matrix-operations.Rmd"          
+## [49] "symbolic-computation.Rmd"        "mixed-programming.Rmd"          
+## [51] "object-oriented-programming.Rmd" "file-operations.Rmd"            
+## [53] "other-softwares.Rmd"             "notations.Rmd"                  
+## [55] "references.Rmd"</code></pre>
 <div class="inline-table"><table class="table table-sm">
 <caption>
 <span id="tab:other-softwares">表 3.2: </span> 导入来自其它数据分析软件产生的数据集</caption>
@@ -642,10 +667,10 @@ _a _b _c
 <p><code>read.dcf</code> 函数读取 Debian 控制格式文件，这种类型的文件以人眼可读的形式在存储数据，如 R 包的 DESCRIPTION 文件或者包含所有 CRAN 上 R 包描述的文件 <a href="https://cran.r-project.org/src/contrib/PACKAGES" class="uri">https://cran.r-project.org/src/contrib/PACKAGES</a></p>
 <div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dcf.html">read.dcf</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, package <span class="op">=</span> <span class="st">"splines"</span><span class="op">)</span>,
-              fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Version"</span>, <span class="st">"Title"</span><span class="op">)</span><span class="op">)</span>
+              fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Package"</span>, <span class="st">"Version"</span>, <span class="st">"Title"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">x</span></code></pre></div>
 <pre><code>##      Package   Version Title                                    
-## [1,] "splines" "4.1.2" "Regression Spline Functions and Classes"</code></pre>
+## [1,] "splines" "4.1.3" "Regression Spline Functions and Classes"</code></pre>
 <p>最后要提及拥有瑞士军刀之称的 <a href="https://github.com/leeper/rio">rio</a> 包，它集合了当前 R 可以读取的所有统计分析软件导出的数据。</p>
 </div>
 <div id="import-large-dataset" class="section level2" number="3.3">
@@ -659,8 +684,10 @@ _a _b _c
 <h2>
 <span class="header-section-number">3.4</span> 从数据库导入<a class="anchor" aria-label="anchor" href="#import-data-from-database"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://rstudio-education.github.io/hopr">Hands-On Programming with R</a> 数据读写章节<a href="references.html#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> 以及 <a href="https://smithjd.github.io/sql-pet/">R, Databases and Docker</a></p>
-<p>将大量的 txt 文本存进 MySQL 数据库中，通过操作数据库来聚合文本，极大降低内存消耗 <a href="references.html#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>，而 ODBC 与 DBI 包是其它数据库接口的基础，knitr 提供了一个支持 SQL 代码的引擎，它便是基于 DBI，因此可以在 R Markdown 文档中直接使用 SQL 代码块 <a href="references.html#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>。这里制作一个归纳表格，左边数据库右边对应其 R 接口，两边都包含链接，如表 <a href="chap-data-transportation.html#tab:dbi">3.4</a> 所示</p>
+<p><a href="https://rstudio-education.github.io/hopr">Hands-On Programming with R</a> 数据读写章节<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://rstudio-education.github.io/hopr/dataio.html" class="uri"&gt;https://rstudio-education.github.io/hopr/dataio.html&lt;/a&gt;&lt;/p&gt;'><sup>10</sup></a> 以及 <a href="https://smithjd.github.io/sql-pet/">R, Databases and Docker</a></p>
+<p>将大量的 txt 文本存进 MySQL 数据库中，通过操作数据库来聚合文本，极大降低内存消耗 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://brucezhaor.github.io/blog/2016/08/04/batch-process-txt-to-mysql" class="uri"&gt;https://brucezhaor.github.io/blog/2016/08/04/batch-process-txt-to-mysql&lt;/a&gt;&lt;/p&gt;'><sup>11</sup></a>，而 ODBC 与 DBI 包是其它数据库接口的基础，knitr 提供了一个支持 SQL 代码的引擎，它便是基于 DBI，因此可以在 R Markdown 文档中直接使用 SQL 代码块 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://bookdown.org/yihui/rmarkdown/language-engines.html#sql" class="uri"&gt;https://bookdown.org/yihui/rmarkdown/language-engines.html#sql&lt;/a&gt;
+[rstudio-spark]: &lt;a href="https://spark.rstudio.com/" class="uri"&gt;https://spark.rstudio.com/&lt;/a&gt;
+[rmarkdown-teaching-demo]: &lt;a href="https://stackoverflow.com/questions/35459166" class="uri"&gt;https://stackoverflow.com/questions/35459166&lt;/a&gt;&lt;/p&gt;'><sup>12</sup></a>。这里制作一个归纳表格，左边数据库右边对应其 R 接口，两边都包含链接，如表 <a href="chap-data-transportation.html#tab:dbi">3.4</a> 所示</p>
 <div class="inline-table"><table class="table table-sm">
 <caption>
 <span id="tab:dbi">表 3.4: </span>数据库接口</caption>
@@ -840,10 +867,10 @@ idate &lt;- '2019-05-03'
 SELECT * FROM user_table where date_format(created_date,'%Y-%m-%d')&gt;=?idate
 ```</code></pre>
 <p>以上代码会将 SQL 的运行结果存在 <code>data_output</code> 这是数据库中，idate 取之前设置的日期<code>2019-05-03</code>，<code>user_table</code> 是 MySQL 数据库中的表名，<code>created_date</code> 是创建<code>user_table</code>时，指定的日期名。</p>
-<p>如果 SQL 比较长，为了代码美观，把带有变量的 SQL 保存为<code>demo.sql</code>脚本，只需要在 SQL 的 chunk 中直接读取 SQL 文件<a href="references.html#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>。</p>
+<p>如果 SQL 比较长，为了代码美观，把带有变量的 SQL 保存为<code>demo.sql</code>脚本，只需要在 SQL 的 chunk 中直接读取 SQL 文件<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://d.cosx.org/d/419974" class="uri"&gt;https://d.cosx.org/d/419974&lt;/a&gt;&lt;/p&gt;'><sup>13</sup></a>。</p>
 <pre><code>```{sql, code=readLines('demo.sql'), output.var='data_output'}
 ```</code></pre>
-<p>如果我们需要每天或者按照指定的日期重复地运行这个 R Markdown 文件，可以在 YAML 部分引入参数<a href="references.html#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a></p>
+<p>如果我们需要每天或者按照指定的日期重复地运行这个 R Markdown 文件，可以在 YAML 部分引入参数<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://bookdown.org/yihui/rmarkdown/params-knit.html" class="uri"&gt;https://bookdown.org/yihui/rmarkdown/params-knit.html&lt;/a&gt;&lt;/p&gt;'><sup>14</sup></a></p>
 <div class="sourceCode" id="cb198"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb198-1"><a href="chap-data-transportation.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb198-2"><a href="chap-data-transportation.html#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="an">params:</span></span>
 <span id="cb198-3"><a href="chap-data-transportation.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="co">  date: "2019-05-03"  # 参数化日期</span></span>
@@ -885,7 +912,7 @@ idate = params$date # 将参数化日期传递给 idate 变量
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>SPARK_HOME <span class="op">=</span> <span class="st">"~/spark/spark-2.4.0-bin-hadoop2.7"</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">sparkR.session</span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local[*]"</span>, sparkConfig <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>spark.driver.memory <span class="op">=</span> <span class="st">"2g"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><a href="https://github.com/dbdahl/rscala">rscala</a> 架起了 R 和 Scala 两门语言之间交流的桥梁，使得彼此之间可以互相调用</p>
 <blockquote>
@@ -955,7 +982,7 @@ idate = params$date # 将参数化日期传递给 idate 变量
 <div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>SPARK_HOME <span class="op">=</span> <span class="st">"D:/spark-2.4.4-bin-hadoop2.7"</span><span class="op">)</span>
 <span class="co"># Sys.setenv(R_HOME = "C:/Program Files/R/R-3.6.1/")</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">sparkR.session</span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local[*]"</span>, 
                sparkConfig <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>spark.driver.memory <span class="op">=</span> <span class="st">"4g"</span><span class="op">)</span>, 
                enableHiveSupport <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -1057,7 +1084,7 @@ idate = params$date # 将参数化日期传递给 idate 变量
   <span class="op">)</span>
 
   <span class="co"># Remove the extension at the end of the data set names</span>
-  <span class="va">names_of_datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">list_of_datasets</span>, <span class="st">"[.]"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">names_of_datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">list_of_datasets</span>, <span class="st">"[.]"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">T</span>, <span class="cn">F</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">names_of_datasets</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
@@ -1154,7 +1181,7 @@ idate = params$date # 将参数化日期传递给 idate 变量
 </h3>
 <div class="sourceCode" id="cb239"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/capture.output.html">capture.output</a></span><span class="op">(</span><span class="va">...</span>, file <span class="op">=</span> <span class="cn">NULL</span>, append <span class="op">=</span> <span class="cn">FALSE</span>,
-               type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="st">"output"</span>, <span class="st">"message"</span><span class="op">)</span>, split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+               type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"output"</span>, <span class="st">"message"</span><span class="op">)</span>, split <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><code>capture.output</code> 将一段R代码执行结果，保存到文件，参数为表达式。<code>capture.output</code> 和 <code>sink</code> 的关系相当于 <code>with</code> 和 <code>attach</code> 的关系。</p>
 <div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">glmout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/capture.output.html">capture.output</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">spontaneous</span> <span class="op">+</span> <span class="va">induced</span>,
@@ -1409,12 +1436,12 @@ a column separator --></p>
 <code class="sourceCode R"><span class="va">diamonds_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6"</span><span class="op">)</span>
 <span class="va">diamonds_sample</span></code></pre></div>
 <pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.76     Ideal     D     SI2  62.4    57  2770 5.78 5.83 3.62
-## 2  0.71 Very Good     E     VS2  63.5    59  2858 5.68 5.59 3.58
-## 3  0.80   Premium     G     VS2  59.6    59  3136 6.09 6.00 3.60
-## 4  0.32 Very Good     H     VS1  62.8    58   561 4.35 4.37 2.74
-## 5  0.74   Premium     E     VS1  62.8    59  3357 5.76 5.68 3.59
-## 6  0.36      Good     I     VS1  63.3    56   568 4.51 4.56 2.87</code></pre>
+## 1  0.32 Very Good     I     SI1  63.1    56   554 4.39 4.36 2.76
+## 2  0.31   Premium     I     VS2  61.1    58   558 4.38 4.36 2.67
+## 3  0.71 Very Good     G    VVS2  60.8    58  2977 5.75 5.77 3.50
+## 4  0.90 Very Good     F     SI2  62.3    58  3519 6.16 6.19 3.85
+## 5  0.88     Ideal     D     SI2  62.2    56  3962 6.12 6.16 3.82
+## 6  0.97   Premium     F     SI2  61.9    58  3993 6.35 6.31 3.92</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
@@ -1424,13 +1451,13 @@ a column separator --></p>
   LIMIT 6
 "</span><span class="op">)</span>
 <span class="va">diamonds_rank</span></code></pre></div>
-<pre><code>##     cut price rank
-## 1  Good   570    1
-## 2 Ideal   571    1
-## 3 Ideal   830    2
-## 4 Ideal   884    3
-## 5 Ideal  1564    4
-## 6 Ideal  1584    5</code></pre>
+<pre><code>##    cut price rank
+## 1 Fair   719    1
+## 2 Fair 14430    2
+## 3 Good   814    1
+## 4 Good   988    2
+## 5 Good  4081    3
+## 6 Good  6841    4</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -1452,10 +1479,10 @@ INSERT INTO person VALUES
 <div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"SELECT * FROM person"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 100 John  30     1 Street 1
-## 2 200 Mary  NA     1 Street 2
-## 3 300 Mike  80     3 Street 3
-## 4 400  Dan  50     4 Street 4</code></pre>
+## 1 300 Mike  80     3 Street 3
+## 2 400  Dan  50     4 Street 4
+## 3 100 John  30     1 Street 1
+## 4 200 Mary  NA     1 Street 2</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
 <div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>,<span class="st">"
@@ -1465,23 +1492,23 @@ SELECT * FROM person
 LIMIT 6
 "</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 100 John  30     1 Street 1    30    40
-## 2 100 John  30     1 Street 1    30    80
-## 3 100 John  30     1 Street 1    60    40
-## 4 100 John  30     1 Street 1    60    80
-## 5 200 Mary  NA     1 Street 2    30    40
-## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
+## 1 300 Mike  80     3 Street 3    30    40
+## 2 300 Mike  80     3 Street 3    30    80
+## 3 300 Mike  80     3 Street 3    60    40
+## 4 300 Mike  80     3 Street 3    60    80
+## 5 400  Dan  50     4 Street 4    30    40
+## 6 400  Dan  50     4 Street 4    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
 <div class="sourceCode" id="cb279"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 今天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select current_date"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   current_date()
-## 1     2022-03-13</code></pre>
+## 1     2022-03-31</code></pre>
 <div class="sourceCode" id="cb281"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 昨天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select date_sub(current_date, 1)"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   date_sub(current_date(), 1)
-## 1                  2022-03-12</code></pre>
+## 1                  2022-03-30</code></pre>
 <div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 本月最后一天 current_date 所属月份的最后一天</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select last_day(current_date)"</span><span class="op">)</span></code></pre></div>
@@ -1491,7 +1518,7 @@ LIMIT 6
 <code class="sourceCode R"><span class="co"># 星期几</span>
 <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html">dbGetQuery</a></span><span class="op">(</span><span class="va">sc</span>, <span class="st">"select dayofweek(current_date)"</span><span class="op">)</span></code></pre></div>
 <pre><code>##   dayofweek(current_date())
-## 1                         1</code></pre>
+## 1                         5</code></pre>
 <p>最后，使用完记得关闭 Spark 连接</p>
 <div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparklyr/man/spark-connections.html">spark_disconnect</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></code></pre></div>
@@ -1507,7 +1534,7 @@ LIMIT 6
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>SPARK_HOME <span class="op">=</span> <span class="st">"/opt/spark/spark-3.0.1-bin-hadoop2.7"</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SparkR</span>, lib.loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"SPARK_HOME"</span><span class="op">)</span>, <span class="st">"R"</span>, <span class="st">"lib"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">sparkR.session</span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local[*]"</span>, sparkConfig <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>spark.driver.memory <span class="op">=</span> <span class="st">"2g"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="rmdwarn">
 <p><strong>SparkR</strong> 要求 Java 版本满足：大于等于8，而小于12，本地 MacOS 安装高版本，比如 oracle-jdk 16.0.1 会报不兼容的错误。</p>
@@ -1709,7 +1736,7 @@ FileUsage       = 1</code></pre>
 </h2>
 <div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.2 (2021-11-01)
+<pre><code>## R version 4.1.3 (2022-03-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -1723,29 +1750,29 @@ FileUsage       = 1</code></pre>
 ## 
 ## Package version:
 ##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.2        
-##   bookdown_0.24      brio_1.1.3         bslib_0.3.1        cachem_1.0.6      
-##   cli_3.1.0          codetools_0.2.18   colorspace_2.0-2   compiler_4.1.2    
-##   config_0.3.1       cpp11_0.4.2        crayon_1.4.2       curl_4.3.2        
-##   data.table_1.14.2  DBI_1.1.2          dbplyr_2.1.1       desc_1.4.0        
-##   digest_0.6.29      downlit_0.4.0      dplyr_1.0.7        ellipsis_0.3.2    
-##   evaluate_0.14      fansi_0.5.0        farver_2.1.0       fastmap_1.1.0     
-##   forge_0.2.0        fs_1.5.2           generics_0.1.1     ggplot2_3.3.5     
-##   globals_0.14.0     glue_1.6.0         graphics_4.1.2     grDevices_4.1.2   
-##   grid_4.1.2         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
+##   bookdown_0.25      brio_1.1.3         bslib_0.3.1        cachem_1.0.6      
+##   cli_3.2.0          codetools_0.2.18   colorspace_2.0-3   compiler_4.1.3    
+##   config_0.3.1       cpp11_0.4.2        crayon_1.5.1       curl_4.3.2        
+##   data.table_1.14.2  DBI_1.1.2          dbplyr_2.1.1       desc_1.4.1        
+##   digest_0.6.29      downlit_0.4.0      dplyr_1.0.8        ellipsis_0.3.2    
+##   evaluate_0.15      fansi_1.0.3        farver_2.1.0       fastmap_1.1.0     
+##   forge_0.2.0        fs_1.5.2           generics_0.1.2     ggplot2_3.3.5     
+##   globals_0.14.0     glue_1.6.2         graphics_4.1.3     grDevices_4.1.3   
+##   grid_4.1.3         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
 ##   htmlwidgets_1.5.4  httr_1.4.2         isoband_0.2.5      jquerylib_0.1.4   
-##   jsonlite_1.7.2     knitr_1.37         labeling_0.4.2     lattice_0.20.45   
-##   lifecycle_1.0.1    magrittr_2.0.1     MASS_7.3.54        Matrix_1.4.0      
-##   memoise_2.0.1      methods_4.1.2      mgcv_1.8.38        mime_0.12         
-##   munsell_0.5.0      nlme_3.1.153       openssl_1.4.6      parallel_4.1.2    
-##   pillar_1.6.4       pkgconfig_2.0.3    png_0.1-7          purrr_0.3.4       
-##   r2d3_0.2.5         R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.2
-##   rlang_0.4.12       rmarkdown_2.11     rprojroot_2.0.2    rstudioapi_0.13   
-##   sass_0.4.0         scales_1.1.1       sparklyr_1.7.3     splines_4.1.2     
-##   stats_4.1.2        stringi_1.7.6      stringr_1.4.0      sys_3.4           
-##   sysfonts_0.8.5     tibble_3.1.6       tidyr_1.1.4        tidyselect_1.1.1  
-##   tinytex_0.36       tools_4.1.2        utf8_1.2.2         utils_4.1.2       
-##   uuid_1.0.3         vctrs_0.3.8        viridisLite_0.4.0  withr_2.4.3       
-##   xfun_0.29          xml2_1.3.3         yaml_2.2.1</code></pre>
+##   jsonlite_1.8.0     knitr_1.38         labeling_0.4.2     lattice_0.20.45   
+##   lifecycle_1.0.1    magrittr_2.0.3     MASS_7.3.56        Matrix_1.4.1      
+##   memoise_2.0.1      methods_4.1.3      mgcv_1.8.40        mime_0.12         
+##   munsell_0.5.0      nlme_3.1.157       openssl_2.0.0      parallel_4.1.3    
+##   pillar_1.7.0       pkgconfig_2.0.3    png_0.1-7          purrr_0.3.4       
+##   r2d3_0.2.6         R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.2
+##   rlang_1.0.2        rmarkdown_2.13     rprojroot_2.0.2    rstudioapi_0.13   
+##   sass_0.4.1         scales_1.1.1       sparklyr_1.7.5     splines_4.1.3     
+##   stats_4.1.3        stringi_1.7.6      stringr_1.4.0      sys_3.4           
+##   sysfonts_0.8.8     tibble_3.1.6       tidyr_1.2.0        tidyselect_1.1.2  
+##   tinytex_0.38       tools_4.1.3        utf8_1.2.2         utils_4.1.3       
+##   uuid_1.0.4         vctrs_0.4.0        viridisLite_0.4.0  withr_2.5.0       
+##   xfun_0.30          xml2_1.3.3         yaml_2.3.5</code></pre>
 
 </div>
 </div>
@@ -1757,6 +1784,7 @@ FileUsage       = 1</code></pre>
 </div>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="chap-data-structure.html"><span class="header-section-number">2</span> 数据结构</a></div>
 <div class="next"><a href="chap-string-operations.html"><span class="header-section-number">4</span> 字符串操作</a></div>
@@ -1816,7 +1844,7 @@ FileUsage       = 1</code></pre>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

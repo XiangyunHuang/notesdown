@@ -7,7 +7,7 @@
 <title>第 8 章 并行化操作 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="向量化运算、并行运算和分布式运算 future 在 R 语言中提供统一的并行和分布式处理框架 future.apply 可以替代 base R 提供的 apply 族函数 future.batchtools 使用 batchtools 实现并行和分布式处理 batchtools Map...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="第 8 章 并行化操作 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="第 8 章 并行化操作 | 现代应用统计与 R 语言">
 <meta name="twitter:description" content="向量化运算、并行运算和分布式运算 future 在 R 语言中提供统一的并行和分布式处理框架 future.apply 可以替代 base R 提供的 apply 族函数 future.batchtools 使用 batchtools 实现并行和分布式处理 batchtools Map...">
 <meta name="twitter:image" content="/images/cover.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
@@ -37,7 +37,33 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -100,22 +126,21 @@
 <li><a class="" href="chap-statistical-models.html">介绍</a></li>
 <li><a class="" href="chap-linear-models.html"><span class="header-section-number">26</span> 线性模型</a></li>
 <li><a class="" href="chap-generalized-linear-models.html"><span class="header-section-number">27</span> 广义线性模型</a></li>
-<li><a class="" href="chap-bayesian-models.html"><span class="header-section-number">28</span> 贝叶斯模型</a></li>
 <li class="book-part">数据建模</li>
 <li><a class="" href="chap-data-modeling.html">介绍</a></li>
-<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">29</span> 文本分析</a></li>
-<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">30</span> 生存分析</a></li>
-<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">31</span> 时序分析</a></li>
+<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">28</span> 文本分析</a></li>
+<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">29</span> 生存分析</a></li>
+<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">30</span> 时序分析</a></li>
 <li class="book-part">时空数据</li>
 <li><a class="" href="chap-spatio-temporal-data.html">介绍</a></li>
-<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">32</span> 空间数据分析</a></li>
-<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">33</span> 空间数据可视化</a></li>
-<li><a class="" href="chap-case-study.html"><span class="header-section-number">34</span> 案例研究</a></li>
-<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">35</span> 数据探索</a></li>
+<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">31</span> 空间数据分析</a></li>
+<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">32</span> 空间数据可视化</a></li>
+<li><a class="" href="chap-case-study.html"><span class="header-section-number">33</span> 案例研究</a></li>
+<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">34</span> 数据探索</a></li>
 <li class="book-part">机器学习</li>
 <li><a class="" href="chap-machine-learning.html">介绍</a></li>
-<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">36</span> 梯度提升机</a></li>
-<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">37</span> 数值优化</a></li>
+<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">35</span> 梯度提升机</a></li>
+<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">36</span> 数值优化</a></li>
 <li class="book-part">附录</li>
 <li><a class="" href="chap-linux-command-bash.html"><span class="header-section-number">A</span> 命令行操作</a></li>
 <li><a class="" href="chap-matrix-operations.html"><span class="header-section-number">B</span> 矩阵运算</a></li>
@@ -168,7 +193,7 @@
 </h2>
 <p>高阶函数，简单来说，就是参数为函数，返回值也是函数。Base R 提供了 <code>Reduce</code> 、<code>Filter</code> 、<code>Find</code> 、<code>Map</code> 、<code>Negate</code> 和 <code>Position</code> 等常用函数，此外还有 <code>*apply</code> 族。</p>
 <p>与 <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map</a></code> 比较</p>
-<p>在 R 语言里玩转<code>apply</code>， <code><a href="https://rdrr.io/r/base/funprog.html">Map()</a></code> 和 <code><a href="https://rdrr.io/r/base/funprog.html">Reduce()</a></code><a href="references.html#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>，下面分别以提取合并多张 XLSX 表格<a href="references.html#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>，分组计算<a href="references.html#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> 和子集操作 <a href="references.html#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a> 为例，从函数式编程到 MapReduce <a href="references.html#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>，制作数据透视表<a href="references.html#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>，用于数据处理的函数式编程和单元测试 Functional programming and unit testing for data munging with R 特别是第三章 <a href="https://b-rodrigues.github.io/fput/" class="uri">https://b-rodrigues.github.io/fput/</a>，然后是函数式编程与数据建模 Modeling data with functional programming in R<a href="references.html#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a></p>
+<p>在 R 语言里玩转<code>apply</code>， <code><a href="https://rdrr.io/r/base/funprog.html">Map()</a></code> 和 <code><a href="https://rdrr.io/r/base/funprog.html">Reduce()</a></code><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stackoverflow.com/questions/3505701/grouping-functions-tapply-by-aggregate-and-the-apply-family" class="uri"&gt;https://stackoverflow.com/questions/3505701/grouping-functions-tapply-by-aggregate-and-the-apply-family&lt;/a&gt;&lt;/p&gt;'><sup>24</sup></a>，下面分别以提取合并多张 XLSX 表格<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://trinkerrstuff.wordpress.com/2018/02/14/easily-make-multi-tabbed-xlsx-files-with-openxlsx/" class="uri"&gt;https://trinkerrstuff.wordpress.com/2018/02/14/easily-make-multi-tabbed-xlsx-files-with-openxlsx/&lt;/a&gt;&lt;/p&gt;'><sup>25</sup></a>，分组计算<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://statcompute.wordpress.com/2018/09/03/playing-map-and-reduce-in-r-by-group-calculation/" class="uri"&gt;https://statcompute.wordpress.com/2018/09/03/playing-map-and-reduce-in-r-by-group-calculation/&lt;/a&gt;&lt;/p&gt;'><sup>26</sup></a> 和子集操作 <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://statcompute.wordpress.com/2018/09/08/playing-map-and-reduce-in-r-subsetting/" class="uri"&gt;https://statcompute.wordpress.com/2018/09/08/playing-map-and-reduce-in-r-subsetting/&lt;/a&gt;&lt;/p&gt;'><sup>27</sup></a> 为例，从函数式编程到 MapReduce <a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://cartesianfaith.com/2015/09/17/from-functional-programming-to-mapreduce-in-r/" class="uri"&gt;https://cartesianfaith.com/2015/09/17/from-functional-programming-to-mapreduce-in-r/&lt;/a&gt;&lt;/p&gt;'><sup>28</sup></a>，制作数据透视表<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://digitheadslabnotebook.blogspot.com/2010/01/pivot-tables-in-r.html" class="uri"&gt;https://digitheadslabnotebook.blogspot.com/2010/01/pivot-tables-in-r.html&lt;/a&gt;&lt;/p&gt;'><sup>29</sup></a>，用于数据处理的函数式编程和单元测试 Functional programming and unit testing for data munging with R 特别是第三章 <a href="https://b-rodrigues.github.io/fput/" class="uri">https://b-rodrigues.github.io/fput/</a>，然后是函数式编程与数据建模 Modeling data with functional programming in R<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://cartesianfaith.files.wordpress.com/2015/12/rowe-modeling-data-with-functional-programming-in-r.pdf" class="uri"&gt;https://cartesianfaith.files.wordpress.com/2015/12/rowe-modeling-data-with-functional-programming-in-r.pdf&lt;/a&gt;&lt;/p&gt;'><sup>30</sup></a></p>
 <div class="sourceCode" id="cb1227"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">add</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="va">x</span><span class="op">)</span>
 <span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html">add</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -216,7 +241,7 @@
 <p>调用 <code>mpi.apply</code> 函数</p>
 <div class="sourceCode" id="cb1236"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
-<span class="fu">mpi.apply</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, <span class="va">runif</span><span class="op">)</span></code></pre></div>
+<span class="fu">mpi.apply</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, <span class="va">runif</span><span class="op">)</span></code></pre></div>
 <pre><code>[[1]]
  [1] 0.33684269 0.84638494 0.82776590 0.23707947 0.07593769 0.27981368
  [7] 0.45307675 0.02878214 0.32807421 0.92854275
@@ -229,7 +254,7 @@
 <p>用完要关闭</p>
 <div class="sourceCode" id="cb1238"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">mpi.close.Rslaves</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>pbdMPI 包处于活跃维护状态，是 <a href="https://github.com/RBigData">pbdR 项目</a> 的核心组件，能够以分布式计算的方式轻松处理 TB 级数据<a href="references.html#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a></p>
+<p>pbdMPI 包处于活跃维护状态，是 <a href="https://github.com/RBigData">pbdR 项目</a> 的核心组件，能够以分布式计算的方式轻松处理 TB 级数据<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;2016年国际 R 语言大会上的介绍&lt;a href="https://github.com/snoweye/user2016.demo" class="uri"&gt;https://github.com/snoweye/user2016.demo&lt;/a&gt; 和2018年 JSM 会 上的介绍 &lt;a href="https://github.com/RBigData/R_JSM2018" class="uri"&gt;https://github.com/RBigData/R_JSM2018&lt;/a&gt;&lt;/p&gt;'><sup>31</sup></a></p>
 <p><a href="https://prs.ism.ac.jp/~nakama/Rhpc/">Rhpc</a> 包同样基于 MPI 方式，但是集 Rmpi 和 snow 两个包的优点于一身，在保持 apply 编程风格的同时，能够提供更好的高性能计算环境，支持长向量，能够处理一些大数据。</p>
 </div>
 <div id="gpur" class="section level2" number="8.5">
@@ -279,7 +304,7 @@ Slot ".device":
 </h2>
 <div class="sourceCode" id="cb1243"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.1.2 (2021-11-01)
+<pre><code>## R version 4.1.3 (2022-03-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -292,22 +317,23 @@ Slot ".device":
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3 bookdown_0.24   brio_1.1.3      bslib_0.3.1    
-##   cachem_1.0.6    compiler_4.1.2  crayon_1.4.2    curl_4.3.2     
-##   desc_1.4.0      digest_0.6.29   downlit_0.4.0   ellipsis_0.3.2 
-##   evaluate_0.14   fansi_0.5.0     fastmap_1.1.0   fs_1.5.2       
-##   glue_1.6.0      graphics_4.1.2  grDevices_4.1.2 highr_0.9      
-##   htmltools_0.5.2 jquerylib_0.1.4 jsonlite_1.7.2  knitr_1.37     
-##   magrittr_2.0.1  memoise_2.0.1   methods_4.1.2   R6_2.5.1       
-##   rappdirs_0.3.3  rlang_0.4.12    rmarkdown_2.11  rprojroot_2.0.2
-##   sass_0.4.0      stats_4.1.2     stringi_1.7.6   stringr_1.4.0  
-##   sysfonts_0.8.5  tinytex_0.36    tools_4.1.2     utils_4.1.2    
-##   vctrs_0.3.8     xfun_0.29       xml2_1.3.3      yaml_2.2.1</code></pre>
+##   base64enc_0.1.3 bookdown_0.25   brio_1.1.3      bslib_0.3.1    
+##   cachem_1.0.6    cli_3.2.0       compiler_4.1.3  curl_4.3.2     
+##   desc_1.4.1      digest_0.6.29   downlit_0.4.0   evaluate_0.15  
+##   fansi_1.0.3     fastmap_1.1.0   fs_1.5.2        glue_1.6.2     
+##   graphics_4.1.3  grDevices_4.1.3 highr_0.9       htmltools_0.5.2
+##   jquerylib_0.1.4 jsonlite_1.8.0  knitr_1.38      magrittr_2.0.3 
+##   memoise_2.0.1   methods_4.1.3   R6_2.5.1        rappdirs_0.3.3 
+##   rlang_1.0.2     rmarkdown_2.13  rprojroot_2.0.2 sass_0.4.1     
+##   stats_4.1.3     stringi_1.7.6   stringr_1.4.0   sysfonts_0.8.8 
+##   tinytex_0.38    tools_4.1.3     utils_4.1.3     vctrs_0.4.0    
+##   xfun_0.30       xml2_1.3.3      yaml_2.3.5</code></pre>
 <p><a href="https://stackoverflow.com/questions/10689055">create-an-empty-data-frame</a>
 <a href="https://www.datacamp.com/community/tutorials/pipe-r-tutorial">pipe-r</a></p>
 
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="chap-advanced-manipulation.html"><span class="header-section-number">7</span> 高级数据操作</a></div>
 <div class="next"><a href="chap-dplyr-manipulation.html"><span class="header-section-number">9</span> 净土化操作</a></div>
@@ -338,7 +364,7 @@ Slot ".device":
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

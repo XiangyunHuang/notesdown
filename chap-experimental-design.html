@@ -7,7 +7,7 @@
 <title>第 25 章 试验设计 | 现代应用统计与 R 语言</title>
 <meta name="author" content="黄湘云">
 <meta name="description" content="library(magrittr) library(ggplot2) 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。 试验设计（Design...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta name="generator" content="bookdown 0.25 with bs4_book()">
 <meta property="og:title" content="第 25 章 试验设计 | 现代应用统计与 R 语言">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="第 25 章 试验设计 | 现代应用统计与 R 语言">
 <meta name="twitter:description" content="library(magrittr) library(ggplot2) 我想不少人初次见到本章题目首先疑惑的可能是到底是试验还是实验？这里做一下说明，实验的意思是带有验证性的目的，已经有结果了，做实验验证某个规律，常常用在物理、化学的课堂里，学生做实验验证自由落体运动、做实验测量重力加速度等等。试验的意思是人为设定一系列操作步骤去探索未知，不确定结果如何，试一试。 试验设计（Design...">
 <meta name="twitter:image" content="/images/cover.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
@@ -37,7 +37,33 @@
       gtag('js', new Date());
 
       gtag('config', 'G-54GQKWF7VP');
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="style.css">
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -100,22 +126,21 @@
 <li><a class="" href="chap-statistical-models.html">介绍</a></li>
 <li><a class="" href="chap-linear-models.html"><span class="header-section-number">26</span> 线性模型</a></li>
 <li><a class="" href="chap-generalized-linear-models.html"><span class="header-section-number">27</span> 广义线性模型</a></li>
-<li><a class="" href="chap-bayesian-models.html"><span class="header-section-number">28</span> 贝叶斯模型</a></li>
 <li class="book-part">数据建模</li>
 <li><a class="" href="chap-data-modeling.html">介绍</a></li>
-<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">29</span> 文本分析</a></li>
-<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">30</span> 生存分析</a></li>
-<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">31</span> 时序分析</a></li>
+<li><a class="" href="chap-text-analysis.html"><span class="header-section-number">28</span> 文本分析</a></li>
+<li><a class="" href="chap-survival-analysis.html"><span class="header-section-number">29</span> 生存分析</a></li>
+<li><a class="" href="chap-time-series-analysis.html"><span class="header-section-number">30</span> 时序分析</a></li>
 <li class="book-part">时空数据</li>
 <li><a class="" href="chap-spatio-temporal-data.html">介绍</a></li>
-<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">32</span> 空间数据分析</a></li>
-<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">33</span> 空间数据可视化</a></li>
-<li><a class="" href="chap-case-study.html"><span class="header-section-number">34</span> 案例研究</a></li>
-<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">35</span> 数据探索</a></li>
+<li><a class="" href="chap-spatial-analysis.html"><span class="header-section-number">31</span> 空间数据分析</a></li>
+<li><a class="" href="chap-spatial-viz.html"><span class="header-section-number">32</span> 空间数据可视化</a></li>
+<li><a class="" href="chap-case-study.html"><span class="header-section-number">33</span> 案例研究</a></li>
+<li><a class="" href="chap-data-explorer.html"><span class="header-section-number">34</span> 数据探索</a></li>
 <li class="book-part">机器学习</li>
 <li><a class="" href="chap-machine-learning.html">介绍</a></li>
-<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">36</span> 梯度提升机</a></li>
-<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">37</span> 数值优化</a></li>
+<li><a class="" href="chap-gradient-boosting-machine.html"><span class="header-section-number">35</span> 梯度提升机</a></li>
+<li><a class="" href="chap-numerical-optimization.html"><span class="header-section-number">36</span> 数值优化</a></li>
 <li class="book-part">附录</li>
 <li><a class="" href="chap-linux-command-bash.html"><span class="header-section-number">A</span> 命令行操作</a></li>
 <li><a class="" href="chap-matrix-operations.html"><span class="header-section-number">B</span> 矩阵运算</a></li>
@@ -137,7 +162,7 @@
 <h1>
 <span class="header-section-number">第 25 章</span> 试验设计<a class="anchor" aria-label="anchor" href="#chap-experimental-design"><i class="fas fa-link"></i></a>
 </h1>
-<div class="sourceCode" id="cb2081"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2084"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
 <div class="rmdnote">
@@ -153,7 +178,7 @@
 <span class="header-section-number">25.1</span> 学生睡眠质量<a class="anchor" aria-label="anchor" href="#sec-sleep"><i class="fas fa-link"></i></a>
 </h2>
 <!-- 单因素两水平方差分析 -->
-<div class="sourceCode" id="cb2082"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2085"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sleep</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">group</span>, y <span class="op">=</span> <span class="va">extra</span>, color <span class="op">=</span> <span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -166,7 +191,7 @@
 </h2>
 <!-- 单因素多水平方差分析，多重比较 -->
 <p>InsectSprays 数据集 <span class="citation"><a href="#ref-Beall1942" role="doc-biblioref">[61]</a></span> 来源于农业实验，记录了不同杀虫剂的效果，即杀虫剂过后，单位实验区域内虫子的数量，如图<a href="chap-experimental-design.html#fig:insect-sprays">25.1</a>所示，横轴表示杀虫剂种类，纵轴表示虫子数量。</p>
-<div class="sourceCode" id="cb2083"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2086"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">InsectSprays</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">spray</span>, y <span class="op">=</span> <span class="va">count</span>, color <span class="op">=</span> <span class="va">spray</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -178,10 +203,10 @@
 </p>
 </div>
 <p>先创建一个 aov 对象，把它命名为 mod1，见下方</p>
-<div class="sourceCode" id="cb2084"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2087"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></code></pre></div>
 <p>第一个参数告诉 R count 是响应变量，spray 是协变量，第二个参数告诉 R 去对象 InsectSprays 中寻找这些变量。下面把分析结果以一种漂亮的格式打印出来</p>
-<div class="sourceCode" id="cb2085"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2088"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)    
 ## spray        5   2669   533.8    34.7 &lt;2e-16 ***
@@ -189,7 +214,7 @@
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>表格中的条目是很容易理解的，比如最右边的列表示 P 值。如果我们想做固定显著性水平下的检验，比如 <span class="math inline">\(\alpha = 0.075\)</span> 时的 F 统计量的值，</p>
-<div class="sourceCode" id="cb2087"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2090"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">qf</a></span><span class="op">(</span><span class="fl">0.075</span>, <span class="fl">5</span>, <span class="fl">66</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 2.110783</code></pre>
 <p>上面的命令是说 <span class="math inline">\(F(5, 66)\)</span> 分布的 0.075 分位点，最后一个参数很关键，因为默认情况下 R 计算下分位点，详情见 <code><a href="https://rdrr.io/r/stats/Fdist.html">?qf</a></code>。</p>
@@ -200,38 +225,38 @@
 <li>残差 <span class="math inline">\(\epsilon_{ij}\)</span> 均值为 0，方差是固定的常数。</li>
 </ol>
 <p>假设 1 和 3 通过图来检验，假设 2 通过 QQ 图来检验。值得一提的是 mod1 对象除了打印出来，还有很多方法</p>
-<div class="sourceCode" id="cb2089"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2092"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "coefficients"  "residuals"     "effects"       "rank"         
 ##  [5] "fitted.values" "assign"        "qr"            "df.residual"  
 ##  [9] "contrasts"     "xlevels"       "call"          "terms"        
 ## [13] "model"</code></pre>
 <p>比如获取残差，考虑到篇幅，这里仅显示前 10 个</p>
-<div class="sourceCode" id="cb2091"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2094"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##    1    2    3    4    5    6    7    8    9   10 
 ## -4.5 -7.5  5.5 -0.5 -0.5 -2.5 -4.5  8.5  2.5  5.5</code></pre>
-<div class="sourceCode" id="cb2093"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb2096"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="experimental-design_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2094"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2097"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span>, main <span class="op">=</span> <span class="st">"Residuals vs. Fitted"</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="experimental-design_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2095"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2098"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">model</span><span class="op">$</span><span class="va">spray</span>, <span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span>, main <span class="op">=</span> <span class="st">"Residuals vs. Levels"</span> <span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="experimental-design_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2096"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2099"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">72</span>, <span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span>, main <span class="op">=</span> <span class="st">"Residuals vs. Time Order"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="experimental-design_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb2097"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqnorm</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span>, pch <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/qqnorm.html">qqline</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="experimental-design_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;"></div>
 <p>如果上面的假设显著失效，我们要采用非参数检验</p>
-<div class="sourceCode" id="cb2098"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span>
 <span class="va">mod2</span></code></pre></div>
 <pre><code>## 
@@ -244,37 +269,37 @@
 \bar{X} \pm t_{1-\alpha/2}(s/\sqrt{n})
 \]</span>
 以 A 号杀虫剂为例，</p>
-<div class="sourceCode" id="cb2100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">xbar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">[</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"count"</span><span class="op">]</span><span class="op">)</span>
 <span class="va">t_crit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="va">mod1</span><span class="op">$</span><span class="va">df.residual</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 <span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">mod1</span><span class="op">$</span><span class="va">df.residual</span><span class="op">)</span>
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>
 <span class="co"># 最后置信区间的上下限</span>
-<span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-c.html">c</a></span><span class="op">(</span><span class="va">xbar</span> <span class="op">-</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="op">(</span><span class="va">s</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span>, <span class="va">xbar</span> <span class="op">+</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="op">(</span><span class="va">s</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">xbar</span> <span class="op">-</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="op">(</span><span class="va">s</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span>, <span class="va">xbar</span> <span class="op">+</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="op">(</span><span class="va">s</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 12.23958 16.76042</code></pre>
 <p>比较 A 号和 C 号杀虫剂的效果，计算两个均值差的置信区间</p>
 <p><span class="math display">\[
 \bar{X}_1 - \bar{X}_2 \pm t_{1-\alpha/2}(s/\sqrt{1/n_1 + 1/n_2})
 \]</span></p>
-<div class="sourceCode" id="cb2102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>
 <span class="va">n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"C"</span><span class="op">)</span>
 
 <span class="va">x1bar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">[</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"count"</span><span class="op">]</span><span class="op">)</span>
 <span class="va">x2bar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">InsectSprays</span><span class="op">[</span><span class="va">InsectSprays</span><span class="op">$</span><span class="va">spray</span> <span class="op">==</span> <span class="st">"C"</span>, <span class="st">"count"</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>代入公式即可计算得到置信区间</p>
-<div class="sourceCode" id="cb2103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">x1bar</span> <span class="op">-</span> <span class="va">x2bar</span><span class="op">)</span> <span class="op">-</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="va">s</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="fl">1</span><span class="op">/</span> <span class="va">n1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 9.219948</code></pre>
-<div class="sourceCode" id="cb2105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">x1bar</span> <span class="op">-</span> <span class="va">x2bar</span><span class="op">)</span> <span class="op">+</span> <span class="va">t_crit</span> <span class="op">*</span> <span class="va">s</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="fl">1</span><span class="op">/</span> <span class="va">n1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 15.61339</code></pre>
 <p>Fisher’s 最小显著性检验 (Fisher’s Least Significant Difference Test) 即</p>
-<div class="sourceCode" id="cb2107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t_crit</span> <span class="op">*</span> <span class="va">s</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="fl">1</span><span class="op">/</span> <span class="va">n1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="va">n2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 3.196719</code></pre>
 <p>Tukey’s Honestly Significant Difference Test 主要测量成对实验的误差比率，假定每个水平下的实验次数是相等的，只需将上面的 aov 对象传递给函数 <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code></p>
-<div class="sourceCode" id="cb2109"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">mod1</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">mod3</span></code></pre></div>
 <pre><code>##   Tukey multiple comparisons of means
@@ -302,18 +327,18 @@
 ## F-B  1.3333333 -3.366075  6.032742 0.9603075</code></pre>
 <!-- TODO: 上下限是怎么计算的，调整的 P 值是怎么算的？ -->
 <p>其中，<code>diff</code> 表示均值之差，<code>lwr</code> 和 <code>upr</code> 表示置信区间的上下限，<span class="math inline">\(p_{adj}\)</span> 是对应的。检查一下，看看哪些置信区间包含 0 ，包含 0 的表示不显著，从第三行来看， A 和 C 之间差别显著。之前计算过 A、C 均值，均值之差即</p>
-<div class="sourceCode" id="cb2111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">x1bar</span> <span class="op">-</span> <span class="va">x2bar</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 12.41667</code></pre>
 <p>在误差比率 <span class="math inline">\(\alpha = 0.05\)</span> 的情况下，如果你想手动计算 HSD 值</p>
-<div class="sourceCode" id="cb2113"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">q_crit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Tukey.html">qtukey</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.05</span>, nmeans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/timeDate/man/base-length.html">length</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">xlevels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, df <span class="op">=</span> <span class="va">mod1</span><span class="op">$</span><span class="va">df.residual</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<div class="sourceCode" id="cb2116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">q_crit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Tukey.html">qtukey</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.05</span>, nmeans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">$</span><span class="va">xlevels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, df <span class="op">=</span> <span class="va">mod1</span><span class="op">$</span><span class="va">df.residual</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 <span class="co"># mod1$df.residual 是 6 </span>
 <span class="va">hsd</span> <span class="op">&lt;-</span> <span class="va">q_crit</span> <span class="op">*</span> <span class="va">s</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span>
 <span class="va">hsd</span></code></pre></div>
 <pre><code>## [1] 6.645967</code></pre>
 <p>将模型结果 mod3 用图画出来，见下图</p>
-<div class="sourceCode" id="cb2115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod3</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:tukey-hsd"></span>
@@ -349,7 +374,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 </h2>
 <!-- 多因素多水平方差分析：绘图表示5个变量 -->
 <p>通过观察不同地区的草类植物吸收二氧化碳的情况，研究植物的耐寒性</p>
-<div class="sourceCode" id="cb2116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">CO2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">conc</span>, y <span class="op">=</span> <span class="va">uptake</span>, color <span class="op">=</span> <span class="va">Type</span>, shape <span class="op">=</span> <span class="va">Treatment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -369,7 +394,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 </h2>
 <!-- 拉丁方设计 -->
 <p>评估喷雾杀虫剂的在果园的效果</p>
-<div class="sourceCode" id="cb2117"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"OrchardSprays"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sec-npk" class="section level2" number="25.6">
@@ -378,7 +403,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 </h2>
 <!-- 试验设计：正交设计 -->
 <p>R. A. Fisher 在农业站做实验验证孟德尔的豌豆实验结果</p>
-<div class="sourceCode" id="cb2118"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"npk"</span><span class="op">)</span></code></pre></div>
 <p>豌豆产量和氮 (nitrogen, N) 磷酸盐 (phosphate, P) 钾盐 (potassium, K) 的关系</p>
 
@@ -450,7 +475,7 @@ y_{ij} = \mu + a_i + \epsilon_{ij}, \quad i = 1,2,\ldots,r, \quad j = 1,2, \ldot
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-13.</p>
+    <p>"<strong>现代应用统计与 R 语言</strong>: Modern Applied Statistics with R" was written by 黄湘云. It was last built on 2022-03-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
