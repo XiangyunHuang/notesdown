@@ -2,7 +2,7 @@
 title: "现代应用统计与 R 语言"
 subtitle: "Modern Applied Statistics with R"
 author: "黄湘云"
-date: "2022-03-31"
+date: "2022-04-01"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: a4
@@ -145,4 +145,4 @@ Bradley Efron 在他的课程中谈及现代统计的研究层次，第一层次
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.1.3 (2022-03-10) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-04-01 03:03:53。
+书籍在 R version 4.1.3 (2022-03-10) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-04-01 09:33:40。

@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.3/lib/R/include/Rinternals.h 63180 FALSE  644 2022-03-23 00:00:20
     ##                                                       ctime               atime
-    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-03-31 16:21:52 2022-03-31 16:29:51
+    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-04-01 00:59:51 2022-04-01 01:07:25
     ##                                         uid gid uname grname
     ## /opt/R/4.1.3/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2022-03-31 19:10:22 2022-03-31 19:10:22 2022-03-31 19:10:22
+    ## . 16384  TRUE  755 2022-04-01 01:38:22 2022-04-01 01:38:22 2022-04-01 01:38:22
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2022-03-31 19:03:52 2022-03-31 19:03:52
+    ## ./_book/ 12288  TRUE  755 2022-04-01 01:33:39 2022-04-01 01:33:39
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2022-03-31 19:06:11 1001 121 runner docker
+    ## ./_book/ 2022-04-01 01:34:21 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 154961
+    ## [1] 25402
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.059   0.000   0.060
+    ##   0.067   0.000   0.067
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.057   0.000   0.057
+    ##   0.062   0.004   0.066
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 12:10:23 PDT"
+    ## [1] "2022-03-31 18:38:23 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 15:10:23 EDT"
+    ## [1] "2022-03-31 21:38:23 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31"
+    ## [1] "2022-04-01"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Thu Mar 31 19:10:23 2022"
+    ## [1] "Fri Apr  1 01:38:23 2022"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Thu Mar 31 19:10:23 2022"
+    ## [1] "Fri Apr 01 01:38:23 2022"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 19:10:23 GMT"
+    ## [1] "2022-04-01 01:38:23 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 19:10:23 UTC"
+    ## [1] "2022-04-01 01:38:23 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 18:10:23 UTC"
+    ## [1] "2022-04-01 00:38:23 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-03-31 18:46:19 2022-03-31 18:46:19
+    ## ./_common.R 3290 FALSE  644 2022-04-01 01:15:13 2022-04-01 01:15:13
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-03-31 18:46:27 1001 121 runner docker
+    ## ./_common.R 2022-04-01 01:33:39 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-03-31 19:10:23 2022-03-31 19:10:23
+    ## ./_common.R 3290 FALSE  644 2022-04-01 01:38:23 2022-04-01 01:38:23
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-03-31 19:10:23 1001 121 runner docker
+    ## ./_common.R 2022-04-01 01:38:23 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 19:10:23 CST"
+    ## [1] "2022-04-01 01:38:23 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-03-31 19:10:23"
+    ## [1] "2022-04-01 01:38:23"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-01 03:10:23 CST"
+    ## [1] "2022-04-01 09:38:23 CST"
     ```
 
 1. 设置时区
@@ -1318,20 +1318,20 @@ apropos('package')
     ```
     
     ```
-    ##          Package    LibPath                      Installed Built   ReposVer 
-    ## cluster  "cluster"  "/opt/R/4.1.3/lib/R/library" "2.1.2"   "4.1.3" "2.1.3"  
-    ## MASS     "MASS"     "/opt/R/4.1.3/lib/R/library" "7.3-55"  "4.1.3" "7.3-56" 
-    ## Matrix   "Matrix"   "/opt/R/4.1.3/lib/R/library" "1.4-0"   "4.1.3" "1.4-1"  
-    ## mgcv     "mgcv"     "/opt/R/4.1.3/lib/R/library" "1.8-39"  "4.1.3" "1.8-40" 
-    ## nlme     "nlme"     "/opt/R/4.1.3/lib/R/library" "3.1-155" "4.1.3" "3.1-157"
-    ## survival "survival" "/opt/R/4.1.3/lib/R/library" "3.2-13"  "4.1.3" "3.3-1"  
-    ##          Repository                               
-    ## cluster  "https://cloud.r-project.org/src/contrib"
-    ## MASS     "https://cloud.r-project.org/src/contrib"
-    ## Matrix   "https://cloud.r-project.org/src/contrib"
-    ## mgcv     "https://cloud.r-project.org/src/contrib"
-    ## nlme     "https://cloud.r-project.org/src/contrib"
-    ## survival "https://cloud.r-project.org/src/contrib"
+    ##         Package   LibPath                           Installed Built   ReposVer 
+    ## formatR "formatR" "/home/runner/work/_temp/Library" "1.11"    "4.1.3" "1.12"   
+    ## cluster "cluster" "/opt/R/4.1.3/lib/R/library"      "2.1.2"   "4.1.3" "2.1.3"  
+    ## MASS    "MASS"    "/opt/R/4.1.3/lib/R/library"      "7.3-55"  "4.1.3" "7.3-56" 
+    ## Matrix  "Matrix"  "/opt/R/4.1.3/lib/R/library"      "1.4-0"   "4.1.3" "1.4-1"  
+    ## mgcv    "mgcv"    "/opt/R/4.1.3/lib/R/library"      "1.8-39"  "4.1.3" "1.8-40" 
+    ## nlme    "nlme"    "/opt/R/4.1.3/lib/R/library"      "3.1-155" "4.1.3" "3.1-157"
+    ##         Repository                               
+    ## formatR "https://cloud.r-project.org/src/contrib"
+    ## cluster "https://cloud.r-project.org/src/contrib"
+    ## MASS    "https://cloud.r-project.org/src/contrib"
+    ## Matrix  "https://cloud.r-project.org/src/contrib"
+    ## mgcv    "https://cloud.r-project.org/src/contrib"
+    ## nlme    "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1357,7 +1357,7 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 412       0          12
+    ##   /home/runner/work/_temp/Library 411       1          12
     ##   /opt/R/4.1.3/lib/R/library       23       6           0
     ## 
     ## Number of available packages (each package counted only once):
@@ -1508,7 +1508,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x55b1822269e8>
+## <bytecode: 0x562a1ccd09e8>
 ## <environment: namespace:base>
 ```
 
