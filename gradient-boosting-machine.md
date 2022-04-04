@@ -1,0 +1,27 @@
+# 梯度提升机 {#chap-gradient-boosting-machine}
+
+<!-- 
+[梯度提升相关的论文合集](https://github.com/benedekrozemberczki/awesome-gradient-boosting-papers) 
+基于树的梯度提升算法，在分类和回归任务上的表现，介绍基本算法内容后，比较实现方式和效率，寻求最佳工程实战
+GBM 算法各种实现的性能比较 <https://github.com/szilard/GBM-perf>，二分类问题的开源实现比较 <https://github.com/szilard/benchm-ml>
+
+useR!2018 Erin LeDell [Machine Learning Tutorial](https://koalaverse.github.io/machine-learning-in-R/)
+
+基于决策树的梯度提升算法
+
+模型接口，训练、测试数据集的描述、要求
+
+https://catboost.ai/docs/concepts/input-data_values-file.html
+
+-->
+
+关于决策树和梯度提升的扩展包/库，近年来层出不穷。2001 年 Jerome H. Friedman 提出梯度提升机后 [@Friedman2001]， 2003 年 Greg Ridgeway 开发了 gbm 包，目前 	Brandon Greenwell 在维护。[gbm](https://github.com/gbm-developers/gbm) 实现了 Freund and Schapire's AdaBoost 算法和 Friedman 的梯度提升机。[h2o](https://github.com/h2oai/h2o-3/tree/master/h2o-r) 是基于 Java 平台的机器学习平台，学习材料 [h2o-tutorials](https://github.com/h2oai/h2o-tutorials)。基于决策树的分类和回归方法 [caret](https://github.com/topepo/caret/) 和基于模型的提升方法 <https://github.com/boost-R> 偏向统计学习，侧重各类统计模型，仅提供 R 语言接口。[xgboost](https://github.com/dmlc/xgboost/tree/master/R-package) 目前已然成为做梯度提升的决策树的工业标准，使用案例丰富，中文帮助文档 <https://xgboost.apachecn.org/cn/latest/>，也提供多种语言接口。类似的还有 [compboost](https://github.com/schalkdaniel/compboost)，其它比较小众的提升库还有 [xLearn](https://github.com/aksnzhy/xlearn)。[catboost](https://github.com/catboost/catboost) 开源的基于决策树的梯度提升库，支持分类特征，提供 R 和 Python 接口，详见官网 <https://catboost.ai>。
+[LightGBM](https://github.com/Microsoft/LightGBM/tree/master/R-package) 提供了 R 包，微软的工具主要支持 Windows 平台和 VS 编译工具。 Python 接口的中文文档 <https://lightgbm.apachecn.org/>， 顺便一提，袁进辉 等人开发的[LightLDA](https://github.com/Microsoft/lightlda) 是大规模主题建模的框架。
+
+## XGBoost {#sec-xgboost}
+
+
+```r
+library(xgboost)
+```
+
