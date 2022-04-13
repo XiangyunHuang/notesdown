@@ -160,13 +160,12 @@ colors <- viridisLite::plasma(9)
 unemp$colorBuckets <- as.numeric(cut(unemp$unemp, c(seq(0, 10, by = 2), 15, 20, 25, 100)))
 # 准备图例文本
 leg.txt <- c("<2%", "2-4%", "4-6%", "6-8%", "8-10%", "10-15%", "15-20%", "20-25%", ">25%")
-
+# 根据区域单元的名称匹配地图数据上每个区域的 FIPS
 cnty.fips <- county.fips$fips[match(
   map("county", plot = FALSE)$names,
   county.fips$polyname
 )]
-
-# 匹配上的区域
+# 根据 FIPS 给地图上每个区域的失业率匹配颜色
 colorsmatched <- unemp$colorBuckets[match(cnty.fips, unemp$fips)]
 par(mar = c(1.5, 0, 2, 0))
 # 绘制区县地图
@@ -184,6 +183,14 @@ title("2009 年美国各个城镇的失业率")
 mtext(text = "数据源：美国人口调查局", side = 1, adj = 0)
 # 添加图例
 legend("top", leg.txt, horiz = TRUE, fill = colors, cex = 0.85)
+```
+
+函数 `match()` 返回一个向量，向量的长度与 x 一致，向量的元素是整型的，表示 x 中的元素出现在 table 中的位置。
+
+```{r}
+match(x = c("A", "B"), table = c("A"))
+match(x = c("A", "B"), table = c("C", "A"))
+match(x = c("A", "B"), table = c("C", "A", "D"))
 ```
 
 ### latticeExtra
