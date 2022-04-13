@@ -137,7 +137,7 @@ getAnywhere(plot.raster)
 ##     }
 ##     rasterImage(x, 0, 0, ncol(x), nrow(x), ...)
 ## }
-## <bytecode: 0x561ef2442288>
+## <bytecode: 0x55a5d9c04490>
 ## <environment: namespace:graphics>
 ```
 
@@ -164,7 +164,7 @@ getAnywhere(rasterImage)
 ##         ...)
 ##     invisible()
 ## }
-## <bytecode: 0x561ef2606e10>
+## <bytecode: 0x55a5d9dcb458>
 ## <environment: namespace:graphics>
 ```
 
@@ -266,13 +266,12 @@ colors <- viridisLite::plasma(9)
 unemp$colorBuckets <- as.numeric(cut(unemp$unemp, c(seq(0, 10, by = 2), 15, 20, 25, 100)))
 # 准备图例文本
 leg.txt <- c("<2%", "2-4%", "4-6%", "6-8%", "8-10%", "10-15%", "15-20%", "20-25%", ">25%")
-
+# 根据区域单元的名称匹配地图数据上每个区域的 FIPS
 cnty.fips <- county.fips$fips[match(
   map("county", plot = FALSE)$names,
   county.fips$polyname
 )]
-
-# 匹配上的区域
+# 根据 FIPS 给地图上每个区域的失业率匹配颜色
 colorsmatched <- unemp$colorBuckets[match(cnty.fips, unemp$fips)]
 par(mar = c(1.5, 0, 2, 0))
 # 绘制区县地图
@@ -300,6 +299,33 @@ legend("top", leg.txt, horiz = TRUE, fill = colors, cex = 0.85)
 
 \caption{2009 年美国各个城镇的失业率分布}(\#fig:unemp-maps)
 \end{figure}
+
+函数 `match()` 返回一个向量，向量的长度与 x 一致，向量的元素是整型的，表示 x 中的元素出现在 table 中的位置。
+
+
+```r
+match(x = c("A", "B"), table = c("A"))
+```
+
+```
+## [1]  1 NA
+```
+
+```r
+match(x = c("A", "B"), table = c("C", "A"))
+```
+
+```
+## [1]  2 NA
+```
+
+```r
+match(x = c("A", "B"), table = c("C", "A", "D"))
+```
+
+```
+## [1]  2 NA
+```
 
 ### latticeExtra
 

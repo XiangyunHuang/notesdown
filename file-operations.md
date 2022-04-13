@@ -91,7 +91,7 @@ library(fs)
     ##                                          size isdir mode               mtime
     ## /opt/R/4.1.3/lib/R/include/Rinternals.h 63180 FALSE  644 2022-03-23 00:00:20
     ##                                                       ctime               atime
-    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-04-04 09:33:11 2022-04-04 09:41:20
+    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-04-13 04:10:48 2022-04-13 04:19:32
     ##                                         uid gid uname grname
     ## /opt/R/4.1.3/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2022-04-04 10:25:19 2022-04-04 10:25:19 2022-04-04 10:25:19
+    ## . 16384  TRUE  755 2022-04-13 07:33:35 2022-04-13 07:33:35 2022-04-13 07:33:36
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2022-04-04 10:18:32 2022-04-04 10:18:32
+    ## ./_book/ 12288  TRUE  755 2022-04-13 07:25:14 2022-04-13 07:25:14
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2022-04-04 10:22:43 1001 121 runner docker
+    ## ./_book/ 2022-04-13 07:25:20 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 26508
+    ## [1] 156079
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.063   0.004   0.067
+    ##   0.057   0.008   0.065
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.062   0.004   0.065
+    ##   0.065   0.004   0.068
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -947,23 +947,23 @@ system(command = "xelatex --version")
 ```
 
 ```
-## XeTeX 3.141592653-2.6-0.999993 (TeX Live 2021)
-## kpathsea version 6.3.3
-## Copyright 2021 SIL International, Jonathan Kew and Khaled Hosny.
+## XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+## kpathsea version 6.3.4
+## Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
 ## There is NO warranty.  Redistribution of this software is
 ## covered by the terms of both the XeTeX copyright and
 ## the Lesser GNU General Public License.
 ## For more information about these matters, see the file
 ## named COPYING and the XeTeX source.
 ## Primary author of XeTeX: Jonathan Kew.
-## Compiled with ICU version 68.2; using 68.2
+## Compiled with ICU version 70.1; using 70.1
 ## Compiled with zlib version 1.2.11; using 1.2.11
-## Compiled with FreeType2 version 2.10.4; using 2.10.4
+## Compiled with FreeType2 version 2.11.1; using 2.11.1
 ## Compiled with Graphite2 version 1.3.14; using 1.3.14
-## Compiled with HarfBuzz version 2.7.4; using 2.7.4
+## Compiled with HarfBuzz version 3.4.0; using 3.4.0
 ## Compiled with libpng version 1.6.37; using 1.6.37
 ## Compiled with pplib version v2.05 less toxic i hope
-## Compiled with fontconfig version 2.11.0; using 2.13.1
+## Compiled with fontconfig version 2.13.0; using 2.13.1
 ```
 
 ```r
@@ -971,9 +971,9 @@ system2(command = 'pdflatex', args = '--version')
 ```
 
 ```
-## pdfTeX 3.141592653-2.6-1.40.23 (TeX Live 2021)
-## kpathsea version 6.3.3
-## Copyright 2021 Han The Thanh (pdfTeX) et al.
+## pdfTeX 3.141592653-2.6-1.40.24 (TeX Live 2022)
+## kpathsea version 6.3.4
+## Copyright 2022 Han The Thanh (pdfTeX) et al.
 ## There is NO warranty.  Redistribution of this software is
 ## covered by the terms of both the pdfTeX copyright and
 ## the Lesser GNU General Public License.
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 03:25:20 PDT"
+    ## [1] "2022-04-13 00:33:36 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 06:25:20 EDT"
+    ## [1] "2022-04-13 03:33:36 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04"
+    ## [1] "2022-04-13"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Mon Apr  4 10:25:20 2022"
+    ## [1] "Wed Apr 13 07:33:36 2022"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Mon Apr 04 10:25:20 2022"
+    ## [1] "Wed Apr 13 07:33:36 2022"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 10:25:20 GMT"
+    ## [1] "2022-04-13 07:33:36 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 10:25:20 UTC"
+    ## [1] "2022-04-13 07:33:36 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 09:25:20 UTC"
+    ## [1] "2022-04-13 06:33:36 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-04-04 09:59:13 2022-04-04 09:59:13
+    ## ./_common.R 3290 FALSE  644 2022-04-13 07:04:03 2022-04-13 07:04:03
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-04-04 09:59:22 1001 121 runner docker
+    ## ./_common.R 2022-04-13 07:04:13 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-04-04 10:25:20 2022-04-04 10:25:20
+    ## ./_common.R 3290 FALSE  644 2022-04-13 07:33:36 2022-04-13 07:33:36
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-04-04 10:25:20 1001 121 runner docker
+    ## ./_common.R 2022-04-13 07:33:36 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 10:25:20 CST"
+    ## [1] "2022-04-13 07:33:36 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 10:25:20"
+    ## [1] "2022-04-13 07:33:36"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-04 18:25:20 CST"
+    ## [1] "2022-04-13 15:33:36 CST"
     ```
 
 1. 设置时区
@@ -1318,20 +1318,20 @@ apropos('package')
     ```
     
     ```
-    ##              Package        LibPath                           Installed Built  
-    ## formatR      "formatR"      "/home/runner/work/_temp/Library" "1.11"    "4.1.3"
-    ## igraph       "igraph"       "/home/runner/work/_temp/Library" "1.2.11"  "4.1.3"
-    ## kernlab      "kernlab"      "/home/runner/work/_temp/Library" "0.9-29"  "4.1.3"
-    ## RColorBrewer "RColorBrewer" "/home/runner/work/_temp/Library" "1.1-2"   "4.1.3"
-    ## rprojroot    "rprojroot"    "/home/runner/work/_temp/Library" "2.0.2"   "4.1.3"
-    ## RSQLite      "RSQLite"      "/home/runner/work/_temp/Library" "2.2.11"  "4.1.3"
-    ##              ReposVer Repository                               
-    ## formatR      "1.12"   "https://cloud.r-project.org/src/contrib"
-    ## igraph       "1.3.0"  "https://cloud.r-project.org/src/contrib"
-    ## kernlab      "0.9-30" "https://cloud.r-project.org/src/contrib"
-    ## RColorBrewer "1.1-3"  "https://cloud.r-project.org/src/contrib"
-    ## rprojroot    "2.0.3"  "https://cloud.r-project.org/src/contrib"
-    ## RSQLite      "2.2.12" "https://cloud.r-project.org/src/contrib"
+    ##           Package     LibPath                           Installed Built  
+    ## beanplot  "beanplot"  "/home/runner/work/_temp/Library" "1.2"     "4.1.3"
+    ## blob      "blob"      "/home/runner/work/_temp/Library" "1.2.2"   "4.1.3"
+    ## extrafont "extrafont" "/home/runner/work/_temp/Library" "0.17"    "4.1.3"
+    ## formatR   "formatR"   "/home/runner/work/_temp/Library" "1.11"    "4.1.3"
+    ## gifski    "gifski"    "/home/runner/work/_temp/Library" "1.4.3-1" "4.1.3"
+    ## igraph    "igraph"    "/home/runner/work/_temp/Library" "1.2.11"  "4.1.3"
+    ##           ReposVer  Repository                               
+    ## beanplot  "1.3.1"   "https://cloud.r-project.org/src/contrib"
+    ## blob      "1.2.3"   "https://cloud.r-project.org/src/contrib"
+    ## extrafont "0.18"    "https://cloud.r-project.org/src/contrib"
+    ## formatR   "1.12"    "https://cloud.r-project.org/src/contrib"
+    ## gifski    "1.6.6-1" "https://cloud.r-project.org/src/contrib"
+    ## igraph    "1.3.0"   "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1357,13 +1357,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 406       6          12
+    ##   /home/runner/work/_temp/Library 395      17          12
     ##   /opt/R/4.1.3/lib/R/library       23       6           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       421         18583
+    ##   https://cloud.r-project.org/src/contrib       421         18580
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1427,50 +1427,51 @@ apropos('package')
     ##  [10] "ggborderline"      "ggbreak"           "ggBubbles"        
     ##  [13] "ggbuildr"          "ggbump"            "ggchangepoint"    
     ##  [16] "ggcharts"          "ggChernoff"        "ggcleveland"      
-    ##  [19] "ggconf"            "ggcorrplot"        "ggdag"            
-    ##  [22] "ggdark"            "ggDCA"             "ggdemetra"        
-    ##  [25] "ggdendro"          "ggdensity"         "ggdist"           
-    ##  [28] "ggdmc"             "ggDoubleHeat"      "ggeasy"           
-    ##  [31] "ggedit"            "ggenealogy"        "ggESDA"           
-    ##  [34] "ggetho"            "ggExtra"           "ggfacto"          
-    ##  [37] "ggfan"             "ggfittext"         "ggfocus"          
-    ##  [40] "ggforce"           "ggformula"         "ggfortify"        
-    ##  [43] "ggfun"             "ggfx"              "gggap"            
-    ##  [46] "gggenes"           "ggghost"           "gggibbous"        
-    ##  [49] "gggrid"            "ggh4x"             "gghalfnorm"       
-    ##  [52] "gghalves"          "gghdr"             "ggheatmap"        
-    ##  [55] "gghighlight"       "gghilbertstrings"  "ggHoriPlot"       
-    ##  [58] "ggimage"           "ggimg"             "gginference"      
-    ##  [61] "gginnards"         "ggip"              "ggiraph"          
-    ##  [64] "ggiraphExtra"      "ggjoy"             "gglm"             
-    ##  [67] "ggloop"            "gglorenz"          "ggmap"            
-    ##  [70] "ggmatplot"         "ggmcmc"            "ggmice"           
-    ##  [73] "ggmosaic"          "ggmotif"           "ggmuller"         
-    ##  [76] "ggmulti"           "ggnetwork"         "ggnewscale"       
-    ##  [79] "ggnormalviolin"    "ggnuplot"          "ggOceanMaps"      
-    ##  [82] "ggokabeito"        "ggpacman"          "ggpage"           
-    ##  [85] "ggparallel"        "ggparliament"      "ggparty"          
-    ##  [88] "ggpattern"         "ggperiodic"        "ggplot.multistats"
-    ##  [91] "ggplotAssist"      "ggplotgui"         "ggplotify"        
-    ##  [94] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
-    ##  [97] "ggpointdensity"    "ggpointless"       "ggpol"            
-    ## [100] "ggpolar"           "ggpolypath"        "ggpp"             
-    ## [103] "ggprism"           "ggpubr"            "ggpval"           
-    ## [106] "ggQC"              "ggQQunif"          "ggquickeda"       
-    ## [109] "ggquiver"          "ggraph"            "ggraptR"          
-    ## [112] "ggrasp"            "ggrastr"           "ggrepel"          
-    ## [115] "ggResidpanel"      "ggridges"          "ggrisk"           
-    ## [118] "ggROC"             "ggsci"             "ggseas"           
-    ## [121] "ggseg"             "ggseqlogo"         "ggshadow"         
-    ## [124] "ggside"            "ggsignif"          "ggsn"             
-    ## [127] "ggsoccer"          "ggsolvencyii"      "ggsom"            
-    ## [130] "ggspatial"         "ggspectra"         "ggstance"         
-    ## [133] "ggstar"            "ggstatsplot"       "ggstream"         
-    ## [136] "ggstudent"         "ggswissmaps"       "ggtea"            
-    ## [139] "ggtern"            "ggtext"            "ggThemeAssist"    
-    ## [142] "ggthemes"          "ggtikz"            "ggTimeSeries"     
-    ## [145] "ggupset"           "ggvenn"            "ggVennDiagram"    
-    ## [148] "ggvoronoi"         "ggwordcloud"       "ggx"
+    ##  [19] "ggconf"            "ggcorrplot"        "ggcorset"         
+    ##  [22] "ggdag"             "ggdark"            "ggDCA"            
+    ##  [25] "ggdemetra"         "ggdendro"          "ggdensity"        
+    ##  [28] "ggdist"            "ggdmc"             "ggDoubleHeat"     
+    ##  [31] "ggeasy"            "ggedit"            "ggenealogy"       
+    ##  [34] "ggESDA"            "ggetho"            "ggExtra"          
+    ##  [37] "ggfacto"           "ggfan"             "ggfittext"        
+    ##  [40] "ggfocus"           "ggforce"           "ggformula"        
+    ##  [43] "ggfortify"         "ggfun"             "ggfx"             
+    ##  [46] "gggap"             "gggenes"           "ggghost"          
+    ##  [49] "gggibbous"         "gggrid"            "ggh4x"            
+    ##  [52] "gghalfnorm"        "gghalves"          "gghdr"            
+    ##  [55] "ggheatmap"         "gghighlight"       "gghilbertstrings" 
+    ##  [58] "ggHoriPlot"        "ggimage"           "ggimg"            
+    ##  [61] "gginference"       "gginnards"         "ggip"             
+    ##  [64] "ggiraph"           "ggiraphExtra"      "ggjoy"            
+    ##  [67] "gglm"              "ggloop"            "gglorenz"         
+    ##  [70] "ggmap"             "ggmatplot"         "ggmcmc"           
+    ##  [73] "ggmice"            "ggmosaic"          "ggmotif"          
+    ##  [76] "ggmuller"          "ggmulti"           "ggnetwork"        
+    ##  [79] "ggnewscale"        "ggnormalviolin"    "ggnuplot"         
+    ##  [82] "ggOceanMaps"       "ggokabeito"        "ggpacman"         
+    ##  [85] "ggpage"            "ggparallel"        "ggparliament"     
+    ##  [88] "ggparty"           "ggpattern"         "ggperiodic"       
+    ##  [91] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
+    ##  [94] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
+    ##  [97] "ggPMX"             "ggpointdensity"    "ggpointless"      
+    ## [100] "ggpol"             "ggpolar"           "ggpolypath"       
+    ## [103] "ggpp"              "ggprism"           "ggpubr"           
+    ## [106] "ggpval"            "ggQC"              "ggQQunif"         
+    ## [109] "ggquickeda"        "ggquiver"          "ggraph"           
+    ## [112] "ggraptR"           "ggrasp"            "ggrastr"          
+    ## [115] "ggrepel"           "ggResidpanel"      "ggridges"         
+    ## [118] "ggrisk"            "ggROC"             "ggsci"            
+    ## [121] "ggseas"            "ggseg"             "ggseqlogo"        
+    ## [124] "ggshadow"          "ggside"            "ggsignif"         
+    ## [127] "ggsn"              "ggsoccer"          "ggsolvencyii"     
+    ## [130] "ggsom"             "ggspatial"         "ggspectra"        
+    ## [133] "ggstance"          "ggstar"            "ggstatsplot"      
+    ## [136] "ggstream"          "ggstudent"         "ggswissmaps"      
+    ## [139] "ggtea"             "ggtern"            "ggtext"           
+    ## [142] "ggThemeAssist"     "ggthemes"          "ggtikz"           
+    ## [145] "ggTimeSeries"      "ggupset"           "ggvenn"           
+    ## [148] "ggVennDiagram"     "ggvoronoi"         "ggwordcloud"      
+    ## [151] "ggx"
     ```
     
 
@@ -1508,7 +1509,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x560d8212a9e8>
+## <bytecode: 0x5595a3a2d9e8>
 ## <environment: namespace:base>
 ```
 

@@ -250,7 +250,7 @@ summary(git2r::repository())
 ```
 ## Local:    devel /home/runner/work/masr/masr
 ## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [322d23f] 2022-04-04: 去掉限制 out.width="75%"
+## Head:     [bcc93b4] 2022-04-13: 点出 maps 包绘制地图最关键的地方：地图数据如何与观测数据建立一一映射
 ## 
 ## Branches:         1
 ## Tags:             0
@@ -263,11 +263,11 @@ summary(git2r::repository())
 ## Staged files:     0
 ## 
 ## Latest commits:
+## [bcc93b4] 2022-04-13: 点出 maps 包绘制地图最关键的地方：地图数据如何与观测数据建立一一映射
 ## [322d23f] 2022-04-04: 去掉限制 out.width="75%"
 ## [982d110] 2022-04-03: Polish
 ## [3550750] 2022-04-01: use system fonts
 ## [430c26c] 2022-03-31: upgrade to R 4.1.3
-## [bc122de] 2022-03-31: upload data
 ```
 
 仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
@@ -1659,9 +1659,9 @@ certifi                      2021.10.8
 charset-normalizer           2.0.12             
 cycler                       0.11.0             
 flatbuffers                  2.0                
-fonttools                    4.31.2             
+fonttools                    4.32.0             
 gast                         0.5.3              
-google-auth                  2.6.2              
+google-auth                  2.6.4              
 google-auth-oauthlib         0.4.6              
 google-pasta                 0.2.0              
 graphviz                     0.8.4              
@@ -1688,11 +1688,11 @@ patsy                        0.5.2
 Pillow                       9.1.0              
 pip                          20.0.2             
 pkg-resources                0.0.0              
-plotly                       5.6.0              
+plotly                       5.7.0              
 protobuf                     3.20.0             
 pyasn1                       0.4.8              
 pyasn1-modules               0.2.8              
-pyparsing                    3.0.7              
+pyparsing                    3.0.8              
 python-dateutil              2.8.2              
 pytz                         2022.1             
 requests                     2.27.1             
@@ -1745,7 +1745,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['branches', 'objects', 'hooks', 'refs', 'logs', 'info', 'description', 'FETCH_HEAD', 'shallow', 'HEAD', 'index', 'config']
+## ['info', 'description', 'hooks', 'config', 'objects', 'shallow', 'logs', 'HEAD', 'refs', 'branches', 'index', 'FETCH_HEAD']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1789,14 +1789,14 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "branches"    "objects"     "hooks"       "refs"        "logs"       
-##  [6] "info"        "description" "FETCH_HEAD"  "shallow"     "HEAD"       
-## [11] "index"       "config"
+##  [1] "info"        "description" "hooks"       "config"      "objects"    
+##  [6] "shallow"     "logs"        "HEAD"        "refs"        "branches"   
+## [11] "index"       "FETCH_HEAD"
 ```
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年04月04日 使用 reticulate 版本 1.24，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年04月13日 使用 reticulate 版本 1.24，本文没有对之前的版本进行测试。
 
 
 
@@ -2713,13 +2713,13 @@ Package                   Version        Title
 **bayesplot**             1.9.0          Plotting for Bayesian Models                                                                                                
 **bbmle**                 1.0.24         Tools for General Maximum Likelihood Estimation                                                                             
 **bdsmatrix**             1.3-4          Routines for Block Diagonal Symmetric Matrices                                                                              
-**beanplot**              1.2            Visualization via Beanplots (like Boxplot/Stripchart/Violin Plot)                                                           
+**beanplot**              1.3.1          Visualization via Beanplots (Like Boxplot/Stripchart/Violin Plot)                                                           
 **beeswarm**              0.4.0          The Bee Swarm Plot, an Alternative to Stripchart                                                                            
 **BH**                    1.78.0-0       Boost C++ Header Files                                                                                                      
 **BiocManager**           1.30.16        Access the Bioconductor Project Package Repository                                                                          
 **bit64**                 4.0.5          A S3 Class for Vectors of 64bit Integers                                                                                    
 **bitops**                1.0-7          Bitwise Operations                                                                                                          
-**blob**                  1.2.2          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
+**blob**                  1.2.3          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
 **bookdown**              0.25           Authoring Books and Technical Documents with R Markdown                                                                     
 **boot**                  1.3-28         Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
 **bridgesampling**        1.1-2          Bridge Sampling for Marginal Likelihoods and Bayes Factors                                                                  
@@ -2765,7 +2765,7 @@ Package                   Version        Title
 **ellipsis**              0.3.2          Tools for Working with ...                                                                                                  
 **equatiomatic**          0.3.1          Transform Models into LaTeX Equations                                                                                       
 **evaluate**              0.15           Parsing and Evaluation Tools that Provide More Details than the Default                                                     
-**extrafont**             0.17           Tools for using fonts                                                                                                       
+**extrafont**             0.18           Tools for Using Fonts                                                                                                       
 **extrafontdb**           1.0            Package for holding the database for the extrafont package                                                                  
 **fansi**                 1.0.3          ANSI Control Sequence Aware String Functions                                                                                
 **fastmap**               1.1.0          Fast Data Structures                                                                                                        
@@ -2798,7 +2798,7 @@ Package                   Version        Title
 **ggsci**                 2.9            Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2                                                             
 **ggsignif**              0.6.3          Significance Brackets for ggplot2                                                                                           
 **ggstream**              0.1.0          Create Streamplots in ggplot2                                                                                               
-**gifski**                1.4.3-1        Highest Quality GIF Encoder                                                                                                 
+**gifski**                1.6.6-1        Highest Quality GIF Encoder                                                                                                 
 **git2r**                 0.30.1         Provides Access to Git Repositories                                                                                         
 **glmmTMB**               1.1.3          Generalized Linear Mixed Models using Template Model Builder                                                                
 **glmnet**                4.1-3          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
@@ -2840,7 +2840,7 @@ Package                   Version        Title
 **leafletCN**             0.2.1          An R Gallery for China and Other Geojson Choropleth Map in Leaflet                                                          
 **lifecycle**             1.0.1          Manage the Life Cycle of your Package Functions                                                                             
 **lightgbm**              3.3.2          Light Gradient Boosting Machine                                                                                             
-**lme4**                  1.1-28         Linear Mixed-Effects Models using Eigen and S4                                                                              
+**lme4**                  1.1-29         Linear Mixed-Effects Models using Eigen and S4                                                                              
 **loo**                   2.5.1          Efficient Leave-One-Out Cross-Validation and WAIC for Bayesian Models                                                       
 **lpSolve**               5.6.15         Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs                                                             
 **lpSolveAPI**            5.5.2.0-17.7   R Interface to 'lp_solve' Version 5.5.2.0                                                                                   
@@ -2884,7 +2884,7 @@ Package                   Version        Title
 **plotly**                4.10.0         Create Interactive Web Graphics via plotly.js                                                                               
 **plyr**                  1.8.7          Tools for Splitting, Applying and Combining Data                                                                            
 **png**                   0.1-7          Read and write PNG images                                                                                                   
-**polynom**               1.4-0          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
+**polynom**               1.4-1          A Collection of Functions to Implement a Class for Univariate Polynomial Manipulations                                      
 **posterior**             1.2.1          Tools for Working with Posterior Distributions                                                                              
 **prettydoc**             0.4.1          Creating Pretty Documents from R Markdown                                                                                   
 **PrevMap**               1.5.4          Geostatistical Modelling of Spatially Referenced Prevalence Data                                                            
@@ -2908,8 +2908,8 @@ Package                   Version        Title
 **rcmdcheck**             1.4.0          Run 'R CMD check' from R and Capture Results                                                                                
 **RColorBrewer**          1.1-3          ColorBrewer Palettes                                                                                                        
 **Rcpp**                  1.0.8.3        Seamless R and C++ Integration                                                                                              
-**RcppArmadillo**         0.10.8.1.0     Rcpp Integration for the Armadillo Templated Linear Algebra Library                                                         
-**RcppEigen**             0.3.3.9.1      Rcpp Integration for the Eigen Templated Linear Algebra Library                                                             
+**RcppArmadillo**         0.11.0.0.0     Rcpp Integration for the Armadillo Templated Linear Algebra Library                                                         
+**RcppEigen**             0.3.3.9.2      Rcpp Integration for the Eigen Templated Linear Algebra Library                                                             
 **RcppParallel**          5.1.5          Parallel Programming Tools for Rcpp                                                                                         
 **RcppTOML**              0.1.7          Rcpp Bindings to Parser for Tom's Obvious Markup Language                                                                   
 **reactable**             0.2.3          Interactive Data Tables Based on 'React Table'                                                                              
@@ -2921,7 +2921,7 @@ Package                   Version        Title
 **reprex**                2.0.1          Prepare Reproducible Example Code via the Clipboard                                                                         
 **reshape2**              1.4.4          Flexibly Reshape Data: A Reboot of the Reshape Package                                                                      
 **reticulate**            1.24           Interface to Python                                                                                                         
-**rgdal**                 1.5-29         Bindings for the Geospatial Data Abstraction Library                                                                        
+**rgdal**                 1.5-30         Bindings for the Geospatial Data Abstraction Library                                                                        
 **rgeos**                 0.5-9          Interface to Geometry Engine - Open Source ('GEOS')                                                                         
 **rlang**                 1.0.2          Functions for Base Types and Core R and Tidyverse Features                                                                  
 **rmarkdown**             2.13           Dynamic Documents for R                                                                                                     
@@ -2935,8 +2935,8 @@ Package                   Version        Title
 **roxygen2**              7.1.2          In-Line Documentation for R                                                                                                 
 **rprojroot**             2.0.3          Finding Files in Project Subdirectories                                                                                     
 **RSQLite**               2.2.12         SQLite Interface for R                                                                                                      
-**rstan**                 2.21.3         R Interface to Stan                                                                                                         
-**rstantools**            2.1.1          Tools for Developing R Packages Interfacing with Stan                                                                       
+**rstan**                 2.21.5         R Interface to Stan                                                                                                         
+**rstantools**            2.2.0          Tools for Developing R Packages Interfacing with Stan                                                                       
 **rstatix**               0.7.0          Pipe-Friendly Framework for Basic Statistical Tests                                                                         
 **rstudioapi**            0.13           Safely Access the RStudio API                                                                                               
 **Rttf2pt1**              1.3.10         'ttf2pt1' Program                                                                                                           

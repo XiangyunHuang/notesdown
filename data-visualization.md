@@ -931,8 +931,8 @@ tikzDevice::tikzTest()
 ## 
 ## Active compiler:
 ## 	/home/runner/.TinyTeX/bin/x86_64-linux/xelatex
-## 	XeTeX 3.141592653-2.6-0.999993 (TeX Live 2021)
-## 	kpathsea version 6.3.3
+## 	XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+## 	kpathsea version 6.3.4
 ```
 
 ```
@@ -3749,7 +3749,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Mon"
+## [1] "Wed"
 ```
 
 ```r
@@ -3757,7 +3757,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 2
+## [1] 4
 ```
 
 :::
@@ -3972,7 +3972,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x561a2f0987b0>
+## <bytecode: 0x560a4bca89d0>
 ## <environment: namespace:ggpubr>
 ```
 
