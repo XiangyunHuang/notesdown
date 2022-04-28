@@ -309,13 +309,21 @@ ggplot(airquality, aes(x = Temp, y = Ozone, color = as.ordered(Month))) +
 ls("package:ggplot2", pattern = "^theme_")
 ```
 
-这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
+这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes)、[clcharts](https://github.com/houseofcommonslibrary/clcharts) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
 
 ```{r builtin-themes, fig.cap="ggplot2 内置的主题", fig.subcap=c("黑白主题", "无主题", "极少配置的主题","经典主题"), fig.width=4, fig.height=4, out.width="45%", fig.ncol=2}
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_classic()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_bw()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_void()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_minimal()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_classic()
 ```
 
 除主题之外，还有一类提供一整套统一的风格样式来绘制各种统计图形，如 [ggpubr](https://github.com/kassambara/ggpubr) 和 [bbplot](https://github.com/bbc/bbplot)
@@ -1452,6 +1460,7 @@ east_asia <- map_data("worldHires",
 ggplot(east_asia, aes(x = long, y = lat, group = group, fill = region)) +
   geom_polygon(colour = "black") +
   scale_fill_brewer(palette = "Set2") +
+  coord_map() +
   theme_minimal()
 ```
 
@@ -1536,7 +1545,12 @@ str(diamonds)
 
 数值型变量 carat 作为 x 轴
 
-```{r diamonds-axis,fig.subcap=c("指定 x 轴","数值变量 price 作为纵轴","有序分类变量 cut 指定颜色","指定统一颜色"),fig.cap="绘图过程",out.width="35%",fig.ncol=2,fig.width=3}
+```{r diamonds-axis}
+#| fig.subcap=c("指定 x 轴","数值变量 price 作为纵轴","有序分类变量 cut 指定颜色","指定统一颜色"),
+#| fig.cap="绘图过程",
+#| out.width="35%",
+#| fig.ncol=2,
+#| fig.width=2
 ggplot(diamonds, aes(x = carat))
 ggplot(diamonds, aes(x = carat, y = price))
 ggplot(diamonds, aes(x = carat, color = cut))

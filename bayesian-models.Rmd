@@ -2,11 +2,10 @@
 
 ```{r,include=FALSE}
 library(cmdstanr)
-# library(posterior)
+# library(posterior) # 与 bayesplot 冲突
+# library(projpred)
 library(bayesplot)
-library(MASS)
 library(ggplot2)
-library(magrittr)
 ```
 
 [LaplacesDemon](https://github.com/LaplacesDemonR/LaplacesDemon) 支持常见模型的贝叶斯推断，具体可见[网站](https://CRAN.R-project.org/package=LaplacesDemon) [@LaplacesDemon2021]，[shinystan](https://github.com/stan-dev/shinystan) 借助 [rstan](https://github.com/stan-dev/rstan) 打包了一些 stan 编写的统计模型，提供模型评估的功能。相比于 [rstan](https://github.com/stan-dev/rstan)，[brms](https://github.com/paul-buerkner/brms) 支持了更加广泛的模型，[shinybrms](https://github.com/fweber144/shinybrms) 类似 [shinystan](https://github.com/stan-dev/shinystan) 提供可视化的 shiny 前端，方便用户调用模型和评估效果。[rstanarm](https://github.com/stan-dev/rstanarm) 基于 stan 语言重写了 [arm](https://github.com/suyusung/arm) 里的模型，和 [brms](https://github.com/paul-buerkner/brms) 一样，提供类似 [lme4](https://github.com/lme4/lme4) 的公式语法，和 Base R 内置的函数 `lm()` 和 `glm()` 保持一致，降低用户学习成本。
@@ -32,24 +31,24 @@ Paul-Christian Bürkner 在 Stan 大会上介绍 brms 和 rstanarm <https://gith
 从 GitHub 下载最新版的源码包 <https://github.com/stan-dev/cmdstan/releases/latest>，编译二进制版本
 
 ```bash
-tar -xzf /Users/xiangyun/Desktop/cmdstan-2.26.0.tar.gz -C /opt/
-cd cmdstan-2.26.0
+sudo mkdir -p /opt/cmdstan-2.29.2
+sudo chown -R $(whoami):staff /opt/cmdstan-2.29.2
+tar -xzf /Users/xiangyun/Desktop/cmdstan-2.29.2.tar.gz -C /opt/
+cd cmdstan-2.29.2
 make build
 ```
 
 设置环境变量 CMDSTAN 指向 CmdStan 安装路径，加载 **cmdstanr** 包会自动检测和加载
 
 ```r
-Sys.setenv(CMDSTAN="/opt/cmdstan-2.26.0")
+Sys.setenv(CMDSTAN="/opt/cmdstan-2.29.2")
 ```
 
-还可以设置环境变量 `CMDSTANR_NO_VER_CHECK=TRUE`，让 cmdstanr 不要检查 CmdStan 版本状态，是不是最新版，比如本书将固定下 CmdStan 版本为 2.26.0
+还可以设置环境变量 `CMDSTANR_NO_VER_CHECK=TRUE`，让 cmdstanr 不要检查 CmdStan 版本状态，是不是最新版，比如本书将固定下 CmdStan 版本为 2.29.2
 
 **cmdstanr** 当前还在开发中，安装方式如下
 
 ```{r,eval=FALSE}
-remotes::install_github('stan-dev/cmdstanr')
-# 或者
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 ```
 
@@ -153,7 +152,13 @@ str(draws_array)
 
 采样结果可以直接传递给 **bayesplot** 包，绘制参数的后验分布和马尔科夫链蒙特卡罗采样的轨迹图（trace plot）。
 
-```{r mu-sigma-dist,fig.cap="(ref:mu-dist-cap)",fig.width=8,fig.height=4,fig.subcap=c("参数的轨迹图", "参数的后验分布图"),fig.show='hold', fig.ncol = 1}
+```{r mu-sigma-dist}
+#| fig.cap="(ref:mu-dist-cap)",
+#| fig.width=8,
+#| fig.height=4,
+#| fig.subcap=c("参数的轨迹图", "参数的后验分布图"),
+#| fig.show='hold', 
+#| fig.ncol = 1
 library(bayesplot)
 mcmc_trace(normal_fit$draws(c("mu", "sigma")))
 mcmc_hist(normal_fit$draws(c("mu", "sigma")))
@@ -252,7 +257,10 @@ model {
 ```{r}
 # 模型编译
 mod <- cmdstan_model(stan_file = "code/eight_schools.stan")
+```
 
+
+```{r}
 # 模型拟合
 eight_schools_fit <- mod$sample(
   data = list( # 观测数据
@@ -365,14 +373,15 @@ rats_fit <- mod$sample(
 ### mcycle 数据 {#subsec-mcycle}
 
 ```{r}
-library(MASS)
 library(ggplot2)
-```
-
-```{r}
+data("mcycle", package = "MASS")
 ggplot(data = mcycle, aes(x = times, y= accel)) +
   geom_point() +
-  # geom_smooth() +
+  labs(x = "Times (ms)", y = "Acceleration (g)") +
+  theme_minimal()
+ggplot(data = mcycle, aes(x = times, y= accel)) +
+  geom_point() +
+  geom_smooth() +
   labs(x = "Times (ms)", y = "Acceleration (g)") +
   theme_minimal()
 ```

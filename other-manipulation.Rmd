@@ -1,5 +1,23 @@
 # 净土化操作 {#chap-dplyr-manipulation}
 
+```{r,echo=FALSE}
+knitr::knit_hooks$set(output = local({
+  # the default output hook
+  hook_output <- knitr::knit_hooks$get("output")
+  function(x, options) {
+    if (!is.null(n <- options$out.lines)) { # out.lines
+      x <- xfun::split_lines(x)
+      if (length(x) > n) {
+        # truncate the output
+        x <- c(head(x, n), "....\n")
+      }
+      x <- paste(x, collapse = "\n") # paste first n lines together
+    }
+    hook_output(x, options)
+  }
+}))
+```
+
 > 常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算
 > 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作
 
@@ -258,7 +276,7 @@ microbenchmark::microbenchmark(s(), d())
 
 只要行中包含缺失值，我们就把这样的行移除出去
 
-```{r,out.lines=10}
+```{r,out.lines=6}
 airquality[complete.cases(airquality), ]
 ```
 
