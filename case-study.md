@@ -705,7 +705,7 @@ length(pdb[, "Package"])
 ```
 
 ```
-## [1] 19045
+## [1] 18932
 ```
 
 经过与官网发布的数据来对比，我们发现这里计算的结果与实际不符，多出来了几十个R包，所以我们再观察一下是否有重复的 R 包描述信息
@@ -719,10 +719,7 @@ pdb[, "Package"][duplicated(pdb[, "Package"])]
 ##  [1] "boot"       "class"      "cluster"    "codetools"  "foreign"   
 ##  [6] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
 ## [11] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
-## [16] "boot"       "class"      "cluster"    "codetools"  "foreign"   
-## [21] "KernSmooth" "lattice"    "MASS"       "Matrix"     "mgcv"      
-## [26] "nlme"       "nnet"       "rpart"      "spatial"    "survival"  
-## [31] "RODBC"      "XML"
+## [16] "RODBC"      "XML"
 ```
 
 不难发现，果然有！所以去掉重复的 R 包信息，就是 CRAN 上实际发布的 R 包数量
@@ -733,7 +730,7 @@ dim(subset(pdb, subset = !duplicated(Package)))[1]
 ```
 
 ```
-## [1] 19013
+## [1] 18915
 ```
 
 接下来就是分析去掉重复信息后的数据矩阵 pdb
@@ -760,7 +757,7 @@ dim(core_pdb[order(core_pdb[, "Maintainer"]), ])
 ```
 
 ```
-## [1] 158   2
+## [1] 157   2
 ```
 
 这么少，是不是有点意外，看来很多大佬更喜欢用自己的邮箱，比如 Paul Murrell， 他的邮箱是 <paul@stat.auckland.ac.nz>
@@ -775,25 +772,25 @@ subset(pdb,
 
 ```
 ##            Package                              Maintainer
-## 2602       compare Paul Murrell <p.murrell@auckland.ac.nz>
-## 5931         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
-## 6240        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
-## 6723      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
-## 6724    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
-## 6725     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
-## 6727  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
-## 6728  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 6729  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
-## 6733       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
-## 6735      grImport Paul Murrell <p.murrell@auckland.ac.nz>
-## 6736     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
-## 7067       hexView Paul Murrell <paul@stat.auckland.ac.nz>
-## 9566      metapost Paul Murrell <paul@stat.auckland.ac.nz>
-## 13355    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
-## 14116    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
-## 14556        roloc Paul Murrell <paul@stat.auckland.ac.nz>
-## 14557 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
-## 18537       vwline Paul Murrell <paul@stat.auckland.ac.nz>
+## 2586       compare Paul Murrell <p.murrell@auckland.ac.nz>
+## 5904         gdiff Paul Murrell <paul@stat.auckland.ac.nz>
+## 6214        gggrid Paul Murrell <paul@stat.auckland.ac.nz>
+## 6690      gridBase Paul Murrell <paul@stat.auckland.ac.nz>
+## 6691    gridBezier Paul Murrell <paul@stat.auckland.ac.nz>
+## 6692     gridDebug Paul Murrell <p.murrell@auckland.ac.nz>
+## 6694  gridGeometry Paul Murrell <paul@stat.auckland.ac.nz>
+## 6695  gridGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 6696  gridGraphviz Paul Murrell <p.murrell@auckland.ac.nz>
+## 6700       gridSVG Paul Murrell <paul@stat.auckland.ac.nz>
+## 6702      grImport Paul Murrell <p.murrell@auckland.ac.nz>
+## 6703     grImport2 Paul Murrell <paul@stat.auckland.ac.nz>
+## 7036       hexView Paul Murrell <paul@stat.auckland.ac.nz>
+## 9521      metapost Paul Murrell <paul@stat.auckland.ac.nz>
+## 13277    rasterize Paul Murrell <paul@stat.auckland.ac.nz>
+## 14028    RGraphics Paul Murrell <paul@stat.auckland.ac.nz>
+## 14465        roloc Paul Murrell <paul@stat.auckland.ac.nz>
+## 14466 rolocISCCNBS Paul Murrell <paul@stat.auckland.ac.nz>
+## 18438       vwline Paul Murrell <paul@stat.auckland.ac.nz>
 ```
 
 所以这种方式不行了，只能列举所有 R Core Team 成员，挨个去匹配，幸好 `contributors()` 函数已经收集了成员名单，不需要我们去官网找了。
@@ -863,7 +860,7 @@ clean_maintainer <- function(x) {
 core_pdb[, "Maintainer"] <- clean_maintainer(core_pdb[, "Maintainer"])
 ```
 
-我们可以看到 R 核心团队总共开发维护有 173 个 R 包
+我们可以看到 R 核心团队总共开发维护有 172 个 R 包
 
 
 ```r
@@ -871,7 +868,7 @@ dim(core_pdb)
 ```
 
 ```
-## [1] 173   3
+## [1] 172   3
 ```
 
 篇幅所限，就展示部分人和R包，见表 \@ref(tab:r-core-team) 按照拼音顺序 Brian Ripley 是第一位
@@ -1079,9 +1076,8 @@ subset(pdb, subset = grepl("Scott Chamberlain", Maintainer),
 ## [36] "rbison"      "rcitoid"     "rcoreoa"     "rcrossref"   "rdatacite"  
 ## [41] "rdryad"      "request"     "rgnparser"   "ritis"       "rorcid"     
 ## [46] "rphylopic"   "rplos"       "rredlist"    "rvertnet"    "sofa"       
-## [51] "solrium"     "spocc"       "taxize"      "taxizedb"    "traits"     
-## [56] "vcr"         "webmockr"    "wellknown"   "wikitaxa"    "worrms"     
-## [61] "zbank"
+## [51] "solrium"     "spocc"       "taxizedb"    "traits"      "vcr"        
+## [56] "webmockr"    "wellknown"   "wikitaxa"    "worrms"      "zbank"
 ```
 
 ### 社区开发者 {#R-Package-Developers}
@@ -1094,7 +1090,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 11031
+## [1] 10935
 ```
 
 可实际上没有这么多的开发者，因为存在这样的情况，以 R 包维护者 Hadley Wickham 为例，由于他曾使用过不同的邮箱，所以在维护者字段出现了不一致的情况，实际却是同一个人。
@@ -1109,11 +1105,11 @@ subset(pdb,
 
 ```
 ##             Package                             Maintainer
-## 622      assertthat    Hadley Wickham <hadley@rstudio.com>
-## 790       babynames    Hadley Wickham <hadley@rstudio.com>
-## 1248      bigrquery    Hadley Wickham <hadley@rstudio.com>
-## 2271      classifly   Hadley Wickham <h.wickham@gmail.com>
-## 2684     conflicted    Hadley Wickham <hadley@rstudio.com>
+## 615      assertthat    Hadley Wickham <hadley@rstudio.com>
+## 783       babynames    Hadley Wickham <hadley@rstudio.com>
+## 1240      bigrquery    Hadley Wickham <hadley@rstudio.com>
+## 2256      classifly   Hadley Wickham <h.wickham@gmail.com>
+## 2670     conflicted    Hadley Wickham <hadley@rstudio.com>
 ....
 ```
 
@@ -1126,7 +1122,7 @@ length(unique(pdb[, "Maintainer"]))
 ```
 
 ```
-## [1] 10202
+## [1] 10129
 ```
 
 接下来，我们还想把 R 包维护者，按照其维护的R包数量排个序，用条形图\@ref(fig:top-maintainers) 表示，其中 Orphaned 表示之前的R包维护者不愿意继续维护了，后来有人接手维护，Orphaned 表示这一类接盘侠。
@@ -1252,7 +1248,7 @@ length(unique(sub_pdb[, "Maintainer"][duplicated(sub_pdb[, "Maintainer"])]))
 ```
 
 ```
-## [1] 3355
+## [1] 3341
 ```
 
 总的开发者中去掉开发了多个R包的人，就剩下只维护1个R包的开发者，共有 
@@ -1301,9 +1297,9 @@ table(ctb_num)
 ```
 ## ctb_num
 ##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-## 3062 1454  961  600  288  163  104   64   43   24   15   10    7   11    4    5 
+## 3032 1449  960  592  281  161  100   64   44   24   14   10    6   11    4    5 
 ##   17   18   19   20   22   23   24   26   27   28   29   56   60  133 
-##    9    4    2    4    2    2    1    2    1    1    1    1    1    1
+##    9    4    1    4    2    2    1    1    2    1    1    1    1    1
 ```
 
 有意思的是，有一个开发者虽然只开发了一个 R 包，但是却引来37位贡献者（包括开发者本人在内），下面把这个颇受欢迎的 R 包找出来
@@ -1325,7 +1321,7 @@ subset(sub_pdb, subset = grepl("Matt Dowle", Maintainer), select = "Package")
 
 ```
 ##         Package
-## 3287 data.table
+## 3273 data.table
 ```
 
 哇，大名鼎鼎的 [data.table](https://github.com/Rdatatable/data.table) 包！！ I JUST find it!! 这是个异数，我们知道 data.table 在R社区享有盛名，影响范围很广，从 Matt Dowle 的 [Github 主页](https://github.com/mattdowle) 来看，他确实只开发了这一个 R 包！黑天鹅在这里出现了！如果按照谁的贡献者多谁影响力大的规律来看，有 10 个以上贡献者的其它几个 R 包也必定是名器！这里留给读者把它找出来吧！
@@ -1529,7 +1525,7 @@ sort(table(update_pdb[,"Published"]), decreasing = TRUE)[1]
 
 ```
 ## 2012-10-29 
-##         74
+##         69
 ```
 
 ```r
@@ -1566,7 +1562,7 @@ subset(update_pdb, subset = Published == min(Published))
 
 ```
 ##       Package  Published
-## 11529    pack 2008-09-08
+## 11464    pack 2008-09-08
 ```
 
 ```r

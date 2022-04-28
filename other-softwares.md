@@ -228,489 +228,6 @@ Emacs 配合 ESS 插件 <https://ess.r-project.org/>
 Nvim-R 是一个基于 Vim 的集成开发环境 <https://github.com/jalvesaq/Nvim-R>
 
 
-## Git 版本控制 {#sec-version-control}
-
-Git 操作
-
-MacOS 上用 Homebrew 安装 [git-delta](https://github.com/dandavison/delta)
-
-```bash
-brew install git-delta
-```
-
-[gitdown](https://github.com/Thinkr-open/gitdown)
-
-只考虑 Ubuntu 18.04 环境下的三剑客 Git & Github & Gitlab
-
-
-```r
-summary(git2r::repository())
-```
-
-```
-## Local:    devel /home/runner/work/masr/masr
-## Remote:   devel @ origin (https://github.com/XiangyunHuang/masr)
-## Head:     [bcc93b4] 2022-04-13: 点出 maps 包绘制地图最关键的地方：地图数据如何与观测数据建立一一映射
-## 
-## Branches:         1
-## Tags:             0
-## Commits:          5
-## Contributors:     1
-## Stashes:          0
-## Ignored files:   12
-## Untracked files: 88
-## Unstaged files:   0
-## Staged files:     0
-## 
-## Latest commits:
-## [bcc93b4] 2022-04-13: 点出 maps 包绘制地图最关键的地方：地图数据如何与观测数据建立一一映射
-## [322d23f] 2022-04-04: 去掉限制 out.width="75%"
-## [982d110] 2022-04-03: Polish
-## [3550750] 2022-04-01: use system fonts
-## [430c26c] 2022-03-31: upgrade to R 4.1.3
-```
-
-仓库 [masr](https://github.com/XiangyunHuang/masr) 哪些人给我点赞加星了
-
-
-```r
-library(gh)
-my_repos <- gh("GET /repos/:owner/:repo/stargazers", owner = "xiangyunhuang", repo = "masr", page = 1)
-vapply(my_repos, "[[", "", "login")
-```
-```
- [1] "dddd1007"        "boltomli"        "JackieMium"      "AXGL"            "fyemath"        
- [6] "rogerclarkgc"    "swsoyee"         "joegaotao"       "YTLogos"         "Accelerator086" 
-[11] "yimingfish"      "gaospecial"      "shenxiangzhuang" "shuaiwang88"     "LusiXie"        
-[16] "llxlr"           "TingjieGuo"      "oiatz"           "XiaogangHe"      "xwydq"          
-[21] "guohongwang1"    "yinandong"       "algony-tony"     "XiangyunHuang"   "perlatex"       
-[26] "talegari"        "hao-shefer"      "zhouyisu"        "tsitong"         "liuyadong" 
-```
-
-\begin{figure}
-
-{\centering \href{https://www.ardata.fr/img/hexbin/git.svg}{\includegraphics[width=0.23\linewidth]{images/git} }
-
-}
-
-\caption{Git 代码版本管理}(\#fig:git)
-\end{figure}
-
-[Jeroen Ooms](https://github.com/jeroen) 开发的 [gert](https://github.com/r-lib/gert) 包实现在 R 环境中操作 Git，我们可以从幻灯片 --- [Gert: A minimal git client for R](https://jeroen.github.io/gert2019) 学习重点内容。
-
-
-```r
-library(gert)
-library(magrittr)
-git_log(max = 10) %>% 
-  subset(subset = grepl("Yihui Xie", x = author), select = c("author", "message"))
-```
-
-提供了 `git_rm()`、 `git_status()`、 `git_add()` 和 `git_commit()` 等函数，其中包含 `git_reset()` 高级的 Git 操作。此外， 还有 `git_branch_*()` 系列分支操作函数
-
-### 安装配置 {#git-setup}
-
-Ubuntu 16.04.5 默认安装的 Git 版本是 2.7.4，下面安装最新版本Git和配置自己的GitHub账户
-
-1. 根据官网安装指导 <https://git-scm.com/download/linux>，在 Ubuntu 14.04.5 和 Ubuntu 16.04.5 安装最新版 GIT 
-
-   ```bash
-   sudo add-apt-repository -y ppa:git-core/ppa
-   sudo apt update && sudo apt install git
-   ```
-
-1. 配置账户
-
-   ```bash
-   git config --global user.name "你的名字"
-   git config --global user.email "你的邮件地址"
-   touch .git-credentials
-   # 记住密码
-   echo "https://username:password@github.com" >> .git-credentials
-   git config --global credential.helper store
-   ```
-
-
-<!-- Git 使用的数据库 -->
-
-以 Fedora 为例 [安装 tig](https://github.com/jonas/tig/blob/master/INSTALL.adoc)，首先安装必要的依赖，然后从官网下载源码，编译安装，之后切到任意本地 Git 仓库下，输入 `tig` 就可以看到如图 \@ref(fig:tig) 所示的样子了
-
-```bash
-sudo yum install readline-devel ncurses-devel asciidoc docbook-utils xmlto
-```
-
-tig 主要用于查看 git 提交的历史日志
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.55\linewidth]{screenshots/git-tig} 
-
-}
-
-\caption{Git 日志查看器}(\#fig:tig)
-\end{figure}
-
-### 追踪文件 {#git-add}
-
-
-```bash
-git add .
-```
-
-提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
-
-```bash
-git add -u
-```
-
-提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)，`git add --update`的缩写
-
-```bash
-git add -A
-```
-
-提交所有变化，`git add --all` 的缩写
-
-```bash
-git init
-git remote add origin https://github.com/XiangyunHuang/masr.git
-git add -A
-git commit -m "添加提交说明"
-git push -u origin master
-```
-
-往远程的空的 Github 仓库添加本地文件
-
-### 合并上流 {#git-upstream}
-
-```bash
-git clone --depth=5 https://github.com/XiangyunHuang/cosx.org.git
-git submodule update --init --recursive
-```
-
-查看远程分支
-
-```bash
-cd cosx.org
-git remote -v
-```
-```
-origin  https://github.com/XiangyunHuang/cosx.org.git (fetch)
-origin  https://github.com/XiangyunHuang/cosx.org.git (push)
-```
-
-```bash
-# 添加上流分支
-git remote add upstream https://github.com/cosname/cosx.org.git
-# 查看远程分支
-git remote -v
-```
-```
-origin  https://github.com/XiangyunHuang/cosx.org.git (fetch)
-origin  https://github.com/XiangyunHuang/cosx.org.git (push)
-upstream        https://github.com/cosname/cosx.org.git (fetch)
-upstream        https://github.com/cosname/cosx.org.git (push)
-```
-
-```bash
-# 获取上流 commit 并且合并到我的 master 分支
-git fetch upstream
-git merge upstream/master master
-git push origin master
-```
-
-### 大文件支持 {#git-lfs}
-
-```bash
-sudo apt install git-lfs
-git lfs install
-git lfs track "*.psd"
-git add .gitattributes
-git commit -m "track *.psd files using Git LFS"
-git push origin master
-```
-
-这玩意迟早需要你购买存储空间，慎用
-
-### 新建分支 {#git-checkout}
-
-
-```bash
-git checkout -b stan     # 新建 stan 分支
-git branch -v            # 查看本地分支 stan 前有个星号标记
-git pull --rebase git@github.com:XiangyunHuang/cosx.org.git master
-# 同步到远程分支 stan
-git push --set-upstream origin stan
-git push origin master:stan
-
-git add .
-git commit -m "balabala"
-git push --set-upstream origin stan
-```
-
-本地新建仓库推送至远程分支
-
-```bash
-git remote add origin https://github.com/XiangyunHuang/notesdown.git
-git add .
-git commit -m "init cos-art"
-# 此时远程仓库 notesdown 还没有 cos-art 分支
-git push origin master:cos-art
-```
-
-位于 [Github](https://github.com/liuhui998/gitbook) [Git Community Book 中译本](http://gitbook.liuhui998.com/)
-
-
-### 创建 Github Pages 站点 {#git-github-pages}
-
-基于 GitHub Pages 创建站点用于存放图片和数据
-
-1. 在Github上创建一个空的仓库，命名为 uploads，没有 readme.md 和 LICENSE
-2. 在本地创建目录 uploads 
-3. 切换到 uploads 目录下
-
-```bash
-git init 
-git checkout -b gh-pages
-git remote add origin https://github.com/XiangyunHuang/uploads.git
-```
-
-添加图片或者数据，并且 git add 和 commit 后
-
-```bash
-git push --set-upstream origin gh-pages
-```
-
-这样仓库 uploads 只包含 gh-pages 分支，数据地址即为以日期为分割线
-
-<https://xiangyunhuang.github.io/uploads/data/eqList2018_05_18.xls>
-
-
-### 博客主题 {#blog-hugo-theme}
-
-初始化博客网站
-
-```bash
-git subtree add --squash --prefix=themes/hugo-lithium \
-  git@github.com:yihui/hugo-lithium.git master
-```
-
-在 Github 创建新的空仓库，本地创建空的目录 xiangyun
-
-```bash
-cd xiangyun
-git init
-git remote add origin https://github.com/XiangyunHuang/xiangyun.git
-
-git add .gitignore
-git commit -m 'upload' 
-git push --set-upstream origin master
-```
-
-`git subtree` 将另外一个仓库收缩为当前仓库的一个目录，且只产生一条提交记录
-
-```bash
-# 子库分支
-git subtree add --squash --prefix=themes/hugo-xmag \
-  -m "add hugo-xmag" git@github.com:yihui/hugo-xmag.git master 
-# 或者子库分支
-git subtree add --squash --prefix=themes/hugo-xmag \
-  -m "add hugo-xmag" https://github.com/yihui/hugo-xmag.git master 
-
-# 移除 git subtree 添加的 hugo 主题
-git filter-branch --index-filter 'git rm --cached --ignore-unmatch -rf themes/hugo-xmag' --prune-empty -f HEAD
-```
-
-
-### 修改远程仓库的位置 {#transform-repo}
-
-有时候我们将自己的仓库转移给别人/组织，或者我们将远程仓库的名字改变了，这时候需要修改远程仓库的位置。比如最近我将博客仓库从 <https://github.com/XiangyunHuang/xiangyun> 转移到 <https://github.com/rbind/xiangyun>
-
-> 转移前
-
-```bash
-git remote -v
-```
-```
-origin  https://github.com/XiangyunHuang/xiangyun.git (fetch)
-origin  https://github.com/XiangyunHuang/xiangyun.git (push)
-```
-
-转移命令
-
-```bash
-git remote set-url origin https://github.com/rbind/xiangyun.git
-```
-
-> 转移后
-
-```bash
-git remote -v
-```
-```
-origin  https://github.com/rbind/xiangyun.git (fetch)
-origin  https://github.com/rbind/xiangyun.git (push)
-```
-
-### 统计代码仓库的提交量 {#count-commits}
-
-
-比如统计之都的主站仓库，提交量最大的20个人
-
-```bash
-git shortlog -sn | head -n 20
-```
-```
-  153	Dawei Lang
-  106	Yihui Xie
-  89	Beilei Bian
-  46	王佳
-  42	雷博文
-  39	Ryan Feng Lin
-  35	Xiangyun Huang
-  32	fanchao
-  32	闫晗
-  30	Lin Feng
-  28	Jiaao Yu
-  25	fyears
-  24	Yixuan Qiu
-  24	Miao YU
-  22	Yuxuan Li
-  22	qinwf
-  20	Alice敏
-  19	yanshi
-  18	Shuyi.Yang
-  13	黄湘云
-```
-
-
-### 账户共存 {#multi-accounts}
-
-> 本节介绍如何使 Gitlab/Github 账户共存在一台机器上
-
-如何生成 SSH 密钥见 Github 文档 ---  [使用 SSH 连接到 GitHub](https://help.github.com/cn/github/authenticating-to-github/connecting-to-github-with-ssh)。有了密钥之后只需在目录 `~/.ssh` 下创建一个配置文件 config
-
-生成 SSH Key
-
-```bash
-ssh-keygen -t rsa -f ~/.ssh/id_rsa_github -C "name1@xxx1.com"
-ssh-keygen -t rsa -f ~/.ssh/id_rsa_gitlab -C "name2@xxx2.com"
-```
-
-将 GitHub/GitLab 公钥分别上传至服务器，然后创建配置文件
-
-```bash
-touch ~/.ssh/config
-```
-
-配置文件内容如下
-
-```
-#
-# Github
-#
-Host github.com // 个人的代码仓库服务器地址
-HostName github.com
-User XiangyunHuang
-IdentityFile ~/.ssh/id_rsa_github
-
-#
-# company
-#
-Host xx.xx.xx.xx //
-IdentityFile ~/.ssh/id_rsa_gitlab
-```
-
-配置成功，你会看到
-
-```bash
-ssh -T git@xx.xx.xx.xx
-```
-```
-Welcome to GitLab, xiangyunhuang!
-```
-
-和
-
-```bash
-ssh -T git@github.com
-```
-```
-Hi XiangyunHuang! You've successfully authenticated, but GitHub does not provide shell access.
-```
-
-### 回车换行 {#git-crlf}
-
-CR (Carriage Return) 表示回车，LF (Line Feed) 表示换行，Windows 下用回车加换行表示下一行，UNIX/Linux 采用换行符 (LF) 表示下一行，MAC OS 则采用回车符 (CR) 表示下一行
-
-```bash
-git config --global core.autocrlf false
-```
-
-### 子模块 {#git-submodule}
-
-- 添加子模块到目录 `templates/` 下
-
-```bash
-git submodule add git://github.com/jgm/pandoc-templates.git templates
-```
-
-- 移除子模块
-
-<https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule/>
-
-
-### 克隆项目 {#git-clone}
-
-```bash
-git clone --depth=10 --branch=master --recursive \
-    git@github.com:XiangyunHuang/pandoc4everything.git
-```
-
-
-
-### 创建 PR {#git-create-pr}
-
-```bash
-git pull --rebase git@github.com:yihui/xaringan.git master
-# then force push to your master branch
-```
-
-参考 <https://github.com/yihui/xaringan/pull/107>
-
-> I don't recommend you to use your master branch for pull requests, because all commits will be squashed before merging, e.g. c2c2055 Then you will have some trouble with syncing your master branch with the master branch here (your choices are (1) delete your repo and fork again; or (2) force push; either option is not good). For pull requests, I recommend that you always use different branches for different pull requests.
-
-### 修改 PR {#git-edit-pr}
-
-> 之前一直有一个思想在阻止自己，就是别人的 repo 我是不能修改的，但是在这里，我拥有修改原始仓的权限，那么别人的复制品衍生的分支，我也有修改权限
-
-```bash
-git fetch origin refs/pull/771/head:patch-2
-# 771 是 PR 对应的编号
-git checkout patch-2
-
-# 你的修改
-
-git add -u
-git commit -m "描述你的修改"
-
-git remote add LalZzy https://github.com/LalZzy/cosx.org.git
-
-git push --set-upstream LalZzy patch-2
-```
-
-> 整理自统计之都论坛的讨论 https://d.cosx.org/d/420363
-
-
-1. GitHub/Git 小抄英文版 <https://www.runoob.com/manual/github-git-cheat-sheet.pdf>
-1. GitHub/Git 小抄中文版 <https://github.github.com/training-kit/downloads/zh_CN/github-git-cheat-sheet/>
-1. Github 秘籍 <https://github.com/tiimgreen/github-cheat-sheet/blob/master/README.zh-cn.md>
-1. Git 简明指南 <https://rogerdudler.github.io/git-guide/index.zh.html>
-1. Git 奇技淫巧 <https://github.com/521xueweihan/git-tips>
-1. Git 官方书籍 <https://git-scm.com/book/zh/v2>
-1. Git 时代的 VIM 不完全使用教程 <http://beiyuu.com/git-vim-tutorial>
-1. 最佳搭档：利用 SSH 及其配置文件节省你的生命 <https://liam.page/2017/09/12/rescue-your-life-with-SSH-config-file/> 
-
 
 ## Pandoc 文档处理 {#sec-pandoc}
 
@@ -850,6 +367,13 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 ```bash
 optipng -o5 filename.png
+```
+
+[TinyPNG](https://tinypng.com/)
+
+```r
+png_files = list.files(path = "image/path/", pattern = "*.png", full.names = TRUE)
+xfun::tinify(input = png_files)
 ```
 
 
@@ -1659,9 +1183,9 @@ certifi                      2021.10.8
 charset-normalizer           2.0.12             
 cycler                       0.11.0             
 flatbuffers                  2.0                
-fonttools                    4.32.0             
+fonttools                    4.33.3             
 gast                         0.5.3              
-google-auth                  2.6.4              
+google-auth                  2.6.6              
 google-auth-oauthlib         0.4.6              
 google-pasta                 0.2.0              
 graphviz                     0.8.4              
@@ -1674,7 +1198,7 @@ kaleido                      0.2.1
 keras                        2.8.0              
 Keras-Preprocessing          1.1.2              
 kiwisolver                   1.4.2              
-libclang                     13.0.0             
+libclang                     14.0.1             
 Markdown                     3.3.6              
 matplotlib                   3.5.1              
 mpmath                       1.2.1              
@@ -1689,7 +1213,7 @@ Pillow                       9.1.0
 pip                          20.0.2             
 pkg-resources                0.0.0              
 plotly                       5.7.0              
-protobuf                     3.20.0             
+protobuf                     3.20.1             
 pyasn1                       0.4.8              
 pyasn1-modules               0.2.8              
 pyparsing                    3.0.8              
@@ -1709,11 +1233,11 @@ tensorboard                  2.8.0
 tensorboard-data-server      0.6.1              
 tensorboard-plugin-wit       1.8.1              
 tensorflow                   2.8.0              
-tensorflow-io-gcs-filesystem 0.24.0             
+tensorflow-io-gcs-filesystem 0.25.0             
 termcolor                    1.1.0              
 tf-estimator-nightly         2.8.0.dev2021122109
 threadpoolctl                3.1.0              
-typing-extensions            4.1.1              
+typing-extensions            4.2.0              
 urllib3                      1.26.9             
 Werkzeug                     2.1.1              
 wheel                        0.34.2             
@@ -1745,7 +1269,7 @@ os.listdir('.git')
 ```
 
 ```
-## ['info', 'description', 'hooks', 'config', 'objects', 'shallow', 'logs', 'HEAD', 'refs', 'branches', 'index', 'FETCH_HEAD']
+## ['hooks', 'index', 'shallow', 'refs', 'config', 'objects', 'logs', 'description', 'FETCH_HEAD', 'HEAD', 'info', 'branches']
 ```
 
 多个代码块共享同一个 Python 进程
@@ -1789,14 +1313,14 @@ x # 得到 python 中的向量 vector 或数组 array
 ```
 
 ```
-##  [1] "info"        "description" "hooks"       "config"      "objects"    
-##  [6] "shallow"     "logs"        "HEAD"        "refs"        "branches"   
-## [11] "index"       "FETCH_HEAD"
+##  [1] "hooks"       "index"       "shallow"     "refs"        "config"     
+##  [6] "objects"     "logs"        "description" "FETCH_HEAD"  "HEAD"       
+## [11] "info"        "branches"
 ```
 
 
 [^gluon]: 朱俊辉的帖子 --- 在 R 中使用 gluon <https://d.cosx.org/d/419785-r-gluon>
-[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年04月13日 使用 reticulate 版本 1.24，本文没有对之前的版本进行测试。
+[^cross-ref]: 早些时候，在 R Markdown 中设置 `python.reticulate = TRUE` 调用 reticulate 包，带来的副作用是不支持交叉引用的 <https://d.cosx.org/d/420680-python-reticulate-true>。RStudio 1.2 已经很好地集成了 reticulate，对 Python 的支持更加到位了  <https://blog.rstudio.com/2018/10/09/rstudio-1-2-preview-reticulated-python/>。截至本文写作时间 2022年04月28日 使用 reticulate 版本 1.24，本文没有对之前的版本进行测试。
 
 
 
@@ -2702,7 +2226,7 @@ Package                   Version        Title
 ------------------------  -------------  ----------------------------------------------------------------------------------------------------------------------------
 **abind**                 1.4-5          Combine Multidimensional Arrays                                                                                             
 **agridat**               1.20           Agricultural Datasets                                                                                                       
-**alabama**               2015.3-1       Constrained Nonlinear Optimization                                                                                          
+**alabama**               2022.4-1       Constrained Nonlinear Optimization                                                                                          
 **arrow**                 7.0.0          Integration to 'Apache' 'Arrow'                                                                                             
 **arules**                1.7-3          Mining Association Rules and Frequent Itemsets                                                                              
 **assertive.types**       0.0-3          Assertions to Check Types of Variables                                                                                      
@@ -2716,23 +2240,23 @@ Package                   Version        Title
 **beanplot**              1.3.1          Visualization via Beanplots (Like Boxplot/Stripchart/Violin Plot)                                                           
 **beeswarm**              0.4.0          The Bee Swarm Plot, an Alternative to Stripchart                                                                            
 **BH**                    1.78.0-0       Boost C++ Header Files                                                                                                      
-**BiocManager**           1.30.16        Access the Bioconductor Project Package Repository                                                                          
+**BiocManager**           1.30.17        Access the Bioconductor Project Package Repository                                                                          
 **bit64**                 4.0.5          A S3 Class for Vectors of 64bit Integers                                                                                    
 **bitops**                1.0-7          Bitwise Operations                                                                                                          
 **blob**                  1.2.3          A Simple S3 Class for Representing Vectors of Binary Data ('BLOBS')                                                         
-**bookdown**              0.25           Authoring Books and Technical Documents with R Markdown                                                                     
+**bookdown**              0.26           Authoring Books and Technical Documents with R Markdown                                                                     
 **boot**                  1.3-28         Bootstrap Functions (Originally by Angelo Canty for S)                                                                      
 **bridgesampling**        1.1-2          Bridge Sampling for Marginal Likelihoods and Bayes Factors                                                                  
 **brio**                  1.1.3          Basic R Input Output                                                                                                        
-**brms**                  2.16.3         Bayesian Regression Models using Stan                                                                                       
-**broom**                 0.7.12         Convert Statistical Objects into Tidy Tibbles                                                                               
-**broom.mixed**           0.2.9.3        Tidying Methods for Mixed Models                                                                                            
+**brms**                  2.17.0         Bayesian Regression Models using Stan                                                                                       
+**broom**                 0.8.0          Convert Statistical Objects into Tidy Tibbles                                                                               
+**broom.mixed**           0.2.9.4        Tidying Methods for Mixed Models                                                                                            
 **bslib**                 0.3.1          Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'                                                                
 **cachem**                1.0.6          Cache R Objects with Automatic Pruning                                                                                      
 **callr**                 3.7.0          Call R from R                                                                                                               
-**checkmate**             2.0.0          Fast and Versatile Argument Checks                                                                                          
+**checkmate**             2.1.0          Fast and Versatile Argument Checks                                                                                          
 **classInt**              0.4-3          Choose Univariate Class Intervals                                                                                           
-**cli**                   3.2.0          Helpers for Developing Command Line Interfaces                                                                              
+**cli**                   3.3.0          Helpers for Developing Command Line Interfaces                                                                              
 **coda**                  0.19-4         Output Analysis and Diagnostics for MCMC                                                                                    
 **colorspace**            2.0-3          A Toolbox for Manipulating and Assessing Colors and Palettes                                                                
 **commonmark**            1.8.0          High Performance CommonMark and Github Markdown Rendering in R                                                              
@@ -2751,7 +2275,7 @@ Package                   Version        Title
 **dendextend**            1.15.2         Extending 'dendrogram' Functionality in R                                                                                   
 **Deriv**                 4.1.3          Symbolic Differentiation                                                                                                    
 **desc**                  1.4.1          Manipulate DESCRIPTION Files                                                                                                
-**deSolve**               1.31           Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')                                          
+**deSolve**               1.32           Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')                                          
 **devtools**              2.4.3          Tools to Make Developing R Packages Easier                                                                                  
 **DiagrammeR**            1.0.9          Graph/Network Visualization                                                                                                 
 **digest**                0.6.29         Create Compact Hash Digests of R Objects                                                                                    
@@ -2777,7 +2301,7 @@ Package                   Version        Title
 **forge**                 0.2.0          Casting Values into Shape                                                                                                   
 **formatR**               1.12           Format R Code Automatically                                                                                                 
 **fs**                    1.5.2          Cross-Platform File System Operations Based on 'libuv'                                                                      
-**future**                1.24.0         Unified Parallel and Distributed Processing in R for Everyone                                                               
+**future**                1.25.0         Unified Parallel and Distributed Processing in R for Everyone                                                               
 **gapminder**             0.3.0          Data from Gapminder                                                                                                         
 **gdtools**               0.2.4          Utilities for Graphical Rendering                                                                                           
 **generics**              0.1.2          Common S3 Generics not Provided by Base R Methods Related to Model Fitting                                                  
@@ -2801,28 +2325,28 @@ Package                   Version        Title
 **gifski**                1.6.6-1        Highest Quality GIF Encoder                                                                                                 
 **git2r**                 0.30.1         Provides Access to Git Repositories                                                                                         
 **glmmTMB**               1.1.3          Generalized Linear Mixed Models using Template Model Builder                                                                
-**glmnet**                4.1-3          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
+**glmnet**                4.1-4          Lasso and Elastic-Net Regularized Generalized Linear Models                                                                 
 **globals**               0.14.0         Identify Global Objects in R Expressions                                                                                    
 **glue**                  1.6.2          Interpreted String Literals                                                                                                 
 **googledrive**           2.0.0          An Interface to Google Drive                                                                                                
 **googlesheets4**         1.0.0          Access Google Sheets using the Sheets API V4                                                                                
 **gridBase**              0.4-7          Integration of base and grid graphics                                                                                       
 **gridExtra**             2.3            Miscellaneous Functions for Grid Graphics                                                                                   
-**gt**                    0.4.0          Easily Create Presentation-Ready Display Tables                                                                             
+**gt**                    0.5.0          Easily Create Presentation-Ready Display Tables                                                                             
 **gtable**                0.3.0          Arrange Grobs in Tables                                                                                                     
-**haven**                 2.4.3          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
+**haven**                 2.5.0          Import and Export 'SPSS', 'Stata' and 'SAS' Files                                                                           
 **heatmaply**             1.3.0          Interactive Cluster Heat Maps Using 'plotly' and ggplot2                                                                    
 **here**                  1.0.1          A Simpler Way to Find Your Files                                                                                            
 **hexbin**                1.28.2         Hexagonal Binning Routines                                                                                                  
 **highr**                 0.9            Syntax Highlighting for R Source Code                                                                                       
-**Hmisc**                 4.6-0          Harrell Miscellaneous                                                                                                       
+**Hmisc**                 4.7-0          Harrell Miscellaneous                                                                                                       
 **hms**                   1.1.1          Pretty Time of Day                                                                                                          
 **hrbrthemes**            0.8.0          Additional Themes, Theme Components and Utilities for ggplot2                                                               
 **htmltools**             0.5.2          Tools for HTML                                                                                                              
 **htmlwidgets**           1.5.4          HTML Widgets for R                                                                                                          
 **httpuv**                1.6.5          HTTP and WebSocket Server Library                                                                                           
 **httr**                  1.4.2          Tools for Working with URLs and HTTP                                                                                        
-**igraph**                1.3.0          Network Analysis and Visualization                                                                                          
+**igraph**                1.3.1          Network Analysis and Visualization                                                                                          
 **influenceR**            0.1.0.1        Software Tools to Quantify Structural Importance of Nodes in a Network                                                      
 **inline**                0.3.19         Functions to Inline C, C++, Fortran Function Calls from R                                                                   
 **isoband**               0.2.5          Generate Isolines and Isobands from Regularly Spaced Elevation Grids                                                        
@@ -2830,7 +2354,7 @@ Package                   Version        Title
 **jsonlite**              1.8.0          A Simple and Robust JSON Parser and Generator for R                                                                         
 **kableExtra**            1.3.4          Construct Complex Table with kable and Pipe Syntax                                                                          
 **Kendall**               2.2.1          Kendall Rank Correlation and Mann-Kendall Trend Test                                                                        
-**knitr**                 1.38           A General-Purpose Package for Dynamic Report Generation in R                                                                
+**knitr**                 1.39           A General-Purpose Package for Dynamic Report Generation in R                                                                
 **later**                 1.3.0          Utilities for Scheduling Functions to Execute Later with Event Loops                                                        
 **lattice**               0.20-45        Trellis Graphics for R                                                                                                      
 **latticeExtra**          0.6-29         Extra Graphical Utilities Based on Lattice                                                                                  
@@ -2852,10 +2376,10 @@ Package                   Version        Title
 **mapproj**               1.2.8          Map Projections                                                                                                             
 **maps**                  3.4.0          Draw Geographical Maps                                                                                                      
 **markdown**              1.1            Render Markdown with the C Library Sundown                                                                                  
-**MASS**                  7.3-56         Support Functions and Datasets for Venables and Ripley's MASS                                                               
+**MASS**                  7.3-57         Support Functions and Datasets for Venables and Ripley's MASS                                                               
 **Matrix**                1.4-1          Sparse and Dense Matrix Classes and Methods                                                                                 
 **MatrixModels**          0.5-0          Modelling with Sparse and Dense Matrices                                                                                    
-**matrixStats**           0.61.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
+**matrixStats**           0.62.0         Functions that Apply to Rows and Columns of Matrices (and to Vectors)                                                       
 **maxLik**                1.5-2          Maximum Likelihood Estimation and Related Tools                                                                             
 **mcmc**                  0.9-7          Markov Chain Monte Carlo                                                                                                    
 **memoise**               2.0.1          'Memoisation' of Functions                                                                                                  
@@ -2874,7 +2398,7 @@ Package                   Version        Title
 **openssl**               2.0.0          Toolkit for Encryption, Signatures and Certificates Based on OpenSSL                                                        
 **palmerpenguins**        0.1.0          Palmer Archipelago (Antarctica) Penguin Data                                                                                
 **patchwork**             1.1.1          The Composer of Plots                                                                                                       
-**pdftools**              3.1.1          Text Extraction, Rendering and Converting of PDF Documents                                                                  
+**pdftools**              3.2.0          Text Extraction, Rendering and Converting of PDF Documents                                                                  
 **pdist**                 1.2            Partitioned Distance Function                                                                                               
 **pillar**                1.7.0          Coloured Formatting for Columns                                                                                             
 **pkgbuild**              1.3.1          Find Tools Needed to Build R Packages                                                                                       
@@ -2921,10 +2445,10 @@ Package                   Version        Title
 **reprex**                2.0.1          Prepare Reproducible Example Code via the Clipboard                                                                         
 **reshape2**              1.4.4          Flexibly Reshape Data: A Reboot of the Reshape Package                                                                      
 **reticulate**            1.24           Interface to Python                                                                                                         
-**rgdal**                 1.5-30         Bindings for the Geospatial Data Abstraction Library                                                                        
+**rgdal**                 1.5-31         Bindings for the Geospatial Data Abstraction Library                                                                        
 **rgeos**                 0.5-9          Interface to Geometry Engine - Open Source ('GEOS')                                                                         
 **rlang**                 1.0.2          Functions for Base Types and Core R and Tidyverse Features                                                                  
-**rmarkdown**             2.13           Dynamic Documents for R                                                                                                     
+**rmarkdown**             2.14           Dynamic Documents for R                                                                                                     
 **ROI**                   1.0-0          R Optimization Infrastructure                                                                                               
 **ROI.plugin.alabama**    1.0-0          'alabama' Plug-in for the R Optimization Infrastructure                                                                     
 **ROI.plugin.lpsolve**    1.0-1          'lp_solve' Plugin for the R Optimization Infrastructure                                                                     
@@ -2944,7 +2468,7 @@ Package                   Version        Title
 **rvest**                 1.0.2          Easily Harvest (Scrape) Web Pages                                                                                           
 **s2**                    1.0.7          Spherical Geometry Operators Using the S2 Geometry Library                                                                  
 **sass**                  0.4.1          Syntactically Awesome Style Sheets ('Sass')                                                                                 
-**scales**                1.1.1          Scale Functions for Visualization                                                                                           
+**scales**                1.2.0          Scale Functions for Visualization                                                                                           
 **scatterplot3d**         0.3-41         3D Scatter Plot                                                                                                             
 **scs**                   3.0-0          Splitting Conic Solver                                                                                                      
 **seriation**             1.3.5          Infrastructure for Ordering Objects Using Seriation                                                                         
@@ -2959,11 +2483,11 @@ Package                   Version        Title
 **slam**                  0.1-50         Sparse Lightweight Arrays and Matrices                                                                                      
 **sm**                    2.2-5.7        Smoothing Methods for Nonparametric Regression and Density Estimation                                                       
 **sourcetools**           0.1.7          Tools for Reading, Tokenizing and Parsing R Code                                                                            
-**sp**                    1.4-6          Classes and Methods for Spatial Data                                                                                        
+**sp**                    1.4-7          Classes and Methods for Spatial Data                                                                                        
 **sparkline**             2.0            'jQuery' Sparkline 'htmlwidget'                                                                                             
 **sparklyr**              1.7.5          R Interface to Apache Spark                                                                                                 
 **SparseM**               1.81           Sparse Linear Algebra                                                                                                       
-**splancs**               2.01-42        Spatial and Space-Time Point Pattern Analysis                                                                               
+**splancs**               2.01-43        Spatial and Space-Time Point Pattern Analysis                                                                               
 **splines2**              0.4.5          Regression Spline Functions and Classes                                                                                     
 **StanHeaders**           2.21.0-7       C++ Header Files for Stan                                                                                                   
 **stars**                 0.5-5          Spatiotemporal Arrays, Raster and Vector Data Cubes                                                                         
@@ -2972,11 +2496,11 @@ Package                   Version        Title
 **SuppDists**             1.1-9.7        Supplementary Distributions                                                                                                 
 **survival**              3.3-1          Survival Analysis                                                                                                           
 **svglite**               2.1.0          An 'SVG' Graphics Device                                                                                                    
-**symengine**             0.1.6          Interface to the 'SymEngine' Library                                                                                        
+**symengine**             0.2.1          Interface to the 'SymEngine' Library                                                                                        
 **sysfonts**              0.8.8          Loading Fonts into R                                                                                                        
 **tensorflow**            2.8.0          R Interface to 'TensorFlow'                                                                                                 
 **terra**                 1.5-21         Spatial Data Analysis                                                                                                       
-**testthat**              3.1.3          Unit Testing for R                                                                                                          
+**testthat**              3.1.4          Unit Testing for R                                                                                                          
 **tfautograph**           0.3.2          Autograph R for 'Tensorflow'                                                                                                
 **tfruns**                1.5.0          Training Run Tools for 'TensorFlow'                                                                                         
 **tibble**                3.1.6          Simple Data Frames                                                                                                          
@@ -2997,24 +2521,24 @@ Package                   Version        Title
 **tweenr**                1.0.2          Interpolate Data for Smooth Animations                                                                                      
 **units**                 0.8-0          Measurement Units for R Vectors                                                                                             
 **usethis**               2.1.5          Automate Package and Project Setup                                                                                          
-**uuid**                  1.0-4          Tools for Generating and Handling of UUIDs                                                                                  
+**uuid**                  1.1-0          Tools for Generating and Handling of UUIDs                                                                                  
 **V8**                    4.1.0          Embedded JavaScript and WebAssembly Engine for R                                                                            
-**vctrs**                 0.4.0          Vector Helpers                                                                                                              
+**vctrs**                 0.4.1          Vector Helpers                                                                                                              
 **vioplot**               0.3.7          Violin Plot                                                                                                                 
 **vipor**                 0.4.5          Plot Categorical Data Using Quasirandom Noise and Density Estimates                                                         
 **viridis**               0.6.2          Colorblind-Friendly Color Maps for R                                                                                        
 **viridisLite**           0.4.0          Colorblind-Friendly Color Maps (Lite Version)                                                                               
 **visNetwork**            2.1.0          Network Visualization using 'vis.js' Library                                                                                
 **vistime**               1.2.1          Pretty Timelines in R                                                                                                       
-**webshot**               0.5.2          Take Screenshots of Web Pages                                                                                               
+**webshot**               0.5.3          Take Screenshots of Web Pages                                                                                               
 **withr**                 2.5.0          Run Code With Temporarily Modified Global State                                                                             
 **xfun**                  0.30           Supporting Functions for Packages Maintained by Yihui Xie                                                                   
-**xgboost**               1.5.2.1        Extreme Gradient Boosting                                                                                                   
+**xgboost**               1.6.0.1        Extreme Gradient Boosting                                                                                                   
 **xkcd**                  0.0.6          Plotting ggplot2 Graphics in an XKCD Style                                                                                  
 **xml2**                  1.3.3          Parse XML                                                                                                                   
 **xtable**                1.8-4          Export Tables to LaTeX or HTML                                                                                              
 **yaml**                  2.3.5          Methods to Convert R Data to YAML and Back                                                                                  
-**zoo**                   1.8-9          S3 Infrastructure for Regular and Irregular Time Series (Z's Ordered Observations)                                          
+**zoo**                   1.8-10         S3 Infrastructure for Regular and Irregular Time Series (Z's Ordered Observations)                                          
 
 ::: {.rmdtip data-latex="{提示}"}
 本书意欲覆盖的内容
@@ -3090,7 +2614,6 @@ Package             Title
 **glmmfields**      Generalized Linear Mixed Models with Robust Random Fields for Spatiotemporal Modeling           
 **glmmLasso**       Variable Selection for Generalized Linear Mixed Models by L1-Penalized Estimation               
 **glmmML**          Generalized Linear Models with Clustering                                                       
-**glmmsr**          Fit a Generalized Linear Mixed Model                                                            
 **glmmTMB**         Generalized Linear Mixed Models using Template Model Builder                                    
 **glmnet**          Lasso and Elastic-Net Regularized Generalized Linear Models                                     
 **greta**           Simple and Scalable Statistical Modelling in R                                                  

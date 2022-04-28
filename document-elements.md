@@ -639,6 +639,7 @@ Package              Title
 **rticles**          Article Formats for R Markdown                                        
 **siteymlgen**       Automatically Generate _site.yml File for R Markdown                  
 **stevetemplates**   Steve's R Markdown Templates                                          
+**thaipdf**          R Markdown to PDF in Thai Language                                    
 **tufte**            Tufte's Styles for R Markdown Documents                               
 **tufterhandout**    Tufte-style html document format for rmarkdown                        
 **uiucthemes**       R Markdown Themes for UIUC Documents and Presentations                

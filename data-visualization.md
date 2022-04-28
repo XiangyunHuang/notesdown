@@ -406,11 +406,13 @@ ls("package:ggplot2", pattern = "^theme_")
 ## [13] "theme_update"   "theme_void"
 ```
 
-这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
+这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes)、[clcharts](https://github.com/houseofcommonslibrary/clcharts) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
 
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_bw()
 ```
 
 ```
@@ -418,7 +420,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_void()
 ```
 
 ```
@@ -426,7 +430,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_minimal()
 ```
 
 ```
@@ -434,7 +440,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_classic()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_classic()
 ```
 
 ```
@@ -2080,6 +2088,7 @@ east_asia <- map_data("worldHires",
 ggplot(east_asia, aes(x = long, y = lat, group = group, fill = region)) +
   geom_polygon(colour = "black") +
   scale_fill_brewer(palette = "Set2") +
+  coord_map() +
   theme_minimal()
 ```
 
@@ -3749,7 +3758,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Wed"
+## [1] "Thu"
 ```
 
 ```r
@@ -3757,7 +3766,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 4
+## [1] 5
 ```
 
 :::
@@ -3972,7 +3981,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x560a4bca89d0>
+## <bytecode: 0x5618455c2428>
 ## <environment: namespace:ggpubr>
 ```
 

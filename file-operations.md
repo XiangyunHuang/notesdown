@@ -89,9 +89,9 @@ library(fs)
     
     ```
     ##                                          size isdir mode               mtime
-    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 63180 FALSE  644 2022-03-23 00:00:20
+    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 63180 FALSE  644 2022-04-21 03:19:36
     ##                                                       ctime               atime
-    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-04-13 04:10:48 2022-04-13 04:19:32
+    ## /opt/R/4.1.3/lib/R/include/Rinternals.h 2022-04-28 09:30:25 2022-04-28 09:37:43
     ##                                         uid gid uname grname
     ## /opt/R/4.1.3/lib/R/include/Rinternals.h   0   0  root   root
     ```
@@ -109,7 +109,7 @@ library(fs)
     ```
     
     ```
-    ## [1] "2022-03-23 00:00:20 UTC"
+    ## [1] "2022-04-21 03:19:36 UTC"
     ```
     
     ```r
@@ -127,7 +127,7 @@ library(fs)
     
     ```
     ##    size isdir mode               mtime               ctime               atime
-    ## . 16384  TRUE  755 2022-04-13 07:33:35 2022-04-13 07:33:35 2022-04-13 07:33:36
+    ## . 20480  TRUE  755 2022-04-28 12:18:43 2022-04-28 12:18:43 2022-04-28 12:18:43
     ##    uid gid  uname grname
     ## . 1001 121 runner docker
     ```
@@ -139,9 +139,9 @@ library(fs)
     
     ```
     ##           size isdir mode               mtime               ctime
-    ## ./_book/ 12288  TRUE  755 2022-04-13 07:25:14 2022-04-13 07:25:14
+    ## ./_book/ 12288  TRUE  755 2022-04-28 12:11:52 2022-04-28 12:11:52
     ##                        atime  uid gid  uname grname
-    ## ./_book/ 2022-04-13 07:25:20 1001 121 runner docker
+    ## ./_book/ 2022-04-28 12:14:59 1001 121 runner docker
     ```
 
 * `file.access(names, mode = 0)`  
@@ -890,7 +890,7 @@ help.search(keyword = "character", package = "base")
     ```
     
     ```
-    ## [1] 156079
+    ## [1] 155032
     ```
 
 - `proc.time()` R 会话运行时间，常用于计算R程序在当前R控制台的运行时间
@@ -904,7 +904,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.057   0.008   0.065
+    ##   0.064   0.004   0.068
     ```
 
 - `system.time` 计算 R 表达式/程序块运行耗费的CPU时间
@@ -918,7 +918,7 @@ help.search(keyword = "character", package = "base")
     
     ```
     ##    user  system elapsed 
-    ##   0.065   0.004   0.068
+    ##   0.066   0.000   0.066
     ```
 
 - `gc.time`  报告垃圾回收耗费的时间
@@ -1007,7 +1007,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 00:33:36 PDT"
+    ## [1] "2022-04-28 05:18:44 PDT"
     ```
     
     ```r
@@ -1016,7 +1016,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 03:33:36 EDT"
+    ## [1] "2022-04-28 08:18:44 EDT"
     ```
 
 1. `Sys.Date` 显示当前时区下的日期，精确到日，返回数据类型为 `date`
@@ -1027,7 +1027,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13"
+    ## [1] "2022-04-28"
     ```
 
 1. `date` 返回当前系统日期和时间，数据类型是字符串
@@ -1038,7 +1038,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Wed Apr 13 07:33:36 2022"
+    ## [1] "Thu Apr 28 12:18:44 2022"
     ```
     
     ```r
@@ -1047,7 +1047,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "Wed Apr 13 07:33:36 2022"
+    ## [1] "Thu Apr 28 12:18:44 2022"
     ```
 
 1. `as.POSIX*` 是一个 Date-time 转换函数
@@ -1058,7 +1058,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 07:33:36 GMT"
+    ## [1] "2022-04-28 12:18:44 GMT"
     ```
 
 1. 时间计算
@@ -1069,7 +1069,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 07:33:36 UTC"
+    ## [1] "2022-04-28 12:18:44 UTC"
     ```
     
     ```r
@@ -1077,7 +1077,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 06:33:36 UTC"
+    ## [1] "2022-04-28 11:18:44 UTC"
     ```
 
 1. `.leap.seconds` 是内置的日期序列
@@ -1142,9 +1142,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-04-13 07:04:03 2022-04-13 07:04:03
+    ## ./_common.R 3290 FALSE  644 2022-04-28 11:52:45 2022-04-28 11:52:45
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-04-13 07:04:13 1001 121 runner docker
+    ## ./_common.R 2022-04-28 12:11:52 1001 121 runner docker
     ```
     
     ```r
@@ -1155,9 +1155,9 @@ system2(command = 'pdflatex', args = '--version')
     
     ```
     ##             size isdir mode               mtime               ctime
-    ## ./_common.R 3290 FALSE  644 2022-04-13 07:33:36 2022-04-13 07:33:36
+    ## ./_common.R 3290 FALSE  644 2022-04-28 12:18:44 2022-04-28 12:18:44
     ##                           atime  uid gid  uname grname
-    ## ./_common.R 2022-04-13 07:33:36 1001 121 runner docker
+    ## ./_common.R 2022-04-28 12:18:44 1001 121 runner docker
     ```
 
 1. `strptime` 用于字符串与 `POSIXlt`、 `POSIXct` 类对象之间的转化，`format` 默认 `tz = ""` 且 `usetz = TRUE` 
@@ -1178,7 +1178,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 07:33:36 CST"
+    ## [1] "2022-04-28 12:18:44 CST"
     ```
     
     ```r
@@ -1186,7 +1186,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 07:33:36"
+    ## [1] "2022-04-28 12:18:44"
     ```
     
     ```r
@@ -1194,7 +1194,7 @@ system2(command = 'pdflatex', args = '--version')
     ```
     
     ```
-    ## [1] "2022-04-13 15:33:36 CST"
+    ## [1] "2022-04-28 20:18:44 CST"
     ```
 
 1. 设置时区
@@ -1318,20 +1318,27 @@ apropos('package')
     ```
     
     ```
-    ##           Package     LibPath                           Installed Built  
-    ## beanplot  "beanplot"  "/home/runner/work/_temp/Library" "1.2"     "4.1.3"
-    ## blob      "blob"      "/home/runner/work/_temp/Library" "1.2.2"   "4.1.3"
-    ## extrafont "extrafont" "/home/runner/work/_temp/Library" "0.17"    "4.1.3"
-    ## formatR   "formatR"   "/home/runner/work/_temp/Library" "1.11"    "4.1.3"
-    ## gifski    "gifski"    "/home/runner/work/_temp/Library" "1.4.3-1" "4.1.3"
-    ## igraph    "igraph"    "/home/runner/work/_temp/Library" "1.2.11"  "4.1.3"
-    ##           ReposVer  Repository                               
-    ## beanplot  "1.3.1"   "https://cloud.r-project.org/src/contrib"
-    ## blob      "1.2.3"   "https://cloud.r-project.org/src/contrib"
-    ## extrafont "0.18"    "https://cloud.r-project.org/src/contrib"
-    ## formatR   "1.12"    "https://cloud.r-project.org/src/contrib"
-    ## gifski    "1.6.6-1" "https://cloud.r-project.org/src/contrib"
-    ## igraph    "1.3.0"   "https://cloud.r-project.org/src/contrib"
+    ##                      Package                LibPath                          
+    ## alabama              "alabama"              "/home/runner/work/_temp/Library"
+    ## assertive.properties "assertive.properties" "/home/runner/work/_temp/Library"
+    ## beanplot             "beanplot"             "/home/runner/work/_temp/Library"
+    ## BiocManager          "BiocManager"          "/home/runner/work/_temp/Library"
+    ## blob                 "blob"                 "/home/runner/work/_temp/Library"
+    ## bookdown             "bookdown"             "/home/runner/work/_temp/Library"
+    ##                      Installed  Built   ReposVer  
+    ## alabama              "2015.3-1" "4.1.3" "2022.4-1"
+    ## assertive.properties "0.0-4"    "4.1.3" "0.0-5"   
+    ## beanplot             "1.2"      "4.1.3" "1.3.1"   
+    ## BiocManager          "1.30.16"  "4.1.3" "1.30.17" 
+    ## blob                 "1.2.2"    "4.1.3" "1.2.3"   
+    ## bookdown             "0.25"     "4.1.3" "0.26"    
+    ##                      Repository                               
+    ## alabama              "https://cloud.r-project.org/src/contrib"
+    ## assertive.properties "https://cloud.r-project.org/src/contrib"
+    ## beanplot             "https://cloud.r-project.org/src/contrib"
+    ## BiocManager          "https://cloud.r-project.org/src/contrib"
+    ## blob                 "https://cloud.r-project.org/src/contrib"
+    ## bookdown             "https://cloud.r-project.org/src/contrib"
     ```
 
 1. `new.packages` 还没有安装的 R 包 
@@ -1357,13 +1364,13 @@ apropos('package')
     ## Number of installed packages:
     ##                                  
     ##                                    ok upgrade unavailable
-    ##   /home/runner/work/_temp/Library 395      17          12
+    ##   /home/runner/work/_temp/Library 362      49          13
     ##   /opt/R/4.1.3/lib/R/library       23       6           0
     ## 
     ## Number of available packages (each package counted only once):
     ##                                          
     ##                                           installed not installed
-    ##   https://cloud.r-project.org/src/contrib       421         18580
+    ##   https://cloud.r-project.org/src/contrib       420         18478
     ```
     
 1. `packageDescription` 查询 R 包描述信息
@@ -1443,21 +1450,21 @@ apropos('package')
     ##  [58] "ggHoriPlot"        "ggimage"           "ggimg"            
     ##  [61] "gginference"       "gginnards"         "ggip"             
     ##  [64] "ggiraph"           "ggiraphExtra"      "ggjoy"            
-    ##  [67] "gglm"              "ggloop"            "gglorenz"         
-    ##  [70] "ggmap"             "ggmatplot"         "ggmcmc"           
-    ##  [73] "ggmice"            "ggmosaic"          "ggmotif"          
-    ##  [76] "ggmuller"          "ggmulti"           "ggnetwork"        
-    ##  [79] "ggnewscale"        "ggnormalviolin"    "ggnuplot"         
-    ##  [82] "ggOceanMaps"       "ggokabeito"        "ggpacman"         
-    ##  [85] "ggpage"            "ggparallel"        "ggparliament"     
-    ##  [88] "ggparty"           "ggpattern"         "ggperiodic"       
-    ##  [91] "ggplot.multistats" "ggplotAssist"      "ggplotgui"        
-    ##  [94] "ggplotify"         "ggplotlyExtra"     "ggpmisc"          
-    ##  [97] "ggPMX"             "ggpointdensity"    "ggpointless"      
-    ## [100] "ggpol"             "ggpolar"           "ggpolypath"       
-    ## [103] "ggpp"              "ggprism"           "ggpubr"           
-    ## [106] "ggpval"            "ggQC"              "ggQQunif"         
-    ## [109] "ggquickeda"        "ggquiver"          "ggraph"           
+    ##  [67] "gglm"              "gglorenz"          "ggmap"            
+    ##  [70] "ggmatplot"         "ggmcmc"            "ggmice"           
+    ##  [73] "ggmosaic"          "ggmotif"           "ggmuller"         
+    ##  [76] "ggmulti"           "ggnetwork"         "ggnewscale"       
+    ##  [79] "ggnormalviolin"    "ggnuplot"          "ggOceanMaps"      
+    ##  [82] "ggokabeito"        "ggpacman"          "ggpage"           
+    ##  [85] "ggparallel"        "ggparliament"      "ggparty"          
+    ##  [88] "ggpattern"         "ggperiodic"        "ggplot.multistats"
+    ##  [91] "ggplotAssist"      "ggplotgui"         "ggplotify"        
+    ##  [94] "ggplotlyExtra"     "ggpmisc"           "ggPMX"            
+    ##  [97] "ggpointdensity"    "ggpointless"       "ggpol"            
+    ## [100] "ggpolar"           "ggpolypath"        "ggpp"             
+    ## [103] "ggprism"           "ggpubr"            "ggpval"           
+    ## [106] "ggQC"              "ggQQunif"          "ggquickeda"       
+    ## [109] "ggquiver"          "ggRandomForests"   "ggraph"           
     ## [112] "ggraptR"           "ggrasp"            "ggrastr"          
     ## [115] "ggrepel"           "ggResidpanel"      "ggridges"         
     ## [118] "ggrisk"            "ggROC"             "ggsci"            
@@ -1469,8 +1476,8 @@ apropos('package')
     ## [136] "ggstream"          "ggstudent"         "ggswissmaps"      
     ## [139] "ggtea"             "ggtern"            "ggtext"           
     ## [142] "ggThemeAssist"     "ggthemes"          "ggtikz"           
-    ## [145] "ggTimeSeries"      "ggupset"           "ggvenn"           
-    ## [148] "ggVennDiagram"     "ggvoronoi"         "ggwordcloud"      
+    ## [145] "ggTimeSeries"      "ggtrendline"       "ggupset"          
+    ## [148] "ggvenn"            "ggVennDiagram"     "ggwordcloud"      
     ## [151] "ggx"
     ```
     
@@ -1509,7 +1516,7 @@ body
 ##         fun <- get(fun, mode = "function", envir = parent.frame())
 ##     .Internal(body(fun))
 ## }
-## <bytecode: 0x5595a3a2d9e8>
+## <bytecode: 0x55a45af923c8>
 ## <environment: namespace:base>
 ```
 
