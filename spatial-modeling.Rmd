@@ -1,0 +1,124 @@
+# 点模式分析 {#chap-spatial-point-analysis}
+
+## 美国旧金山犯罪数据 {#sec-sf-crime}
+
+
+1. ggmap 内置数据集 crime 可以扩展。
+
+休斯顿警察局 Lightly cleaned Houston crime from January 2010 to August 2010 geocoded with Google Maps
+Houston Police Department, City of Houston
+http://www.houstontx.gov/police/cs/stats2.htm
+
+1. RgoogleMaps 包内置的旧金山犯罪数据集 incidents 为例介绍空间点数据，也可以扩展，用全量数据。
+
+Joshua Ebner 整理了 2017 年的美国旧金山犯罪数据，也写了一篇[博客](https://www.sharpsightlabs.com/blog/how-to-create-a-crime-heatmap-in-r/)。数据集来自其博客，点击[链接](https://sharpsightlabs.com/datasets/sf_crime-data-2017.csv)即可下载。
+
+```{r}
+#| eval: false
+library(ggplot2)
+library(readr)
+
+# 导入数据
+sf_crime <- read_csv("data/sf-crime-data-2017.csv",
+  col_names = c(
+    "incident_number",
+    "crime_category",
+    "crime_description",
+    "day_of_week",
+    "date",
+    "time",
+    "police_district",
+    "resolution",
+    "address",
+    "lon",
+    "lat",
+    "location",
+    "PdId"
+  ),
+  skip = 1
+)
+```
+
+查看数据
+
+```{r}
+#| eval: false
+sf_crime
+```
+
+### 散点图
+
+```{r}
+#| eval: false
+# 散点图检查
+ggplot() +
+  geom_point(data = sf_crime, aes(x = lon, y = lat), alpha = .05)
+```
+
+### 热力图
+
+```{r}
+#| eval: false
+# 密度估计 heatmap
+ggplot() +
+  stat_density2d(
+    data = sf_crime,
+    aes(x = lon, y = lat, fill = ..density..),
+    geom = "tile", contour = F
+  )
+```
+
+切换 viridis 调色板
+
+```{r}
+#| eval: false
+ggplot() +
+  stat_density2d(
+    data = sf_crime,
+    aes(x = lon, y = lat, fill = ..density..),
+    geom = "tile", contour = F
+  ) +
+  scale_fill_viridis_c()
+```
+
+再设置透明度
+
+```{r}
+#| eval: false
+ggplot() +
+  stat_density2d(
+    data = sf_crime,
+    aes(x = lon, y = lat, fill = ..density..),
+    geom = "tile", contour = F, alpha = .5
+  ) +
+  scale_fill_viridis_c()
+```
+
+
+```{r}
+#| eval: false
+# 精细调整的热力图
+
+ggplot() +
+  stat_density2d(
+    data = sf_crime,
+    aes(x = lon, y = lat, fill = ..density..),
+    geom = "tile", contour = F, alpha = .5
+  ) +
+  scale_fill_viridis_c(option = "inferno") +
+  labs(
+    title = "SF has largest concentration of crime\nnear Downtown & Tenderloin",
+    subtitle = "There are also moderate pockets of crime in SOMA & the Mission",
+    fill = "Number of\ncrime incidents"
+  ) +
+  theme(
+    text = element_text(color = "#444444"),
+    plot.title = element_text(size = 22, face = "bold"),
+    plot.subtitle = element_text(size = 12),
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  guides(fill = guide_legend(override.aes = list(alpha = 1)))
+```
+
