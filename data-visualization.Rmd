@@ -574,22 +574,6 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
   )
 ```
 
-斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
-
-```{r fiji-earthquake, fig.cap="斐济地震带", fig.width=5, fig.height=4, fig.showtext=TRUE, out.width="75%"}
-library(maps)
-library(mapdata)
-FijiMap <- map_data("worldHires", region = "Fiji")
-ggplot(FijiMap, aes(x = long, y = lat)) +
-  geom_map(map = FijiMap, aes(map_id = region), size = .2) +
-  geom_point(data = quakes, aes(x = long, y = lat, colour = mag)) +
-  xlim(160, 195) +
-  scale_colour_distiller(palette = "Spectral") +
-  scale_y_continuous(breaks = (-18:18) * 5) +
-  coord_map("ortho", orientation = c(-10, 180, 0)) +
-  labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
-  theme_minimal(base_family = "Noto Serif SC")
-```
 
 ### 数学字体 {#subsec-fontcm}
 
@@ -601,7 +585,9 @@ Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm
 
 ```{r}
 library(extrafont)
-font_addpackage(pkg = "fontcm")
+if (!"fontcm" %in% .packages(T)) {
+  install.packages("fontcm")
+}
 ```
 
 查看可被 `pdf()` 图形设备使用的字体列表
@@ -613,7 +599,13 @@ fonts()
 
 fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
 
-```{r fontcm, fig.cap="fontcm 处理数学公式", fig.process=embed_math_fonts, dev=ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=6, fig.height=3}
+```{r}
+#| label: fontcm
+#| fig.cap: "fontcm 处理数学公式"
+#| fig.process: embed_math_fonts
+#| dev: ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png'))
+#| fig.width: 6 
+#| fig.height: 3
 library(fontcm)
 library(ggplot2)
 library(extrafont)
@@ -665,7 +657,13 @@ embed_math_fonts <- function(fig_path) {
 
 代码块选项中设置 `fig.process=embed_math_fonts` 可在绘图后，立即插入字体，此操作仅限于以 pdf 格式保存的图形设备，也适用于 Base R 绘制的图形，见图 \@ref(fig:embed-math-fonts)。
 
-```{r embed-math-fonts, fig.cap="嵌入数学字体", fig.process=embed_math_fonts, dev = ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), fig.width=4, fig.height=3.5}
+```{r}
+#| label: embed-math-fonts
+#| fig.cap: "嵌入数学字体"
+#| fig.process: embed_math_fonts
+#| dev: ifelse(knitr::is_html_output(), 'svg', ifelse(knitr::is_latex_output(), 'pdf', 'png')), 
+#| fig.width: 4
+#| fig.height: 3.5
 par(mar = c(4.1, 4.1, 1.5, 0.5), family = "CM Roman")
 x <- seq(-4, 4, len = 101)
 y <- cbind(sin(x), cos(x))

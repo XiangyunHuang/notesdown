@@ -1,5 +1,70 @@
 # 空间数据可视化 {#chap-spatial-viz}
 
+
+```{r,echo=FALSE}
+if (is.na(Sys.getenv("CI", NA))) {
+  # 准备 Noto 中英文字体
+  sysfonts::font_paths(new = "~/Library/Fonts/")
+  ## 宋体
+  sysfonts::font_add(
+    family = "Noto Serif CJK SC",
+    regular = "NotoSerifCJKsc-Regular.otf",
+    bold = "NotoSerifCJKsc-Bold.otf"
+  )
+  ## 黑体
+  sysfonts::font_add(
+    family = "Noto Sans CJK SC",
+    regular = "NotoSansCJKsc-Regular.otf",
+    bold = "NotoSansCJKsc-Bold.otf"
+  )
+  sysfonts::font_add(
+    family = "Noto Serif",
+    regular = "NotoSerif-Regular.ttf",
+    bold = "NotoSerif-Bold.ttf",
+    italic = "NotoSerif-Italic.ttf",
+    bolditalic = "NotoSerif-BoldItalic.ttf"
+  )
+  sysfonts::font_add(
+    family = "Noto Sans",
+    regular = "NotoSans-Regular.ttf",
+    bold = "NotoSans-Bold.ttf",
+    italic = "NotoSans-Italic.ttf",
+    bolditalic = "NotoSans-BoldItalic.ttf"
+  )
+} else {
+  sysfonts::font_paths(new = c(
+    "/usr/share/fonts/opentype/noto/",
+    "/usr/share/fonts/truetype/noto/"
+  ))
+  ## 宋体
+  sysfonts::font_add(
+    family = "Noto Serif CJK SC",
+    regular = "NotoSerifCJK-Regular.ttc",
+    bold = "NotoSerifCJK-Bold.ttc"
+  )
+  ## 黑体
+  sysfonts::font_add(
+    family = "Noto Sans CJK SC",
+    regular = "NotoSansCJK-Regular.ttc",
+    bold = "NotoSansCJK-Bold.ttc"
+  )
+  sysfonts::font_add(
+    family = "Noto Serif",
+    regular = "NotoSerif-Regular.ttf",
+    bold = "NotoSerif-Bold.ttf",
+    italic = "NotoSerif-Italic.ttf",
+    bolditalic = "NotoSerif-BoldItalic.ttf"
+  )
+  sysfonts::font_add(
+    family = "Noto Sans",
+    regular = "NotoSans-Regular.ttf",
+    bold = "NotoSans-Bold.ttf",
+    italic = "NotoSans-Italic.ttf",
+    bolditalic = "NotoSans-BoldItalic.ttf"
+  )
+}
+```
+
 <!-- https://segmentfault.com/a/1190000015048613 -->
 
 Robert J. Hijmans [^Robert-Hijmans] 开发了 [raster](https://github.com/rspatial/raster) 包用于网格空间数据的读、写、操作、分析和建模，同时维护了空间数据分析的网站 <https://www.rspatial.org>。Edzer Pebesma [^Edzer-Pebesma] 和 Roger Bivand 等创建了 [sp](https://github.com/edzer/sp/) 包定义了空间数据类型和方法，提供了大量的空间数据操作方法，同时维护了空间数据对象 sp 的绘图网站 <https://edzer.github.io/sp/>，他们也一起合作写了新书 [Spatial Data Science](https://keen-swartz-3146c4.netlify.com/)，提供了在线 [网页版](https://www.r-spatial.org/book/) 书籍及其 [源代码](https://github.com/edzer/sdsr)。Edzer Pebesma 后来开发了 [sf](https://github.com/r-spatial/sf/) 包重新定义了空间数据对象和操作方法，并维护了空间数据分析、建模和可视化网站 <https://www.r-spatial.org/>
@@ -121,6 +186,31 @@ quakes |>
   ) |>
   e_tooltip()
 ```
+
+
+斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
+
+```{r}
+#| label: fiji-earthquake
+#| fig.cap: "斐济地震带"
+#| fig.width: 5
+#| fig.height: 4
+#| fig.showtext: true
+#| out.width: "75%"
+library(maps)
+library(mapdata)
+FijiMap <- map_data("worldHires", region = "Fiji")
+ggplot(FijiMap, aes(x = long, y = lat)) +
+  geom_map(map = FijiMap, aes(map_id = region), size = .2) +
+  geom_point(data = quakes, aes(x = long, y = lat, colour = mag)) +
+  xlim(160, 195) +
+  scale_colour_distiller(palette = "Spectral") +
+  scale_y_continuous(breaks = (-18:18) * 5) +
+  coord_map("ortho", orientation = c(-10, 180, 0)) +
+  labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
+  theme_minimal(base_family = "Noto Serif SC")
+```
+
 
 ### 各国人均GDP和预期寿命分布 {#subsec-gapminder}
 
