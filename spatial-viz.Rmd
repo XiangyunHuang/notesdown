@@ -122,6 +122,31 @@ quakes |>
   e_tooltip()
 ```
 
+### 各国人均GDP和预期寿命分布 {#subsec-gapminder}
+
+```{r gapminder-echarts4r, fig.cap="各国人均GDP和预期寿命", eval=knitr::is_html_output()}
+library(echarts4r)
+library(gapminder)
+
+gapminder |>
+  group_by(year) |>
+  e_charts(x = country, timeline = TRUE) |>
+  e_map(serie = gdpPercap) |>
+  e_visual_map(serie = gdpPercap) |>
+  e_tooltip(
+    # 数据项图形触发，用于散点图等，设置 'axis' 表示坐标轴触发，主要在柱状图/条形图
+    trigger = "item",
+    # 鼠标移动或点击时触发
+    triggerOn = "mousemove|click",
+    # 定制悬浮内容 params.name 取自 bind 变量
+    formatter = htmlwidgets::JS("
+      function(params){
+        return('国家: <strong>' + params.name + '</strong>' +
+               '<br />人均 GDP: ' + Math.round(params.value) + '美元')
+      }
+    ")
+  )
+```
 
 
 ## 美国各个城镇的失业率分布
