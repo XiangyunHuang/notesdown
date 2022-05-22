@@ -467,6 +467,18 @@ mtcars[cyl == 6, `:=`(disp_mean = mean(disp), hp_mean = mean(hp))][cyl == 6, .(c
 mtcars[, colnames(mtcars)[grep("_mean$", colnames(mtcars))] := NULL]
 ```
 
+### 筛选多列 {#sec-select-columns}
+
+按照某一规则筛选多列
+
+```{r}
+library(data.table)
+iris <- as.data.table(iris)
+iris[, head(.SD, 6), .SDcols = function(x) is.numeric(x)]
+```
+
+
+
 ### 修改多列类型 {#sec-modify-columns-type}
 
 ```{r}
