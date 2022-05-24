@@ -2,7 +2,6 @@
 
 ```{r}
 library(data.table)
-library(magrittr)
 ```
 
 介绍 data.table 处理数据的方式，对标 dplyr 的基本操作
@@ -112,8 +111,8 @@ subset(x = mtcars_df, subset = cyl == 6 & gear == 4, select = c(mpg, disp))
 ::: dplyr
 
 ```{r dplyr-filter}
-mtcars %>%
-  dplyr::filter(cyl == 6 & gear == 4) %>%
+mtcars |> 
+  dplyr::filter(cyl == 6 & gear == 4) |> 
   dplyr::select(mpg, disp)
 ```
 
@@ -137,20 +136,20 @@ mtcars_df[, .(mean_mpg = mean(mpg), mean_disp = mean(disp))]
 ```{r}
 # mtcars_df[, .(mean_mpg := mean(mpg), mean_disp := mean(disp))] # 报错
 # 正确的姿势
-mtcars_df[, `:=`(mean_mpg = mean(mpg), mean_disp = mean(disp))][, .(mpg, disp, mean_mpg, mean_disp)] %>% head()
+mtcars_df[, `:=`(mean_mpg = mean(mpg), mean_disp = mean(disp))][, .(mpg, disp, mean_mpg, mean_disp)] |>  head()
 ```
 
 
 ```{r dplyr-mutate-1}
-mtcars %>%
+mtcars |> 
   dplyr::summarise(mean_mpg = mean(mpg), mean_disp = mean(disp))
 ```
 
 
 ```{r dplyr-mutate-2}
-mtcars %>%
-  dplyr::mutate(mean_mpg = mean(mpg), mean_disp = mean(disp)) %>%
-  dplyr::select(mpg, disp, mean_mpg, mean_disp) %>%
+mtcars |> 
+  dplyr::mutate(mean_mpg = mean(mpg), mean_disp = mean(disp)) |> 
+  dplyr::select(mpg, disp, mean_mpg, mean_disp) |> 
   head()
 ```
 
@@ -174,8 +173,8 @@ aggregate(data = mtcars_df, mpg ~ cyl + gear, FUN = mean)
 
 
 ```{r dplyr-summarise}
-mtcars %>%
-  dplyr::group_by(cyl, gear) %>%
+mtcars |> 
+  dplyr::group_by(cyl, gear) |> 
   dplyr::summarise(mean_mpg = mean(mpg))
 ```
 
@@ -216,9 +215,9 @@ mtcars_df[, .(mpg, cyl, gear)][cyl == 4][order(cyl, -gear)]
 
 
 ```{r dplyr-arrange}
-mtcars %>%
-  dplyr::select(mpg, cyl, gear) %>%
-  dplyr::filter(cyl == 4) %>%
+mtcars |> 
+  dplyr::select(mpg, cyl, gear) |> 
+  dplyr::filter(cyl == 4) |> 
   dplyr::arrange(cyl, desc(gear))
 ```
 
@@ -278,7 +277,7 @@ reshape(data = sleep, v.names = "extra", idvar = "group", timevar = "ID", direct
 :::
 
 ```{r}
-ToothGrowth %>% head()
+head(ToothGrowth)
 ToothGrowth$time <- rep(1:10, 6)
 reshape(ToothGrowth,
   v.names = "len", idvar = c("supp", "dose"),
@@ -296,9 +295,9 @@ reshape(ToothGrowth,
 分组切片，取每组第一个和最后一个值
 
 ```{r}
-Loblolly %>%
-  dplyr::group_by(Seed) %>%
-  dplyr::arrange(height, age, Seed) %>%
+Loblolly |> 
+  dplyr::group_by(Seed) |> 
+  dplyr::arrange(height, age, Seed) |> 
   dplyr::slice(1, dplyr::n())
 ```
 
@@ -380,7 +379,6 @@ Table: (\#tab:two-table-verbs) 两表的操作
 
 
 ```{r}
-library(magrittr)
 class(mtcars)
 library(data.table)
 mtcars <- as.data.table(mtcars)
@@ -391,19 +389,19 @@ class(mtcars)
 
 ```{r}
 # base
-mtcars[, c("cyl", "gear")] %>% head(3)
+mtcars[, c("cyl", "gear")] |>  head(3)
 # data.table
-mtcars[, c("cyl", "gear")] %>% head(3)
+mtcars[, c("cyl", "gear")] |>  head(3)
 # dplyr
-dplyr::select(mtcars, cyl, gear) %>% head(3)
+dplyr::select(mtcars, cyl, gear) |>  head(3)
 ```
 
 反选多列，选择除了 cyl 和 gear 的列
 
 ```{r}
 ## 或者 mtcars[, setdiff(names(mtcars), c("cyl", "gear"))]
-mtcars[, !(names(mtcars) %in% c("cyl", "gear"))] %>% head(3)
-subset(mtcars, select = -c(cyl, gear)) %>% head(3)
+mtcars[, !(names(mtcars) %in% c("cyl", "gear"))] |>  head(3)
+subset(mtcars, select = -c(cyl, gear)) |>  head(3)
 ```
 
 
@@ -603,8 +601,8 @@ mtcars[, as.list(unlist(lapply(.SD, function(x) {
 by = "cyl", .SDcols = c("mpg", "hp")
 ]
 # dplyr
-mtcars %>%
-  dplyr::group_by(cyl) %>%
+mtcars |> 
+  dplyr::group_by(cyl) |> 
   dplyr::summarise(
     mean_mpg = mean(mpg), mean_hp = mean(hp),
     median_mpg = mean(mpg), median_hp = mean(hp)
@@ -670,7 +668,7 @@ split(iris, iris$Species) %>%
   }, ., levels(iris$Species)) %>%
   do.call(rbind, .)
 
-# dplyr 操作，需要 dplyr >= 1.0.0 或者开发版
+# dplyr 操作，需要 dplyr >= 1.0.0 
 iris %>%
   dplyr::group_by(Species) %>%
   dplyr::summarise(broom::tidy(lm(Petal.Length ~ Sepal.Length)))
@@ -687,9 +685,9 @@ mtcars[, .(mpg_rate = round(mpg / sum(mpg) * 100, digits = 2)), by = .(cyl, vs, 
 ### 去掉含有缺失值的记录 {#sec-remove-na}
 
 ```{r}
-airquality[complete.cases(airquality), ] %>% head()
+airquality[complete.cases(airquality), ] |>  head()
 # 或着
-airquality[!apply(airquality, 1, anyNA), ] %>% head()
+airquality[!apply(airquality, 1, anyNA), ] |>  head()
 ```
 
 ### 集合操作 {#sec-match-set}
@@ -780,11 +778,11 @@ dat[order(dat$Species, decreasing = T), ]
 
 ### 分组获取 Top 值 {#lapply-split-order}
 
-分组按既定规律取数，比如分组按变量 b 取 Top 6
+分组按既定规律取数，比如按 Species 分组取 Top 6
 
-```{r}
+```{r,eval=FALSE}
 # 分组取前6个
-do.call("rbind.data.frame", lapply(split(x = iris, ~Species), head))
+do.call("rbind.data.frame", lapply(base::split(x = iris, ~Species), head))
 ```
 
 
