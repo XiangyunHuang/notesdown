@@ -503,21 +503,21 @@
 <div class="sourceCode" id="cb1100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">i_1</span>, <span class="va">i_2</span>, <span class="va">f_1</span>, <span class="va">f_2</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    i_1 i_2  f_1 f_2
-## 1:   1  NA    a   z
-## 2:   2   6    c   a
-## 3:   3   7    a   x
+## 1:   1  NA &lt;NA&gt;   z
+## 2:   2   6    a   a
+## 3:   3   7    b   x
 ## 4:   4   8 &lt;NA&gt;   c
-## 5:   5   9    a   x
-## 6:  NA  10    a   x</code></pre>
+## 5:   5   9    c   x
+## 6:  NA  10 &lt;NA&gt;   x</code></pre>
 <div class="sourceCode" id="cb1102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span><span class="va">DT</span>, id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"f_1"</span>, <span class="st">"f_2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     i_1 i_2 variable value
-##  1:   1  NA      f_1     a
-##  2:   2   6      f_1     c
-##  3:   3   7      f_1     a
+##  1:   1  NA      f_1  &lt;NA&gt;
+##  2:   2   6      f_1     a
+##  3:   3   7      f_1     b
 ##  4:   4   8      f_1  &lt;NA&gt;
-##  5:   5   9      f_1     a
-##  6:  NA  10      f_1     a
+##  5:   5   9      f_1     c
+##  6:  NA  10      f_1  &lt;NA&gt;
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -544,7 +544,6 @@
 ## 1:   4 21.50 26.925 28.2
 ## 2:   6 19.75 19.750 19.7
 ## 3:   8 15.05    NaN 15.4</code></pre>
-<div class="sidebar">
 <p>tidyr 包提供数据变形的函数 <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">tidyr::pivot_longer()</a></code> 和 <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">tidyr::pivot_wider()</a></code> 相比于 Base R 提供的 <code><a href="https://rdrr.io/r/stats/reshape.html">reshape()</a></code> 和 data.table 提供的 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt()</a></code> 和 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast()</a></code> 更加形象的命名</p>
 <div class="sourceCode" id="cb1110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sleep</span>, names_from <span class="op">=</span> <span class="st">"ID"</span>, values_from <span class="op">=</span> <span class="st">"extra"</span><span class="op">)</span></code></pre></div>
@@ -568,10 +567,10 @@
 <code>timevar</code> 组内编号</li>
 <li>
 <code>v.names</code> 个体观察值</li>
+<li>
+<code>sep</code> 新的列名是由参数 <code>v.names</code> (extra) 和参数值 <code>timevar</code> (ID) 拼接起来的，默认 <code>sep = "."</code> 推荐使用下划线来做分割 <code>sep = "_"</code>
+</li>
 </ul>
-<div class="rmdnote">
-<p><code>sep</code> 新的列名是由参数 <code>v.names</code> (extra) 和参数值 <code>timevar</code> (ID) 拼接起来的，默认 <code>sep = "."</code> 推荐使用下划线来做分割 <code>sep = "_"</code></p>
-</div>
 <div class="sourceCode" id="cb1114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ToothGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>##    len supp dose
@@ -594,7 +593,6 @@
 ## 31   OJ  0.5  15.2  21.5  17.6   9.7  14.5  10.0   8.2   9.4  16.5    9.7
 ## 41   OJ  1.0  19.7  23.3  23.6  26.4  20.0  25.2  25.8  21.2  14.5   27.3
 ## 51   OJ  2.0  25.5  26.4  22.4  24.5  24.8  30.9  26.4  27.3  29.4   23.0</code></pre>
-</div>
 <p>以数据集 ToothGrowth 为例，变量 supp（大组），dose（小组） 和 time（组内个体编号） 一起决定唯一的一个数据 len，特别适合纵向数据的变形操作</p>
 </div>
 <div id="subsec-group-by" class="section level3" number="7.1.7">
@@ -1816,24 +1814,24 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
   FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>, <span class="op">]</span>
 <span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          5.0         3.2          1.2         0.2     setosa
-##  2:          4.7         3.2          1.3         0.2     setosa
-##  3:          5.1         3.8          1.9         0.4     setosa
-##  4:          5.5         4.2          1.4         0.2     setosa
-##  5:          5.5         3.5          1.3         0.2     setosa
-##  6:          4.9         3.0          1.4         0.2     setosa
-##  7:          6.7         3.1          4.4         1.4 versicolor
-##  8:          5.6         3.0          4.1         1.3 versicolor
+##  1:          5.0         3.6          1.4         0.2     setosa
+##  2:          5.2         3.5          1.5         0.2     setosa
+##  3:          5.3         3.7          1.5         0.2     setosa
+##  4:          5.4         3.9          1.3         0.4     setosa
+##  5:          4.4         2.9          1.4         0.2     setosa
+##  6:          5.1         3.8          1.6         0.2     setosa
+##  7:          5.9         3.0          4.2         1.5 versicolor
+##  8:          5.8         2.6          4.0         1.2 versicolor
 ##  9:          6.1         2.8          4.7         1.2 versicolor
-## 10:          6.1         3.0          4.6         1.4 versicolor
-## 11:          6.3         3.3          4.7         1.6 versicolor
-## 12:          5.5         2.6          4.4         1.2 versicolor
-## 13:          7.7         3.0          6.1         2.3  virginica
-## 14:          5.8         2.7          5.1         1.9  virginica
-## 15:          6.9         3.1          5.4         2.1  virginica
-## 16:          6.9         3.2          5.7         2.3  virginica
-## 17:          6.2         3.4          5.4         2.3  virginica
-## 18:          7.7         3.8          6.7         2.2  virginica</code></pre>
+## 10:          5.2         2.7          3.9         1.4 versicolor
+## 11:          5.7         2.8          4.1         1.3 versicolor
+## 12:          5.4         3.0          4.5         1.5 versicolor
+## 13:          6.1         3.0          4.9         1.8  virginica
+## 14:          6.0         3.0          4.8         1.8  virginica
+## 15:          7.1         3.0          5.9         2.1  virginica
+## 16:          6.4         2.8          5.6         2.1  virginica
+## 17:          6.4         2.8          5.6         2.2  virginica
+## 18:          6.7         3.3          5.7         2.5  virginica</code></pre>
 </div>
 <div id="lapply-split-quantile" class="section level3" number="7.2.24">
 <h3>

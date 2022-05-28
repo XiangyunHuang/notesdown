@@ -1187,24 +1187,22 @@ leaflet(quakes) |>
 
 ## 动画 {#sec-echarts4r-animation}
 
-[袁凡](https://yuanfan.vercel.app/) 用 R 中 echarts4r 包绘制柱状图的[笔记](https://yuanfan.vercel.app/posts/echarts4r-e-bar/)
 
 
 ```r
 # https://d.cosx.org/d/422311
-library(purrr)
 library(echarts4r)
 
 data("gapminder", package = "gapminder")
 
-titles <- map(unique(gapminder$year), function(x) {
+titles <- lapply(unique(gapminder$year), function(x) {
   list(
     text = "Gapminder",
     left = "center"
   )
 })
 
-years <- map(unique(gapminder$year), function(x) {
+years <- lapply(unique(gapminder$year), function(x) {
   list(
     subtext = x,
     left = "center",
@@ -1219,14 +1217,13 @@ years <- map(unique(gapminder$year), function(x) {
 })
 
 # 添加一列颜色，各大洲和颜色的对应关系可自定义，调整 levels 或 labels 里面的顺序即可，也可不指定 levels ，调用其它调色板
-gapminder <- gapminder |>
-  transform(
-    color = factor(
-      continent,
-      levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
-      labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
-    )
+gapminder <- within(gapminder, {
+  color <- factor(
+    continent,
+    levels = c("Asia", "Africa", "Americas", "Europe", "Oceania"),
+    labels = RColorBrewer::brewer.pal(n = 5, name = "Spectral")
   )
+})
 
 gapminder |>
   group_by(year) |>
