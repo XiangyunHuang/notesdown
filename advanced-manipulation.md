@@ -3,7 +3,6 @@
 
 ```r
 library(data.table)
-library(magrittr)
 ```
 
 介绍 data.table 处理数据的方式，对标 dplyr 的基本操作
@@ -90,7 +89,7 @@ DT[, tail(.SD, 2), by = x] # 每组最后两行
 
 ```r
 # 除了 x 列外，所有列都按 x 分组求和
-DT[, lapply(.SD, sum), by = x] 
+DT[, lapply(.SD, sum), by = x]
 ```
 
 ```
@@ -246,7 +245,7 @@ DT[, c(.(y = max(y)), lapply(.SD, min)), by = rleid(v), .SDcols = v:b]
 
 
 ```r
-mtcars_df = as.data.table(mtcars)
+mtcars_df <- as.data.table(mtcars)
 ```
 
 过滤 cyl = 6 并且 gear = 4 的记录
@@ -299,8 +298,8 @@ subset(x = mtcars_df, subset = cyl == 6 & gear == 4, select = c(mpg, disp))
 
 
 ```r
-mtcars %>% 
-  dplyr::filter(cyl == 6 & gear == 4)  %>% 
+mtcars |> 
+  dplyr::filter(cyl == 6 & gear == 4) |> 
   dplyr::select(mpg, disp)
 ```
 
@@ -320,8 +319,7 @@ mtcars %>%
 
 
 ```r
-mtcars_df[, mean_mpg := mean(mpg)
-          ][, mean_disp := mean(disp)]
+mtcars_df[, mean_mpg := mean(mpg)][, mean_disp := mean(disp)]
 mtcars_df[1:6, ]
 ```
 
@@ -351,8 +349,7 @@ mtcars_df[, .(mean_mpg = mean(mpg), mean_disp = mean(disp))]
 ```r
 # mtcars_df[, .(mean_mpg := mean(mpg), mean_disp := mean(disp))] # 报错
 # 正确的姿势
-mtcars_df[, `:=`(mean_mpg = mean(mpg), mean_disp = mean(disp))          
-          ][, .(mpg, disp, mean_mpg, mean_disp)] %>% head()
+mtcars_df[, `:=`(mean_mpg = mean(mpg), mean_disp = mean(disp))][, .(mpg, disp, mean_mpg, mean_disp)] |>  head()
 ```
 
 ```
@@ -368,7 +365,7 @@ mtcars_df[, `:=`(mean_mpg = mean(mpg), mean_disp = mean(disp))
 
 
 ```r
-mtcars %>% 
+mtcars |> 
   dplyr::summarise(mean_mpg = mean(mpg), mean_disp = mean(disp))
 ```
 
@@ -380,9 +377,10 @@ mtcars %>%
 
 
 ```r
-mtcars %>% 
-  dplyr::mutate(mean_mpg = mean(mpg), mean_disp = mean(disp)) %>% 
-  dplyr::select(mpg, disp, mean_mpg, mean_disp) %>% head()
+mtcars |> 
+  dplyr::mutate(mean_mpg = mean(mpg), mean_disp = mean(disp)) |> 
+  dplyr::select(mpg, disp, mean_mpg, mean_disp) |> 
+  head()
 ```
 
 ```
@@ -462,8 +460,8 @@ aggregate(data = mtcars_df, mpg ~ cyl + gear, FUN = mean)
 
 
 ```r
-mtcars %>% 
-  dplyr::group_by(cyl, gear) %>% 
+mtcars |> 
+  dplyr::group_by(cyl, gear) |> 
   dplyr::summarise(mean_mpg = mean(mpg))
 ```
 
@@ -490,7 +488,7 @@ mtcars %>%
 
 
 ```r
-sub_mtcars_df <- mtcars_df[, .(mean_mpg = mean(mpg)), by = .(cyl, gear)] 
+sub_mtcars_df <- mtcars_df[, .(mean_mpg = mean(mpg)), by = .(cyl, gear)]
 setNames(sub_mtcars_df, c("cyl", "gear", "ave_mpg"))
 ```
 
@@ -554,9 +552,7 @@ sub_mtcars_df
 
 
 ```r
-mtcars_df[, .(mpg, cyl, gear)          
-          ][cyl == 4            
-            ][order(cyl, -gear)]
+mtcars_df[, .(mpg, cyl, gear)][cyl == 4][order(cyl, -gear)]
 ```
 
 ```
@@ -579,9 +575,9 @@ mtcars_df[, .(mpg, cyl, gear)
 
 
 ```r
-mtcars %>%
-  dplyr::select(mpg, cyl, gear) %>%
-  dplyr::filter(cyl == 4) %>%
+mtcars |> 
+  dplyr::select(mpg, cyl, gear) |> 
+  dplyr::filter(cyl == 4) |> 
   dplyr::arrange(cyl, desc(gear))
 ```
 
@@ -628,12 +624,12 @@ DT[, .(i_1, i_2, f_1, f_2)]
 
 ```
 ##    i_1 i_2  f_1 f_2
-## 1:   1  NA    a   z
-## 2:   2   6    a   a
-## 3:   3   7 <NA>   x
+## 1:   1  NA <NA>   z
+## 2:   2   6    c   a
+## 3:   3   7    c   x
 ## 4:   4   8    b   c
-## 5:   5   9    c   x
-## 6:  NA  10    b   x
+## 5:   5   9    a   x
+## 6:  NA  10 <NA>   x
 ```
 
 
@@ -644,12 +640,12 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 
 ```
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     a
-##  2:   2   6      f_1     a
-##  3:   3   7      f_1  <NA>
+##  1:   1  NA      f_1  <NA>
+##  2:   2   6      f_1     c
+##  3:   3   7      f_1     c
 ##  4:   4   8      f_1     b
-##  5:   5   9      f_1     c
-##  6:  NA  10      f_1     b
+##  5:   5   9      f_1     a
+##  6:  NA  10      f_1  <NA>
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -734,7 +730,7 @@ reshape(data = sleep, v.names = "extra", idvar = "group", timevar = "ID", direct
 
 
 ```r
-ToothGrowth %>% head
+head(ToothGrowth)
 ```
 
 ```
@@ -749,8 +745,10 @@ ToothGrowth %>% head
 
 ```r
 ToothGrowth$time <- rep(1:10, 6)
-reshape(ToothGrowth, v.names = "len", idvar = c("supp", "dose"),
-        timevar = "time", direction = "wide")
+reshape(ToothGrowth,
+  v.names = "len", idvar = c("supp", "dose"),
+  timevar = "time", direction = "wide"
+)
 ```
 
 ```
@@ -774,9 +772,9 @@ reshape(ToothGrowth, v.names = "len", idvar = c("supp", "dose"),
 
 
 ```r
-Loblolly %>% 
-  dplyr::group_by(Seed) %>% 
-  dplyr::arrange(height, age, Seed) %>% 
+Loblolly |> 
+  dplyr::group_by(Seed) |> 
+  dplyr::arrange(height, age, Seed) |> 
   dplyr::slice(1, dplyr::n())
 ```
 
@@ -878,7 +876,8 @@ list 列表里每个元素都是 data.frame 时，最适合用 `data.table::rbin
 # 合并列表 https://recology.info/2018/10/limiting-dependencies/
 function(x) {
   tibble::as_tibble((x <- data.table::setDF(
-    data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = "id"))
+    data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = "id")
+  )
   ))
 }
 ```
@@ -886,7 +885,8 @@ function(x) {
 ```
 ## function(x) {
 ##   tibble::as_tibble((x <- data.table::setDF(
-##     data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = "id"))
+##     data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = "id")
+##   )
 ##   ))
 ## }
 ```
@@ -929,7 +929,6 @@ Table: (\#tab:two-table-verbs) 两表的操作
 
 
 ```r
-library(magrittr)
 class(mtcars)
 ```
 
@@ -952,7 +951,7 @@ class(mtcars)
 
 ```r
 # base
-mtcars[, c("cyl", "gear")] %>% head(3)
+mtcars[, c("cyl", "gear")] |>  head(3)
 ```
 
 ```
@@ -964,7 +963,7 @@ mtcars[, c("cyl", "gear")] %>% head(3)
 
 ```r
 # data.table
-mtcars[, c("cyl", "gear")] %>% head(3)
+mtcars[, c("cyl", "gear")] |>  head(3)
 ```
 
 ```
@@ -976,7 +975,7 @@ mtcars[, c("cyl", "gear")] %>% head(3)
 
 ```r
 # dplyr
-dplyr::select(mtcars, cyl, gear) %>% head(3)
+dplyr::select(mtcars, cyl, gear) |>  head(3)
 ```
 
 ```
@@ -991,7 +990,7 @@ dplyr::select(mtcars, cyl, gear) %>% head(3)
 
 ```r
 ## 或者 mtcars[, setdiff(names(mtcars), c("cyl", "gear"))]
-mtcars[ , !(names(mtcars) %in% c("cyl","gear"))]  %>% head(3) 
+mtcars[, !(names(mtcars) %in% c("cyl", "gear"))] |>  head(3)
 ```
 
 ```
@@ -999,7 +998,7 @@ mtcars[ , !(names(mtcars) %in% c("cyl","gear"))]  %>% head(3)
 ```
 
 ```r
-subset(mtcars, select = -c(cyl, gear)) %>% head(3)
+subset(mtcars, select = -c(cyl, gear)) |>  head(3)
 ```
 
 ```
@@ -1015,7 +1014,7 @@ subset(mtcars, select = -c(cyl, gear)) %>% head(3)
 
 ```r
 # base
-mtcars[mtcars$cyl == 6 & mtcars$gear == 4,]
+mtcars[mtcars$cyl == 6 & mtcars$gear == 4, ]
 ```
 
 ```
@@ -1040,7 +1039,7 @@ subset(mtcars, subset = cyl == 6 & gear == 4)
 
 ```r
 # data.table
-mtcars[cyl == 6 & gear == 4,]
+mtcars[cyl == 6 & gear == 4, ]
 ```
 
 ```
@@ -1181,8 +1180,31 @@ mtcars[cyl == 6, `:=`(disp_mean = mean(disp), hp_mean = mean(hp))][cyl == 6, .(c
 
 
 ```r
-mtcars[, colnames(mtcars)[grep('_mean$', colnames(mtcars))] := NULL]
+mtcars[, colnames(mtcars)[grep("_mean$", colnames(mtcars))] := NULL]
 ```
+
+### 筛选多列 {#sec-select-columns}
+
+按照某一规则筛选多列
+
+
+```r
+library(data.table)
+iris <- as.data.table(iris)
+iris[, head(.SD, 6), .SDcols = function(x) is.numeric(x)]
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:          5.1         3.5          1.4         0.2
+## 2:          4.9         3.0          1.4         0.2
+## 3:          4.7         3.2          1.3         0.2
+## 4:          4.6         3.1          1.5         0.2
+## 5:          5.0         3.6          1.4         0.2
+## 6:          5.4         3.9          1.7         0.4
+```
+
+
 
 ### 修改多列类型 {#sec-modify-columns-type}
 
@@ -1215,7 +1237,7 @@ str(mtcars)
 
 
 ```r
-mtcars[order(cyl, - gear)][, head(.SD, 1), by = list(cyl, gear, am)]
+mtcars[order(cyl, -gear)][, head(.SD, 1), by = list(cyl, gear, am)]
 ```
 
 ```
@@ -1234,7 +1256,7 @@ mtcars[order(cyl, - gear)][, head(.SD, 1), by = list(cyl, gear, am)]
 
 ```r
 # 或者
-mtcars[order(cyl, - gear)][, .SD[1], by = list(cyl, gear, am)]
+mtcars[order(cyl, -gear)][, .SD[1], by = list(cyl, gear, am)]
 ```
 
 ```
@@ -1273,9 +1295,9 @@ rownames(dat) <- subset(dat, select = year, drop = TRUE)
 air_passengers <- subset(dat, select = -year)
 
 knitr::kable(air_passengers,
-    caption = "1949-1960年国际航班乘客数量变化",
-    align = "c", row.names = TRUE
-  )
+  caption = "1949-1960年国际航班乘客数量变化",
+  align = "c", row.names = TRUE
+)
 ```
 
 \begin{table}
@@ -1318,7 +1340,7 @@ knitr::kable(air_passengers,
 
 ```r
 # 环比横向/同比纵向
-mom <- function(x) diff(x, lag = 1)/x[-length(x)] # month to month
+mom <- function(x) diff(x, lag = 1) / x[-length(x)] # month to month
 # 格式化输出
 format_mom <- function(x) formatC(mom(x), format = "f", digits = 4)
 ```
@@ -1328,13 +1350,14 @@ format_mom <- function(x) formatC(mom(x), format = "f", digits = 4)
 ```r
 library(formattable)
 # 同比变化
-air_passengers %>%  
-  apply(., 2, format_mom) %>% as.data.frame() %>%
+air_passengers %>%
+  apply(., 2, format_mom) %>%
+  as.data.frame() %>%
   formattable(., list(
-        Jan = color_tile("white", "pink"),
-        Feb = color_tile("white", "springgreen4"),
-        Mar = percent
-      ))
+    Jan = color_tile("white", "pink"),
+    Feb = color_tile("white", "springgreen4"),
+    Mar = percent
+  ))
 
 library(DT)
 datatable(air_passengers)
@@ -1355,31 +1378,32 @@ Reduce(function(x, y, ...) merge(x, y, ..., all = TRUE), all_dfs)
 ```
 
 ```
-##    Sepal.Length Species Sepal.Width Petal.Length
-## 1           4.3  setosa         3.0           NA
-## 2           4.4  setosa          NA           NA
-## 3           4.6  setosa          NA          1.0
-## 4           4.6  setosa          NA          1.0
-## 5           4.7  setosa          NA          1.6
-## 6           4.8  setosa         3.0          1.9
-## 7           4.8  setosa         3.4          1.9
-## 8           4.9  setosa          NA           NA
-## 9           4.9  setosa          NA           NA
-## 10          5.0  setosa          NA          1.6
-## 11          5.0  setosa          NA          1.6
-## 12          5.0  setosa          NA          1.6
-## 13          5.0  setosa          NA          1.6
-## 14          5.1  setosa          NA          1.5
-## 15          5.1  setosa          NA          1.4
-## 16          5.1  setosa          NA          1.7
-## 17          5.1  setosa          NA          1.5
-## 18          5.2  setosa          NA          1.4
-## 19          5.2  setosa          NA          1.5
-## 20          5.4  setosa         3.7          1.3
-## 21          5.4  setosa         3.7          1.7
-## 22          5.7  setosa          NA          1.5
-## 23          5.7  setosa          NA          1.7
-## 24          5.8  setosa         4.0           NA
+##     Sepal.Length Species Sepal.Width Petal.Length
+##  1:          4.3  setosa         3.0           NA
+##  2:          4.4  setosa          NA           NA
+##  3:          4.6  setosa          NA          1.0
+##  4:          4.6  setosa          NA          1.0
+##  5:          4.7  setosa          NA          1.6
+##  6:          4.8  setosa         3.4          1.9
+##  7:          4.8  setosa         3.0          1.9
+##  8:          4.9  setosa          NA           NA
+##  9:          4.9  setosa          NA           NA
+## 10:          5.0  setosa          NA          1.6
+## 11:          5.0  setosa          NA          1.6
+## 12:          5.0  setosa          NA          1.6
+## 13:          5.0  setosa          NA          1.6
+## 14:          5.1  setosa          NA          1.4
+## 15:          5.1  setosa          NA          1.5
+## 16:          5.1  setosa          NA          1.5
+## 17:          5.1  setosa          NA          1.7
+## 18:          5.2  setosa          NA          1.5
+## 19:          5.2  setosa          NA          1.4
+## 20:          5.4  setosa         3.7          1.3
+## 21:          5.4  setosa         3.7          1.7
+## 22:          5.7  setosa          NA          1.5
+## 23:          5.7  setosa          NA          1.7
+## 24:          5.8  setosa         4.0           NA
+##     Sepal.Length Species Sepal.Width Petal.Length
 ```
 
 ```r
@@ -1388,31 +1412,32 @@ Reduce(function(x, y, ...) dplyr::full_join(x, y, ...), all_dfs)
 ```
 
 ```
-##    Sepal.Length Species Sepal.Width Petal.Length
-## 1           5.1  setosa          NA          1.4
-## 2           5.1  setosa          NA          1.5
-## 3           5.1  setosa          NA          1.5
-## 4           5.1  setosa          NA          1.7
-## 5           4.9  setosa          NA           NA
-## 6           4.7  setosa          NA          1.6
-## 7           4.6  setosa          NA          1.0
-## 8           5.0  setosa          NA          1.6
-## 9           5.0  setosa          NA          1.6
-## 10          5.4  setosa         3.7          1.3
-## 11          5.4  setosa         3.7          1.7
-## 12          4.6  setosa          NA          1.0
-## 13          5.0  setosa          NA          1.6
-## 14          5.0  setosa          NA          1.6
-## 15          4.4  setosa          NA           NA
-## 16          4.9  setosa          NA           NA
-## 17          4.8  setosa         3.4          1.9
-## 18          4.8  setosa         3.0          1.9
-## 19          4.3  setosa         3.0           NA
-## 20          5.8  setosa         4.0           NA
-## 21          5.7  setosa          NA          1.5
-## 22          5.7  setosa          NA          1.7
-## 23          5.2  setosa          NA          1.5
-## 24          5.2  setosa          NA          1.4
+##     Sepal.Length Species Sepal.Width Petal.Length
+##  1:          5.1  setosa          NA          1.4
+##  2:          5.1  setosa          NA          1.5
+##  3:          5.1  setosa          NA          1.5
+##  4:          5.1  setosa          NA          1.7
+##  5:          4.9  setosa          NA           NA
+##  6:          4.7  setosa          NA          1.6
+##  7:          4.6  setosa          NA          1.0
+##  8:          5.0  setosa          NA          1.6
+##  9:          5.0  setosa          NA          1.6
+## 10:          5.4  setosa         3.7          1.3
+## 11:          5.4  setosa         3.7          1.7
+## 12:          4.6  setosa          NA          1.0
+## 13:          5.0  setosa          NA          1.6
+## 14:          5.0  setosa          NA          1.6
+## 15:          4.4  setosa          NA           NA
+## 16:          4.9  setosa          NA           NA
+## 17:          4.8  setosa         3.4          1.9
+## 18:          4.8  setosa         3.0          1.9
+## 19:          4.3  setosa         3.0           NA
+## 20:          5.8  setosa         4.0           NA
+## 21:          5.7  setosa          NA          1.5
+## 22:          5.7  setosa          NA          1.7
+## 23:          5.2  setosa          NA          1.5
+## 24:          5.2  setosa          NA          1.4
+##     Sepal.Length Species Sepal.Width Petal.Length
 ```
 
 合并完应该有30行，为啥只有24行？这是因为 `merge()` 函数对主键 key 相同的记录会合并，要想不合并，需要调用 `rbindlist()` 函数 <https://d.cosx.org/d/421235>
@@ -1467,37 +1492,38 @@ dplyr::bind_rows(all_dfs)
 ```
 
 ```
-##    Sepal.Length Species Sepal.Width Petal.Length
-## 1           5.1  setosa          NA           NA
-## 2           4.9  setosa          NA           NA
-## 3           4.7  setosa          NA           NA
-## 4           4.6  setosa          NA           NA
-## 5           5.0  setosa          NA           NA
-## 6           5.4  setosa          NA           NA
-## 7           4.6  setosa          NA           NA
-## 8           5.0  setosa          NA           NA
-## 9           4.4  setosa          NA           NA
-## 10          4.9  setosa          NA           NA
-## 11          5.4  setosa         3.7           NA
-## 12          4.8  setosa         3.4           NA
-## 13          4.8  setosa         3.0           NA
-## 14          4.3  setosa         3.0           NA
-## 15          5.8  setosa         4.0           NA
-## 16          5.7  setosa          NA          1.5
-## 17          5.4  setosa          NA          1.3
-## 18          5.1  setosa          NA          1.4
-## 19          5.7  setosa          NA          1.7
-## 20          5.1  setosa          NA          1.5
-## 21          5.4  setosa          NA          1.7
-## 22          5.1  setosa          NA          1.5
-## 23          4.6  setosa          NA          1.0
-## 24          5.1  setosa          NA          1.7
-## 25          4.8  setosa          NA          1.9
-## 26          5.0  setosa          NA          1.6
-## 27          5.0  setosa          NA          1.6
-## 28          5.2  setosa          NA          1.5
-## 29          5.2  setosa          NA          1.4
-## 30          4.7  setosa          NA          1.6
+##     Sepal.Length Species Sepal.Width Petal.Length
+##  1:          5.1  setosa          NA           NA
+##  2:          4.9  setosa          NA           NA
+##  3:          4.7  setosa          NA           NA
+##  4:          4.6  setosa          NA           NA
+##  5:          5.0  setosa          NA           NA
+##  6:          5.4  setosa          NA           NA
+##  7:          4.6  setosa          NA           NA
+##  8:          5.0  setosa          NA           NA
+##  9:          4.4  setosa          NA           NA
+## 10:          4.9  setosa          NA           NA
+## 11:          5.4  setosa         3.7           NA
+## 12:          4.8  setosa         3.4           NA
+## 13:          4.8  setosa         3.0           NA
+## 14:          4.3  setosa         3.0           NA
+## 15:          5.8  setosa         4.0           NA
+## 16:          5.7  setosa          NA          1.5
+## 17:          5.4  setosa          NA          1.3
+## 18:          5.1  setosa          NA          1.4
+## 19:          5.7  setosa          NA          1.7
+## 20:          5.1  setosa          NA          1.5
+## 21:          5.4  setosa          NA          1.7
+## 22:          5.1  setosa          NA          1.5
+## 23:          4.6  setosa          NA          1.0
+## 24:          5.1  setosa          NA          1.7
+## 25:          4.8  setosa          NA          1.9
+## 26:          5.0  setosa          NA          1.6
+## 27:          5.0  setosa          NA          1.6
+## 28:          5.2  setosa          NA          1.5
+## 29:          5.2  setosa          NA          1.4
+## 30:          4.7  setosa          NA          1.6
+##     Sepal.Length Species Sepal.Width Petal.Length
 ```
 
 ### 分组聚合多个指标 {#sec-multiple-aggregations}
@@ -1558,8 +1584,8 @@ by = "cyl", .SDcols = c("mpg", "hp")
 
 ```r
 # dplyr
-mtcars %>%
-  dplyr::group_by(cyl) %>%
+mtcars |> 
+  dplyr::group_by(cyl) |> 
   dplyr::summarise(
     mean_mpg = mean(mpg), mean_hp = mean(hp),
     median_mpg = mean(mpg), median_hp = mean(hp)
@@ -1579,8 +1605,10 @@ mtcars %>%
 
 
 ```r
-tmp <- aggregate(data = mtcars, cbind(mpg, hp) ~ cyl,
-          FUN = median)
+tmp <- aggregate(
+  data = mtcars, cbind(mpg, hp) ~ cyl,
+  FUN = median
+)
 tmp <- as.data.table(tmp)
 setnames(tmp, old = c("mpg", "hp"), new = c("median_mpg", "median_hp"))
 tmp
@@ -1659,7 +1687,11 @@ dplyr::select(tmp, "median_mpg", setdiff(names(tmp), "median_mpg"))
 dat <- split(iris, iris$Species)
 mod <- lapply(dat, function(x) lm(Petal.Length ~ Sepal.Length, x))
 mod <- lapply(mod, function(x) coef(summary(x)))
-mod <- Map(function(x, y) {x <- as.data.frame(x) ; x$Species = y; x}, mod, names(dat))
+mod <- Map(function(x, y) {
+  x <- as.data.frame(x)
+  x$Species <- y
+  x
+}, mod, names(dat))
 mod <- do.call(rbind, mod)
 mod
 ```
@@ -1697,9 +1729,9 @@ split(iris, iris$Species) %>%
 ```
 
 ```r
-# dplyr 操作，需要 dplyr >= 1.0.0 或者开发版
-iris %>% 
-  dplyr::group_by(Species) %>% 
+# dplyr 操作，需要 dplyr >= 1.0.0 
+iris %>%
+  dplyr::group_by(Species) %>%
   dplyr::summarise(broom::tidy(lm(Petal.Length ~ Sepal.Length)))
 ```
 
@@ -1720,7 +1752,7 @@ iris %>%
 
 
 ```r
-mtcars[, mpg_rate := round(mpg/sum(mpg) * 100, digits = 2), by = .(cyl, vs, am)]
+mtcars[, mpg_rate := round(mpg / sum(mpg) * 100, digits = 2), by = .(cyl, vs, am)]
 mtcars[, .(mpg_rate, mpg, cyl, vs, am)]
 ```
 
@@ -1762,7 +1794,7 @@ mtcars[, .(mpg_rate, mpg, cyl, vs, am)]
 ```
 
 ```r
-mtcars[, .(mpg_rate = round(mpg/sum(mpg) * 100, digits = 2)), by = .(cyl, vs, am)]
+mtcars[, .(mpg_rate = round(mpg / sum(mpg) * 100, digits = 2)), by = .(cyl, vs, am)]
 ```
 
 ```
@@ -1806,7 +1838,7 @@ mtcars[, .(mpg_rate = round(mpg/sum(mpg) * 100, digits = 2)), by = .(cyl, vs, am
 
 
 ```r
-airquality[complete.cases(airquality), ] %>% head
+airquality[complete.cases(airquality), ] |>  head()
 ```
 
 ```
@@ -1821,7 +1853,7 @@ airquality[complete.cases(airquality), ] %>% head
 
 ```r
 # 或着
-airquality[!apply(airquality, 1, anyNA), ] %>%  head
+airquality[!apply(airquality, 1, anyNA), ] |>  head()
 ```
 
 ```
@@ -1841,7 +1873,7 @@ match 和 `%in%`
 
 
 ```r
-`%nin%` <- Negate('%in%')
+`%nin%` <- Negate("%in%")
 # `%in%` <- function(x, table) match(x, table, nomatch = 0) > 0 # %in% 函数的定义
 x <- letters[1:5]
 y <- letters[3:8]
@@ -1865,7 +1897,7 @@ x %nin% y
 
 
 ```r
-match(x,y)
+match(x, y)
 ```
 
 ```
@@ -1899,6 +1931,237 @@ union(x, y)
 ## [1] "a" "b" "c" "d" "e" "f" "g" "h"
 ```
 
+### 对数值向量按既定分组计数 {#transform-cut-aggregate}
+
+此数据处理过程陆续使用了 `transform()`、`cut()` 和 `aggregate()` 三个函数
+
+
+```r
+# 对数值向量按既定分组计数
+dat <- data.frame(y = 1:12)
+dat <- transform(dat, x = cut(y, breaks = c(0, 6, 9, 15)))
+dat <- aggregate(data = dat, y ~ x, FUN = length)
+```
+
+
+
+```r
+ggplot(data = dat, aes(x = x, y = y)) +
+  geom_col()
+
+data.frame(y = 1:12) %>%
+  transform(x = cut(y, breaks = c(0, 6, 9, 15))) %>%
+  aggregate(data = ., y ~ x, FUN = length) %>%
+  ggplot(data = ., aes(x = x, y = y)) +
+  geom_col()
+```
+
+对数值向量按分位数分组计数
+
+
+```r
+dat <- data.frame(y = 1:12)
+dat <- transform(dat, x = cut(
+  x = y,
+  breaks = quantile(y, prob = seq(0, 1, 0.25), na.rm = TRUE)
+))
+
+# dat <- transform(dat, x = cut(
+#   x = y,
+#   breaks = quantile(y, prob = seq(0, 1, 0.25)),
+#   include.lowest = T
+# ))
+
+dat1 <- aggregate(data = dat, y ~ x, FUN = length)
+```
+
+
+
+```r
+ggplot(data = dat1, aes(x = x, y = y)) +
+  geom_col()
+```
+
+### 分组排序 {#aggregate-order}
+
+按变量 a 分组计算，之后按变量 b 降序排列
+
+
+```r
+dat <- aggregate(data = iris, cbind(Sepal.Width, Sepal.Length) ~ Species, FUN = mean)
+# 按 Species 降序排列
+dat[order(dat$Species, decreasing = T), ]
+```
+
+```
+##      Species Sepal.Width Sepal.Length
+## 3  virginica       2.974        6.588
+## 2 versicolor       2.770        5.936
+## 1     setosa       3.428        5.006
+```
+
+### 分组获取 Top 值 {#lapply-split-order}
+
+分组按既定规律取数，比如按 Species 分组取 Top 6
+
+
+```r
+# 分组取前6个
+do.call("rbind.data.frame", lapply(base::split(x = iris, ~Species), head))
+```
+
+
+
+```r
+# 分组取 Top 6
+do.call(rbind, lapply(split(iris, iris$Species),
+  FUN = function(x) head(x[order(x$Sepal.Length, decreasing = T), ], 6)
+))
+```
+
+```
+##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+##  1:          5.8         4.0          1.2         0.2     setosa
+##  2:          5.7         4.4          1.5         0.4     setosa
+##  3:          5.7         3.8          1.7         0.3     setosa
+##  4:          5.5         4.2          1.4         0.2     setosa
+##  5:          5.5         3.5          1.3         0.2     setosa
+##  6:          5.4         3.9          1.7         0.4     setosa
+##  7:          7.0         3.2          4.7         1.4 versicolor
+##  8:          6.9         3.1          4.9         1.5 versicolor
+##  9:          6.8         2.8          4.8         1.4 versicolor
+## 10:          6.7         3.1          4.4         1.4 versicolor
+## 11:          6.7         3.0          5.0         1.7 versicolor
+## 12:          6.7         3.1          4.7         1.5 versicolor
+## 13:          7.9         3.8          6.4         2.0  virginica
+## 14:          7.7         3.8          6.7         2.2  virginica
+## 15:          7.7         2.6          6.9         2.3  virginica
+## 16:          7.7         2.8          6.7         2.0  virginica
+## 17:          7.7         3.0          6.1         2.3  virginica
+## 18:          7.6         3.0          6.6         2.1  virginica
+```
+
+### 分组抽样 {#lapply-split-sample}
+
+
+```r
+# 分组抽样
+do.call(rbind, lapply(split(iris, iris$Species),
+  FUN = function(x) x[sample(1:nrow(x), size = 6), ]
+))
+```
+
+```
+##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+##  1:          4.9         3.1          1.5         0.1     setosa
+##  2:          5.1         3.8          1.9         0.4     setosa
+##  3:          5.1         3.7          1.5         0.4     setosa
+##  4:          5.0         3.6          1.4         0.2     setosa
+##  5:          4.7         3.2          1.6         0.2     setosa
+##  6:          4.7         3.2          1.3         0.2     setosa
+##  7:          7.0         3.2          4.7         1.4 versicolor
+##  8:          5.4         3.0          4.5         1.5 versicolor
+##  9:          6.7         3.1          4.7         1.5 versicolor
+## 10:          6.2         2.2          4.5         1.5 versicolor
+## 11:          5.7         2.8          4.5         1.3 versicolor
+## 12:          6.4         3.2          4.5         1.5 versicolor
+## 13:          7.2         3.2          6.0         1.8  virginica
+## 14:          6.9         3.1          5.4         2.1  virginica
+## 15:          6.5         3.0          5.2         2.0  virginica
+## 16:          7.2         3.0          5.8         1.6  virginica
+## 17:          6.3         2.7          4.9         1.8  virginica
+## 18:          6.5         3.0          5.8         2.2  virginica
+```
+
+### 分组计算分位数 {#lapply-split-quantile}
+
+
+```r
+# 分组计算分位数，如何分组呢
+do.call(rbind, lapply(iris[, sapply(iris, class) == "numeric"], quantile))
+```
+
+```
+##              0% 25% 50% 75% 100%
+## Sepal.Length  1   1   1   1    1
+## Sepal.Width   1   1   1   1    1
+## Petal.Length  1   1   1   1    1
+## Petal.Width   1   1   1   1    1
+## Species       0   0   0   0    0
+```
+
+```r
+aggregate(data = iris, cbind(Sepal.Length, Sepal.Width) ~ Species, FUN = quantile)
+```
+
+```
+##      Species Sepal.Length.0% Sepal.Length.25% Sepal.Length.50% Sepal.Length.75%
+## 1     setosa           4.300            4.800            5.000            5.200
+## 2 versicolor           4.900            5.600            5.900            6.300
+## 3  virginica           4.900            6.225            6.500            6.900
+##   Sepal.Length.100% Sepal.Width.0% Sepal.Width.25% Sepal.Width.50%
+## 1             5.800          2.300           3.200           3.400
+## 2             7.000          2.000           2.525           2.800
+## 3             7.900          2.200           2.800           3.000
+##   Sepal.Width.75% Sepal.Width.100%
+## 1           3.675            4.400
+## 2           3.000            3.400
+## 3           3.175            3.800
+```
+
+```r
+# 对 Sepal.Length 按 Species 分组计算分位数
+do.call("rbind", tapply(iris$Sepal.Length, iris$Species, quantile))
+```
+
+```
+##             0%   25% 50% 75% 100%
+## setosa     4.3 4.800 5.0 5.2  5.8
+## versicolor 4.9 5.600 5.9 6.3  7.0
+## virginica  4.9 6.225 6.5 6.9  7.9
+```
+
+
+
+```r
+# 分组取平均 mean /中位数 median
+aggregate(data = iris, . ~ Species, FUN = mean)
+```
+
+```
+##      Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1     setosa        5.006       3.428        1.462       0.246
+## 2 versicolor        5.936       2.770        4.260       1.326
+## 3  virginica        6.588       2.974        5.552       2.026
+```
+
+
+### 计算日粒度的 DoD/WoW/MoM/YoY {#shift-lag}
+
+
+截止写作时间，data.table 提供的滑动窗口聚合统计函数 `frollmean()`、`frollsum()` 和 `frollapply()` 还处于实验阶段。 shift 提供漂移功能，向前前置 lead 或向后延迟 lag。
+
+[移动平均、求和和计算](https://r-norberg.blogspot.com/2016/06/understanding-datatable-rolling-joins.html)
+
+
+
+```r
+dat <- data.frame(dt = seq(
+  from = as.Date("2021-01-01"),
+  to = Sys.Date(), by = "1 day"
+))
+
+dat <- within(dat, {
+  uv = round(1000 * runif(n = nrow(dat)))
+  uv_dod_d = ifelse(nrow(dat) <= 1, NA, c(NA, diff(uv, lag = 1)))
+  uv_wow_d = ifelse(nrow(dat) <= 7, NA, c(rep(NA, 7), diff(uv, lag = 7)))
+  uv_mom_d = ifelse(nrow(dat) <= 30, NA, c(rep(NA, 30), diff(uv, lag = 30)))
+  uv_yoy_d = ifelse(nrow(dat) <= 365, NA, c(rep(NA, 365), diff(uv, lag = 365)))
+})
+```
+
+
+
 
 ## 运行环境 {#sec-adm-sessioninfo}
 
@@ -1908,7 +2171,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -1931,14 +2194,14 @@ sessionInfo()
 ## [1] magrittr_2.0.3    data.table_1.14.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] knitr_1.38       sysfonts_0.8.8   tidyselect_1.1.2 R6_2.5.1        
+##  [1] knitr_1.39       sysfonts_0.8.8   tidyselect_1.1.2 R6_2.5.1        
 ##  [5] rlang_1.0.2      fastmap_1.1.0    fansi_1.0.3      stringr_1.4.0   
-##  [9] dplyr_1.0.8      tools_4.1.3      broom_0.7.12     xfun_0.30       
-## [13] utf8_1.2.2       DBI_1.1.2        cli_3.2.0        htmltools_0.5.2 
+##  [9] dplyr_1.0.9      tools_4.2.0      broom_0.8.0      xfun_0.31       
+## [13] utf8_1.2.2       DBI_1.1.2        cli_3.3.0        htmltools_0.5.2 
 ## [17] ellipsis_0.3.2   assertthat_0.2.1 yaml_2.3.5       digest_0.6.29   
-## [21] tibble_3.1.6     lifecycle_1.0.1  crayon_1.5.1     bookdown_0.25   
-## [25] tidyr_1.2.0      purrr_0.3.4      vctrs_0.4.0      curl_4.3.2      
-## [29] glue_1.6.2       evaluate_0.15    rmarkdown_2.13   stringi_1.7.6   
-## [33] compiler_4.1.3   pillar_1.7.0     backports_1.4.1  generics_0.1.2  
+## [21] tibble_3.1.7     lifecycle_1.0.1  crayon_1.5.1     bookdown_0.26   
+## [25] tidyr_1.2.0      purrr_0.3.4      vctrs_0.4.1      curl_4.3.2      
+## [29] glue_1.6.2       evaluate_0.15    rmarkdown_2.14   stringi_1.7.6   
+## [33] compiler_4.2.0   pillar_1.7.0     backports_1.4.1  generics_0.1.2  
 ## [37] pkgconfig_2.0.3
 ```

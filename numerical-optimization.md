@@ -52,11 +52,9 @@ library(shape)
 library(ReacTran)        # PDE 偏微分方程
 library(PBSddesolve)     # DAE 延迟微分方程
 
-library(nlme)            # 混合效应模型
-library(nlmeODE)         # ODE 应用于混合效应模型
-
-library(Sim.DiffProc)    # SDE 随机微分方程
-
+library(nlme)              # 混合效应模型
+# library(nlmeODE)         # ODE 应用于混合效应模型
+# library(Sim.DiffProc)    # SDE 随机微分方程 种群 ODE 建模
 # library(nlmixr)          # Population ODE modeling
 ```
 
@@ -1428,7 +1426,7 @@ nlp$solution
 ```
 
 ```
-## [1] 22.22222  0.00000
+## [1] -21.99115   0.00000
 ```
 
 ```r
@@ -1436,7 +1434,7 @@ nlp$objval
 ```
 
 ```
-## [1] -0.9734211
+## [1] -1
 ```
 
 实际上，还是陷入局部最优解。
@@ -1681,7 +1679,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.1059
+## [1] 368.106
 ```
 
 ```r
@@ -1689,9 +1687,10 @@ nlp$solution
 ```
 
 ```
-##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
 ```
 
 下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
@@ -2073,7 +2072,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.130882 4.805102 3.756842 1.230146
+## [1] 1.050118 4.950591 3.519485 1.415755
 ```
 
 ```r
@@ -2081,7 +2080,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.24102
+## [1] 17.67325
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2209,7 +2208,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227969 4.245371
+## [1] 1.227965 4.245362
 ```
 
 ```r
@@ -2409,7 +2408,7 @@ nlp$solution
 ```
 
 ```
-## [1] 26.98115 47.26044
+## [1]  6.628073 48.837434
 ```
 
 ```r
@@ -2417,7 +2416,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.170359
+## [1] -3.109135
 ```
 比如下面三组
 
@@ -3163,12 +3162,12 @@ library(PBSddesolve)    # DAE 延迟微分方程
 
 
 ```r
-library(Sim.DiffProc)
+# library(Sim.DiffProc)
 ```
 
 
 
-种群 ODE 建模，
+
 
 [nlmixr](https://github.com/nlmixrdevelopment/nlmixr) 借助 [RxODE](https://github.com/nlmixrdevelopment/RxODE/) 求解基于常微分方程的非线性混合效应模型
 
@@ -3180,7 +3179,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -3201,35 +3200,33 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] Deriv_4.1.3               quadprog_1.5-8           
-##  [3] kableExtra_1.3.4          tibble_3.1.6             
-##  [5] Sim.DiffProc_4.8          nlmeODE_1.1              
-##  [7] nlme_3.1-157              PBSddesolve_1.12.6       
-##  [9] ReacTran_1.4.3.1          shape_1.4.6              
-## [11] scatterplot3d_0.3-41      deSolve_1.31             
-## [13] BB_2019.10-1              rootSolve_1.8.2.3        
-## [15] kernlab_0.9-29            lattice_0.20-45          
-## [17] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
-## [19] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
-## [21] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
-## [23] lpSolve_5.6.15           
+##  [3] kableExtra_1.3.4          tibble_3.1.7             
+##  [5] nlme_3.1-157              PBSddesolve_1.12.6       
+##  [7] ReacTran_1.4.3.1          shape_1.4.6              
+##  [9] scatterplot3d_0.3-41      deSolve_1.32             
+## [11] BB_2019.10-1              rootSolve_1.8.2.3        
+## [13] kernlab_0.9-30            lattice_0.20-45          
+## [15] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
+## [17] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
+## [19] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
+## [21] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] svglite_2.1.0           sysfonts_0.8.8          digest_0.6.29          
 ##  [4] utf8_1.2.2              slam_0.1-50             R6_2.5.1               
-##  [7] alabama_2015.3-1        evaluate_0.15           httr_1.4.2             
+##  [7] alabama_2022.4-1        evaluate_0.15           httr_1.4.3             
 ## [10] pillar_1.7.0            rlang_1.0.2             curl_4.3.2             
-## [13] rstudioapi_0.13         nloptr_2.0.0            rmarkdown_2.13         
-## [16] webshot_0.5.2           stringr_1.4.0           munsell_0.5.0          
-## [19] compiler_4.1.3          numDeriv_2016.8-1.1     xfun_0.30              
-## [22] systemfonts_1.0.4       pkgconfig_2.0.3         htmltools_0.5.2        
-## [25] bookdown_0.25           viridisLite_0.4.0       fansi_1.0.3            
-## [28] crayon_1.5.1            MASS_7.3-56             grid_4.1.3             
-## [31] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.3         
-## [34] scales_1.1.1            cli_3.2.0               stringi_1.7.6          
-## [37] xml2_1.3.3              ellipsis_0.3.2          vctrs_0.4.0            
-## [40] lpSolveAPI_5.5.2.0-17.7 tools_4.1.3             glue_1.6.2             
-## [43] parallel_4.1.3          fastmap_1.1.0           yaml_2.3.5             
-## [46] colorspace_2.0-3        scs_3.0-0               rvest_1.0.2            
-## [49] knitr_1.38
+## [13] rstudioapi_0.13         nloptr_2.0.1            rmarkdown_2.14         
+## [16] webshot_0.5.3           stringr_1.4.0           munsell_0.5.0          
+## [19] compiler_4.2.0          numDeriv_2016.8-1.1     xfun_0.31              
+## [22] pkgconfig_2.0.3         systemfonts_1.0.4       htmltools_0.5.2        
+## [25] bookdown_0.26           viridisLite_0.4.0       fansi_1.0.3            
+## [28] crayon_1.5.1            grid_4.2.0              lifecycle_1.0.1        
+## [31] registry_0.5-1          magrittr_2.0.3          scales_1.2.0           
+## [34] cli_3.3.0               stringi_1.7.6           xml2_1.3.3             
+## [37] ellipsis_0.3.2          vctrs_0.4.1             lpSolveAPI_5.5.2.0-17.7
+## [40] tools_4.2.0             glue_1.6.2              fastmap_1.1.0          
+## [43] yaml_2.3.5              colorspace_2.0-3        scs_3.0-0              
+## [46] rvest_1.0.2             knitr_1.39
 ```
 

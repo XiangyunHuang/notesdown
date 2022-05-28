@@ -185,7 +185,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -198,15 +198,15 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3 bookdown_0.25   bslib_0.3.1     cli_3.2.0      
-##   compiler_4.1.3  curl_4.3.2      digest_0.6.29   evaluate_0.15  
-##   fastmap_1.1.0   fs_1.5.2        glue_1.6.2      graphics_4.1.3 
-##   grDevices_4.1.3 highr_0.9       htmltools_0.5.2 jquerylib_0.1.4
-##   jsonlite_1.8.0  knitr_1.38      magrittr_2.0.3  methods_4.1.3  
-##   R6_2.5.1        rappdirs_0.3.3  rlang_1.0.2     rmarkdown_2.13 
-##   sass_0.4.1      stats_4.1.3     stringi_1.7.6   stringr_1.4.0  
-##   sysfonts_0.8.8  tinytex_0.38    tools_4.1.3     utils_4.1.3    
-##   xfun_0.30       yaml_2.3.5
+##   base64enc_0.1.3 bookdown_0.26   bslib_0.3.1     cli_3.3.0      
+##   compiler_4.2.0  curl_4.3.2      digest_0.6.29   evaluate_0.15  
+##   fastmap_1.1.0   fs_1.5.2        glue_1.6.2      graphics_4.2.0 
+##   grDevices_4.2.0 highr_0.9       htmltools_0.5.2 jquerylib_0.1.4
+##   jsonlite_1.8.0  knitr_1.39      magrittr_2.0.3  methods_4.2.0  
+##   R6_2.5.1        rappdirs_0.3.3  rlang_1.0.2     rmarkdown_2.14 
+##   sass_0.4.1      stats_4.2.0     stringi_1.7.6   stringr_1.4.0  
+##   sysfonts_0.8.8  tinytex_0.39    tools_4.2.0     utils_4.2.0    
+##   xfun_0.31       yaml_2.3.5
 ```
 
 [create-an-empty-data-frame](https://stackoverflow.com/questions/10689055)

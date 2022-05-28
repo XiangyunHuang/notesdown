@@ -43,7 +43,7 @@ R.version.string
 ```
 
 ```
-## [1] "R version 4.1.3 (2022-03-10)"
+## [1] "R version 4.2.0 (2022-04-22)"
 ```
 
 ```r
@@ -451,20 +451,18 @@ endsWith(list.files(), ".Rmd")
 
 ```
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
-##  [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-##  [25] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-##  [37] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
-##  [49] FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [61]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE
-##  [73] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-##  [85]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-##  [97]  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [121]  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [133]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE
-## [145] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE
-## [169] FALSE FALSE  TRUE  TRUE
+##  [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE
+##  [25] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [49] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+##  [61] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [97]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [109]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
+## [121]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [145]  TRUE FALSE  TRUE FALSE  TRUE  TRUE
 ```
 
 ```r
@@ -474,20 +472,18 @@ grepl("\\.Rmd$", list.files())
 
 ```
 ##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
-##  [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-##  [25] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-##  [37] FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
-##  [49] FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
-##  [61]  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE  TRUE
-##  [73] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE
-##  [85]  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-##  [97]  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [109]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [121]  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [133]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE  TRUE
-## [145] FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [157]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE
-## [169] FALSE FALSE  TRUE  TRUE
+##  [13]  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE
+##  [25] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE
+##  [37]  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [49] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+##  [61] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE
+##  [73]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE
+##  [85]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [97]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [109]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
+## [121]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+## [145]  TRUE FALSE  TRUE FALSE  TRUE  TRUE
 ```
 
 部分匹配(Partial String Matching)
@@ -1696,14 +1692,17 @@ writeLines(strwrap(x, width = 60))
 ## contributed advice and encouragement in the early days of R
 ## and later became a member of the core team.
 ## 
-## Stefano Iacus (a former member of R Core) and Simon Urbanek
-## developed the macOS port, including the R.app GUI,
-## toolchains and packaging.
+## Stefano Iacus (up to 2014, a former member of R Core) and
+## Simon Urbanek developed the macOS port, including the R.app
+## GUI, toolchains and packaging.
 ## 
-## The Windows port was developed by Guido Masarotto (for a
-## while a member of R Core) and Brian Ripley, then Duncan
-## Murdoch (a former member of R Core) and currently by Jeroen
-## Ooms (base) and Uwe Ligges (packages).
+## The Windows port was originally developed by Guido
+## Masarotto (for a while a member of R Core) and Brian
+## Ripley, then further by Duncan Murdoch (a former member of
+## R Core) and then Jeroen Ooms (base) and Uwe Ligges
+## (packages).  Tomas Kalibera is the current main developer
+## of the Windows port and provides assistance with package
+## porting.
 ## 
 ## Tomas Kalibera's work has been sponsored by Jan Vitek and
 ## funded by his European Research Council grant "Evolving
@@ -1763,14 +1762,17 @@ writeLines(strwrap(x, width = 60, indent = 5))
 ## graciously contributed advice and encouragement in the
 ## early days of R and later became a member of the core team.
 ## 
-##      Stefano Iacus (a former member of R Core) and Simon
-## Urbanek developed the macOS port, including the R.app GUI,
-## toolchains and packaging.
+##      Stefano Iacus (up to 2014, a former member of R Core)
+## and Simon Urbanek developed the macOS port, including the
+## R.app GUI, toolchains and packaging.
 ## 
-##      The Windows port was developed by Guido Masarotto (for
-## a while a member of R Core) and Brian Ripley, then Duncan
-## Murdoch (a former member of R Core) and currently by Jeroen
-## Ooms (base) and Uwe Ligges (packages).
+##      The Windows port was originally developed by Guido
+## Masarotto (for a while a member of R Core) and Brian
+## Ripley, then further by Duncan Murdoch (a former member of
+## R Core) and then Jeroen Ooms (base) and Uwe Ligges
+## (packages).  Tomas Kalibera is the current main developer
+## of the Windows port and provides assistance with package
+## porting.
 ## 
 ##      Tomas Kalibera's work has been sponsored by Jan Vitek
 ## and funded by his European Research Council grant "Evolving
@@ -1833,15 +1835,17 @@ writeLines(strwrap(x, width = 60, exdent = 5))
 ##      contributed advice and encouragement in the early days
 ##      of R and later became a member of the core team.
 ## 
-## Stefano Iacus (a former member of R Core) and Simon Urbanek
-##      developed the macOS port, including the R.app GUI,
-##      toolchains and packaging.
+## Stefano Iacus (up to 2014, a former member of R Core) and
+##      Simon Urbanek developed the macOS port, including the
+##      R.app GUI, toolchains and packaging.
 ## 
-## The Windows port was developed by Guido Masarotto (for a
-##      while a member of R Core) and Brian Ripley, then
-##      Duncan Murdoch (a former member of R Core) and
-##      currently by Jeroen Ooms (base) and Uwe Ligges
-##      (packages).
+## The Windows port was originally developed by Guido
+##      Masarotto (for a while a member of R Core) and Brian
+##      Ripley, then further by Duncan Murdoch (a former
+##      member of R Core) and then Jeroen Ooms (base) and Uwe
+##      Ligges (packages).  Tomas Kalibera is the current main
+##      developer of the Windows port and provides assistance
+##      with package porting.
 ## 
 ## Tomas Kalibera's work has been sponsored by Jan Vitek and
 ##      funded by his European Research Council grant
@@ -1899,14 +1903,16 @@ writeLines(strwrap(x, prefix = "THANKS> "))
 ## THANKS> contributed advice and encouragement in the early days of R and
 ## THANKS> later became a member of the core team.
 ## THANKS> 
-## THANKS> Stefano Iacus (a former member of R Core) and Simon Urbanek
-## THANKS> developed the macOS port, including the R.app GUI, toolchains
-## THANKS> and packaging.
+## THANKS> Stefano Iacus (up to 2014, a former member of R Core) and Simon
+## THANKS> Urbanek developed the macOS port, including the R.app GUI,
+## THANKS> toolchains and packaging.
 ## THANKS> 
-## THANKS> The Windows port was developed by Guido Masarotto (for a while
-## THANKS> a member of R Core) and Brian Ripley, then Duncan Murdoch (a
-## THANKS> former member of R Core) and currently by Jeroen Ooms (base)
-## THANKS> and Uwe Ligges (packages).
+## THANKS> The Windows port was originally developed by Guido Masarotto
+## THANKS> (for a while a member of R Core) and Brian Ripley, then further
+## THANKS> by Duncan Murdoch (a former member of R Core) and then Jeroen
+## THANKS> Ooms (base) and Uwe Ligges (packages).  Tomas Kalibera is the
+## THANKS> current main developer of the Windows port and provides
+## THANKS> assistance with package porting.
 ## THANKS> 
 ## THANKS> Tomas Kalibera's work has been sponsored by Jan Vitek and
 ## THANKS> funded by his European Research Council grant "Evolving
@@ -1943,10 +1949,10 @@ sapply(
 ## actual   10   10   11   12   13   14   15   16   17    18    19    20    21
 ##        [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 ## target    23    24    25    26    27    28    29    30    31    32    33    34
-## actual    22    23    24    25    26    27    28    29    30    31    32    33
+## actual    22    23    24    25    26    27    28    28    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    36    37    38    38
+## actual    34    35    36    37    37    39
 ```
 
 ### strtrim
@@ -2219,7 +2225,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -2232,20 +2238,20 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.25   
-##   bslib_0.3.1      cli_3.2.0        compiler_4.1.3   cpp11_0.4.2     
+##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.26   
+##   bslib_0.3.1      cli_3.3.0        compiler_4.2.0   cpp11_0.4.2     
 ##   crayon_1.5.1     curl_4.3.2       DBI_1.1.2        digest_0.6.29   
-##   dplyr_1.0.8      ellipsis_0.3.2   evaluate_0.15    fansi_1.0.3     
+##   dplyr_1.0.9      ellipsis_0.3.2   evaluate_0.15    fansi_1.0.3     
 ##   fastmap_1.1.0    fs_1.5.2         generics_0.1.2   glue_1.6.2      
-##   graphics_4.1.3   grDevices_4.1.3  highr_0.9        htmltools_0.5.2 
-##   jquerylib_0.1.4  jsonlite_1.8.0   knitr_1.38       lifecycle_1.0.1 
-##   magrittr_2.0.3   methods_4.1.3    openssl_2.0.0    pillar_1.7.0    
+##   graphics_4.2.0   grDevices_4.2.0  highr_0.9        htmltools_0.5.2 
+##   jquerylib_0.1.4  jsonlite_1.8.0   knitr_1.39       lifecycle_1.0.1 
+##   magrittr_2.0.3   methods_4.2.0    openssl_2.0.1    pillar_1.7.0    
 ##   pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1         rappdirs_0.3.3  
-##   rlang_1.0.2      rmarkdown_2.13   sass_0.4.1       stats_4.1.3     
+##   rlang_1.0.2      rmarkdown_2.14   sass_0.4.1       stats_4.2.0     
 ##   stringi_1.7.6    stringr_1.4.0    sys_3.4          sysfonts_0.8.8  
-##   tibble_3.1.6     tidyr_1.2.0      tidyselect_1.1.2 tinytex_0.38    
-##   tools_4.1.3      utf8_1.2.2       utils_4.1.3      vctrs_0.4.0     
-##   xfun_0.30        yaml_2.3.5
+##   tibble_3.1.7     tidyr_1.2.0      tidyselect_1.1.2 tinytex_0.39    
+##   tools_4.2.0      utf8_1.2.2       utils_4.2.0      vctrs_0.4.1     
+##   xfun_0.31        yaml_2.3.5
 ```
 
 [^regexp]: https://homepage.divms.uiowa.edu/~luke/R/regexp.html

@@ -1476,7 +1476,7 @@ sessionInfo()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -1497,24 +1497,24 @@ sessionInfo()
 ## 
 ## other attached packages:
 ## [1] sparkline_2.0    rpart_4.1.16     visNetwork_2.1.0 networkD3_0.4   
-## [5] r2d3_0.2.6       dygraphs_1.1.1.6 plotly_4.10.0    ggplot2_3.3.5   
-## [9] reticulate_1.24 
+## [5] r2d3_0.2.6       dygraphs_1.1.1.6 plotly_4.10.0    ggplot2_3.3.6   
+## [9] reticulate_1.25 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.8.3      lattice_0.20-45   tidyr_1.2.0       ps_1.6.0         
-##  [5] png_0.1-7         sysfonts_0.8.8    zoo_1.8-9         assertthat_0.2.1 
+##  [1] Rcpp_1.0.8.3      lattice_0.20-45   tidyr_1.2.0       ps_1.7.0         
+##  [5] png_0.1-7         sysfonts_0.8.8    zoo_1.8-10        assertthat_0.2.1 
 ##  [9] digest_0.6.29     utf8_1.2.2        R6_2.5.1          evaluate_0.15    
-## [13] httr_1.4.2        pillar_1.7.0      rlang_1.0.2       lazyeval_0.2.2   
+## [13] httr_1.4.3        pillar_1.7.0      rlang_1.0.2       lazyeval_0.2.2   
 ## [17] curl_4.3.2        rstudioapi_0.13   data.table_1.14.2 callr_3.7.0      
-## [21] Matrix_1.4-1      rmarkdown_2.13    labeling_0.4.2    webshot_0.5.2    
-## [25] stringr_1.4.0     htmlwidgets_1.5.4 igraph_1.2.11     munsell_0.5.0    
-## [29] compiler_4.1.3    xfun_0.30         pkgconfig_2.0.3   htmltools_0.5.2  
-## [33] tidyselect_1.1.2  tibble_3.1.6      bookdown_0.25     fansi_1.0.3      
-## [37] viridisLite_0.4.0 crayon_1.5.1      dplyr_1.0.8       withr_2.5.0      
-## [41] MASS_7.3-56       grid_4.1.3        jsonlite_1.8.0    gtable_0.3.0     
-## [45] lifecycle_1.0.1   DBI_1.1.2         magrittr_2.0.3    scales_1.1.1     
-## [49] cli_3.2.0         stringi_1.7.6     farver_2.1.0      ellipsis_0.3.2   
-## [53] generics_0.1.2    vctrs_0.4.0       tools_4.1.3       glue_1.6.2       
+## [21] Matrix_1.4-1      rmarkdown_2.14    labeling_0.4.2    webshot_0.5.3    
+## [25] stringr_1.4.0     htmlwidgets_1.5.4 igraph_1.3.1      munsell_0.5.0    
+## [29] compiler_4.2.0    xfun_0.31         pkgconfig_2.0.3   htmltools_0.5.2  
+## [33] tidyselect_1.1.2  tibble_3.1.7      bookdown_0.26     fansi_1.0.3      
+## [37] viridisLite_0.4.0 crayon_1.5.1      dplyr_1.0.9       withr_2.5.0      
+## [41] MASS_7.3-57       grid_4.2.0        jsonlite_1.8.0    gtable_0.3.0     
+## [45] lifecycle_1.0.1   DBI_1.1.2         magrittr_2.0.3    scales_1.2.0     
+## [49] cli_3.3.0         stringi_1.7.6     farver_2.1.0      ellipsis_0.3.2   
+## [53] generics_0.1.2    vctrs_0.4.1       tools_4.2.0       glue_1.6.2       
 ## [57] purrr_0.3.4       processx_3.5.3    fastmap_1.1.0     yaml_2.3.5       
-## [61] colorspace_2.0-3  isoband_0.2.5     knitr_1.38
+## [61] colorspace_2.0-3  isoband_0.2.5     knitr_1.39
 ```

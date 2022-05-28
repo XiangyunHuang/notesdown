@@ -1001,17 +1001,9 @@ Hmisc 包的 labcurve 函数可以在曲线上放置名称，而不是遥远的�
 
 边空分为内边空和外边空
 
-
-```
-## Warning in knitr::include_graphics(path = paste(system.file("help/figures", : It
-## is highly recommended to use relative paths for images. You had absolute paths:
-## "/opt/R/4.1.3/lib/R/library/graphics/help/figures/mai.png"; "/opt/R/4.1.3/lib/R/
-## library/graphics/help/figures/oma.png"
-```
-
 \begin{figure}
 
-{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.3/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{/opt/R/4.1.3/lib/R/library/graphics/help/figures/oma} }
+{\centering \subfloat[内边空(\#fig:par-mai-oma-1)]{\includegraphics[width=0.35\linewidth]{../../../../../opt/R/4.2.0/lib/R/library/graphics/help/figures/mai} }\subfloat[外边空(\#fig:par-mai-oma-2)]{\includegraphics[width=0.35\linewidth]{../../../../../opt/R/4.2.0/lib/R/library/graphics/help/figures/oma} }
 
 }
 
@@ -3064,7 +3056,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -3077,25 +3069,25 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1         base64enc_0.1.3     bookdown_0.25      
-##   bslib_0.3.1         cli_3.2.0           codetools_0.2-18   
-##   compiler_4.1.3      curl_4.3.2          digest_0.6.29      
+##   askpass_1.1         base64enc_0.1.3     bookdown_0.26      
+##   bslib_0.3.1         cli_3.3.0           codetools_0.2-18   
+##   compiler_4.2.0      curl_4.3.2          digest_0.6.29      
 ##   evaluate_0.15       fastmap_1.1.0       filehash_2.4-3     
-##   fs_1.5.2            glue_1.6.2          graphics_4.1.3     
-##   grDevices_4.1.3     grid_4.1.3          highr_0.9          
+##   fs_1.5.2            glue_1.6.2          graphics_4.2.0     
+##   grDevices_4.2.0     grid_4.2.0          highr_0.9          
 ##   htmltools_0.5.2     jpeg_0.1-9          jquerylib_0.1.4    
-##   jsonlite_1.8.0      KernSmooth_2.23-20  knitr_1.38         
+##   jsonlite_1.8.0      KernSmooth_2.23-20  knitr_1.39         
 ##   lattice_0.20-45     latticeExtra_0.6-29 magick_2.7.3       
 ##   magrittr_2.0.3      mapproj_1.2.8       maps_3.4.0         
-##   MASS_7.3-56         Matrix_1.4-1        methods_4.1.3      
-##   mgcv_1.8-40         nlme_3.1-157        pdftools_3.1.1     
+##   MASS_7.3-57         Matrix_1.4-1        methods_4.2.0      
+##   mgcv_1.8-40         nlme_3.1-157        pdftools_3.2.0     
 ##   png_0.1-7           qpdf_1.1            R6_2.5.1           
-##   rappdirs_0.3.3      RColorBrewer_1.1-2  Rcpp_1.0.8.3       
-##   rlang_1.0.2         rmarkdown_2.13      sass_0.4.1         
-##   shape_1.4.6         splines_4.1.3       stats_4.1.3        
+##   rappdirs_0.3.3      RColorBrewer_1.1-3  Rcpp_1.0.8.3       
+##   rlang_1.0.2         rmarkdown_2.14      sass_0.4.1         
+##   shape_1.4.6         splines_4.2.0       stats_4.2.0        
 ##   stringi_1.7.6       stringr_1.4.0       survival_3.3-1     
 ##   sys_3.4             sysfonts_0.8.8      tikzDevice_0.12.3.1
-##   tinytex_0.38        tools_4.1.3         utils_4.1.3        
-##   xfun_0.30           yaml_2.3.5
+##   tinytex_0.39        tools_4.2.0         utils_4.2.0        
+##   xfun_0.31           yaml_2.3.5
 ```
 

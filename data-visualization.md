@@ -406,11 +406,13 @@ ls("package:ggplot2", pattern = "^theme_")
 ## [13] "theme_update"   "theme_void"
 ```
 
-这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
+这里只展示 `theme_bw()` `theme_void()` `theme_minimal() ` 和 `theme_void()` 等四个常见主题，更多主题参考 [ggsci](https://github.com/nanxstats/ggsci)、[ggthemes](https://github.com/jrnold/ggthemes) 、[ggtech](https://github.com/ricardo-bion/ggtech)、[hrbrthemes](https://github.com/hrbrmstr/hrbrthemes)、[clcharts](https://github.com/houseofcommonslibrary/clcharts) 和 [ggthemr](https://github.com/cttobin/ggthemr) 包
 
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_bw()
 ```
 
 ```
@@ -418,7 +420,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_bw()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_void()
 ```
 
 ```
@@ -426,7 +430,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_void()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_minimal()
 ```
 
 ```
@@ -434,7 +440,9 @@ ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_minimal()
 ```
 
 ```r
-ggplot(airquality, aes(x = Temp, y = Ozone)) + geom_point() + theme_classic()
+ggplot(airquality, aes(x = Temp, y = Ozone), na.rm = TRUE) +
+  geom_point() +
+  theme_classic()
 ```
 
 ```
@@ -766,32 +774,6 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
 \caption{showtext 包处理图里的中文}(\#fig:showtext)
 \end{figure}
 
-斐济是太平洋上的一个岛国，受地壳板块运动的影响，地震活动频繁，图 \@ref(fig:fiji-earthquake) 清晰展示了它的地震带。
-
-
-```r
-library(maps)
-library(mapdata)
-FijiMap <- map_data("worldHires", region = "Fiji")
-ggplot(FijiMap, aes(x = long, y = lat)) +
-  geom_map(map = FijiMap, aes(map_id = region), size = .2) +
-  geom_point(data = quakes, aes(x = long, y = lat, colour = mag)) +
-  xlim(160, 195) +
-  scale_colour_distiller(palette = "Spectral") +
-  scale_y_continuous(breaks = (-18:18) * 5) +
-  coord_map("ortho", orientation = c(-10, 180, 0)) +
-  labs(colour = "震级", x = "经度", y = "纬度", title = "斐济地震带") +
-  theme_minimal(base_family = "Noto Serif SC")
-```
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-visualization_files/figure-latex/fiji-earthquake-1} 
-
-}
-
-\caption{斐济地震带}(\#fig:fiji-earthquake)
-\end{figure}
 
 ### 数学字体 {#subsec-fontcm}
 
@@ -804,7 +786,9 @@ Winston Chang 将 Paul Murrell 的 Computer Modern 字体文件打包成 [fontcm
 
 ```r
 library(extrafont)
-font_addpackage(pkg = "fontcm")
+if (!"fontcm" %in% .packages(T)) {
+  install.packages("fontcm")
+}
 ```
 
 查看可被 `pdf()` 图形设备使用的字体列表
@@ -815,16 +799,8 @@ font_addpackage(pkg = "fontcm")
 fonts()
 ```
 
-```
-##  [1] "CM Roman"               "CM Roman Asian"         "CM Roman CE"           
-##  [4] "CM Roman Cyrillic"      "CM Roman Greek"         "CM Sans"               
-##  [7] "CM Sans Asian"          "CM Sans CE"             "CM Sans Cyrillic"      
-## [10] "CM Sans Greek"          "CM Symbol"              "CM Typewriter"         
-## [13] "CM Typewriter Asian"    "CM Typewriter CE"       "CM Typewriter Cyrillic"
-## [16] "CM Typewriter Greek"
-```
-
 fontcm 包提供数学字体，`grDevices::embedFonts()` 函数调用 Ghostscript 软件将数学字体嵌入 ggplot2 图形中，达到正确显示数学公式的目的，此方法适用于 pdf 设备保存的图形，对 `cairo_pdf()` 保存的 PDF 格式图形无效。
+
 
 
 ```r
@@ -861,15 +837,6 @@ p2 <- p + annotate("text",
   )
 p1 + p2
 ```
-
-\begin{figure}
-
-{\centering \includegraphics{data-visualization_files/figure-latex/fontcm-1} 
-
-}
-
-\caption{fontcm 处理数学公式}(\#fig:fontcm)
-\end{figure}
 
 为实现图 \@ref(fig:fontcm) 的最终效果，需要启用一个有超级牛力的 [fig.process](https://yihui.org/knitr/options/#plots) 选项，主要是传递一个函数给它，对用 R 语言生成的图形再操作。
 
@@ -908,15 +875,6 @@ axis(1,
   labels = expression(-pi, -pi / 2, 0, pi / 2, pi)
 )
 ```
-
-\begin{figure}
-
-{\centering \includegraphics{data-visualization_files/figure-latex/embed-math-fonts-1} 
-
-}
-
-\caption{嵌入数学字体}(\#fig:embed-math-fonts)
-\end{figure}
 
 ### TikZ 设备 {#subsec-tikz-device}
 
@@ -2012,7 +1970,7 @@ BOD %>% transform(., ratio = demand / sum(demand)) %>%
 
 
 ```r
-dat = aggregate(formula = carat ~ cut, data = diamonds, FUN = length)
+dat = aggregate(carat ~ cut, data = diamonds, FUN = length)
 plotly::plot_ly() %>%
   plotly::add_pie(
     data = dat, labels = ~cut, values = ~carat,
@@ -2080,6 +2038,7 @@ east_asia <- map_data("worldHires",
 ggplot(east_asia, aes(x = long, y = lat, group = group, fill = region)) +
   geom_polygon(colour = "black") +
   scale_fill_brewer(palette = "Set2") +
+  coord_map() +
   theme_minimal()
 ```
 
@@ -3749,7 +3708,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Thu"
+## [1] "Sat"
 ```
 
 ```r
@@ -3757,7 +3716,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 5
+## [1] 7
 ```
 
 :::
@@ -3793,7 +3752,7 @@ dat <- transform(dat,
 
 
 ```r
-dat1 <- aggregate(formula = commit ~ year + month, data = dat, FUN = length)
+dat1 <- aggregate(x = commit ~ year + month, data = dat, FUN = length)
 # 条形图
 ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
   geom_bar(stat = "identity", position = "identity")
@@ -3807,7 +3766,7 @@ ggplot(data = dat1, aes(x = month, y = commit, fill = year)) +
 
 ```r
 # 日历图
-dat2 <- aggregate(formula = commit ~ year + week + weekday, data = dat, FUN = length)
+dat2 <- aggregate(x = commit ~ year + week + weekday, data = dat, FUN = length)
 
 dat2 <- transform(dat2, colorBin = cut(commit, breaks = c(0, 5, 10, 15, 20, 25)))
 
@@ -3972,7 +3931,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x56530a9642b8>
+## <bytecode: 0x555974537508>
 ## <environment: namespace:ggpubr>
 ```
 

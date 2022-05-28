@@ -16,14 +16,14 @@ searchpaths()
 
 ```
 ## [1] ".GlobalEnv"                          
-## [2] "/opt/R/4.1.3/lib/R/library/stats"    
-## [3] "/opt/R/4.1.3/lib/R/library/graphics" 
-## [4] "/opt/R/4.1.3/lib/R/library/grDevices"
-## [5] "/opt/R/4.1.3/lib/R/library/utils"    
-## [6] "/opt/R/4.1.3/lib/R/library/datasets" 
-## [7] "/opt/R/4.1.3/lib/R/library/methods"  
+## [2] "/opt/R/4.2.0/lib/R/library/stats"    
+## [3] "/opt/R/4.2.0/lib/R/library/graphics" 
+## [4] "/opt/R/4.2.0/lib/R/library/grDevices"
+## [5] "/opt/R/4.2.0/lib/R/library/utils"    
+## [6] "/opt/R/4.2.0/lib/R/library/datasets" 
+## [7] "/opt/R/4.2.0/lib/R/library/methods"  
 ## [8] "Autoloads"                           
-## [9] "/opt/R/4.1.3/lib/R/library/base"
+## [9] "/opt/R/4.2.0/lib/R/library/base"
 ```
 
 ```r
@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpdKhAj0/file258466f3cac3b.data"
+## [1] "/tmp/RtmpXZLcyw/file2192c1a482243.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpdKhAj0/test258462356325c"
+## [1] "/tmp/RtmpXZLcyw/test2192c3d4e61f6"
 ```
 
 ```r
@@ -478,34 +478,15 @@ yaml::read_yaml(file = '_bookdown.yml')
 ## [1] "_common.R"
 ## 
 ## $rmd_files
-##  [1] "index.Rmd"                       "preface.Rmd"                    
-##  [3] "data-wrangling.Rmd"              "data-structure.Rmd"             
-##  [5] "data-transportation.Rmd"         "string-operations.Rmd"          
-##  [7] "regular-expressions.Rmd"         "data-manipulation.Rmd"          
-##  [9] "advanced-manipulation.Rmd"       "parallel-manipulation.Rmd"      
-## [11] "other-manipulation.Rmd"          "statistical-graphics.Rmd"       
-## [13] "graphics-foundations.Rmd"        "data-visualization.Rmd"         
-## [15] "interactive-web-graphics.Rmd"    "dynamic-documents.Rmd"          
-## [17] "document-elements.Rmd"           "portable-documents.Rmd"         
-## [19] "web-documents.Rmd"               "office-documents.Rmd"           
-## [21] "reproducible-workflows.Rmd"      "advanced-documents.Rmd"         
-## [23] "data-product.Rmd"                "interactive-data-tables.Rmd"    
-## [25] "interactive-shiny-app.Rmd"       "statistical-foundations.Rmd"    
-## [27] "sampling-distributions.Rmd"      "parameter-estimators.Rmd"       
-## [29] "hypothesis-test.Rmd"             "power-analysis.Rmd"             
-## [31] "experimental-design.Rmd"         "statistical-models.Rmd"         
-## [33] "linear-models.Rmd"               "generalized-linear-models.Rmd"  
-## [35] "data-modeling.Rmd"               "text-analysis.Rmd"              
-## [37] "survival-analysis.Rmd"           "time-series-analysis.Rmd"       
-## [39] "spatio-temporal-data.Rmd"        "spatial-analysis.Rmd"           
-## [41] "spatial-viz.Rmd"                 "case-study.Rmd"                 
-## [43] "data-explorer.Rmd"               "machine-learning.Rmd"           
-## [45] "gradient-boosting-machine.Rmd"   "numerical-optimization.Rmd"     
-## [47] "appendix.Rmd"                    "matrix-operations.Rmd"          
-## [49] "symbolic-computation.Rmd"        "mixed-programming.Rmd"          
-## [51] "object-oriented-programming.Rmd" "file-operations.Rmd"            
-## [53] "other-softwares.Rmd"             "notations.Rmd"                  
-## [55] "references.Rmd"
+##  [1] "index.Rmd"                    "preface.Rmd"                 
+##  [3] "data-wrangling.Rmd"           "data-structure.Rmd"          
+##  [5] "data-transportation.Rmd"      "string-operations.Rmd"       
+##  [7] "regular-expressions.Rmd"      "data-manipulation.Rmd"       
+##  [9] "advanced-manipulation.Rmd"    "parallel-manipulation.Rmd"   
+## [11] "other-manipulation.Rmd"       "statistical-graphics.Rmd"    
+## [13] "graphics-foundations.Rmd"     "data-visualization.Rmd"      
+## [15] "interactive-web-graphics.Rmd" "numerical-optimization.Rmd"  
+## [17] "appendix.Rmd"                 "references.Rmd"
 ```
 
 Table: (\#tab:other-softwares) 导入来自其它数据分析软件产生的数据集
@@ -542,7 +523,7 @@ x
 
 ```
 ##      Package   Version Title                                    
-## [1,] "splines" "4.1.3" "Regression Spline Functions and Classes"
+## [1,] "splines" "4.2.0" "Regression Spline Functions and Classes"
 ```
 
 最后要提及拥有瑞士军刀之称的 [rio](https://github.com/leeper/rio) 包，它集合了当前 R 可以读取的所有统计分析软件导出的数据。
@@ -1370,7 +1351,7 @@ cat(readLines('data/AirPassengers.txt'), sep = "\n")
 ## 422, 465, 467, 404, 347, 305, 336, 340, 318, 362, 348, 363, 435, 
 ## 491, 505, 404, 359, 310, 337, 360, 342, 406, 396, 420, 472, 548, 
 ## 559, 463, 407, 362, 405, 417, 391, 419, 461, 472, 535, 622, 606, 
-## 508, 461, 390, 432), .Tsp = c(1949, 1960.9166666666699, 12), class = "ts")
+## 508, 461, 390, 432), tsp = c(1949, 1960.9166666666699, 12), class = "ts")
 ```
 
 `dput` 函数类似 `dump` 函数，保存数据对象到磁盘文件
@@ -1439,7 +1420,7 @@ structure(c(112, 118, 132, 129, 121, 135, 148, 148, 136, 119,
 422, 465, 467, 404, 347, 305, 336, 340, 318, 362, 348, 363, 435, 
 491, 505, 404, 359, 310, 337, 360, 342, 406, 396, 420, 472, 548, 
 559, 463, 407, 362, 405, 417, 391, 419, 461, 472, 535, 622, 606, 
-508, 461, 390, 432), .Tsp = c(1949, 1960.91666666667, 12), class = "ts")
+508, 461, 390, 432), tsp = c(1949, 1960.91666666667, 12), class = "ts")
 ```
 
 <!-- 记得删除文件 AirPassengers.txt 和 AirPassengers.dat -->
@@ -1625,12 +1606,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.70      Good     D     VS2  63.2    60  3087 5.56 5.61 3.53
-## 2  0.77 Very Good     H     VS1  62.2    57  3152 5.81 5.86 3.63
-## 3  1.00 Very Good     G     SI2  63.1    63  3713 6.33 6.23 3.96
-## 4  1.00      Good     H     SI2  63.2    60  3740 6.27 6.30 3.97
-## 5  0.82     Ideal     G     VS1  61.9    54  3880 5.99 6.03 3.72
-## 6  0.73     Ideal     G      IF  62.3    56  4142 5.72 5.78 3.58
+## 1  1.03      Good     J     SI1  63.6    57  2855 6.38 6.29 4.03
+## 2  1.02     Ideal     I     VS2  62.8    57  3148 6.45 6.39 4.03
+## 3  0.89 Very Good     F     SI2  60.2    60  3356 6.18 6.21 3.73
+## 4  0.72     Ideal     G     VS1  61.4    56  3478 5.75 5.79 3.55
+## 5  0.25 Very Good     F    VVS2  61.0    58   575 4.02 4.05 2.46
+## 6  1.00      Good     F     SI2  61.8    58  4053 6.43 6.48 3.99
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1648,13 +1629,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair   840    1
-## 2 Good  2062    1
-## 3 Good  2386    2
-## 4 Good  4171    3
-## 5 Good  7152    4
-## 6 Good  7370    5
+##     cut price rank
+## 1  Fair  1784    1
+## 2  Good  3239    1
+## 3  Good  3428    2
+## 4  Good  4568    3
+## 5  Good  5055    4
+## 6 Ideal   522    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1727,7 +1708,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2022-04-28
+## 1     2022-05-28
 ```
 
 ```r
@@ -1737,7 +1718,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2022-04-27
+## 1                  2022-05-27
 ```
 
 ```r
@@ -1747,7 +1728,7 @@ dbGetQuery(sc, "select last_day(current_date)")
 
 ```
 ##   last_day(current_date())
-## 1               2022-04-30
+## 1               2022-05-31
 ```
 
 ```r
@@ -1757,7 +1738,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         5
+## 1                         7
 ```
 
 最后，使用完记得关闭 Spark 连接
@@ -2000,7 +1981,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.1.3 (2022-03-10)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.4 LTS
 ## 
@@ -2013,28 +1994,28 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.2        
-##   bookdown_0.25      bslib_0.3.1        cli_3.2.0          codetools_0.2.18  
-##   colorspace_2.0-3   compiler_4.1.3     config_0.3.1       cpp11_0.4.2       
+##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.3        
+##   bookdown_0.26      bslib_0.3.1        cli_3.3.0          codetools_0.2.18  
+##   colorspace_2.0-3   compiler_4.2.0     config_0.3.1       cpp11_0.4.2       
 ##   crayon_1.5.1       curl_4.3.2         data.table_1.14.2  DBI_1.1.2         
-##   dbplyr_2.1.1       digest_0.6.29      dplyr_1.0.8        ellipsis_0.3.2    
+##   dbplyr_2.1.1       digest_0.6.29      dplyr_1.0.9        ellipsis_0.3.2    
 ##   evaluate_0.15      fansi_1.0.3        farver_2.1.0       fastmap_1.1.0     
-##   forge_0.2.0        fs_1.5.2           generics_0.1.2     ggplot2_3.3.5     
-##   globals_0.14.0     glue_1.6.2         graphics_4.1.3     grDevices_4.1.3   
-##   grid_4.1.3         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
-##   htmlwidgets_1.5.4  httr_1.4.2         isoband_0.2.5      jquerylib_0.1.4   
-##   jsonlite_1.8.0     knitr_1.38         labeling_0.4.2     lattice_0.20.45   
-##   lifecycle_1.0.1    magrittr_2.0.3     MASS_7.3.56        Matrix_1.4.1      
-##   methods_4.1.3      mgcv_1.8.40        mime_0.12          munsell_0.5.0     
-##   nlme_3.1.157       openssl_2.0.0      parallel_4.1.3     pillar_1.7.0      
+##   forge_0.2.0        fs_1.5.2           generics_0.1.2     ggplot2_3.3.6     
+##   globals_0.15.0     glue_1.6.2         graphics_4.2.0     grDevices_4.2.0   
+##   grid_4.2.0         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
+##   htmlwidgets_1.5.4  httr_1.4.3         isoband_0.2.5      jquerylib_0.1.4   
+##   jsonlite_1.8.0     knitr_1.39         labeling_0.4.2     lattice_0.20.45   
+##   lifecycle_1.0.1    magrittr_2.0.3     MASS_7.3.57        Matrix_1.4.1      
+##   methods_4.2.0      mgcv_1.8.40        mime_0.12          munsell_0.5.0     
+##   nlme_3.1.157       openssl_2.0.1      parallel_4.2.0     pillar_1.7.0      
 ##   pkgconfig_2.0.3    png_0.1-7          purrr_0.3.4        r2d3_0.2.6        
-##   R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.2 rlang_1.0.2       
-##   rmarkdown_2.13     rprojroot_2.0.2    rstudioapi_0.13    sass_0.4.1        
-##   scales_1.1.1       sparklyr_1.7.5     splines_4.1.3      stats_4.1.3       
+##   R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.3 rlang_1.0.2       
+##   rmarkdown_2.14     rprojroot_2.0.3    rstudioapi_0.13    sass_0.4.1        
+##   scales_1.2.0       sparklyr_1.7.5     splines_4.2.0      stats_4.2.0       
 ##   stringi_1.7.6      stringr_1.4.0      sys_3.4            sysfonts_0.8.8    
-##   tibble_3.1.6       tidyr_1.2.0        tidyselect_1.1.2   tinytex_0.38      
-##   tools_4.1.3        utf8_1.2.2         utils_4.1.3        uuid_1.0.4        
-##   vctrs_0.4.0        viridisLite_0.4.0  withr_2.5.0        xfun_0.30         
+##   tibble_3.1.7       tidyr_1.2.0        tidyselect_1.1.2   tinytex_0.39      
+##   tools_4.2.0        utf8_1.2.2         utils_4.2.0        uuid_1.1.0        
+##   vctrs_0.4.1        viridisLite_0.4.0  withr_2.5.0        xfun_0.31         
 ##   xml2_1.3.3         yaml_2.3.5
 ```
 
