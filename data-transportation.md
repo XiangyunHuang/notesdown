@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpOt4C9D/file585c247306df.data"
+## [1] "/tmp/RtmpRuqfkT/file586d20f46071.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpOt4C9D/test585c6ff3de79"
+## [1] "/tmp/RtmpRuqfkT/test586d21cfc3a8"
 ```
 
 ```r
@@ -1606,12 +1606,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.30      Good     H     SI1  63.8    55   554 4.26 4.20 2.70
-## 2  0.31   Premium     H     SI1  61.7    59   558 4.39 4.36 2.70
-## 3  0.90   Premium     E     SI2  63.0    57  3084 6.08 6.05 3.82
-## 4  0.72 Very Good     D     VS2  63.1    59  3139 5.67 5.70 3.59
-## 5  0.83     Ideal     E     SI1  62.7    57  3231 5.96 6.01 3.75
-## 6  0.90      Good     F     SI2  63.1    56  3519 6.12 6.18 3.88
+## 1  0.73     Ideal     E     SI2  61.8    58  2805 5.77 5.81 3.58
+## 2  0.73   Premium     F     VS2  62.5    57  2805 5.75 5.70 3.58
+## 3  0.86 Very Good     I     VS1  61.2    58  2905 6.10 6.16 3.75
+## 4  0.70     Ideal     H    VVS1  60.5    58  2947 5.76 5.81 3.50
+## 5  0.73     Ideal     G     VS1  61.6    57  3033 5.76 5.79 3.56
+## 6  0.72   Premium     F     VS1  62.2    57  3167 5.74 5.67 3.55
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1630,12 +1630,12 @@ diamonds_rank
 
 ```
 ##    cut price rank
-## 1 Fair  2093    1
-## 2 Good  1318    1
-## 3 Good  2438    2
-## 4 Good  3253    3
-## 5 Good  4864    4
-## 6 Good  6046    5
+## 1 Fair  1156    1
+## 2 Fair  3801    2
+## 3 Fair  7333    3
+## 4 Good  3063    1
+## 5 Good  7096    2
+## 6 Good  7738    3
 ```
 
 LATERAL VIEW 把一列拆成多行
