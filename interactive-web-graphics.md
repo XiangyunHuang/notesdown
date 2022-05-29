@@ -5,33 +5,19 @@
 
 
 
-::: {.rmdtip data-latex="{提示}"}
-plotly 包的函数使用起来还是比较复杂的，特别是需要打磨细节以打造数据产品时，此外，其依赖相当重，仅数据处理就包含两套方法 --- dplyr 和 data.table，引起很多函数冲突，可谓「苦其久矣」！因此，准备另起炉灶，开发一个新的 R 包 qplotly，取意 quick plotly，以 `qplot_ly()` 替代 `plot_ly()`。类似简化 API 的工作有 [simplevis](https://github.com/StatisticsNZ/simplevis)、
-[autoplotly](https://github.com/terrytangyuan/autoplotly)、
-[ggfortify](https://github.com/sinhrks/ggfortify) 和 [plotme](https://github.com/yogevherz/plotme)。
-
-plotly 团队开发了 [plotly.js](https://github.com/plotly/plotly.js) 库，且维护了 R 接口文档 (https://plotly.com/r/)，Carson Sievert 开发了 [plotly](https://github.com/ropensci/plotly) 包，配套书 [Interactive web-based data visualization with R, plotly, and shiny](https://plotly-r.com/)。
-Paul C. Bauer 的书 [Applied Data Visualization](https://bookdown.org/paul/applied-data-visualization/) 介绍 plotly <https://bookdown.org/paul/applied-data-visualization/what-is-plotly.html>
-:::
-
-[echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
+[echarts4r](https://github.com/JohnCoene/echarts4r) 包基于 [Apache ECharts](https://github.com/apache/echarts)，ECharts 的 Python 接口 [pyecharts](https://github.com/pyecharts/pyecharts) 也非常受欢迎，基于 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 [apexcharter](https://github.com/dreamRs/apexcharter)。
 [ECharts2Shiny](https://github.com/XD-DENG/ECharts2Shiny) 包将 ECharts 嵌入 shiny 框架中。
 
 
-
-[timevis](https://github.com/daattali/timevis) 创建交互式的时间线的时序可视化，它基于 [Vis](https://visjs.org/) 的 [vis-timeline](https://github.com/visjs/vis-timeline) 模块，支持 shiny 集成。[dygraphs](https://github.com/rstudio/dygraphs) 包基于 [dygraphs](https://github.com/danvk/dygraphs) 可视化库，将时序数据可视化，更多情况见 <https://dygraphs.com/>。[leaflet](https://github.com/rstudio/leaflet) 提供 [leaflet](https://leafletjs.com/) 的 R 接口。[rAmCharts4](https://github.com/stla/rAmCharts4) 基于 [amCharts 4](https://github.com/amcharts/amcharts4/) 库， [apexcharter](https://github.com/dreamRs/apexcharter) 提供 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 R 接口。还有 [billboarder](https://github.com/dreamRs/billboarder) 等。更完整地，请看 Etienne Bacher 维护的 R 包列表 [r-js-adaptation](https://github.com/etiennebacher/r-js-adaptation) 。
+[leaflet](https://github.com/rstudio/leaflet) 提供 [leaflet](https://leafletjs.com/) 的 R 接口。[rAmCharts4](https://github.com/stla/rAmCharts4) 基于 [amCharts 4](https://github.com/amcharts/amcharts4/) 库， [apexcharter](https://github.com/dreamRs/apexcharter) 提供 [apexcharts.js](https://github.com/apexcharts/apexcharts.js) 的 R 接口。还有 [billboarder](https://github.com/dreamRs/billboarder) 等。更完整地，请看 Etienne Bacher 维护的 R 包列表 [r-js-adaptation](https://github.com/etiennebacher/r-js-adaptation) 。
 
 <!-- 
 https://github.com/stla/rAmCharts4
 R 包 JavaScript 库 权限 网站 开发者 简短描述
 -->
 
-对于想了解 htmlwidgets 框架，JavaScript 响应式编程的读者，推荐 John Coene 新书 [JavaScript for R](https://book.javascript-for-r.com/)
 
 
-::: {.rmdtip data-latex="{提示}"}
-学习 [plotly](https://github.com/ropensci/plotly) 和 [highcharter](https://github.com/jbkunst/highcharter) 为代表的 基于 JavaScript 的 R 包，共有四重境界：第一重是照着帮助文档的示例，示例有啥我们做啥；第二重是明白帮助文档中 R 函数和 JavaScript 函数的对应关系，能力达到 JS 库的功能边界；第三重是深度自定义一些扩展性的 JS 功能，放飞自我；第四重是重新造轮子，为所欲为。下面的介绍希望能帮助读者到达第二重境界。
-:::
 
 [plotly](https://github.com/ropensci/plotly) 是一个功能非常强大的绘制交互式图形的 R 包。它支持下载图片、添加水印、自定义背景图片、工具栏和注释[^plotly-annotation] 等一系列细节的自定义控制。下面结合 JavaScript 库 [plotly.js](https://github.com/plotly/plotly.js) 一起介绍，帮助文档 `?config` 没有太详细地介绍，所以我们看看 `config()` 函数中参数 `...` 和 JavaScript 库 [plot_config.js](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js) 中的功能函数是怎么对应的。图 中图片下载按钮对应 `toImageButtonOptions` 参数， 看 [toImageButtonOptions](https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js#L311) 源代码，可知，它接受任意数据类型，对应到 R 里面就是列表。 `watermark` 和 `displaylogo` 都是传递布尔值（TRUE/FALSE），具体根据 JavaScript 代码中的 valType （参数值类型）决定，其它参数类似。另一个函数 [layout](https://plot.ly/r/reference/#Layout_and_layout_style_objects) 和函数 `config()` 是类似的，怎么传递参数值是根据 JavaScript 代码来的。
 
@@ -973,46 +959,7 @@ plot_ly(dat,
 ```
 
 
-## 时序图 {#sec-dygraphs}
 
-[dygraphs](https://github.com/rstudio/dygraphs) 专门用来绘制交互式时间序列图形，下面以美团股价为例，展示时间窗口筛选、坐标轴名称、刻度标签、注释、事件标注、缩放等功能
-
-
-
-```r
-meituan <- quantmod::getSymbols("3690.HK", auto.assign = FALSE, src = "yahoo")
-library(dygraphs)
-# 缩放
-dyUnzoom <- function(dygraph) {
-  dyPlugin(
-    dygraph = dygraph,
-    name = "Unzoom",
-    path = system.file("plugins/unzoom.js", package = "dygraphs")
-  )
-}
-
-# 年月
-getYearMonth <- '
-  function(d) {
-    var monthNames = ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12"];
-    date = new Date(d);
-    return date.getFullYear() + "-" + monthNames[date.getMonth()]; 
-  }'
-
-dygraph(meituan[, "3690.HK.Adjusted"], main = "美团股价走势") |> 
-  dyRangeSelector(dateWindow = c(format(Sys.Date(), "%Y-01-01"), as.character(Sys.Date())))  |> 
-  dyAxis(name = "x", axisLabelFormatter = getYearMonth)  |> 
-  dyAxis("y", valueRange = c(0, 500), label = "美团股价")  |> 
-  dyEvent("2020-01-23", "武汉封城", labelLoc = "bottom")  |> 
-  dyShading(from = "2020-01-23", to = "2020-04-08", color = "#FFE6E6")  |> 
-  dyAnnotation("2020-01-23", text = "武汉封城", tooltip = "武汉封城", width = 60)  |> 
-  dyAnnotation("2020-04-08", text = "武汉解封", tooltip = "武汉解封", width = 60)  |> 
-  dyHighlight(highlightSeriesOpts = list(strokeWidth = 2))  |> 
-  dySeries(label = "调整股价")  |> 
-  dyLegend(show = "follow", hideOnMouseOut = FALSE)  |> 
-  dyOptions(fillGraph = TRUE, drawGrid = FALSE, gridLineColor = "lightblue")  |> 
-  dyUnzoom()
-```
 
 ## 导出静态图形 {#sec-export}
 
@@ -1249,56 +1196,6 @@ gapminder |>
 ```
 
 
-```r
-# params.name 对应 bind
-# params.value[0] 对应 x
-# params.value[1] 对应 serie
-# params.value[2] 对应 size
-# tooltips 自定义
-# https://stackoverflow.com/questions/50554304/displaying-extra-variables-in-tooltips-echarts4r
-# 百分数处理
-# https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
-mtcars |>
-  tibble::rownames_to_column("model") |>
-  e_charts(x = wt) |>
-  e_scatter(serie = mpg, size = qsec, bind = model) |>
-  e_tooltip(formatter = htmlwidgets::JS("
-          function(params) {
-              return (
-                  '<strong>' + params.name + '</strong>' +
-                  '<br />wt: ' + params.value[0] +
-                  '<br />mpg: ' + params.value[1] +
-                  '<br />qsec- ' + params.value[2]
-              )
-          }
-          "))
-```
-
-## 三维图 (rgl) {#sec-rgl-3d}
-
-[ggrgl](https://github.com/coolbutuseless/ggrgl)
-
-
-```r
-library(rgl)
-lat <- matrix(seq(90, -90, len = 50) * pi / 180, 50, 50, byrow = TRUE)
-long <- matrix(seq(-180, 180, len = 50) * pi / 180, 50, 50)
-
-r <- 6378.1 # radius of Earth in km
-x <- r * cos(lat) * cos(long)
-y <- r * cos(lat) * sin(long)
-z <- r * sin(lat)
-# 调整视角
-rgl.viewpoint( theta = 0, phi = 15, fov = 60, zoom = 0.5, interactive = TRUE)
-
-persp3d(x, y, z,
-  col = "white", xlab = "", ylab = "", zlab = "",
-  texture = system.file("textures/world.png", package = "rgl"),
-  specular = "black", axes = FALSE, box = FALSE,
-  normal_x = x, normal_y = y, normal_z = z
-)
-```
-
 
 ## 网络图 {#sec-network-analysis}
 
@@ -1376,7 +1273,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-14-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 
@@ -1429,42 +1326,6 @@ r2d3(
 <https://github.com/XiangyunHuang/roughviz>]{.todo}
 
 
-## Python 交互图形 {#sec-python-plotly}
-
-[Plotly](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/express/_chart_types.py) 的图形库
-
-
-```python
-import plotly.express as px
-
-px.scatter(
-    px.data.iris(),
-    x="sepal_width",
-    y="sepal_length",
-    color="species",
-    trendline="ols",
-    template="simple_white",
-    labels={
-        "sepal_length": "Sepal Length (cm)",
-        "sepal_width": "Sepal Width (cm)",
-        "species": "Species of Iris",
-    },
-    title="Edgar Anderson's Iris Data",
-    color_discrete_sequence=px.colors.qualitative.Set2
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{images/iris} 
-
-}
-
-\caption{插入图片}(\#fig:plotly-python-iris)
-\end{figure}
-
-不能同时使用 Python 版和 R 版的 Plotly.js 库，因为版本不一致产生冲突，而不能显示图形。
-
 ## 运行环境 {#sec-web-graphics-session}
 
 
@@ -1494,24 +1355,22 @@ sessionInfo()
 ## 
 ## other attached packages:
 ## [1] sparkline_2.0    rpart_4.1.16     visNetwork_2.1.0 networkD3_0.4   
-## [5] r2d3_0.2.6       dygraphs_1.1.1.6 plotly_4.10.0    ggplot2_3.3.6   
-## [9] reticulate_1.25 
+## [5] r2d3_0.2.6       plotly_4.10.0    ggplot2_3.3.6   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.8.3      lattice_0.20-45   tidyr_1.2.0       ps_1.7.0         
-##  [5] png_0.1-7         sysfonts_0.8.8    zoo_1.8-10        assertthat_0.2.1 
-##  [9] digest_0.6.29     utf8_1.2.2        R6_2.5.1          evaluate_0.15    
-## [13] httr_1.4.3        pillar_1.7.0      rlang_1.0.2       lazyeval_0.2.2   
-## [17] curl_4.3.2        rstudioapi_0.13   data.table_1.14.2 callr_3.7.0      
-## [21] Matrix_1.4-1      rmarkdown_2.14    labeling_0.4.2    webshot_0.5.3    
-## [25] stringr_1.4.0     htmlwidgets_1.5.4 igraph_1.3.1      munsell_0.5.0    
-## [29] compiler_4.2.0    xfun_0.31         pkgconfig_2.0.3   htmltools_0.5.2  
-## [33] tidyselect_1.1.2  tibble_3.1.7      bookdown_0.26     fansi_1.0.3      
-## [37] viridisLite_0.4.0 crayon_1.5.1      dplyr_1.0.9       withr_2.5.0      
-## [41] MASS_7.3-57       grid_4.2.0        jsonlite_1.8.0    gtable_0.3.0     
-## [45] lifecycle_1.0.1   DBI_1.1.2         magrittr_2.0.3    scales_1.2.0     
-## [49] cli_3.3.0         stringi_1.7.6     farver_2.1.0      ellipsis_0.3.2   
-## [53] generics_0.1.2    vctrs_0.4.1       tools_4.2.0       glue_1.6.2       
-## [57] purrr_0.3.4       processx_3.5.3    fastmap_1.1.0     yaml_2.3.5       
-## [61] colorspace_2.0-3  isoband_0.2.5     knitr_1.39
+##  [1] tidyselect_1.1.2  xfun_0.31         purrr_0.3.4       colorspace_2.0-3 
+##  [5] vctrs_0.4.1       generics_0.1.2    htmltools_0.5.2   viridisLite_0.4.0
+##  [9] yaml_2.3.5        utf8_1.2.2        rlang_1.0.2       isoband_0.2.5    
+## [13] pillar_1.7.0      glue_1.6.2        withr_2.5.0       DBI_1.1.2        
+## [17] lifecycle_1.0.1   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
+## [21] htmlwidgets_1.5.4 evaluate_0.15     labeling_0.4.2    knitr_1.39       
+## [25] callr_3.7.0       fastmap_1.1.0     ps_1.7.0          curl_4.3.2       
+## [29] fansi_1.0.3       scales_1.2.0      webshot_0.5.3     jsonlite_1.8.0   
+## [33] sysfonts_0.8.8    farver_2.1.0      png_0.1-7         digest_0.6.29    
+## [37] stringi_1.7.6     processx_3.5.3    bookdown_0.26     dplyr_1.0.9      
+## [41] grid_4.2.0        cli_3.3.0         tools_4.2.0       magrittr_2.0.3   
+## [45] lazyeval_0.2.2    tibble_3.1.7      crayon_1.5.1      tidyr_1.2.0      
+## [49] pkgconfig_2.0.3   ellipsis_0.3.2    MASS_7.3-57       data.table_1.14.2
+## [53] assertthat_0.2.1  rmarkdown_2.14    httr_1.4.3        rstudioapi_0.13  
+## [57] R6_2.5.1          igraph_1.3.1      compiler_4.2.0
 ```
