@@ -3708,7 +3708,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Sun"
+## [1] "Sat"
 ```
 
 ```r
@@ -3716,7 +3716,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 1
+## [1] 7
 ```
 
 :::
@@ -3789,7 +3789,7 @@ ggplot(data = dat2, aes(x = week, y = weekday, fill = colorBin)) +
 
 }
 
-\caption{《现代统计图形》的活跃情况}(\#fig:calendar-masr)
+\caption{《R语言学习笔记》的活跃情况}(\#fig:calendar-masr)
 \end{figure}
 
 ### 岭线图 {#sec-ggplot2-ridgeline}
@@ -3931,7 +3931,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x5618543625b8>
+## <bytecode: 0x55c5a39e6fc8>
 ## <environment: namespace:ggpubr>
 ```
 
