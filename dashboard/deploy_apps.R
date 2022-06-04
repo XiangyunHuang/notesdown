@@ -28,7 +28,7 @@ new_app_dirs <- app_dirs[!new_app_md5[, "app_md5"] == old_app_md5[, "app_md5"]]
 
 ## 更新部署
 if (length(new_app_dirs) >= 1) {
-  new_app_names <- paste("masr", new_app_dirs, sep = "-")
+  new_app_names <- paste("notesdown", new_app_dirs, sep = "-")
   # 部署新的 Shiny App
   for (i in 1:length(new_app_dirs)) {
     rsconnect::deployApp(appDir = new_app_dirs[i], appName = new_app_names[i])

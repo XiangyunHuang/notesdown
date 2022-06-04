@@ -12,5 +12,5 @@ for (fmt in formats) {
 unlink("_main.log")
 
 if (length(formats) > 1 && Sys.getenv("USER") == "xiangyun") {
-  bookdown::publish_book(render = "none", name = "masr", account = "xiangyun", server = "bookdown.org")
+  bookdown::publish_book(render = "none", name = "notesdown", account = "xiangyun", server = "bookdown.org")
 }

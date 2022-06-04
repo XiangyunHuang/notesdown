@@ -208,7 +208,7 @@ xfun::session_info(packages = c(
 借助 **bookdown** [@xie2016] 可以将 Rmd 文件组织起来， **rmarkdown** [@rmarkdown]和 **knitr** [@xie2015] 将源文件编译成 Markdown 文件， [Pandoc](https://pandoc.org/) 将 Markdown 文件转化成 HTML 和 TeX 文件， [TinyTeX](https://yihui.name/tinytex/) [@xie2019] 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 **ggplot2** 包制作 [@Wickham_2016_ggplot2]，而统计理论相关的示意图用 Base R 创作。
 
 ::: {.rmdtip data-latex="{提示}"}
-得益于 Github Action 提供的测试服务，[Github Pages](https://pages.github.com/)、[Bookdown](https://bookdown.org) 和 [Netlify](https://netlify.com/) 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 <https://xiangyunhuang.github.io/masr/>， <https://bookdown.org/xiangyun/masr/> ， <https://masr.netlify.app/>。
+得益于 Github Action 提供的测试服务，[Github Pages](https://pages.github.com/)、[Bookdown](https://bookdown.org) 和 [Netlify](https://netlify.com/) 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 <https://xiangyunhuang.github.io/notesdown/>， <https://bookdown.org/xiangyun/notesdown/> ， <https://notesdown.netlify.app/>。
 :::
 
 ## 记号约定 {#sec-conventions}
@@ -243,44 +243,44 @@ ruler()
 # 登陆 GitHub Package
 cat ~/TOKEN.txt | docker login https://docker.pkg.github.com -u XiangyunHuang --password-stdin
 # 拉取镜像
-docker pull docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel
+docker pull docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel
 ```
 
 读者可以先查看下容器内的信息
 
 ```bash
 docker run --rm -u root -v "/${PWD}://home/docker/" \
-  docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel \
+  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel \
   bash -c "locale; fc-list | sort"
 ```
 
 > 运行容器
 
-下面从镜像创建一个叫 masr-book 的容器，并让它在后台运行，允许以真正的 root 账户权限交互式执行命令，停止容器后，自动销毁容器。 此处，不再介绍 Docker 容器的使用，用容器打包本书所有软件环境仅供读者完整复现本书之用，感兴趣的读者可以去参考书籍[Docker 从入门到实践](https://vuepress.mirror.docker-practice.com/)。
+下面从镜像创建一个叫 notesdown-book 的容器，并让它在后台运行，允许以真正的 root 账户权限交互式执行命令，停止容器后，自动销毁容器。 此处，不再介绍 Docker 容器的使用，用容器打包本书所有软件环境仅供读者完整复现本书之用，感兴趣的读者可以去参考书籍[Docker 从入门到实践](https://vuepress.mirror.docker-practice.com/)。
 
 ```bash
-docker run -itd -p 8282:8787 --rm --name=masr-book --privileged=true \
-  docker.pkg.github.com/xiangyunhuang/masr/masr-book:devel /sbin/init
+docker run -itd -p 8282:8787 --rm --name=notesdown-book --privileged=true \
+  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel /sbin/init
 ```
 
-接着登陆进入 masr-book 容器，
+接着登陆进入 notesdown-book 容器，
 
 ```bash
-docker exec -it masr-book bash
+docker exec -it notesdown-book bash
 ```
 
 一番骚操作后，用户退出容器，然后停止容器。
 
 ```bash
-docker stop masr-book
+docker stop notesdown-book
 ```
 
 > 使用 RStudio Server
 
-启动容器后，接着获取容器 masr-book 的 IP 地址，然后依据端口号 8282 从网页进入 RStudio Sever，比如 <http://192.168.100.23:8282>
+启动容器后，接着获取容器 notesdown-book 的 IP 地址，然后依据端口号 8282 从网页进入 RStudio Sever，比如 <http://192.168.100.23:8282>
 
 ```bash
-docker inspect --format='{{.NetworkSettings.IPAddress}}' masr-book
+docker inspect --format='{{.NetworkSettings.IPAddress}}' notesdown-book
 ```
 
 [^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
