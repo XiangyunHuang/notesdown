@@ -1,18 +1,12 @@
 # 净土化操作 {#chap-dplyr-manipulation}
 
 
+```r
+library(dplyr)
+```
 
-> 常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算
-> 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作
-
-在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形
-
-::: sidebar
-更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入 tidyverse，数据处理或者叫特征工程 Base R vs data.table vs dplyr 它们各有优点，所以都加以介绍 参考 [Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
-
-关于 tidyverse 提供的数据操作不要移动到 Base R 对应的章节，这二者已经越行越远，本章主要讲并行或分布式数据操作工具，如 sparklyr 针对大数据集上的操
-
-Base R 的数据操作的一致性问题参见统计之都帖子 <https://d.cosx.org/d/420763>
+<!--
+[Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
 
 [Malcolm Barrett](https://malco.io/) 以幻灯片的形式呈现 [dplyr](https://malco.io/slides/hs_dplyr/) 和 [purrr](https://malco.io/slides/hs_purrr/) 的基础用法
 
@@ -20,8 +14,7 @@ Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://git
 
 关于引用 [quotation](https://github.com/cwickham/quotation)
 
-相比于 SQL， dplyr 在数据库操作的不足，这是一些比较难的部分 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
-:::
+相比于 SQL， dplyr 在数据库操作的不足 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
 
 函数式编程 Functional Programming Languages 用于数据处理
 
@@ -33,10 +26,6 @@ Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://git
 - [fastmap](https://github.com/wch/fastmap) 实现键值存储，提供新的数据结构
 - [Roaring bitmaps](https://github.com/RoaringBitmap/CRoaring) Bitsets, also called bitmaps, are commonly used as fast data structures.
 
-
-```r
-library(tidyverse)
-```
 
 数据操作的语法
 
@@ -61,11 +50,12 @@ library(tidyverse)
 Garrett Grolemund 在 RStudio 主要从事教育教学，参考 [Materials for the Tidyverse Train-the-trainer workshop](https://github.com/rstudio-education/teach-tidy) 和 [The Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/)
 
 Dirk Eddelbuettel 的 [Getting Started in R -- Tinyverse Edition](https://github.com/eddelbuettel/gsir-te)
+-->
 
 
 ## 常用操作 {#common-operations}
 
-dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称“数据操作的语法”，与 ggplot2 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 [这里](https://dplyr.tidyverse.org)，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。
+dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 [这里](https://dplyr.tidyverse.org)，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。
 
 dplyr 常用的函数是 7 个： `arrange` 排序 `filter` 过滤行 `select` 选择列 `mutate` 变换 `summarise` 汇总 `group_by` 分组 `distinct` 去重
 
@@ -77,27 +67,7 @@ dplyr 常用的函数是 7 个： `arrange` 排序 `filter` 过滤行 `select` �
 
 
 ```r
-diamonds
-```
-
-```
-## # A tibble: 53,940 x 10
-##    carat cut       color clarity depth table price     x     y     z
-##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl> <dbl> <dbl>
-##  1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
-##  2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
-##  3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
-##  4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
-##  5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
-##  6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
-##  7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
-##  8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
-##  9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
-## 10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
-## # ... with 53,930 more rows
-```
-
-```r
+data("diamonds", package = "ggplot2")
 glimpse(diamonds)
 ```
 
@@ -136,7 +106,7 @@ Table: (\#tab:dplyr-object-type) dplyr 定义的数据对象类型
 
 
 ```r
-diamonds %>% filter(cut == "Ideal" , carat >= 3)
+diamonds |>  filter(cut == "Ideal" , carat >= 3)
 ```
 
 ```
@@ -153,8 +123,8 @@ diamonds %>% filter(cut == "Ideal" , carat >= 3)
 
 
 ```r
-diamonds %>% 
-  filter(carat >= 3, color == "I") %>% 
+diamonds |>  
+  filter(carat >= 3, color == "I") |>  
   select(cut, carat)
 ```
 
@@ -186,8 +156,8 @@ arrange 默认升序排列，按钻石重量升序，按价格降序
 
 
 ```r
-diamonds %>% 
-  filter(cut == "Ideal" , carat >= 3) %>% 
+diamonds |>  
+  filter(cut == "Ideal" , carat >= 3) |>  
   arrange(carat, desc(price))
 ```
 
@@ -207,9 +177,9 @@ diamonds %>%
 
 
 ```r
-diamonds %>% 
-  filter(carat > 3, color == "I") %>% 
-  group_by(cut, clarity) %>% 
+diamonds |>  
+  filter(carat > 3, color == "I") |>  
+  group_by(cut, clarity) |>  
   summarise(sum_carat = sum(carat), mean_carat = mean(carat), n_count = n())
 ```
 
@@ -236,11 +206,11 @@ diamonds %>%
 
 ```r
 set.seed(2018)
-one <- diamonds %>% 
-  filter(color == "I") %>% 
+one <- diamonds |>  
+  filter(color == "I") |>  
   sample_n(5)
-two <- diamonds %>% 
-  filter(color == "J") %>% 
+two <- diamonds |>  
+  filter(color == "J") |>  
   sample_n(5)
 # 按行合并数据框 one 和 two
 bind_rows(one, two)
@@ -267,11 +237,11 @@ bind_rows(one, two)
 
 ```r
 set.seed(2018)
-three <- diamonds %>% 
-  select(carat, color) %>% 
+three <- diamonds |>  
+  select(carat, color) |>  
   sample_n(5)
-four <- diamonds %>% 
-  select(carat, color) %>% 
+four <- diamonds |>  
+  select(carat, color) |>  
   sample_n(5)
 bind_cols(three, four)
 ```
@@ -294,9 +264,9 @@ bind_cols(three, four)
 
 
 ```r
-diamonds %>% 
-  filter(carat > 3, color == "I") %>% 
-  select(cut, carat) %>% 
+diamonds |>  
+  filter(carat > 3, color == "I") |>  
+  select(cut, carat) |>  
   mutate(vol = if_else(carat > 3.5, "A", "B"))
 ```
 
@@ -354,8 +324,8 @@ df
 
 
 ```r
-df %>%
-  group_by(x, y) %>%
+df |>  
+  group_by(x, y) |> 
   filter(row_number(z) == 1)
 ```
 
@@ -372,7 +342,7 @@ df %>%
 
 ```r
 # 此处不对，没有了 z 
-df %>%
+df |> 
   distinct(x, y)
 ```
 
@@ -386,7 +356,7 @@ df %>%
 
 ```r
 # 应该为
-df %>%
+df |> 
   distinct(x, y, .keep_all = TRUE)
 ```
 
@@ -467,8 +437,8 @@ microbenchmark::microbenchmark(s(), d())
 ```
 ## Unit: microseconds
 ##  expr   min     lq    mean median    uq    max neval
-##   s()  19.5  22.55  58.468   27.6  31.9 2887.3   100
-##   d() 212.0 217.95 250.755  220.7 225.0 2789.4   100
+##   s()  23.0  26.45  64.859  31.85  38.0 2973.0   100
+##   d() 247.8 252.80 287.072 254.90 261.3 2850.3   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}
@@ -477,17 +447,17 @@ microbenchmark::microbenchmark(s(), d())
 
 
 ```r
-airquality[complete.cases(airquality), ]
+airquality[complete.cases(airquality), ] |> head()
 ```
 
 ```
-##     Ozone Solar.R Wind Temp Month Day
-## 1      41     190  7.4   67     5   1
-## 2      36     118  8.0   72     5   2
-## 3      12     149 12.6   74     5   3
-## 4      18     313 11.5   62     5   4
-## 7      23     299  8.6   65     5   7
-....
+##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 7    23     299  8.6   65     5   7
+## 8    19      99 13.8   59     5   8
 ```
 
 ### 数据类型转化 {#coerce-data-type}
@@ -595,7 +565,7 @@ sort(setdiff(miss_pkg, pkg))
 ```
 
 ```
-## [1] "mnormt"  "tmvnsim"
+## [1] "mnormt"
 ```
 
 转化为管道操作，增加可读性
@@ -624,63 +594,3 @@ one_abs
 
 似然估计
 
-## 运行环境 {#dm-dplyr-rsession}
-
-
-```r
-xfun::session_info()
-```
-
-```
-## R version 4.2.0 (2022-04-22)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.4 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   askpass_1.1          assertthat_0.2.1     backports_1.4.1     
-##   base64enc_0.1.3      bit_4.0.4            bit64_4.0.5         
-##   blob_1.2.3           bookdown_0.26        broom_0.8.0         
-##   bslib_0.3.1          callr_3.7.0          cellranger_1.1.0    
-##   cli_3.3.0            clipr_0.8.0          colorspace_2.0-3    
-##   compiler_4.2.0       cpp11_0.4.2          crayon_1.5.1        
-##   curl_4.3.2           data.table_1.14.2    DBI_1.1.2           
-##   dbplyr_2.1.1         desc_1.4.1           digest_0.6.29       
-##   dplyr_1.0.9          dtplyr_1.2.1         ellipsis_0.3.2      
-##   evaluate_0.15        fansi_1.0.3          farver_2.1.0        
-##   fastmap_1.1.0        forcats_0.5.1        fs_1.5.2            
-##   gargle_1.2.0         generics_0.1.2       ggplot2_3.3.6       
-##   glue_1.6.2           googledrive_2.0.0    googlesheets4_1.0.0 
-##   graphics_4.2.0       grDevices_4.2.0      grid_4.2.0          
-##   gtable_0.3.0         haven_2.5.0          highr_0.9           
-##   hms_1.1.1            htmltools_0.5.2      httr_1.4.3          
-##   ids_1.0.1            isoband_0.2.5        jquerylib_0.1.4     
-##   jsonlite_1.8.0       knitr_1.39           labeling_0.4.2      
-##   lattice_0.20.45      lifecycle_1.0.1      lubridate_1.8.0     
-##   magrittr_2.0.3       MASS_7.3.57          Matrix_1.4.1        
-##   methods_4.2.0        mgcv_1.8.40          microbenchmark_1.4.9
-##   mime_0.12            modelr_0.1.8         munsell_0.5.0       
-##   nlme_3.1.157         openssl_2.0.1        pillar_1.7.0        
-##   pkgconfig_2.0.3      prettyunits_1.1.1    processx_3.5.3      
-##   progress_1.2.2       ps_1.7.0             purrr_0.3.4         
-##   R6_2.5.1             rappdirs_0.3.3       RColorBrewer_1.1.3  
-##   readr_2.1.2          readxl_1.4.0         rematch_1.0.1       
-##   rematch2_2.1.2       reprex_2.0.1         rlang_1.0.2         
-##   rmarkdown_2.14       rprojroot_2.0.3      rstudioapi_0.13     
-##   rvest_1.0.2          sass_0.4.1           scales_1.2.0        
-##   selectr_0.4.2        splines_4.2.0        stats_4.2.0         
-##   stringi_1.7.6        stringr_1.4.0        sys_3.4             
-##   sysfonts_0.8.8       tibble_3.1.7         tidyr_1.2.0         
-##   tidyselect_1.1.2     tidyverse_1.3.1      tinytex_0.39        
-##   tools_4.2.0          tzdb_0.3.0           utf8_1.2.2          
-##   utils_4.2.0          uuid_1.1.0           vctrs_0.4.1         
-##   viridisLite_0.4.0    vroom_1.5.7          withr_2.5.0         
-##   xfun_0.31            xml2_1.3.3           yaml_2.3.5
-```

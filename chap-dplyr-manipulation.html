@@ -54,9 +54,9 @@
     }
   </style>
 <link rel="stylesheet" href="style.css">
-<meta name="description" content="常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作 在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形 更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入...">
-<meta property="og:description" content="常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作 在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形 更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入...">
-<meta name="twitter:description" content="常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作 在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形 更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入...">
+<meta name="description" content="library(dplyr)  9.1 常用操作 dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL...">
+<meta property="og:description" content="library(dplyr)  9.1 常用操作 dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL...">
+<meta name="twitter:description" content="library(dplyr)  9.1 常用操作 dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL...">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -110,65 +110,59 @@
 <h1>
 <span class="header-section-number">第 9 章</span> 净土化操作<a class="anchor" aria-label="anchor" href="#chap-dplyr-manipulation"><i class="fas fa-link"></i></a>
 </h1>
-<blockquote>
-<p>常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算
-以 dplyr 为核心的 tidyverse 风数据操作 管道风操作</p>
-</blockquote>
-<p>在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形</p>
-<div class="sidebar">
-<p>更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入 tidyverse，数据处理或者叫特征工程 Base R vs data.table vs dplyr 它们各有优点，所以都加以介绍 参考 <a href="https://jozef.io/categories/rcase4base/">Jozef Hajnala</a> 博文。</p>
-<p>关于 tidyverse 提供的数据操作不要移动到 Base R 对应的章节，这二者已经越行越远，本章主要讲并行或分布式数据操作工具，如 sparklyr 针对大数据集上的操</p>
-<p>Base R 的数据操作的一致性问题参见统计之都帖子 <a href="https://d.cosx.org/d/420763" class="uri">https://d.cosx.org/d/420763</a></p>
-<p><a href="https://malco.io/">Malcolm Barrett</a> 以幻灯片的形式呈现 <a href="https://malco.io/slides/hs_dplyr/">dplyr</a> 和 <a href="https://malco.io/slides/hs_purrr/">purrr</a> 的基础用法</p>
-<p>Charlotte Wickham 的课程 A introduction to purrr <a href="https://github.com/cwickham/purrr-tutorial">purrr-tutorial</a></p>
-<p>关于引用 <a href="https://github.com/cwickham/quotation">quotation</a></p>
-<p>相比于 SQL， dplyr 在数据库操作的不足，这是一些比较难的部分 <a href="https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues" class="uri">https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues</a></p>
-</div>
-<p>函数式编程 Functional Programming Languages 用于数据处理</p>
-<ul>
-<li>
-<a href="https://github.com/smartinsightsfromdata/rpivotTable">rpivotTable</a> 动态数据透视表</li>
-<li>
-<a href="https://github.com/dgrtwo/fuzzyjoin">fuzzyjoin</a> Join tables together on inexact matching</li>
-<li>
-<a href="https://github.com/hadley/dtplyr">dtplyr</a> dtplyr is the data.table backend for dplyr. It provides S3 methods for data.table objects so that dplyr works the way you expect.</li>
-<li>
-<a href="https://github.com/yonicd/bplyr">bplyr</a> basic dplyr and tidyr functionality without the tidyverse dependencies</li>
-<li>
-<a href="https://github.com/OHDSI/SqlRender">SqlRender</a> 基于 Java 语言，借助 rJava 包支持参数化的 SQL 语句，并且可以将一种 SQL 语句（如 Microsoft SQL Server）转化为多种SQL语句（如Oracle, PostgreSQL, Amazon RedShift, Impala, IBM Netezza, Google BigQuery, Microsoft PDW, and SQLite）</li>
-<li>
-<a href="https://github.com/wch/fastmap">fastmap</a> 实现键值存储，提供新的数据结构</li>
-<li>
-<a href="https://github.com/RoaringBitmap/CRoaring">Roaring bitmaps</a> Bitsets, also called bitmaps, are commonly used as fast data structures.</li>
-</ul>
 <div class="sourceCode" id="cb1267"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
-<p>数据操作的语法</p>
-<p>第一代</p>
-<ol style="list-style-type: decimal">
-<li>Base R 数据操作已在第 <a href="chap-data-manipulation.html#chap-data-manipulation">6</a> 章详细介绍</li>
-</ol>
-<p>第二代</p>
-<ol style="list-style-type: decimal">
-<li>reshape （退休）使用函数 <code>melt</code> 和 <code>cast</code> 重构(restructure)和聚合(aggregate)数据</li>
-<li>reshape2 （退休）是 reshape 的继任者，功能和 reshape 类似，提供两个函数 <code>melt</code> 和 <code>cast</code> 聚合数据，因此不再介绍 reshape，而鉴于 reshape2 还在活跃使用中，故而以它为例介绍 <code>melt</code> 和 <code>cast</code> 函数</li>
-<li>plyr （退休）统一拆分(split)，计算(apply)，合并(combine)的数据处理流，由 dplyr（用于data.frame） 和 purrr （用于 list）继任</li>
-</ol>
-<p>第三代</p>
-<ol style="list-style-type: decimal">
-<li>dplyr 操作数据的语法及其扩展</li>
-<li>sparklyr 给 dplyr 提供 Spark 接口支持</li>
-<li>dbplyr 给 dplyr 提供 DBI 数据库接口支持</li>
-<li>dtplyr 给 dplyr 提供 data.table 支持</li>
-<li>tidyr 提供 <code>spread</code> 和 <code>gather</code> 两个函数清洗数据</li>
-</ol>
-<p>Garrett Grolemund 在 RStudio 主要从事教育教学，参考 <a href="https://github.com/rstudio-education/teach-tidy">Materials for the Tidyverse Train-the-trainer workshop</a> 和 <a href="https://rstudio-education.github.io/tidyverse-cookbook/">The Tidyverse Cookbook</a></p>
-<p>Dirk Eddelbuettel 的 <a href="https://github.com/eddelbuettel/gsir-te">Getting Started in R – Tinyverse Edition</a></p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
+<!--
+[Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
+
+[Malcolm Barrett](https://malco.io/) 以幻灯片的形式呈现 [dplyr](https://malco.io/slides/hs_dplyr/) 和 [purrr](https://malco.io/slides/hs_purrr/) 的基础用法
+
+Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://github.com/cwickham/purrr-tutorial)
+
+关于引用 [quotation](https://github.com/cwickham/quotation)
+
+相比于 SQL， dplyr 在数据库操作的不足 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
+
+函数式编程 Functional Programming Languages 用于数据处理
+
+- [rpivotTable](https://github.com/smartinsightsfromdata/rpivotTable) 动态数据透视表
+- [fuzzyjoin](https://github.com/dgrtwo/fuzzyjoin) Join tables together on inexact matching
+- [dtplyr](https://github.com/hadley/dtplyr) dtplyr is the data.table backend for dplyr. It provides S3 methods for data.table objects so that dplyr works the way you expect.
+- [bplyr](https://github.com/yonicd/bplyr) basic dplyr and tidyr functionality without the tidyverse dependencies 
+- [SqlRender](https://github.com/OHDSI/SqlRender) 基于 Java 语言，借助 rJava 包支持参数化的 SQL 语句，并且可以将一种 SQL 语句（如 Microsoft SQL Server）转化为多种SQL语句（如Oracle, PostgreSQL, Amazon RedShift, Impala, IBM Netezza, Google BigQuery, Microsoft PDW, and SQLite）
+- [fastmap](https://github.com/wch/fastmap) 实现键值存储，提供新的数据结构
+- [Roaring bitmaps](https://github.com/RoaringBitmap/CRoaring) Bitsets, also called bitmaps, are commonly used as fast data structures.
+
+
+数据操作的语法
+
+第一代
+
+1. Base R 数据操作已在第 \@ref(chap-data-manipulation) 章详细介绍
+
+第二代
+
+1. reshape （退休）使用函数 `melt` 和 `cast` 重构(restructure)和聚合(aggregate)数据 
+1. reshape2 （退休）是 reshape 的继任者，功能和 reshape 类似，提供两个函数 `melt` 和 `cast` 聚合数据，因此不再介绍 reshape，而鉴于 reshape2 还在活跃使用中，故而以它为例介绍  `melt` 和 `cast` 函数
+1. plyr （退休）统一拆分(split)，计算(apply)，合并(combine)的数据处理流，由 dplyr（用于data.frame） 和 purrr （用于 list）继任
+
+第三代
+
+1. dplyr 操作数据的语法及其扩展
+1. sparklyr 给 dplyr 提供 Spark 接口支持
+1. dbplyr 给 dplyr 提供 DBI 数据库接口支持
+1. dtplyr 给 dplyr 提供 data.table 支持
+1. tidyr 提供 `spread` 和 `gather` 两个函数清洗数据
+
+Garrett Grolemund 在 RStudio 主要从事教育教学，参考 [Materials for the Tidyverse Train-the-trainer workshop](https://github.com/rstudio-education/teach-tidy) 和 [The Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/)
+
+Dirk Eddelbuettel 的 [Getting Started in R -- Tinyverse Edition](https://github.com/eddelbuettel/gsir-te)
+-->
 <div id="common-operations" class="section level2" number="9.1">
 <h2>
 <span class="header-section-number">9.1</span> 常用操作<a class="anchor" aria-label="anchor" href="#common-operations"><i class="fas fa-link"></i></a>
 </h2>
-<p>dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称“数据操作的语法”，与 ggplot2 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 <a href="https://dplyr.tidyverse.org">这里</a>，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。</p>
+<p>dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 <a href="https://dplyr.tidyverse.org">这里</a>，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。</p>
 <p>dplyr 常用的函数是 7 个： <code>arrange</code> 排序 <code>filter</code> 过滤行 <code>select</code> 选择列 <code>mutate</code> 变换 <code>summarise</code> 汇总 <code>group_by</code> 分组 <code>distinct</code> 去重</p>
 <p>以 ggplot2 包自带的钻石数据集 diamonds 为例介绍</p>
 <div id="tibble-show" class="section level3" number="9.1.1">
@@ -177,23 +171,8 @@
 </h3>
 <p>除了直接打印数据集的前几行，tibble 包还提供 glimpse 函数查看数据集，而 Base R 默认查看方式是调用 str 函数</p>
 <div class="sourceCode" id="cb1268"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span></code></pre></div>
-<pre><code>## # A tibble: 53,940 × 10
-##    carat cut       color clarity depth table price     x     y     z
-##    &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
-##  2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
-##  3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
-##  4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
-##  5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
-##  6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
-##  7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
-##  8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
-##  9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
-## 10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
-## # … with 53,930 more rows</code></pre>
-<div class="sourceCode" id="cb1270"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"diamonds"</span>, package <span class="op">=</span> <span class="st">"ggplot2"</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 53,940
 ## Columns: 10
 ## $ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.…
@@ -251,8 +230,8 @@
 <span class="header-section-number">9.1.2</span> 筛选<a class="anchor" aria-label="anchor" href="#dplyr-filter"><i class="fas fa-link"></i></a>
 </h3>
 <p>按条件筛选数据的子集，按行筛选</p>
-<div class="sourceCode" id="cb1272"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">==</span> <span class="st">"Ideal"</span> , <span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb1270"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diamonds</span> |&gt;  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">==</span> <span class="st">"Ideal"</span> , <span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 10
 ##   carat cut   color clarity depth table price     x     y     z
 ##   &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -261,9 +240,9 @@
 ## 3  3.01 Ideal J     SI2      61.7    58 16037  9.25  9.2   5.69
 ## 4  3.01 Ideal J     I1       65.4    60 16538  8.99  8.93  5.86</code></pre>
 <p>先按行，再按列筛选</p>
-<div class="sourceCode" id="cb1274"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<div class="sourceCode" id="cb1272"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">carat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 16 × 2
 ##    cut       carat
@@ -290,9 +269,9 @@
 <span class="header-section-number">9.1.3</span> 排序<a class="anchor" aria-label="anchor" href="#dplyr-arrange"><i class="fas fa-link"></i></a>
 </h3>
 <p>arrange 默认升序排列，按钻石重量升序，按价格降序</p>
-<div class="sourceCode" id="cb1276"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">==</span> <span class="st">"Ideal"</span> , <span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<div class="sourceCode" id="cb1274"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cut</span> <span class="op">==</span> <span class="st">"Ideal"</span> , <span class="va">carat</span> <span class="op">&gt;=</span> <span class="fl">3</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">carat</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 10
 ##   carat cut   color clarity depth table price     x     y     z
@@ -307,10 +286,10 @@
 <span class="header-section-number">9.1.4</span> 聚合<a class="anchor" aria-label="anchor" href="#dplyr-summarise"><i class="fas fa-link"></i></a>
 </h3>
 <p>分组求和，求平均，计数</p>
-<div class="sourceCode" id="cb1278"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">clarity</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<div class="sourceCode" id="cb1276"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">clarity</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>sum_carat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">carat</span><span class="op">)</span>, mean_carat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">carat</span><span class="op">)</span>, n_count <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 8 × 5
 ## # Groups:   cut [5]
@@ -330,13 +309,13 @@
 <span class="header-section-number">9.1.5</span> 合并<a class="anchor" aria-label="anchor" href="#dplyr-merge"><i class="fas fa-link"></i></a>
 </h3>
 <p>按行合并</p>
-<div class="sourceCode" id="cb1280"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1278"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">)</span>
-<span class="va">one</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<span class="va">one</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="va">two</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">color</span> <span class="op">==</span> <span class="st">"J"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<span class="va">two</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">color</span> <span class="op">==</span> <span class="st">"J"</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
 <span class="co"># 按行合并数据框 one 和 two</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">one</span>, <span class="va">two</span><span class="op">)</span></code></pre></div>
@@ -354,13 +333,13 @@
 ##  9  1.5  Premium   J     VVS2     61.8  60    8760  7.36  7.33  4.54
 ## 10  1.51 Premium   J     SI1      60.4  62    6680  7.42  7.32  4.45</code></pre>
 <p>按列合并</p>
-<div class="sourceCode" id="cb1282"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1280"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">)</span>
-<span class="va">three</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">color</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<span class="va">three</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">color</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="va">four</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">color</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<span class="va">four</span> <span class="op">&lt;-</span> <span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">color</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">three</span>, <span class="va">four</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 × 4
@@ -377,10 +356,10 @@
 <span class="header-section-number">9.1.6</span> 变换<a class="anchor" aria-label="anchor" href="#dplyr-mutate"><i class="fas fa-link"></i></a>
 </h3>
 <p>添加一列，新的列或者改变原来的列</p>
-<div class="sourceCode" id="cb1284"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">diamonds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">carat</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+<div class="sourceCode" id="cb1282"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diamonds</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;</span> <span class="fl">3</span>, <span class="va">color</span> <span class="op">==</span> <span class="st">"I"</span><span class="op">)</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">cut</span>, <span class="va">carat</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>vol <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">carat</span> <span class="op">&gt;</span> <span class="fl">3.5</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 13 × 3
 ##    cut       carat vol  
@@ -404,7 +383,7 @@
 <span class="header-section-number">9.1.7</span> 去重<a class="anchor" aria-label="anchor" href="#dplyr-duplicated"><i class="fas fa-link"></i></a>
 </h3>
 <p>数据去重在 dplyr 中的实现<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://stackoverflow.com/questions/22959635/" class="uri"&gt;https://stackoverflow.com/questions/22959635/&lt;/a&gt;&lt;/p&gt;'><sup>32</sup></a>。</p>
-<div class="sourceCode" id="cb1286"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1284"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
@@ -424,9 +403,9 @@
 ## 9  0 0  9
 ## 10 0 0 10</code></pre>
 <p>去掉列重复的数据点 (x, y)</p>
-<div class="sourceCode" id="cb1288"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<div class="sourceCode" id="cb1286"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> |&gt;  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 3
 ## # Groups:   x, y [4]
@@ -436,18 +415,18 @@
 ## 2     1     0     4
 ## 3     1     1     7
 ## 4     0     0     9</code></pre>
-<div class="sourceCode" id="cb1290"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1288"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 此处不对，没有了 z </span>
-<span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">df</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>##   x y
 ## 1 0 1
 ## 2 1 0
 ## 3 1 1
 ## 4 0 0</code></pre>
-<div class="sourceCode" id="cb1292"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1290"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 应该为</span>
-<span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+<span class="va">df</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>##   x y z
 ## 1 0 1 1
@@ -473,7 +452,7 @@
 <span class="header-section-number">9.2.1</span> 初始化数据框<a class="anchor" aria-label="anchor" href="#create-empty-dataframe"><i class="fas fa-link"></i></a>
 </h3>
 <p>创建空的数据框，就是不包含任何行、记录</p>
-<div class="sourceCode" id="cb1294"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1292"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">empty_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   Doubles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">double</a></span><span class="op">(</span><span class="op">)</span>,
   Ints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="op">)</span>,
@@ -490,10 +469,10 @@
 ##  $ Logicals  : logi 
 ##  $ Characters: chr</code></pre>
 <p>如果数据框 df 包含数据，现在要依据它创建一个空的数据框</p>
-<div class="sourceCode" id="cb1296"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1294"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">empty_df</span> <span class="op">=</span> <span class="va">df</span><span class="op">[</span><span class="cn">FALSE</span>,<span class="op">]</span></code></pre></div>
 <p>还可以使用 structure 构造一个数据框，并且我们发现它的效率更高</p>
-<div class="sourceCode" id="cb1297"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1295"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     Date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
     File <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="op">)</span>,
@@ -510,34 +489,34 @@
 <span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span><span class="fu">s</span><span class="op">(</span><span class="op">)</span>, <span class="fu">d</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Unit: microseconds
 ##  expr   min     lq    mean median     uq    max neval
-##   s()  19.9  22.35  59.367  26.20  32.45 2930.6   100
-##   d() 208.1 218.30 251.996 221.45 224.95 2875.1   100</code></pre>
+##   s()  23.0  26.20  66.436  30.75  36.90 3099.4   100
+##   d() 247.9 256.05 290.508 259.40 264.15 2816.2   100</code></pre>
 </div>
 <div id="remove-missing-values" class="section level3" number="9.2.2">
 <h3>
 <span class="header-section-number">9.2.2</span> 移除缺失记录<a class="anchor" aria-label="anchor" href="#remove-missing-values"><i class="fas fa-link"></i></a>
 </h3>
 <p>只要行中包含缺失值，我们就把这样的行移除出去</p>
-<div class="sourceCode" id="cb1299"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">airquality</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
-<pre><code>##     Ozone Solar.R Wind Temp Month Day
-## 1      41     190  7.4   67     5   1
-## 2      36     118  8.0   72     5   2
-## 3      12     149 12.6   74     5   3
-## 4      18     313 11.5   62     5   4
-## 7      23     299  8.6   65     5   7
-....</code></pre>
+<div class="sourceCode" id="cb1297"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">airquality</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span>, <span class="op">]</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 7    23     299  8.6   65     5   7
+## 8    19      99 13.8   59     5   8</code></pre>
 </div>
 <div id="coerce-data-type" class="section level3" number="9.2.3">
 <h3>
 <span class="header-section-number">9.2.3</span> 数据类型转化<a class="anchor" aria-label="anchor" href="#coerce-data-type"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1301"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1299"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">PlantGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>## 'data.frame':    30 obs. of  2 variables:
 ##  $ weight: num  4.17 5.58 5.18 6.11 4.5 4.61 5.17 4.53 5.33 5.14 ...
 ##  $ group : Factor w/ 3 levels "ctrl","trt1",..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-<div class="sourceCode" id="cb1303"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1301"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bob</span> <span class="op">&lt;-</span> <span class="va">PlantGrowth</span>
 <span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">bob</span>, <span class="va">is.factor</span><span class="op">)</span>
 <span class="va">bob</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">bob</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">as.character</span><span class="op">)</span>
@@ -552,7 +531,7 @@
 </h3>
 <p>输入是一个数据框 data.frame，按照其中某一变量分组，然后计算任意数量的变量的行和和列和。</p>
 <p>空气质量数据集 airquality 按月份 Month 分组，然后求取满足条件的列的和</p>
-<div class="sourceCode" id="cb1305"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1303"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">$</span><span class="va">Month</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gv</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">subdta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">airquality</span>, subset <span class="op">=</span> <span class="va">Month</span> <span class="op">==</span> <span class="va">gv</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
@@ -582,11 +561,11 @@
 </h2>
 <p><a href="http://stefanbache.dk/">Stefan Milton Bache</a> 开发了 <a href="https://github.com/tidyverse/magrittr">magrittr</a> 包实现管道操作，增加代码的可读性和维护性，但是这个 R 包的名字取的太奇葩，因为 <a href="https://d.cosx.org/d/420697/21">记不住</a>，它其实是一个复杂的<a href="https://magrittr.tidyverse.org/articles/magrittr.html">法语发音</a>，中式英语就叫它马格里特吧！这下应该好记多了吧！</p>
 <p>我要查看是否需要新添加一个 R 包依赖，假设该 R 包是 reticulate 没有出现在 DESCRIPTION 文件中，但是可能已经被其中某（个）些 R 包依赖了</p>
-<div class="sourceCode" id="cb1307"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1305"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="st">"reticulate"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/package_dependencies.html">package_dependencies</a></span><span class="op">(</span><span class="fu">desc</span><span class="fu">::</span><span class="fu"><a href="http://r-lib.github.io/desc/reference/desc_get_deps.html">desc_get_deps</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">package</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>安装 pkg 的依赖</p>
-<div class="sourceCode" id="cb1309"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1307"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="st">"bookdown"</span>,
   <span class="st">"e1071"</span>,
@@ -606,13 +585,13 @@
 <span class="va">miss_pkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">merge_pkg</span><span class="op">)</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/zpackages.html">.packages</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># 除了 pkg 外，未安装的 R 包，安装 pkg 的依赖</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="va">miss_pkg</span>, <span class="va">pkg</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "mnormt"  "tmvnsim"</code></pre>
+<pre><code>## [1] "mnormt"</code></pre>
 <p>转化为管道操作，增加可读性</p>
 <blockquote>
 <p>再举一个关于数据模拟的例子</p>
 </blockquote>
 <p>模拟 0-1 序列，</p>
-<div class="sourceCode" id="cb1311"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1309"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">)</span>
 <span class="va">binom_sample</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, size <span class="op">=</span> <span class="va">n</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.2</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">n</span>
@@ -625,66 +604,6 @@
 <pre><code>## [1] 1.000e-01 1.000e-02 1.100e-02 4.400e-03 1.460e-03 3.980e-04 4.700e-06
 ## [8] 9.552e-05</code></pre>
 <p>似然估计</p>
-</div>
-<div id="dm-dplyr-rsession" class="section level2" number="9.4">
-<h2>
-<span class="header-section-number">9.4</span> 运行环境<a class="anchor" aria-label="anchor" href="#dm-dplyr-rsession"><i class="fas fa-link"></i></a>
-</h2>
-<div class="sourceCode" id="cb1313"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">xfun</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xfun/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.2.0 (2022-04-22)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.4 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   askpass_1.1          assertthat_0.2.1     backports_1.4.1     
-##   base64enc_0.1.3      bit_4.0.4            bit64_4.0.5         
-##   blob_1.2.3           bookdown_0.26        brio_1.1.3          
-##   broom_0.8.0          bslib_0.3.1          cachem_1.0.6        
-##   callr_3.7.0          cellranger_1.1.0     cli_3.3.0           
-##   clipr_0.8.0          colorspace_2.0-3     compiler_4.2.0      
-##   cpp11_0.4.2          crayon_1.5.1         curl_4.3.2          
-##   data.table_1.14.2    DBI_1.1.2            dbplyr_2.1.1        
-##   desc_1.4.1           digest_0.6.29        downlit_0.4.0       
-##   dplyr_1.0.9          dtplyr_1.2.1         ellipsis_0.3.2      
-##   evaluate_0.15        fansi_1.0.3          farver_2.1.0        
-##   fastmap_1.1.0        forcats_0.5.1        fs_1.5.2            
-##   gargle_1.2.0         generics_0.1.2       ggplot2_3.3.6       
-##   glue_1.6.2           googledrive_2.0.0    googlesheets4_1.0.0 
-##   graphics_4.2.0       grDevices_4.2.0      grid_4.2.0          
-##   gtable_0.3.0         haven_2.5.0          highr_0.9           
-##   hms_1.1.1            htmltools_0.5.2      httr_1.4.3          
-##   ids_1.0.1            isoband_0.2.5        jquerylib_0.1.4     
-##   jsonlite_1.8.0       knitr_1.39           labeling_0.4.2      
-##   lattice_0.20.45      lifecycle_1.0.1      lubridate_1.8.0     
-##   magrittr_2.0.3       MASS_7.3.57          Matrix_1.4.1        
-##   memoise_2.0.1        methods_4.2.0        mgcv_1.8.40         
-##   microbenchmark_1.4.9 mime_0.12            modelr_0.1.8        
-##   munsell_0.5.0        nlme_3.1.157         openssl_2.0.1       
-##   pillar_1.7.0         pkgconfig_2.0.3      prettyunits_1.1.1   
-##   processx_3.5.3       progress_1.2.2       ps_1.7.0            
-##   purrr_0.3.4          R6_2.5.1             rappdirs_0.3.3      
-##   RColorBrewer_1.1.3   readr_2.1.2          readxl_1.4.0        
-##   rematch_1.0.1        rematch2_2.1.2       reprex_2.0.1        
-##   rlang_1.0.2          rmarkdown_2.14       rprojroot_2.0.3     
-##   rstudioapi_0.13      rvest_1.0.2          sass_0.4.1          
-##   scales_1.2.0         selectr_0.4.2        splines_4.2.0       
-##   stats_4.2.0          stringi_1.7.6        stringr_1.4.0       
-##   sys_3.4              sysfonts_0.8.8       tibble_3.1.7        
-##   tidyr_1.2.0          tidyselect_1.1.2     tidyverse_1.3.1     
-##   tinytex_0.39         tools_4.2.0          tzdb_0.3.0          
-##   utf8_1.2.2           utils_4.2.0          uuid_1.1.0          
-##   vctrs_0.4.1          viridisLite_0.4.0    vroom_1.5.7         
-##   withr_2.5.0          xfun_0.31            xml2_1.3.3          
-##   yaml_2.3.5</code></pre>
 
 </div>
 </div>
@@ -719,7 +638,6 @@
 </ul>
 </li>
 <li><a class="nav-link" href="#pipe-manipulation"><span class="header-section-number">9.3</span> 管道操作</a></li>
-<li><a class="nav-link" href="#dm-dplyr-rsession"><span class="header-section-number">9.4</span> 运行环境</a></li>
 </ul>
 
       <div class="book-extra">
@@ -737,7 +655,7 @@
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2022-06-05.</p>
+    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2022-06-09.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
