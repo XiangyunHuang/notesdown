@@ -1,34 +1,11 @@
 # 净土化操作 {#chap-dplyr-manipulation}
 
-```{r,echo=FALSE}
-knitr::knit_hooks$set(output = local({
-  # the default output hook
-  hook_output <- knitr::knit_hooks$get("output")
-  function(x, options) {
-    if (!is.null(n <- options$out.lines)) { # out.lines
-      x <- xfun::split_lines(x)
-      if (length(x) > n) {
-        # truncate the output
-        x <- c(head(x, n), "....\n")
-      }
-      x <- paste(x, collapse = "\n") # paste first n lines together
-    }
-    hook_output(x, options)
-  }
-}))
+```{r}
+library(dplyr)
 ```
 
-> 常用操作和高频问题需要合并进之前的 data-manipulation，本章只介绍向量化计算
-> 以 dplyr 为核心的 tidyverse 风数据操作 管道风操作
-
-在不同规模的数据集上，Base R，dplyr 和 data.table 的处理性能应该属于低、中、高档搭配的情形
-
-::: sidebar
-更加高级的数据变形操作，特别是数据类型的一致性，方便后续的可视化和建模，引入 tidyverse，数据处理或者叫特征工程 Base R vs data.table vs dplyr 它们各有优点，所以都加以介绍 参考 [Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
-
-关于 tidyverse 提供的数据操作不要移动到 Base R 对应的章节，这二者已经越行越远，本章主要讲并行或分布式数据操作工具，如 sparklyr 针对大数据集上的操
-
-Base R 的数据操作的一致性问题参见统计之都帖子 <https://d.cosx.org/d/420763>
+<!--
+[Jozef Hajnala](https://jozef.io/categories/rcase4base/) 博文。
 
 [Malcolm Barrett](https://malco.io/) 以幻灯片的形式呈现 [dplyr](https://malco.io/slides/hs_dplyr/) 和 [purrr](https://malco.io/slides/hs_purrr/) 的基础用法
 
@@ -36,8 +13,7 @@ Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://git
 
 关于引用 [quotation](https://github.com/cwickham/quotation)
 
-相比于 SQL， dplyr 在数据库操作的不足，这是一些比较难的部分 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
-:::
+相比于 SQL， dplyr 在数据库操作的不足 <https://dbi.r-dbi.org/articles/dbi-1#sec:open-issues>
 
 函数式编程 Functional Programming Languages 用于数据处理
 
@@ -49,9 +25,6 @@ Charlotte Wickham 的课程 A introduction to purrr [purrr-tutorial](https://git
 - [fastmap](https://github.com/wch/fastmap) 实现键值存储，提供新的数据结构
 - [Roaring bitmaps](https://github.com/RoaringBitmap/CRoaring) Bitsets, also called bitmaps, are commonly used as fast data structures.
 
-```{r}
-library(tidyverse)
-```
 
 数据操作的语法
 
@@ -76,11 +49,12 @@ library(tidyverse)
 Garrett Grolemund 在 RStudio 主要从事教育教学，参考 [Materials for the Tidyverse Train-the-trainer workshop](https://github.com/rstudio-education/teach-tidy) 和 [The Tidyverse Cookbook](https://rstudio-education.github.io/tidyverse-cookbook/)
 
 Dirk Eddelbuettel 的 [Getting Started in R -- Tinyverse Edition](https://github.com/eddelbuettel/gsir-te)
+-->
 
 
 ## 常用操作 {#common-operations}
 
-dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称“数据操作的语法”，与 ggplot2 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 [这里](https://dplyr.tidyverse.org)，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。
+dplyr 由 Hadley Wickham 主要由开发和维护，是Rstudio公司开源的用于数据处理的一大利器，该包号称「数据操作的语法」，与 ggplot2 的「图形语法」 对应，也就是说数据处理那一套已经建立完整的和SQL一样的功能。它们都遵循同样的处理逻辑，只不过一个用SQL写，一个用R语言写，处理效率差不多，R语言写的 SQL 会被翻译为 SQL 语句，再传至数据库查询，当然它也支持内存内的数据操作。目前 dplyr 以 dbplyr 为后端支持的数据库有：MySQL、PostgreSQL，SQLite等，完整的支持列表请看 [这里](https://dplyr.tidyverse.org)，连接特定数据库，都是基于 DBI，DBI 即 Database Interface， 是使用C/C++开发的底层数据库接口，是一个统一的关系型数据库连接框架，需要根据不同的具体的数据库进行实例化，才可使用。
 
 dplyr 常用的函数是 7 个： `arrange` 排序 `filter` 过滤行 `select` 选择列 `mutate` 变换 `summarise` 汇总 `group_by` 分组 `distinct` 去重
 
@@ -91,7 +65,7 @@ dplyr 常用的函数是 7 个： `arrange` 排序 `filter` 过滤行 `select` �
 除了直接打印数据集的前几行，tibble 包还提供 glimpse 函数查看数据集，而 Base R 默认查看方式是调用 str 函数
 
 ```{r}
-diamonds
+data("diamonds", package = "ggplot2")
 glimpse(diamonds)
 ```
 
@@ -114,14 +88,14 @@ Table: (\#tab:dplyr-object-type) dplyr 定义的数据对象类型
 按条件筛选数据的子集，按行筛选
 
 ```{r}
-diamonds %>% filter(cut == "Ideal" , carat >= 3)
+diamonds |>  filter(cut == "Ideal" , carat >= 3)
 ```
 
 先按行，再按列筛选
 
 ```{r}
-diamonds %>% 
-  filter(carat >= 3, color == "I") %>% 
+diamonds |>  
+  filter(carat >= 3, color == "I") |>  
   select(cut, carat)
 ```
 
@@ -130,8 +104,8 @@ diamonds %>%
 arrange 默认升序排列，按钻石重量升序，按价格降序
 
 ```{r}
-diamonds %>% 
-  filter(cut == "Ideal" , carat >= 3) %>% 
+diamonds |>  
+  filter(cut == "Ideal" , carat >= 3) |>  
   arrange(carat, desc(price))
 ```
 
@@ -140,9 +114,9 @@ diamonds %>%
 分组求和，求平均，计数
 
 ```{r}
-diamonds %>% 
-  filter(carat > 3, color == "I") %>% 
-  group_by(cut, clarity) %>% 
+diamonds |>  
+  filter(carat > 3, color == "I") |>  
+  group_by(cut, clarity) |>  
   summarise(sum_carat = sum(carat), mean_carat = mean(carat), n_count = n())
 ```
 
@@ -153,11 +127,11 @@ diamonds %>%
 
 ```{r}
 set.seed(2018)
-one <- diamonds %>% 
-  filter(color == "I") %>% 
+one <- diamonds |>  
+  filter(color == "I") |>  
   sample_n(5)
-two <- diamonds %>% 
-  filter(color == "J") %>% 
+two <- diamonds |>  
+  filter(color == "J") |>  
   sample_n(5)
 # 按行合并数据框 one 和 two
 bind_rows(one, two)
@@ -167,11 +141,11 @@ bind_rows(one, two)
 
 ```{r}
 set.seed(2018)
-three <- diamonds %>% 
-  select(carat, color) %>% 
+three <- diamonds |>  
+  select(carat, color) |>  
   sample_n(5)
-four <- diamonds %>% 
-  select(carat, color) %>% 
+four <- diamonds |>  
+  select(carat, color) |>  
   sample_n(5)
 bind_cols(three, four)
 ```
@@ -182,9 +156,9 @@ bind_cols(three, four)
 添加一列，新的列或者改变原来的列
 
 ```{r}
-diamonds %>% 
-  filter(carat > 3, color == "I") %>% 
-  select(cut, carat) %>% 
+diamonds |>  
+  filter(carat > 3, color == "I") |>  
+  select(cut, carat) |>  
   mutate(vol = if_else(carat > 3.5, "A", "B"))
 ```
 
@@ -207,14 +181,14 @@ df
 去掉列重复的数据点 (x, y) 
 
 ```{r}
-df %>%
-  group_by(x, y) %>%
+df |>  
+  group_by(x, y) |> 
   filter(row_number(z) == 1)
 # 此处不对，没有了 z 
-df %>%
+df |> 
   distinct(x, y)
 # 应该为
-df %>%
+df |> 
   distinct(x, y, .keep_all = TRUE)
 ```
 
@@ -276,8 +250,8 @@ microbenchmark::microbenchmark(s(), d())
 
 只要行中包含缺失值，我们就把这样的行移除出去
 
-```{r,out.lines=6}
-airquality[complete.cases(airquality), ]
+```{r}
+airquality[complete.cases(airquality), ] |> head()
 ```
 
 ### 数据类型转化 {#coerce-data-type}
@@ -367,8 +341,3 @@ one_abs
 
 似然估计
 
-## 运行环境 {#dm-dplyr-rsession}
-
-```{r}
-xfun::session_info()
-```
