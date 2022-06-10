@@ -57,4 +57,4 @@ Book in early development. Planned release in 202X.
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.2.0 (2022-04-22) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-06-10 09:48:13。
+书籍在 R version 4.2.0 (2022-04-22) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-06-10 10:32:58。
