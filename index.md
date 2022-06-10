@@ -1,7 +1,7 @@
 --- 
 title: "R 语言学习笔记"
 author: "黄湘云"
-date: "2022-06-09"
+date: "2022-06-10"
 site: bookdown::bookdown_site
 documentclass: book
 papersize: a4
@@ -57,4 +57,4 @@ Book in early development. Planned release in 202X.
 
 ## 运行信息 {#sec-session-welcome .unnumbered}
 
-书籍在 R version 4.2.0 (2022-04-22) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-06-09 20:04:53。
+书籍在 R version 4.2.0 (2022-04-22) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2022-06-10 09:48:13。
