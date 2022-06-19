@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpr3gzE5/file581318792966.data"
+## [1] "/tmp/RtmpobcRWw/file585b4e08308e.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/Rtmpr3gzE5/test58136c5f4330"
+## [1] "/tmp/RtmpobcRWw/test585b769e6d21"
 ```
 
 ```r
@@ -486,8 +486,8 @@ yaml::read_yaml(file = '_bookdown.yml')
 ## [11] "other-manipulation.Rmd"       "statistical-graphics.Rmd"    
 ## [13] "graphics-foundations.Rmd"     "data-visualization.Rmd"      
 ## [15] "interactive-web-graphics.Rmd" "statistical-computation.Rmd" 
-## [17] "numerical-optimization.Rmd"   "appendix.Rmd"                
-## [19] "references.Rmd"
+## [17] "numerical-optimization.Rmd"   "differential-equations.Rmd"  
+## [19] "appendix.Rmd"                 "references.Rmd"
 ```
 
 Table: (\#tab:other-softwares) 导入来自其它数据分析软件产生的数据集
@@ -1607,12 +1607,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.80     Ideal     F     SI1  61.0    56  3082 6.05 5.98 3.67
-## 2  0.90   Premium     F     SI2  61.5    59  3704 6.23 6.20 3.82
-## 3  0.82 Very Good     E     VS2  60.4    61  3795 6.06 6.09 3.67
-## 4  0.73 Very Good     D     VS1  62.2    56  3856 5.72 5.75 3.57
-## 5  0.72     Ideal     E    VVS2  62.0    56  3874 5.74 5.77 3.57
-## 6  0.90 Very Good     G     VS2  62.4    60  4182 6.07 6.11 3.80
+## 1  0.78   Premium     G     VS2  60.8    58  2803 6.03 5.95 3.64
+## 2  0.71   Premium     F     VS2  62.6    58  2853 5.67 5.70 3.56
+## 3  0.79     Ideal     G     SI1  62.3    57  2898 5.90 5.85 3.66
+## 4  0.71   Premium     D     SI1  60.6    58  2913 5.77 5.79 3.50
+## 5  0.73 Very Good     E     VS2  62.9    58  3184 5.70 5.75 3.60
+## 6  0.91     Ideal     H     SI1  62.4    57  3635 6.18 6.23 3.87
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1630,13 +1630,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  1033    1
-## 2 Fair  2117    2
-## 3 Fair  4853    3
-## 4 Fair  6086    4
-## 5 Good   552    1
-## 6 Good   597    2
+##     cut price rank
+## 1  Fair  4928    1
+## 2  Fair  5993    2
+## 3  Fair  6002    3
+## 4  Good  1878    1
+## 5  Good  2789    2
+## 6 Ideal   605    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1709,7 +1709,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2022-06-10
+## 1     2022-06-19
 ```
 
 ```r
@@ -1719,7 +1719,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2022-06-09
+## 1                  2022-06-18
 ```
 
 ```r
@@ -1739,7 +1739,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         6
+## 1                         1
 ```
 
 最后，使用完记得关闭 Spark 连接

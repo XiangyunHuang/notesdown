@@ -34,6 +34,9 @@ library(ggfortify)         # 统计分析结果可视化：主成分图
 library(gganimate)         # 动态图
 ```
 
+[^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
+[^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
+
 David Robinson 给出为何使用 ggplot2 [^why-ggplot2] 当然也有 Jeff Leek 指出在某些重要场合不适合 ggplot2 [^why-not-ggplot2] 并且给出强有力的 [证据](http://motioninsocial.com/tufte/)，其实不管怎么样，适合自己的才是好的。也不枉费 Garrick Aden-Buie 花费 160 页幻灯片逐步分解介绍 [优雅的ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2)，[Malcolm Barrett](https://malco.io/) 也介绍了 [ggplot2 基础用法](https://malco.io/slides/hs_ggplot2)，还有 Selva Prabhakaran 精心总结给出了 50 个 ggplot2 数据可视化的 [例子](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) 以及 Victor Perrier 为小白用 ggplot2 操碎了心地开发 RStudio 插件 [esquisse](https://github.com/dreamRs/esquisse) 包，Claus O. Wilke 教你一步步创建出版级的图形 <https://github.com/clauswilke/practical_ggplot2>。
 
 ggplot2 是十分方便的统计作图工具，相比 Base R，为了一张出版级的图形，不需要去调整每个参数，实现快速出图。集成了很多其它统计计算的 R 包，支持丰富的统计分析和计算功能，如回归、平滑等，实现了作图和模型的无缝连接。比如图\@ref(fig:awesome-ggplot2)，使用 loess 局部多项式平滑得到数据的趋势，不仅仅是散点图，代码量也非常少。
@@ -59,24 +62,8 @@ ggplot(mpg, aes(displ, hwy)) +
 \caption{简洁美观}(\#fig:awesome-ggplot2)
 \end{figure}
 
-故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。除此之外还有几篇重要的参考资料：
+故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。
 
-1. Pablo Barberá 的 [Data Visualization with R and ggplot2](https://github.com/pablobarbera/Rdataviz)
-3. Matt Leonawicz 的新作 [mapmate](https://github.com/leonawicz/mapmate), 可以去其主页欣赏系列作品^[<https://leonawicz.github.io/>]
-4. [tidytuesday 可视化挑战官方项目](https://github.com/rfordatascience/tidytuesday) 还有 [tidytuesday](https://github.com/abichat/tidytuesday)
-5. [ggstatsplot](https://github.com/IndrajeetPatil/ggstatsplot) 可视化统计检验、模型的结果
-6. [ggpubr](https://github.com/kassambara/ggpubr) 制作出版级统计图形
-7. Thomas Lin Pedersen [Drawing Anything with ggplot2](https://github.com/thomasp85/ggplot2_workshop)
-8. [Designing ggplots: making clear figures that communicate](https://designing-ggplots.netlify.app/)
-9. [ggh4x](https://github.com/teunbrand/ggh4x) 提供 ggplot2 的额外定制功能
-10. [ggdist](https://github.com/mjskay/ggdist) Visualizations of distributions and uncertainty
-11. [gghighlight](https://github.com/yutannihilation/gghighlight)
-12. [ggnetwork](https://github.com/briatte/ggnetwork)
-13. [ggPMX](https://github.com/ggPMXdevelopment/ggPMX) 'ggplot2' Based Tool to Facilitate Diagnostic Plots for NLME Models
-14. [ggpp](https://github.com/aphalo/ggpp) ggpp: Grammar Extensions to 'ggplot2'
-
-[^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
-[^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
 
 如 Berton Gunter 所说，数据可视化只是一种手段，根据数据实际情况作展示才是重要的，并不是要追求酷炫。
 
@@ -3708,7 +3695,7 @@ weekdays(Sys.Date(), abbreviate = TRUE)
 ```
 
 ```
-## [1] "Fri"
+## [1] "Sun"
 ```
 
 ```r
@@ -3716,7 +3703,7 @@ data.table::wday(Sys.Date())
 ```
 
 ```
-## [1] 6
+## [1] 1
 ```
 
 :::
@@ -3931,7 +3918,7 @@ stat_chull
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55fef6b9e610>
+## <bytecode: 0x556d70d2a258>
 ## <environment: namespace:ggpubr>
 ```
 
