@@ -2,13 +2,13 @@
 
 <!-- 
 Optimization Packages for R
-https://github.com/r-opt 
-数值优化 经典教材 [@Nocedal2006]
+https://github.com/r-opt
+
 https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
 [gslnls](https://github.com/JorisChau/gslnls) GSL 库做非线性回归
-
-https://www.lindo.com/downloads/LINGO-OSX-64x86-19.0.dmg
 -->
+
+数值优化的理论部分可以参考经典教材《Numerical Optimization》 [@Nocedal2006] 和复旦大学吴立德教授的[数值优化课程](https://www.bilibili.com/video/BV1Kx411m7QB/)，本文仅仅梳理一些 R 语言社区提供的扩展包。
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
 
@@ -45,17 +45,6 @@ library(kernlab)    # 优化问题和机器学习的关系
 
 library(rootSolve)       # 非线性方程
 library(BB)              # 非线性方程组
-library(deSolve)         # ODE 常微分方程
-library(scatterplot3d)   # 三维曲线图
-
-library(shape)
-library(ReacTran)        # PDE 偏微分方程
-library(PBSddesolve)     # DAE 延迟微分方程
-
-library(nlme)              # 混合效应模型
-# library(nlmeODE)         # ODE 应用于混合效应模型
-# library(Sim.DiffProc)    # SDE 随机微分方程 种群 ODE 建模
-# library(nlmixr)          # Population ODE modeling
 ```
 
 
@@ -1426,7 +1415,7 @@ nlp$solution
 ```
 
 ```
-## [1]  0.00000 22.22222
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -1679,7 +1668,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.106
+## [1] 368.1061
 ```
 
 ```r
@@ -2072,7 +2061,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.083562 4.926363 3.567155 1.351610
+## [1] 1.132156 4.509763 4.112440 1.220657
 ```
 
 ```r
@@ -2080,7 +2069,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.59331
+## [1] 17.59272
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2208,7 +2197,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227973 4.245368
+## [1] 1.227969 4.245366
 ```
 
 ```r
@@ -2408,7 +2397,7 @@ nlp$solution
 ```
 
 ```
-## [1] 47.954832  5.010219
+## [1] -12.864440  -2.691383
 ```
 
 ```r
@@ -2416,7 +2405,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.202837
+## [1] -3.113433
 ```
 比如下面三组
 
@@ -2938,32 +2927,29 @@ sessionInfo()
 ## other attached packages:
 ##  [1] Deriv_4.1.3               quadprog_1.5-8           
 ##  [3] kableExtra_1.3.4          tibble_3.1.7             
-##  [5] nlme_3.1-157              PBSddesolve_1.12.6       
-##  [7] ReacTran_1.4.3.1          shape_1.4.6              
-##  [9] scatterplot3d_0.3-41      deSolve_1.32             
-## [11] BB_2019.10-1              rootSolve_1.8.2.3        
-## [13] kernlab_0.9-30            lattice_0.20-45          
-## [15] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
-## [17] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
-## [19] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
-## [21] lpSolve_5.6.15           
+##  [5] BB_2019.10-1              rootSolve_1.8.2.3        
+##  [7] kernlab_0.9-30            lattice_0.20-45          
+##  [9] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
+## [11] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
+## [13] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
+## [15] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] svglite_2.1.0           sysfonts_0.8.8          digest_0.6.29          
-##  [4] utf8_1.2.2              slam_0.1-50             R6_2.5.1               
-##  [7] alabama_2022.4-1        evaluate_0.15           httr_1.4.3             
-## [10] pillar_1.7.0            rlang_1.0.2             curl_4.3.2             
-## [13] rstudioapi_0.13         nloptr_2.0.1            rmarkdown_2.14         
-## [16] webshot_0.5.3           stringr_1.4.0           munsell_0.5.0          
-## [19] compiler_4.2.0          numDeriv_2016.8-1.1     xfun_0.31              
-## [22] pkgconfig_2.0.3         systemfonts_1.0.4       htmltools_0.5.2        
-## [25] bookdown_0.26           viridisLite_0.4.0       fansi_1.0.3            
-## [28] crayon_1.5.1            grid_4.2.0              lifecycle_1.0.1        
-## [31] registry_0.5-1          magrittr_2.0.3          scales_1.2.0           
-## [34] cli_3.3.0               stringi_1.7.6           xml2_1.3.3             
-## [37] ellipsis_0.3.2          vctrs_0.4.1             lpSolveAPI_5.5.2.0-17.7
-## [40] tools_4.2.0             glue_1.6.2              fastmap_1.1.0          
-## [43] yaml_2.3.5              colorspace_2.0-3        scs_3.0-0              
-## [46] rvest_1.0.2             knitr_1.39
+##  [1] xfun_0.31               slam_0.1-50             colorspace_2.0-3       
+##  [4] vctrs_0.4.1             viridisLite_0.4.0       htmltools_0.5.2        
+##  [7] yaml_2.3.5              utf8_1.2.2              rlang_1.0.2            
+## [10] nloptr_2.0.1            pillar_1.7.0            glue_1.6.2             
+## [13] registry_0.5-1          scs_3.0-0               lifecycle_1.0.1        
+## [16] stringr_1.4.0           munsell_0.5.0           rvest_1.0.2            
+## [19] lpSolveAPI_5.5.2.0-17.7 evaluate_0.15           knitr_1.39             
+## [22] fastmap_1.1.0           curl_4.3.2              fansi_1.0.3            
+## [25] scales_1.2.0            webshot_0.5.3           alabama_2022.4-1       
+## [28] sysfonts_0.8.8          systemfonts_1.0.4       digest_0.6.29          
+## [31] stringi_1.7.6           bookdown_0.26           numDeriv_2016.8-1.1    
+## [34] grid_4.2.0              cli_3.3.0               tools_4.2.0            
+## [37] magrittr_2.0.3          crayon_1.5.1            pkgconfig_2.0.3        
+## [40] ellipsis_0.3.2          xml2_1.3.3              svglite_2.1.0          
+## [43] rmarkdown_2.14          httr_1.4.3              rstudioapi_0.13        
+## [46] R6_2.5.1                compiler_4.2.0
 ```
 
