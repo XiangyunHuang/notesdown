@@ -624,11 +624,11 @@ DT[, .(i_1, i_2, f_1, f_2)]
 
 ```
 ##    i_1 i_2  f_1 f_2
-## 1:   1  NA    b   z
-## 2:   2   6    c   a
-## 3:   3   7    a   x
-## 4:   4   8    b   c
-## 5:   5   9 <NA>   x
+## 1:   1  NA    c   z
+## 2:   2   6    b   a
+## 3:   3   7    b   x
+## 4:   4   8 <NA>   c
+## 5:   5   9    b   x
 ## 6:  NA  10 <NA>   x
 ```
 
@@ -640,11 +640,11 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 
 ```
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     b
-##  2:   2   6      f_1     c
-##  3:   3   7      f_1     a
-##  4:   4   8      f_1     b
-##  5:   5   9      f_1  <NA>
+##  1:   1  NA      f_1     c
+##  2:   2   6      f_1     b
+##  3:   3   7      f_1     b
+##  4:   4   8      f_1  <NA>
+##  5:   5   9      f_1     b
 ##  6:  NA  10      f_1  <NA>
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
@@ -2051,24 +2051,24 @@ do.call(rbind, lapply(split(iris, iris$Species),
 
 ```
 ##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          4.8         3.4          1.6         0.2     setosa
-##  2:          5.0         3.4          1.6         0.4     setosa
-##  3:          5.3         3.7          1.5         0.2     setosa
-##  4:          5.1         3.3          1.7         0.5     setosa
-##  5:          4.9         3.6          1.4         0.1     setosa
-##  6:          4.7         3.2          1.6         0.2     setosa
-##  7:          6.3         2.3          4.4         1.3 versicolor
-##  8:          6.2         2.2          4.5         1.5 versicolor
-##  9:          5.2         2.7          3.9         1.4 versicolor
-## 10:          6.7         3.1          4.4         1.4 versicolor
-## 11:          6.1         3.0          4.6         1.4 versicolor
-## 12:          5.6         3.0          4.5         1.5 versicolor
-## 13:          6.7         3.3          5.7         2.1  virginica
-## 14:          7.3         2.9          6.3         1.8  virginica
-## 15:          6.2         2.8          4.8         1.8  virginica
-## 16:          5.6         2.8          4.9         2.0  virginica
-## 17:          7.6         3.0          6.6         2.1  virginica
-## 18:          6.9         3.1          5.1         2.3  virginica
+##  1:          5.0         3.3          1.4         0.2     setosa
+##  2:          5.5         3.5          1.3         0.2     setosa
+##  3:          5.0         3.5          1.3         0.3     setosa
+##  4:          4.8         3.0          1.4         0.1     setosa
+##  5:          5.1         3.7          1.5         0.4     setosa
+##  6:          5.4         3.9          1.3         0.4     setosa
+##  7:          6.3         2.5          4.9         1.5 versicolor
+##  8:          5.6         2.7          4.2         1.3 versicolor
+##  9:          5.9         3.0          4.2         1.5 versicolor
+## 10:          5.6         2.9          3.6         1.3 versicolor
+## 11:          5.2         2.7          3.9         1.4 versicolor
+## 12:          6.1         2.8          4.7         1.2 versicolor
+## 13:          6.9         3.2          5.7         2.3  virginica
+## 14:          5.8         2.7          5.1         1.9  virginica
+## 15:          7.6         3.0          6.6         2.1  virginica
+## 16:          7.2         3.2          6.0         1.8  virginica
+## 17:          7.7         2.8          6.7         2.0  virginica
+## 18:          6.7         2.5          5.8         1.8  virginica
 ```
 
 ### 分组计算分位数 {#lapply-split-quantile}
