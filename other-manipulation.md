@@ -436,9 +436,9 @@ microbenchmark::microbenchmark(s(), d())
 
 ```
 ## Unit: microseconds
-##  expr   min     lq   mean median     uq    max neval
-##   s()  19.9  22.85  57.83  28.75  32.40 2679.1   100
-##   d() 211.6 218.35 249.60 222.40 227.95 2523.2   100
+##  expr   min    lq    mean median     uq    max neval
+##   s()  20.1  21.0  48.927  23.25  25.10 2346.7   100
+##   d() 189.4 191.2 215.948 192.30 194.25 2160.5   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}

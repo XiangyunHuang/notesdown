@@ -2061,7 +2061,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.037762 4.802924 3.740537 1.345239
+## [1] 1.045004 4.829737 3.706666 1.339628
 ```
 
 ```r
@@ -2069,7 +2069,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.11629
+## [1] 17.11984
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2197,7 +2197,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227966 4.245374
+## [1] 1.227971 4.245374
 ```
 
 ```r
@@ -2397,7 +2397,7 @@ nlp$solution
 ```
 
 ```
-## [1] 41.80998 48.20303
+## [1] 18.44657 36.34640
 ```
 
 ```r
@@ -2405,7 +2405,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.279697
+## [1] -3.116658
 ```
 比如下面三组
 
@@ -2907,7 +2907,7 @@ sessionInfo()
 ```
 ## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.4 LTS
+## Running under: Ubuntu 20.04.5 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
