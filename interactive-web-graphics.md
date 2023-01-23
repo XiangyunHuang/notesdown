@@ -126,21 +126,6 @@ Table: (\#tab:plotly-config) 交互图形的设置函数 `config()` 各个参数
 
 ## 散点图 {#sec-plotly-scatter}
 
-
-Table: (\#tab:plotly-scatter-functions) 散点图类型
-
-| 类型             | 名称              |
-| :--------------- | :---------------- |
-| `scattercarpet`  | 地毯图            |
-| `scatterternary` | 三元图            |
-| `scatter3d`      | 三维散点图        |
-| `scattergeo`     | 地图散点图        |
-| `scattermapbox`  | 地图散点图 Mapbox |
-| `scatter`        | 散点图            |
-| `scattergl`      | 散点图 GL         |
-| `scatterpolar`   | 极坐标散点图      |
-| `scatterpolargl` | 极坐标散点图 GL   |
-
 plotly.js 提供很多图层用于绘制各类图形 <https://github.com/plotly/plotly.js/tree/master/src/traces>
 
 
@@ -285,71 +270,6 @@ plot_ly(data = dat) %>%
 ```
 
 
-## 直方图 {#sec-plotly-histogram}
-
-
-```r
-plot_ly(iris,
-  x = ~Sepal.Length, colors = "Greys",
-  color = ~Species, type = "histogram"
-)
-```
-
-## 箱线图 {#sec-plotly-boxplot}
-
-
-```r
-# 箱线图
-plot_ly(diamonds,
-  x = ~clarity, y = ~price, colors = "Greys",
-  color = ~clarity, type = "box"
-)
-```
-
-## 提琴图 {#sec-plotly-violin}
-
-
-```r
-plot_ly(sleep,
-  x = ~group, y = ~extra, split = ~group,
-  type = "violin",
-  box = list(visible = T),
-  meanline = list(visible = T)
-)
-```
-
-plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
-
-\begin{table}
-
-\caption{(\#tab:add-layer)图层}
-\centering
-\begin{tabular}[t]{l|l|l}
-\hline
-A & B & C\\
-\hline
-add\_annotations & add\_histogram & add\_polygons\\
-\hline
-add\_area & add\_histogram2d & add\_ribbons\\
-\hline
-add\_bars & add\_histogram2dcontour & add\_scattergeo\\
-\hline
-add\_boxplot & add\_image & add\_segments\\
-\hline
-add\_choropleth & add\_lines & add\_sf\\
-\hline
-add\_contour & add\_markers & add\_surface\\
-\hline
-add\_data & add\_mesh & add\_table\\
-\hline
-add\_fun & add\_paths & add\_text\\
-\hline
-add\_heatmap & add\_pie & add\_trace\\
-\hline
-\end{tabular}
-\end{table}
-
-
 
 ## 气泡图 {#sec-plotly-bubble}
 
@@ -413,7 +333,7 @@ plot_ly(
 
 
 ```r
-plot_ly(
+plotly::plot_ly(
   data = PlantGrowth, y = ~weight,
   color = ~group, colors = "Greys",
   type = "scatter", line = list(shape = "spline"),
@@ -428,28 +348,28 @@ plot_ly(
 
 
 ```r
-plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
+plotly::plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
 ```
 
 
 
 
-## 地图 I {#sec-plotly-map}
+## 地图上的散点图 {#sec-plotly-map}
 
 `plot_mapbox()` 使用 Mapbox 提供的地图服务，因此，需要注册一个账户，获取 MAPBOX_TOKEN
 
 
 ```r
 data("quakes")
-plot_mapbox(
+plotly::plot_mapbox(
   data = quakes, colors = "Greys",
   lon = ~long, lat = ~lat,
   color = ~mag, size = 2,
   type = "scattermapbox", 
   mode = "markers",
   marker = list(opacity = 0.5)
-) %>%
-  layout(
+) |>
+  plotly::layout(
     title = "Fiji Earthquake",
     mapbox = list(
       zoom = 3,
@@ -458,73 +378,11 @@ plot_mapbox(
         lon = ~ median(long)
       )
     )
-  ) %>%
-  config(
+  ) |>
+  plotly::config(
     mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN")
   )
 ```
-
-
-```r
-plotly::plot_ly(
-  data = quakes,
-  lon = ~long, lat = ~lat,
-  type = "scattergeo", mode = "markers",
-  text = ~ paste0(
-    "站点：", stations, "<br>",
-    "震级：", mag
-  ),
-  marker = list(
-    color = ~mag, 
-    size = 10, opacity = 0.8,
-    line = list(color = "white", width = 1)
-  )
-) %>%
-  plotly::layout(geo = list(
-    showland = TRUE,
-    landcolor = plotly::toRGB("gray95"),
-    subunitcolor = plotly::toRGB("gray85"),
-    countrycolor = plotly::toRGB("gray85"),
-    countrywidth = 0.5,
-    subunitwidth = 0.5,
-    lonaxis = list(
-      showgrid = TRUE,
-      gridwidth = 0.5,
-      range = c(160, 190),
-      dtick = 5
-    ),
-    lataxis = list(
-      showgrid = TRUE,
-      gridwidth = 0.5,
-      range = c(-40, -10),
-      dtick = 5
-    )
-  ))
-```
-
-
-
-```r
-dat <- data.frame(state.x77,
-  stats = rownames(state.x77),
-  stats_abbr = state.abb
-)
-
-plotly::plot_ly(
-  data = dat,
-  type = "choropleth",
-  locations = ~stats_abbr,
-  locationmode = "USA-states",
-  colorscale = "Viridis",
-  z = ~Income
-) |>
-  plotly::layout(
-    geo = list(scope = "usa"),
-    title = "1974年美国各州的人均收入",
-    legend = list(title = "收入")
-  )
-```
-
 
 
 
@@ -610,29 +468,6 @@ ridesDf %>%
 \caption{轨迹数据}(\#fig:uber-rides)
 \end{figure}
 
-
-## 三维图 (plotly) {#sec-plotly-3d}
-
-
-
-```r
-plot_ly(z = ~volcano) %>%
-  add_surface()
-
-plot_ly(x = c(0, 0, 1), y = c(0, 1, 0), z = c(0, 0, 0)) %>%
-  add_mesh()
-
-# https://plot.ly/r/reference/#scatter3d
-transform(mtcars, am = ifelse(am == 0, "Automatic", "Manual")) %>%
-  plot_ly(x = ~wt, y = ~hp, z = ~qsec, 
-          color = ~am, colors = c("#BF382A", "#0C4B8E")) %>%
-  add_markers() %>%
-  layout(scene = list(
-    xaxis = list(title = "Weight"),
-    yaxis = list(title = "Gross horsepower"),
-    zaxis = list(title = "1/4 mile time")
-  ))
-```
 
 ## 甘特图 {#sec-plotly-gantt-charts}
 
@@ -960,55 +795,6 @@ plot_ly(dat,
 
 
 
-## 导出静态图形 {#sec-export}
-
-orca (Open-source Report Creator App) 软件针对 plotly.js 库渲染的图形具有很强的导出功能，[安装 orca](https://github.com/plotly/orca#installation) 后，`plotly::orca()` 函数可以将基于 htmlwidgets 的 plotly 图形对象导出为 PNG、PDF 和 SVG 等格式的高质量静态图片。
-
-
-```r
-p <- plot_ly(x = 1:10, y = 1:10, color = 1:10)
-orca(p, "plot.svg")
-```
-
-## 静态图形转交互图形 {#sec-ggplotly}
-
-函数 `ggplotly()`  将 ggplot 对象转化为交互式 plotly 对象
-
-
-```r
-gg <- ggplot(faithful, aes(x = eruptions, y = waiting)) +
-  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
-  xlim(1, 6) +
-  ylim(40, 100)
-```
-
-静态图形
-
-
-```r
-gg
-```
-
-
-
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-6-1} \end{center}
-
-转化为 plotly 对象
-
-
-```r
-ggplotly(gg)
-```
-
-添加动态点的注释，比如点横纵坐标、坐标文本，整个注释标签的样式（如背景色）
-
-
-```r
-ggplotly(gg, dynamicTicks = "y") %>%
-  style(., hoveron = "points", hoverinfo = "x+y+text", 
-        hoverlabel = list(bgcolor = "white"))
-```
-
 
 
 ## 地图 II {#sec-echarts4r-map}
@@ -1272,7 +1058,7 @@ visTree(res, main = "鸢尾花分类树", width = "100%")
 
 
 
-\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\begin{center}\includegraphics{interactive-web-graphics_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
 节点、边的属性都可以映射数据指标
 
@@ -1357,17 +1143,16 @@ sessionInfo()
 ## loaded via a namespace (and not attached):
 ##  [1] tidyselect_1.1.2  xfun_0.31         purrr_0.3.4       colorspace_2.0-3 
 ##  [5] vctrs_0.4.1       generics_0.1.2    htmltools_0.5.2   viridisLite_0.4.0
-##  [9] yaml_2.3.5        utf8_1.2.2        rlang_1.0.2       isoband_0.2.5    
-## [13] pillar_1.7.0      glue_1.6.2        withr_2.5.0       DBI_1.1.2        
-## [17] lifecycle_1.0.1   stringr_1.4.0     munsell_0.5.0     gtable_0.3.0     
-## [21] htmlwidgets_1.5.4 evaluate_0.15     labeling_0.4.2    knitr_1.39       
-## [25] callr_3.7.0       fastmap_1.1.0     ps_1.7.0          curl_4.3.2       
-## [29] fansi_1.0.3       scales_1.2.0      webshot_0.5.3     jsonlite_1.8.0   
-## [33] sysfonts_0.8.8    farver_2.1.0      png_0.1-7         digest_0.6.29    
-## [37] stringi_1.7.6     processx_3.5.3    bookdown_0.26     dplyr_1.0.9      
-## [41] grid_4.2.0        cli_3.3.0         tools_4.2.0       magrittr_2.0.3   
-## [45] lazyeval_0.2.2    tibble_3.1.7      crayon_1.5.1      tidyr_1.2.0      
-## [49] pkgconfig_2.0.3   ellipsis_0.3.2    MASS_7.3-57       data.table_1.14.2
-## [53] assertthat_0.2.1  rmarkdown_2.14    httr_1.4.3        rstudioapi_0.13  
-## [57] R6_2.5.1          igraph_1.3.1      compiler_4.2.0
+##  [9] yaml_2.3.5        utf8_1.2.2        rlang_1.0.2       pillar_1.7.0     
+## [13] glue_1.6.2        withr_2.5.0       DBI_1.1.2         lifecycle_1.0.1  
+## [17] stringr_1.4.0     munsell_0.5.0     gtable_0.3.0      htmlwidgets_1.5.4
+## [21] evaluate_0.15     knitr_1.39        callr_3.7.0       fastmap_1.1.0    
+## [25] ps_1.7.0          curl_4.3.2        fansi_1.0.3       scales_1.2.0     
+## [29] webshot_0.5.3     jsonlite_1.8.0    sysfonts_0.8.8    png_0.1-7        
+## [33] digest_0.6.29     stringi_1.7.6     processx_3.5.3    bookdown_0.26    
+## [37] dplyr_1.0.9       grid_4.2.0        cli_3.3.0         tools_4.2.0      
+## [41] magrittr_2.0.3    lazyeval_0.2.2    tibble_3.1.7      crayon_1.5.1     
+## [45] tidyr_1.2.0       pkgconfig_2.0.3   ellipsis_0.3.2    data.table_1.14.2
+## [49] assertthat_0.2.1  rmarkdown_2.14    httr_1.4.3        rstudioapi_0.13  
+## [53] R6_2.5.1          igraph_1.3.1      compiler_4.2.0
 ```

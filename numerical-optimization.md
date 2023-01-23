@@ -1415,7 +1415,7 @@ nlp$solution
 ```
 
 ```
-## [1]   0.00000 -21.99115
+## [1]  0.00000 22.22222
 ```
 
 ```r
@@ -1423,7 +1423,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -2060,7 +2060,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.136519 4.867706 3.667100 1.238743
+## [1] 1.410464 4.415201 4.156750 1.112773
 ```
 
 ```r
@@ -2068,7 +2068,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.28294
+## [1] 19.82441
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2196,7 +2196,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227962 4.245359
+## [1] 1.227971 4.245375
 ```
 
 ```r
@@ -2396,7 +2396,7 @@ nlp$solution
 ```
 
 ```
-## [1] 34.01078 43.48791
+## [1]  2.239109 16.151379
 ```
 
 ```r
@@ -2404,7 +2404,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.16149
+## [1] -3.277042
 ```
 比如下面三组
 
@@ -2730,170 +2730,6 @@ HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 旅行商问题、背包问题、指派问题、选址问题、网络流量问题
 
 规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
-
-## 回归与优化 {#sec-regression-optimization}
-
-简单线性回归
-
-[nlsr](https://cran.r-project.org/package=nlsr)
-
-是否能给大家提供一些思路？
-
-Lasso [@lasso1996]
-
-Least Angle Regression [@lar2004]
-
-为了解决Lasso的有偏估计问题，自适应 Lasso、松弛 Lasso 
-SCAD (Smoothly Clipped Absolute Deviation)[@scad2008]
-MCP (Minimax Concave Penalty)[@mcp2010]
-
-由于缺少高效的求解算法，Lasso 在高维小样本特征选择研究中没有广泛流行，最小角回归(Least Angle Regression, LAR)算法 [@lar2004] 的出现有力促进了Lasso在高维小样本数据中的应用
-
-[bestsubset](https://github.com/ryantibs/best-subset/) 最优子集回归
-
-经典的普通最小二乘、广义最小二乘、岭回归、逐步回归、Lasso 回归、最优子集回归都可转化为优化问题，一般形式如下
-
-$$
-\underbrace{\hat{\theta}_{\lambda_n}}_{\text{待估参数}} \in \arg \min_{\theta \in \Omega} \left\{ \underbrace{\mathcal{L}(\theta;Z_{1}^{n})}_{\text{损失函数}} + \lambda_n \underbrace{\mathcal{R}(\theta)}_{\text{正则化项}} \right\}.
-$$
-
-下面尝试以 nloptr 包的优化器来展示求解过程，并与 Base R、**glmnet** 和 **MASS** 实现的回归模型比较。
-
-<!-- 向量用小写，矩阵用大写 -->
-
-$$
-\arg \min_{\beta,\lambda} ~~ \frac{1}{2} || \mathbf{y} - \mathbf{X} \beta ||_2^2 +  \lambda ||\beta||_1
-$$
-其中，$X \in \mathbb{R}^{m\times n}$， $y \in \mathbb{R}^m$，$\beta \in \mathbb{R}^n$， $0 < \lambda \in \mathbb{R}$
-
-<!-- 
-广义最小二乘拟合 nlme::gls  预测 nlme::predict.gls
-用广义最小二乘拟合线性模型 MASS::lm.gls	
-用广义最小二乘拟合趋势面 spatial::surf.gls
--->
-
-$$y = X\beta + \epsilon$$
-
-$\hat{\beta} = (X^{\top}X)^{-1}X^{\top}y, \quad \hat{Y} = X(X^{\top}X)^{-1}X^{\top}y$
-
-
-```r
-set.seed(123)
-n <- 200
-p <- 50
-x <- matrix(rnorm(n * p), n)
-y <- rnorm(n)
-lm(y ~ x + 0)
-# y 的估计
-# 教科书版
-fit_base = function(x, y) {
-  x %*% solve(t(x) %*% x) %*% t(x) %*% y
-}
-# 先向量计算，然后矩阵计算
-fit_vector = function(x, y) {
-  x %*% (solve(t(x) %*% x) %*% (t(x) %*% y))
-}
-# X'X 是对称的，防止求逆
-fit_inv = function(x, y) {
-  x %*% solve(crossprod(x), crossprod(x, y))
-}
-```
-
-QR 分解 $X_{n\times p} = Q_{n\times p} R_{p\times p}$，$n > p$，$Q^{\top}Q = I$，$R$ 是上三角矩阵，$\hat{Y} = X(X^{\top}X)^{-1}X^{\top}y = QQ^{\top}y$
-
-
-```r
-fit_qr <- function(x, y) {
-  decomp <- qr(x)
-  qr.qy(decomp, qr.qty(decomp, y))
-}
-lm.fit(x, y)
-```
-
-若 $A = X^{\top}X$ 是正定矩阵，则 $A = LL^{\top}$，$L$ 是下三角矩阵
-
-
-```r
-fit_chol <- function(x, y) {
-  decomp <- chol(crossprod(x))
-  lxy <- backsolve(decomp, crossprod(x, y), transpose = TRUE)
-  b <- backsolve(decomp, lxy)
-  x %*% b
-}
-```
-
-
-```r
-## Using C/C++
-system.time(RcppEigen::fastLmPure(x, y, method = 1)) ## QR
-system.time(RcppEigen::fastLmPure(x, y, method = 2)) ## Cholesky
-system.time(RcppArmadillo::fastLmPure(x, y, method = 1)) ## QR
-system.time(RcppArmadillo::fastLmPure(x, y, method = 2)) ## Cholesky
-```
-
-## 对数似然 {#sec-log-likelihood}
-
-随机变量 X 服从参数为 $\lambda > 0$ 的指数分布，密度函数 $p(x)$ 为
-
-\begin{equation*}
-\begin{array}{l}
- p(x) = \left\{ 
-    \begin{array}{l}
-    \lambda\mathrm{e}^{-\lambda x},  x \geq 0\\
-    0, \quad x < 0
-    \end{array} \right.
-\end{array}
-\end{equation*}
-
-其中，$\lambda > 0$，下面给定一系列模拟样本观察值 $x_1, x_2, \cdots, x_n$，估计参数 $\lambda$。对数似然函数 $\ell(\lambda) = \log \prod_{i=1}^{n} f(x_i) = n \log \lambda - \lambda \sum_{i=1}^{n}x_i$。解此方程即可得到 $\lambda$ 的极大似然估计 $\lambda_{mle} = \frac{1}{\bar{X}}$，极大值 $\ell(\lambda_{mle}) = - n(1 + \log \bar{X})$。
-
-根据上述样本，计算样本均值 $(\mu - 1.5*\sigma/\sqrt{n}, \mu + 1.5*\sigma/\sqrt{n})$ 和方差 $(0.8\sigma, 1.5\sigma)$。
-已知正态分布 $f(x) = \frac{1}{\sqrt{2\pi}\sigma}\mathrm{e}^{- \frac{(x - \mu)^2}{2\sigma^2}}$ 的对数似然形式 $\ell(\mu,\sigma^2) = \log \prod_{i=1}^{n} f(x_i) = \sum_{i=1}^{n}\log f(x_i)$。正态分布的密度函数的对数可用 `dnorm(..., log = TRUE)` 计算。
-
-生成服从指数分布的样本，计算样本的均值和方差，依据均值和方差构造区间，然后将区间网格化，在此网格上绘制正态分布的对数似然函数。绕那么大一个圈子，其实就是绘制正态分布的对数似然函数。
-
-
-```r
-set.seed(2021)
-n <- 20 # 随机数的个数
-x <- rexp(n, rate = 5) # 服从指数分布的随机数
-m <- 40 # 网格数
-
-mu <- seq(
-  mean(x) - 1.5 * sd(x) / sqrt(n),
-  mean(x) + 1.5 * sd(x) / sqrt(n),
-  length.out = m
-)
-sigma <- seq(0.8 * sd(x), 1.5 * sd(x), length.out = m)
-df <- expand.grid(x = mu, y = sigma)
-# 正态分布的对数似然
-loglik <- function(b, x0) -sum(dnorm(x0, b[1], b[2], log = TRUE))
-
-df$fnxy = apply(df, 1, loglik, x0 = x)
-
-wireframe(
-  data = df, fnxy ~ x * y,
-  shade = TRUE, drape = FALSE,
-  xlab = expression(mu), 
-  ylab = expression(sigma), 
-  zlab = list(expression(-loglik(mu, sigma)), rot = 90),
-  scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = 120, x = -70, y = 0)
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/log-likelihood-1} 
-
-}
-
-\caption{正态分布参数的负对数似然函数}(\#fig:log-likelihood)
-\end{figure}
-
-
-<!-- 添加极大值点，除指数分布外，还有正态、二项、泊松分布观察其似然曲面的特点，都是单峰，有唯一极值点，再考虑正态混合模型的似然曲面 -->
 
 
 ## 运行环境 {#sec-numerical-optimization-session}
