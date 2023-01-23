@@ -134,21 +134,6 @@ Table: (\#tab:plotly-config) 交互图形的设置函数 `config()` 各个参数
 
 ## 散点图 {#sec-plotly-scatter}
 
-
-Table: (\#tab:plotly-scatter-functions) 散点图类型
-
-| 类型             | 名称              |
-| :--------------- | :---------------- |
-| `scattercarpet`  | 地毯图            |
-| `scatterternary` | 三元图            |
-| `scatter3d`      | 三维散点图        |
-| `scattergeo`     | 地图散点图        |
-| `scattermapbox`  | 地图散点图 Mapbox |
-| `scatter`        | 散点图            |
-| `scattergl`      | 散点图 GL         |
-| `scatterpolar`   | 极坐标散点图      |
-| `scatterpolargl` | 极坐标散点图 GL   |
-
 plotly.js 提供很多图层用于绘制各类图形 <https://github.com/plotly/plotly.js/tree/master/src/traces>
 
 ```{r plotly-scatterplot,fig.cap="其它常见图形",eval=knitr::is_html_output()}
@@ -288,46 +273,6 @@ plot_ly(data = dat) %>%
 ```
 
 
-## 直方图 {#sec-plotly-histogram}
-
-```{r plotly-histogram, fig.cap="分组直方图", eval=knitr::is_html_output()}
-plot_ly(iris,
-  x = ~Sepal.Length, colors = "Greys",
-  color = ~Species, type = "histogram"
-)
-```
-
-## 箱线图 {#sec-plotly-boxplot}
-
-```{r plotly-boxplot, fig.cap="箱线图", eval=knitr::is_html_output()}
-# 箱线图
-plot_ly(diamonds,
-  x = ~clarity, y = ~price, colors = "Greys",
-  color = ~clarity, type = "box"
-)
-```
-
-## 提琴图 {#sec-plotly-violin}
-
-```{r plotly-violin, fig.cap="提琴图", eval=knitr::is_html_output()}
-plot_ly(sleep,
-  x = ~group, y = ~extra, split = ~group,
-  type = "violin",
-  box = list(visible = T),
-  meanline = list(visible = T)
-)
-```
-
-plotly 包含图层 27 种，见表 \@ref(tab:add-layer) 
-
-```{r add-layer, echo=FALSE}
-library(plotly, warn.conflicts = FALSE)
-knitr::kable(matrix(grep("add_*", x = ls("package:plotly"), value = T), ncol = 3),
-  col.names = c("A", "B", "C"), caption = "图层"
-)
-```
-
-
 
 ## 气泡图 {#sec-plotly-bubble}
 
@@ -388,7 +333,7 @@ plot_ly(
 ## 堆积图 {#sec-plotly-tozeroy}
 
 ```{r plotly-tozeroy,eval=knitr::is_html_output()}
-plot_ly(
+plotly::plot_ly(
   data = PlantGrowth, y = ~weight,
   color = ~group, colors = "Greys",
   type = "scatter", line = list(shape = "spline"),
@@ -402,7 +347,7 @@ plot_ly(
 其他基础图形
 
 ```{r plotly-heatmap, eval=knitr::is_html_output()}
-plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
+plotly::plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
 ```
 
 
@@ -414,15 +359,15 @@ plot_ly(z = volcano, type = 'heatmap', colors = "Greys")
 
 ```{r mapbox-quakes,eval=knitr::is_html_output(),fig.cap="斐济地震数据"}
 data("quakes")
-plot_mapbox(
+plotly::plot_mapbox(
   data = quakes, colors = "Greys",
   lon = ~long, lat = ~lat,
   color = ~mag, size = 2,
   type = "scattermapbox", 
   mode = "markers",
   marker = list(opacity = 0.5)
-) %>%
-  layout(
+) |>
+  plotly::layout(
     title = "Fiji Earthquake",
     mapbox = list(
       zoom = 3,
@@ -431,71 +376,11 @@ plot_mapbox(
         lon = ~ median(long)
       )
     )
-  ) %>%
-  config(
+  ) |>
+  plotly::config(
     mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN")
   )
 ```
-
-```{r bubble-map, eval=knitr::is_html_output(), fig.cap="斐济地震带分布"}
-plotly::plot_ly(
-  data = quakes,
-  lon = ~long, lat = ~lat,
-  type = "scattergeo", mode = "markers",
-  text = ~ paste0(
-    "站点：", stations, "<br>",
-    "震级：", mag
-  ),
-  marker = list(
-    color = ~mag, 
-    size = 10, opacity = 0.8,
-    line = list(color = "white", width = 1)
-  )
-) %>%
-  plotly::layout(geo = list(
-    showland = TRUE,
-    landcolor = plotly::toRGB("gray95"),
-    subunitcolor = plotly::toRGB("gray85"),
-    countrycolor = plotly::toRGB("gray85"),
-    countrywidth = 0.5,
-    subunitwidth = 0.5,
-    lonaxis = list(
-      showgrid = TRUE,
-      gridwidth = 0.5,
-      range = c(160, 190),
-      dtick = 5
-    ),
-    lataxis = list(
-      showgrid = TRUE,
-      gridwidth = 0.5,
-      range = c(-40, -10),
-      dtick = 5
-    )
-  ))
-```
-
-
-```{r choropleth-map, eval=knitr::is_html_output(), fig.cap="美国各州收入"}
-dat <- data.frame(state.x77,
-  stats = rownames(state.x77),
-  stats_abbr = state.abb
-)
-
-plotly::plot_ly(
-  data = dat,
-  type = "choropleth",
-  locations = ~stats_abbr,
-  locationmode = "USA-states",
-  colorscale = "Viridis",
-  z = ~Income
-) |>
-  plotly::layout(
-    geo = list(scope = "usa"),
-    title = "1974年美国各州的人均收入",
-    legend = list(title = "收入")
-  )
-```
-
 
 
 
