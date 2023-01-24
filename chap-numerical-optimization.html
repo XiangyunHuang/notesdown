@@ -134,7 +134,7 @@ https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
 <p>Berwin A. Turlach 开发的 <a href="https://CRAN.R-project.org/package=quadprog">quadprog</a> 主要用于求解二次规划问题。<a href="https://web.stanford.edu/~anqif/">Anqi Fu</a> 开发的 <a href="https://github.com/anqif/CVXR">CVXR</a> 可解很多凸优化问题 <span class="citation"><a href="#ref-CVXR2020" role="doc-biblioref">[28]</a></span>，详见网站 <a href="https://cvxr.rbind.io/" class="uri">https://cvxr.rbind.io/</a>，<a href="https://www.ucl.ac.uk/~uctpjyy/nloptr.html">Jelmer Ypma</a> 开发的 <a href="https://github.com/jyypma/nloptr">nloptr</a> 可解无约束和有约束的非线性规划问题 <span class="citation"><a href="#ref-nloptr" role="doc-biblioref">[29]</a></span>，<a href="https://github.com/mbinois/GPareto">GPareto</a> 求解多目标优化问题，帕雷托前沿优化和估计<span class="citation"><a href="#ref-GPareto2019" role="doc-biblioref">[30]</a></span>。<a href="https://github.com/igraph/igraph/">igraph</a> 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。 <a href="https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html" class="uri">https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html</a> 提供了一般的求解器介绍。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。<span class="citation"><a href="#ref-ROI2020" role="doc-biblioref">[31]</a></span> 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。<a href="https://github.com/luca-scr/GA">GA</a> 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 <span class="citation"><a href="#ref-GA2013" role="doc-biblioref">[32]</a>, <a href="#ref-GA2017" role="doc-biblioref">[33]</a></span>，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，<span class="citation"><a href="#ref-NMOF2019" role="doc-biblioref">[34]</a></span> 提供了详细的介绍。<span class="citation"><a href="#ref-Nash2014" role="doc-biblioref">[35]</a></span> 总结了 R 语言环境下最优化问题的最佳实践。<a href="https://github.com/coatless/rcppensmallen">RcppEnsmallen</a> 数值优化
 通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。<a href="https://github.com/yixuan/RcppNumerical">RcppNumerical</a> 无约束数值优化，一维/多维数值积分。</p>
 <p>谷歌开源的运筹优化工具 <a href="https://github.com/google/or-tools">or-tools</a> 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 <a href="https://github.com/Operations-Research-Science/Ebook-Linear_Programming">线性规划</a> 一书值得一看。</p>
-<div class="sourceCode" id="cb1770"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1762"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 加载 ROI 时不要自动加载插件</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>ROI_LOAD_PLUGINS <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gaborcsardi/lpSolve">lpSolve</a></span><span class="op">)</span>    <span class="co"># 线性规划求解器</span>
@@ -314,7 +314,7 @@ s.t.\left\{
 \end{array} 
 \end{equation*}\]</span></p>
 <p>对应成 R 代码如下</p>
-<div class="sourceCode" id="cb1771"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1763"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># lpSolve 添加约束条件</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gaborcsardi/lpSolve">lpSolve</a></span><span class="op">)</span>
 <span class="co"># 目标</span>
@@ -328,7 +328,7 @@ s.t.\left\{
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lpSolve/man/lp.html">lp</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="va">f.obj</span>, <span class="va">f.con</span>, <span class="va">f.dir</span>, <span class="va">f.rhs</span><span class="op">)</span>
 <span class="va">res</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] -31.4</code></pre>
-<div class="sourceCode" id="cb1773"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1765"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 2.4 3.4</code></pre>
 </div>
@@ -351,7 +351,7 @@ s.t.\left\{
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1775"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1767"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标</span>
 <span class="va">f.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.6</span><span class="op">)</span>
 <span class="co"># 约束</span>
@@ -364,7 +364,7 @@ s.t.\left\{
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lpSolve/man/lp.html">lp</a></span><span class="op">(</span><span class="st">"max"</span>, <span class="va">f.obj</span>, <span class="va">f.con</span>, <span class="va">f.dir</span>, <span class="va">f.rhs</span>, int.vec<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">res</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 29.2</code></pre>
-<div class="sourceCode" id="cb1777"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1769"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 26 40</code></pre>
 </div>
@@ -383,7 +383,7 @@ s.t.\left\{
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1779"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1771"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标</span>
 <span class="va">f.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.6</span><span class="op">)</span>
 <span class="co"># 约束</span>
@@ -396,7 +396,7 @@ s.t.\left\{
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lpSolve/man/lp.html">lp</a></span><span class="op">(</span><span class="st">"max"</span>, <span class="va">f.obj</span>, <span class="va">f.con</span>, <span class="va">f.dir</span>, <span class="va">f.rhs</span>, int.vec<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, all.bin <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">res</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 0.8</code></pre>
-<div class="sourceCode" id="cb1781"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1773"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 1 1</code></pre>
 </div>
@@ -404,8 +404,8 @@ s.t.\left\{
 <h3>
 <span class="header-section-number">13.2.3</span> 混合整数规划<a class="anchor" aria-label="anchor" href="#mixed-integer-programming"><i class="fas fa-link"></i></a>
 </h3>
-<p><a href="https://cran.r-project.org/package=Rsymphony">Rsymphony</a> 是混合整数规划求解器 <a href="https://github.com/coin-or/SYMPHONY">SYMPHONY</a> 的 R 语言接口<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>。</p>
-<div class="sourceCode" id="cb1784"><pre class="downlit sourceCode r">
+<p><a href="https://cran.r-project.org/package=Rsymphony">Rsymphony</a> 是混合整数规划求解器 <a href="https://github.com/coin-or/SYMPHONY">SYMPHONY</a> 的 R 语言接口<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a>。</p>
+<div class="sourceCode" id="cb1776"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://R-Forge.R-project.org/projects/rsymphony">Rsymphony</a></span><span class="op">)</span>
 <span class="co">## Simple linear program.</span>
 <span class="co">## maximize: 2 x_1 + 4 x_2 + 3 x_3</span>
@@ -483,7 +483,7 @@ s.t.\left\{
  \end{array} \right.
 \end{array} 
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1785"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1777"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/L_objective.html">L_objective</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span>, <span class="op">-</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span>,
   <span class="co"># 指定变量类型：第1个变量是连续值，第2、3个变量是整数</span>
@@ -511,11 +511,11 @@ s.t.\left\{
 ## subject to
 ## - 3 constraints of type linear.
 ## - 1 lower and 1 upper non-standard variable bound.</code></pre>
-<div class="sourceCode" id="cb1787"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1779"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"lpsolve"</span><span class="op">)</span>
 <span class="va">res</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1]  0.3333333  8.0000000 -2.0000000</code></pre>
-<div class="sourceCode" id="cb1789"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1781"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 81</code></pre>
 </div>
@@ -528,9 +528,9 @@ s.t.\left\{
 <h3>
 <span class="header-section-number">13.3.1</span> 凸二次规划<a class="anchor" aria-label="anchor" href="#sec-strictly-convex-quadratic-program"><i class="fas fa-link"></i></a>
 </h3>
-<p>在 R 中使用 <strong>quadprog</strong> <span class="citation"><a href="#ref-quadprog2019" role="doc-biblioref">[36]</a></span> 包求解二次规划<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/" class="uri"&gt;https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/&lt;/a&gt;&lt;/p&gt;'><sup>50</sup></a>，<strong>quadprogXT</strong> 包用来求解带绝对值约束的二次规划，<strong>pracma</strong> <span class="citation"><a href="#ref-pracma2021" role="doc-biblioref">[37]</a></span>包提供 <code>quadprog()</code> 函数就是对 <strong>quadprog</strong> 包的 <code><a href="https://rdrr.io/pkg/quadprog/man/solve.QP.html">solve.QP()</a></code> 进行封装，调用风格更像 Matlab。<strong>quadprog</strong> 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。quadprog 求解的二次型的形式如下：</p>
+<p>在 R 中使用 <strong>quadprog</strong> <span class="citation"><a href="#ref-quadprog2019" role="doc-biblioref">[36]</a></span> 包求解二次规划<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/" class="uri"&gt;https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/&lt;/a&gt;&lt;/p&gt;'><sup>49</sup></a>，<strong>quadprogXT</strong> 包用来求解带绝对值约束的二次规划，<strong>pracma</strong> <span class="citation"><a href="#ref-pracma2021" role="doc-biblioref">[37]</a></span>包提供 <code>quadprog()</code> 函数就是对 <strong>quadprog</strong> 包的 <code><a href="https://rdrr.io/pkg/quadprog/man/solve.QP.html">solve.QP()</a></code> 进行封装，调用风格更像 Matlab。<strong>quadprog</strong> 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。quadprog 求解的二次型的形式如下：</p>
 <p><span class="math display">\[\min_b - d^{\top}b +\frac{1}{2}b^{\top}Db , \quad A^{\top}b \geq b_{0}\]</span></p>
-<div class="sourceCode" id="cb1791"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1783"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">solve.QP</span><span class="op">(</span><span class="va">Dmat</span>, <span class="va">dvec</span>, <span class="va">Amat</span>, <span class="va">bvec</span>, meq <span class="op">=</span> <span class="fl">0</span>, factorized <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>参数 <code>Dmat</code>、<code>dvec</code>、<code>Amat</code>、<code>bvec</code> 分别对应二次规划问题中的 <span class="math inline">\(D,d,A,b_{0}\)</span>。下面举个二次规划的具体例子</p>
 <p><span class="math display">\[
@@ -546,7 +546,7 @@ b_{0} = (2,-2,-3)
 \]</span>
 即目标函数 <span class="math display">\[Q(x,y) = x^2 + y^2 -xy+3x-2y+4\]</span>
 它的可行域如图<a href="chap-numerical-optimization.html#fig:feasible-region">13.1</a>所示</p>
-<div class="sourceCode" id="cb1792"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1784"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>,
   xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">5.5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">3.5</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"n"</span>,
   xlab <span class="op">=</span> <span class="st">"x"</span>, ylab <span class="op">=</span> <span class="st">"y"</span>, main <span class="op">=</span> <span class="st">"Feasible Region"</span>
@@ -559,7 +559,7 @@ b_{0} = (2,-2,-3)
 </p>
 </div>
 <p>调用 <strong>quadprog</strong> 包的 <code><a href="https://rdrr.io/pkg/quadprog/man/solve.QP.html">solve.QP()</a></code> 函数求解此二次规划问题</p>
-<div class="sourceCode" id="cb1793"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1785"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">quadprog</span><span class="op">)</span>
 <span class="va">Dmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">dvec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>
@@ -586,7 +586,7 @@ b_{0} = (2,-2,-3)
 ## $iact
 ## [1] 1</code></pre>
 <p>ROI 默认的二次规划的标准形式为 <span class="math inline">\(\frac{1}{2}x^{\top}Qx + a^{\top}x\)</span>，在传递参数值的时候注意和上面的区别。</p>
-<div class="sourceCode" id="cb1795"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1787"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://roi.r-forge.r-project.org/">ROI</a></span><span class="op">)</span>
 <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/Q_objective.html">Q_objective</a></span><span class="op">(</span>Q <span class="op">=</span> <span class="va">Dmat</span>, L <span class="op">=</span> <span class="op">-</span><span class="va">dvec</span><span class="op">)</span>,
@@ -596,11 +596,11 @@ b_{0} = (2,-2,-3)
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.slsqp"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] -0.08333333</code></pre>
-<div class="sourceCode" id="cb1797"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1789"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 0.1666667 1.8333333</code></pre>
 <p>对变量 <span class="math inline">\(x\)</span> 添加整型约束，原二次规划即变成混合整数二次规划 （Mixed Integer Quadratic Programming，简称 MIQP）</p>
-<div class="sourceCode" id="cb1799"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1791"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目前开源的求解器都不能处理 MIQP 问题</span>
 <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/Q_objective.html">Q_objective</a></span><span class="op">(</span>Q <span class="op">=</span> <span class="va">Dmat</span>, L <span class="op">=</span> <span class="op">-</span><span class="va">dvec</span><span class="op">)</span>,
@@ -612,7 +612,7 @@ b_{0} = (2,-2,-3)
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <p>在可行域上画出等高线，标记目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解</p>
-<div class="sourceCode" id="cb1800"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1792"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">qp_sol</span> <span class="op">&lt;-</span> <span class="va">sol</span><span class="op">$</span><span class="va">solution</span> <span class="co"># 二次规划的解</span>
 <span class="va">uc_sol</span> <span class="op">&lt;-</span> <span class="va">sol</span><span class="op">$</span><span class="va">unconstrained.solution</span> <span class="co"># 无约束情况下的解</span>
 <span class="co"># 画图</span>
@@ -653,7 +653,7 @@ b_{0} = (2,-2,-3)
 <p>kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。</p>
 <p>R 包 kernlab 的函数 <code><a href="https://rdrr.io/pkg/kernlab/man/ipop.html">ipop()</a></code> 实现内点法可以求解半正定的二次规划问题，对应到上面的例子，就是要求 <span class="math inline">\(A \geq 0\)</span>，而 R 包 quadprog 只能求解正定的二次规划问题，即要求 <span class="math inline">\(A &gt; 0\)</span>。</p>
 <p>以二分类问题为例，采用 SMO (Sequential Minimization Optimization) 求解器，将 SVM 的二次优化问题分解。</p>
-<div class="sourceCode" id="cb1801"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1793"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">kernlab</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">120</span><span class="op">)</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">120</span>, mean <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
@@ -681,7 +681,7 @@ b_{0} = (2,-2,-3)
 <p><span class="math display">\[
 g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g(s) \exp(-s) \mathrm{ds}
 \]</span></p>
-<div class="sourceCode" id="cb1802"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1794"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/integrate.html">integrate</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">{</span>
     <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">t</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
@@ -702,11 +702,11 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g
 ## [1] -0.3201572</code></pre>
 <div class="rmdtip">
 <p>计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，<code>g(c(1,2))</code> 会报错，因此上面对函数 <code>g()</code> 用了向量化函数 <code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code> 操作。</p>
-<div class="sourceCode" id="cb1804"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1796"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">g</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.453392</code></pre>
 <p>类似地，同时计算多个目标函数 <code>f(y)</code> 的值，也需要<code><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize()</a></code> 实现向量化操作。</p>
-<div class="sourceCode" id="cb1806"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1798"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Vectorize.html">Vectorize</a></span><span class="op">(</span><span class="va">f</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -0.1103310 -0.2373865</code></pre>
 </div>
@@ -724,7 +724,7 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g
 <p>Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。</p>
 <p><span class="math display">\[f(x_1,x_2) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2\]</span>
 它在四个位置取得一样的极小值，分别是 <span class="math inline">\(f(-3.7793, -3.2832) = 0\)</span>，<span class="math inline">\(f(-2.8051, 3.1313) = 0\)</span>，<span class="math inline">\(f(3, 2) = 0\)</span>，<span class="math inline">\(f(3.5844, -1.8481) = 0\)</span>。函数图像见图 <a href="chap-numerical-optimization.html#fig:himmelblau">13.4</a>。</p>
-<div class="sourceCode" id="cb1808"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1800"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
    <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">11</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">7</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>
@@ -766,7 +766,7 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g
 图 13.4: Himmelblau 函数图像
 </p>
 </div>
-<div class="sourceCode" id="cb1809"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1801"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 梯度函数</span>
 <span class="va">gr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">numDeriv</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/numDeriv/man/grad.html">grad</a></span><span class="op">(</span><span class="va">fn</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
@@ -796,35 +796,35 @@ g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g
 <p><span class="math display">\[
 f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mathrm{e}^{-x^2-y^2} - \frac{1}{3}*\mathrm{e}^{-(x+1)^2-y^2}
 \]</span></p>
-<div class="sourceCode" id="cb1811"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1803"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fl">3</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="va">exp</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="op">(</span><span class="va">y</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span> <span class="fl">10</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="fl">5</span> <span class="op">-</span> <span class="va">x</span><span class="op">^</span><span class="fl">3</span> <span class="op">-</span> <span class="va">y</span><span class="op">^</span><span class="fl">5</span><span class="op">)</span><span class="op">*</span><span class="va">exp</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">-</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">*</span><span class="va">exp</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">-</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1812"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1804"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">peaks</span>, <span class="st">"x"</span><span class="op">)</span></code></pre></div>
 <pre><code>## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * x))) + 
 ##     3 * exp^(-x^2 - (y + 1)^2) + (10 * (1/5 - 3 * x^2) * exp^(-x^2 - 
 ##     y^2) - 10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
 ##     (2 * x)))) - 1/3 * (exp^(-(x + 1)^2 - y^2) * (log(exp) * 
 ##     (2 * (x + 1)))))</code></pre>
-<div class="sourceCode" id="cb1814"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1806"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">peaks</span>, <span class="st">"y"</span><span class="op">)</span></code></pre></div>
 <pre><code>## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * (y + 
 ##     1)))) - (10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
 ##     (2 * y))) + 10 * (5 * y^4) * exp^(-x^2 - y^2)) - 1/3 * (exp^(-(x + 
 ##     1)^2 - y^2) * (log(exp) * (2 * y))))</code></pre>
-<div class="sourceCode" id="cb1816"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1808"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Deriv</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">peaks</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## -(10 * ((0.2 - 3 * x^2)/exp^(x^2 + y^2)) + 3/exp^((1 + y)^2 + 
 ##     x^2) + log(exp) * (x * (6 * ((1 - x)/exp^((1 + y)^2 + x^2)) - 
 ##     20 * ((x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2))) - 0.666666666666667 * 
 ##     ((1 + x)/exp^((1 + x)^2 + y^2))))</code></pre>
-<div class="sourceCode" id="cb1818"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1810"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Deriv/man/Simplify.html">Simplify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">peaks</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## -((6 * ((1 - x) * (1 + y)/exp^((1 + y)^2 + x^2)) - 0.666666666666667 * 
 ##     (y/exp^((1 + x)^2 + y^2))) * log(exp) - y * (20 * (log(exp) * 
 ##     (x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2)) + 50 * (y^3/exp^(x^2 + 
 ##     y^2))))</code></pre>
-<div class="sourceCode" id="cb1820"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1812"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fl">3</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span>
     <span class="fl">10</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">/</span> <span class="fl">5</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">5</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span>
@@ -852,7 +852,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 ## $message
 ## NULL</code></pre>
 <p>在 <span class="math inline">\((-1.3473958, 0.2045192)\)</span> 处取得极小值</p>
-<div class="sourceCode" id="cb1822"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1814"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>,
   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>
@@ -885,7 +885,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 </h4>
 <p><a href="https://en.wikipedia.org/wiki/Rosenbrock_function">香蕉函数</a> 定义如下：</p>
 <p><span class="math display">\[f(x_1,x_2) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2\]</span></p>
-<div class="sourceCode" id="cb1823"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1815"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
 <span class="op">}</span>
@@ -912,10 +912,10 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 图 13.6: 香蕉函数图像
 </p>
 </div>
-<div class="sourceCode" id="cb1824"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1816"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterFromXYZ.html">rasterFromXYZ</a></span><span class="op">(</span><span class="va">df</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sp/man/CRS-class.html">CRS</a></span><span class="op">(</span><span class="st">"+proj=longlat +datum=WGS84"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">rasterVis</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rasterVis/man/vectorplot.html">vectorplot</a></span><span class="op">(</span><span class="va">r</span>, par.settings <span class="op">=</span> <span class="fu">RdBuTheme</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1825"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1817"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 梯度函数</span>
 <span class="va">gr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">numDeriv</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/numDeriv/man/grad.html">grad</a></span><span class="op">(</span><span class="va">fn</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
@@ -936,7 +936,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 ## 
 ## $message
 ## NULL</code></pre>
-<div class="sourceCode" id="cb1827"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1819"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span><span class="va">fn</span>, n <span class="op">=</span> <span class="fl">2L</span>, G <span class="op">=</span> <span class="va">gr</span><span class="op">)</span>,
   bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/V_bound.html">V_bound</a></span><span class="op">(</span>ld <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, ud <span class="op">=</span> <span class="fl">3</span>, nobj <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>
@@ -944,7 +944,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.lbfgs"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 1.364878e-17</code></pre>
-<div class="sourceCode" id="cb1829"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1821"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 1 1</code></pre>
 </div>
@@ -955,7 +955,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 <p>Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 <span class="math inline">\(n\)</span> 维形式如下：
 <span class="math display">\[f(\mathbf{x}) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}\]</span>
 其中，<span class="math inline">\(a = 20, b = 0.2, c = 2\pi\)</span>，对 <span class="math inline">\(\forall i = 1,2,\cdots, n\)</span>，<span class="math inline">\(x_i \in [-10, 10]\)</span>，<span class="math inline">\(f(\mathbf{x})\)</span> 在 <span class="math inline">\(\mathbf{x}^{\star} = (0,0,\cdot,0)\)</span> 取得全局最小值 <span class="math inline">\(f(\mathbf{x}^{\star}) = 0\)</span>，二维图像如图 <a href="chap-numerical-optimization.html#fig:ackley">13.7</a>。</p>
-<div class="sourceCode" id="cb1831"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1823"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">a</span> <span class="op">=</span> <span class="fl">20</span>, <span class="va">b</span> <span class="op">=</span> <span class="fl">0.2</span>, <span class="va">c</span> <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">mean1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
   <span class="va">mean2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">c</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span>
@@ -989,7 +989,7 @@ f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mat
 rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
 -->
 <p>以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 — Nelder–Mead 算法，选择初值 <span class="math inline">\((2,2,\cdots,2)\)</span> ，看下效果，再与全局优化算法比较。</p>
-<div class="sourceCode" id="cb1832"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1824"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span><span class="va">fn</span>, n <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span>,
   bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/V_bound.html">V_bound</a></span><span class="op">(</span>ld <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>, ud <span class="op">=</span> <span class="fl">10</span>, nobj <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span>
@@ -998,22 +998,22 @@ rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带�
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.neldermead"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2</code></pre>
-<div class="sourceCode" id="cb1834"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1826"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 6.593599</code></pre>
 <p>可以说完全没有优化效果，已经陷入局部极小值。根据<a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#global-optimization">nloptr 全局优化算法</a>的介绍，这里采用 directL 算法，因为是全局优化，不用选择初值。</p>
-<div class="sourceCode" id="cb1836"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1828"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 调全局优化器</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>##  [1] 0 0 0 0 0 0 0 0 0 0</code></pre>
-<div class="sourceCode" id="cb1838"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1830"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 4.440892e-16</code></pre>
-<div class="sourceCode" id="cb1840"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1832"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 6.593599</code></pre>
-<div class="sourceCode" id="cb1842"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1834"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 6.593599</code></pre>
 </div>
@@ -1023,7 +1023,7 @@ rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带�
 </h4>
 <p>这里，还有另外一个例子，Rastrigin 函数也是多模态函数</p>
 <p><span class="math display">\[f(\mathbf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)\]</span></p>
-<div class="sourceCode" id="cb1844"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1836"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">10</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">*</span> <span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fl">10</span><span class="op">)</span>
 <span class="op">}</span>
@@ -1052,17 +1052,17 @@ rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带�
 </p>
 </div>
 <p>设置 10 维 的优化</p>
-<div class="sourceCode" id="cb1845"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1837"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span><span class="va">fn</span>, n <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span>,
   bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/V_bound.html">V_bound</a></span><span class="op">(</span>ld <span class="op">=</span> <span class="op">-</span><span class="fl">50</span>, ud <span class="op">=</span> <span class="fl">50</span>, nobj <span class="op">=</span> <span class="fl">10L</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>调全局优化器求解非凸优化问题</p>
-<div class="sourceCode" id="cb1846"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1838"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>##  [1] 0 0 0 0 0 0 0 0 0 0</code></pre>
-<div class="sourceCode" id="cb1848"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1840"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 </div>
@@ -1074,7 +1074,7 @@ rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带�
 f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
 \]</span>
 在 <span class="math inline">\(\mathbf{x}^\star = (0,0)\)</span> 处取得全局最小值 <span class="math inline">\(f(\mathbf{x}^\star) = 0\)</span></p>
-<div class="sourceCode" id="cb1850"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1842"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fl">0.5</span> <span class="op">+</span> <span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">0.001</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>
 <span class="op">}</span>
@@ -1101,7 +1101,7 @@ f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)
 图 13.9: Schaffer 函数
 </p>
 </div>
-<div class="sourceCode" id="cb1851"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1843"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>,
   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, length <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>
@@ -1135,7 +1135,7 @@ f(x_1,x_2) = - | \sin(x_1)\cos(x_2)\exp\big(| 1 - \frac{\sqrt{x_1^2 + x_2^2}}{\p
 \]</span></p>
 <p>在 <span class="math inline">\((8.05502, 9.66459)\)</span>、<span class="math inline">\((-8.05502, 9.66459)\)</span>、<span class="math inline">\((8.05502, -9.66459)\)</span>、<span class="math inline">\((-8.05502, -9.66459)\)</span> 同时取得最小值 <span class="math inline">\(-19.2085\)</span>。</p>
 
-<div class="sourceCode" id="cb1852"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1844"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="va">pi</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
@@ -1173,7 +1173,7 @@ f(x_1,x_2) = - | \sin(x_1)\cos(x_2)\exp\big(| 1 - \frac{\sqrt{x_1^2 + x_2^2}}{\p
 f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \]</span>
 <span class="math inline">\(\forall i = 1,2,\cdots, n\)</span>，<span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\(x_i = i(n+1-i)\)</span> 处取得全局极小值 <span class="math inline">\(f(\mathbf{x}^\star)=-n(n+4)(n-1)/6\)</span>，取值区间 <span class="math inline">\(x \in [-n^2, n^2], \forall i = 1,2,\cdots,n\)</span></p>
-<div class="sourceCode" id="cb1853"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1845"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="va">n</span><span class="op">]</span><span class="op">)</span>
@@ -1213,7 +1213,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
     s.t. \quad -50 \leq x_1, x_2 \leq 50
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1854"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1846"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">subfun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">i</span>, <span class="va">m</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="va">i</span> <span class="op">*</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">500</span> <span class="op">*</span> <span class="op">(</span><span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
@@ -1223,7 +1223,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
     <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mapply.html">mapply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">subfun</span>, i <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, MoreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>m <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>目标函数的图像见图 <a href="chap-numerical-optimization.html#fig:super-function">13.13</a>，搜索区域 <span class="math inline">\([-50, 50] \times [-50, 50]\)</span> 内几乎没有变化的梯度，给寻优过程带来很大困难。</p>
-<div class="sourceCode" id="cb1855"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1847"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span>, length.out <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>,
   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span>, length.out <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>
@@ -1248,7 +1248,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 </p>
 </div>
 <p>将区域 <span class="math inline">\([0, 12] \times [0, 12]\)</span> 的图像绘制出来，不难发现，有不少局部陷阱。</p>
-<div class="sourceCode" id="cb1856"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1848"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span>, length.out <span class="op">=</span> <span class="fl">201</span><span class="op">)</span>,
   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span>, length.out <span class="op">=</span> <span class="fl">201</span><span class="op">)</span>
@@ -1273,21 +1273,21 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 </p>
 </div>
 <p>最优解在 <span class="math inline">\((7.999982, 7.999982)\)</span> 取得，目标函数值为 -7.978832。</p>
-<div class="sourceCode" id="cb1857"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1849"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7.999982</span>, <span class="fl">7.999982</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -7.978832</code></pre>
 <p>面对如此复杂的函数，调用全局优化器</p>
-<div class="sourceCode" id="cb1859"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1851"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span><span class="va">fn</span>, n <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>,
   bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/V_bound.html">V_bound</a></span><span class="op">(</span>ld <span class="op">=</span> <span class="op">-</span><span class="fl">50</span>, ud <span class="op">=</span> <span class="fl">50</span>, nobj <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] -21.99115   0.00000</code></pre>
-<div class="sourceCode" id="cb1861"><pre class="downlit sourceCode r">
+<pre><code>## [1]  0.00000 22.22222</code></pre>
+<div class="sourceCode" id="cb1853"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -1</code></pre>
+<pre><code>## [1] -0.9734211</code></pre>
 <p>实际上，还是陷入局部最优解。</p>
 <pre><code>SETS:
 P/1..5/;
@@ -1314,13 +1314,13 @@ Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^
     s.t. \quad 2 \leq x_1,x_2,\cdots,x_n \leq 4
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1864"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1856"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="va">n</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p><span class="math inline">\(n\)</span> 维目标函数是非线性的，给定初值 <span class="math inline">\((3, 3, \cdots, 3)\)</span>，下面求解 25 维的箱式约束，</p>
-<div class="sourceCode" id="cb1865"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1857"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/nlminb.html">nlminb</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, objective <span class="op">=</span> <span class="va">fn</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">25</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## $par
 ##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
@@ -1353,7 +1353,7 @@ A = \begin{bmatrix}
 \end{bmatrix}, \quad
 b = (2, 2, -4, -4)
 \]</span></p>
-<div class="sourceCode" id="cb1867"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1859"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/constrOptim.html">constrOptim</a></span><span class="op">(</span>
   theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, <span class="co"># 初始值</span>
   f <span class="op">=</span> <span class="va">fn</span>, <span class="co"># 目标函数</span>
@@ -1386,7 +1386,7 @@ b = (2, 2, -4, -4)
 ## $barrier.value
 ## [1] -0.003278963</code></pre>
 <p>从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 <code><a href="https://rdrr.io/r/stats/nlminb.html">nlminb()</a></code> 函数的求解结果来看，实际上还没有收敛。如果没有提供梯度，则必须用 Nelder-Mead 方法，下面增加迭代次数到 1000。</p>
-<div class="sourceCode" id="cb1869"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1861"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/constrOptim.html">constrOptim</a></span><span class="op">(</span>
   theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, <span class="co"># 初始值</span>
   f <span class="op">=</span> <span class="va">fn</span>, <span class="co"># 目标函数</span>
@@ -1420,7 +1420,7 @@ b = (2, 2, -4, -4)
 ## $barrier.value
 ## [1] -0.003366467</code></pre>
 <p>还是没有收敛，可见 Nelder-Mead 方法在这个优化问题上收敛速度比较慢。下面考虑调用基于梯度的优化算法 — BFGS 方法。</p>
-<div class="sourceCode" id="cb1871"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1863"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 输入 n 维向量，输出 n 维向量</span>
 <span class="va">gr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -1463,7 +1463,7 @@ b = (2, 2, -4, -4)
 ## $barrier.value
 ## [1] -0.003327104</code></pre>
 <p>相比于 Nelder-Mead 方法，目标值 373 更大，可见已陷入局部最优解，下面通过 ROI 包，分别调用求解器 L-BFGS 和 directL，发现前者同样陷入局部最优解，而后者可以获得与 <code><a href="https://rdrr.io/r/stats/nlminb.html">nlminb()</a></code> 函数一致的结果。</p>
-<div class="sourceCode" id="cb1873"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1865"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 调用改进的 BFGS 算法</span>
 <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span><span class="va">fn</span>, n <span class="op">=</span> <span class="fl">25L</span>, G <span class="op">=</span> <span class="va">gr</span><span class="op">)</span>,
@@ -1472,22 +1472,22 @@ b = (2, 2, -4, -4)
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.lbfgs"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 373</code></pre>
-<div class="sourceCode" id="cb1875"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1867"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3</code></pre>
-<div class="sourceCode" id="cb1877"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1869"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 调全局优化算法</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.directL"</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 368.106</code></pre>
-<div class="sourceCode" id="cb1879"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1871"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
 ##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
 ## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
 ## [25] 4.000000</code></pre>
 <p>下面再与函数 <code><a href="https://rdrr.io/r/stats/optim.html">optim()</a></code> 提供的 L-BFGS-B 算法比较</p>
-<div class="sourceCode" id="cb1881"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1873"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optim.html">optim</a></span><span class="op">(</span>
   par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, fn <span class="op">=</span> <span class="va">fn</span>, gr <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"L-BFGS-B"</span>,
   lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">25</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">25</span><span class="op">)</span>
@@ -1511,7 +1511,7 @@ b = (2, 2, -4, -4)
 ## $message
 ## [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</code></pre>
 <p>值得注意的是，当提供梯度信息的时候，虽然求解速度提升了，但是最优解变差了。</p>
-<div class="sourceCode" id="cb1883"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1875"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optim.html">optim</a></span><span class="op">(</span>
   par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, fn <span class="op">=</span> <span class="va">fn</span>, gr <span class="op">=</span> <span class="va">gr</span>, method <span class="op">=</span> <span class="st">"L-BFGS-B"</span>,
   lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">25</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">25</span><span class="op">)</span>
@@ -1548,7 +1548,7 @@ b = (2, 2, -4, -4)
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1885"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1877"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">4</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>
 <span class="co"># 目标函数的梯度</span>
@@ -1584,7 +1584,7 @@ b = (2, 2, -4, -4)
   <span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>调用 <strong>alabama</strong> 包的求解器</p>
-<div class="sourceCode" id="cb1886"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1878"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
 <span class="co"># 初始值</span>
 <span class="va">p0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
@@ -1641,14 +1641,14 @@ b = (2, 2, -4, -4)
 ## $K
 ## [1] 4.269112e-08</code></pre>
 <p>ans 是 <code>constrOptim.nl()</code> 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。</p>
-<div class="sourceCode" id="cb1888"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1880"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 不提供梯度函数，照样可以求解</span>
 <span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu">alabama</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/alabama/man/constrOptim.nl.html">constrOptim.nl</a></span><span class="op">(</span>par <span class="op">=</span> <span class="va">p0</span>, fn <span class="op">=</span> <span class="va">fn</span>, heq <span class="op">=</span> <span class="va">heq</span>, hin <span class="op">=</span> <span class="va">hin</span><span class="op">)</span></code></pre></div>
 <div class="rmdtip">
 <p>等式和不等式约束的雅可比矩阵必须以 matrix 数据类型存储，而不能以 vector 类型存储。要注意和后面 ROI 包的调用形式区别。</p>
 </div>
 <p>实际上，可以用 ROI 调用 alabama 求解器的方式，这种方式可以简化目标函数梯度和约束条件的表示</p>
-<div class="sourceCode" id="cb1889"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1881"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">4</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>
 <span class="co"># 目标函数的梯度</span>
@@ -1672,7 +1672,7 @@ b = (2, 2, -4, -4)
    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span>, <span class="fl">6</span>, <span class="fl">4</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>通过 ROI 调用 alabama 求解器</p>
-<div class="sourceCode" id="cb1890"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1882"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">)</span>
 <span class="co"># 初始值</span>
 <span class="va">p0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
@@ -1692,7 +1692,7 @@ b = (2, 2, -4, -4)
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"alabama"</span>, start <span class="op">=</span> <span class="va">p0</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 1.674812e-06 9.994336e-08 9.999982e-01</code></pre>
-<div class="sourceCode" id="cb1892"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1884"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 </div>
@@ -1713,7 +1713,7 @@ b = (2, 2, -4, -4)
 \end{array}
 \end{equation*}\]</span></p>
 <p>考虑用 ROI 调 nloptr 实现，看结果是否和例子一致，nloptr 支持不等式约束包含等号，支持箱式约束。</p>
-<div class="sourceCode" id="cb1894"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1886"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 一个 4 维的目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>
@@ -1754,36 +1754,36 @@ b = (2, 2, -4, -4)
   bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/V_bound.html">V_bound</a></span><span class="op">(</span>ld <span class="op">=</span> <span class="fl">1</span>, ud <span class="op">=</span> <span class="fl">5</span>, nobj <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span>,
   maximum <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span>
 <span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1895"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1887"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数初始值</span>
 <span class="fu">fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 16</code></pre>
-<div class="sourceCode" id="cb1897"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1889"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数最优值</span>
 <span class="fu">fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.00000000</span>, <span class="fl">4.74299963</span>, <span class="fl">3.82114998</span>, <span class="fl">1.37940829</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
 <p>求解一般的非线性约束问题，求解器 nloptr.mma / nloptr.cobyla 仅支持非线性不等式约束，不支持等式约束，而 nlminb 只支持等式约束，因此，下面分别调用 nloptr.auglag、nloptr.slsqp 和 nloptr.isres 来求解上述优化问题。</p>
-<div class="sourceCode" id="cb1899"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1891"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.auglag"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 1.000000 4.743174 3.820922 1.379440</code></pre>
-<div class="sourceCode" id="cb1901"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1893"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
-<div class="sourceCode" id="cb1903"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1895"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.slsqp"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] 1.000000 4.742996 3.821155 1.379408</code></pre>
-<div class="sourceCode" id="cb1905"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1897"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 17.01402</code></pre>
-<div class="sourceCode" id="cb1907"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1899"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.152832 4.600128 3.988407 1.264313</code></pre>
-<div class="sourceCode" id="cb1909"><pre class="downlit sourceCode r">
+<pre><code>## [1] 1.066952 4.872730 3.654360 1.327806</code></pre>
+<div class="sourceCode" id="cb1901"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] 18.18684</code></pre>
+<pre><code>## [1] 17.24629</code></pre>
 <p>可以看出，nloptr 提供的优化能力可以覆盖<a href="https://github.com/coin-or/Ipopt">Ipopt 求解器</a>，推荐使用 nloptr.slsqp 求解器。</p>
 </div>
 <div id="nonlinear-mixed-integer-constrained" class="section level4" number="13.4.3.4">
@@ -1802,7 +1802,7 @@ b = (2, 2, -4, -4)
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1911"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1903"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fl">1.5</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span>
   <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>
@@ -1815,7 +1815,7 @@ b = (2, 2, -4, -4)
   <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>目前 ROI 还解不了</p>
-<div class="sourceCode" id="cb1912"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1904"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 初始值</span>
 <span class="va">p0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.1</span>, <span class="fl">5.1</span>, <span class="fl">5</span><span class="op">)</span>
 <span class="co"># 定义目标规划</span>
@@ -1828,7 +1828,7 @@ b = (2, 2, -4, -4)
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"auto"</span>, start <span class="op">=</span> <span class="va">p0</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <p>目标函数在 <span class="math inline">\((4.49712, 9.147501, -4)\)</span> 取得最小值 -86.72165</p>
-<div class="sourceCode" id="cb1913"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1905"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4.49712</span>, <span class="fl">9.147501</span>, <span class="op">-</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -86.72165</code></pre>
 </div>
@@ -1848,7 +1848,7 @@ b = (2, 2, -4, -4)
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1915"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1907"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">pi</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">pi</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># 目标函数的梯度</span>
@@ -1889,8 +1889,8 @@ b = (2, 2, -4, -4)
 <span class="op">)</span>
 <span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="va">p0</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 1.227967 4.245372</code></pre>
-<div class="sourceCode" id="cb1917"><pre class="downlit sourceCode r">
+<pre><code>## [1] 1.227971 4.245374</code></pre>
+<div class="sourceCode" id="cb1909"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
 <p>下面再给一个来自 <a href="https://octave.org/doc/v6.2.0/Nonlinear-Programming.html">Octave 优化文档</a> 的示例，该优化问题包含多个非线性的等式约束。</p>
@@ -1905,7 +1905,7 @@ b = (2, 2, -4, -4)
     \end{array} \right.
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1919"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1911"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 一个 5 维的目标函数</span>
 <span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/prod.html">prod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>
@@ -1936,7 +1936,7 @@ b = (2, 2, -4, -4)
     ncol <span class="op">=</span> <span class="fl">5</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<div class="sourceCode" id="cb1920"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1912"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 定义目标规划</span>
 <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span>F <span class="op">=</span> <span class="va">fn</span>, n <span class="op">=</span> <span class="fl">5L</span>, G <span class="op">=</span> <span class="va">gr</span><span class="op">)</span>, <span class="co"># 5 个目标变量</span>
@@ -1951,7 +1951,7 @@ b = (2, 2, -4, -4)
   maximum <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span>
 <span class="op">)</span></code></pre></div>
 <p>调用 SQP（序列二次规划） 求解器</p>
-<div class="sourceCode" id="cb1921"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1913"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.slsqp"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.8</span>, <span class="fl">1.7</span>, <span class="fl">1.9</span>, <span class="op">-</span><span class="fl">0.8</span>,<span class="op">-</span><span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <pre><code>## [1] -1.7171435  1.5957096  1.8272458 -0.7636431 -0.7636431</code></pre>
@@ -1981,7 +1981,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 @bnd(-50, x, 50);
 @bnd(-50, y, 50);</code></pre>
 <p>启用全局优化求解器，求解 14 分钟，在 <span class="math inline">\((0.08256372, 24.56510)\)</span> 取得极小值 -2.863497。不启用全局优化器就没法解，Lingo 会报错，找不到最优解，勉强找到一个可行解 <span class="math inline">\((0.06082750, 44.12793)\)</span>，目标值为 -1.29816。</p>
-<div class="sourceCode" id="cb1924"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1916"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">50</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">60</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">70</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="fl">80</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span>
@@ -1999,16 +1999,16 @@ x - (( @cos(y) )^x - x)^y = 0;
 
 <span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06082750</span>, <span class="fl">44.12793</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -1.29816</code></pre>
-<div class="sourceCode" id="cb1926"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1918"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1.966877</code></pre>
-<div class="sourceCode" id="cb1928"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1920"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heq</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.06082750</span>, <span class="fl">44.12793</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 1.923673e-08</code></pre>
-<div class="sourceCode" id="cb1930"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1922"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heq</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb1932"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1924"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 定义目标规划</span>
 <span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/OP.html">OP</a></span><span class="op">(</span>
   objective <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/F_objective.html">F_objective</a></span><span class="op">(</span>F <span class="op">=</span> <span class="va">fn</span>, n <span class="op">=</span> <span class="fl">2L</span>, G <span class="op">=</span> <span class="va">gr</span><span class="op">)</span>, <span class="co"># 2 个目标变量</span>
@@ -2022,34 +2022,34 @@ x - (( @cos(y) )^x - x)^y = 0;
   maximum <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span>
 <span class="op">)</span></code></pre></div>
 <p>nloptr.auglag 无法求解此优化问题</p>
-<div class="sourceCode" id="cb1933"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1925"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.auglag"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
 <p>调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解</p>
-<div class="sourceCode" id="cb1934"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1926"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ROI/man/ROI_solve.html">ROI_solve</a></span><span class="op">(</span><span class="va">op</span>, solver <span class="op">=</span> <span class="st">"nloptr.isres"</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="va">nlp</span><span class="op">$</span><span class="va">solution</span></code></pre></div>
-<pre><code>## [1] 14.80420 16.79101</code></pre>
-<div class="sourceCode" id="cb1936"><pre class="downlit sourceCode r">
+<pre><code>## [1]  2.228688 43.795838</code></pre>
+<div class="sourceCode" id="cb1928"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nlp</span><span class="op">$</span><span class="va">objval</span></code></pre></div>
-<pre><code>## [1] -3.399381</code></pre>
+<pre><code>## [1] -3.12098</code></pre>
 <p>比如下面三组</p>
-<div class="sourceCode" id="cb1938"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1930"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">40.95941</span>, <span class="fl">41.52914</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -1.025926</code></pre>
-<div class="sourceCode" id="cb1940"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1932"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heq</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">40.95941</span>, <span class="fl">41.52914</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1942"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1934"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -1.467513</code></pre>
-<div class="sourceCode" id="cb1944"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1936"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heq</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1946"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1938"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">fn</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -3.466596</code></pre>
-<div class="sourceCode" id="cb1948"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1940"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">heq</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] -8.515447e+208</code></pre>
 </div>
@@ -2064,17 +2064,17 @@ x - (( @cos(y) )^x - x)^y = 0;
 <span class="header-section-number">13.5.1</span> 一元非线性方程<a class="anchor" aria-label="anchor" href="#subsec-equation"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/">牛顿-拉弗森方法</a></p>
-<div class="sourceCode" id="cb1950"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1942"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rootSolve</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="subsec-equations" class="section level3" number="13.5.2">
 <h3>
 <span class="header-section-number">13.5.2</span> 非线性方程组<a class="anchor" aria-label="anchor" href="#subsec-equations"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1951"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1943"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.jhsph.edu/agingandhealth/People/Faculty_personal_pages/Varadhan.html">BB</a></span><span class="op">)</span></code></pre></div>
 <p>二项混合泊松分布的参数最大似然估计</p>
-<div class="sourceCode" id="cb1952"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1944"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">poissmix.loglik</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># Log-likelihood for a binary Poisson mixture distribution</span>
   <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
@@ -2110,7 +2110,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 ## iter:  50  f-value:  -1989.946  pgrad:  0.01959506 
 ## iter:  60  f-value:  -1989.946  pgrad:  0.002494289 
 ##   Successful convergence.</code></pre>
-<div class="sourceCode" id="cb1954"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1946"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ans2</span></code></pre></div>
 <pre><code>## $par
 ## [1] 0.3598829 1.2560906 2.6634011
@@ -2140,7 +2140,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 ## method      M 
 ##      2     50</code></pre>
 <p>计算最大似然处的黑塞矩阵以及参数的标准差</p>
-<div class="sourceCode" id="cb1956"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1948"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">hess</span> <span class="op">&lt;-</span> <span class="fu">numDeriv</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/numDeriv/man/hessian.html">hessian</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ans2</span><span class="op">$</span><span class="va">par</span>, func <span class="op">=</span> <span class="va">poissmix.loglik</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
 <span class="co"># Note that we have to supplied data vector 'y'</span>
 <span class="va">hess</span></code></pre></div>
@@ -2148,12 +2148,12 @@ x - (( @cos(y) )^x - x)^y = 0;
 ## [1,] -907.1105  270.2287  341.2543
 ## [2,]  270.2287 -113.4794  -61.6819
 ## [3,]  341.2543  -61.6819 -192.7822</code></pre>
-<div class="sourceCode" id="cb1958"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1950"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="op">-</span><span class="va">hess</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">se</span></code></pre></div>
 <pre><code>## [1] 0.1946836 0.3500308 0.2504769</code></pre>
 <p>从不同初始值出发尝试寻找全局最大值，实际找的是一系列局部最大值</p>
-<div class="sourceCode" id="cb1960"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1952"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 3 randomly generated starting values</span>
 <span class="va">p0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">ans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BB/man/multiStart.html">multiStart</a></span><span class="op">(</span>
@@ -2234,7 +2234,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 ## iter:  40  f-value:  -1989.946  pgrad:  0.06813025 
 ## iter:  50  f-value:  -1989.946  pgrad:  0.001450644 
 ##   Successful convergence.</code></pre>
-<div class="sourceCode" id="cb1962"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1954"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># selecting only converged solutions</span>
 <span class="va">pmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ans</span><span class="op">$</span><span class="va">fvalue</span><span class="op">[</span><span class="va">ans</span><span class="op">$</span><span class="va">conv</span><span class="op">]</span>, <span class="va">ans</span><span class="op">$</span><span class="va">par</span><span class="op">[</span><span class="va">ans</span><span class="op">$</span><span class="va">conv</span>, <span class="op">]</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html">dimnames</a></span><span class="op">(</span><span class="va">pmat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fvalue"</span>, <span class="st">"parameter 1"</span>, <span class="st">"parameter 2"</span>, <span class="st">"parameter 3"</span><span class="op">)</span><span class="op">)</span>
@@ -2266,12 +2266,12 @@ x - (( @cos(y) )^x - x)^y = 0;
     s.t. \quad x_1 \in [10, 80], x_2 \in [20, 90], x_3 \in [15, 100]
 \end{array}
 \end{equation*}\]</span></p>
-<div class="sourceCode" id="cb1964"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1956"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dicekrigingclub.github.io/www/">DiceKriging</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.statistik.tu-dortmund.de/~olafm/software/emoa/">emoa</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mbinois/GPareto">GPareto</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://dice.emse.fr">DiceDesign</a></span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1965"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1957"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ms609.github.io/Ternary/">Ternary</a></span><span class="op">)</span>
 <span class="fu">TernaryPlot</span><span class="op">(</span>
   atip <span class="op">=</span> <span class="st">"Top"</span>, btip <span class="op">=</span> <span class="st">"Bottom"</span>, ctip <span class="op">=</span> <span class="st">"Right"</span>, 
@@ -2290,7 +2290,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 <h2>
 <span class="header-section-number">13.8</span> 运行环境<a class="anchor" aria-label="anchor" href="#sec-numerical-optimization-session"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb1966"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1958"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -2461,7 +2461,7 @@ x - (( @cos(y) )^x - x)^y = 0;
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2023-01-23.</p>
+    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2023-01-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

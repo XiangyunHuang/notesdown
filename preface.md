@@ -56,7 +56,9 @@ JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管�
 
 国内可视化分析平台，比如 [hiplot](https://github.com/hiplot) 基于 R 语言实现可视化分析，各类图形的介绍见[文档](https://hiplot.com.cn/docs/zh/)，极大地降低数据分析人员探索分析的门槛，节省了时间，同时非专业内的人也可借助其完成分析探索的过程，只需明白各类图形的含义即可。美团也建设了自己的可视化分析平台帮助运营人员，详见[文档](https://tech.meituan.com/2018/08/02/mt-r-practice.html)
 
-[Patrick Burns](https://www.burns-stat.com/) 收集整理了 R 语言中奇葩的现象，写成 [The R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) 直译过来就是《R 之炼狱》。这些奇葩的怪现象可以看做是 R 风格的一部分，对于编程人员来说就是一些建议和技巧，参考之可以避开某些坑。 Paul E. Johnson 整理了一份真正的 R 语言建议，记录了他自己从 SAS 转换到 R 的过程中遇到的各种问题 <http://pj.freefaculty.org/R/Rtips.html>。Michail Tsagris 和 Manos Papadakis 也收集了 70 多条 R 编程的技巧和建议，力求以更加 R 范地将语言特性发挥到极致 [@Rfast_2018_Tsagris]，Martin Mächler 提供了一份 [Good Practices in R Programming](https://stat.ethz.ch/Teaching/maechler/R/useR_2014/)。 Python 社区广泛流传着 Tim Peters 的 《Python 之禅》，它已经整合进每一版 Python 软件中，只需在 Python 控制台里执行  `import this` 可以获得。
+[Patrick Burns](https://www.burns-stat.com/) 收集整理了 R 语言中奇葩的现象，写成 [The R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) 直译过来就是《R 之炼狱》。这些奇葩的怪现象可以看做是 R 风格的一部分，对于编程人员来说就是一些建议和技巧，参考之可以避开某些坑。 Paul E. Johnson 整理了一份真正的 R 语言建议，记录了他自己从 SAS 转换到 R 的过程中遇到的各种问题 <http://pj.freefaculty.org/R/Rtips.html>。Michail Tsagris 和 Manos Papadakis 也收集了 70 多条 R 编程的技巧和建议，力求以更加 R 范地将语言特性发挥到极致 [@Rfast_2018_Tsagris]，Martin Mächler 提供了一份 [Good Practices in R Programming](https://stat.ethz.ch/Teaching/maechler/R/useR_2014/)。 
+
+Python 社区广泛流传着 Tim Peters 的 《Python 之禅》，它已经整合进每一版 Python 软件中，只需在 Python 控制台里执行  `import this` 可以获得。
 
 > 1. Beautiful is better than ugly.
 1. Explicit is better than implicit.
@@ -86,13 +88,6 @@ JASP <https://jasp-stats.org> 是一款免费的统计软件，源代码托管�
 
 John M. Chambers 谈了数据科学的源起以及和 S、R 语言的渊源 [@RS_2020_John]。
 
-
-
-## 获取帮助 {#sec-r-help}
-
-R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题 <https://cran.r-project.org/faqs.html> 中查找，也可在线搜索 <https://cran.r-project.org/search.html> 或 <https://rseek.org/> ，更多获取帮助方式见 <https://www.r-project.org/help.html>。爆栈网问题以标签分类，比如 [r-plotly](https://stackoverflow.com/questions/tagged/r-plotly)、[r-markdown](https://stackoverflow.com/questions/tagged/r-markdown)、 [data.table](https://stackoverflow.com/questions/tagged/data.table) 和 [ggplot2](https://stackoverflow.com/questions/tagged/ggplot2)，还可以关注一些活跃的社区大佬，比如 [谢益辉](https://stackoverflow.com/users/559676/yihui-xie)。
-
-
 ## 写作环境 {#sec-writing-details}
 
 \index{bookdown}
@@ -104,138 +99,7 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 
 }
 
-\caption{书籍项目架构图}(\#fig:book-workflow)
+\caption{书籍项目}(\#fig:book-workflow)
 \end{figure}
 
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2023年01月23日09时07分33秒，本书用 R version 4.2.0 (2022-04-22) 编译，完整运行环境如下：
 
-
-```r
-xfun::session_info(packages = c(
-  "knitr", "rmarkdown", "bookdown"
-), dependencies = FALSE)
-```
-
-```
-## R version 4.2.0 (2022-04-22)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.5 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   bookdown_0.26  knitr_1.39     rmarkdown_2.14
-## 
-## Pandoc version: 2.16.2
-```
-
-借助 **bookdown** [@xie2016] 可以将 Rmd 文件组织起来， **rmarkdown** [@rmarkdown]和 **knitr** [@xie2015] 将源文件编译成 Markdown 文件， [Pandoc](https://pandoc.org/) 将 Markdown 文件转化成 HTML 和 TeX 文件， [TinyTeX](https://yihui.name/tinytex/) [@xie2019] 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 **ggplot2** 包制作 [@Wickham_2016_ggplot2]，而统计理论相关的示意图用 Base R 创作。
-
-::: {.rmdtip data-latex="{提示}"}
-得益于 Github Action 提供的测试服务，[Github Pages](https://pages.github.com/)、[Bookdown](https://bookdown.org) 和 [Netlify](https://netlify.com/) 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 <https://xiangyunhuang.github.io/notesdown/>， <https://bookdown.org/xiangyun/notesdown/> ， <https://notesdown.netlify.app/>。
-:::
-
-## 记号约定 {#sec-conventions}
-
-正文中的代码、函数、参数及参数值以等宽正体表示，如 `data(list = c('iris', 'BOD'))`{.R}，
-其中函数名称 `data()`，参数及参数值 `list = c('iris', 'BOD')`{.R} ，R 程序包用粗体表示，如 **graphics**。
- 
-
-
-```r
-ruler()
-```
-
-```
-----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-```
-
-## 复现环境 {#sec-contribute}
-
-> 构建容器
-
-本书借助 Github Action 从 Dockerfile 构建容器镜像，然后将镜像文件推送到 Github Package。完成这些操作首先需要从 <https://github.com/settings/tokens> 新建拥有 GitHub Package [^github-package] 读写删的权限的 TOKEN（俗称访问令牌或密钥），命名为 `GITHUB_PKG`，并将此令牌保存到本地 TOKEN.txt 文件中，以备后用。
-
-镜像内默认暴露 8181 端口供外部连接使用，进入容器后，默认工作路径是 `/home/docker/`。创建好镜像后，要先登陆 GitHub Package 然后才有权限将镜像拉取下来
-
-```bash
-# 登陆 GitHub Package
-cat ~/TOKEN.txt | docker login https://docker.pkg.github.com -u XiangyunHuang --password-stdin
-# 拉取镜像
-docker pull docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel
-```
-
-读者可以先查看下容器内的信息
-
-```bash
-docker run --rm -u root -v "/${PWD}://home/docker/" \
-  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel \
-  bash -c "locale; fc-list | sort"
-```
-
-> 运行容器
-
-下面从镜像创建一个叫 notesdown-book 的容器，并让它在后台运行，允许以真正的 root 账户权限交互式执行命令，停止容器后，自动销毁容器。 此处，不再介绍 Docker 容器的使用，用容器打包本书所有软件环境仅供读者完整复现本书之用，感兴趣的读者可以去参考书籍[Docker 从入门到实践](https://vuepress.mirror.docker-practice.com/)。
-
-```bash
-docker run -itd -p 8282:8787 --rm --name=notesdown-book --privileged=true \
-  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown-book:devel /sbin/init
-```
-
-接着登陆进入 notesdown-book 容器，
-
-```bash
-docker exec -it notesdown-book bash
-```
-
-一番骚操作后，用户退出容器，然后停止容器。
-
-```bash
-docker stop notesdown-book
-```
-
-> 使用 RStudio Server
-
-启动容器后，接着获取容器 notesdown-book 的 IP 地址，然后依据端口号 8282 从网页进入 RStudio Sever，比如 <http://192.168.100.23:8282>
-
-```bash
-docker inspect --format='{{.NetworkSettings.IPAddress}}' notesdown-book
-```
-
-[^github-package]: <https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages>
-
-## 如何发问 {#sec-help-me}
-
-> The phrase "does not work" is not very helpful, it can mean quite a few things including:
-> 
-* Your computer exploded.
-* No explosion, but smoke is pouring out the back and microsoft's "NoSmoke" utility is not compatible with your power supply.
-* The computer stopped working.
-* The computer sits around on the couch all day eating chips and watching talk shows.
-* The computer has started picketing your house shouting catchy slogans and demanding better working conditions and an increase in memory.
-* Everything went dark and you cannot check the cables on the back of the computer because the lights are off due to the power outage.
-* R crashed, but the other programs are still working.
-* R gave an error message and stopped processing your code after running for a while.
-* R gave an error message without running any of your code (and is waiting for your next command).
-* R is still running your code and the time has exceeded your patience so you think it has hung.
-* R completed and returned a result, but also gave warnings.
-* R completed your command, but gave an incorrect answer.
-* R completed your command but the answer is different from what you expect (but is correct according to the documentation).
-> 
-> There are probably others. Running your code I think the answer is the last one.
->
-> --- Greg Snow [^GS-help-2012]
-
-[^GS-help-2012]: 来自 R 社区论坛收集的智语 `fortunes::fortune(324)`。
-
-
-## 作者简介 {#sec-about-author}
-
-热心开源事业，统计之都副主编，经常混迹于统计之都论坛、Github 和爆栈网。个人主页 <https://xiangyun.rbind.io/>

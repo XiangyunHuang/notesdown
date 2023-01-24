@@ -113,14 +113,14 @@
 <h1>
 <span class="header-section-number">第 7 章</span> 高级数据操作<a class="anchor" aria-label="anchor" href="#chap-advanced-manipulation"><i class="fas fa-link"></i></a>
 </h1>
-<div class="sourceCode" id="cb1029"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1021"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span></code></pre></div>
 <p>介绍 data.table 处理数据的方式，对标 dplyr 的基本操作</p>
 <div id="intro" class="section level2" number="7.1">
 <h2>
 <span class="header-section-number">7.1</span> 基础介绍<a class="anchor" aria-label="anchor" href="#intro"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb1030"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1022"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 用一个真实的数据集替换，让每一个操作都有实际含义和价值 mtcars</span>
 <span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"c"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
@@ -138,24 +138,24 @@
 ## 7: c 1 1 7 3
 ## 8: c 2 3 8 2
 ## 9: c 2 6 9 1</code></pre>
-<div class="sourceCode" id="cb1032"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1024"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组求和</span>
 <span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    y V1
 ## 1: 1  9
 ## 2: 0  4</code></pre>
-<div class="sourceCode" id="cb1034"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1026"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span>bool <span class="op">=</span> <span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    bool V1
 ## 1:    1  9
 ## 2:    0  4</code></pre>
-<div class="sourceCode" id="cb1036"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1028"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 每组第二行</span></code></pre></div>
 <pre><code>##    x v y a b
 ## 1: b 1 3 2 8
 ## 2: a 2 3 5 5
 ## 3: c 2 3 8 2</code></pre>
-<div class="sourceCode" id="cb1038"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1030"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="fl">2</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 每组最后两行</span></code></pre></div>
 <pre><code>##    x v y a b
 ## 1: b 1 3 2 8
@@ -164,21 +164,21 @@
 ## 4: a 1 6 6 4
 ## 5: c 2 3 8 2
 ## 6: c 2 6 9 1</code></pre>
-<div class="sourceCode" id="cb1040"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1032"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 除了 x 列外，所有列都按 x 分组求和</span>
 <span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">sum</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span></code></pre></div>
 <pre><code>##    x v  y  a  b
 ## 1: b 3 10  6 24
 ## 2: a 5 10 15 15
 ## 3: c 5 10 24  6</code></pre>
-<div class="sourceCode" id="cb1042"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1034"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 各个列都按 x 分组取最小</span>
 <span class="va">DT</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 分组嵌套查询</span></code></pre></div>
 <pre><code>##    x v y a b
 ## 1: b 1 1 1 9
 ## 2: a 1 6 6 4
 ## 3: c 1 1 7 3</code></pre>
-<div class="sourceCode" id="cb1044"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1036"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>MySum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, MyMin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, MyMax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># 表达式嵌套</span></code></pre></div>
 <pre><code>##    x y MySum MyMin MyMax
 ## 1: b 1     2     1     1
@@ -187,13 +187,13 @@
 ## 4: a 0     1     1     1
 ## 5: c 1     3     1     2
 ## 6: c 0     2     2     2</code></pre>
-<div class="sourceCode" id="cb1046"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1038"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>a <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">b</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 按 x 分组，将 a,b 两列的值列出来</span></code></pre></div>
 <pre><code>##    x     a     b
 ## 1: b 1,2,3 9,8,7
 ## 2: a 4,5,6 6,5,4
 ## 3: c 7,8,9 3,2,1</code></pre>
-<div class="sourceCode" id="cb1048"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1040"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>seq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 列操作不仅仅是聚合</span></code></pre></div>
 <pre><code>##     x seq
 ##  1: b   1
@@ -213,26 +213,26 @@
 ## 15: c   5
 ## 16: c   4
 ## 17: c   3</code></pre>
-<div class="sourceCode" id="cb1050"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1042"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 按 x 分组对 v 求和，然后过滤出和小于 20 的行</span>
 <span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span><span class="op">[</span><span class="va">V1</span> <span class="op">&lt;</span> <span class="fl">20</span><span class="op">]</span> <span class="co"># 组合查询</span></code></pre></div>
 <pre><code>##    x V1
 ## 1: b  3
 ## 2: a  5
 ## 3: c  5</code></pre>
-<div class="sourceCode" id="cb1052"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1044"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">V1</span><span class="op">)</span><span class="op">]</span> <span class="co"># 对结果排序</span></code></pre></div>
 <pre><code>##    x V1
 ## 1: a  5
 ## 2: c  5
 ## 3: b  3</code></pre>
-<div class="sourceCode" id="cb1054"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1046"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">.N</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">sum</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">x</span><span class="op">]</span> <span class="co"># 计算每一组的和，每一组的观测数</span></code></pre></div>
 <pre><code>##    x N v  y  a  b
 ## 1: b 3 3 10  6 24
 ## 2: a 3 5 10 15 15
 ## 3: c 3 5 10 24  6</code></pre>
-<div class="sourceCode" id="cb1056"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1048"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 两个复杂的操作，还没弄清楚这个技术存在的意义</span>
 <span class="va">DT</span><span class="op">[</span>,
   <span class="op">{</span>
@@ -251,7 +251,7 @@
 ## 7: c  3.6666667 -0.3333333
 ## 8: c  4.6666667 -1.3333333
 ## 9: c  5.6666667 -2.3333333</code></pre>
-<div class="sourceCode" id="cb1058"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1050"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># using rleid, get max(y) and min of all cols in .SDcols for each consecutive run of 'v'</span>
 <span class="va">DT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">.</span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">min</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rleid.html">rleid</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="va">v</span><span class="op">:</span><span class="va">b</span><span class="op">]</span></code></pre></div>
 <pre><code>##    rleid y v y a b
@@ -263,10 +263,10 @@
 <h3>
 <span class="header-section-number">7.1.1</span> 过滤<a class="anchor" aria-label="anchor" href="#subsec-filter-i"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1060"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1052"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
 <p>过滤 cyl = 6 并且 gear = 4 的记录</p>
-<div class="sourceCode" id="cb1061"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1053"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
@@ -274,14 +274,14 @@
 ## 3: 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
 ## 4: 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</code></pre>
 <p>过滤操作是针对数据框的行（记录）</p>
-<div class="sourceCode" id="cb1063"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1055"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, <span class="fu">.</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg  disp
 ## 1: 21.0 160.0
 ## 2: 21.0 160.0
 ## 3: 19.2 167.6
 ## 4: 17.8 167.6</code></pre>
-<div class="sourceCode" id="cb1065"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1057"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mtcars_df</span>, subset <span class="op">=</span> <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg  disp
 ## 1: 21.0 160.0
@@ -289,7 +289,7 @@
 ## 3: 19.2 167.6
 ## 4: 17.8 167.6</code></pre>
 <div class="dplyr">
-<div class="sourceCode" id="cb1067"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1059"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span></code></pre></div>
@@ -305,7 +305,7 @@
 <span class="header-section-number">7.1.2</span> 变换<a class="anchor" aria-label="anchor" href="#subsec-mutate-j"><i class="fas fa-link"></i></a>
 </h3>
 <p>根据已有的列生成新的列，或者修改已有的列，一次只能修改一列</p>
-<div class="sourceCode" id="cb1069"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1061"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span>, <span class="va">mean_mpg</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">mean_disp</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">]</span>
 <span class="va">mtcars_df</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl disp  hp drat    wt  qsec vs am gear carb mean_mpg mean_disp
@@ -315,11 +315,11 @@
 ## 4: 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1 20.09062  230.7219
 ## 5: 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2 20.09062  230.7219
 ## 6: 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1 20.09062  230.7219</code></pre>
-<div class="sourceCode" id="cb1071"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1063"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span>, mean_disp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    mean_mpg mean_disp
 ## 1: 20.09062  230.7219</code></pre>
-<div class="sourceCode" id="cb1073"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1065"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># mtcars_df[, .(mean_mpg := mean(mpg), mean_disp := mean(disp))] # 报错</span>
 <span class="co"># 正确的姿势</span>
 <span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span>, mean_disp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span>, <span class="va">mean_mpg</span>, <span class="va">mean_disp</span><span class="op">)</span><span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -330,12 +330,12 @@
 ## 4: 21.4  258 20.09062  230.7219
 ## 5: 18.7  360 20.09062  230.7219
 ## 6: 18.1  225 20.09062  230.7219</code></pre>
-<div class="sourceCode" id="cb1075"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1067"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span>, mean_disp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   mean_mpg mean_disp
 ## 1 20.09062  230.7219</code></pre>
-<div class="sourceCode" id="cb1077"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1069"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span>, mean_disp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span>, <span class="va">mean_mpg</span>, <span class="va">mean_disp</span><span class="op">)</span> |&gt; 
@@ -353,19 +353,19 @@
 <span class="header-section-number">7.1.3</span> 聚合<a class="anchor" aria-label="anchor" href="#subsec-summarise-j"><i class="fas fa-link"></i></a>
 </h3>
 <p>分组统计 多个分组变量</p>
-<div class="sourceCode" id="cb1079"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1071"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span><span class="op">(</span><span class="va">mtcars_df</span>, <span class="va">cyl</span> <span class="op">~</span> <span class="va">gear</span>, value.var <span class="op">=</span> <span class="st">"mpg"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl     3      4    5
 ## 1:   4 21.50 26.925 28.2
 ## 2:   6 19.75 19.750 19.7
 ## 3:   8 15.05    NaN 15.4</code></pre>
-<div class="sourceCode" id="cb1081"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1073"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">gear</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>##       3      4    5
 ## 4 21.50 26.925 28.2
 ## 6 19.75 19.750 19.7
 ## 8 15.05     NA 15.4</code></pre>
-<div class="sourceCode" id="cb1083"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1075"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    cyl gear mean_mpg
 ## 1:   6    4   19.750
@@ -376,7 +376,7 @@
 ## 6:   4    5   28.200
 ## 7:   8    5   15.400
 ## 8:   6    5   19.700</code></pre>
-<div class="sourceCode" id="cb1085"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1077"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars_df</span>, <span class="va">mpg</span> <span class="op">~</span> <span class="va">cyl</span> <span class="op">+</span> <span class="va">gear</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>##   cyl gear    mpg
 ## 1   4    3 21.500
@@ -387,7 +387,7 @@
 ## 6   4    5 28.200
 ## 7   6    5 19.700
 ## 8   8    5 15.400</code></pre>
-<div class="sourceCode" id="cb1087"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1079"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -409,7 +409,7 @@
 <span class="header-section-number">7.1.4</span> 命名<a class="anchor" aria-label="anchor" href="#subsec-setname"><i class="fas fa-link"></i></a>
 </h3>
 <p>修改列名，另存一份生效</p>
-<div class="sourceCode" id="cb1089"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1081"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sub_mtcars_df</span> <span class="op">&lt;-</span> <span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mean_mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span>, <span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear ave_mpg
@@ -421,7 +421,7 @@
 ## 6:   4    5  28.200
 ## 7:   8    5  15.400
 ## 8:   6    5  19.700</code></pre>
-<div class="sourceCode" id="cb1091"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1083"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 注意 sub_mtcars_df 并没有修改列名</span>
 <span class="va">sub_mtcars_df</span></code></pre></div>
 <pre><code>##    cyl gear mean_mpg
@@ -434,7 +434,7 @@
 ## 7:   8    5   15.400
 ## 8:   6    5   19.700</code></pre>
 <p>修改列名并直接起作用，在原来的数据集上生效</p>
-<div class="sourceCode" id="cb1093"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1085"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setattr.html">setnames</a></span><span class="op">(</span><span class="va">sub_mtcars_df</span>, old <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mean_mpg"</span><span class="op">)</span>, new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ave_mpg"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># sub_mtcars_df 已经修改了列名</span>
 <span class="va">sub_mtcars_df</span></code></pre></div>
@@ -454,7 +454,7 @@
 <span class="header-section-number">7.1.5</span> 排序<a class="anchor" aria-label="anchor" href="#subsec-order-by-j"><i class="fas fa-link"></i></a>
 </h3>
 <p>按照某（些）列从大到小或从小到大的顺序排列， 先按 cyl 升序，然后按 gear 降序</p>
-<div class="sourceCode" id="cb1095"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1087"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars_df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="op">-</span><span class="va">gear</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##      mpg cyl gear
 ##  1: 26.0   4    5
@@ -468,7 +468,7 @@
 ##  9: 27.3   4    4
 ## 10: 21.4   4    4
 ## 11: 21.5   4    3</code></pre>
-<div class="sourceCode" id="cb1097"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1089"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span> |&gt; 
@@ -491,7 +491,7 @@
 <span class="header-section-number">7.1.6</span> 变形<a class="anchor" aria-label="anchor" href="#subsec-reshape"><i class="fas fa-link"></i></a>
 </h3>
 <p>melt 宽的变长的</p>
-<div class="sourceCode" id="cb1099"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1091"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>
   i_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="cn">NA</span><span class="op">)</span>,
   i_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">10</span><span class="op">)</span>,
@@ -501,24 +501,24 @@
   d_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, origin <span class="op">=</span> <span class="st">"2013-09-01"</span><span class="op">)</span>,
   d_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="fl">6</span><span class="op">:</span><span class="fl">1</span>, origin <span class="op">=</span> <span class="st">"2012-01-01"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1092"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">DT</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">i_1</span>, <span class="va">i_2</span>, <span class="va">f_1</span>, <span class="va">f_2</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    i_1 i_2  f_1 f_2
-## 1:   1  NA &lt;NA&gt;   z
-## 2:   2   6 &lt;NA&gt;   a
+## 1:   1  NA    c   z
+## 2:   2   6    c   a
 ## 3:   3   7    c   x
-## 4:   4   8 &lt;NA&gt;   c
+## 4:   4   8    a   c
 ## 5:   5   9    c   x
-## 6:  NA  10    c   x</code></pre>
-<div class="sourceCode" id="cb1102"><pre class="downlit sourceCode r">
+## 6:  NA  10 &lt;NA&gt;   x</code></pre>
+<div class="sourceCode" id="cb1094"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span><span class="va">DT</span>, id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"f_1"</span>, <span class="st">"f_2"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     i_1 i_2 variable value
-##  1:   1  NA      f_1  &lt;NA&gt;
-##  2:   2   6      f_1  &lt;NA&gt;
+##  1:   1  NA      f_1     c
+##  2:   2   6      f_1     c
 ##  3:   3   7      f_1     c
-##  4:   4   8      f_1  &lt;NA&gt;
+##  4:   4   8      f_1     a
 ##  5:   5   9      f_1     c
-##  6:  NA  10      f_1     c
+##  6:  NA  10      f_1  &lt;NA&gt;
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -526,34 +526,34 @@
 ## 11:   5   9      f_2     x
 ## 12:  NA  10      f_2     x</code></pre>
 <p>dcast 长的变宽的</p>
-<div class="sourceCode" id="cb1104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1096"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sleep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">sleep</span><span class="op">)</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span><span class="op">(</span><span class="va">sleep</span>, <span class="va">group</span> <span class="op">~</span> <span class="va">ID</span>, value.var <span class="op">=</span> <span class="st">"extra"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    group   1    2    3    4    5   6   7   8   9  10
 ## 1:     1 0.7 -1.6 -0.2 -1.2 -0.1 3.4 3.7 0.8 0.0 2.0
 ## 2:     2 1.9  0.8  1.1  0.1 -0.1 4.4 5.5 1.6 4.6 3.4</code></pre>
-<div class="sourceCode" id="cb1106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1098"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 如果有多个值</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span><span class="op">(</span><span class="va">mtcars_df</span>, <span class="va">cyl</span> <span class="op">~</span> <span class="va">gear</span>, value.var <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl  3 4 5
 ## 1:   4  1 8 2
 ## 2:   6  2 4 1
 ## 3:   8 12 0 2</code></pre>
-<div class="sourceCode" id="cb1108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span><span class="op">(</span><span class="va">mtcars_df</span>, <span class="va">cyl</span> <span class="op">~</span> <span class="va">gear</span>, value.var <span class="op">=</span> <span class="st">"mpg"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl     3      4    5
 ## 1:   4 21.50 26.925 28.2
 ## 2:   6 19.75 19.750 19.7
 ## 3:   8 15.05    NaN 15.4</code></pre>
 <p>tidyr 包提供数据变形的函数 <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">tidyr::pivot_longer()</a></code> 和 <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">tidyr::pivot_wider()</a></code> 相比于 Base R 提供的 <code><a href="https://rdrr.io/r/stats/reshape.html">reshape()</a></code> 和 data.table 提供的 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt()</a></code> 和 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast()</a></code> 更加形象的命名</p>
-<div class="sourceCode" id="cb1110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sleep</span>, names_from <span class="op">=</span> <span class="st">"ID"</span>, values_from <span class="op">=</span> <span class="st">"extra"</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 11
 ##   group   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
 ##   &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1 1       0.7  -1.6  -0.2  -1.2  -0.1   3.4   3.7   0.8   0     2  
 ## 2 2       1.9   0.8   1.1   0.1  -0.1   4.4   5.5   1.6   4.6   3.4</code></pre>
-<div class="sourceCode" id="cb1112"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sleep</span>, v.names <span class="op">=</span> <span class="st">"extra"</span>, idvar <span class="op">=</span> <span class="st">"group"</span>, timevar <span class="op">=</span> <span class="st">"ID"</span>, direction <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></code></pre></div>
 <pre><code>##    group extra.1 extra.2 extra.3 extra.4 extra.5 extra.6 extra.7 extra.8
 ## 1:     1     0.7    -1.6    -0.2    -1.2    -0.1     3.4     3.7     0.8
@@ -572,7 +572,7 @@
 <code>sep</code> 新的列名是由参数 <code>v.names</code> (extra) 和参数值 <code>timevar</code> (ID) 拼接起来的，默认 <code>sep = "."</code> 推荐使用下划线来做分割 <code>sep = "_"</code>
 </li>
 </ul>
-<div class="sourceCode" id="cb1114"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ToothGrowth</span><span class="op">)</span></code></pre></div>
 <pre><code>##    len supp dose
 ## 1  4.2   VC  0.5
@@ -581,7 +581,7 @@
 ## 4  5.8   VC  0.5
 ## 5  6.4   VC  0.5
 ## 6 10.0   VC  0.5</code></pre>
-<div class="sourceCode" id="cb1116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ToothGrowth</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">6</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html">reshape</a></span><span class="op">(</span><span class="va">ToothGrowth</span>,
   v.names <span class="op">=</span> <span class="st">"len"</span>, idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"supp"</span>, <span class="st">"dose"</span><span class="op">)</span>,
@@ -601,7 +601,7 @@
 <span class="header-section-number">7.1.7</span> 分组<a class="anchor" aria-label="anchor" href="#subsec-group-by"><i class="fas fa-link"></i></a>
 </h3>
 <p>分组切片，取每组第一个和最后一个值</p>
-<div class="sourceCode" id="cb1118"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Loblolly</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Seed</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">age</span>, <span class="va">Seed</span><span class="op">)</span> |&gt; 
@@ -630,7 +630,7 @@
 <p>合并操作对应于数据库中的连接操作， dplyr 包的哲学就来源于对数据库操作的进一步抽象， data.table 包的 merge 函数就对应为 dplyr 包的 join 函数</p>
 <p><code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">data.table::merge</a></code> 和 <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr::join</a></code></p>
 <p>给出一个表格，数据操作， data.table 实现， dplyr 实现</p>
-<div class="sourceCode" id="cb1120"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dt1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, X <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, key <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
 <span class="va">dt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>A <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span>, Y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, key <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="va">dt2</span><span class="op">)</span> <span class="co"># 内连接</span></code></pre></div>
@@ -643,7 +643,7 @@
 ## 6: j 10 6</code></pre>
 <p>参数 key 的作用相当于建立一个索引，通过它实现更快的数据操作速度</p>
 <p><code>key = c("x","y","z")</code> 或者 <code>key = "x,y,z"</code> 其中 x,y,z 是列名</p>
-<div class="sourceCode" id="cb1122"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">band_members</span>, <span class="va">band_instruments</span>, package <span class="op">=</span> <span class="st">"dplyr"</span><span class="op">)</span>
 <span class="va">band_members</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
@@ -652,7 +652,7 @@
 ## 1 Mick  Stones 
 ## 2 John  Beatles
 ## 3 Paul  Beatles</code></pre>
-<div class="sourceCode" id="cb1124"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1116"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">band_instruments</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   name  plays 
@@ -660,7 +660,7 @@
 ## 1 John  guitar
 ## 2 Paul  bass  
 ## 3 Keith guitar</code></pre>
-<div class="sourceCode" id="cb1126"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">band_members</span>, <span class="va">band_instruments</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 3
 ##   name  band    plays 
@@ -668,7 +668,7 @@
 ## 1 John  Beatles guitar
 ## 2 Paul  Beatles bass</code></pre>
 <p>list 列表里每个元素都是 data.frame 时，最适合用 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">data.table::rbindlist</a></code> 合并</p>
-<div class="sourceCode" id="cb1128"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 合并列表 https://recology.info/2018/10/limiting-dependencies/</span>
 <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDF.html">setDF</a></span><span class="op">(</span>
@@ -782,10 +782,10 @@
 </tr>
 </tbody>
 </table></div>
-<div class="sourceCode" id="cb1130"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1122"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "data.frame"</code></pre>
-<div class="sourceCode" id="cb1132"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1124"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="va">mtcars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
@@ -794,21 +794,21 @@
 <h3>
 <span class="header-section-number">7.2.1</span> 选择多列<a class="anchor" aria-label="anchor" href="#sec-select"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear
 ## 1:   6    4
 ## 2:   6    4
 ## 3:   4    4</code></pre>
-<div class="sourceCode" id="cb1136"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear
 ## 1:   6    4
 ## 2:   6    4
 ## 3:   4    4</code></pre>
-<div class="sourceCode" id="cb1138"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##    cyl gear
@@ -816,11 +816,11 @@
 ## 2:   6    4
 ## 3:   4    4</code></pre>
 <p>反选多列，选择除了 cyl 和 gear 的列</p>
-<div class="sourceCode" id="cb1140"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## 或者 mtcars[, setdiff(names(mtcars), c("cyl", "gear"))]</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
-<div class="sourceCode" id="cb1142"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, select <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span><span class="op">)</span><span class="op">)</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg disp  hp drat    wt  qsec vs am carb
 ## 1: 21.0  160 110 3.90 2.620 16.46  0  1    4
@@ -831,7 +831,7 @@
 <h3>
 <span class="header-section-number">7.2.2</span> 过滤多行<a class="anchor" aria-label="anchor" href="#sec-filter"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="va">mtcars</span><span class="op">[</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -839,14 +839,14 @@
 ## 2: 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
 ## 3: 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
 ## 4: 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</code></pre>
-<div class="sourceCode" id="cb1146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html">subset</a></span><span class="op">(</span><span class="va">mtcars</span>, subset <span class="op">=</span> <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 ## 2: 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
 ## 3: 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
 ## 4: 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</code></pre>
-<div class="sourceCode" id="cb1148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
 <span class="va">mtcars</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -854,7 +854,7 @@
 ## 2: 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
 ## 3: 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
 ## 4: 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</code></pre>
-<div class="sourceCode" id="cb1150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">&amp;</span> <span class="va">gear</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -867,7 +867,7 @@
 <h3>
 <span class="header-section-number">7.2.3</span> 去重多行<a class="anchor" aria-label="anchor" href="#sec-duplicated"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -879,7 +879,7 @@
 ## 6: 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
 ## 7: 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
 ## 8: 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
-<div class="sourceCode" id="cb1154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
 <span class="va">mtcars</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -891,7 +891,7 @@
 ## 6: 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
 ## 7: 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
 ## 8: 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
-<div class="sourceCode" id="cb1156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html">unique</a></span><span class="op">(</span><span class="va">mtcars</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"gear"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 ## 1: 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
@@ -902,7 +902,7 @@
 ## 6: 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
 ## 7: 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
 ## 8: 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
-<div class="sourceCode" id="cb1158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">gear</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -924,7 +924,7 @@
 <h4>
 <span class="header-section-number">7.2.4.1</span> 左合并<a class="anchor" aria-label="anchor" href="#subsec-left-join"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb1160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr::inner_join()</span>
 <span class="co"># dplyr::left_join()</span>
 <span class="co"># dplyr::right_join()</span>
@@ -940,7 +940,7 @@
 <h3>
 <span class="header-section-number">7.2.5</span> 新添多列<a class="anchor" aria-label="anchor" href="#sec-add-columns"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span>, <span class="fu">`:=`</span><span class="op">(</span>disp_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span>, hp_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">disp</span>, <span class="va">hp</span>, <span class="va">disp_mean</span>, <span class="va">hp_mean</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##    cyl  disp  hp disp_mean  hp_mean
 ## 1:   6 160.0 110  183.3143 122.2857
@@ -956,7 +956,7 @@
 <span class="header-section-number">7.2.6</span> 删除多列<a class="anchor" aria-label="anchor" href="#sec-delete-columns"><i class="fas fa-link"></i></a>
 </h3>
 <p>删除列就是将该列的值清空，置为 NULL，下面将新添的两个列删除，根据列名的特点用正则表达式匹配</p>
-<div class="sourceCode" id="cb1163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"_mean$"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">:=</span> <span class="cn">NULL</span><span class="op">]</span></code></pre></div>
 </div>
 <div id="sec-select-columns" class="section level3" number="7.2.7">
@@ -964,7 +964,7 @@
 <span class="header-section-number">7.2.7</span> 筛选多列<a class="anchor" aria-label="anchor" href="#sec-select-columns"><i class="fas fa-link"></i></a>
 </h3>
 <p>按照某一规则筛选多列</p>
-<div class="sourceCode" id="cb1164"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">iris</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="fl">6</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span></code></pre></div>
@@ -980,7 +980,7 @@
 <h3>
 <span class="header-section-number">7.2.8</span> 修改多列类型<a class="anchor" aria-label="anchor" href="#sec-modify-columns-type"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">)</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="va">as.integer</span><span class="op">)</span>, .SDcols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span><span class="op">)</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
 <pre><code>## Classes 'data.table' and 'data.frame':   32 obs. of  11 variables:
@@ -1003,7 +1003,7 @@
 <span class="header-section-number">7.2.9</span> 取每组第一行<a class="anchor" aria-label="anchor" href="#sec-select-first-row"><i class="fas fa-link"></i></a>
 </h3>
 <p>先将 mtcars 按 cyl 升序，gear 降序排列，然后按 cyl, gear 和 am 分组取第一行</p>
-<div class="sourceCode" id="cb1168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="op">-</span><span class="va">gear</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="fl">1</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     cyl gear am  mpg disp  hp drat    wt  qsec vs carb
 ##  1:   4    5  1 26.0  120  91 4.43 2.140 16.70  0    2
@@ -1016,7 +1016,7 @@
 ##  8:   6    3  0 21.4  258 110 3.08 3.215 19.44  1    1
 ##  9:   8    5  1 15.8  351 264 4.22 3.170 14.50  0    4
 ## 10:   8    3  0 18.7  360 175 3.15 3.440 17.02  0    2</code></pre>
-<div class="sourceCode" id="cb1170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 或者</span>
 <span class="va">mtcars</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="op">-</span><span class="va">gear</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">.SD</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">gear</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     cyl gear am  mpg disp  hp drat    wt  qsec vs carb
@@ -1036,7 +1036,7 @@
 <span class="header-section-number">7.2.10</span> 计算环比同比<a class="anchor" aria-label="anchor" href="#subsec-mom-vs-yoy"><i class="fas fa-link"></i></a>
 </h3>
 <p>以数据集 AirPassengers 为例，重新整理后见表 <a href="chap-advanced-manipulation.html#tab:air-passengers">7.3</a></p>
-<div class="sourceCode" id="cb1172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
   year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1949</span><span class="op">:</span><span class="fl">1960</span>, each <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,
@@ -1257,12 +1257,12 @@
 </tbody>
 </table></div>
 <p>横向计算环比，如1949年2月相比1月增长多少、3月相比2月增长多少，以此类推，就是计算环比？纵向计算同比，如1950年1月相比1949年1月增长多少、1951年相比1950年1月增长多少？</p>
-<div class="sourceCode" id="cb1173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 环比横向/同比纵向</span>
 <span class="va">mom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">x</span>, lag <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># month to month</span>
 <span class="co"># 格式化输出</span>
 <span class="va">format_mom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="fu">mom</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"f"</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://renkun-ken.github.io/formattable/">formattable</a></span><span class="op">)</span>
 <span class="co"># 同比变化</span>
 <span class="va">air_passengers</span> <span class="op"><a href="https://rdrr.io/pkg/DT/man/DT-imports.html">%&gt;%</a></span>
@@ -1282,7 +1282,7 @@
 <span class="header-section-number">7.2.11</span> 合并多个数据框<a class="anchor" aria-label="anchor" href="#sec-merge-multi-dfs"><i class="fas fa-link"></i></a>
 </h3>
 <p>将所有列都保留，以 <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join()</a></code> 方式合并</p>
-<div class="sourceCode" id="cb1175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df1</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
 <span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
 <span class="va">df3</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fl">16</span><span class="op">:</span><span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">]</span>
@@ -1315,7 +1315,7 @@
 ## 23:          5.7  setosa          NA          1.7
 ## 24:          5.8  setosa         4.0           NA
 ##     Sepal.Length Species Sepal.Width Petal.Length</code></pre>
-<div class="sourceCode" id="cb1177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span>, <span class="va">all_dfs</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Species Sepal.Width Petal.Length
@@ -1346,7 +1346,7 @@
 ##     Sepal.Length Species Sepal.Width Petal.Length</code></pre>
 <p>合并完应该有30行，为啥只有24行？这是因为 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge()</a></code> 函数对主键 key 相同的记录会合并，要想不合并，需要调用 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbindlist()</a></code> 函数 <a href="https://d.cosx.org/d/421235" class="uri">https://d.cosx.org/d/421235</a></p>
 <p><code><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbind()</a></code> 列数相同的两个 data.frame 按行合并，<code><a href="https://rdrr.io/r/base/cbind.html">cbind()</a></code> 行数相同的两个 data.frame 按列合并，<code><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge()</a></code> 对行、列数没有要求</p>
-<div class="sourceCode" id="cb1179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/rbindlist.html">rbindlist</a></span><span class="op">(</span><span class="va">all_dfs</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Species Sepal.Width Petal.Length
 ##  1:          5.1  setosa          NA           NA
@@ -1380,7 +1380,7 @@
 ## 29:          5.2  setosa          NA          1.4
 ## 30:          4.7  setosa          NA          1.6
 ##     Sepal.Length Species Sepal.Width Petal.Length</code></pre>
-<div class="sourceCode" id="cb1181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">all_dfs</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Species Sepal.Width Petal.Length
@@ -1421,7 +1421,7 @@
 <span class="header-section-number">7.2.12</span> 分组聚合多个指标<a class="anchor" aria-label="anchor" href="#sec-multiple-aggregations"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://stackoverflow.com/questions/24151602/calculate-multiple-aggregations-with-lapply-sd" class="uri">https://stackoverflow.com/questions/24151602/calculate-multiple-aggregations-with-lapply-sd</a></p>
-<div class="sourceCode" id="cb1183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>,
@@ -1431,7 +1431,7 @@
 ## 1   4 26.66364   26.00000  82.63636  91.00000
 ## 2   6 19.74286   19.70000 122.28571 110.00000
 ## 3   8 15.10000   15.20000 209.21429 192.50000</code></pre>
-<div class="sourceCode" id="cb1185"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 数据一致性 https://d.cosx.org/d/420763-base-r</span>
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>, <span class="va">mtcars</span>,
@@ -1443,7 +1443,7 @@
 ## 1   4 26.66364   26.0  82.63636   91.0
 ## 2   6 19.74286   19.7 122.28571  110.0
 ## 3   8 15.10000   15.2 209.21429  192.5</code></pre>
-<div class="sourceCode" id="cb1187"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.SD</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
@@ -1457,7 +1457,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 1:   6 19.74286       19.7 122.28571     110.0
 ## 2:   4 26.66364       26.0  82.63636      91.0
 ## 3:   8 15.10000       15.2 209.21429     192.5</code></pre>
-<div class="sourceCode" id="cb1189"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="va">mtcars</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span> |&gt; 
@@ -1476,7 +1476,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.13</span> 重命名多个列<a class="anchor" aria-label="anchor" href="#sec-rename-multi-cols"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">hp</span><span class="op">)</span> <span class="op">~</span> <span class="va">cyl</span>,
   FUN <span class="op">=</span> <span class="va">median</span>
@@ -1494,14 +1494,14 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="header-section-number">7.2.14</span> 对多个列依次排序<a class="anchor" aria-label="anchor" href="#sec-sort-multi-cols"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns" class="uri">https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-multiple-columns</a></p>
-<div class="sourceCode" id="cb1193"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># base</span>
 <span class="va">tmp</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">median_mpg</span>, <span class="op">-</span><span class="va">median_hp</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##    cyl median_mpg median_hp
 ## 1:   8       15.2     192.5
 ## 2:   6       19.7     110.0
 ## 3:   4       26.0      91.0</code></pre>
-<div class="sourceCode" id="cb1195"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># data.table</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">setorder</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="va">median_mpg</span>, <span class="op">-</span><span class="va">median_hp</span><span class="op">)</span>
 <span class="co"># dplyr</span>
@@ -1515,7 +1515,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.15</span> 重排多个列的位置<a class="anchor" aria-label="anchor" href="#sec-rearrange-position-multi-cols"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1197"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># https://stackoverflow.com/questions/19619666/change-column-position-of-data-table</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setcolorder.html">setcolorder</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"median_mpg"</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>, <span class="st">"median_mpg"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tmp</span></code></pre></div>
@@ -1523,7 +1523,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 1:       15.2   8     192.5
 ## 2:       19.7   6     110.0
 ## 3:       26.0   4      91.0</code></pre>
-<div class="sourceCode" id="cb1199"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr</span>
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"median_mpg"</span>, <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>, <span class="st">"median_mpg"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##    median_mpg cyl median_hp
@@ -1535,7 +1535,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.16</span> 整理回归结果<a class="anchor" aria-label="anchor" href="#sec-tidy-output"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1201"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">dat</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Length</span> <span class="op">~</span> <span class="va">Sepal.Length</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">mod</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
@@ -1553,7 +1553,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## versicolor.Sepal.Length 0.6864698 0.08630708  7.9538056 2.586190e-10 versicolor
 ## virginica.(Intercept)   0.6104680 0.41710685  1.4635770 1.498279e-01  virginica
 ## virginica.Sepal.Length  0.7500808 0.06302606 11.9011203 6.297786e-16  virginica</code></pre>
-<div class="sourceCode" id="cb1203"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 管道操作</span>
 <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/DT/man/DT-imports.html">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">.</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Length</span> <span class="op">~</span> <span class="va">Sepal.Length</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/DT/man/DT-imports.html">%&gt;%</a></span>
@@ -1570,7 +1570,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## versicolor.Sepal.Length 0.6864698 0.08630708  7.9538056 2.586190e-10 versicolor
 ## virginica.(Intercept)   0.6104680 0.41710685  1.4635770 1.498279e-01  virginica
 ## virginica.Sepal.Length  0.7500808 0.06302606 11.9011203 6.297786e-16  virginica</code></pre>
-<div class="sourceCode" id="cb1205"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1197"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dplyr 操作，需要 dplyr &gt;= 1.0.0 </span>
 <span class="va">iris</span> <span class="op"><a href="https://rdrr.io/pkg/DT/man/DT-imports.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/DT/man/DT-imports.html">%&gt;%</a></span>
@@ -1590,7 +1590,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.17</span> <code>:=</code> 和 <code>.()</code><a class="anchor" aria-label="anchor" href="#sec-assignment-by-reference"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1207"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="va">mpg_rate</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span>
 <span class="va">mtcars</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">mpg_rate</span>, <span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     mpg_rate  mpg cyl vs am
@@ -1627,7 +1627,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 31:    48.70 15.0   8  0  1
 ## 32:    10.78 21.4   4  1  1
 ##     mpg_rate  mpg cyl vs am</code></pre>
-<div class="sourceCode" id="cb1209"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>mpg_rate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">vs</span>, <span class="va">am</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##     cyl vs am mpg_rate
 ##  1:   6  0  1    34.04
@@ -1668,7 +1668,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.18</span> 去掉含有缺失值的记录<a class="anchor" aria-label="anchor" href="#sec-remove-na"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1211"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">airquality</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">airquality</span><span class="op">)</span>, <span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##   Ozone Solar.R Wind Temp Month Day
 ## 1    41     190  7.4   67     5   1
@@ -1677,7 +1677,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 4    18     313 11.5   62     5   4
 ## 7    23     299  8.6   65     5   7
 ## 8    19      99 13.8   59     5   8</code></pre>
-<div class="sourceCode" id="cb1213"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1205"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 或着</span>
 <span class="va">airquality</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">airquality</span>, <span class="fl">1</span>, <span class="va">anyNA</span><span class="op">)</span>, <span class="op">]</span> |&gt;  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##   Ozone Solar.R Wind Temp Month Day
@@ -1694,7 +1694,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 </h3>
 <p>match 和 <code>%in%</code>
 <a href="https://d.cosx.org/d/421314" class="uri">https://d.cosx.org/d/421314</a></p>
-<div class="sourceCode" id="cb1215"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1207"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">`%nin%`</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Negate</a></span><span class="op">(</span><span class="st">"%in%"</span><span class="op">)</span>
 <span class="co"># `%in%` &lt;- function(x, table) match(x, table, nomatch = 0) &gt; 0 # %in% 函数的定义</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
@@ -1702,21 +1702,21 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 
 <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">y</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
-<div class="sourceCode" id="cb1217"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">%nin%</span> <span class="va">y</span></code></pre></div>
 <pre><code>## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
 <p>返回一个逻辑向量，x 中的元素匹配到了就返回 TRUE，否则 FALSE， <code>%nin%</code> 是 <code>%in%</code> 的取反效果</p>
-<div class="sourceCode" id="cb1219"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1211"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] NA NA  1  2  3</code></pre>
 <p>x 在 y 中的匹配情况，匹配到了，就返回在 y 中匹配的位置，没有匹配到就返回 NA</p>
-<div class="sourceCode" id="cb1221"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1213"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "a" "b"</code></pre>
-<div class="sourceCode" id="cb1223"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">intersect</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "c" "d" "e"</code></pre>
-<div class="sourceCode" id="cb1225"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">union</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "a" "b" "c" "d" "e" "f" "g" "h"</code></pre>
 </div>
@@ -1725,12 +1725,12 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="header-section-number">7.2.20</span> 对数值向量按既定分组计数<a class="anchor" aria-label="anchor" href="#transform-cut-aggregate"><i class="fas fa-link"></i></a>
 </h3>
 <p>此数据处理过程陆续使用了 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">transform()</a></code>、<code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code> 和 <code><a href="https://rdrr.io/r/stats/aggregate.html">aggregate()</a></code> 三个函数</p>
-<div class="sourceCode" id="cb1227"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1219"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 对数值向量按既定分组计数</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">transform</a></span><span class="op">(</span><span class="va">dat</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">y</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, FUN <span class="op">=</span> <span class="va">length</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1228"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1220"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span>
 
@@ -1740,7 +1740,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>对数值向量按分位数分组计数</p>
-<div class="sourceCode" id="cb1229"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/transform.data.table.html">transform</a></span><span class="op">(</span><span class="va">dat</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="va">y</span>,
@@ -1754,7 +1754,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="co"># ))</span>
 
 <span class="va">dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, <span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, FUN <span class="op">=</span> <span class="va">length</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1230"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1222"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
@@ -1763,7 +1763,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="header-section-number">7.2.21</span> 分组排序<a class="anchor" aria-label="anchor" href="#aggregate-order"><i class="fas fa-link"></i></a>
 </h3>
 <p>按变量 a 分组计算，之后按变量 b 降序排列</p>
-<div class="sourceCode" id="cb1231"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">Sepal.Width</span>, <span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">~</span> <span class="va">Species</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>
 <span class="co"># 按 Species 降序排列</span>
 <span class="va">dat</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">Species</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
@@ -1777,10 +1777,10 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <span class="header-section-number">7.2.22</span> 分组获取 Top 值<a class="anchor" aria-label="anchor" href="#lapply-split-order"><i class="fas fa-link"></i></a>
 </h3>
 <p>分组按既定规律取数，比如按 Species 分组取 Top 6</p>
-<div class="sourceCode" id="cb1233"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组取前6个</span>
 <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind.data.frame"</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">iris</span>, <span class="op">~</span><span class="va">Species</span><span class="op">)</span>, <span class="va">head</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb1234"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组取 Top 6</span>
 <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>,
   FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">Sepal.Length</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">6</span><span class="op">)</span>
@@ -1809,36 +1809,36 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h3>
 <span class="header-section-number">7.2.23</span> 分组抽样<a class="anchor" aria-label="anchor" href="#lapply-split-sample"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1236"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1228"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组抽样</span>
 <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/split.html">split</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>,
   FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>, <span class="op">]</span>
 <span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          5.4         3.4          1.7         0.2     setosa
-##  2:          5.0         3.5          1.3         0.3     setosa
-##  3:          4.9         3.6          1.4         0.1     setosa
-##  4:          4.6         3.1          1.5         0.2     setosa
-##  5:          5.4         3.9          1.7         0.4     setosa
-##  6:          4.4         2.9          1.4         0.2     setosa
-##  7:          6.7         3.0          5.0         1.7 versicolor
-##  8:          6.0         2.7          5.1         1.6 versicolor
-##  9:          5.4         3.0          4.5         1.5 versicolor
-## 10:          5.0         2.0          3.5         1.0 versicolor
-## 11:          5.6         2.7          4.2         1.3 versicolor
-## 12:          5.2         2.7          3.9         1.4 versicolor
-## 13:          4.9         2.5          4.5         1.7  virginica
-## 14:          5.8         2.7          5.1         1.9  virginica
-## 15:          6.2         2.8          4.8         1.8  virginica
-## 16:          6.3         3.4          5.6         2.4  virginica
-## 17:          5.8         2.8          5.1         2.4  virginica
-## 18:          6.7         3.1          5.6         2.4  virginica</code></pre>
+##  1:          5.0         3.4          1.6         0.4     setosa
+##  2:          5.0         3.3          1.4         0.2     setosa
+##  3:          4.4         3.0          1.3         0.2     setosa
+##  4:          4.8         3.1          1.6         0.2     setosa
+##  5:          4.6         3.2          1.4         0.2     setosa
+##  6:          5.0         3.4          1.5         0.2     setosa
+##  7:          5.1         2.5          3.0         1.1 versicolor
+##  8:          5.2         2.7          3.9         1.4 versicolor
+##  9:          6.0         2.9          4.5         1.5 versicolor
+## 10:          5.6         3.0          4.5         1.5 versicolor
+## 11:          5.7         2.8          4.1         1.3 versicolor
+## 12:          5.8         2.7          4.1         1.0 versicolor
+## 13:          6.5         3.0          5.8         2.2  virginica
+## 14:          7.2         3.2          6.0         1.8  virginica
+## 15:          7.3         2.9          6.3         1.8  virginica
+## 16:          6.1         2.6          5.6         1.4  virginica
+## 17:          6.4         2.8          5.6         2.1  virginica
+## 18:          6.3         3.4          5.6         2.4  virginica</code></pre>
 </div>
 <div id="lapply-split-quantile" class="section level3" number="7.2.24">
 <h3>
 <span class="header-section-number">7.2.24</span> 分组计算分位数<a class="anchor" aria-label="anchor" href="#lapply-split-quantile"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb1238"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1230"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组计算分位数，如何分组呢</span>
 <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">iris</span>, <span class="va">class</span><span class="op">)</span> <span class="op">==</span> <span class="st">"numeric"</span><span class="op">]</span>, <span class="va">quantile</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##              0% 25% 50% 75% 100%
@@ -1847,7 +1847,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## Petal.Length  1   1   1   1    1
 ## Petal.Width   1   1   1   1    1
 ## Species       0   0   0   0    0</code></pre>
-<div class="sourceCode" id="cb1240"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1232"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span><span class="op">)</span> <span class="op">~</span> <span class="va">Species</span>, FUN <span class="op">=</span> <span class="va">quantile</span><span class="op">)</span></code></pre></div>
 <pre><code>##      Species Sepal.Length.0% Sepal.Length.25% Sepal.Length.50% Sepal.Length.75%
 ## 1     setosa           4.300            4.800            5.000            5.200
@@ -1861,14 +1861,14 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 ## 1           3.675            4.400
 ## 2           3.000            3.400
 ## 3           3.175            3.800</code></pre>
-<div class="sourceCode" id="cb1242"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1234"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 对 Sepal.Length 按 Species 分组计算分位数</span>
 <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, <span class="va">iris</span><span class="op">$</span><span class="va">Species</span>, <span class="va">quantile</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##             0%   25% 50% 75% 100%
 ## setosa     4.3 4.800 5.0 5.2  5.8
 ## versicolor 4.9 5.600 5.9 6.3  7.0
 ## virginica  4.9 6.225 6.5 6.9  7.9</code></pre>
-<div class="sourceCode" id="cb1244"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1236"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分组取平均 mean /中位数 median</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span>, <span class="va">.</span> <span class="op">~</span> <span class="va">Species</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>##      Species Sepal.Length Sepal.Width Petal.Length Petal.Width
@@ -1882,7 +1882,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 </h3>
 <p>截止写作时间，data.table 提供的滑动窗口聚合统计函数 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/froll.html">frollmean()</a></code>、<code><a href="https://Rdatatable.gitlab.io/data.table/reference/froll.html">frollsum()</a></code> 和 <code><a href="https://Rdatatable.gitlab.io/data.table/reference/froll.html">frollapply()</a></code> 还处于实验阶段。 shift 提供漂移功能，向前前置 lead 或向后延迟 lag。</p>
 <p><a href="https://r-norberg.blogspot.com/2016/06/understanding-datatable-rolling-joins.html">移动平均、求和和计算</a></p>
-<div class="sourceCode" id="cb1246"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1238"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>dt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>
   from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zoo/man/yearmon.html">as.Date</a></span><span class="op">(</span><span class="st">"2021-01-01"</span><span class="op">)</span>,
   to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"1 day"</span>
@@ -1901,7 +1901,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <h2>
 <span class="header-section-number">7.3</span> 运行环境<a class="anchor" aria-label="anchor" href="#sec-adm-sessioninfo"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb1247"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1239"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -2007,7 +2007,7 @@ by <span class="op">=</span> <span class="st">"cyl"</span>, .SDcols <span class=
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2023-01-23.</p>
+    <p>"<strong>R 语言学习笔记</strong>" was written by 黄湘云. It was last built on 2023-01-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

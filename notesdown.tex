@@ -218,7 +218,7 @@
 
 \title{R 语言学习笔记}
 \author{黄湘云}
-\date{2023-01-23}
+\date{2023-01-24}
 
 \begin{document}
 \maketitle
@@ -243,6 +243,50 @@ Book in early development. Planned release in 202X.
 
 \end{rmdwarn}
 
+\hypertarget{sec-help-me}{%
+\section*{如何发问}\label{sec-help-me}}
+\addcontentsline{toc}{section}{如何发问}
+
+\begin{quote}
+The phrase ``does not work'' is not very helpful, it can mean quite a few things including:
+
+\begin{itemize}
+\tightlist
+\item
+  Your computer exploded.
+\item
+  No explosion, but smoke is pouring out the back and microsoft's ``NoSmoke'' utility is not compatible with your power supply.
+\item
+  The computer stopped working.
+\item
+  The computer sits around on the couch all day eating chips and watching talk shows.
+\item
+  The computer has started picketing your house shouting catchy slogans and demanding better working conditions and an increase in memory.
+\item
+  Everything went dark and you cannot check the cables on the back of the computer because the lights are off due to the power outage.
+\item
+  R crashed, but the other programs are still working.
+\item
+  R gave an error message and stopped processing your code after running for a while.
+\item
+  R gave an error message without running any of your code (and is waiting for your next command).
+\item
+  R is still running your code and the time has exceeded your patience so you think it has hung.
+\item
+  R completed and returned a result, but also gave warnings.
+\item
+  R completed your command, but gave an incorrect answer.
+\item
+  R completed your command but the answer is different from what you expect (but is correct according to the documentation).
+\end{itemize}
+
+There are probably others. Running your code I think the answer is the last one.
+
+\hspace*{\fill} --- Greg Snow \footnote{来自 R 社区论坛收集的智语 \texttt{fortunes::fortune(324)}。}
+\end{quote}
+
+R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题 \url{https://cran.r-project.org/faqs.html} 中查找，也可在线搜索 \url{https://cran.r-project.org/search.html} 或 \url{https://rseek.org/} ，更多获取帮助方式见 \url{https://www.r-project.org/help.html}。爆栈网问题以标签分类，比如 \href{https://stackoverflow.com/questions/tagged/r-plotly}{r-plotly}、\href{https://stackoverflow.com/questions/tagged/r-markdown}{r-markdown}、 \href{https://stackoverflow.com/questions/tagged/data.table}{data.table} 和 \href{https://stackoverflow.com/questions/tagged/ggplot2}{ggplot2}，还可以关注一些活跃的社区大佬，比如 \href{https://stackoverflow.com/users/559676/yihui-xie}{谢益辉}。
+
 \hypertarget{sec-licenses}{%
 \section*{授权说明}\label{sec-licenses}}
 \addcontentsline{toc}{section}{授权说明}
@@ -258,7 +302,48 @@ Book in early development. Planned release in 202X.
 \section*{运行信息}\label{sec-session-welcome}}
 \addcontentsline{toc}{section}{运行信息}
 
-书籍在 R version 4.2.0 (2022-04-22) 下编译，Pandoc 版本 2.16.2，最新一次编译发生在 2023-01-23 17:07:32。
+本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2023年01月24日04时43分12秒，本书用 R version 4.2.0 (2022-04-22) 编译，完整运行环境如下：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{xfun}\SpecialCharTok{::}\FunctionTok{session\_info}\NormalTok{(}\AttributeTok{packages =} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"knitr"}\NormalTok{, }\StringTok{"rmarkdown"}\NormalTok{, }\StringTok{"bookdown"}
+\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 4.2.0 (2022-04-22)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 20.04.5 LTS
+## 
+## Locale:
+##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##   LC_ADDRESS=C               LC_TELEPHONE=C            
+##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## Package version:
+##   bookdown_0.26  knitr_1.39     rmarkdown_2.14
+## 
+## Pandoc version: 2.16.2
+\end{verbatim}
+
+借助 \textbf{bookdown} \citep{xie2016} 可以将 Rmd 文件组织起来， \textbf{rmarkdown} \citep{rmarkdown}和 \textbf{knitr} \citep{xie2015} 将源文件编译成 Markdown 文件， \href{https://pandoc.org/}{Pandoc} 将 Markdown 文件转化成 HTML 和 TeX 文件， \href{https://yihui.name/tinytex/}{TinyTeX} \citep{xie2019} 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 \textbf{ggplot2} 包制作 \citep{Wickham_2016_ggplot2}，而统计理论相关的示意图用 Base R 创作。
+
+\hypertarget{sec-conventions}{%
+\section*{记号约定}\label{sec-conventions}}
+\addcontentsline{toc}{section}{记号约定}
+
+正文中的代码、函数、参数及参数值以等宽正体表示，如 \VERB|\FunctionTok{data}\NormalTok{(}\AttributeTok{list =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}iris\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BOD\textquotesingle{}}\NormalTok{))}|， 其中函数名称 \texttt{data()}，参数及参数值 \VERB|\NormalTok{list }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}iris\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BOD\textquotesingle{}}\NormalTok{)}| ，R 程序包用粗体表示，如 \textbf{graphics}。
+
+\hypertarget{sec-about-author}{%
+\section*{作者简介}\label{sec-about-author}}
+\addcontentsline{toc}{section}{作者简介}
+
+热心开源事业，统计之都编辑，经常混迹于统计之都论坛、Github 和爆栈网。个人主页 \url{https://xiangyun.rbind.io/}
 
 \hypertarget{chap-preface}{%
 \chapter{前言}\label{chap-preface}}
@@ -317,7 +402,9 @@ JASP \url{https://jasp-stats.org} 是一款免费的统计软件，源代码托�
 
 国内可视化分析平台，比如 \href{https://github.com/hiplot}{hiplot} 基于 R 语言实现可视化分析，各类图形的介绍见\href{https://hiplot.com.cn/docs/zh/}{文档}，极大地降低数据分析人员探索分析的门槛，节省了时间，同时非专业内的人也可借助其完成分析探索的过程，只需明白各类图形的含义即可。美团也建设了自己的可视化分析平台帮助运营人员，详见\href{https://tech.meituan.com/2018/08/02/mt-r-practice.html}{文档}
 
-\href{https://www.burns-stat.com/}{Patrick Burns} 收集整理了 R 语言中奇葩的现象，写成 \href{https://www.burns-stat.com/pages/Tutor/R_inferno.pdf}{The R Inferno} 直译过来就是《R 之炼狱》。这些奇葩的怪现象可以看做是 R 风格的一部分，对于编程人员来说就是一些建议和技巧，参考之可以避开某些坑。 Paul E. Johnson 整理了一份真正的 R 语言建议，记录了他自己从 SAS 转换到 R 的过程中遇到的各种问题 \url{http://pj.freefaculty.org/R/Rtips.html}。Michail Tsagris 和 Manos Papadakis 也收集了 70 多条 R 编程的技巧和建议，力求以更加 R 范地将语言特性发挥到极致 \citep{Rfast_2018_Tsagris}，Martin Mächler 提供了一份 \href{https://stat.ethz.ch/Teaching/maechler/R/useR_2014/}{Good Practices in R Programming}。 Python 社区广泛流传着 Tim Peters 的 《Python 之禅》，它已经整合进每一版 Python 软件中，只需在 Python 控制台里执行 \texttt{import\ this} 可以获得。
+\href{https://www.burns-stat.com/}{Patrick Burns} 收集整理了 R 语言中奇葩的现象，写成 \href{https://www.burns-stat.com/pages/Tutor/R_inferno.pdf}{The R Inferno} 直译过来就是《R 之炼狱》。这些奇葩的怪现象可以看做是 R 风格的一部分，对于编程人员来说就是一些建议和技巧，参考之可以避开某些坑。 Paul E. Johnson 整理了一份真正的 R 语言建议，记录了他自己从 SAS 转换到 R 的过程中遇到的各种问题 \url{http://pj.freefaculty.org/R/Rtips.html}。Michail Tsagris 和 Manos Papadakis 也收集了 70 多条 R 编程的技巧和建议，力求以更加 R 范地将语言特性发挥到极致 \citep{Rfast_2018_Tsagris}，Martin Mächler 提供了一份 \href{https://stat.ethz.ch/Teaching/maechler/R/useR_2014/}{Good Practices in R Programming}。
+
+Python 社区广泛流传着 Tim Peters 的 《Python 之禅》，它已经整合进每一版 Python 软件中，只需在 Python 控制台里执行 \texttt{import\ this} 可以获得。
 
 \begin{quote}
 \begin{enumerate}
@@ -373,11 +460,6 @@ JASP \url{https://jasp-stats.org} 是一款免费的统计软件，源代码托�
 
 John M. Chambers 谈了数据科学的源起以及和 S、R 语言的渊源 \citep{RS_2020_John}。
 
-\hypertarget{sec-r-help}{%
-\section{获取帮助}\label{sec-r-help}}
-
-R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题 \url{https://cran.r-project.org/faqs.html} 中查找，也可在线搜索 \url{https://cran.r-project.org/search.html} 或 \url{https://rseek.org/} ，更多获取帮助方式见 \url{https://www.r-project.org/help.html}。爆栈网问题以标签分类，比如 \href{https://stackoverflow.com/questions/tagged/r-plotly}{r-plotly}、\href{https://stackoverflow.com/questions/tagged/r-markdown}{r-markdown}、 \href{https://stackoverflow.com/questions/tagged/data.table}{data.table} 和 \href{https://stackoverflow.com/questions/tagged/ggplot2}{ggplot2}，还可以关注一些活跃的社区大佬，比如 \href{https://stackoverflow.com/users/559676/yihui-xie}{谢益辉}。
-
 \hypertarget{sec-writing-details}{%
 \section{写作环境}\label{sec-writing-details}}
 
@@ -389,177 +471,8 @@ R 社区提供了丰富的帮助资源，可以在 R 官网搜集的高频问题
 
 }
 
-\caption{书籍项目架构图}\label{fig:book-workflow}
+\caption{书籍项目}\label{fig:book-workflow}
 \end{figure}
-
-本书 R Markdown 源文件托管在 Github 仓库里，本地使用 RStudio IDE 编辑，bookdown 组织各个章节的 Rmd 文件和输出格式，使用 Git 进行版本控制。每次提交修改到 Github 上都会触发 Travis 自动编译书籍，将一系列 Rmd 文件经 knitr 调用 R 解释器执行里面的代码块，并将输出结果返回，Pandoc 将 Rmd 文件转化为 md 、 html 或者 tex 文件。若想输出 pdf 文件，还需要准备 TeX 排版环境，最后使用 Netlify 托管书籍网站，和 Travis 一起实现连续部署，使得每次修改都会同步到网站。最近一次编译时间 2023年01月23日09时07分33秒，本书用 R version 4.2.0 (2022-04-22) 编译，完整运行环境如下：
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{xfun}\SpecialCharTok{::}\FunctionTok{session\_info}\NormalTok{(}\AttributeTok{packages =} \FunctionTok{c}\NormalTok{(}
-  \StringTok{"knitr"}\NormalTok{, }\StringTok{"rmarkdown"}\NormalTok{, }\StringTok{"bookdown"}
-\NormalTok{), }\AttributeTok{dependencies =} \ConstantTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## R version 4.2.0 (2022-04-22)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.5 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   bookdown_0.26  knitr_1.39     rmarkdown_2.14
-## 
-## Pandoc version: 2.16.2
-\end{verbatim}
-
-借助 \textbf{bookdown} \citep{xie2016} 可以将 Rmd 文件组织起来， \textbf{rmarkdown} \citep{rmarkdown}和 \textbf{knitr} \citep{xie2015} 将源文件编译成 Markdown 文件， \href{https://pandoc.org/}{Pandoc} 将 Markdown 文件转化成 HTML 和 TeX 文件， \href{https://yihui.name/tinytex/}{TinyTeX} \citep{xie2019} 可以将 TeX 文件进一步编译成 PDF 文档，书中大量的图形在用 \textbf{ggplot2} 包制作 \citep{Wickham_2016_ggplot2}，而统计理论相关的示意图用 Base R 创作。
-
-\begin{rmdtip}{提示}
-得益于 Github Action 提供的测试服务，\href{https://pages.github.com/}{Github Pages}、\href{https://bookdown.org}{Bookdown} 和 \href{https://netlify.com/}{Netlify} 提供的部署服务，鉴于国内的网络环境，本书托管在三个地方，分别是 \url{https://xiangyunhuang.github.io/notesdown/}， \url{https://bookdown.org/xiangyun/notesdown/} ， \url{https://notesdown.netlify.app/}。
-
-\end{rmdtip}
-
-\hypertarget{sec-conventions}{%
-\section{记号约定}\label{sec-conventions}}
-
-正文中的代码、函数、参数及参数值以等宽正体表示，如 \VERB|\FunctionTok{data}\NormalTok{(}\AttributeTok{list =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}iris\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BOD\textquotesingle{}}\NormalTok{))}|， 其中函数名称 \texttt{data()}，参数及参数值 \VERB|\NormalTok{list }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}iris\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}BOD\textquotesingle{}}\NormalTok{)}| ，R 程序包用粗体表示，如 \textbf{graphics}。
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{ruler}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-\end{verbatim}
-
-\hypertarget{sec-contribute}{%
-\section{复现环境}\label{sec-contribute}}
-
-\begin{quote}
-构建容器
-\end{quote}
-
-本书借助 Github Action 从 Dockerfile 构建容器镜像，然后将镜像文件推送到 Github Package。完成这些操作首先需要从 \url{https://github.com/settings/tokens} 新建拥有 GitHub Package \footnote{\url{https://docs.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages}} 读写删的权限的 TOKEN（俗称访问令牌或密钥），命名为 \texttt{GITHUB\_PKG}，并将此令牌保存到本地 TOKEN.txt 文件中，以备后用。
-
-镜像内默认暴露 8181 端口供外部连接使用，进入容器后，默认工作路径是 \texttt{/home/docker/}。创建好镜像后，要先登陆 GitHub Package 然后才有权限将镜像拉取下来
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# 登陆 GitHub Package}
-\FunctionTok{cat}\NormalTok{ \textasciitilde{}/TOKEN.txt }\KeywordTok{|} \ExtensionTok{docker}\NormalTok{ login https://docker.pkg.github.com }\AttributeTok{{-}u}\NormalTok{ XiangyunHuang }\AttributeTok{{-}{-}password{-}stdin}
-\CommentTok{\# 拉取镜像}
-\ExtensionTok{docker}\NormalTok{ pull docker.pkg.github.com/xiangyunhuang/notesdown/notesdown{-}book:devel}
-\end{Highlighting}
-\end{Shaded}
-
-读者可以先查看下容器内的信息
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}{-}rm} \AttributeTok{{-}u}\NormalTok{ root }\AttributeTok{{-}v} \StringTok{"/}\VariableTok{$\{PWD\}}\StringTok{://home/docker/"} \DataTypeTok{\textbackslash{}}
-\NormalTok{  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown{-}book:devel }\DataTypeTok{\textbackslash{}}
-\NormalTok{  bash }\AttributeTok{{-}c} \StringTok{"locale; fc{-}list | sort"}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{quote}
-运行容器
-\end{quote}
-
-下面从镜像创建一个叫 notesdown-book 的容器，并让它在后台运行，允许以真正的 root 账户权限交互式执行命令，停止容器后，自动销毁容器。 此处，不再介绍 Docker 容器的使用，用容器打包本书所有软件环境仅供读者完整复现本书之用，感兴趣的读者可以去参考书籍\href{https://vuepress.mirror.docker-practice.com/}{Docker 从入门到实践}。
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ run }\AttributeTok{{-}itd} \AttributeTok{{-}p}\NormalTok{ 8282:8787 }\AttributeTok{{-}{-}rm} \AttributeTok{{-}{-}name}\OperatorTok{=}\NormalTok{notesdown{-}book }\AttributeTok{{-}{-}privileged}\OperatorTok{=}\NormalTok{true }\DataTypeTok{\textbackslash{}}
-\NormalTok{  docker.pkg.github.com/xiangyunhuang/notesdown/notesdown{-}book:devel /sbin/init}
-\end{Highlighting}
-\end{Shaded}
-
-接着登陆进入 notesdown-book 容器，
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ exec }\AttributeTok{{-}it}\NormalTok{ notesdown{-}book bash}
-\end{Highlighting}
-\end{Shaded}
-
-一番骚操作后，用户退出容器，然后停止容器。
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ stop notesdown{-}book}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{quote}
-使用 RStudio Server
-\end{quote}
-
-启动容器后，接着获取容器 notesdown-book 的 IP 地址，然后依据端口号 8282 从网页进入 RStudio Sever，比如 \url{http://192.168.100.23:8282}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{docker}\NormalTok{ inspect }\AttributeTok{{-}{-}format}\OperatorTok{=}\StringTok{\textquotesingle{}\{\{.NetworkSettings.IPAddress\}\}\textquotesingle{}}\NormalTok{ notesdown{-}book}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{sec-help-me}{%
-\section{如何发问}\label{sec-help-me}}
-
-\begin{quote}
-The phrase ``does not work'' is not very helpful, it can mean quite a few things including:
-
-\begin{itemize}
-\tightlist
-\item
-  Your computer exploded.
-\item
-  No explosion, but smoke is pouring out the back and microsoft's ``NoSmoke'' utility is not compatible with your power supply.
-\item
-  The computer stopped working.
-\item
-  The computer sits around on the couch all day eating chips and watching talk shows.
-\item
-  The computer has started picketing your house shouting catchy slogans and demanding better working conditions and an increase in memory.
-\item
-  Everything went dark and you cannot check the cables on the back of the computer because the lights are off due to the power outage.
-\item
-  R crashed, but the other programs are still working.
-\item
-  R gave an error message and stopped processing your code after running for a while.
-\item
-  R gave an error message without running any of your code (and is waiting for your next command).
-\item
-  R is still running your code and the time has exceeded your patience so you think it has hung.
-\item
-  R completed and returned a result, but also gave warnings.
-\item
-  R completed your command, but gave an incorrect answer.
-\item
-  R completed your command but the answer is different from what you expect (but is correct according to the documentation).
-\end{itemize}
-
-There are probably others. Running your code I think the answer is the last one.
-
-\hspace*{\fill} --- Greg Snow \footnote{来自 R 社区论坛收集的智语 \texttt{fortunes::fortune(324)}。}
-\end{quote}
-
-\hypertarget{sec-about-author}{%
-\section{作者简介}\label{sec-about-author}}
-
-热心开源事业，统计之都副主编，经常混迹于统计之都论坛、Github 和爆栈网。个人主页 \url{https://xiangyun.rbind.io/}
 
 \hypertarget{part-ux6570ux636eux6574ux7406}{%
 \part{数据整理}\label{part-ux6570ux636eux6574ux7406}}
@@ -812,7 +725,7 @@ Datetime & \texttt{POSIXct} & \texttt{DatetimeVector} & - & \texttt{Datetime} & 
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23"
+## [1] "2023-01-24"
 \end{verbatim}
 
 \begin{Shaded}
@@ -822,7 +735,7 @@ Datetime & \texttt{POSIXct} & \texttt{DatetimeVector} & - & \texttt{Datetime} & 
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23 09:07:34 UTC"
+## [1] "2023-01-24 04:43:14 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -832,7 +745,7 @@ Datetime & \texttt{POSIXct} & \texttt{DatetimeVector} & - & \texttt{Datetime} & 
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23 09:07:34 UTC" "2023-01-23 00:00:00 UTC"
+## [1] "2023-01-24 04:43:14 UTC" "2023-01-24 00:00:00 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -883,7 +796,7 @@ Datetime & \texttt{POSIXct} & \texttt{DatetimeVector} & - & \texttt{Datetime} & 
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23"
+## [1] "2023-01-24"
 \end{verbatim}
 
 \begin{Shaded}
@@ -941,7 +854,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23 09:07:34 UTC"
+## [1] "2023-01-24 04:43:14 UTC"
 \end{verbatim}
 
 \begin{Shaded}
@@ -961,7 +874,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 34
+## [1] 14
 \end{verbatim}
 
 \begin{Shaded}
@@ -971,7 +884,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "34"
+## [1] "14"
 \end{verbatim}
 
 \begin{Shaded}
@@ -981,7 +894,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 7
+## [1] 43
 \end{verbatim}
 
 \begin{Shaded}
@@ -991,7 +904,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "07"
+## [1] "43"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1001,7 +914,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 9
+## [1] 4
 \end{verbatim}
 
 \begin{Shaded}
@@ -1011,7 +924,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "09"
+## [1] "04"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1021,7 +934,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 23
+## [1] 24
 \end{verbatim}
 
 \begin{Shaded}
@@ -1031,7 +944,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 2
+## [1] 3
 \end{verbatim}
 
 \begin{Shaded}
@@ -1041,7 +954,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 23
+## [1] 24
 \end{verbatim}
 
 \begin{Shaded}
@@ -1051,7 +964,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "23"
+## [1] "24"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1061,7 +974,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Monday"
+## [1] "Tuesday"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1071,7 +984,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mon"
+## [1] "Tue"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1184,7 +1097,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "0.04993987 secs"
+## [1] "0.05037522 secs"
 \end{verbatim}
 
 日期转化详见 \citep{Brian_2001_date, Gabor_2004_date}
@@ -1279,7 +1192,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "776,160,869"
+## [1] "248,313,813"
 \end{verbatim}
 
 \begin{Shaded}
@@ -1302,7 +1215,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "2023-01-23 00:00:00"
+## [1] "2023-01-24 00:00:00"
 \end{verbatim}
 
 从 POSIXt 数据对象中，抽取小时和分钟部分，返回字符串
@@ -1314,7 +1227,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "09:07"
+## [1] "04:43"
 \end{verbatim}
 
 \begin{longtable}[]{@{}
@@ -1729,7 +1642,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpGaqj0g/file5c2a74b118d5.data"
+## [1] "/tmp/Rtmp9BCqlz/file5d8644963c4c.data"
 \end{verbatim}
 
 设置参数 \texttt{n\ =\ -1} 表示将文件 fil 的内容从头读到尾
@@ -1774,7 +1687,7 @@ Base R 针对不同的数据格式文件，提供了大量的数据导入和导�
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/tmp/RtmpGaqj0g/test5c2a46109faa"
+## [1] "/tmp/Rtmp9BCqlz/test5d863f2f59eb"
 \end{verbatim}
 
 \begin{Shaded}
@@ -3194,12 +3107,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.61     Ideal     E    VVS2  62.1  54.2  2907 5.43 5.45 3.38
-## 2  0.70     Ideal     H     VS1  61.7  55.0  3004 5.69 5.72 3.52
-## 3  0.77     Ideal     E     SI1  61.6  57.0  3218 5.91 5.87 3.63
-## 4  1.02 Very Good     J     SI2  63.1  58.0  3359 6.38 6.34 4.01
-## 5  0.78 Very Good     F     VS1  63.3  56.0  3563 5.84 5.89 3.71
-## 6  0.34   Premium     I     SI1  61.3  61.0   574 4.49 4.45 2.74
+## 1  0.70   Premium     G    VVS2  62.9    59  2874 5.68 5.61 3.55
+## 2  0.75     Ideal     E     SI1  60.8    56  3045 5.91 5.89 3.59
+## 3  1.01 Very Good     J     SI2  63.3    53  3088 6.35 6.31 4.01
+## 4  0.90      Good     I     SI1  63.5    59  3176 6.05 6.10 3.86
+## 5  0.90      Good     I     VS2  63.8    55  3303 6.07 6.16 3.90
+## 6  0.70     Ideal     D     VS1  62.0    57  3335 5.69 5.76 3.55
 \end{verbatim}
 
 将抽样的结果用窗口函数 \texttt{RANK()} 排序，详见 \url{https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html}
@@ -3219,12 +3132,12 @@ diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将�
 
 \begin{verbatim}
 ##    cut price rank
-## 1 Fair  6905    1
-## 2 Good   473    1
-## 3 Good   544    2
-## 4 Good   695    3
-## 5 Good  1675    4
-## 6 Good  2889    5
+## 1 Fair  1881    1
+## 2 Fair  2808    2
+## 3 Fair  3149    3
+## 4 Good   432    1
+## 5 Good  1180    2
+## 6 Good  2137    3
 \end{verbatim}
 
 LATERAL VIEW 把一列拆成多行
@@ -3260,10 +3173,10 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 \end{verbatim}
 
 行列转换 \url{https://www.cnblogs.com/kimbo/p/6208973.html}，LATERAL VIEW 展开
@@ -3281,12 +3194,12 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 \end{verbatim}
 
 日期相关的函数 \url{https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html\#date-and-timestamp-functions}
@@ -3300,7 +3213,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   current_date()
-## 1     2023-01-23
+## 1     2023-01-24
 \end{verbatim}
 
 \begin{Shaded}
@@ -3312,7 +3225,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   date_sub(current_date(), 1)
-## 1                  2023-01-22
+## 1                  2023-01-23
 \end{verbatim}
 
 \begin{Shaded}
@@ -3336,7 +3249,7 @@ LATERAL VIEW 把一列拆成多行
 
 \begin{verbatim}
 ##   dayofweek(current_date())
-## 1                         2
+## 1                         3
 \end{verbatim}
 
 最后，使用完记得关闭 Spark 连接
@@ -5845,7 +5758,7 @@ R 语言是用字符串来表示正则表达式的，但是正则表达式不是
 ## actual    22    23    24    25    26    27    28    29    30    31    32    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
-## actual    34    35    35    37    38    39
+## actual    34    35    36    37    38    39
 \end{verbatim}
 
 \hypertarget{strtrim}{%
@@ -11361,10 +11274,10 @@ melt 宽的变长的
 
 \begin{verbatim}
 ##    i_1 i_2  f_1 f_2
-## 1:   1  NA    a   z
-## 2:   2   6    b   a
-## 3:   3   7    a   x
-## 4:   4   8    c   c
+## 1:   1  NA <NA>   z
+## 2:   2   6    c   a
+## 3:   3   7    b   x
+## 4:   4   8    b   c
 ## 5:   5   9    b   x
 ## 6:  NA  10 <NA>   x
 \end{verbatim}
@@ -11377,10 +11290,10 @@ melt 宽的变长的
 
 \begin{verbatim}
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     a
-##  2:   2   6      f_1     b
-##  3:   3   7      f_1     a
-##  4:   4   8      f_1     c
+##  1:   1  NA      f_1  <NA>
+##  2:   2   6      f_1     c
+##  3:   3   7      f_1     b
+##  4:   4   8      f_1     b
 ##  5:   5   9      f_1     b
 ##  6:  NA  10      f_1  <NA>
 ##  7:   1  NA      f_2     z
@@ -12911,24 +12824,24 @@ x 在 y 中的匹配情况，匹配到了，就返回在 y 中匹配的位置，
 
 \begin{verbatim}
 ##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          4.9         3.1          1.5         0.2     setosa
-##  2:          5.4         3.7          1.5         0.2     setosa
-##  3:          4.7         3.2          1.3         0.2     setosa
-##  4:          4.8         3.4          1.6         0.2     setosa
-##  5:          5.4         3.9          1.7         0.4     setosa
-##  6:          5.2         3.4          1.4         0.2     setosa
-##  7:          5.8         2.7          4.1         1.0 versicolor
-##  8:          5.5         2.3          4.0         1.3 versicolor
-##  9:          5.8         2.7          3.9         1.2 versicolor
+##  1:          4.4         3.0          1.3         0.2     setosa
+##  2:          4.4         3.2          1.3         0.2     setosa
+##  3:          4.6         3.4          1.4         0.3     setosa
+##  4:          5.0         3.3          1.4         0.2     setosa
+##  5:          4.6         3.2          1.4         0.2     setosa
+##  6:          5.0         3.0          1.6         0.2     setosa
+##  7:          6.0         2.9          4.5         1.5 versicolor
+##  8:          5.6         2.5          3.9         1.1 versicolor
+##  9:          5.8         2.6          4.0         1.2 versicolor
 ## 10:          6.2         2.2          4.5         1.5 versicolor
-## 11:          6.7         3.1          4.7         1.5 versicolor
-## 12:          5.7         2.9          4.2         1.3 versicolor
-## 13:          6.5         3.2          5.1         2.0  virginica
-## 14:          7.2         3.6          6.1         2.5  virginica
-## 15:          6.8         3.2          5.9         2.3  virginica
-## 16:          6.4         2.8          5.6         2.1  virginica
-## 17:          6.3         2.9          5.6         1.8  virginica
-## 18:          7.1         3.0          5.9         2.1  virginica
+## 11:          5.5         2.4          3.7         1.0 versicolor
+## 12:          6.5         2.8          4.6         1.5 versicolor
+## 13:          6.3         2.7          4.9         1.8  virginica
+## 14:          6.5         3.0          5.5         1.8  virginica
+## 15:          6.7         3.3          5.7         2.1  virginica
+## 16:          6.7         3.1          5.6         2.4  virginica
+## 17:          7.4         2.8          6.1         1.9  virginica
+## 18:          6.4         2.8          5.6         2.1  virginica
 \end{verbatim}
 
 \hypertarget{lapply-split-quantile}{%
@@ -13740,9 +13653,9 @@ arrange 默认升序排列，按钻石重量升序，按价格降序
 
 \begin{verbatim}
 ## Unit: microseconds
-##  expr   min    lq    mean median    uq    max neval
-##   s()  20.1  21.4  52.020  23.75  25.7 2557.8   100
-##   d() 189.1 192.2 220.181 194.10 196.7 2302.4   100
+##  expr   min    lq    mean median     uq    max neval
+##   s()  19.7  22.3  57.112  28.15  32.00 2671.6   100
+##   d() 210.9 217.4 248.017 220.40 225.95 2454.8   100
 \end{verbatim}
 
 \hypertarget{remove-missing-values}{%
@@ -20948,7 +20861,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "Mon"
+## [1] "Tue"
 \end{verbatim}
 
 \begin{Shaded}
@@ -20958,7 +20871,7 @@ airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 2
+## [1] 3
 \end{verbatim}
 
 \end{rmdnote}
@@ -21174,7 +21087,7 @@ ggpubr 包提供了 \texttt{stat\_chull()} 图层
 ##         position = position, show.legend = show.legend, inherit.aes = inherit.aes, 
 ##         params = list(na.rm = na.rm, ...))
 ## }
-## <bytecode: 0x55fea5578988>
+## <bytecode: 0x5577decd4d58>
 ## <environment: namespace:ggpubr>
 \end{verbatim}
 
@@ -24690,7 +24603,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  0.00000 22.22222
+## [1]   0.00000 -21.99115
 \end{verbatim}
 
 \begin{Shaded}
@@ -24700,7 +24613,7 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -0.9734211
+## [1] -1
 \end{verbatim}
 
 实际上，还是陷入局部最优解。
@@ -24955,7 +24868,7 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 368.1059
+## [1] 368.106
 \end{verbatim}
 
 \begin{Shaded}
@@ -24965,9 +24878,10 @@ b = (2, 2, -4, -4)
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [10] 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000 2.00000
-## [19] 2.00000 2.00000 2.00000 2.00000 2.00000 2.10913 4.00000
+##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
+## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
+## [25] 4.000000
 \end{verbatim}
 
 下面再与函数 \texttt{optim()} 提供的 L-BFGS-B 算法比较
@@ -25372,7 +25286,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.410464 4.415201 4.156750 1.112773
+## [1] 1.099014 4.498540 4.115037 1.273853
 \end{verbatim}
 
 \begin{Shaded}
@@ -25382,7 +25296,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 19.82441
+## [1] 17.71249
 \end{verbatim}
 
 可以看出，nloptr 提供的优化能力可以覆盖\href{https://github.com/coin-or/Ipopt}{Ipopt 求解器}，推荐使用 nloptr.slsqp 求解器。
@@ -25512,7 +25426,7 @@ ans 是 \texttt{constrOptim.nl()} 返回的一个 list， convergence = 0 表示
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.227971 4.245375
+## [1] 1.227970 4.245374
 \end{verbatim}
 
 \begin{Shaded}
@@ -25727,7 +25641,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  2.239109 16.151379
+## [1] 10.396060  4.840869
 \end{verbatim}
 
 \begin{Shaded}
@@ -25737,7 +25651,7 @@ nloptr.auglag 无法求解此优化问题
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -3.277042
+## [1] -3.257451
 \end{verbatim}
 
 比如下面三组
