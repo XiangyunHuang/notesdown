@@ -16,14 +16,14 @@ searchpaths()
 
 ```
 ## [1] ".GlobalEnv"                          
-## [2] "/opt/R/4.2.2/lib/R/library/stats"    
-## [3] "/opt/R/4.2.2/lib/R/library/graphics" 
-## [4] "/opt/R/4.2.2/lib/R/library/grDevices"
-## [5] "/opt/R/4.2.2/lib/R/library/utils"    
-## [6] "/opt/R/4.2.2/lib/R/library/datasets" 
-## [7] "/opt/R/4.2.2/lib/R/library/methods"  
+## [2] "/opt/R/4.2.0/lib/R/library/stats"    
+## [3] "/opt/R/4.2.0/lib/R/library/graphics" 
+## [4] "/opt/R/4.2.0/lib/R/library/grDevices"
+## [5] "/opt/R/4.2.0/lib/R/library/utils"    
+## [6] "/opt/R/4.2.0/lib/R/library/datasets" 
+## [7] "/opt/R/4.2.0/lib/R/library/methods"  
 ## [8] "Autoloads"                           
-## [9] "/opt/R/4.2.2/lib/R/library/base"
+## [9] "/opt/R/4.2.0/lib/R/library/base"
 ```
 
 ```r
@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpBQLgva/file204411bde51b6.data"
+## [1] "/tmp/RtmpdcK2qb/file695536672a09.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpBQLgva/test204411bedb762"
+## [1] "/tmp/RtmpdcK2qb/test695575d0dade"
 ```
 
 ```r
@@ -524,7 +524,7 @@ x
 
 ```
 ##      Package   Version Title                                    
-## [1,] "splines" "4.2.2" "Regression Spline Functions and Classes"
+## [1,] "splines" "4.2.0" "Regression Spline Functions and Classes"
 ```
 
 最后要提及拥有瑞士军刀之称的 [rio](https://github.com/leeper/rio) 包，它集合了当前 R 可以读取的所有统计分析软件导出的数据。
@@ -541,15 +541,24 @@ x
 
 将大量的 txt 文本存进 MySQL 数据库中，通过操作数据库来聚合文本，极大降低内存消耗 [^txt-to-mysql]，而 ODBC 与 DBI 包是其它数据库接口的基础，knitr 提供了一个支持 SQL 代码的引擎，它便是基于 DBI，因此可以在 R Markdown 文档中直接使用 SQL 代码块 [^sql-engine]。这里制作一个归纳表格，左边数据库右边对应其 R 接口，两边都包含链接，如表 \@ref(tab:dbi) 所示
 
+\begin{table}
 
-Table: (\#tab:dbi)数据库接口
-
-|数据库     |官网                        |R接口     |开发仓                             |
-|:----------|:---------------------------|:---------|:----------------------------------|
-|MySQL      |https://www.mysql.com/      |RMySQL    |https://github.com/r-dbi/RMySQL    |
-|SQLite     |https://www.sqlite.org      |RSQLite   |https://github.com/r-dbi/RSQLite   |
-|PostgreSQL |https://www.postgresql.org/ |RPostgres |https://github.com/r-dbi/RPostgres |
-|MariaDB    |https://mariadb.org/        |RMariaDB  |https://github.com/r-dbi/RMariaDB  |
+\caption{(\#tab:dbi)数据库接口}
+\centering
+\begin{tabular}[t]{l|l|l|l}
+\hline
+数据库 & 官网 & R接口 & 开发仓\\
+\hline
+MySQL & https://www.mysql.com/ & RMySQL & https://github.com/r-dbi/RMySQL\\
+\hline
+SQLite & https://www.sqlite.org & RSQLite & https://github.com/r-dbi/RSQLite\\
+\hline
+PostgreSQL & https://www.postgresql.org/ & RPostgres & https://github.com/r-dbi/RPostgres\\
+\hline
+MariaDB & https://mariadb.org/ & RMariaDB & https://github.com/r-dbi/RMariaDB\\
+\hline
+\end{tabular}
+\end{table}
 
 
 
@@ -874,10 +883,14 @@ cars
 ```r
 spark_web(sc)
 ```
-<div class="figure" style="text-align: center">
-<img src="screenshots/spark-start.png" alt="Spark Web 接口" width="960" />
-<p class="caption">(\#fig:spark-web)Spark Web 接口</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=6.4in]{screenshots/spark-start} 
+
+}
+
+\caption{Spark Web 接口}(\#fig:spark-web)
+\end{figure}
 
 传递 SQL 查询语句，比如数据集 mtcars 有多少行
 
@@ -913,10 +926,14 @@ select(cars, hp, mpg) %>%
 
 数据查询和结果可视化，见图 \@ref(fig:spark-mtcars)
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/spark-mtcars.png" alt="数据聚合和可视化" width="240" />
-<p class="caption">(\#fig:spark-mtcars)数据聚合和可视化</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1.6in]{screenshots/spark-mtcars} 
+
+}
+
+\caption{数据聚合和可视化}(\#fig:spark-mtcars)
+\end{figure}
 
 用完要记得关闭连接
 
@@ -1208,10 +1225,14 @@ Map(function(data, name){
 ```r
 saveWorkbook(wb, file = "data/matcars.xlsx", overwrite = TRUE)
 ```
-<div class="figure" style="text-align: center">
-<img src="screenshots/dm-batch-export-xlsx.png" alt="批量导出数据" width="614" />
-<p class="caption">(\#fig:batch-export-xlsx)批量导出数据</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=4.1in]{screenshots/dm-batch-export-xlsx} 
+
+}
+
+\caption{批量导出数据}(\#fig:batch-export-xlsx)
+\end{figure}
 
 ## 导出数据 {#export-data}
 
@@ -1572,7 +1593,9 @@ ggplot(diamonds_preview, aes(cut, cnt)) +
   theme_minimal()
 ```
 
-<img src="data-transportation_files/figure-html/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" />
+
+
+\begin{center}\includegraphics{data-transportation_files/figure-latex/unnamed-chunk-75-1} \end{center}
 
 diamonds 数据集总共 53940 条数据，下面用 BUCKET 分桶抽样，将原数据随机分成 1000 个桶，取其中的一个桶，由于是随机分桶，所以每次的结果都不一样，解释详见<https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-sampling.html>
 
@@ -1584,12 +1607,12 @@ diamonds_sample
 
 ```
 ##   carat       cut color clarity depth table price    x    y    z
-## 1  0.75   Premium     F     VS2  61.6    58  3013 5.84 5.89 3.61
-## 2  1.14     Ideal     J     SI1  60.2    57  3045 6.81 6.71 4.07
-## 3  1.00      Fair     D     SI2  64.8    60  3304 6.23 6.18 4.02
-## 4  0.25 Very Good     G     VS2  61.9    57   407 4.05 4.08 2.51
-## 5  0.30     Ideal     H     SI1  62.0    58   407 4.25 4.33 2.66
-## 6  0.90   Premium     D     SI2  62.9    56  4007 6.19 6.09 3.86
+## 1  0.70      Good     E     VS2  64.1    59  2777 5.64 5.59 3.60
+## 2  0.70   Premium     E    VVS2  60.6    60  3377 5.74 5.72 3.47
+## 3  1.18 Very Good     D      I1  61.5    62  3816 6.73 6.88 4.19
+## 4  1.01      Fair     E     SI2  64.7    55  4118 6.37 6.30 4.10
+## 5  1.06     Ideal     I     SI2  62.7    58  4591 6.48 6.50 4.07
+## 6  0.25     Ideal     F     VS1  61.1    58   595 4.04 4.08 2.48
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1607,13 +1630,13 @@ diamonds_rank
 ```
 
 ```
-##    cut price rank
-## 1 Fair  2330    1
-## 2 Fair  7746    2
-## 3 Fair 11322    3
-## 4 Good   393    1
-## 5 Good  4140    2
-## 6 Good  4336    3
+##     cut price rank
+## 1  Fair  2538    1
+## 2  Fair  7056    2
+## 3  Fair 15627    3
+## 4  Good  4221    1
+## 5  Good  4285    2
+## 6 Ideal   424    1
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1648,10 +1671,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1668,12 +1691,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1880,7 +1903,7 @@ mtcars %>%
 ```
 
 ```
-## # A tibble: 32 × 11
+## # A tibble: 32 x 11
 ##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 ##    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 ##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -1899,7 +1922,7 @@ mtcars %>%
 ## 14  15.2     8  276.   180  3.07  3.78  18       0     0     3     3
 ## 15  10.4     8  472    205  2.93  5.25  18.0     0     0     3     4
 ## 16  10.4     8  460    215  3     5.42  17.8     0     0     3     4
-## # … with 16 more rows
+## # ... with 16 more rows
 ```
 
 
@@ -1909,7 +1932,7 @@ mtcars %>%
 ```
 
 ```
-## # A tibble: 32 × 11
+## # A tibble: 32 x 11
 ##     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 ##   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 ## 1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
@@ -1920,7 +1943,7 @@ mtcars %>%
 ## 6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
 ## 7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
 ## 8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-## # … with 24 more rows
+## # ... with 24 more rows
 ```
 
 ## 批量导出 xlsx 文件 {#sec-batch-export-xlsx}
@@ -1959,9 +1982,9 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.2.2 (2022-10-31)
+## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.1 LTS
+## Running under: Ubuntu 20.04.5 LTS
 ## 
 ## Locale:
 ##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -1973,28 +1996,27 @@ xfun::session_info()
 ## 
 ## Package version:
 ##   askpass_1.1        assertthat_0.2.1   base64enc_0.1-3    blob_1.2.3        
-##   bookdown_0.26      brio_1.1.3         bslib_0.3.1        cachem_1.0.6      
-##   cli_3.3.0          codetools_0.2.18   colorspace_2.0-3   compiler_4.2.2    
-##   config_0.3.1       cpp11_0.4.2        crayon_1.5.1       curl_4.3.2        
-##   data.table_1.14.2  DBI_1.1.2          dbplyr_2.1.1       desc_1.4.1        
-##   digest_0.6.29      downlit_0.4.0      dplyr_1.0.9        ellipsis_0.3.2    
+##   bookdown_0.26      bslib_0.3.1        cli_3.3.0          codetools_0.2.18  
+##   colorspace_2.0-3   compiler_4.2.0     config_0.3.1       cpp11_0.4.2       
+##   crayon_1.5.1       curl_4.3.2         data.table_1.14.2  DBI_1.1.2         
+##   dbplyr_2.1.1       digest_0.6.29      dplyr_1.0.9        ellipsis_0.3.2    
 ##   evaluate_0.15      fansi_1.0.3        farver_2.1.0       fastmap_1.1.0     
 ##   forge_0.2.0        fs_1.5.2           generics_0.1.2     ggplot2_3.3.6     
-##   globals_0.15.0     glue_1.6.2         graphics_4.2.2     grDevices_4.2.2   
-##   grid_4.2.2         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
+##   globals_0.15.0     glue_1.6.2         graphics_4.2.0     grDevices_4.2.0   
+##   grid_4.2.0         gtable_0.3.0       highr_0.9          htmltools_0.5.2   
 ##   htmlwidgets_1.5.4  httr_1.4.3         isoband_0.2.5      jquerylib_0.1.4   
 ##   jsonlite_1.8.0     knitr_1.39         labeling_0.4.2     lattice_0.20.45   
 ##   lifecycle_1.0.1    magrittr_2.0.3     MASS_7.3.57        Matrix_1.4.1      
-##   memoise_2.0.1      methods_4.2.2      mgcv_1.8.40        mime_0.12         
-##   munsell_0.5.0      nlme_3.1.157       openssl_2.0.1      parallel_4.2.2    
-##   pillar_1.7.0       pkgconfig_2.0.3    png_0.1-7          purrr_0.3.4       
-##   r2d3_0.2.6         R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.3
-##   rlang_1.0.2        rmarkdown_2.14     rprojroot_2.0.3    rstudioapi_0.13   
-##   sass_0.4.1         scales_1.2.0       sparklyr_1.7.5     splines_4.2.2     
-##   stats_4.2.2        stringi_1.7.6      stringr_1.4.0      sys_3.4           
-##   sysfonts_0.8.8     tibble_3.1.7       tidyr_1.2.0        tidyselect_1.1.2  
-##   tinytex_0.39       tools_4.2.2        utf8_1.2.2         utils_4.2.2       
-##   uuid_1.1.0         vctrs_0.4.1        viridisLite_0.4.0  withr_2.5.0       
-##   xfun_0.31          xml2_1.3.3         yaml_2.3.5
+##   methods_4.2.0      mgcv_1.8.40        mime_0.12          munsell_0.5.0     
+##   nlme_3.1.157       openssl_2.0.1      parallel_4.2.0     pillar_1.7.0      
+##   pkgconfig_2.0.3    png_0.1-7          purrr_0.3.4        r2d3_0.2.6        
+##   R6_2.5.1           rappdirs_0.3.3     RColorBrewer_1.1.3 rlang_1.0.2       
+##   rmarkdown_2.14     rprojroot_2.0.3    rstudioapi_0.13    sass_0.4.1        
+##   scales_1.2.0       sparklyr_1.7.5     splines_4.2.0      stats_4.2.0       
+##   stringi_1.7.6      stringr_1.4.0      sys_3.4            sysfonts_0.8.8    
+##   tibble_3.1.7       tidyr_1.2.0        tidyselect_1.1.2   tinytex_0.39      
+##   tools_4.2.0        utf8_1.2.2         utils_4.2.0        uuid_1.1.0        
+##   vctrs_0.4.1        viridisLite_0.4.0  withr_2.5.0        xfun_0.31         
+##   xml2_1.3.3         yaml_2.3.5
 ```
 
