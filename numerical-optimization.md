@@ -49,29 +49,71 @@ library(BB)              # 非线性方程组
 
 
 
-表 \@ref(tab:roi-plugin-latex) 对目前的优化器按优化问题做了分类
+表 \@ref(tab:roi-plugin-html) 对目前的优化器按优化问题做了分类
 
+<table style="NAborder-bottom: 0;">
+<caption>(\#tab:roi-plugin-html)ROI 插件按优化问题分类</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Linear </th>
+   <th style="text-align:left;"> Quadratic </th>
+   <th style="text-align:left;"> Conic </th>
+   <th style="text-align:left;"> Functional </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Box </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> optimx </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Linear </td>
+   <td style="text-align:left;"> $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ </td>
+   <td style="text-align:left;"> ipop, $\mathrm{quadprog}^{\star}$, qpoases </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Quadratic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Conic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Functional </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> alabama, deoptim, nlminb, nloptr </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>*</sup> 求解器受限于凸优化问题</td></tr>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>+</sup> 求解器可以处理整型约束</td></tr>
+</tfoot>
+</table>
 
-\begin{table}
-
-\caption{(\#tab:roi-plugin-latex)ROI 插件按优化问题分类}
-\centering
-\begin{tabular}[t]{>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}}
-\toprule
-  & Linear & Quadratic & Conic & Functional\\
-\midrule
-No &  &  &  & \\
-Box &  &  &  & optimx\\
-Linear & $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ & ipop, $\mathrm{quadprog}^{\star}$, qpoases &  & \\
-Quadratic &  & $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ &  & \\
-Conic &  &  & $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ & \\
-\addlinespace
-Functional &  &  &  & alabama, deoptim, nlminb, nloptr\\
-\bottomrule
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{*} 求解器受限于凸优化问题}\\
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{+} 求解器可以处理整型约束}\\
-\end{tabular}
-\end{table}
 
 
 ## 线性规划 {#sec-linear-programming}
@@ -424,14 +466,10 @@ plot(0, 0,
 polygon(c(2, 5, -1), c(0, 3, 3), border = TRUE, lwd = 2, col = "gray")
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/feasible-region-1} 
-
-}
-
-\caption{可行域}(\#fig:feasible-region)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/feasible-region-1.png" alt="可行域" width="432" />
+<p class="caption">(\#fig:feasible-region)可行域</p>
+</div>
 
 调用 **quadprog** 包的 `solve.QP()` 函数求解此二次规划问题
 
@@ -541,14 +579,10 @@ levelplot(z ~ x * y, grid,
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/quadprog-1} 
-
-}
-
-\caption{无约束和有约束条件下的解}(\#fig:quadprog)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/quadprog-1.png" alt="无约束和有约束条件下的解" width="432" />
+<p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
+</div>
 
 
 ### 半正定二次优化 {#subsec-semidefinite-optimization}
@@ -569,14 +603,10 @@ svp <- ksvm(x, y, type = "C-svc")
 plot(svp, data = x)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/toy-binary-1} 
-
-}
-
-\caption{二分类问题}(\#fig:toy-binary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="528" />
+<p class="caption">(\#fig:toy-binary)二分类问题</p>
+</div>
 
 ## 非线性规划 {#sec-nonlinear-programming}
 
@@ -695,14 +725,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/himmelblau-1} 
-
-}
-
-\caption{Himmelblau 函数图像}(\#fig:himmelblau)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
+<p class="caption">(\#fig:himmelblau)Himmelblau 函数图像</p>
+</div>
 
 
 ```r
@@ -849,14 +875,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/peaks-1} 
-
-}
-
-\caption{Peaks 多峰图像}(\#fig:peaks)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/peaks-1.png" alt="Peaks 多峰图像" width="528" />
+<p class="caption">(\#fig:peaks)Peaks 多峰图像</p>
+</div>
 
 
 函数来自 Octave 内置的 `peaks()` 函数，它有很多的局部极大值和极小值，可在 [Octave Online](https://octave-online.net/) 上输入命令 `help peaks` 查看其帮助文档。
@@ -893,14 +915,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/rosenbrock-1} 
-
-}
-
-\caption{香蕉函数图像}(\#fig:rosenbrock)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/rosenbrock-1.png" alt="香蕉函数图像" width="528" />
+<p class="caption">(\#fig:rosenbrock)香蕉函数图像</p>
+</div>
 
 
 
@@ -993,14 +1011,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/ackley-1} 
-
-}
-
-\caption{二维 Ackley 函数图像}(\#fig:ackley)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/ackley-1.png" alt="二维 Ackley 函数图像" width="528" />
+<p class="caption">(\#fig:ackley)二维 Ackley 函数图像</p>
+</div>
 
 
 <!-- 
@@ -1100,14 +1114,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/rastrigin-1} 
-
-}
-
-\caption{Rastrigin 函数}(\#fig:rastrigin)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/rastrigin-1.png" alt="Rastrigin 函数" width="528" />
+<p class="caption">(\#fig:rastrigin)Rastrigin 函数</p>
+</div>
 
 设置 10 维 的优化
 
@@ -1170,14 +1180,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-01-1} 
-
-}
-
-\caption{Schaffer 函数}(\#fig:schaffer-01)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/schaffer-01-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">(\#fig:schaffer-01)Schaffer 函数</p>
+</div>
 
 
 
@@ -1200,14 +1206,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-02-1} 
-
-}
-
-\caption{Schaffer 函数}(\#fig:schaffer-02)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/schaffer-02-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">(\#fig:schaffer-02)Schaffer 函数</p>
+</div>
 
 #### Hölder 函数 {#holder}
 
@@ -1245,14 +1247,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/holder-1} 
-
-}
-
-\caption{(ref:holder)}(\#fig:holder)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/holder-1.png" alt="(ref:holder)" width="528" />
+<p class="caption">(\#fig:holder)(ref:holder)</p>
+</div>
 
 
 
@@ -1293,14 +1291,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/trid-1} 
-
-}
-
-\caption{Trid 函数}(\#fig:trid)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/trid-1.png" alt="Trid 函数" width="528" />
+<p class="caption">(\#fig:trid)Trid 函数</p>
+</div>
 
 
 #### 超级复杂函数 {#super-complex-function}
@@ -1350,14 +1344,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/super-function-1} 
-
-}
-
-\caption{函数图像}(\#fig:super-function)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/super-function-1.png" alt="函数图像" width="528" />
+<p class="caption">(\#fig:super-function)函数图像</p>
+</div>
 
 将区域 $[0, 12] \times [0, 12]$ 的图像绘制出来，不难发现，有不少局部陷阱。
 
@@ -1382,14 +1372,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/zoom-super-function-1} 
-
-}
-
-\caption{局部放大函数图像}(\#fig:zoom-super-function)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/zoom-super-function-1.png" alt="局部放大函数图像" width="528" />
+<p class="caption">(\#fig:zoom-super-function)局部放大函数图像</p>
+</div>
 
 最优解在 $(7.999982, 7.999982)$ 取得，目标函数值为 -7.978832。
 
@@ -1415,7 +1401,7 @@ nlp$solution
 ```
 
 ```
-## [1]   0.00000 -21.99115
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -1423,7 +1409,7 @@ nlp$objval
 ```
 
 ```
-## [1] -1
+## [1] -0.9734211
 ```
 
 实际上，还是陷入局部最优解。
@@ -1668,7 +1654,7 @@ nlp$objval
 ```
 
 ```
-## [1] 368.106
+## [1] 368.1061
 ```
 
 ```r
@@ -2061,7 +2047,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.099014 4.498540 4.115037 1.273853
+## [1] 1.396282 3.652208 4.839132 1.138134
 ```
 
 ```r
@@ -2069,7 +2055,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.71249
+## [1] 20.55211
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2197,7 +2183,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227970 4.245374
+## [1] 1.227970 4.245371
 ```
 
 ```r
@@ -2397,7 +2383,7 @@ nlp$solution
 ```
 
 ```
-## [1] 10.396060  4.840869
+## [1] -47.27543  48.67849
 ```
 
 ```r
@@ -2405,7 +2391,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.257451
+## [1] -3.102207
 ```
 比如下面三组
 
@@ -2741,13 +2727,13 @@ sessionInfo()
 ```
 
 ```
-## R version 4.2.0 (2022-04-22)
+## R version 4.2.2 (2022-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.5 LTS
+## Running under: Ubuntu 22.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -2771,21 +2757,24 @@ sessionInfo()
 ## [15] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] xfun_0.31               slam_0.1-50             colorspace_2.0-3       
-##  [4] vctrs_0.4.1             viridisLite_0.4.0       htmltools_0.5.2        
-##  [7] yaml_2.3.5              utf8_1.2.2              rlang_1.0.2            
-## [10] nloptr_2.0.1            pillar_1.7.0            glue_1.6.2             
-## [13] registry_0.5-1          scs_3.0-0               lifecycle_1.0.1        
-## [16] stringr_1.4.0           munsell_0.5.0           rvest_1.0.2            
-## [19] lpSolveAPI_5.5.2.0-17.7 evaluate_0.15           knitr_1.39             
-## [22] fastmap_1.1.0           curl_4.3.2              fansi_1.0.3            
-## [25] scales_1.2.0            webshot_0.5.3           alabama_2022.4-1       
-## [28] sysfonts_0.8.8          systemfonts_1.0.4       digest_0.6.29          
-## [31] stringi_1.7.6           bookdown_0.26           numDeriv_2016.8-1.1    
-## [34] grid_4.2.0              cli_3.3.0               tools_4.2.0            
-## [37] magrittr_2.0.3          crayon_1.5.1            pkgconfig_2.0.3        
-## [40] ellipsis_0.3.2          xml2_1.3.3              svglite_2.1.0          
-## [43] rmarkdown_2.14          httr_1.4.3              rstudioapi_0.13        
-## [46] R6_2.5.1                compiler_4.2.0
+##  [1] svglite_2.1.0           sysfonts_0.8.8          digest_0.6.29          
+##  [4] utf8_1.2.2              slam_0.1-50             R6_2.5.1               
+##  [7] alabama_2022.4-1        evaluate_0.15           highr_0.9              
+## [10] httr_1.4.3              pillar_1.7.0            rlang_1.0.2            
+## [13] curl_4.3.2              rstudioapi_0.13         nloptr_2.0.1           
+## [16] jquerylib_0.1.4         rmarkdown_2.14          webshot_0.5.3          
+## [19] stringr_1.4.0           munsell_0.5.0           compiler_4.2.2         
+## [22] numDeriv_2016.8-1.1     xfun_0.31               pkgconfig_2.0.3        
+## [25] systemfonts_1.0.4       htmltools_0.5.2         downlit_0.4.0          
+## [28] bookdown_0.26           viridisLite_0.4.0       fansi_1.0.3            
+## [31] crayon_1.5.1            grid_4.2.2              jsonlite_1.8.0         
+## [34] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.3         
+## [37] scales_1.2.0            cli_3.3.0               stringi_1.7.6          
+## [40] cachem_1.0.6            fs_1.5.2                xml2_1.3.3             
+## [43] bslib_0.3.1             ellipsis_0.3.2          vctrs_0.4.1            
+## [46] lpSolveAPI_5.5.2.0-17.7 tools_4.2.2             glue_1.6.2             
+## [49] fastmap_1.1.0           yaml_2.3.5              colorspace_2.0-3       
+## [52] scs_3.0-0               rvest_1.0.2             memoise_2.0.1          
+## [55] knitr_1.39              sass_0.4.1
 ```
 

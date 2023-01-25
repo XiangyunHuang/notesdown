@@ -43,7 +43,7 @@ R.version.string
 ```
 
 ```
-## [1] "R version 4.2.0 (2022-04-22)"
+## [1] "R version 4.2.2 (2022-10-31)"
 ```
 
 ```r
@@ -450,13 +450,13 @@ endsWith(list.files(), ".Rmd")
 ```
 
 ```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
-## [13] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-## [25] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [37]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
-## [49] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-## [61] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [73] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [13] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [25] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
+## [37] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+## [49]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [61]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+## [73] FALSE  TRUE FALSE
 ```
 
 ```r
@@ -465,13 +465,13 @@ grepl("\\.Rmd$", list.files())
 ```
 
 ```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
-## [13] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-## [25] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [37]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
-## [49] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-## [61] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [73] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [13] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE
+## [25] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
+## [37] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+## [49]  TRUE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [61]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE
+## [73] FALSE  TRUE FALSE
 ```
 
 部分匹配(Partial String Matching)
@@ -938,14 +938,10 @@ regmatches(x, m)
 
 我们可以在 <https://regex101.com/> 上测试表达式，如图\@ref(fig:regex101)所示，表达式 `^(([^:]+)://)?([^:/]+)(:([0-9]+))?(/.*)` 包含7个组，每个组的匹配结果见图的右下角，这样我们不难理解，函数 `regmatches` 返回的第列表中，第3个位置是传输协议 protocol `http` ，第4个位置是主机 host `stat.umn.edu`， 第6个位置是端口 port `80` ，第7个位置是路径 path `/xyz`，所以函数 `regmatches` 的作用就是根据函数 `regexec` 匹配的结果抽取子字符串。
 
-\begin{figure}
-
-{\centering \href{https://regex101.com/}{\includegraphics[width=0.75\linewidth]{screenshots/regexp-name-group} }
-
-}
-
-\caption{正则表达式匹配结果}(\#fig:regex101)
-\end{figure}
+<div class="figure" style="text-align: center">
+<a href="https://regex101.com/" target="_blank"><img src="screenshots/regexp-name-group.png" alt="正则表达式匹配结果" width="75%" /></a>
+<p class="caption">(\#fig:regex101)正则表达式匹配结果</p>
+</div>
 
 进一步，我们可以用 `regmatches` 函数抽取 URL 的部分内容，如前面提到的传输协议，主机等
 
@@ -1052,7 +1048,7 @@ sub(" .*", "", extSoftVersion()["PCRE"])
 
 ```
 ##    PCRE 
-## "10.40"
+## "10.39"
 ```
 
 参数 replacement 的值是正则表达式，其包含反向引用的用法， `\\1` 即引用表达式 `([ab])` 
@@ -2170,15 +2166,16 @@ libcurlVersion()
 ```
 
 ```
-## [1] "7.68.0"
+## [1] "7.81.0"
 ## attr(,"ssl_version")
-## [1] "OpenSSL/1.1.1f"
+## [1] "OpenSSL/3.0.2"
 ## attr(,"libssh_version")
-## [1] "libssh/0.9.3/openssl/zlib"
+## [1] "libssh/0.9.6/openssl/zlib"
 ## attr(,"protocols")
-##  [1] "dict"   "file"   "ftp"    "ftps"   "gopher" "http"   "https"  "imap"  
-##  [9] "imaps"  "ldap"   "ldaps"  "pop3"   "pop3s"  "rtmp"   "rtsp"   "scp"   
-## [17] "sftp"   "smb"    "smbs"   "smtp"   "smtps"  "telnet" "tftp"
+##  [1] "dict"    "file"    "ftp"     "ftps"    "gopher"  "gophers" "http"   
+##  [8] "https"   "imap"    "imaps"   "ldap"    "ldaps"   "mqtt"    "pop3"   
+## [15] "pop3s"   "rtmp"    "rtsp"    "scp"     "sftp"    "smb"     "smbs"   
+## [22] "smtp"    "smtps"   "telnet"  "tftp"
 ```
 
 于主编利用 [tidyRSS](https://github.com/RobertMyles/tidyRSS) 包 抓取解析博客站点的订阅信息，并将此设置为定时任务，创建自动更新内容的博客聚合网站 [Daily R](https://dailyr.netlify.com/)
@@ -2213,9 +2210,9 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.2.0 (2022-04-22)
+## R version 4.2.2 (2022-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.5 LTS
+## Running under: Ubuntu 22.04.1 LTS
 ## 
 ## Locale:
 ##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -2227,19 +2224,21 @@ xfun::session_info()
 ## 
 ## Package version:
 ##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.26   
-##   bslib_0.3.1      cli_3.3.0        compiler_4.2.0   cpp11_0.4.2     
-##   crayon_1.5.1     curl_4.3.2       DBI_1.1.2        digest_0.6.29   
+##   brio_1.1.3       bslib_0.3.1      cachem_1.0.6     cli_3.3.0       
+##   compiler_4.2.2   cpp11_0.4.2      crayon_1.5.1     curl_4.3.2      
+##   DBI_1.1.2        desc_1.4.1       digest_0.6.29    downlit_0.4.0   
 ##   dplyr_1.0.9      ellipsis_0.3.2   evaluate_0.15    fansi_1.0.3     
 ##   fastmap_1.1.0    fs_1.5.2         generics_0.1.2   glue_1.6.2      
-##   graphics_4.2.0   grDevices_4.2.0  highr_0.9        htmltools_0.5.2 
+##   graphics_4.2.2   grDevices_4.2.2  highr_0.9        htmltools_0.5.2 
 ##   jquerylib_0.1.4  jsonlite_1.8.0   knitr_1.39       lifecycle_1.0.1 
-##   magrittr_2.0.3   methods_4.2.0    openssl_2.0.1    pillar_1.7.0    
-##   pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1         rappdirs_0.3.3  
-##   rlang_1.0.2      rmarkdown_2.14   sass_0.4.1       stats_4.2.0     
-##   stringi_1.7.6    stringr_1.4.0    sys_3.4          sysfonts_0.8.8  
-##   tibble_3.1.7     tidyr_1.2.0      tidyselect_1.1.2 tinytex_0.39    
-##   tools_4.2.0      utf8_1.2.2       utils_4.2.0      vctrs_0.4.1     
-##   xfun_0.31        yaml_2.3.5
+##   magrittr_2.0.3   memoise_2.0.1    methods_4.2.2    openssl_2.0.1   
+##   pillar_1.7.0     pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1        
+##   rappdirs_0.3.3   rlang_1.0.2      rmarkdown_2.14   rprojroot_2.0.3 
+##   sass_0.4.1       stats_4.2.2      stringi_1.7.6    stringr_1.4.0   
+##   sys_3.4          sysfonts_0.8.8   tibble_3.1.7     tidyr_1.2.0     
+##   tidyselect_1.1.2 tinytex_0.39     tools_4.2.2      utf8_1.2.2      
+##   utils_4.2.2      vctrs_0.4.1      xfun_0.31        xml2_1.3.3      
+##   yaml_2.3.5
 ```
 
 [^regexp]: https://homepage.divms.uiowa.edu/~luke/R/regexp.html
