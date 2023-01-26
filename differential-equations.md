@@ -73,14 +73,10 @@ scatterplot3d(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{differential-equations_files/figure-latex/ode-lorenz-1} 
-
-}
-
-\caption{洛伦兹曲线}(\#fig:ode-lorenz)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="differential-equations_files/figure-html/ode-lorenz-1.png" alt="洛伦兹曲线" width="528" />
+<p class="caption">(\#fig:ode-lorenz)洛伦兹曲线</p>
+</div>
 
 ## 偏微分方程 {#sec-partial-differential-equations}
 
@@ -134,14 +130,10 @@ image(out,
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{differential-equations_files/figure-latex/pde-1d-1} 
-
-}
-
-\caption{一维热传导方程的数值解热力图}(\#fig:pde-1d)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="differential-equations_files/figure-html/pde-1d-1.png" alt="一维热传导方程的数值解热力图" width="528" />
+<p class="caption">(\#fig:pde-1d)一维热传导方程的数值解热力图</p>
+</div>
 
 二维拉普拉斯方程
 
@@ -191,14 +183,10 @@ image(z, col = terrain.colors(20))
 contour(z, method = "flattest", add = TRUE, lty = 1)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{differential-equations_files/figure-latex/laplace-eq-image-1} 
-
-}
-
-\caption{解析解的二维图像}(\#fig:laplace-eq-image)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="differential-equations_files/figure-html/laplace-eq-image-1.png" alt="解析解的二维图像" width="528" />
+<p class="caption">(\#fig:laplace-eq-image)解析解的二维图像</p>
+</div>
 
 
 ```r
@@ -213,14 +201,10 @@ persp(z,
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{differential-equations_files/figure-latex/laplace-eq-persp-1} 
-
-}
-
-\caption{解析解的三维透视图像}(\#fig:laplace-eq-persp)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="differential-equations_files/figure-html/laplace-eq-persp-1.png" alt="解析解的三维透视图像" width="528" />
+<p class="caption">(\#fig:laplace-eq-persp)解析解的三维透视图像</p>
+</div>
 
 求解 PDE
 
