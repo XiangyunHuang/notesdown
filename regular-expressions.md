@@ -122,24 +122,24 @@ extSoftVersion()
 ```
 
 ```
-##                                                      zlib 
-##                                                  "1.2.11" 
-##                                                     bzlib 
-##                                      "1.0.8, 13-Jul-2019" 
-##                                                        xz 
-##                                                   "5.2.5" 
-##                                                      PCRE 
-##                                        "10.39 2021-10-29" 
-##                                                       ICU 
-##                                                    "70.1" 
-##                                                       TRE 
-##                                 "TRE 0.8.0 R_fixes (BSD)" 
-##                                                     iconv 
-##                                              "glibc 2.35" 
-##                                                  readline 
-##                                                     "8.1" 
-##                                                      BLAS 
-## "/usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3"
+##                                              zlib 
+##                                          "1.2.11" 
+##                                             bzlib 
+##                              "1.0.8, 13-Jul-2019" 
+##                                                xz 
+##                                           "5.2.4" 
+##                                              PCRE 
+##                                "10.40 2022-04-14" 
+##                                               ICU 
+##                                            "66.1" 
+##                                               TRE 
+##                         "TRE 0.8.0 R_fixes (BSD)" 
+##                                             iconv 
+##                                      "glibc 2.31" 
+##                                          readline 
+##                                             "8.0" 
+##                                              BLAS 
+## "/usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0"
 ```
 
 ```r
@@ -196,10 +196,10 @@ stringi::stri_info()
 
 ```
 ## $Unicode.version
-## [1] "14.0"
+## [1] "13.0"
 ## 
 ## $ICU.version
-## [1] "70.1"
+## [1] "66.1"
 ## 
 ## $Locale
 ## $Locale$Language
@@ -390,20 +390,28 @@ parsed
 
 `notables` 是一个长度为2的字符串向量，所以获得两组匹配，捕捉到匹配开始的位置 `capture.start` 和匹配的长度 `capture.length` 都是两组，按列来看，字符 B 出现在字符串 `  Ben Franklin and Jefferson Davis` 的第三个位置，匹配的长度 Ben 是三个字符，长度是 3，如图 \@ref(fig:name-capture) 所示，需要注意的是一定要设置 `perl = TRUE` 才能使用命名捕捉功能，函数 `sub` 不支持命名反向引用 Named backreferences
 
-<div class="figure" style="text-align: center">
-<img src="screenshots/regexp-name-capture.png" alt="命名捕捉" width="676" />
-<p class="caption">(\#fig:name-capture)命名捕捉</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=4.51in]{screenshots/regexp-name-capture} 
+
+}
+
+\caption{命名捕捉}(\#fig:name-capture)
+\end{figure}
 
 Atomic grouping 原子分组, possessive qualifiers 占有限定 and conditional 条件 and recursive 递归等模式超出介绍的范围，不在此处详述，感兴趣的读者可参考，此外，插播一条漫画 \@ref(fig:regex-xkcd)
 
 [^char-byte]: `useBytes = TRUE` 表示把字符看作字节。字符、字节和比特的关系是，一个字节 byte 八个比特 bit，一个英文字符 character 用一个字节表示，而一个中、日、韩文字符需要两个字节表示 
 [^learn-regex]: 推荐的学习正则表达式的路径可以见统计之都论坛 <https://d.cosx.org/d/420410>
 
-<div class="figure" style="text-align: center">
-<a href="https://imgs.xkcd.com/comics/regular_expressions.png" target="_blank"><img src="screenshots/regexp-comics.png" alt="正则表达式漫画" width="300" /></a>
-<p class="caption">(\#fig:regex-xkcd)正则表达式漫画</p>
-</div>
+\begin{figure}
+
+{\centering \href{https://imgs.xkcd.com/comics/regular_expressions.png}{\includegraphics[width=2in]{screenshots/regexp-comics} }
+
+}
+
+\caption{正则表达式漫画}(\#fig:regex-xkcd)
+\end{figure}
 
 正则表达式的直观解释 <https://github.com/gadenbuie/regexplain>
 

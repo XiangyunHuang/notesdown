@@ -36,10 +36,14 @@
 
 另一方面，我们谈谈开源领域的佼佼者 --- R (<https://cran.r-project.org/>)，Python (<https://www.python.org/>) 和 Octave (<http://www.gnu.org/software/octave/>)。Python 号称万能的胶水语言，从系统运维到深度学习都有它的广泛存在，它被各大主流 Linux 系统内置，语言风格上更接近于基数庞大的开发人员，形成了强大的生态平台。 Octave 号称是可以替代 Matlab 的科学计算软件，在兼容 Matlab 的方面确实做的很不错，然而，根据 Julia 官网给出的各大编程语言的测试 <https://julialang.org/benchmarks/>，性能上不能相提并论。
 
-<div class="figure" style="text-align: center">
-<img src="preface_files/figure-html/r-eco-system-1.png" alt="R 语言扩展包生态系统" width="85%" />
-<p class="caption">(\#fig:r-eco-system)R 语言扩展包生态系统</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.85\linewidth]{preface_files/figure-latex/r-eco-system-1} 
+
+}
+
+\caption{R 语言扩展包生态系统}(\#fig:r-eco-system)
+\end{figure}
 
 R 提供了丰富的图形接口，包括 Tcl/Tk , Gtk, Shiny 等，以及基于它们的衍生品 rattle（[RGtk2](http://www.ggobi.org/rgtk2/)）、[Rcmdr]( https://CRAN.R-project.org/package=Rcmdr)（tcl/tk）、[radiant](https://github.com/radiant-rstats/radiant)（shiny）。更多底层介绍，见 John Chamber 的著作《Extending R》。
 
@@ -89,9 +93,13 @@ John M. Chambers 谈了数据科学的源起以及和 S、R 语言的渊源 [@RS
 \index{bookdown}
 \index{Pandoc}
 
-<div class="figure" style="text-align: center">
-<img src="preface_files/figure-html/book-workflow-1.png" alt="书籍项目" width="672" />
-<p class="caption">(\#fig:book-workflow)书籍项目</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics{preface_files/figure-latex/book-workflow-1} 
+
+}
+
+\caption{书籍项目}(\#fig:book-workflow)
+\end{figure}
 
 
