@@ -517,8 +517,8 @@ qp_sol <- sol$solution # 二次规划的解
 uc_sol <- sol$unconstrained.solution # 无约束情况下的解
 # 画图
 library(lattice)
-x <- seq(-2, 5.5, length.out = 500)
-y <- seq(-1, 3.5, length.out = 500)
+x <- seq(-2, 5.5, length.out = 100)
+y <- seq(-1, 3.5, length.out = 100)
 grid <- expand.grid(x = x, y = y)
 # 二次规划的目标函数
 grid$z <- with(grid, x^2 + y^2 - x * y + 3 * x - 2 * y + 4)
@@ -537,7 +537,7 @@ levelplot(z ~ x * y, grid,
     )
   },
   colorkey = TRUE,
-  col.regions = terrain.colors(40)
+  col.regions = terrain.colors(41)
 )
 ```
 
@@ -1415,7 +1415,7 @@ nlp$solution
 ```
 
 ```
-## [1]  0.00000 22.22222
+## [1] 22.22222  0.00000
 ```
 
 ```r
@@ -2061,7 +2061,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.104832 4.867556 3.666439 1.289956
+## [1] 1.039351 4.567737 4.033653 1.337758
 ```
 
 ```r
@@ -2069,7 +2069,7 @@ nlp$objval
 ```
 
 ```
-## [1] 17.40355
+## [1] 17.43814
 ```
 
 可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
@@ -2197,7 +2197,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227971 4.245373
+## [1] 1.227972 4.245391
 ```
 
 ```r
@@ -2397,7 +2397,7 @@ nlp$solution
 ```
 
 ```
-## [1]  2.48256 10.19667
+## [1] 40.0591906 -0.9583157
 ```
 
 ```r
@@ -2405,7 +2405,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.033718
+## [1] -3.105538
 ```
 比如下面三组
 
