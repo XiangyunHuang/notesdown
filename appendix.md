@@ -631,10 +631,11 @@ Iñaki Ucar 开发的 [cran2copr](https://github.com/Enchufa2/cran2copr) 项目�
    ##  [66] "rappdirs"    "rstudioapi"  "graphics"    "grDevices"   "sass"       
    ##  [71] "jquerylib"   "base64enc"   "mime"        "fastmap"     "fansi"      
    ##  [76] "vctrs"       "askpass"     "credentials" "openssl"     "sys"        
-   ##  [81] "zip"         "gitcreds"    "ini"         "highr"       "xfun"       
-   ##  [86] "systemfonts" "textshaping" "tinytex"     "httpuv"      "xtable"     
-   ##  [91] "fontawesome" "sourcetools" "later"       "promises"    "pillar"     
-   ##  [96] "pkgconfig"   "diffobj"     "rematch2"    "Rcpp"        "utf8"
+   ##  [81] "zip"         "gitcreds"    "httr2"       "ini"         "highr"      
+   ##  [86] "xfun"        "systemfonts" "textshaping" "tinytex"     "httpuv"     
+   ##  [91] "xtable"      "fontawesome" "sourcetools" "later"       "promises"   
+   ##  [96] "pillar"      "pkgconfig"   "diffobj"     "rematch2"    "Rcpp"       
+   ## [101] "utf8"
    ```
 
    其中，依赖关系见表 \@ref(tab:devtools-sys-dep)
