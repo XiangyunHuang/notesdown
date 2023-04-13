@@ -625,11 +625,11 @@ DT[, .(i_1, i_2, f_1, f_2)]
 ```
 ##    i_1 i_2  f_1 f_2
 ## 1:   1  NA    a   z
-## 2:   2   6 <NA>   a
-## 3:   3   7    b   x
-## 4:   4   8    b   c
+## 2:   2   6    a   a
+## 3:   3   7    a   x
+## 4:   4   8 <NA>   c
 ## 5:   5   9    c   x
-## 6:  NA  10    b   x
+## 6:  NA  10    a   x
 ```
 
 
@@ -641,11 +641,11 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 ```
 ##     i_1 i_2 variable value
 ##  1:   1  NA      f_1     a
-##  2:   2   6      f_1  <NA>
-##  3:   3   7      f_1     b
-##  4:   4   8      f_1     b
+##  2:   2   6      f_1     a
+##  3:   3   7      f_1     a
+##  4:   4   8      f_1  <NA>
 ##  5:   5   9      f_1     c
-##  6:  NA  10      f_1     b
+##  6:  NA  10      f_1     a
 ##  7:   1  NA      f_2     z
 ##  8:   2   6      f_2     a
 ##  9:   3   7      f_2     x
@@ -2051,24 +2051,24 @@ do.call(rbind, lapply(split(iris, iris$Species),
 
 ```
 ##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          5.0         3.2          1.2         0.2     setosa
-##  2:          5.0         3.3          1.4         0.2     setosa
-##  3:          5.4         3.4          1.5         0.4     setosa
-##  4:          4.9         3.1          1.5         0.1     setosa
-##  5:          4.7         3.2          1.6         0.2     setosa
-##  6:          5.3         3.7          1.5         0.2     setosa
-##  7:          5.0         2.3          3.3         1.0 versicolor
-##  8:          5.1         2.5          3.0         1.1 versicolor
-##  9:          6.0         3.4          4.5         1.6 versicolor
-## 10:          5.5         2.5          4.0         1.3 versicolor
-## 11:          6.1         2.8          4.0         1.3 versicolor
-## 12:          5.9         3.0          4.2         1.5 versicolor
-## 13:          5.8         2.7          5.1         1.9  virginica
-## 14:          6.1         3.0          4.9         1.8  virginica
-## 15:          7.2         3.0          5.8         1.6  virginica
-## 16:          7.1         3.0          5.9         2.1  virginica
-## 17:          6.3         3.3          6.0         2.5  virginica
-## 18:          6.7         3.3          5.7         2.1  virginica
+##  1:          5.0         3.4          1.5         0.2     setosa
+##  2:          4.8         3.4          1.6         0.2     setosa
+##  3:          5.4         3.7          1.5         0.2     setosa
+##  4:          5.1         3.4          1.5         0.2     setosa
+##  5:          4.6         3.6          1.0         0.2     setosa
+##  6:          5.1         3.8          1.6         0.2     setosa
+##  7:          6.1         3.0          4.6         1.4 versicolor
+##  8:          6.6         2.9          4.6         1.3 versicolor
+##  9:          5.6         3.0          4.5         1.5 versicolor
+## 10:          5.7         2.9          4.2         1.3 versicolor
+## 11:          5.5         2.4          3.8         1.1 versicolor
+## 12:          5.8         2.7          4.1         1.0 versicolor
+## 13:          7.4         2.8          6.1         1.9  virginica
+## 14:          7.7         2.8          6.7         2.0  virginica
+## 15:          6.7         3.3          5.7         2.5  virginica
+## 16:          6.7         2.5          5.8         1.8  virginica
+## 17:          6.2         3.4          5.4         2.3  virginica
+## 18:          6.8         3.2          5.9         2.3  virginica
 ```
 
 ### 分组计算分位数 {#lapply-split-quantile}
@@ -2171,7 +2171,7 @@ sessionInfo()
 ```
 ## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.5 LTS
+## Running under: Ubuntu 20.04.6 LTS
 ## 
 ## Matrix products: default
 ## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
