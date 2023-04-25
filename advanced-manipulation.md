@@ -466,7 +466,7 @@ mtcars |>
 ```
 
 ```
-## # A tibble: 8 x 3
+## # A tibble: 8 × 3
 ## # Groups:   cyl [3]
 ##     cyl  gear mean_mpg
 ##   <dbl> <dbl>    <dbl>
@@ -624,10 +624,10 @@ DT[, .(i_1, i_2, f_1, f_2)]
 
 ```
 ##    i_1 i_2 f_1 f_2
-## 1:   1  NA   a   z
-## 2:   2   6   a   a
-## 3:   3   7   c   x
-## 4:   4   8   a   c
+## 1:   1  NA   c   z
+## 2:   2   6   b   a
+## 3:   3   7   a   x
+## 4:   4   8   b   c
 ## 5:   5   9   b   x
 ## 6:  NA  10   b   x
 ```
@@ -640,10 +640,10 @@ melt(DT, id = 1:2, measure = c("f_1", "f_2"))
 
 ```
 ##     i_1 i_2 variable value
-##  1:   1  NA      f_1     a
-##  2:   2   6      f_1     a
-##  3:   3   7      f_1     c
-##  4:   4   8      f_1     a
+##  1:   1  NA      f_1     c
+##  2:   2   6      f_1     b
+##  3:   3   7      f_1     a
+##  4:   4   8      f_1     b
 ##  5:   5   9      f_1     b
 ##  6:  NA  10      f_1     b
 ##  7:   1  NA      f_2     z
@@ -700,7 +700,7 @@ tidyr::pivot_wider(data = sleep, names_from = "ID", values_from = "extra")
 ```
 
 ```
-## # A tibble: 2 x 11
+## # A tibble: 2 × 11
 ##   group   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
 ##   <fct> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 ## 1 1       0.7  -1.6  -0.2  -1.2  -0.1   3.4   3.7   0.8   0     2  
@@ -777,7 +777,7 @@ Loblolly |>
 ```
 
 ```
-## # A tibble: 28 x 3
+## # A tibble: 28 × 3
 ## # Groups:   Seed [14]
 ##    height   age Seed 
 ##     <dbl> <dbl> <ord>
@@ -791,7 +791,7 @@ Loblolly |>
 ##  8  59.1     25 307  
 ##  9   3.46     3 331  
 ## 10  59.5     25 331  
-## # ... with 18 more rows
+## # … with 18 more rows
 ```
 
 `dplyr::slice()` 和函数 `slice.index()` 有关系吗？
@@ -833,7 +833,7 @@ band_members
 ```
 
 ```
-## # A tibble: 3 x 2
+## # A tibble: 3 × 2
 ##   name  band   
 ##   <chr> <chr>  
 ## 1 Mick  Stones 
@@ -846,7 +846,7 @@ band_instruments
 ```
 
 ```
-## # A tibble: 3 x 2
+## # A tibble: 3 × 2
 ##   name  plays 
 ##   <chr> <chr> 
 ## 1 John  guitar
@@ -859,7 +859,7 @@ dplyr::inner_join(band_members, band_instruments)
 ```
 
 ```
-## # A tibble: 2 x 3
+## # A tibble: 2 × 3
 ##   name  band    plays 
 ##   <chr> <chr>   <chr> 
 ## 1 John  Beatles guitar
@@ -1298,40 +1298,24 @@ knitr::kable(air_passengers,
 )
 ```
 
-\begin{table}
 
-\caption{(\#tab:air-passengers)1949-1960年国际航班乘客数量变化}
-\centering
-\begin{tabular}[t]{l|c|c|c|c|c|c|c|c|c|c|c|c}
-\hline
-  & Jan & Feb & Mar & Apr & May & Jun & Jul & Aug & Sep & Oct & Nov & Dec\\
-\hline
-1949 & 112 & 118 & 132 & 129 & 121 & 135 & 148 & 148 & 136 & 119 & 104 & 118\\
-\hline
-1950 & 115 & 126 & 141 & 135 & 125 & 149 & 170 & 170 & 158 & 133 & 114 & 140\\
-\hline
-1951 & 145 & 150 & 178 & 163 & 172 & 178 & 199 & 199 & 184 & 162 & 146 & 166\\
-\hline
-1952 & 171 & 180 & 193 & 181 & 183 & 218 & 230 & 242 & 209 & 191 & 172 & 194\\
-\hline
-1953 & 196 & 196 & 236 & 235 & 229 & 243 & 264 & 272 & 237 & 211 & 180 & 201\\
-\hline
-1954 & 204 & 188 & 235 & 227 & 234 & 264 & 302 & 293 & 259 & 229 & 203 & 229\\
-\hline
-1955 & 242 & 233 & 267 & 269 & 270 & 315 & 364 & 347 & 312 & 274 & 237 & 278\\
-\hline
-1956 & 284 & 277 & 317 & 313 & 318 & 374 & 413 & 405 & 355 & 306 & 271 & 306\\
-\hline
-1957 & 315 & 301 & 356 & 348 & 355 & 422 & 465 & 467 & 404 & 347 & 305 & 336\\
-\hline
-1958 & 340 & 318 & 362 & 348 & 363 & 435 & 491 & 505 & 404 & 359 & 310 & 337\\
-\hline
-1959 & 360 & 342 & 406 & 396 & 420 & 472 & 548 & 559 & 463 & 407 & 362 & 405\\
-\hline
-1960 & 417 & 391 & 419 & 461 & 472 & 535 & 622 & 606 & 508 & 461 & 390 & 432\\
-\hline
-\end{tabular}
-\end{table}
+
+Table: (\#tab:air-passengers)1949-1960年国际航班乘客数量变化
+
+|     | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov | Dec |
+|:----|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|1949 | 112 | 118 | 132 | 129 | 121 | 135 | 148 | 148 | 136 | 119 | 104 | 118 |
+|1950 | 115 | 126 | 141 | 135 | 125 | 149 | 170 | 170 | 158 | 133 | 114 | 140 |
+|1951 | 145 | 150 | 178 | 163 | 172 | 178 | 199 | 199 | 184 | 162 | 146 | 166 |
+|1952 | 171 | 180 | 193 | 181 | 183 | 218 | 230 | 242 | 209 | 191 | 172 | 194 |
+|1953 | 196 | 196 | 236 | 235 | 229 | 243 | 264 | 272 | 237 | 211 | 180 | 201 |
+|1954 | 204 | 188 | 235 | 227 | 234 | 264 | 302 | 293 | 259 | 229 | 203 | 229 |
+|1955 | 242 | 233 | 267 | 269 | 270 | 315 | 364 | 347 | 312 | 274 | 237 | 278 |
+|1956 | 284 | 277 | 317 | 313 | 318 | 374 | 413 | 405 | 355 | 306 | 271 | 306 |
+|1957 | 315 | 301 | 356 | 348 | 355 | 422 | 465 | 467 | 404 | 347 | 305 | 336 |
+|1958 | 340 | 318 | 362 | 348 | 363 | 435 | 491 | 505 | 404 | 359 | 310 | 337 |
+|1959 | 360 | 342 | 406 | 396 | 420 | 472 | 548 | 559 | 463 | 407 | 362 | 405 |
+|1960 | 417 | 391 | 419 | 461 | 472 | 535 | 622 | 606 | 508 | 461 | 390 | 432 |
 
 横向计算环比，如1949年2月相比1月增长多少、3月相比2月增长多少，以此类推，就是计算环比？纵向计算同比，如1950年1月相比1949年1月增长多少、1951年相比1950年1月增长多少？
 
@@ -1591,7 +1575,7 @@ mtcars |>
 ```
 
 ```
-## # A tibble: 3 x 5
+## # A tibble: 3 × 5
 ##     cyl mean_mpg mean_hp median_mpg median_hp
 ##   <int>    <dbl>   <dbl>      <dbl>     <dbl>
 ## 1     4     26.7    82.6       26.7      82.6
@@ -1734,7 +1718,7 @@ iris %>%
 ```
 
 ```
-## # A tibble: 6 x 6
+## # A tibble: 6 × 6
 ## # Groups:   Species [3]
 ##   Species    term         estimate std.error statistic  p.value
 ##   <fct>      <chr>           <dbl>     <dbl>     <dbl>    <dbl>
@@ -2051,24 +2035,24 @@ do.call(rbind, lapply(split(iris, iris$Species),
 
 ```
 ##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-##  1:          5.0         3.5          1.6         0.6     setosa
-##  2:          5.2         4.1          1.5         0.1     setosa
-##  3:          4.9         3.1          1.5         0.2     setosa
-##  4:          4.7         3.2          1.6         0.2     setosa
-##  5:          4.8         3.4          1.9         0.2     setosa
-##  6:          4.8         3.1          1.6         0.2     setosa
-##  7:          6.4         3.2          4.5         1.5 versicolor
-##  8:          5.6         2.5          3.9         1.1 versicolor
-##  9:          5.8         2.7          4.1         1.0 versicolor
-## 10:          6.1         3.0          4.6         1.4 versicolor
-## 11:          5.7         2.9          4.2         1.3 versicolor
-## 12:          5.1         2.5          3.0         1.1 versicolor
-## 13:          6.8         3.2          5.9         2.3  virginica
-## 14:          6.5         3.0          5.2         2.0  virginica
-## 15:          7.2         3.2          6.0         1.8  virginica
-## 16:          6.4         2.8          5.6         2.1  virginica
-## 17:          5.6         2.8          4.9         2.0  virginica
-## 18:          6.5         3.0          5.5         1.8  virginica
+##  1:          4.3         3.0          1.1         0.1     setosa
+##  2:          4.4         3.2          1.3         0.2     setosa
+##  3:          5.4         3.4          1.5         0.4     setosa
+##  4:          4.6         3.1          1.5         0.2     setosa
+##  5:          5.1         3.8          1.6         0.2     setosa
+##  6:          5.2         3.5          1.5         0.2     setosa
+##  7:          6.1         2.8          4.7         1.2 versicolor
+##  8:          5.5         2.6          4.4         1.2 versicolor
+##  9:          5.8         2.7          3.9         1.2 versicolor
+## 10:          6.8         2.8          4.8         1.4 versicolor
+## 11:          6.2         2.9          4.3         1.3 versicolor
+## 12:          5.6         2.7          4.2         1.3 versicolor
+## 13:          7.7         3.0          6.1         2.3  virginica
+## 14:          6.4         3.2          5.3         2.3  virginica
+## 15:          6.2         2.8          4.8         1.8  virginica
+## 16:          7.2         3.0          5.8         1.6  virginica
+## 17:          6.3         2.7          4.9         1.8  virginica
+## 18:          7.2         3.2          6.0         1.8  virginica
 ```
 
 ### 分组计算分位数 {#lapply-split-quantile}
@@ -2169,13 +2153,13 @@ sessionInfo()
 ```
 
 ```
-## R version 4.2.0 (2022-04-22)
+## R version 4.2.2 (2022-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.6 LTS
+## Running under: Ubuntu 22.04.2 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -2192,14 +2176,16 @@ sessionInfo()
 ## [1] magrittr_2.0.3    data.table_1.14.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] knitr_1.39       sysfonts_0.8.8   tidyselect_1.1.2 R6_2.5.1        
-##  [5] rlang_1.0.2      fastmap_1.1.0    fansi_1.0.3      stringr_1.4.0   
-##  [9] dplyr_1.0.9      tools_4.2.0      broom_0.8.0      xfun_0.31       
-## [13] utf8_1.2.2       DBI_1.1.2        cli_3.3.0        htmltools_0.5.2 
-## [17] ellipsis_0.3.2   assertthat_0.2.1 yaml_2.3.5       digest_0.6.29   
-## [21] tibble_3.1.7     lifecycle_1.0.1  crayon_1.5.1     bookdown_0.26   
-## [25] tidyr_1.2.0      purrr_0.3.4      vctrs_0.4.1      curl_4.3.2      
-## [29] glue_1.6.2       evaluate_0.15    rmarkdown_2.14   stringi_1.7.6   
-## [33] compiler_4.2.0   pillar_1.7.0     backports_1.4.1  generics_0.1.2  
-## [37] pkgconfig_2.0.3
+##  [1] highr_0.9        bslib_0.3.1      compiler_4.2.2   pillar_1.7.0    
+##  [5] jquerylib_0.1.4  tools_4.2.2      sysfonts_0.8.8   digest_0.6.29   
+##  [9] downlit_0.4.0    jsonlite_1.8.0   evaluate_0.15    memoise_2.0.1   
+## [13] lifecycle_1.0.1  tibble_3.1.7     pkgconfig_2.0.3  rlang_1.0.2     
+## [17] DBI_1.1.2        cli_3.3.0        curl_4.3.2       yaml_2.3.5      
+## [21] xfun_0.31        fastmap_1.1.0    stringr_1.4.0    dplyr_1.0.9     
+## [25] xml2_1.3.3       knitr_1.39       generics_0.1.2   fs_1.5.2        
+## [29] sass_0.4.1       vctrs_0.4.1      tidyselect_1.1.2 glue_1.6.2      
+## [33] R6_2.5.1         fansi_1.0.3      rmarkdown_2.14   bookdown_0.26   
+## [37] tidyr_1.2.0      purrr_0.3.4      backports_1.4.1  htmltools_0.5.2 
+## [41] ellipsis_0.3.2   assertthat_0.2.1 utf8_1.2.2       stringi_1.7.6   
+## [45] broom_0.8.0      cachem_1.0.6     crayon_1.5.1
 ```

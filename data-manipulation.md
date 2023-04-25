@@ -24,14 +24,10 @@ data.table 诞生于2006年4月15日（以在 CRAN 上发布的第一个版本�
 更多参考材料见[A data.table and dplyr tour](https://atrebas.github.io/post/2019-03-03-datatable-dplyr/)，
 [Big Data in Economics: Data cleaning and wrangling](https://raw.githack.com/uo-ec510-2020-spring/lectures/master/05-datatable/05-datatable.html) 和 [DataCamp’s data.table cheatsheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)，关于采用 Base R 还是 tidyverse 做数据操作的 [讨论](https://d.cosx.org/d/420697)，数据操作的动画展示参考 <https://github.com/gadenbuie/tidyexplain>。
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.55\linewidth]{diagrams/tidyverse-vs-base-r} 
-
-}
-
-\caption{Tidyverse 和 Base R 的关系}(\#fig:tidyverse-vs-base-r)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="diagrams/tidyverse-vs-base-r.svg" alt="Tidyverse 和 Base R 的关系" width="55%" />
+<p class="caption">(\#fig:tidyverse-vs-base-r)Tidyverse 和 Base R 的关系</p>
+</div>
 
 什么是 Base R? Base R 指的是 R 语言/软件的核心组件，由 R Core Team 维护
 
@@ -70,8 +66,8 @@ sapply(.libPaths(), function(pkg_path) {
 ```
 
 ```
-##      /home/runner/work/_temp/Library /opt/R/4.2.0/lib/R/library
-## [1,]                           FALSE                       TRUE
+##      /home/runner/work/_temp/Library /opt/R/4.2.2/lib/R/library
+## [1,]                            TRUE                       TRUE
 ## [2,]                            TRUE                      FALSE
 ```
 
@@ -859,14 +855,10 @@ plot(cut(Z, breaks = -6:6))
 hist(Z, breaks = -6:6)
 ```
 
-\begin{figure}
-
-{\centering \subfloat[条形图(\#fig:cut-1)]{\includegraphics[width=0.45\linewidth]{data-manipulation_files/figure-latex/cut-1} }\subfloat[直方图(\#fig:cut-2)]{\includegraphics[width=0.45\linewidth]{data-manipulation_files/figure-latex/cut-2} }
-
-}
-
-\caption{连续型变量分组统计}(\#fig:cut)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/cut-1.png" alt="连续型变量分组统计" width="45%" /><img src="data-manipulation_files/figure-html/cut-2.png" alt="连续型变量分组统计" width="45%" />
+<p class="caption">(\#fig:cut)连续型变量分组统计</p>
+</div>
 
 在指定分组数的情况下，我们还想获取分组的断点
 
@@ -2563,9 +2555,7 @@ with(ToothGrowth, {
 })
 ```
 
-
-
-\begin{center}\includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/subset-in-boxplot-1} \end{center}
+<img src="data-manipulation_files/figure-html/subset-in-boxplot-1.png" width="75%" style="display: block; margin: auto;" />
 
 将 `boxplot` 函数的 `subset` 参数单独提出来，调用数据子集选择函数 `subset` ，这里 `with` 中只包含一个表达式，所以也可以不用大括号
 
@@ -2592,9 +2582,7 @@ legend(2, 9, c("Ascorbic acid", "Orange juice"),
 )
 ```
 
-
-
-\begin{center}\includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/subset-out-boxplot-1} \end{center}
+<img src="data-manipulation_files/figure-html/subset-out-boxplot-1.png" width="75%" style="display: block; margin: auto;" />
 
 可以作为数据变换 `transform` 的一种替代，它也比较像 **dplyr** 包的 `mutate` 函数
 
@@ -2662,14 +2650,10 @@ Table: (\#tab:apply-functions) apply 函数
 spectrum(sunspot.year, kernel = kernel("daniell", c(11, 7, 3)), log = "no")
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/spectrum-sunspot-year-1} 
-
-}
-
-\caption{太阳黑子的频谱}(\#fig:spectrum-sunspot-year)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/spectrum-sunspot-year-1.png" alt="太阳黑子的频谱" width="75%" />
+<p class="caption">(\#fig:spectrum-sunspot-year)太阳黑子的频谱</p>
+</div>
 
 <!-- https://design.tidyverse.org/cs-mapply-pmap.html -->
 
@@ -2716,14 +2700,10 @@ invisible(lapply(samples, function(x) {
 }))
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/mapply-lapply-1} 
-
-}
-
-\caption{ lapply 函数}(\#fig:mapply-lapply)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/mapply-lapply-1.png" alt=" lapply 函数" width="75%" />
+<p class="caption">(\#fig:mapply-lapply) lapply 函数</p>
+</div>
 
 分别计算每个样本的平均值
 
@@ -2797,14 +2777,10 @@ vapply 和 sapply 类似，但是预先指定返回值类型，这样可以更�
 plot(presidents)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/usa-presidents-1} 
-
-}
-
-\caption{1945-1974美国总统的支持率}(\#fig:usa-presidents)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/usa-presidents-1.png" alt="1945-1974美国总统的支持率" width="75%" />
+<p class="caption">(\#fig:usa-presidents)1945-1974美国总统的支持率</p>
+</div>
 
 计算这 30 年每个季度的平均支持率
 
@@ -2958,14 +2934,10 @@ ggplot(df, aes(x, y, z = z)) +
   geom_contour()
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/with-op-1} 
-
-}
-
-\caption{with 操作}(\#fig:with-op)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/with-op-1.png" alt="with 操作" width="75%" />
+<p class="caption">(\#fig:with-op)with 操作</p>
+</div>
 
 ## 分组聚合 {#sec-aggregate}
 
@@ -3173,22 +3145,15 @@ knitr::kable(dat,
 )
 ```
 
-\begin{table}
 
-\caption{(\#tab:data-frame-PlantGrowth)不同生长环境下植物的干重}
-\centering
-\begin{tabular}[t]{c|c|c|c|c|c|c|c|c|c|c}
-\hline
-group & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
-\hline
-ctrl & 4.17 & 5.58 & 5.18 & 6.11 & 4.50 & 4.61 & 5.17 & 4.53 & 5.33 & 5.14\\
-\hline
-trt1 & 4.81 & 4.17 & 4.41 & 3.59 & 5.87 & 3.83 & 6.03 & 4.89 & 4.32 & 4.69\\
-\hline
-trt2 & 6.31 & 5.12 & 5.54 & 5.50 & 5.37 & 5.29 & 4.92 & 6.15 & 5.80 & 5.26\\
-\hline
-\end{tabular}
-\end{table}
+
+Table: (\#tab:data-frame-PlantGrowth)不同生长环境下植物的干重
+
+| group |  1   |  2   |  3   |  4   |  5   |  6   |  7   |  8   |  9   |  10  |
+|:-----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
+| ctrl  | 4.17 | 5.58 | 5.18 | 6.11 | 4.50 | 4.61 | 5.17 | 4.53 | 5.33 | 5.14 |
+| trt1  | 4.81 | 4.17 | 4.41 | 3.59 | 5.87 | 3.83 | 6.03 | 4.89 | 4.32 | 4.69 |
+| trt2  | 6.31 | 5.12 | 5.54 | 5.50 | 5.37 | 5.29 | 4.92 | 6.15 | 5.80 | 5.26 |
 
 或者，我们也可以使用 **tidyr** 包提供的 `pivot_wider()` 函数
 
@@ -3201,7 +3166,7 @@ tidyr::pivot_wider(
 ```
 
 ```
-## # A tibble: 10 x 4
+## # A tibble: 10 × 4
 ##       id  ctrl  trt1  trt2
 ##    <int> <dbl> <dbl> <dbl>
 ##  1     1  4.17  4.81  6.31
@@ -3302,14 +3267,10 @@ iris |>
   geom_point()
 ```
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{data-manipulation_files/figure-latex/pipe-dataframe-ggplot2-1} 
-
-}
-
-\caption{管道连接数据操作和可视化}(\#fig:pipe-dataframe-ggplot2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="data-manipulation_files/figure-html/pipe-dataframe-ggplot2-1.png" alt="管道连接数据操作和可视化" width="75%" />
+<p class="caption">(\#fig:pipe-dataframe-ggplot2)管道连接数据操作和可视化</p>
+</div>
 
 ## `CASE WHEN` 和 `fcase` {#sec-case-when}
 
@@ -3660,36 +3621,36 @@ head(iris[ind, ])
 ## 5:          4.5         2.3          1.3         0.3  setosa
 ## 6:          4.6         3.1          1.5         0.2  setosa
 ```
-\begin{table}
-\caption{(\#tab:column-order)iris 数据集原顺序（左）和新顺序（右）}
 
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-\bottomrule
-\end{tabular}
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.4 & 3.0 & 1.3 & 0.2 & setosa\\
-4.4 & 3.2 & 1.3 & 0.2 & setosa\\
-4.5 & 2.3 & 1.3 & 0.3 & setosa\\
-\addlinespace
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
+<table class="kable_wrapper">
+<caption>(\#tab:column-order)iris 数据集原顺序（左）和新顺序（右）</caption>
+<tbody>
+  <tr>
+   <td> 
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+|          5.0|         3.6|          1.4|         0.2|setosa  |
+|          5.4|         3.9|          1.7|         0.4|setosa  |
+
+ </td>
+   <td> 
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          4.3|         3.0|          1.1|         0.1|setosa  |
+|          4.4|         2.9|          1.4|         0.2|setosa  |
+|          4.4|         3.0|          1.3|         0.2|setosa  |
+|          4.4|         3.2|          1.3|         0.2|setosa  |
+|          4.5|         2.3|          1.3|         0.3|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+
+ </td>
+  </tr>
+</tbody>
+</table>
 

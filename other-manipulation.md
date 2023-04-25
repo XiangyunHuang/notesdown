@@ -74,16 +74,16 @@ glimpse(diamonds)
 ```
 ## Rows: 53,940
 ## Columns: 10
-## $ carat   <dbl> 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.~
-## $ cut     <ord> Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Ver~
-## $ color   <ord> E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I,~
-## $ clarity <ord> SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1, ~
-## $ depth   <dbl> 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 64~
-## $ table   <dbl> 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62, 58~
-## $ price   <int> 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 34~
-## $ x       <dbl> 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.~
-## $ y       <dbl> 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.~
-## $ z       <dbl> 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.~
+## $ carat   <dbl> 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.…
+## $ cut     <ord> Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Ver…
+## $ color   <ord> E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I,…
+## $ clarity <ord> SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1, …
+## $ depth   <dbl> 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 64…
+## $ table   <dbl> 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62, 58…
+## $ price   <int> 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 34…
+## $ x       <dbl> 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.…
+## $ y       <dbl> 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.…
+## $ z       <dbl> 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.…
 ```
 
 Table: (\#tab:dplyr-object-type) dplyr 定义的数据对象类型
@@ -110,7 +110,7 @@ diamonds |>  filter(cut == "Ideal" , carat >= 3)
 ```
 
 ```
-## # A tibble: 4 x 10
+## # A tibble: 4 × 10
 ##   carat cut   color clarity depth table price     x     y     z
 ##   <dbl> <ord> <ord> <ord>   <dbl> <dbl> <int> <dbl> <dbl> <dbl>
 ## 1  3.22 Ideal I     I1       62.6    55 12545  9.49  9.42  5.92
@@ -129,7 +129,7 @@ diamonds |>
 ```
 
 ```
-## # A tibble: 16 x 2
+## # A tibble: 16 × 2
 ##    cut       carat
 ##    <ord>     <dbl>
 ##  1 Premium    3.01
@@ -162,7 +162,7 @@ diamonds |>
 ```
 
 ```
-## # A tibble: 4 x 10
+## # A tibble: 4 × 10
 ##   carat cut   color clarity depth table price     x     y     z
 ##   <dbl> <ord> <ord> <ord>   <dbl> <dbl> <int> <dbl> <dbl> <dbl>
 ## 1  3.01 Ideal J     I1       65.4    60 16538  8.99  8.93  5.86
@@ -184,7 +184,7 @@ diamonds |>
 ```
 
 ```
-## # A tibble: 8 x 5
+## # A tibble: 8 × 5
 ## # Groups:   cut [5]
 ##   cut       clarity sum_carat mean_carat n_count
 ##   <ord>     <ord>       <dbl>      <dbl>   <int>
@@ -217,7 +217,7 @@ bind_rows(one, two)
 ```
 
 ```
-## # A tibble: 10 x 10
+## # A tibble: 10 × 10
 ##    carat cut       color clarity depth table price     x     y     z
 ##    <dbl> <ord>     <ord> <ord>   <dbl> <dbl> <int> <dbl> <dbl> <dbl>
 ##  1  0.42 Ideal     I     VVS1     62.5  57     884  4.77  4.8   2.99
@@ -247,7 +247,7 @@ bind_cols(three, four)
 ```
 
 ```
-## # A tibble: 5 x 4
+## # A tibble: 5 × 4
 ##   carat...1 color...2 carat...3 color...4
 ##       <dbl> <ord>         <dbl> <ord>    
 ## 1      0.33 H              0.52 F        
@@ -271,7 +271,7 @@ diamonds |>
 ```
 
 ```
-## # A tibble: 13 x 3
+## # A tibble: 13 × 3
 ##    cut       carat vol  
 ##    <ord>     <dbl> <chr>
 ##  1 Premium    3.01 B    
@@ -330,7 +330,7 @@ df |>
 ```
 
 ```
-## # A tibble: 4 x 3
+## # A tibble: 4 × 3
 ## # Groups:   x, y [4]
 ##       x     y     z
 ##   <int> <int> <int>
@@ -437,8 +437,8 @@ microbenchmark::microbenchmark(s(), d())
 ```
 ## Unit: microseconds
 ##  expr   min    lq    mean median    uq    max neval
-##   s()  19.8  21.3  51.000   23.9  25.2 2471.8   100
-##   d() 189.4 191.9 218.052  193.0 195.8 2257.5   100
+##   s()  19.9  23.4  62.075  27.75  33.2 2958.1   100
+##   d() 215.7 223.9 259.913 228.85 236.9 2766.1   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}

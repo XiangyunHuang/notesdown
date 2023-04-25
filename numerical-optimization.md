@@ -1,5 +1,6 @@
 # 数值优化 {#chap-numerical-optimization}
 
+```{=html}
 <!-- 
 Optimization Packages for R
 https://github.com/r-opt
@@ -7,25 +8,16 @@ https://github.com/r-opt
 https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
 [gslnls](https://github.com/JorisChau/gslnls) GSL 库做非线性回归
 -->
-
+```
 数值优化的理论部分可以参考经典教材《Numerical Optimization》 [@Nocedal2006] 和复旦大学吴立德教授的[数值优化课程](https://www.bilibili.com/video/BV1Kx411m7QB/)，本文仅仅梳理一些 R 语言社区提供的扩展包。
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
 
-商业优化求解器的能力都覆盖非线性规划（NLP），线性（LP）、二次（QP）和锥规划（SOCP），混合整数线性规划（MILP），多目标优化，最小二乘和方程求解。此外，还有很多文档介绍，
-[LINGO](https://www.lindo.com/)提供[用户手册](https://www.lindo.com/downloads/PDF/LINGO.pdf)，
-[Matlab 优化工具箱](https://ww2.mathworks.cn/products/optimization.html) 提供 [Optimization 工具箱使用指南](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)，
-[MOSEK](https://github.com/MOSEK) (<https://www.mosek.com/>) 提供 [MOSEK 建模食谱](https://docs.mosek.com/modeling-cookbook/index.html)，[LocalSolver](https://www.localsolver.com/) 提供[基本使用手册](https://www.localsolver.com/docs/last/index.html)，
-[Gurobi](https://www.gurobi.com/) 提供 [Gurobi 参考手册](https://www.gurobi.com/documentation/9.1/refman/index.html)，[CPLEX Optimization Studio](https://www.ibm.com/cn-zh/products/ilog-cplex-optimization-studio)。
+商业优化求解器的能力都覆盖非线性规划（NLP），线性（LP）、二次（QP）和锥规划（SOCP），混合整数线性规划（MILP），多目标优化，最小二乘和方程求解。此外，还有很多文档介绍， [LINGO](https://www.lindo.com/)提供[用户手册](https://www.lindo.com/downloads/PDF/LINGO.pdf)， [Matlab 优化工具箱](https://ww2.mathworks.cn/products/optimization.html) 提供 [Optimization 工具箱使用指南](https://ww2.mathworks.cn/help/releases/R2021a/pdf_doc/optim/optim.pdf)， [MOSEK](https://github.com/MOSEK) (<https://www.mosek.com/>) 提供 [MOSEK 建模食谱](https://docs.mosek.com/modeling-cookbook/index.html)，[LocalSolver](https://www.localsolver.com/) 提供[基本使用手册](https://www.localsolver.com/docs/last/index.html)， [Gurobi](https://www.gurobi.com/) 提供 [Gurobi 参考手册](https://www.gurobi.com/documentation/9.1/refman/index.html)，[CPLEX Optimization Studio](https://www.ibm.com/cn-zh/products/ilog-cplex-optimization-studio)。
 
-开源社区有不少工具，也能求解常见的优化问题，如 Julia 的 [JuMP](https://github.com/jump-dev) (<https://jump.dev/>)，Octave (<https://www.gnu.org/software/octave/>) 内置的优化函数，Python 模块 [SciPy](https://github.com/scipy/scipy) 提供 [Optimization 优化求解器](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)，[cvxopt](https://github.com/cvxopt/cvxopt) 凸优化求解器，主要基于内点法，提供 Julia、Python、Matlab 接口，算法介绍见
-[锥优化](http://www.seas.ucla.edu/~vandenbe/publications/coneprog.pdf)
-[机器学习优化](http://www.seas.ucla.edu/~vandenbe/publications/mlbook.pdf)。
-课程见 [Optimization for Machine Learning](https://github.com/epfml/OptML_course)，书籍见[Convex Optimization](https://stanford.edu/~boyd/cvxbook/)，相关综述见[Convex Optimization: Algorithms and Complexity](https://arxiv.org/pdf/1405.4980.pdf)。
+开源社区有不少工具，也能求解常见的优化问题，如 Julia 的 [JuMP](https://github.com/jump-dev) (<https://jump.dev/>)，Octave (<https://www.gnu.org/software/octave/>) 内置的优化函数，Python 模块 [SciPy](https://github.com/scipy/scipy) 提供 [Optimization 优化求解器](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)，[cvxopt](https://github.com/cvxopt/cvxopt) 凸优化求解器，主要基于内点法，提供 Julia、Python、Matlab 接口，算法介绍见 [锥优化](http://www.seas.ucla.edu/~vandenbe/publications/coneprog.pdf) [机器学习优化](http://www.seas.ucla.edu/~vandenbe/publications/mlbook.pdf)。 课程见 [Optimization for Machine Learning](https://github.com/epfml/OptML_course)，书籍见[Convex Optimization](https://stanford.edu/~boyd/cvxbook/)，相关综述见[Convex Optimization: Algorithms and Complexity](https://arxiv.org/pdf/1405.4980.pdf)。
 
-
-Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题 [@nloptr]，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html> 提供了一般的求解器介绍。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013;@GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。@Nash2014 总结了 R 语言环境下最优化问题的最佳实践。[RcppEnsmallen](https://github.com/coatless/rcppensmallen) 数值优化
-通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。[RcppNumerical](https://github.com/yixuan/RcppNumerical) 无约束数值优化，一维/多维数值积分。
+Berwin A. Turlach 开发的 [quadprog](https://CRAN.R-project.org/package=quadprog) 主要用于求解二次规划问题。[Anqi Fu](https://web.stanford.edu/~anqif/) 开发的 [CVXR](https://github.com/anqif/CVXR) 可解很多凸优化问题 [@CVXR2020]，详见网站 <https://cvxr.rbind.io/>，[Jelmer Ypma](https://www.ucl.ac.uk/~uctpjyy/nloptr.html) 开发的 [nloptr](https://github.com/jyypma/nloptr) 可解无约束和有约束的非线性规划问题 [@nloptr]，[GPareto](https://github.com/mbinois/GPareto) 求解多目标优化问题，帕雷托前沿优化和估计[@GPareto2019]。[igraph](https://github.com/igraph/igraph/) 可以用来解决最短路径、最大网络流、最小生成树等图优化相关的问题。 <https://palomar.home.ece.ust.hk/MAFS6010R_lectures/Rsession_solvers.html> 提供了一般的求解器介绍。ROI 包力图统一各个求解器的调用接口，打造一个优化算法的基础设施平台。@ROI2020 详细介绍了目前优化算法发展情况及 R 社区提供的优化能力。[GA](https://github.com/luca-scr/GA) 包实现了遗传算法，支持连续和离散的空间搜索，可以并行 [@GA2013; @GA2017]，是求解 TSP 问题的重要方法。NMOF 包实现了差分进化、遗传算法、粒子群算法、模拟退火算法等启发式优化算法，还提供网格搜索和贪婪搜索工具，@NMOF2019 提供了详细的介绍。@Nash2014 总结了 R 语言环境下最优化问题的最佳实践。[RcppEnsmallen](https://github.com/coatless/rcppensmallen) 数值优化 通用标准的优化方法，前沿最新的优化方法，包含小批量/全批量梯度下降技术、无梯度优化器，约束优化技术。[RcppNumerical](https://github.com/yixuan/RcppNumerical) 无约束数值优化，一维/多维数值积分。
 
 谷歌开源的运筹优化工具 [or-tools](https://github.com/google/or-tools) 提供了约束优化、线性优化、混合整数优化、装箱和背包算法、TSP（Traveling Salesman Problem）、VRP（Vehicle Routing Problem）、图算法（最短路径、最小成本流、最大流等）等算法和求解器。「运筹OR帷幄」社区开源的 [线性规划](https://github.com/Operations-Research-Science/Ebook-Linear_Programming) 一书值得一看。
 
@@ -49,39 +41,80 @@ library(BB)              # 非线性方程组
 
 
 
-表 \@ref(tab:roi-plugin-latex) 对目前的优化器按优化问题做了分类
+表 \@ref(tab:roi-plugin-html) 对目前的优化器按优化问题做了分类
 
+<table style="NAborder-bottom: 0;">
+<caption>(\#tab:roi-plugin-html)ROI 插件按优化问题分类</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Linear </th>
+   <th style="text-align:left;"> Quadratic </th>
+   <th style="text-align:left;"> Conic </th>
+   <th style="text-align:left;"> Functional </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Box </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> optimx </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Linear </td>
+   <td style="text-align:left;"> $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ </td>
+   <td style="text-align:left;"> ipop, $\mathrm{quadprog}^{\star}$, qpoases </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Quadratic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Conic </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Functional </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> alabama, deoptim, nlminb, nloptr </td>
+  </tr>
+</tbody>
+<tfoot>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>*</sup> 求解器受限于凸优化问题</td></tr>
+<tr><td style="padding: 0; " colspan="100%">
+<sup>+</sup> 求解器可以处理整型约束</td></tr>
+</tfoot>
+</table>
 
-\begin{table}
-
-\caption{(\#tab:roi-plugin-latex)ROI 插件按优化问题分类}
-\centering
-\begin{tabular}[t]{>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}>{\raggedright\arraybackslash}p{2cm}}
-\toprule
-  & Linear & Quadratic & Conic & Functional\\
-\midrule
-No &  &  &  & \\
-Box &  &  &  & optimx\\
-Linear & $\mathrm{clp}^\star$, $\mathrm{cbc}^{\star+}$, $\mathrm{glpk}^{\star+}$, $\mathrm{lpsolve}^{\star+}$, $\mathrm{msbinlp}^{\star+}$, $\mathrm{symphony}^{\star+}$ & ipop, $\mathrm{quadprog}^{\star}$, qpoases &  & \\
-Quadratic &  & $\mathrm{cplex}^{+}$, $\mathrm{gurobi}^{\star+}$, $\mathrm{mosek}^{\star+}$, $\mathrm{neos}^{+}$ &  & \\
-Conic &  &  & $\mathrm{ecos}^{\star+}$, $\mathrm{scs}^{\star}$ & \\
-\addlinespace
-Functional &  &  &  & alabama, deoptim, nlminb, nloptr\\
-\bottomrule
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{*} 求解器受限于凸优化问题}\\
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{+} 求解器可以处理整型约束}\\
-\end{tabular}
-\end{table}
 
 
 ## 线性规划 {#sec-linear-programming}
 
-[clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和
-[Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。[lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 --
-[lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) 和 [lpSolve](https://github.com/gaborcsardi/lpSolve) 也提供类似的能力。[ompr](https://github.com/dirkschumacher/ompr) 求解混合整数线性规划问题。
+[clpAPI](https://cran.r-project.org/package=clpAPI) 线性规划求解器。[glpk](https://www.gnu.org/software/glpk/) 的两个 R 接口 -- [glpkAPI](https://cran.r-project.org/package=glpkAPI) 和 [Rglpk](https://CRAN.R-project.org/package=Rglpk) 提供线性规划和混合整数规划的求解能力。[lp_solve](http://lpsolve.sourceforge.net/) 的两个 R 接口 -- [lpSolveAPI](https://cran.r-project.org/package=lpSolveAPI) 和 [lpSolve](https://github.com/gaborcsardi/lpSolve) 也提供类似的能力。[ompr](https://github.com/dirkschumacher/ompr) 求解混合整数线性规划问题。
 
 举个例子，如下
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \min_x \quad -6x_1 -5x_2 \\
@@ -93,9 +126,10 @@ Functional &  &  &  & alabama, deoptim, nlminb, nloptr\\
     \end{array} \right.
 \end{array}
 \end{equation*}
-
+```
 写成矩阵形式
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
 \min_x \quad
@@ -120,7 +154,7 @@ s.t.\left\{
  \end{array} \right.
 \end{array} 
 \end{equation*}
-
+```
 对应成 R 代码如下
 
 
@@ -155,6 +189,7 @@ res$solution
 
 ### 一般整数规划 {#common-integer-programming}
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \max_x \quad 0.2x_1 + 0.6x_2 \\
@@ -166,8 +201,7 @@ res$solution
     \end{array} \right.
 \end{array}
 \end{equation*}
-
-
+```
 
 ```r
 # 目标
@@ -197,6 +231,7 @@ res$solution
 
 ### 0-1 整数规划 {#binary-integer-programming}
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \max_x \quad 0.2x_1 + 0.6x_2 \\
@@ -208,7 +243,7 @@ res$solution
     \end{array} \right.
 \end{array}
 \end{equation*}
-
+```
 
 ```r
 # 目标
@@ -238,11 +273,11 @@ res$solution
 
 ### 混合整数规划 {#mixed-integer-programming}
 
-[Rsymphony](https://cran.r-project.org/package=Rsymphony) 是混合整数规划求解器 [SYMPHONY](https://github.com/coin-or/SYMPHONY) 的 R 语言接口[^symphony]。
+[Rsymphony](https://cran.r-project.org/package=Rsymphony) 是混合整数规划求解器 [SYMPHONY](https://github.com/coin-or/SYMPHONY) 的 R 语言接口[^numerical-optimization-1]。
 
-[^symphony]: 以 MacOS 为例安装 symphony 软件
+[^numerical-optimization-1]: 以 MacOS 为例安装 symphony 软件
 
-    ```bash
+    ``` bash
     brew tap coin-or-tools/coinor
     brew install symphony
     ```
@@ -291,6 +326,7 @@ Rsymphony_solve_LP(obj, mat, dir, rhs,
 
 一部分变量要求是整数
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \max_x \quad 3x_1 + 7x_2 - 12x_3 \\
@@ -303,9 +339,10 @@ Rsymphony_solve_LP(obj, mat, dir, rhs,
     \end{array} \right.
 \end{array}
 \end{equation*}
-
+```
 矩阵形式如下
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
 \min_x \quad
@@ -331,8 +368,7 @@ s.t.\left\{
  \end{array} \right.
 \end{array} 
 \end{equation*}
-
-
+```
 
 ```r
 op <- OP(
@@ -388,9 +424,9 @@ res$objval
 
 ### 凸二次规划 {#sec-strictly-convex-quadratic-program}
 
-[^intro-quadprog]: https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/
+在 R 中使用 **quadprog** [@quadprog2019] 包求解二次规划[^numerical-optimization-2]，**quadprogXT** 包用来求解带绝对值约束的二次规划，**pracma** [@pracma2021]包提供 `quadprog()` 函数就是对 **quadprog** 包的 `solve.QP()` 进行封装，调用风格更像 Matlab。**quadprog** 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。quadprog 求解的二次型的形式如下：
 
-在 R 中使用 **quadprog** [@quadprog2019] 包求解二次规划[^intro-quadprog]，**quadprogXT** 包用来求解带绝对值约束的二次规划，**pracma** [@pracma2021]包提供 `quadprog()` 函数就是对 **quadprog** 包的 `solve.QP()` 进行封装，调用风格更像 Matlab。**quadprog** 包实现了 Goldfarb and Idnani (1982, 1983) 提出的对偶方法，主要用来求解带线性约束的严格凸二次规划问题。quadprog 求解的二次型的形式如下：
+[^numerical-optimization-2]: <https://rwalk.xyz/solving-quadratic-progams-with-rs-quadprog-package/>
 
 $$\min_b - d^{\top}b +\frac{1}{2}b^{\top}Db , \quad A^{\top}b \geq b_{0}$$
 
@@ -412,8 +448,8 @@ A = \begin{bmatrix}1 & 1\\
 \end{bmatrix}, \quad
 b_{0} = (2,-2,-3)
 $$
-即目标函数 $$Q(x,y) = x^2 + y^2 -xy+3x-2y+4$$
-它的可行域如图\@ref(fig:feasible-region)所示
+
+即目标函数 $$Q(x,y) = x^2 + y^2 -xy+3x-2y+4$$ 它的可行域如图\@ref(fig:feasible-region)所示
 
 
 ```r
@@ -424,14 +460,10 @@ plot(0, 0,
 polygon(c(2, 5, -1), c(0, 3, 3), border = TRUE, lwd = 2, col = "gray")
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/feasible-region-1} 
-
-}
-
-\caption{可行域}(\#fig:feasible-region)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/feasible-region-1.png" alt="可行域" width="432" />
+<p class="caption">(\#fig:feasible-region)可行域</p>
+</div>
 
 调用 **quadprog** 包的 `solve.QP()` 函数求解此二次规划问题
 
@@ -541,15 +573,10 @@ levelplot(z ~ x * y, grid,
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/quadprog-1} 
-
-}
-
-\caption{无约束和有约束条件下的解}(\#fig:quadprog)
-\end{figure}
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/quadprog-1.png" alt="无约束和有约束条件下的解" width="432" />
+<p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
+</div>
 
 ### 半正定二次优化 {#subsec-semidefinite-optimization}
 
@@ -569,14 +596,10 @@ svp <- ksvm(x, y, type = "C-svc")
 plot(svp, data = x)
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/toy-binary-1} 
-
-}
-
-\caption{二分类问题}(\#fig:toy-binary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/toy-binary-1.png" alt="二分类问题" width="528" />
+<p class="caption">(\#fig:toy-binary)二分类问题</p>
+</div>
 
 ## 非线性规划 {#sec-nonlinear-programming}
 
@@ -643,18 +666,13 @@ Vectorize(f, "y")(c(1, 2))
 
 <!-- ?nlm -->
 
-
-
 下面这些用来测试优化算法的函数来自[维基百科](https://en.wikipedia.org/wiki/Test_functions_for_optimization)
-
-
 
 #### Himmelblau 函数 {#himmelblau}
 
 Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。
 
-$$f(x_1,x_2) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$
-它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$，$f(-2.8051, 3.1313) = 0$，$f(3, 2) = 0$，$f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
+$$f(x_1,x_2) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2$$ 它在四个位置取得一样的极小值，分别是 $f(-3.7793, -3.2832) = 0$，$f(-2.8051, 3.1313) = 0$，$f(3, 2) = 0$，$f(3.5844, -1.8481) = 0$。函数图像见图 \@ref(fig:himmelblau)。
 
 
 ```r
@@ -695,14 +713,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/himmelblau-1} 
-
-}
-
-\caption{Himmelblau 函数图像}(\#fig:himmelblau)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
+<p class="caption">(\#fig:himmelblau)Himmelblau 函数图像</p>
+</div>
 
 
 ```r
@@ -730,7 +744,6 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## $message
 ## NULL
 ```
-
 
 #### Peaks 函数 {#peaks}
 
@@ -825,7 +838,7 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 ## NULL
 ```
 
-在 $(-1.3473958,  0.2045192)$ 处取得极小值
+在 $(-1.3473958, 0.2045192)$ 处取得极小值
 
 
 ```r
@@ -849,19 +862,12 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/peaks-1} 
-
-}
-
-\caption{Peaks 多峰图像}(\#fig:peaks)
-\end{figure}
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/peaks-1.png" alt="Peaks 多峰图像" width="528" />
+<p class="caption">(\#fig:peaks)Peaks 多峰图像</p>
+</div>
 
 函数来自 Octave 内置的 `peaks()` 函数，它有很多的局部极大值和极小值，可在 [Octave Online](https://octave-online.net/) 上输入命令 `help peaks` 查看其帮助文档。
-
-
 
 #### Rosenbrock 函数 {#rosenbrock}
 
@@ -893,22 +899,16 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/rosenbrock-1} 
-
-}
-
-\caption{香蕉函数图像}(\#fig:rosenbrock)
-\end{figure}
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/rosenbrock-1.png" alt="香蕉函数图像" width="528" />
+<p class="caption">(\#fig:rosenbrock)香蕉函数图像</p>
+</div>
 
 
 ```r
 r <- raster::rasterFromXYZ(df, crs = CRS("+proj=longlat +datum=WGS84"))
 rasterVis::vectorplot(r, par.settings = RdBuTheme())
 ```
-
 
 
 ```r
@@ -961,10 +961,7 @@ nlp$solution
 
 #### Ackley 函数 {#ackley}
 
-
-Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $n$ 维形式如下：
-$$f(\mathbf{x}) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$
-其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots, n$，$x_i \in [-10, 10]$，$f(\mathbf{x})$ 在 $\mathbf{x}^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(\mathbf{x}^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
+Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 $n$ 维形式如下： $$f(\mathbf{x}) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}$$ 其中，$a = 20, b = 0.2, c = 2\pi$，对 $\forall i = 1,2,\cdots, n$，$x_i \in [-10, 10]$，$f(\mathbf{x})$ 在 $\mathbf{x}^{\star} = (0,0,\cdot,0)$ 取得全局最小值 $f(\mathbf{x}^{\star}) = 0$，二维图像如图 \@ref(fig:ackley)。
 
 
 ```r
@@ -993,21 +990,19 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/ackley-1} 
-
-}
-
-\caption{二维 Ackley 函数图像}(\#fig:ackley)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/ackley-1.png" alt="二维 Ackley 函数图像" width="528" />
+<p class="caption">(\#fig:ackley)二维 Ackley 函数图像</p>
+</div>
 
 
+
+```{=html}
 <!-- 
 rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
 -->
-
-以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder–Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
+```
+以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder--Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
 
 ```r
@@ -1053,6 +1048,7 @@ nlp$objval
 ## [1] 4.440892e-16
 ```
 
+
 ```r
 fn(x = c(2, 2))
 ```
@@ -1069,82 +1065,11 @@ fn(x = rep(2, 10))
 ## [1] 6.593599
 ```
 
-#### Rastrigin 函数 {#rastrigin}
-
-这里，还有另外一个例子，Rastrigin 函数也是多模态函数
-
-$$f(\mathbf{x})= \sum_{i=1}^{n}\big(x_i^2 - 10 \cos(2\pi x_i) + 10\big)$$
-
-
-```r
-fn <- function(x) {
-  sum(x^2 - 10 * cos(2 * pi * x) + 10)
-}
-
-df <- expand.grid(
-  x = seq(-4, 4, length.out = 201),
-  y = seq(-4, 4, length.out = 201)
-)
-
-df$fnxy = apply(df, 1, fn)
-
-wireframe(
-  data = df, fnxy ~ x * y,
-  shade = TRUE, drape = FALSE,
-  xlab = expression(x[1]), 
-  ylab = expression(x[2]), 
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = 120, x = -65, y = 0)
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/rastrigin-1} 
-
-}
-
-\caption{Rastrigin 函数}(\#fig:rastrigin)
-\end{figure}
-
-设置 10 维 的优化
-
-
-```r
-op <- OP(
-  objective = F_objective(fn, n = 10L),
-  bounds = V_bound(ld = -50, ud = 50, nobj = 10L)
-)
-```
-
-调全局优化器求解非凸优化问题
-
-
-```r
-nlp <- ROI_solve(op, solver = "nloptr.directL")
-nlp$solution
-```
-
-```
-##  [1] 0 0 0 0 0 0 0 0 0 0
-```
-
-```r
-nlp$objval
-```
-
-```
-## [1] 0
-```
-
 #### Schaffer 函数 {#schaffer}
 
 $$
 f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
-$$
-在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
+$$ 在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
 
 
 ```r
@@ -1170,15 +1095,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-01-1} 
-
-}
-
-\caption{Schaffer 函数}(\#fig:schaffer-01)
-\end{figure}
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/schaffer-01-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">(\#fig:schaffer-01)Schaffer 函数</p>
+</div>
 
 
 ```r
@@ -1200,14 +1120,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/schaffer-02-1} 
-
-}
-
-\caption{Schaffer 函数}(\#fig:schaffer-02)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/schaffer-02-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">(\#fig:schaffer-02)Schaffer 函数</p>
+</div>
 
 #### Hölder 函数 {#holder}
 
@@ -1245,17 +1161,10 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/holder-1} 
-
-}
-
-\caption{(ref:holder)}(\#fig:holder)
-\end{figure}
-
-
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/holder-1.png" alt="(ref:holder)" width="528" />
+<p class="caption">(\#fig:holder)(ref:holder)</p>
+</div>
 
 #### Trid 函数 {#trid}
 
@@ -1265,8 +1174,7 @@ $n \geq 2$ 维 Trid 函数
 
 $$
 f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
-$$
-$\forall i = 1,2,\cdots, n$，$f(x)$ 在 $x_i = i(n+1-i)$ 处取得全局极小值 $f(\mathbf{x}^\star)=-n(n+4)(n-1)/6$，取值区间 $x \in [-n^2, n^2], \forall i = 1,2,\cdots,n$
+$$ $\forall i = 1,2,\cdots, n$，$f(x)$ 在 $x_i = i(n+1-i)$ 处取得全局极小值 $f(\mathbf{x}^\star)=-n(n+4)(n-1)/6$，取值区间 $x \in [-n^2, n^2], \forall i = 1,2,\cdots,n$
 
 
 ```r
@@ -1293,458 +1201,18 @@ wireframe(
 )
 ```
 
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/trid-1} 
-
-}
-
-\caption{Trid 函数}(\#fig:trid)
-\end{figure}
-
-
-#### 超级复杂函数 {#super-complex-function}
-
-有如下复杂的目标函数
-
-\begin{equation*}
-\begin{array}{l}
-  \min_x \quad \cos(x_1)\cos(x_2) - \sum_{i=1}^{5}\Big( (-1)^i \cdot i \cdot 2 \cdot \exp\big(-500 \cdot ( (x_1 - i \cdot 2)^2 + (x_2 - i\cdot 2)^2 ) \big) \Big) \\
-    s.t. \quad -50 \leq x_1, x_2 \leq 50
-\end{array}
-\end{equation*}
-
-
-
-```r
-subfun <- function(i, m) {
-  (-1)^i * i * 2 * exp(-500 * ((m[1] - i * 2)^2 + (m[2] - i * 2)^2))
-}
-
-fn <- function(x) {
-  cos(x[1]) * cos(x[2]) -
-    sum(mapply(FUN = subfun, i = 1:5, MoreArgs = list(m = x)))
-}
-```
-
-目标函数的图像见图 \@ref(fig:super-function)，搜索区域 $[-50, 50] \times [-50, 50]$ 内几乎没有变化的梯度，给寻优过程带来很大困难。
-
-
-```r
-df <- expand.grid(
-  x = seq(-50, 50, length.out = 101),
-  y = seq(-50, 50, length.out = 101)
-)
-
-df$fnxy = apply(df, 1, fn)
-
-wireframe(
-  data = df, fnxy ~ x * y,
-  shade = TRUE, drape = FALSE,
-  xlab = expression(x[1]), 
-  ylab = expression(x[2]), 
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = 120, x = -65, y = 0)
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/super-function-1} 
-
-}
-
-\caption{函数图像}(\#fig:super-function)
-\end{figure}
-
-将区域 $[0, 12] \times [0, 12]$ 的图像绘制出来，不难发现，有不少局部陷阱。
-
-
-```r
-df <- expand.grid(
-  x = seq(0, 12, length.out = 201),
-  y = seq(0, 12, length.out = 201)
-)
-
-df$fnxy = apply(df, 1, fn)
-
-wireframe(
-  data = df, fnxy ~ x * y,
-  shade = TRUE, drape = FALSE,
-  xlab = expression(x[1]), 
-  ylab = expression(x[2]), 
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = 120, x = -65, y = 0)
-)
-```
-
-\begin{figure}
-
-{\centering \includegraphics{numerical-optimization_files/figure-latex/zoom-super-function-1} 
-
-}
-
-\caption{局部放大函数图像}(\#fig:zoom-super-function)
-\end{figure}
-
-最优解在 $(7.999982, 7.999982)$ 取得，目标函数值为 -7.978832。
-
-
-```r
-fn(x = c(7.999982, 7.999982))
-```
-
-```
-## [1] -7.978832
-```
-
-面对如此复杂的函数，调用全局优化器
-
-
-```r
-op <- OP(
-  objective = F_objective(fn, n = 2L),
-  bounds = V_bound(ld = -50, ud = 50, nobj = 2L)
-)
-nlp <- ROI_solve(op, solver = "nloptr.directL")
-nlp$solution
-```
-
-```
-## [1] 22.22222  0.00000
-```
-
-```r
-nlp$objval
-```
-
-```
-## [1] -0.9734211
-```
-
-实际上，还是陷入局部最优解。
-
-```
-SETS:
-P/1..5/;
-Endsets
-Min=@cos(x1) * @cos(x2) - @Sum(P(j): (-1)^j * j * 2 * @exp(-500 * ((x1 - j * 2)^2 + (x2 - j * 2)^2)));
-@Bnd(-50, x1, 50);
-@Bnd(-50, x2, 50);
-```
-
-Lingo 18.0 启用全局优化求解器后，在 $(x_1 = 7.999982, x_2 = 7.999982)$ 取得最小值 -7.978832。而默认未启用全局优化求解器的情况下，在 $(x_1 = 18.84956, x_2 = -40.84070)$ 取得局部极小值 -1.000000。
-
+<div class="figure" style="text-align: center">
+<img src="numerical-optimization_files/figure-html/trid-1.png" alt="Trid 函数" width="528" />
+<p class="caption">(\#fig:trid)Trid 函数</p>
+</div>
 
 ### 多元非线性约束优化 {#sec-nonlinear-constrained-optimization}
-
-R 自带的函数 `nlminb()` 可求解无约束、箱式约束优化问题，`constrOptim()` 还可求解线性不等式约束优化，其中包括带线性约束的二次规划。`optim()` 提供一大类优化算法，且包含随机优化算法---模拟退火算法，可求解无约束、箱式约束优化问题。
-
-#### 普通箱式约束 {#box-constrained-optimization}
-
-有如下箱式约束优化问题，目标函数和[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)有些相似。
-
-\begin{equation*}
-\begin{array}{l}
-  \min_x \quad (x_1 - 1)^2 + 4\sum_{i =1}^{n -1}(x_{i+1} -x_i^2)^2  \\
-    s.t. \quad 2 \leq x_1,x_2,\cdots,x_n \leq 4
-\end{array}
-\end{equation*}
-
-
-
-```r
-fn <- function(x) {
-  n <- length(x)
-  sum(c(1, rep(4, n - 1)) * (x - c(1, x[-n])^2)^2)
-}
-```
-
-$n$ 维目标函数是非线性的，给定初值 $(3, 3, \cdots, 3)$，下面求解 25 维的箱式约束，
-
-
-```r
-nlminb(start = rep(3, 25), objective = fn, lower = rep(2, 25), upper = rep(4, 25))
-```
-
-```
-## $par
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000
-## 
-## $objective
-## [1] 368.1059
-## 
-## $convergence
-## [1] 0
-## 
-## $iterations
-## [1] 6
-## 
-## $evaluations
-## function gradient 
-##       10      177 
-## 
-## $message
-## [1] "relative convergence (4)"
-```
-
-`nlminb()` 出于历史兼容性的原因尚且存在，最优解的第24个分量没有在可行域的边界上。使用 `constrOptim()` 函数求解，默认求极小，需将箱式或线性不等式约束写成矩阵形式，即 $Ax \geq b$ 的形式，参数 ui 是 $k \times n$ 的约束矩阵 $A$，ci 是右侧 $k$ 维约束向量 $b$。以上面的优化问题为例，将箱式约束 $2 \leq x_1,x_2 \leq 4$ 转化为矩阵形式，约束矩阵和向量分别为：
-
-$$
-A = \begin{bmatrix}
-1  & 0  \\
-0  & 1 \\
--1 & 0 \\
-0  & -1
-\end{bmatrix}, \quad
-b = (2, 2, -4, -4)
-$$
-
-
-```r
-constrOptim(
-  theta = rep(3, 25), # 初始值
-  f = fn, # 目标函数
-  method = "Nelder-Mead", # 没有提供梯度，则必须用 Nelder-Mead 方法
-  ui = rbind(diag(rep(1, 25)), diag(rep(-1, 25))),
-  ci = c(rep(2, 25), rep(-4, 25))
-)
-```
-
-```
-## $par
-##  [1] 2.006142 2.002260 2.003971 2.003967 2.004143 2.004255 2.001178 2.002990
-##  [9] 2.003883 2.006029 2.017345 2.009236 2.000949 2.007793 2.025831 2.007896
-## [17] 2.004514 2.004381 2.008771 2.015695 2.005803 2.009127 2.017988 2.257782
-## [25] 3.999846
-## 
-## $value
-## [1] 378.4208
-## 
-## $counts
-## function gradient 
-##    12048       NA 
-## 
-## $convergence
-## [1] 1
-## 
-## $message
-## NULL
-## 
-## $outer.iterations
-## [1] 25
-## 
-## $barrier.value
-## [1] -0.003278963
-```
-
-从求解的结果来看，convergence = 1 意味着迭代次数到达默认的极限 maxit = 500，结合 `nlminb()` 函数的求解结果来看，实际上还没有收敛。如果没有提供梯度，则必须用 Nelder-Mead 方法，下面增加迭代次数到 1000。
-
-
-```r
-constrOptim(
-  theta = rep(3, 25), # 初始值
-  f = fn, # 目标函数
-  method = "Nelder-Mead", 
-  control = list(maxit = 1000),
-  ui = rbind(diag(rep(1, 25)), diag(rep(-1, 25))),
-  ci = c(rep(2, 25), rep(-4, 25))
-)
-```
-
-```
-## $par
-##  [1] 2.000081 2.000142 2.001919 2.000584 2.000007 2.000003 2.001097 2.001600
-##  [9] 2.000207 2.000042 2.000250 2.000295 2.000580 2.002165 2.000453 2.000932
-## [17] 2.000456 2.000363 2.000418 2.000474 2.009483 2.001156 2.003173 2.241046
-## [25] 3.990754
-## 
-## $value
-## [1] 370.8601
-## 
-## $counts
-## function gradient 
-##    18036       NA 
-## 
-## $convergence
-## [1] 1
-## 
-## $message
-## NULL
-## 
-## $outer.iterations
-## [1] 19
-## 
-## $barrier.value
-## [1] -0.003366467
-```
-
-还是没有收敛，可见 Nelder-Mead 方法在这个优化问题上收敛速度比较慢。下面考虑调用基于梯度的优化算法 --- BFGS 方法。
-
-
-```r
-# 输入 n 维向量，输出 n 维向量
-gr <- function(x) {
-  n <- length(x)
-  c(2 * (x[1] - 2), rep(0, n - 1))
-  +8 * c(0, x[-1] - x[-n]^2)
-  -16 * c(x[-n], 0) * c(x[-1] - x[-n]^2, 0)
-}
-
-constrOptim(
-  theta = rep(3, 25), # 初始值
-  f = fn, # 目标函数
-  grad = gr,
-  method = "BFGS", 
-  control = list(maxit = 1000),
-  ui = rbind(diag(rep(1, 25)), diag(rep(-1, 25))),
-  ci = c(rep(2, 25), rep(-4, 25))
-)
-```
-
-```
-## $par
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000001
-## [25] 3.000000
-## 
-## $value
-## [1] 373
-## 
-## $counts
-## function gradient 
-##     3721      464 
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## NULL
-## 
-## $outer.iterations
-## [1] 3
-## 
-## $barrier.value
-## [1] -0.003327104
-```
-
-相比于 Nelder-Mead 方法，目标值 373 更大，可见已陷入局部最优解，下面通过 ROI 包，分别调用求解器 L-BFGS 和 directL，发现前者同样陷入局部最优解，而后者可以获得与 `nlminb()` 函数一致的结果。
-
-
-```r
-# 调用改进的 BFGS 算法
-op <- OP(
-  objective = F_objective(fn, n = 25L, G = gr),
-  bounds = V_bound(ld = 2, ud = 4, nobj = 25L)
-)
-nlp <- ROI_solve(op, solver = "nloptr.lbfgs", start = rep(3, 25))
-nlp$objval
-```
-
-```
-## [1] 373
-```
-
-```r
-nlp$solution
-```
-
-```
-##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3
-```
-
-```r
-# 调全局优化算法
-nlp <- ROI_solve(op, solver = "nloptr.directL")
-nlp$objval
-```
-
-```
-## [1] 368.106
-```
-
-```r
-nlp$solution
-```
-
-```
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000
-```
-
-下面再与函数 `optim()` 提供的 L-BFGS-B 算法比较
-
-
-```r
-optim(
-  par = rep(3, 25), fn = fn, gr = NULL, method = "L-BFGS-B",
-  lower = rep(2, 25), upper = rep(4, 25)
-)
-```
-
-```
-## $par
-##  [1] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-##  [9] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000
-## [17] 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.000000 2.109093
-## [25] 4.000000
-## 
-## $value
-## [1] 368.1059
-## 
-## $counts
-## function gradient 
-##        6        6 
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
-```
-
-值得注意的是，当提供梯度信息的时候，虽然求解速度提升了，但是最优解变差了。
-
-
-```r
-optim(
-  par = rep(3, 25), fn = fn, gr = gr, method = "L-BFGS-B",
-  lower = rep(2, 25), upper = rep(4, 25)
-)
-```
-
-```
-## $par
-##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3
-## 
-## $value
-## [1] 373
-## 
-## $counts
-## function gradient 
-##        2        2 
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## [1] "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL"
-```
 
 #### 非线性严格不等式约束 {#nonlinear-strictly-inequality-constraints}
 
 第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \min_x \quad (x_1 + 3x_2 + x_3)^2 + 4(x_1 - x_2)^2 \\
@@ -1756,7 +1224,7 @@ optim(
     \end{array} \right.
 \end{array}
 \end{equation*}
-
+```
 
 ```r
 # 目标函数
@@ -1795,7 +1263,7 @@ hin.jac <- function(x) {
 }
 ```
 
-调用 **alabama** 包的求解器 
+调用 **alabama** 包的求解器
 
 
 ```r
@@ -1935,148 +1403,9 @@ nlp$objval
 ## [1] 1
 ```
 
-#### 非线性和箱式约束 {#nonlinear-and-box-constrained}
-
-与上面的例子不同，下面这个例子的不等式约束包含等号，还有箱式约束，优化问题来源于[Ipopt 官网](https://coin-or.github.io/Ipopt/INTERFACES.html)，提供的初始值为 $x_0 = (1,5,5,1)$，最优解为 $x_{\star} = (1.00000000,4.74299963,3.82114998,1.37940829)$。优化问题的具体内容如下：
-
-\begin{equation*}
-\begin{array}{l}
-  \min_x \quad x_1 x_4 (x_1 + x_2 + x_3) + x_3 \\
-    s.t.\left\{ 
-    \begin{array}{l}
-     x_1^2 + x_2^2 + x_3^2 + x_4^2 = 40 \\
-     x_1 x_2 x_3 x_4 \geq 25 \\
-     1 \leq x_1, x_2, x_3, x_4 \leq 5
-    \end{array} \right.
-\end{array}
-\end{equation*}
-
-考虑用 ROI 调 nloptr 实现，看结果是否和例子一致，nloptr 支持不等式约束包含等号，支持箱式约束。
-
-
-```r
-# 一个 4 维的目标函数
-fn <- function(x) {
-  x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3]
-}
-# 目标函数的梯度
-gr <- function(x) {
-  c(
-    x[4] * (2 * x[1] + x[2] + x[3]), x[1] * x[4],
-    x[1] * x[4] + 1, x[1] * (x[1] + x[2] + x[3])
-  )
-}
-# 等式约束
-heq <- function(x) {
-  sum(x^2)
-}
-# 等式约束的雅可比
-heq.jac <- function(x) {
-  2 * c(x[1], x[2], x[3], x[4])
-}
-# 不等式约束
-hin <- function(x) {
-  prod(x)
-}
-# 不等式约束的雅可比
-hin.jac <- function(x) {
-  c(prod(x[-1]), prod(x[-2]), prod(x[-3]), prod(x[-4]))
-}
-# 定义目标规划
-op <- OP(
-  objective = F_objective(F = fn, n = 4L, G = gr), # 4 个目标变量
-  constraints = F_constraint(
-    F = list(heq = heq, hin = hin),
-    dir = c("==", ">="),
-    rhs = c(40, 25),
-    # 等式和不等式约束的雅可比
-    J = list(heq.jac = heq.jac, hin.jac = hin.jac)
-  ),
-  bounds = V_bound(ld = 1, ud = 5, nobj = 4L),
-  maximum = FALSE # 求最小
-)
-```
-
-
-```r
-# 目标函数初始值
-fn(c(1, 5, 5, 1))
-```
-
-```
-## [1] 16
-```
-
-```r
-# 目标函数最优值
-fn(c(1.00000000, 4.74299963, 3.82114998, 1.37940829))
-```
-
-```
-## [1] 17.01402
-```
-
-求解一般的非线性约束问题，求解器 nloptr.mma / nloptr.cobyla 仅支持非线性不等式约束，不支持等式约束，而 nlminb 只支持等式约束，因此，下面分别调用 nloptr.auglag、nloptr.slsqp 和 nloptr.isres 来求解上述优化问题。
-
-
-```r
-nlp <- ROI_solve(op, solver = "nloptr.auglag", start = c(1, 5, 5, 1))
-nlp$solution
-```
-
-```
-## [1] 1.000000 4.743174 3.820922 1.379440
-```
-
-```r
-nlp$objval
-```
-
-```
-## [1] 17.01402
-```
-
-
-```r
-nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(1, 5, 5, 1))
-nlp$solution
-```
-
-```
-## [1] 1.000000 4.742996 3.821155 1.379408
-```
-
-```r
-nlp$objval
-```
-
-```
-## [1] 17.01402
-```
-
-
-```r
-nlp <- ROI_solve(op, solver = "nloptr.isres", start = c(1, 5, 5, 1))
-nlp$solution
-```
-
-```
-## [1] 1.098152 3.969414 4.597320 1.379240
-```
-
-```r
-nlp$objval
-```
-
-```
-## [1] 19.2359
-```
-
-可以看出，nloptr 提供的优化能力可以覆盖[Ipopt 求解器](https://github.com/coin-or/Ipopt)，推荐使用 nloptr.slsqp 求解器。
-
-
 #### 非线性混合整数约束 {#nonlinear-mixed-integer-constrained}
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \max_x \quad 1.5(x_1 - \sin(x_1 - x_2))^2 + 0.5x_2^2 + x_3^2 - x_1 x_2 - 2x_1 + x_2 x_3 \\
@@ -2089,8 +1418,7 @@ nlp$objval
     \end{array} \right.
 \end{array}
 \end{equation*}
-
-
+```
 
 ```r
 fn <- function(x) {
@@ -2134,11 +1462,11 @@ fn(x = c(4.49712, 9.147501, -4))
 ## [1] -86.72165
 ```
 
-
 #### 含复杂目标函数 {#complex-object-function}
 
 下面这个目标函数比较复杂，约束条件也是非线性的
 
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \max_x \quad \frac{(\sin(2\pi x_1))^3 \sin(2\pi x_2)}{x_1^3 (x_1 + x_2)} \\
@@ -2150,8 +1478,7 @@ fn(x = c(4.49712, 9.147501, -4))
     \end{array} \right.
 \end{array}
 \end{equation*}
-
-
+```
 
 ```r
 # 目标函数
@@ -2197,7 +1524,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227972 4.245374
+## [1] 1.227977 4.245366
 ```
 
 ```r
@@ -2208,88 +1535,9 @@ nlp$objval
 ## [1] 0.09582504
 ```
 
-下面再给一个来自 [Octave 优化文档](https://octave.org/doc/v6.2.0/Nonlinear-Programming.html) 的示例，该优化问题包含多个非线性的等式约束。
-
-\begin{equation*}
-\begin{array}{l}
-  \min_x \quad \mathrm{e}^{\prod_{i=1}^{5} x_i} - \frac{1}{2}(x_1^3 + x_2^3 + 1)^2 \\
-    s.t.\left\{ 
-    \begin{array}{l}
-     \sum_{i=1}^{5}x_i^2 - 10 = 0 \\
-     x_2 x_3 - 5x_4 x_5 = 0 \\
-     x_1^3 + x_2^3 + 1 = 0
-    \end{array} \right.
-\end{array}
-\end{equation*}
-
-
-```r
-# 一个 5 维的目标函数
-fn <- function(x) {
-  exp(prod(x)) - 0.5 * (x[1]^3 + x[2]^3 + 1)^2
-}
-# 目标函数的梯度
-gr <- function(x) {
-  c(
-    exp(prod(x))*prod(x[-1]) - 3*(x[1]^3 + x[2]^3 + 1)*x[1]^2,
-    exp(prod(x))*prod(x[-2]) - 3*(x[1]^3 + x[2]^3 + 1)*x[2]^2,
-    exp(prod(x))*prod(x[-3]), 
-    exp(prod(x))*prod(x[-4]),
-    exp(prod(x))*prod(x[-5])
-  )
-}
-# 等式约束
-heq <- function(x) {
-  c(
-    sum(x^2) - 10,
-    x[2] * x[3] - 5 * x[4] * x[5],
-    x[1]^3 + x[2]^3 + 1
-  )
-}
-# 等式约束的雅可比
-heq.jac <- function(x) {
-  matrix(c(2 * x[1], 2 * x[2], 2 * x[3], 2 * x[4], 2 * x[5],
-    0, x[3], x[2], -5 * x[5], -5 * x[4],
-    3 * x[1]^2, 3 * x[2]^2, 0, 0, 0),
-    ncol = 5, byrow = TRUE
-  )
-}
-```
-
-
-```r
-# 定义目标规划
-op <- OP(
-  objective = F_objective(F = fn, n = 5L, G = gr), # 5 个目标变量
-  constraints = F_constraint(
-    F = list(heq = heq),
-    dir = "==",
-    rhs = 0,
-    # 等式的雅可比
-    J = list(heq.jac = heq.jac)
-  ),
-  bounds = V_bound(ld = -Inf, ud = Inf, nobj = 5L),
-  maximum = FALSE # 求最小
-)
-```
-
-调用 SQP（序列二次规划） 求解器
-
-
-```r
-nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(-1.8, 1.7, 1.9, -0.8,-0.8))
-nlp$solution
-```
-
-```
-## [1] -1.7171435  1.5957096  1.8272458 -0.7636431 -0.7636431
-```
-
-计算结果和 Octave 的示例一致。
-
 #### 含复杂约束条件 {#complex-constrained-function}
 
-
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
@@ -2301,10 +1549,10 @@ nlp$solution
     \end{array} \right.
 \end{array}
 \end{equation*}
-
+```
 Lingo 代码如下：
 
-```
+```         
 Min = @exp(@sin(50 * x)) + @sin(60 * @exp(y)) + @sin(70 * @sin(x)) 
       + @sin(@sin(80 * y)) - @sin(10 * (x + y)) + (x^2 + y^2)^@sin(y) / 4;
 
@@ -2397,7 +1645,7 @@ nlp$solution
 ```
 
 ```
-## [1] -21.50347  29.20402
+## [1] 27.62470 10.82521
 ```
 
 ```r
@@ -2405,8 +1653,9 @@ nlp$objval
 ```
 
 ```
-## [1] -3.228399
+## [1] -3.010884
 ```
+
 比如下面三组
 
 
@@ -2684,11 +1933,7 @@ pmat[!duplicated(pmat), ]
 ## [5,] -1989.946      0.3599      1.2560      2.6634
 ```
 
-用一个具体的参数估计问题，求极大似然点，混合正态分布
-隐函数方程组
-求解非线性方程组 [@BB2019]
-
-
+用一个具体的参数估计问题，求极大似然点，混合正态分布 隐函数方程组 求解非线性方程组 [@BB2019]
 
 ## 多目标规划 {#sec-multi-objective-optimization}
 
@@ -2696,7 +1941,7 @@ pmat[!duplicated(pmat), ]
 
 R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)。另外，《Search Methodologies: Introductory Tutorials in Optimization and Decision Support Techniques》[@Deb2005] 多目标优化方法
 
-
+```{=tex}
 \begin{equation*}
 \begin{array}{l}
   \min_x \left\{
@@ -2707,7 +1952,7 @@ R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解�
     s.t. \quad x_1 \in [10, 80], x_2 \in [20, 90], x_3 \in [15, 100]
 \end{array}
 \end{equation*}
-
+```
 
 ```r
 library(DiceKriging)
@@ -2732,7 +1977,6 @@ HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
 
 规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
 
-
 ## 运行环境 {#sec-numerical-optimization-session}
 
 
@@ -2741,13 +1985,13 @@ sessionInfo()
 ```
 
 ```
-## R version 4.2.0 (2022-04-22)
+## R version 4.2.2 (2022-10-31)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.6 LTS
+## Running under: Ubuntu 22.04.2 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
+## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -2771,21 +2015,23 @@ sessionInfo()
 ## [15] lpSolve_5.6.15           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] xfun_0.31               slam_0.1-50             colorspace_2.0-3       
-##  [4] vctrs_0.4.1             viridisLite_0.4.0       htmltools_0.5.2        
-##  [7] yaml_2.3.5              utf8_1.2.2              rlang_1.0.2            
-## [10] nloptr_2.0.1            pillar_1.7.0            glue_1.6.2             
-## [13] registry_0.5-1          scs_3.0-0               lifecycle_1.0.1        
-## [16] stringr_1.4.0           munsell_0.5.0           rvest_1.0.2            
-## [19] lpSolveAPI_5.5.2.0-17.7 evaluate_0.15           knitr_1.39             
-## [22] fastmap_1.1.0           curl_4.3.2              fansi_1.0.3            
-## [25] scales_1.2.0            webshot_0.5.3           alabama_2022.4-1       
-## [28] sysfonts_0.8.8          systemfonts_1.0.4       digest_0.6.29          
-## [31] stringi_1.7.6           bookdown_0.26           numDeriv_2016.8-1.1    
-## [34] grid_4.2.0              cli_3.3.0               tools_4.2.0            
-## [37] magrittr_2.0.3          crayon_1.5.1            pkgconfig_2.0.3        
-## [40] ellipsis_0.3.2          xml2_1.3.3              svglite_2.1.0          
-## [43] rmarkdown_2.14          httr_1.4.3              rstudioapi_0.13        
-## [46] R6_2.5.1                compiler_4.2.0
+##  [1] svglite_2.1.0           sysfonts_0.8.8          digest_0.6.29          
+##  [4] utf8_1.2.2              slam_0.1-50             R6_2.5.1               
+##  [7] alabama_2022.4-1        evaluate_0.15           highr_0.9              
+## [10] httr_1.4.3              pillar_1.7.0            rlang_1.0.2            
+## [13] curl_4.3.2              rstudioapi_0.13         nloptr_2.0.1           
+## [16] jquerylib_0.1.4         rmarkdown_2.14          webshot_0.5.3          
+## [19] stringr_1.4.0           munsell_0.5.0           compiler_4.2.2         
+## [22] numDeriv_2016.8-1.1     xfun_0.31               pkgconfig_2.0.3        
+## [25] systemfonts_1.0.4       htmltools_0.5.2         downlit_0.4.0          
+## [28] bookdown_0.26           viridisLite_0.4.0       fansi_1.0.3            
+## [31] crayon_1.5.1            grid_4.2.2              jsonlite_1.8.0         
+## [34] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.3         
+## [37] scales_1.2.0            cli_3.3.0               stringi_1.7.6          
+## [40] cachem_1.0.6            fs_1.5.2                xml2_1.3.3             
+## [43] bslib_0.3.1             ellipsis_0.3.2          vctrs_0.4.1            
+## [46] lpSolveAPI_5.5.2.0-17.7 tools_4.2.2             glue_1.6.2             
+## [49] fastmap_1.1.0           yaml_2.3.5              colorspace_2.0-3       
+## [52] scs_3.0-0               rvest_1.0.2             memoise_2.0.1          
+## [55] knitr_1.39              sass_0.4.1
 ```
-
