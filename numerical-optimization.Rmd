@@ -394,51 +394,7 @@ nlp$objval
 nlp$solution
 ```
 
-对变量 $x$ 添加整型约束，原二次规划即变成混合整数二次规划 （Mixed Integer Quadratic Programming，简称 MIQP）
 
-```{r,eval=FALSE}
-# 目前开源的求解器都不能处理 MIQP 问题
-op <- OP(
-  objective = Q_objective(Q = Dmat, L = -dvec),
-  constraints = L_constraint(A, rep(">=", 3), bvec),
-  types = c("I", "C"),
-  maximum = FALSE # 默认求最小
-)
-nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(1, 2))
-nlp$objval
-nlp$solution
-```
-
-在可行域上画出等高线，标记目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
-
-```{r quadprog,fig.cap="无约束和有约束条件下的解",fig.width=4.5,fig.height=4}
-qp_sol <- sol$solution # 二次规划的解
-uc_sol <- sol$unconstrained.solution # 无约束情况下的解
-# 画图
-library(lattice)
-x <- seq(-2, 5.5, length.out = 100)
-y <- seq(-1, 3.5, length.out = 100)
-grid <- expand.grid(x = x, y = y)
-# 二次规划的目标函数
-grid$z <- with(grid, x^2 + y^2 - x * y + 3 * x - 2 * y + 4)
-levelplot(z ~ x * y, grid,
-  cuts = 40,
-  panel = function(...) {
-    panel.levelplot(...)
-    panel.polygon(c(2, 5, -1), c(0, 3, 3),
-      border = TRUE,
-      lwd = 2, col = "transparent"
-    )
-    panel.points(
-      c(uc_sol[1], qp_sol[1]),
-      c(uc_sol[2], qp_sol[2]),
-      lwd = 5, col = c("red", "yellow"), pch = 19
-    )
-  },
-  colorkey = TRUE,
-  col.regions = terrain.colors(41)
-)
-```
 
 ### 半正定二次优化 {#subsec-semidefinite-optimization}
 
