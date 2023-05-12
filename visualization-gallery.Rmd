@@ -1,4 +1,5 @@
-# 数据可视化 {#chap-data-visualization}
+# 可视化之图库 {#chap-gallery}
+
 
 ```{r,echo=FALSE}
 if (is.na(Sys.getenv("CI", NA))) {
@@ -88,588 +89,8 @@ library(ggfortify)         # 统计分析结果可视化：主成分图
 library(gganimate)         # 动态图
 ```
 
-[^why-ggplot2]: http://varianceexplained.org/r/why-I-use-ggplot2/
-[^why-not-ggplot2]: https://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/
 
-David Robinson 给出为何使用 ggplot2 [^why-ggplot2] 当然也有 Jeff Leek 指出在某些重要场合不适合 ggplot2 [^why-not-ggplot2] 并且给出强有力的 [证据](http://motioninsocial.com/tufte/)，其实不管怎么样，适合自己的才是好的。也不枉费 Garrick Aden-Buie 花费 160 页幻灯片逐步分解介绍 [优雅的ggplot2](https://pkg.garrickadenbuie.com/gentle-ggplot2)，[Malcolm Barrett](https://malco.io/) 也介绍了 [ggplot2 基础用法](https://malco.io/slides/hs_ggplot2)，还有 Selva Prabhakaran 精心总结给出了 50 个 ggplot2 数据可视化的 [例子](https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html) 以及 Victor Perrier 为小白用 ggplot2 操碎了心地开发 RStudio 插件 [esquisse](https://github.com/dreamRs/esquisse) 包，Claus O. Wilke 教你一步步创建出版级的图形 <https://github.com/clauswilke/practical_ggplot2>。
-
-ggplot2 是十分方便的统计作图工具，相比 Base R，为了一张出版级的图形，不需要去调整每个参数，实现快速出图。集成了很多其它统计计算的 R 包，支持丰富的统计分析和计算功能，如回归、平滑等，实现了作图和模型的无缝连接。比如图\@ref(fig:awesome-ggplot2)，使用 loess 局部多项式平滑得到数据的趋势，不仅仅是散点图，代码量也非常少。
-
-```{r awesome-ggplot2, fig.cap="简洁美观"}
-ggplot(mpg, aes(displ, hwy)) +
-  geom_point(aes(color = class)) +
-  geom_smooth(se = TRUE, method = "loess") +
-  labs(
-    title = "Fuel efficiency generally decreases with engine size",
-    subtitle = "Two seaters (sports cars) are an exception because of their light weight",
-    caption = "Data from fueleconomy.gov"
-  )
-```
-
-故事源于一幅图片，我不记得第一次见到这幅图是什么时候了，只因多次在多个场合中见过，所以留下了深刻的印象，后来才知道它出自于一篇博文 --- [Using R packages and education to scale Data Science at Airbnb](https://medium.com/airbnb-engineering/using-r-packages-and-education-to-scale-data-science-at-airbnb)，作者 Ricardo Bion 还在其 Github 上传了相关代码^[<https://github.com/ricardo-bion/medium_visualization>]。
-
-
-如 Berton Gunter 所说，数据可视化只是一种手段，根据数据实际情况作展示才是重要的，并不是要追求酷炫。
-
-> 3-D bar plots are an abomination. Just because Excel can do them doesn't mean you should. (Dismount pulpit).
->
-> --- Berton Gunter [^BG-help-2007]
-
-[^BG-help-2007]: <https://stat.ethz.ch/pipermail/r-help/2007-October/142420.html>
-
-**grid** 是 **lattice** 和 **ggplot2** 的基础，**gganimate** 是 ggplot2 一个扩展，它将静态图形视为帧，调用第三方工具合成 GIF 动图或 MP4 视频等，要想深入了解 ggplot2，可以去看 [Hadley Wickham](http://hadley.nz), [Danielle Navarro](https://djnavarro.net), and [Thomas Lin Pedersen](https://www.data-imaginist.com) 合著的《ggplot2: elegant graphics for data analysis》第三版 <https://ggplot2-book.org/>。
-
-
-## 配色 {#sec-colors}
-
-配色真的是一门学问，有的人功力非常深厚，仅用黑白灰就可以创造出一个世界，如中国的水墨画，科波拉执导的《教父》，沃卓斯基姐妹执导的《黑客帝国》等。黑西装、白衬衫和黑领带是《黑客帝国》的经典元素，《教父》开场的黑西装、黑领结和白衬衫，尤其胸前的红玫瑰更是点睛之笔。导演将黑白灰和光影混合形成了层次丰富立体的画面，打造了一场视觉盛宴，无论是呈现在纸上还是银幕上都可以给人留下深刻的印象。正所谓食色性也，花花世界，岂能都是法印眼中的白骨！再说《红楼梦》里，芍药丛中，桃花树下，滴翠亭边，栊翠庵里，处处都是湘云、黛玉、宝钗、妙玉留下的四季诗歌。
-
-
-```{r old-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("terrain.colors 调色板", "heat.colors 调色板", "topo.colors 调色板", "cm.colors 调色板"), fig.cap="R 3.6.0 以前的调色板",fig.ncol = 2}
-filled.contour(volcano, nlevels = 10, color.palette = terrain.colors)
-filled.contour(volcano, nlevels = 10, color.palette = heat.colors)
-filled.contour(volcano, nlevels = 10, color.palette = topo.colors)
-filled.contour(volcano, nlevels = 10, color.palette = cm.colors)
-```
-
-```{r new-color-palette,fig.show='hold',out.width="45%", fig.subcap=c("Grays 调色板", "YlOrRd 调色板", "Purples 3 调色板", "Viridis 调色板"),fig.cap="R 3.6.0 以后的调色板",fig.ncol = 2}
-filled.contour(volcano,
-  nlevels = 10,
-  color.palette = function(n, ...) hcl.colors(n, "Grays", rev = TRUE, ...)
-)
-filled.contour(volcano,
-  nlevels = 10,
-  color.palette = function(n, ...) hcl.colors(n, "YlOrRd", rev = TRUE, ...)
-)
-filled.contour(volcano,
-  nlevels = 10,
-  color.palette = function(n, ...) hcl.colors(n, "purples", rev = TRUE, ...)
-)
-filled.contour(volcano,
-  nlevels = 10,
-  color.palette = function(n, ...) hcl.colors(n, "viridis", rev = FALSE, ...)
-)
-```
-
-::: {.rmdnote data-latex="{注意}"}
-`hcl.colors()` 函数是在 R 3.6.0 引入的，之前的 R 软件版本中没有，同时内置了 110 个调色板，详见 `hcl.pals()`。
-:::
-
-<!--
-R Colors in CSS for R Markdown HTML Documents
-https://www.garrickadenbuie.com/blog/r-colors-css/
-
-https://www.garrickadenbuie.com/blog/ 及其系列博客
--->
-
-### 调色板 {#subsec-color-palettes}
-
-R 预置的灰色有224种，挑出其中的调色板
-
-```{r echo=TRUE}
-grep("^gr(a|e)y", grep("gr(a|e)y", colors(), value = TRUE), 
-     value = TRUE, invert = TRUE)
-```
-
-```{r gray-palettes,fig.cap="灰度调色板"}
-gray_colors <- paste0(rep(c("slategray", "darkslategray"), each = 4), seq(4))
-barplot(1:8, col = gray_colors, border = NA)
-```
-
-gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式英语的差别，且看
-
-```{r,echo=TRUE}
-all.equal(
-  col2rgb(paste0("gray", seq(100))),
-  col2rgb(paste0("grey", seq(100)))
-)
-```
-
-`gray100` 代表白色，`gray0` 代表黑色，提取灰色调色板，去掉首尾部分是必要的
-
-```{r gray-colors, fig.cap="提取 10 种灰色做调色板"}
-barplot(1:8,
-  col = gray.colors(8, start = .3, end = .9),
-  main = "gray.colors function", border = NA
-)
-```
-
-首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 `grDevices::colorRampPalette()` 函数扩充至想要的数目，用 `graphics::rect()` 函数预览这组颜色配制的调色板
-
-```{r peach-pear-palette,fig.cap="桃色至梨色的渐变",fig.width=8,fig.height=1,collapse=TRUE}
-# Colors from https://github.com/johannesbjork/LaCroixColoR
-colors_vec <- c("#FF3200", "#E9A17C", "#E9E4A6", 
-                "#1BB6AF", "#0076BB", "#172869")
-# 代码来自 ?colorspace::rainbow_hcl
-pal <- function(n = 20, colors = colors, border = "light gray", ...) {
-  colorname <- (grDevices::colorRampPalette(colors))(n)
-  plot(0, 0,
-    type = "n", xlim = c(0, 1), ylim = c(0, 1),
-    axes = FALSE, ...
-  )
-  rect(0:(n - 1) / n, 0, 1:n / n, 1, col = colorname, border = border)
-}
-par(mar = rep(0, 4))
-pal(n = 20, colors = colors_vec, xlab = "Colors from Peach to Pear", ylab = "")
-```
-
-`colorRampPalette()` 自制调色板
-
-```{r custom-palettes,fig.cap="colorRampPalette 自制调色板", collapse=TRUE,fig.width=8,fig.height=3}
-create_palette <- function(n = 1000, colors = c("blue", "orangeRed")) {
-  color_palette <- colorRampPalette(colors)(n)
-  barplot(rep(1, times = n), col = color_palette, 
-          border = color_palette, axes = FALSE)
-}
-par(mfrow = c(3, 1), mar = c(0.1, 0.1, 0.5, 0.1), xaxs = "i", yaxs = "i")
-create_palette(n = 1000, colors = c("blue", "orangeRed"))
-create_palette(n = 1000, colors = c("darkgreen", "yellow", "orangered"))
-create_palette(n = 1000, colors = c("blue", "white", "orangered"))
-```
-
-```{r rcolorbrewer-palette,fig.height=8,fig.cap="RColorBrewer 调色板"}
-par(mar = c(0, 4, 0, 0))
-RColorBrewer::display.brewer.all()
-```
-
-```{r builtin-palettes,fig.height=5.5,fig.width=6,fig.cap="grDevices 调色板 "}
-# 代码来自 ?palettes
-demo.pal <- function(n, border = if (n < 32) "light gray" else NA,
-           main = paste("color palettes: alpha = 1,  n=", n),
-           ch.col = c(
-             "rainbow(n, start=.7, end=.1)", "heat.colors(n)",
-             "terrain.colors(n)", "topo.colors(n)",
-             "cm.colors(n)", "gray.colors(n, start = 0.3, end = 0.9)"
-           )) {
-    nt <- length(ch.col)
-    i <- 1:n
-    j <- n / nt
-    d <- j / 6
-    dy <- 2 * d
-    plot(i, i + d, type = "n", axes = FALSE, ylab = "", xlab = "", main = main)
-    for (k in 1:nt) {
-      rect(i - .5, (k - 1) * j + dy, i + .4, k * j,
-        col = eval(parse(text = ch.col[k])), border = border
-      )
-      text(2 * j, k * j + dy / 4, ch.col[k])
-    }
-  }
-n <- if (.Device == "postscript") 64 else 16
-# Since for screen, larger n may give color allocation problem
-par(mar = c(0, 0, 2, 0))
-demo.pal(n)
-```
-
-```{r demo-colors, fig.width=8, fig.height=11, fig.cap="grDevices 调色板", out.width="100%"}
-par(mfrow = c(33, 1), mar = c(0, 0, .8, 0))
-for (i in seq(32)) {
-  pal(
-    n = length((1 + 20 * (i - 1)):(20 * i)),
-    colors()[(1 + 20 * (i - 1)):(20 * i)],
-    main = paste(1 + 20 * (i - 1), "to", 20 * i)
-  )
-}
-pal(n = 17, colors()[641:657], main = "641 to 657")
-```
-
-```{r colorspace-palette, fig.width=8,fig.height=8,fig.cap="colorspace 调色板", collapse=TRUE}
-library(colorspace)
-## a few useful diverging HCL palettes
-par(mar = c(0,0,2,0), mfrow = c(16, 2))
-
-pal(n = 16, diverge_hcl(16), main = "diverging HCL palettes")
-pal(n = 16, diverge_hcl(16, h = c(246, 40), c = 96, l = c(65, 90)))
-pal(n = 16, diverge_hcl(16, h = c(130, 43), c = 100, l = c(70, 90)))
-pal(n = 16, diverge_hcl(16, h = c(180, 70), c = 70, l = c(90, 95)))
-
-pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
-pal(n = 16, diverge_hcl(16, h = c(128, 330), c = 98, l = c(65, 90)))
-pal(n = 16, diverge_hcl(16, h = c(255, 330), l = c(40, 90)))
-pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90), power = 1))
-
-## sequential palettes
-pal(n = 16, sequential_hcl(16), main= "sequential palettes")
-pal(n = 16, heat_hcl(16, h = c(0, -100), 
-                     l = c(75, 40), c = c(40, 80), power = 1))
-pal(n = 16, terrain_hcl(16, c = c(65, 0), l = c(45, 95), power = c(1/3, 1.5)))
-pal(n = 16, heat_hcl(16, c = c(80, 30), l = c(30, 90), power = c(1/5, 1.5)))
-
-## compare base and colorspace palettes
-## (in color and desaturated)
-## diverging red-blue colors
-pal(n = 16, diverge_hsv(16), main = "diverging red-blue colors")
-pal(n = 16, diverge_hcl(16, c = 100, l = c(50, 90)))
-pal(n = 16, desaturate(diverge_hsv(16)))
-pal(n = 16, desaturate(diverge_hcl(16, c = 100, l = c(50, 90))))
-
-## diverging cyan-magenta colors
-pal(n = 16, cm.colors(16), main = "diverging cyan-magenta colors")
-pal(n = 16, diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95)))
-pal(n = 16, desaturate(cm.colors(16)))
-pal(n = 16, desaturate(diverge_hcl(16, h = c(180, 330), c = 59, l = c(75, 95))))
-
-## heat colors
-pal(n = 16, heat.colors(16), main = "heat colors")
-pal(n = 16, heat_hcl(16))
-pal(n = 16, desaturate(heat.colors(16)))
-pal(n = 16, desaturate(heat_hcl(16)))
-
-## terrain colors
-pal(n = 16, terrain.colors(16), main = "terrain colors")
-pal(n = 16, terrain_hcl(16))
-pal(n = 16, desaturate(terrain.colors(16)))
-pal(n = 16, desaturate(terrain_hcl(16)))
-
-pal(n = 16, rainbow_hcl(16, start = 30, end = 300), main = "dynamic")
-pal(n = 16, rainbow_hcl(16, start = 60, end = 240), main = "harmonic")
-pal(n = 16, rainbow_hcl(16, start = 270, end = 150), main = "cold")
-pal(n = 16, rainbow_hcl(16, start = 90, end = -30), main = "warm")
-```
-
-除之前提到的 **grDevices** 包， [**colorspace**](https://colorspace.r-forge.r-project.org/) (<https://hclwizard.org/>) 包 [@colorspace_2009_rainbow; @colorspace_2009_rgb; @colorspace_2019]，[RColorBrewer](https://CRAN.R-project.org/package=RColorBrewer) 包 [@RColorBrewer] <https://colorbrewer2.org/>，[viridis](https://github.com/sjmgarnier/viridis) 包、[colourvalues](https://github.com/SymbolixAU/colourvalues)、[wesanderson](https://github.com/karthik/wesanderson)、[dichromat](https://CRAN.R-project.org/package=dichromat) 包、[pals](https://github.com/kwstat/pals) 包，[palr](https://github.com/AustralianAntarcticDivision/palr) 包，[colorRamps](https://cran.r-project.org/package=colorRamps) 包、[ColorPalette](https://cran.r-project.org/package=ColorPalette) 包、[colortools](https://cran.r-project.org/package=colortools) 包就不一一详细介绍了。
-
-[colormap](https://github.com/bhaskarvk/colormap) 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
-[paletteer](https://github.com/EmilHvitfeldt/paletteer) 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。根据电影 Harry Potter 制作的调色板 [harrypotter](https://github.com/aljrico/harrypotter)，根据网站 [CARTO](https://carto.com/) 设计的 [rcartocolor](https://github.com/Nowosad/rcartocolor) 包，[colorblindr](https://github.com/clauswilke/colorblindr) 模拟色盲环境下的配色方案。
-
-[yarrr](https://github.com/ndphillips/yarrr) 包主要是为书籍 [《YaRrr! The Pirate's Guide to R》](https://bookdown.org/ndphillips/YaRrr/) <https://github.com/ndphillips/ThePiratesGuideToR> 提供配套资源，兼顾收集了一组[调色板](https://bookdown.org/ndphillips/YaRrr/more-colors.html)。
-
-
-::: {.rmdnote data-latex="{注意}"}
-RColorBrewer 调色板数量必须至少 3 个，这是上游 colorbrewer 的 [问题](https://github.com/axismaps/colorbrewer/issues/23)，具体体现在调用
-`RColorBrewer::brewer.pal(n = 2, name = "Set2")` 时会有警告。 plotly 调用
-
-```
-[1] "#66C2A5" "#FC8D62" "#8DA0CB"
-Warning message:
-In RColorBrewer::brewer.pal(n = 2, name = "Set2") :
-  minimal value for n is 3, returning requested palette with 3 different levels
-```
-:::
-
-```{r select-color,fig.cap="源起",fig.height=6,collapse=TRUE}
-par(mar = c(1, 2, 1, 0), mfrow = c(3, 2))
-set.seed(1234)
-x <- sample(seq(8), 8, replace = FALSE)
-barplot(x, col = palette(), border = "white")
-barplot(x, col = heat.colors(8), border = "white")
-barplot(x, col = gray.colors(8), border = "white")
-barplot(x, col = "lightblue", border = "white")
-barplot(x, col = colorspace::sequential_hcl(8), border = "white")
-barplot(x, col = colorspace::diverge_hcl(8,
-  h = c(130, 43),
-  c = 100, l = c(70, 90)
-), border = "white")
-```
-
-与图 \@ref(fig:geom-tile) 对比，图\@ref(fig:palette-spectral) 的层次更加丰富，识别性更高
-
-```{r palette-spectral,fig.cap="Spectral 调色板",fig.showtext=TRUE,fig.asp=.8}
-expand.grid(months = month.abb, years = 1949:1960) |> 
-  transform(num = as.vector(AirPassengers)) |> 
-  ggplot(aes(x = years, y = months, fill = num)) +
-  scale_fill_distiller(palette = "Spectral") +
-  geom_tile(color = "white", size = 0.4) +
-  scale_x_continuous(
-    expand = c(0.01, 0.01),
-    breaks = seq(1949, 1960, by = 1),
-    labels = 1949:1960
-  ) +
-  theme_minimal(
-    base_size = 10.54,
-    base_family = "Noto Serif SC"
-  ) +
-  labs(x = "年", y = "月", fill = "人数")
-```
-
-再举例子，图 \@ref(fig:faithfuld) 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。
-
-```{r faithfuld,fig.cap="美国黄石国家公园的老忠实泉"}
-erupt <- ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
-  geom_raster() +
-  scale_x_continuous(NULL, expand = c(0, 0)) +
-  scale_y_continuous(NULL, expand = c(0, 0)) +
-  theme(legend.position = "none")
-p1 <- erupt + scale_fill_gradientn(colours = gray.colors(7))
-p2 <- erupt + scale_fill_distiller(palette = "Spectral")
-p3 <- erupt + scale_fill_gradientn(colours = terrain.colors(7))
-p4 <- erupt + scale_fill_continuous(type = 'viridis')
-(p1 + p2) / (p3 + p4)
-```
-
-RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging) 三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 `scale_alpha_*` 、 `scale_colour_*` 和 `scale_fill_*` 等，详见：
-
-```{r,echo=TRUE}
-ls("package:ggplot2", pattern = "scale_col(ou|o)r_")
-ls("package:ggplot2", pattern = "scale_fill_")
-```
-
-colourlovers 包借助 XML, jsonlite 和 httr 包可以在线获取网站 [COLOURlovers](https://www.colourlovers.com/) 的调色板
-
-```{r,eval=FALSE}
-library(colourlovers)
-palette1 <- clpalette('113451')
-palette2 <- clpalette('92095')
-palette3 <- clpalette('629637')
-palette4 <- clpalette('694737')
-```
-
-使用调色板
-
-```{r,eval=FALSE}
-layout(matrix(1:4, nrow = 2))
-par(mar = c(2, 2, 2, 2))
-
-barplot(VADeaths, col = swatch(palette1)[[1]], border = NA)
-barplot(VADeaths, col = swatch(palette2)[[1]], border = NA)
-barplot(VADeaths, col = swatch(palette3)[[1]], border = NA)
-barplot(VADeaths, col = swatch(palette4)[[1]], border = NA)
-```
-
-调色板的描述信息
-
-```{r,eval=FALSE}
-palette1
-```
-
-获取调色板中的颜色向量
-
-```{r,eval=FALSE}
-swatch(palette1)[[1]]
-```
-
-### 颜色模式 {#subsec-color-schames}
-
-不同的颜色模式，从 RGB 到 HCL 的基本操作 <https://stat545.com/block018_colors.html>
-
-```{r, fig.cap="HCL调色", R.options=list(tidyverse.quiet = TRUE)}
-# https://github.com/hadley/ggplot2-book
-hcl <- expand.grid(x = seq(-1, 1, length = 100), y = seq(-1, 1, length = 100)) |>
-  subset(subset = x^2 + y^2 < 1) |>
-  transform(
-    r = sqrt(x^2 + y^2)
-  ) |>
-  transform(
-    h = 180 / pi * atan2(y, x),
-    c = 100 * r,
-    l = 65
-  ) |>
-  transform(
-    colour = hcl(h, c, l)
-  )
-
-# sin(h) = y / (c / 100)
-# y = sin(h) * c / 100
-
-cols <- scales::hue_pal()(5)
-selected <- colorspace::RGB(t(col2rgb(cols)) / 255) %>%
-  as("polarLUV") %>%
-  colorspace::coords() %>%
-  as.data.frame() %>%
-  transform(
-    x = cos(H / 180 * pi) * C / 100,
-    y = sin(H / 180 * pi) * C / 100,
-    colour = cols
-  )
-
-ggplot(hcl, aes(x, y)) +
-  geom_raster(aes(fill = colour)) +
-  scale_fill_identity() +
-  scale_colour_identity() +
-  coord_equal() +
-  scale_x_continuous("", breaks = NULL) +
-  scale_y_continuous("", breaks = NULL) +
-  geom_point(data = selected, size = 10, color = "white") +
-  geom_point(data = selected, size = 5, aes(colour = colour))
-```
-
-R 内置了 `r length(colors(TRUE))` 种不同颜色的名称，下面随机地选取 20 种颜色
-
-```{r}
-sample(colors(TRUE), 20)
-```
-
-R 包 grDevices 提供 hcl 调色板[^hcl-palettes] 调制两个色板
-
-[^hcl-palettes]: https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/index.html
-
-```{r color-pal, fig.cap = "桃色至梨色的渐变", fig.width=4, fig.height=4}
-# Colors from https://github.com/johannesbjork/LaCroixColoR
-color_pal <- c("#FF3200", "#E9A17C", "#E9E4A6", "#1BB6AF", "#0076BB", "#172869")
-n <- 16
-more_colors <- (grDevices::colorRampPalette(color_pal))(n)
-scales::show_col(colours = more_colors)
-```
-
-```{r fish-hsv-pal, fig.cap="Hue-Saturation-Value (HSV) 颜色模型", fig.width=4, fig.height=4}
-# colors in colortools from http://www.gastonsanchez.com/
-fish_pal <- c(
-  "#69D2E7", "#6993E7", "#7E69E7", "#BD69E7",
-  "#E769D2", "#E76993", "#E77E69", "#E7BD69",
-  "#D2E769", "#93E769", "#69E77E", "#69E7BD"
-)
-more_colors <- (grDevices::colorRampPalette(fish_pal))(n)
-scales::show_col(colours = more_colors)
-```
-
-```{r}
-rgb(red = 86, green = 180, blue = 233, maxColorValue = 255) # "#56B4E9"
-rgb(red = 0, green = 158, blue = 115, maxColorValue = 255) # "#009E73"
-rgb(red = 240, green = 228, blue = 66, maxColorValue = 255) # "#F0E442"
-rgb(red = 0, green = 114, blue = 178, maxColorValue = 255) # "#0072B2"
-```
-
-举例子，直方图配色与不配色
-
-```{r,fig.cap="直方图",title.mar=TRUE}
-# library(pander)
-# evalsOptions('graph.unify', TRUE)
-# panderOptions('graph.colors') 获取调色板
-# https://www.fontke.com/tool/rgbschemes/ 在线配色
-cols <- c(
-  "#56B4E9", "#009E73", "#F0E442", "#0072B2",
-  "#D55E00", "#CC79A7", "#999999", "#E69F00"
-)
-hist(mtcars$hp, col = "#56B4E9", border = "white", grid = grid())
-```
-
-```{r,fig.cap="直方图"}
-ggplot(mtcars) +
-  geom_histogram(aes(x = hp, fill = as.factor(..count..)),
-    color = "white", bins = 6
-  ) +
-  scale_fill_manual(values = rep("#56B4E9", 10)) +
-  ggtitle("Histogram with ggplot2") +
-  theme_minimal() +
-  theme(legend.position = "none") 
-```
-
-#### RGB
-
-红(red)、绿(green)、蓝(blue)是三原色
-
-``` {r,eval=FALSE}
-rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)
-```
-
-函数参数说明：
-
-- `red, blue, green, alpha` 取值范围$[0,M]$，$M$ 是 *maxColorValue*
-- `names` 字符向量，给这组颜色值取名
-- `maxColorValue` 红，绿，蓝三色范围的最大值
-
-The colour specification refers to the standard sRGB colorspace (IEC standard 61966).
-
-rgb 产生一种颜色，如 `rgb(255, 0, 0, maxColorValue = 255)` 的颜色是 `"#FF0000"` ，这是一串16进制数，每两个一组，那么一组有 $16^2 = 256$ 种组合，整个一串有 $256^3 = 16777216$ 种组合，这就是RGB表达的所有颜色。
-
-#### HSL
-
-色相饱和度亮度 hue--saturation--luminance (HSL)
-
-#### HSV
-
-Create a vector of colors from vectors specifying hue, saturation and value. 色相饱和度值
-
-```r
-hsv(h = 1, s = 1, v = 1, alpha)
-```
-
-This function creates a vector of colors corresponding to the given values in HSV space. rgb and rgb2hsv for RGB to HSV conversion;
-
-hsv函数通过设置色调、饱和度和亮度获得颜色，三个值都是0-1的相对量
-
-RGB HSV HSL 都是不连续的颜色空间，缺点
-
-#### HCL
-
-基于感知的颜色空间替代RGB颜色空间
-
-通过指定色相(hue)，色度(chroma)和亮度(luminance/lightness)，创建一组（种）颜色
-
-``` {r,eval=FALSE}
-hcl(h = 0, c = 35, l = 85, alpha, fixup = TRUE)
-```
-
-函数参数说明：
-
-- **h** 颜色的色调，取值范围为[0,360]，0、120、240分别对应红色、绿色、蓝色
-
-- **c** 颜色的色度，其上界取决于色调和亮度
-
-- **l** 颜色的亮度，取值范围[0,100]，给定色调和色度，只有一部分子集可用
-
-- **alpha** 透明度，取值范围[0,1]，0 和1分别表示透明和不透明
-
-This function corresponds to polar coordinates in the CIE-LUV color space
-
-选色为什么这么难
-
-色相与阴影相比是无关紧要的，色相对于标记和分类很有用，但表示（精细的）空间数据或形状的效果较差。颜色是改善图形的好工具，但糟糕的配色方案 (color schemes) 可能会导致比灰度调色板更差的效果。[@colorspace_2009_rainbow]
-
-黑、白、灰，看似有三种颜色，其实只有一种颜色，黑和白只是灰色的两极，那么如何设置灰色梯度，使得人眼比较好区分它们呢？这样获得的调色板适用于什么样的绘图环境呢？
-
-#### CMYK
-
-印刷三原色：青 (cyan)、品红 (magenta)、黄 (yellow)
-
-- 颜色模式转化
-
-`col2rgb()` 、`rgb2hsv()` 和 `rgb()` 函数 `hex2RGB()` 函数 colorspace `col2hcl()` 函数 scales `col2HSV()` colortools `col2hex()`
-
-```{r color-exchange,echo=TRUE}
-col2rgb("lightblue") # color to  RGB
-scales::col2hcl("lightblue") # color to HCL
-# palr::col2hex("lightblue") # color to HEX
-# colortools::col2HSV("lightblue") # color to HSV
-
-rgb(173, 216, 230, maxColorValue = 255) # RGB to HEX
-colorspace::hex2RGB("#ADD8E6") # HEX to RGB
-rgb(.678, .847, .902, maxColorValue = 1) # RGB to HEX
-rgb2hsv(173, 216, 230, maxColorValue = 255) # RGB to HSV
-```
-
-### LaTeX 配色 {#subsec-latex-colors}
-
-LaTeX 宏包 [xcolor](https://www.ctan.org/pkg/xcolor) 中定义颜色的常用方式有两种，其一，`\textcolor{green!40!yellow}`{.TeX} 表示 40% 的绿色和 60% 的黄色混合色彩，其二，`\textcolor[HTML]{34A853}`{.TeX} HEX 表示的色彩直接在 LaTeX 文档中使用的方式，类似地 `\textcolor[RGB]{52,168,83}`{.TeX} 也表示 Google 图标中的绿色。
-
-```tex
-\documentclass[tikz,border=10pt]{standalone}
-\begin{document}
-\begin{tikzpicture}
-\draw (0,0) rectangle (2,1) node [midway] {\textcolor[RGB]{52,168,83}{Hello} \textcolor[HTML]{34A853}{\TeX}};
-\end{tikzpicture}
-\end{document}
-```
-
-对应于 R 中的调用方式为：
-
-```{r}
-rgb(52, 168, 83, maxColorValue = 255)
-```
-
-### ggplot2 配色 {#subsec-ggplot2-colors}
-
-```{r colorize-boxplot,fig.cap="几种不同的箱线图",fig.width=4,fig.height=4,out.width="45%",fig.show='hold',fig.ncol=2,fig.subcap=c("简单箱线图", "ggplot2 绘制的箱线图", "ggplot2 调用默认调色板", "ggplot2 调用 Google 调色板"),collapse=TRUE}
-boxplot(weight ~ group,
-  data = PlantGrowth, col = "lightgray",
-  notch = FALSE, varwidth = TRUE
-)
-# 类似 boxplot
-ggplot(data = PlantGrowth, aes(x = group, y = weight)) +
-  geom_boxplot(notch = FALSE, varwidth = TRUE, fill = "lightgray")
-
-# 默认调色板
-ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
-  geom_boxplot(notch = FALSE, varwidth = TRUE)
-
-# Google 调色板
-ggplot(data = PlantGrowth, aes(x = group, y = weight, fill = group)) +
-  geom_boxplot(notch = FALSE, varwidth = TRUE) +
-  scale_fill_manual(values = c("#4285f4", "#34A853", "#FBBC05", "#EA4335"))
-```
-
-## 图库 {#sec-gallery}
-
-### 饼图 {#sec-ggplot2-pie}
+## 饼图 {#sec-ggplot2-pie}
 
 我对饼图是又爱又恨，爱的是它表示百分比的时候，往往让读者联想到蛋糕，份额这类根深蒂固的情景，从而让数字通俗易懂、深入人心，是一种很好的表达方式，恨的也是这一点，我用柱状图表达不香吗？人眼对角度的区分度远不如柱状图呢，特别是当两个类所占的份额比较接近的时候，所以很多时候，除了用饼图表达份额，还会在旁边标上百分比，从数据可视化的角度来说，如图 \@ref(fig:bod-pie) 所示，这是信息冗余！
 
@@ -712,7 +133,7 @@ plotly::plot_ly() %>%
 
 设置参数 hole 可以绘制环形饼图，比如 hole = 0.6
 
-### 地图 {#sec-ggplot2-map}
+## 地图 {#sec-ggplot2-map}
 
 USArrests 数据集描述了1973年美国50个州每10万居民中因袭击、抢劫和强奸而逮捕的人，以及城市人口占比。这里的地图是指按照行政区划为边界的示意图，比如图 \@ref(fig:state-crimes)
 
@@ -788,7 +209,7 @@ ggplot(worldmap, aes(long, lat, group = group)) +
 ```
 
 
-### 热图 {#sec-ggplot2-heatmap}
+## 热图 {#sec-ggplot2-heatmap}
 
 <!-- [heatmap3](https://cran.r-project.org/package=heatmap3) 包提供兼容 Base R 的 heatmap() 函数 -->
 
@@ -800,7 +221,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("ComplexHeatmap")
 ```
 
-### 散点图 {#ggplot2-scatter}
+## 散点图 {#ggplot2-scatter}
 
 下面以 diamonds 数据集为例展示 ggplot2 的绘图过程，首先加载 diamonds 数据集，查看数据集的内容
 
@@ -963,7 +384,7 @@ ggplot(data = dat, aes(x = as.factor(year), y = as.factor(month))) +
   theme_minimal()
 ```
 
-### 条形图 {#sec-ggplot2-barplot}
+## 条形图 {#sec-ggplot2-barplot}
 
 条形图特别适合分类变量的展示，我们这里展示钻石切割质量 cut 不同等级的数量，当然我们可以直接展示各类的数目，在图层 `geom_bar` 中指定 `stat="identity"`
 
@@ -1145,7 +566,7 @@ plotly::plot_ly(diamonds,
   plotly::config(displayModeBar = FALSE)
 ```
 
-### 直方图 {#ggplot2-histogram}
+## 直方图 {#ggplot2-histogram}
 
 直方图用来查看连续变量的分布
 
@@ -1203,7 +624,7 @@ ggplot(mtcars) +
 
 
 
-### 箱线图 {#ggplot2-boxplot}
+## 箱线图 {#ggplot2-boxplot}
 
 以 PlantGrowth 数据集为例展示箱线图，在两组不同实验条件下，植物生长的情况，纵坐标是干燥植物的量，横坐标表示不同的实验条件。这是非常典型的适合用箱线图来表达数据的场合，Y 轴对应数值型变量，X 轴对应分类变量，在 R 语言中，分类变量的类型是 factor
 
@@ -1260,7 +681,7 @@ ggplot(diamonds, aes(x = cut, y = price, color = color)) +
   facet_grid(clarity ~ color)
 ```
 
-### 函数图 {#sec-ggplot2-function}
+## 函数图 {#sec-ggplot2-function}
 
 蝴蝶图的参数方程如下
 
@@ -1269,7 +690,7 @@ x &= \sin t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big) \\
 y &= \cos t \big(\mathrm e^{\cos t} - 2 \cos 4t + \sin^5(\frac{t}{12})\big), t \in [- \pi, \pi]
 \end{align}
 
-### 密度图 {#sec-ggplot2-density}
+## 密度图 {#sec-ggplot2-density}
 
 
 ```{r mpg-cyl-density,fig.cap="按汽缸数分组的城市里程"}
@@ -1390,7 +811,7 @@ p2 <- plotly::plot_ly(x = den$x1, y = den$x2, z = den$fhat) %>%
 htmltools::tagList(p1, p2)
 ```
 
-### 提琴图 {#sec-ggplot2-violin}
+## 提琴图 {#sec-ggplot2-violin}
 
 2004 年 Daniel Adler 开发 [vioplot](https://github.com/TomKellyGenetics/vioplot) 包实现提琴图的绘制，它可能是最早实现此功能的 R 包，随后10余年没有更新却一直坚挺在 CRAN 上，非常难得，好在 Thomas Kelly 已经接手维护。另一款绘制提琴图的 R 包是 Peter Kampstra 开发的 [beanplot](https://cran.r-project.org/package=beanplot) [@beanplot_2008_jss]，也存在很多年了，不过随着时间的变迁，比较现代的方式是 **ggplot2** 带来的 `geom_violin()` 扔掉了很多依赖，也是各种图形的汇集地，可以看作是最佳实践。提琴图比起箱线图优势在于呈现更多的分布信息，其次在于更加美观，但是就目前来说箱线图的受众比提琴图要多很多，毕竟前者是包含更多统计信息，如图\@ref(fig:boxplot-violin) 所示。
 
@@ -1420,7 +841,7 @@ with(
 ```
 
 
-### 抖动图 {#ggplot2-jitter}
+## 抖动图 {#ggplot2-jitter}
 
 
 抖动图适合数据量比较小的情况
@@ -1491,7 +912,7 @@ ggplot(iris, aes(x = Species, y = Sepal.Width, color = Species)) +
   geom_point(position = position_jitter(seed = 37, width = 0.25))
 ```
 
-### 蜂群图 {#sec-ggplot2-beeswarm}
+## 蜂群图 {#sec-ggplot2-beeswarm}
 
 在样本点有限的情况下，用蜜蜂图代替普通的抖动图，可视化效果会好很多，如图 \@ref(fig:beeswarm) 所示。Erik Clarke 开发的 [ggbeeswarm](https://github.com/eclarke/ggbeeswarm) 包可以将随机抖动的散点图朝着比较规律的方向聚合，又不丢失数据本身的准确性。
 
@@ -1508,7 +929,7 @@ p1 + p2
 
 
 
-### 玫瑰图 {#ggplot2-rose}
+## 玫瑰图 {#ggplot2-rose}
 
 南丁格尔风玫瑰图[^nightingale-rose] 可以作为堆积条形图，分组条形图
 
@@ -1546,7 +967,7 @@ p + geom_bar(position = "fill") +
 
 [^nightingale-rose]: https://mbostock.github.io/protovis/ex/crimea-rose-full.html
 
-### 瓦片图 {#sec-ggplot2-tile}
+## 瓦片图 {#sec-ggplot2-tile}
 
 ```{r geom-tile,fig.cap="1949-1960年国际航线乘客数量的月度趋势",fig.showtext=TRUE,fig.width=8,fig.height=4}
 p1 <- expand.grid(months = month.abb, years = 1949:1960) %>%
@@ -1558,7 +979,7 @@ p1 <- expand.grid(months = month.abb, years = 1949:1960) %>%
     expand = c(0.01, 0.01),
     breaks = seq(1949, 1960, by = 1), labels = 1949:1960
   ) +
-  theme_minimal(base_size = 10.54, base_family = "Noto Serif SC") +
+  theme_minimal(base_size = 10.54, base_family = "Noto Serif CJK SC") +
   theme(legend.position = "top") +
   labs(x = "年", y = "月", fill = "人数")
 
@@ -1571,13 +992,13 @@ p2 <- expand.grid(months = month.abb, years = 1949:1960) %>%
     expand = c(0.01, 0.01),
     breaks = seq(1949, 1960, by = 1), labels = 1949:1960
   ) +
-  theme_minimal(base_size = 10.54, base_family = "Noto Serif SC") +
+  theme_minimal(base_size = 10.54, base_family = "Noto Serif CJK SC") +
   theme(legend.position = "top") +
   labs(x = "年", y = "月", color = "人数")
 p1 + p2
 ```
 
-### 日历图 {#sec-ggplot2-calendar}
+## 日历图 {#sec-ggplot2-calendar}
 
 airquality 数据集记录了1973年5月至9月纽约的空气质量，包括气温（华氏度）、风速（米/小时）、紫外线强度、臭氧含量四个指标，图 \@ref(fig:calendar-airquality) 展示了每日的气温变化。
 
@@ -1617,7 +1038,7 @@ data.table::wday(Sys.Date())
 :::
 
 
-### 岭线图 {#sec-ggplot2-ridgeline}
+## 岭线图 {#sec-ggplot2-ridgeline}
 
 **ggridges** 包，[于淼](https://yufree.cn/) 对此图形的来龙去脉做了比较系统的阐述，详见统计之都主站文章[叠嶂图的前世今生](https://cosx.org/2018/04/ridgeline-story/)
 
@@ -1672,7 +1093,7 @@ axis(1, tck = -0.01)
 mtext(names(dens), 2, at = length(ys):1, las = 2, padj = 0)
 ```
 
-### 椭圆图 {#sec-ggplot2-ellipse}
+## 椭圆图 {#sec-ggplot2-ellipse}
 
 type 指定多元分布的类型，`type = "t"` 和 `type = "norm"` 分别表示 t 分布和正态分布，`geom = "polygon"`，以 `eruptions > 3` 分为两组
 
@@ -1693,7 +1114,7 @@ ggplot(faithful, aes(waiting, eruptions, fill = eruptions > 3)) +
 ```
 
 
-### Q-Q 图 {#sec-ggplot2-qq}
+## Q-Q 图 {#sec-ggplot2-qq}
 
 quantile-quantile Q-Q 正态分布图的 ggplot2 实现 [qqplotr](https://github.com/aloy/qqplotr)
 
@@ -1701,7 +1122,7 @@ quantile-quantile Q-Q 正态分布图的 ggplot2 实现 [qqplotr](https://github
 
 
 
-### 包络图 {#sec-ggplot2-chull}
+## 包络图 {#sec-ggplot2-chull}
 
 ggpubr 包提供了 `stat_chull()` 图层
 
@@ -1744,7 +1165,7 @@ ggplot(mpg, aes(displ, hwy, colour = drv)) +
   stat_chull(fill = NA)
 ```
 
-### 拟合图 {#sec-ggplot2-fit}
+## 拟合图 {#sec-ggplot2-fit}
 
 ```{r spline-fun,fig.cap="自定义样条函数",fig.width=4,fig.height=4,fig.show='hold',out.width='45%'}
 xx <- -9:9
@@ -1791,7 +1212,7 @@ ggplot(trees, aes(x = Girth, y = Volume)) +
   )
 ```
 
-### 地形图 {#sec-ggplot2-raster}
+## 地形图 {#sec-ggplot2-raster}
 
 区域之间以轮廓分割，轮廓之间以相同的颜色填充，Cleveland 把这个叫做 level plot， **lattice** 包中 `levelplot()` 函数正来源于此。
 
@@ -1814,7 +1235,7 @@ filled.contour(volcano,
 ```
 
 
-### 树状图 {#sec-ggplot2-treemap}
+## 树状图 {#sec-ggplot2-treemap}
 
 数据集 GNI2014 来自 [**treemap**](https://github.com/mtennekes/treemap) 包，是一个 data.frame 类型的数据对象，记录了 2014 年每个国家的人口总数 population 和国民人均收入 GNI，数据样例见下方：
 
@@ -1859,7 +1280,7 @@ ggplot(G20, aes(
 
 <!-- https://github.com/DaphneGiorgi/IBMPopSim 钻石数据集 diamonds 对比，连续变量离散化，直方图，分布对比 -->
 
-### 留存图 {#sec-ggplot2-cohort}
+## 留存图 {#sec-ggplot2-cohort}
 
 ```{r cohort-ggplot2}
 cohort <- data.frame(
@@ -1884,7 +1305,7 @@ ggplot(cohort, aes(x = week, y = cohort, fill = value)) +
 留存是 [Cohort 分析](https://en.wikipedia.org/wiki/Cohort_analysis) 中的一种情况，还有转化等，首先
 定义你的问题，确定度量问题的指标，确定和问题相关的 Cohort （比如时间、空间和用户属性等关键的影响因素），然后数据处理、可视化获得 Cohort 分析结果，最后在实际决策和行动中检验分析结论。
 
-### 瀑布图 {#sec-ggplot2-waterfall}
+## 瀑布图 {#sec-ggplot2-waterfall}
 
 瀑布图 waterfall 与上月相比，谁增谁减，用瀑布图分别表示占比和绝对数值。[瀑布图 waterfall](https://vita.had.co.nz/papers/ggplot2-wires.pdf)
 
@@ -1930,7 +1351,7 @@ ggplot(balance) +
 
 
 
-### 水流图 {#sec-ggplot2-streamgraph}
+## 水流图 {#sec-ggplot2-streamgraph}
 
 常用于时间序列数据展示的堆积区域图，[ggstream](https://github.com/davidsjoberg/ggstream) 和 [streamgraph](https://github.com/hrbrmstr/streamgraph)
 
@@ -1944,7 +1365,7 @@ ggplot(blockbusters, aes(year, box_office, fill = genre)) +
   theme_minimal()
 ```
 
-### 时间线 {#sec-ggplot2-vistime}
+## 时间线 {#sec-ggplot2-vistime}
 
 ```{r vis-timeline,fig.cap="数据科学的时间轴",fig.width=10,fig.height=5}
 # 交互动态图 https://github.com/shosaco/vistime
@@ -2003,7 +1424,7 @@ hc_vistime(pres, col.event = "Position", col.group = "Name",
            title = "Presidents of the USA")
 ```
 
-### 三元图 {#sec-ggplot2-ternary}
+## 三元图 {#sec-ggplot2-ternary}
 
 [Ternary](https://github.com/ms609/Ternary/) 使用基础图形库，而 [ggtern](https://bitbucket.org/nicholasehamilton/ggtern) 使用 ggplot2 绘制
 
@@ -2025,7 +1446,7 @@ ggtern(Fragments, aes(
   theme_legend_position("tr")
 ```
 
-### 向量场图 {#sec-vector-fields}
+## 向量场图 {#sec-vector-fields}
 
 
 ```{r}
@@ -2033,7 +1454,7 @@ library(ggquiver)
 ```
 
 
-### 四象限图 {#sec-ggplot2-eisenhower}
+## 四象限图 {#sec-ggplot2-eisenhower}
 
 ```{r eisenhower,fig.cap="四象限图"}
 dat <- data.frame(
@@ -2069,7 +1490,7 @@ ggplot(data = dat) +
 ```
 
 
-### 龙卷风图 {#sec-ggplot2-tornado}
+## 龙卷风图 {#sec-ggplot2-tornado}
 
 ```{r tornado-ggplot2,fig.cap="龙卷风图展示变量重要性",fig.height=4}
 dat <- data.frame(
@@ -2086,7 +1507,7 @@ ggplot(dat, aes(x = variable, y = value, fill = Level)) +
 
 [Tornado diagram](https://en.wikipedia.org/wiki/Tornado_diagram) 主要用于敏感性分析，比较不同变量的重要性程度。条形图 `geom_bar()` 图层的变体，模型权重可视化的手段，仅限于广义线性模型。
 
-### 聚类图 {#sec-ggplot2-hclust}
+## 聚类图 {#sec-ggplot2-hclust}
 
 ggdendro 的 `dendro_data()` 函数支持 `tree` 、`hclust` 、`dendrogram` 和 `rpart` 结果的整理，进而绘图
 
@@ -2107,7 +1528,7 @@ ggplot() +
   theme_minimal()
 ```
 
-### 主成分图 {#sec-ggplot2-prcomp}
+## 主成分图 {#sec-ggplot2-prcomp}
 
 借助 [**autoplotly**](https://github.com/terrytangyuan/autoplotly) 包 [@autoplotly] 可将函数 `stats::prcomp` 生成的结果转化为交互图形
 
@@ -2131,7 +1552,7 @@ library(ggfortify)
 autoplot(pca, data = iris, colour = 'Species')
 ```
 
-### 组合图 {#sec-ggplot2-composite}
+## 组合图 {#sec-ggplot2-composite}
 
 <!-- 也许可以加一个复杂的例子 [Tidy Tuesday Vacination](http://paulnice.datasorcery.tech/posts/tidy-tuesday-vacination/) 
 [ggprism](https://github.com/csdaw/ggprism) 提供 [GraphPad](https://www.graphpad.com/) 风格的主题
@@ -2152,7 +1573,7 @@ ggdensity(sleep,
 
 [^rug-plot]: 其实是轴须图 rug plot，只因样子看起来像铺在地上的毛毯，故而称之为地毯图，对应于 R 内置的 `rug()` 函数或 ggplot2 提供的图层 `geom_rug()`，更多解释详见 <https://en.wikipedia.org/wiki/Rug_plot>。
 
-### 动态图 {#sec-ggplot2-animation}
+## 动态图 {#sec-ggplot2-animation}
 
 [**av**](https://github.com/ropensci/av) 包基于 [FFmpeg](https://github.com/FFmpeg/FFmpeg) 将静态图片合成视频，而 [**gifski**](https://github.com/r-rust/gifski/) 包基于 [gifski](https://gif.ski/) 将静态图片合成 GIF 动画，[**animation**](https://github.com/yihui/animation) 包 [@Xie_2013_animation] 将 Base R 绘制的图形转化为动画或视频，[mapmate](https://github.com/leonawicz/mapmate) 制作地图相关的三维可视化图形，[**gganimate**](https://github.com/thomasp85/gganimate) 包支持将 ggplot2 生成的图形，**magick** 可以将一系列静态图形合成动态图形，借助 **gifski** 包转化为动态图片或视频。推荐读者从 [gganimate 案例合集](https://github.com/ropenscilabs/learngganimate) 开始制作动态图形。 [**rgl**](https://r-forge.r-project.org/projects/rgl/) 可以制作真三维动态图形，支持缩放、拖拽、旋转等操作， [**rayshader**](https://github.com/tylermorganwall/rayshader) 还支持转化 ggplot2 对象为 3D 图形。
 
