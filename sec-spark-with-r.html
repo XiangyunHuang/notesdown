@@ -732,12 +732,12 @@ a column separator --></p>
 <div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="sec-spark-with-r.html#cb259-1" aria-hidden="true" tabindex="-1"></a>diamonds_sample <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM diamonds TABLESAMPLE (BUCKET 1 OUT OF 1000) LIMIT 6&quot;</span>)</span>
 <span id="cb259-2"><a href="sec-spark-with-r.html#cb259-2" aria-hidden="true" tabindex="-1"></a>diamonds_sample</span></code></pre></div>
 <pre><code>##   carat       cut color clarity depth table price    x    y    z
-## 1  0.77     Ideal     I     VS1  61.5    59  2798 5.87 5.91 3.62
-## 2  1.01      Fair     J     VS2  65.8    55  3190 6.29 6.24 4.12
-## 3  0.78 Very Good     F     VS1  61.7    55  3744 5.89 5.94 3.65
-## 4  0.93   Premium     H     SI1  61.8    59  3750 6.27 6.23 3.86
-## 5  0.30     Ideal     D     SI2  63.0    55   574 4.26 4.25 2.68
-## 6  0.32 Very Good     I     VS2  63.4    55   576 4.37 4.33 2.76</code></pre>
+## 1  0.72 Very Good     G     VS2  63.7  56.4  2776 5.62 5.69 3.61
+## 2  0.79   Premium     D     SI2  60.0  60.0  2853 6.07 6.03 3.63
+## 3  0.82     Ideal     F     VS2  61.9  57.0  3453 5.99 5.96 3.70
+## 4  1.05      Fair     F     SI2  66.0  60.0  3615 6.30 6.22 4.13
+## 5  0.76     Ideal     F     VS2  61.9  57.0  3648 5.83 5.86 3.62
+## 6  0.90 Very Good     E     SI2  62.4  57.0  3662 6.13 6.17 3.84</code></pre>
 <p>将抽样的结果用窗口函数 <code>RANK()</code> 排序，详见 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html</a></p>
 <p>窗口函数 <a href="https://www.cnblogs.com/ZackSun/p/9713435.html" class="uri">https://www.cnblogs.com/ZackSun/p/9713435.html</a></p>
 <div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="sec-spark-with-r.html#cb261-1" aria-hidden="true" tabindex="-1"></a>diamonds_rank <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;</span></span>
@@ -747,12 +747,12 @@ a column separator --></p>
 <span id="cb261-5"><a href="sec-spark-with-r.html#cb261-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span>
 <span id="cb261-6"><a href="sec-spark-with-r.html#cb261-6" aria-hidden="true" tabindex="-1"></a>diamonds_rank</span></code></pre></div>
 <pre><code>##     cut price rank
-## 1  Fair  2011    1
-## 2  Fair  2381    2
-## 3  Good  2092    1
-## 4  Good  2311    2
-## 5  Good  4077    3
-## 6 Ideal   489    1</code></pre>
+## 1  Good   659    1
+## 2  Good   755    2
+## 3  Good  2496    3
+## 4  Good  4140    4
+## 5 Ideal   600    1
+## 6 Ideal   628    2</code></pre>
 <p>LATERAL VIEW 把一列拆成多行</p>
 <p><a href="https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/" class="uri">https://liam.page/2020/03/09/LATERAL-VIEW-in-Hive-SQL/</a>
 <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html" class="uri">https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-lateral-view.html</a></p>
@@ -772,10 +772,10 @@ a column separator --></p>
 <p>查看数据集</p>
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="sec-spark-with-r.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;SELECT * FROM person&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2</code></pre>
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4</code></pre>
 <p>行列转换 <a href="https://www.cnblogs.com/kimbo/p/6208973.html" class="uri">https://www.cnblogs.com/kimbo/p/6208973.html</a>，LATERAL VIEW 展开</p>
 <div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="sec-spark-with-r.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc,<span class="st">&quot;</span></span>
 <span id="cb266-2"><a href="sec-spark-with-r.html#cb266-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * FROM person</span></span>
@@ -784,12 +784,12 @@ a column separator --></p>
 <span id="cb266-5"><a href="sec-spark-with-r.html#cb266-5" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 6</span></span>
 <span id="cb266-6"><a href="sec-spark-with-r.html#cb266-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
 <pre><code>##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80</code></pre>
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80</code></pre>
 <p>日期相关的函数 <a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions" class="uri">https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions</a></p>
 <div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="sec-spark-with-r.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 今天</span></span>
 <span id="cb268-2"><a href="sec-spark-with-r.html#cb268-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(sc, <span class="st">&quot;select current_date&quot;</span>)</span></code></pre></div>
