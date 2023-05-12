@@ -1765,17 +1765,7 @@ persp(x1, x2, z,
 
 把网站搬出来，汉化 <http://latticeextra.r-forge.r-project.org/>
 
-
-### 箱线图 {#lattice-boxplot}
-
-```{r}
-library(lattice)
-# plot(data = InsectSprays, count ~ spray)
-bwplot(count ~ spray, data = InsectSprays)
-```
-
-
-### 折线图 {#lattice-line}
+### 时序图 {#lattice-line}
 
 latticeExtra 包提供了强大的图层函数 `layer()`
 
@@ -1793,7 +1783,7 @@ xyplot(EuStockMarkets) +
 
 如何解释
 
-时序图
+### 水平图
 
 Plot many time series in parallel
 
@@ -1815,6 +1805,7 @@ horizonplot(EuStockMarkets,
   )
 ```
 
+### 折线图
 
 ```{r}
 # # https://stackoverflow.com/questions/25109196/r-lattice-package-add-legend-to-a-figure
@@ -1849,17 +1840,7 @@ barchart(Claims / Holders ~ Age | Group,
 )
 ```
 
-
-```{r}
-barchart(Claims / Holders ~ Age | Group,
-  groups = District, data = Insurance,
-  main = "Claims frequency",
-  auto.key = list(
-    space = "top", columns = 4,
-    title = "District", cex.title = 1
-  )
-)
-```
+### 高级设置
 
 lattice 图形的参数设置
 
@@ -1883,6 +1864,8 @@ trellis.par.get()
 trellis.par.set(my.settings)
 ```
 
+
+### 柱形图
 
 ```{r}
 library(MASS)
@@ -1911,29 +1894,7 @@ barchart(Claims / Holders * 100 ~ Age | Group,
 )
 ```
 
-### 平滑图 {#lattice-smooth}
-
-```{r}
-set.seed(1)
-xy <- data.frame(
-  x = runif(100),
-  y = rt(100, df = 5)
-)
-
-xyplot(y ~ x, xy, panel = function(...) {
-  panel.xyplot(...)
-  panel.smoother(..., span = 0.9)
-})
-
-library(splines)
-xyplot(y ~ x, xy) +
-  layer(panel.smoother(y ~ ns(x, 5), method = "lm"))
-
-library(nlme)
-library(mgcv)
-xyplot(y ~ x, xy) +
-  layer(panel.smoother(y ~ s(x), method = "gam"))
-```
+### Rootograms {#lattice-smooth}
 
 Trellis Displays of Tukey's Hanging Rootograms
 
@@ -1942,57 +1903,9 @@ x <- rpois(1000, lambda = 50)
 rootogram(~x, dfun = function(x) dpois(x, lambda = 50))
 ```
 
-### 点图 {#lattice-dotplot}
-
-```{r, fig.width=6,fig.height=6}
-# 添加背景网格线作为参考线
-segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
-  data = subset(USCancerRates, state == "Washington"),
-  draw.bands = FALSE, centers = rate.male
-)
-```
-
-### 阶梯图 {#lattice-step}
-
-经验累积分布图
-
-```{r}
-ecdfplot(~height | voice.part, data = singer)
-```
-
-### 分面图 {#lattice-facet}
-
-```{r, fig.width=8, fig.height=6, out.width="100%"}
-## a variant of Figure 5.6 from Sarkar (2008)
-## http://lmdvr.r-forge.r-project.org/figures/figures.html?chapter=05;figure=05_06
-
-depth.ord <- rev(order(quakes$depth))
-quakes$Magnitude <- equal.count(quakes$mag, 4)
-quakes.ordered <- quakes[depth.ord, ]
-
-levelplot(depth ~ long + lat | Magnitude,
-  data = quakes.ordered,
-  panel = panel.levelplot.points, type = c("p", "g"),
-  aspect = "iso", prepanel = prepanel.default.xyplot
-)
-```
-
-### 等高线图 {#lattice-contour}
-
-```{r smoothness,fig.width=4,fig.height=4,out.width="75%"}
-set.seed(1)
-xyz <- data.frame(x = rnorm(100), y = rnorm(100))
-xyz$z <- with(xyz, x * y + rnorm(100, sd = 1))
-
-## GAM smoother with smoothness by cross validation
-library(mgcv)
-levelplot(z ~ x * y, xyz,
-  panel = panel.2dsmoother,
-  form = z ~ s(x, y), method = "gam"
-)
-```
-
 ### 透视图 {#lattice-persp}
+
+(ref:volcano-topo) Topographic Information on Auckland's Maunga Whau Volcano
 
 ```{r volcano-topo, fig.cap="(ref:volcano-topo)", fig.width=5.5, fig.height=5}
 library(shape)
@@ -2001,82 +1914,6 @@ persp(volcano,
   r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
   shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
   col = drapecol(volcano, col = terrain.colors(100)),
-  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent",
-  main = "Topographic Information \n on Auckland's Maunga Whau Volcano"
+  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent"
 )
 ```
-
-
-
-### 聚类图 {#lattice-cluster}
-
-
-```{r,fig.width=4,fig.height=4,out.width="75%"}
-xyplot(Sepal.Length ~ Petal.Length,
-  groups = Species,
-  data = iris, scales = "free",
-  par.settings = list(
-    superpose.symbol = list(pch = c(15:17)),
-    superpose.line = list(lwd = 2, lty = 1:3)
-  ),
-  panel = function(x, y, ...) {
-    panel.xyplot(x, y, ...)
-    panel.ellipse(x, y, ...)
-  },
-  auto.key = list(x = .1, y = .8, corner = c(0, 0))
-)
-```
-
-
-
-```{r,eval=FALSE}
-# lattice 书 6.3.1 节 参数曲面
-
-kx <- function(u, v) cos(u) * (r + cos(u / 2))
-ky <- function(u, v) {
-  sin(u) * (r + cos(u / 2) * sin(t * v) -
-    sin(u / 2) * sin(2 * t * v)) * sin(t * v) -
-    sin(u / 2) * sin(2 * t * v)
-}
-
-
-kz <- function(u, v) sin(u / 2) * sin(t * v) + cos(u / 2) * sin(t * v)
-n <- 50
-u <- seq(0.3, 1.25, length = n) * 2 * pi
-v <- seq(0, 1, length = n) * 2 * pi
-um <- matrix(u, length(u), length(u))
-vm <- matrix(v, length(v), length(v), byrow = TRUE)
-r <- 2
-t <- 1
-
-wireframe(kz(um, vm) ~ kx(um, vm) + ky(um, vm),
-  shade = TRUE, xlab = expression(x[1]),
-  ylab = expression(x[2]),
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  screen = list(z = 170, x = -60),
-  alpha = 0.75, panel.aspect = 0.6, aspect = c(1, 0.4),
-  scales = list(arrows = FALSE, col = "black"),
-  lattice.options = list(
-    layout.widths = list(
-      left.padding = list(x = -.6, units = "inches"),
-      right.padding = list(x = -1.0, units = "inches")
-    ),
-    layout.heights = list(
-      bottom.padding = list(x = -.8, units = "inches"),
-      top.padding = list(x = -1.0, units = "inches")
-    )
-  ),
-  par.settings = list(
-    axis.line = list(col = "transparent")
-  )
-)
-```
-
-
-
-## 运行环境 {#graphics-sessioninfo}
-
-```{r}
-xfun::session_info()
-```
-
