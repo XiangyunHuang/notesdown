@@ -92,28 +92,6 @@ jobs:
           pip list --format=columns
           deactivate
 
-      - name: Configure R CXXFLAGS/CXX14FLAGS
-        run: |
-          mkdir -p ~/.R
-          echo "CXXFLAGS += -Wno-ignored-attributes" >> ~/.R/Makevars
-          echo "CXX14 = g++ -flto=2" >> ~/.R/Makevars
-          echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
-          echo $PATH
-
-      - name: Cache R packages
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: r-${{ matrix.config.os }}-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
-          restore-keys: r-${{ matrix.config.os }}-${{ matrix.config.r }}-
-
-      - name: Cache bookdown results
-        uses: actions/cache@v3
-        with:
-          path: _bookdown_files
-          key: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-${{ hashFiles('**/*Rmd') }}
-          restore-keys: bookdown-${{ matrix.config.os }}-${{ matrix.config.r }}-
-
       - name: Add Write Permission To R library And Install rJava
         run: |
           sudo chown -R $(whoami):root /opt/R/${R_VERSION}/lib/R/library
