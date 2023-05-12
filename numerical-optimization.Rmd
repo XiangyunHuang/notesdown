@@ -1,14 +1,5 @@
 # 数值优化 {#chap-numerical-optimization}
 
-```{=html}
-<!-- 
-Optimization Packages for R
-https://github.com/r-opt
-
-https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
-[gslnls](https://github.com/JorisChau/gslnls) GSL 库做非线性回归
--->
-```
 数值优化的理论部分可以参考经典教材《Numerical Optimization》 [@Nocedal2006] 和复旦大学吴立德教授的[数值优化课程](https://www.bilibili.com/video/BV1Kx411m7QB/)，本文仅仅梳理一些 R 语言社区提供的扩展包。
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
@@ -33,9 +24,6 @@ library(ROI.plugin.quadprog) # 注册 quadprog 求解二次规划
 library(ROI.plugin.scs)      # 注册 scs 求解凸锥规划
 library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
-
-library(rootSolve)       # 非线性方程
-library(BB)              # 非线性方程组
 ```
 
 ```{r, echo=FALSE}
@@ -394,8 +382,6 @@ nlp$objval
 nlp$solution
 ```
 
-
-
 ### 半正定二次优化 {#subsec-semidefinite-optimization}
 
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
@@ -679,11 +665,6 @@ surf3D(x, y, z,
 )
 ```
 
-```{=html}
-<!-- 
-rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
--->
-```
 以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder--Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
 ```{r}
@@ -715,7 +696,9 @@ fn(x = rep(2, 10))
 
 $$
 f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
-$$ 在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
+$$
+
+在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
 
 ```{r schaffer-01, fig.cap="Schaffer 函数", fig.width=5.5, fig.height=5}
 fn <- function(x) {
@@ -1175,126 +1158,4 @@ heq(x = c(-21.88091, 28.96994))
 
 fn(x = c(-49.921967437, 4.8499336803))
 heq(x = c(-49.921967437, 4.8499336803))
-```
-
-## 非线性方程 {#sec-nonlinear-equations}
-
-### 一元非线性方程 {#subsec-equation}
-
-[牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
-
-```{r}
-library(rootSolve)
-```
-
-### 非线性方程组 {#subsec-equations}
-
-```{r}
-library(BB)
-```
-
-二项混合泊松分布的参数最大似然估计
-
-```{r}
-poissmix.loglik <- function(p, y) {
-  # Log-likelihood for a binary Poisson mixture distribution
-  i <- 0:(length(y) - 1)
-  
-  loglik <- y * log(p[1] * exp(-p[2]) * p[2]^i / exp(lgamma(i + 1)) +
-    (1 - p[1]) * exp(-p[3]) * p[3]^i / exp(lgamma(i + 1)))
-
-  sum(loglik)
-}
-# Data from Hasselblad (JASA 1969)
-# 介绍实际应用场景
-poissmix.dat <- data.frame(death = 0:9, 
-                           freq = c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1))
-lo <- c(0, 0, 0) # lower limits for parameters
-hi <- c(1, Inf, Inf) # upper limits for parameters
-p0 <- runif(3, c(0.2, 1, 1), c(0.8, 5, 8)) 
-# a randomly generated vector of length 3
-y <- c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1)
-
-ans1 <- spg(
-  par = p0, fn = poissmix.loglik, y = y, lower = lo, upper = hi,
-  control = list(maximize = TRUE, trace = FALSE)
-)
-ans2 <- BBoptim(
-  par = p0, fn = poissmix.loglik, y = y,
-  lower = lo, upper = hi, control = list(maximize = TRUE)
-)
-ans2
-```
-
-计算最大似然处的黑塞矩阵以及参数的标准差
-
-```{r}
-hess <- numDeriv::hessian(x = ans2$par, func = poissmix.loglik, y = y)
-# Note that we have to supplied data vector 'y'
-hess
-se <- sqrt(diag(solve(-hess)))
-se
-```
-
-从不同初始值出发尝试寻找全局最大值，实际找的是一系列局部最大值
-
-```{r}
-# 3 randomly generated starting values
-p0 <- matrix(runif(30, c(0.2, 1, 1), c(0.8, 8, 8)), 10, 3, byrow = TRUE)
-ans <- multiStart(
-  par = p0, fn = poissmix.loglik, action = "optimize",
-  y = y, lower = lo, upper = hi, control = list(maximize = TRUE)
-)
-# selecting only converged solutions
-pmat <- round(cbind(ans$fvalue[ans$conv], ans$par[ans$conv, ]), 4)
-dimnames(pmat) <- list(NULL, c("fvalue", "parameter 1", "parameter 2", "parameter 3"))
-pmat[!duplicated(pmat), ]
-```
-
-用一个具体的参数估计问题，求极大似然点，混合正态分布 隐函数方程组 求解非线性方程组 [@BB2019]
-
-## 多目标规划 {#sec-multi-objective-optimization}
-
-多目标规划的基本想法是将多目标问题转化为单目标问题，常见方法有理想点法、线性加权法、非劣解集法、极大极小法。理想点法是先在给定约束条件下分别求解单个目标的最优值，构造新的单目标函数。线性加权法是给每个目标函数赋予权重系数，各个权重系数之和等于1。非劣解集法是先求解其中一个单目标函数的最优值，然后将其设为等式约束，将其最优值从最小值开始递增，然后求解另一个目标函数的最小值。极大极小法是采用标准的简面体爬山法和通用全局优化法求解多目标优化问题。
-
-R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)。另外，《Search Methodologies: Introductory Tutorials in Optimization and Decision Support Techniques》[@Deb2005] 多目标优化方法
-
-```{=tex}
-\begin{equation*}
-\begin{array}{l}
-  \min_x \left\{
-      \begin{array}{l}  
-        f_1(x) = 0.5x_1 + 0.6x_2 + 0.7 \exp(\frac{x_1 + x_3}{10}) \\
-        f_2(x) = (x_1 - 2x_2)^2 + (2x_2 - 3x_3)^2 + (5x_3 -x_1)^2
-      \end{array} \right. \\
-    s.t. \quad x_1 \in [10, 80], x_2 \in [20, 90], x_3 \in [15, 100]
-\end{array}
-\end{equation*}
-```
-```{r,eval=FALSE}
-library(DiceKriging)
-library(emoa)
-library(GPareto)
-library(DiceDesign)
-```
-
-```{r,eval=FALSE}
-library(Ternary)
-TernaryPlot(
-  atip = "Top", btip = "Bottom", ctip = "Right", 
-  axis.col = "red", col = rgb(0.8, 0.8, 0.8)
-)
-HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
-```
-
-## 经典优化问题 {#sec-classic-optimization}
-
-旅行商问题、背包问题、指派问题、选址问题、网络流量问题
-
-规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
-
-## 运行环境 {#sec-numerical-optimization-session}
-
-```{r}
-sessionInfo()
 ```
