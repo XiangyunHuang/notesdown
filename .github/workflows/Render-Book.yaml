@@ -12,9 +12,6 @@ on:
   pull_request:
     branches:
       - devel
-  schedule:
-    # 每周一晚上11点跑任务
-    - cron:  '0 23 * * 3'
 
 name: Render-Book
 
@@ -29,14 +26,12 @@ jobs:
     strategy:
       matrix:
         config:
-          - {os: ubuntu-22.04, r: '4.2.2'}
+          - {os: ubuntu-22.04, r: '4.2.3'}
 
     env:
       RETICULATE_PYTHON_ENV: "/opt/.virtualenvs/r-tensorflow"
       LANG: "en_US.UTF-8"
       TZ: "Asia/Shanghai"
-      CMDSTAN_VERSION: "2.28.2"
-      CMDSTAN: "/opt/cmdstan/cmdstan-2.28.2"
       SPARK_VERSION: "3.1.1"
       HADOOP_VERSION: "3.2"
       PANDOC_VERSION: "2.16.2"
@@ -48,13 +43,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1000
+          fetch-depth: 100
           ref: 'devel'
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         with:
+          use-public-rspm: true
           r-version: ${{ matrix.config.r }}
+          extra-repositories: 'https://mc-stan.org/r-packages'
+
+      # based on the renv lockfile file
+      # - uses: r-lib/actions/setup-renv@v2
+      # based on the DESCRIPTION file
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          needs: book
 
       - name: Install Pandoc
         uses: r-lib/actions/setup-pandoc@v2
@@ -88,14 +92,6 @@ jobs:
           pip list --format=columns
           deactivate
 
-      - name: Build CmdStan
-        run: |
-          mkdir -p /opt/cmdstan
-          curl -fLo cmdstan-${CMDSTAN_VERSION}.tar.gz https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz
-          tar -xzf cmdstan-${CMDSTAN_VERSION}.tar.gz -C /opt/cmdstan/
-          cd ${CMDSTAN}
-          make build
-
       - name: Configure R CXXFLAGS/CXX14FLAGS
         run: |
           mkdir -p ~/.R
@@ -123,16 +119,6 @@ jobs:
           sudo chown -R $(whoami):root /opt/R/${R_VERSION}/lib/R/library
           sudo R CMD javareconf
           Rscript -e 'install.packages("rJava", type="source")'
-
-      - name: Install R packages
-        run: |
-          if(!require('renv')) install.packages('renv')
-          renv::restore()
-          if(!require('cmdstanr')) install.packages('cmdstanr', repos = "https://mc-stan.org/r-packages")
-          # if(!require('spDataLarge')) install.packages('spDataLarge', repos = "https://nowosad.github.io/drat")
-          # TODO: use renv instead
-          # if(!require('catboost')) remotes::install_github('catboost/catboost', subdir = 'catboost/R-package')
-        shell: Rscript {0}
 
       - name: Install LaTeX packages
         run: |
@@ -207,7 +193,7 @@ jobs:
         with:
           publish-dir: './_book'
           production-branch: devel
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_PAT }}
           deploy-message:
             'Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})'
           enable-pull-request-comment: true
