@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11.1 调色板 | R 语言学习笔记</title>
+  <meta name="description" content="11.1 调色板 | R 语言学习笔记" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11.1 调色板 | R 语言学习笔记" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/cover.png" />
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11.1 调色板 | R 语言学习笔记" />
+  
+  
+  <meta name="twitter:image" content="/images/cover.png" />
+
+<meta name="author" content="黄湘云" />
+
+
+<meta name="date" content="2023-05-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chap-visualization-colors.html"/>
+<link rel="next" href="subsec-color-schames.html"/>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<script src="libs/plotly-locale-zh-CN/zh-cn.js"></script>
+<script src="libs/mathjax/cdn.js"></script>
+<script src="libs/echarts4r/echarts-en.min.js"></script>
+<script src="libs/echarts4r/ecStat.min.js"></script>
+<script src="libs/echarts4r/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding/echarts4r.js"></script>
+<script src="libs/d3/d3.min.js"></script>
+<script src="libs/forceNetwork-binding/forceNetwork.js"></script>
+<link href="libs/vis/vis-network.min.css" rel="stylesheet" />
+<script src="libs/vis/vis-network.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+<script src="libs/FileSaver/FileSaver.min.js"></script>
+<script src="libs/Blob/Blob.js"></script>
+<script src="libs/canvas-toBlob/canvas-toBlob.js"></script>
+<script src="libs/html2canvas/html2canvas.js"></script>
+<script src="libs/jspdf/jspdf.debug.js"></script>
+<link href="libs/jquery-sparkline/jquery.sparkline.css" rel="stylesheet" />
+<script src="libs/jquery-sparkline/jquery.sparkline.js"></script>
+<script src="libs/sparkline-binding/sparkline.js"></script>
+<script src="libs/r2d3-render/r2d3-render.js"></script>
+<script src="libs/webcomponents/webcomponents.js"></script>
+<script src="libs/r2d3-binding/r2d3.js"></script>
+<script src="libs/d3v6/d3.min.js"></script>
+<script src="libs/kePrint/kePrint.js"></script>
+<link href="libs/lightable/lightable.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-54GQKWF7VP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-54GQKWF7VP');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 语言学习笔记</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>欢迎</a></li>
+<li class="chapter" data-level="1" data-path="chap-preface.html"><a href="chap-preface.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-r-or-python.html"><a href="sec-r-or-python.html"><i class="fa fa-check"></i><b>1.1</b> 语言抉择</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-data-science.html"><a href="sec-data-science.html"><i class="fa fa-check"></i><b>1.2</b> 数据科学</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-writing-details.html"><a href="sec-writing-details.html"><i class="fa fa-check"></i><b>1.3</b> 写作环境</a></li>
+</ul></li>
+<li class="part"><span><b>I 数据整理</b></span></li>
+<li class="chapter" data-level="" data-path="chap-data-wrangling.html"><a href="chap-data-wrangling.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="2" data-path="chap-data-structure.html"><a href="chap-data-structure.html"><i class="fa fa-check"></i><b>2</b> 数据结构</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="subsec:typeof.html"><a href="subsec:typeof.html"><i class="fa fa-check"></i><b>2.1</b> 类型</a></li>
+<li class="chapter" data-level="2.2" data-path="sec-character.html"><a href="sec-character.html"><i class="fa fa-check"></i><b>2.2</b> 字符</a></li>
+<li class="chapter" data-level="2.3" data-path="sec-vector.html"><a href="sec-vector.html"><i class="fa fa-check"></i><b>2.3</b> 向量</a></li>
+<li class="chapter" data-level="2.4" data-path="sec-matrix.html"><a href="sec-matrix.html"><i class="fa fa-check"></i><b>2.4</b> 矩阵</a></li>
+<li class="chapter" data-level="2.5" data-path="sec-array.html"><a href="sec-array.html"><i class="fa fa-check"></i><b>2.5</b> 数组</a></li>
+<li class="chapter" data-level="2.6" data-path="sec-expression.html"><a href="sec-expression.html"><i class="fa fa-check"></i><b>2.6</b> 表达式</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-list.html"><a href="sec-list.html"><i class="fa fa-check"></i><b>2.7</b> 列表</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-date.html"><a href="sec-date.html"><i class="fa fa-check"></i><b>2.8</b> 日期</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-null.html"><a href="sec-null.html"><i class="fa fa-check"></i><b>2.9</b> 空值</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chap-data-transportation.html"><a href="chap-data-transportation.html"><i class="fa fa-check"></i><b>3</b> 数据搬运</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="import-data.html"><a href="import-data.html"><i class="fa fa-check"></i><b>3.1</b> 导入数据</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="import-data.html"><a href="import-data.html#scan-file"><i class="fa fa-check"></i><b>3.1.1</b> <code>scan</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="import-data.html"><a href="import-data.html#read-write-table"><i class="fa fa-check"></i><b>3.1.2</b> <code>read.table</code></a></li>
+<li class="chapter" data-level="3.1.3" data-path="import-data.html"><a href="import-data.html#read-write-lines"><i class="fa fa-check"></i><b>3.1.3</b> <code>readLines</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="import-data.html"><a href="import-data.html#read-save-rds"><i class="fa fa-check"></i><b>3.1.4</b> <code>readRDS</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="other-data-source.html"><a href="other-data-source.html"><i class="fa fa-check"></i><b>3.2</b> 其它数据格式</a></li>
+<li class="chapter" data-level="3.3" data-path="import-large-dataset.html"><a href="import-large-dataset.html"><i class="fa fa-check"></i><b>3.3</b> 导入大数据集</a></li>
+<li class="chapter" data-level="3.4" data-path="import-data-from-database.html"><a href="import-data-from-database.html"><i class="fa fa-check"></i><b>3.4</b> 从数据库导入</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="import-data-from-database.html"><a href="import-data-from-database.html#postgresql"><i class="fa fa-check"></i><b>3.4.1</b> PostgreSQL</a></li>
+<li class="chapter" data-level="3.4.2" data-path="import-data-from-database.html"><a href="import-data-from-database.html#mysql"><i class="fa fa-check"></i><b>3.4.2</b> MySQL</a></li>
+<li class="chapter" data-level="3.4.3" data-path="import-data-from-database.html"><a href="import-data-from-database.html#spark"><i class="fa fa-check"></i><b>3.4.3</b> Spark</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="batch-import-data.html"><a href="batch-import-data.html"><i class="fa fa-check"></i><b>3.5</b> 批量导入数据</a></li>
+<li class="chapter" data-level="3.6" data-path="batch-export-data.html"><a href="batch-export-data.html"><i class="fa fa-check"></i><b>3.6</b> 批量导出数据</a></li>
+<li class="chapter" data-level="3.7" data-path="export-data.html"><a href="export-data.html"><i class="fa fa-check"></i><b>3.7</b> 导出数据</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="export-data.html"><a href="export-data.html#export-output"><i class="fa fa-check"></i><b>3.7.1</b> 导出运行结果</a></li>
+<li class="chapter" data-level="3.7.2" data-path="export-data.html"><a href="export-data.html#export-data-object"><i class="fa fa-check"></i><b>3.7.2</b> 导出数据对象</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html"><i class="fa fa-check"></i><b>3.8</b> Spark 与 R 语言</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparklyr"><i class="fa fa-check"></i><b>3.8.1</b> sparklyr</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparkr"><i class="fa fa-check"></i><b>3.8.2</b> SparkR</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="sec-database-with-r.html"><a href="sec-database-with-r.html"><i class="fa fa-check"></i><b>3.9</b> 数据库与 R 语言</a></li>
+<li class="chapter" data-level="3.10" data-path="sec-batch-import-csv.html"><a href="sec-batch-import-csv.html"><i class="fa fa-check"></i><b>3.10</b> 批量读取 csv 文件</a></li>
+<li class="chapter" data-level="3.11" data-path="sec-batch-export-xlsx.html"><a href="sec-batch-export-xlsx.html"><i class="fa fa-check"></i><b>3.11</b> 批量导出 xlsx 文件</a></li>
+<li class="chapter" data-level="3.12" data-path="dm-session-info.html"><a href="dm-session-info.html"><i class="fa fa-check"></i><b>3.12</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="chap-string-operations.html"><a href="chap-string-operations.html"><i class="fa fa-check"></i><b>4</b> 字符串操作</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="base-count.html"><a href="base-count.html"><i class="fa fa-check"></i><b>4.1</b> 字符数统计</a></li>
+<li class="chapter" data-level="4.2" data-path="base-translations.html"><a href="base-translations.html"><i class="fa fa-check"></i><b>4.2</b> 字符串翻译</a></li>
+<li class="chapter" data-level="4.3" data-path="base-concatenate.html"><a href="base-concatenate.html"><i class="fa fa-check"></i><b>4.3</b> 字符串连接</a></li>
+<li class="chapter" data-level="4.4" data-path="base-strsplit.html"><a href="base-strsplit.html"><i class="fa fa-check"></i><b>4.4</b> 字符串拆分</a></li>
+<li class="chapter" data-level="4.5" data-path="base-match.html"><a href="base-match.html"><i class="fa fa-check"></i><b>4.5</b> 字符串匹配</a></li>
+<li class="chapter" data-level="4.6" data-path="base-search.html"><a href="base-search.html"><i class="fa fa-check"></i><b>4.6</b> 字符串查询</a></li>
+<li class="chapter" data-level="4.7" data-path="base-replacement.html"><a href="base-replacement.html"><i class="fa fa-check"></i><b>4.7</b> 字符串替换</a></li>
+<li class="chapter" data-level="4.8" data-path="base-extract.html"><a href="base-extract.html"><i class="fa fa-check"></i><b>4.8</b> 字符串提取</a></li>
+<li class="chapter" data-level="4.9" data-path="string-named-capture.html"><a href="string-named-capture.html"><i class="fa fa-check"></i><b>4.9</b> 命名捕捉</a></li>
+<li class="chapter" data-level="4.10" data-path="exact-match.html"><a href="exact-match.html"><i class="fa fa-check"></i><b>4.10</b> 精确匹配</a></li>
+<li class="chapter" data-level="4.11" data-path="fuzzy-match.html"><a href="fuzzy-match.html"><i class="fa fa-check"></i><b>4.11</b> 模糊匹配</a></li>
+<li class="chapter" data-level="4.12" data-path="replace.html"><a href="replace.html"><i class="fa fa-check"></i><b>4.12</b> 高级的替换</a></li>
+<li class="chapter" data-level="4.13" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>4.13</b> 高级的提取</a></li>
+<li class="chapter" data-level="4.14" data-path="other-string-op.html"><a href="other-string-op.html"><i class="fa fa-check"></i><b>4.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="4.14.1" data-path="other-string-op.html"><a href="other-string-op.html#strwrap"><i class="fa fa-check"></i><b>4.14.1</b> strwrap</a></li>
+<li class="chapter" data-level="4.14.2" data-path="other-string-op.html"><a href="other-string-op.html#strtrim"><i class="fa fa-check"></i><b>4.14.2</b> strtrim</a></li>
+<li class="chapter" data-level="4.14.3" data-path="other-string-op.html"><a href="other-string-op.html#strrep"><i class="fa fa-check"></i><b>4.14.3</b> strrep</a></li>
+<li class="chapter" data-level="4.14.4" data-path="other-string-op.html"><a href="other-string-op.html#trimws"><i class="fa fa-check"></i><b>4.14.4</b> trimws</a></li>
+<li class="chapter" data-level="4.14.5" data-path="other-string-op.html"><a href="other-string-op.html#tolower"><i class="fa fa-check"></i><b>4.14.5</b> tolower</a></li>
+</ul></li>
+<li class="chapter" data-level="4.15" data-path="encode-string.html"><a href="encode-string.html"><i class="fa fa-check"></i><b>4.15</b> 字符串加密</a></li>
+<li class="chapter" data-level="4.16" data-path="performance.html"><a href="performance.html"><i class="fa fa-check"></i><b>4.16</b> 处理性能</a></li>
+<li class="chapter" data-level="4.17" data-path="web-crawler.html"><a href="web-crawler.html"><i class="fa fa-check"></i><b>4.17</b> 网络爬虫</a></li>
+<li class="chapter" data-level="4.18" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>4.18</b> 文本挖掘</a></li>
+<li class="chapter" data-level="4.19" data-path="string-session-info.html"><a href="string-session-info.html"><i class="fa fa-check"></i><b>4.19</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="chap-regular-expressions.html"><a href="chap-regular-expressions.html"><i class="fa fa-check"></i><b>5</b> 正则表达式</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="character-constants.html"><a href="character-constants.html"><i class="fa fa-check"></i><b>5.1</b> 字符常量</a></li>
+<li class="chapter" data-level="5.2" data-path="environments.html"><a href="environments.html"><i class="fa fa-check"></i><b>5.2</b> 软件环境</a></li>
+<li class="chapter" data-level="5.3" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>5.3</b> 基本概念</a></li>
+<li class="chapter" data-level="5.4" data-path="match.html"><a href="match.html"><i class="fa fa-check"></i><b>5.4</b> 字符串匹配</a></li>
+<li class="chapter" data-level="5.5" data-path="concatenation.html"><a href="concatenation.html"><i class="fa fa-check"></i><b>5.5</b> 级联表达式</a></li>
+<li class="chapter" data-level="5.6" data-path="backreference.html"><a href="backreference.html"><i class="fa fa-check"></i><b>5.6</b> 反向引用</a></li>
+<li class="chapter" data-level="5.7" data-path="regexp-named-capture.html"><a href="regexp-named-capture.html"><i class="fa fa-check"></i><b>5.7</b> 命名捕捉</a></li>
+<li class="chapter" data-level="5.8" data-path="comment.html"><a href="comment.html"><i class="fa fa-check"></i><b>5.8</b> 表达式注释</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="chap-data-manipulation.html"><a href="chap-data-manipulation.html"><i class="fa fa-check"></i><b>6</b> 数据操作</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dm-view.html"><a href="dm-view.html"><i class="fa fa-check"></i><b>6.1</b> 查看数据</a></li>
+<li class="chapter" data-level="6.2" data-path="dm-subset.html"><a href="dm-subset.html"><i class="fa fa-check"></i><b>6.2</b> 提取子集</a></li>
+<li class="chapter" data-level="6.3" data-path="dm-reshape.html"><a href="dm-reshape.html"><i class="fa fa-check"></i><b>6.3</b> 数据重塑</a></li>
+<li class="chapter" data-level="6.4" data-path="dm-transform.html"><a href="dm-transform.html"><i class="fa fa-check"></i><b>6.4</b> 数据转换</a></li>
+<li class="chapter" data-level="6.5" data-path="dm-order.html"><a href="dm-order.html"><i class="fa fa-check"></i><b>6.5</b> 按列排序</a></li>
+<li class="chapter" data-level="6.6" data-path="dm-split.html"><a href="dm-split.html"><i class="fa fa-check"></i><b>6.6</b> 数据拆分</a></li>
+<li class="chapter" data-level="6.7" data-path="dm-merge.html"><a href="dm-merge.html"><i class="fa fa-check"></i><b>6.7</b> 数据合并</a></li>
+<li class="chapter" data-level="6.8" data-path="dm-duplicated.html"><a href="dm-duplicated.html"><i class="fa fa-check"></i><b>6.8</b> 数据去重</a></li>
+<li class="chapter" data-level="6.9" data-path="dm-missing.html"><a href="dm-missing.html"><i class="fa fa-check"></i><b>6.9</b> 数据缺失</a></li>
+<li class="chapter" data-level="6.10" data-path="dm-aggregate.html"><a href="dm-aggregate.html"><i class="fa fa-check"></i><b>6.10</b> 数据聚合</a></li>
+<li class="chapter" data-level="6.11" data-path="dm-table.html"><a href="dm-table.html"><i class="fa fa-check"></i><b>6.11</b> 表格统计</a></li>
+<li class="chapter" data-level="6.12" data-path="dm-index.html"><a href="dm-index.html"><i class="fa fa-check"></i><b>6.12</b> 索引访问</a></li>
+<li class="chapter" data-level="6.13" data-path="dm-array.html"><a href="dm-array.html"><i class="fa fa-check"></i><b>6.13</b> 多维数组</a></li>
+<li class="chapter" data-level="6.14" data-path="dm-others.html"><a href="dm-others.html"><i class="fa fa-check"></i><b>6.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="dm-others.html"><a href="dm-others.html#relist-or-unlist"><i class="fa fa-check"></i><b>6.14.1</b> 列表属性</a></li>
+<li class="chapter" data-level="6.14.2" data-path="dm-others.html"><a href="dm-others.html#stack-or-unstack"><i class="fa fa-check"></i><b>6.14.2</b> 堆叠向量</a></li>
+<li class="chapter" data-level="6.14.3" data-path="dm-others.html"><a href="dm-others.html#class-or-unclass"><i class="fa fa-check"></i><b>6.14.3</b> 属性转化</a></li>
+<li class="chapter" data-level="6.14.4" data-path="dm-others.html"><a href="dm-others.html#attach-or-detach"><i class="fa fa-check"></i><b>6.14.4</b> 绑定环境</a></li>
+<li class="chapter" data-level="6.14.5" data-path="dm-others.html"><a href="dm-others.html#with-or-within"><i class="fa fa-check"></i><b>6.14.5</b> 数据环境</a></li>
+</ul></li>
+<li class="chapter" data-level="6.15" data-path="dm-apply-family.html"><a href="dm-apply-family.html"><i class="fa fa-check"></i><b>6.15</b> apply 族</a></li>
+<li class="chapter" data-level="6.16" data-path="sec-option-with.html"><a href="sec-option-with.html"><i class="fa fa-check"></i><b>6.16</b> with 选项</a></li>
+<li class="chapter" data-level="6.17" data-path="sec-aggregate.html"><a href="sec-aggregate.html"><i class="fa fa-check"></i><b>6.17</b> 分组聚合</a></li>
+<li class="chapter" data-level="6.18" data-path="sec-merge-two-tables.html"><a href="sec-merge-two-tables.html"><i class="fa fa-check"></i><b>6.18</b> 合并操作</a></li>
+<li class="chapter" data-level="6.19" data-path="sec-reshape.html"><a href="sec-reshape.html"><i class="fa fa-check"></i><b>6.19</b> 长宽转换</a></li>
+<li class="chapter" data-level="6.20" data-path="sec-filter-columns.html"><a href="sec-filter-columns.html"><i class="fa fa-check"></i><b>6.20</b> 对符合条件的列操作</a></li>
+<li class="chapter" data-level="6.21" data-path="sec-case-when.html"><a href="sec-case-when.html"><i class="fa fa-check"></i><b>6.21</b> <code>CASE WHEN</code> 和 <code>fcase</code></a></li>
+<li class="chapter" data-level="6.22" data-path="sec-datatable-in-action.html"><a href="sec-datatable-in-action.html"><i class="fa fa-check"></i><b>6.22</b> 数据操作实战</a></li>
+<li class="chapter" data-level="6.23" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html"><i class="fa fa-check"></i><b>6.23</b> 高频数据操作</a>
+<ul>
+<li class="chapter" data-level="6.23.1" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-reduce-merge"><i class="fa fa-check"></i><b>6.23.1</b> 循环合并</a></li>
+<li class="chapter" data-level="6.23.2" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-count-by-group"><i class="fa fa-check"></i><b>6.23.2</b> 分组计数</a></li>
+<li class="chapter" data-level="6.23.3" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-sample-by-group"><i class="fa fa-check"></i><b>6.23.3</b> 分组抽样</a></li>
+<li class="chapter" data-level="6.23.4" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-order-by-group"><i class="fa fa-check"></i><b>6.23.4</b> 分组排序</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chap-advanced-manipulation.html"><a href="chap-advanced-manipulation.html"><i class="fa fa-check"></i><b>7</b> 高级数据操作</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>7.1</b> 基础介绍</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="intro.html"><a href="intro.html#subsec-filter-i"><i class="fa fa-check"></i><b>7.1.1</b> 过滤</a></li>
+<li class="chapter" data-level="7.1.2" data-path="intro.html"><a href="intro.html#subsec-mutate-j"><i class="fa fa-check"></i><b>7.1.2</b> 变换</a></li>
+<li class="chapter" data-level="7.1.3" data-path="intro.html"><a href="intro.html#subsec-summarise-j"><i class="fa fa-check"></i><b>7.1.3</b> 聚合</a></li>
+<li class="chapter" data-level="7.1.4" data-path="intro.html"><a href="intro.html#subsec-setname"><i class="fa fa-check"></i><b>7.1.4</b> 命名</a></li>
+<li class="chapter" data-level="7.1.5" data-path="intro.html"><a href="intro.html#subsec-order-by-j"><i class="fa fa-check"></i><b>7.1.5</b> 排序</a></li>
+<li class="chapter" data-level="7.1.6" data-path="intro.html"><a href="intro.html#subsec-reshape"><i class="fa fa-check"></i><b>7.1.6</b> 变形</a></li>
+<li class="chapter" data-level="7.1.7" data-path="intro.html"><a href="intro.html#subsec-group-by"><i class="fa fa-check"></i><b>7.1.7</b> 分组</a></li>
+<li class="chapter" data-level="7.1.8" data-path="intro.html"><a href="intro.html#subsec-merge"><i class="fa fa-check"></i><b>7.1.8</b> 合并</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html"><i class="fa fa-check"></i><b>7.2</b> 高频操作</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select"><i class="fa fa-check"></i><b>7.2.1</b> 选择多列</a></li>
+<li class="chapter" data-level="7.2.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-filter"><i class="fa fa-check"></i><b>7.2.2</b> 过滤多行</a></li>
+<li class="chapter" data-level="7.2.3" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-duplicated"><i class="fa fa-check"></i><b>7.2.3</b> 去重多行</a></li>
+<li class="chapter" data-level="7.2.4" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge"><i class="fa fa-check"></i><b>7.2.4</b> 合并操作</a></li>
+<li class="chapter" data-level="7.2.5" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-add-columns"><i class="fa fa-check"></i><b>7.2.5</b> 新添多列</a></li>
+<li class="chapter" data-level="7.2.6" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-delete-columns"><i class="fa fa-check"></i><b>7.2.6</b> 删除多列</a></li>
+<li class="chapter" data-level="7.2.7" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-columns"><i class="fa fa-check"></i><b>7.2.7</b> 筛选多列</a></li>
+<li class="chapter" data-level="7.2.8" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-modify-columns-type"><i class="fa fa-check"></i><b>7.2.8</b> 修改多列类型</a></li>
+<li class="chapter" data-level="7.2.9" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-first-row"><i class="fa fa-check"></i><b>7.2.9</b> 取每组第一行</a></li>
+<li class="chapter" data-level="7.2.10" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#subsec-mom-vs-yoy"><i class="fa fa-check"></i><b>7.2.10</b> 计算环比同比</a></li>
+<li class="chapter" data-level="7.2.11" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge-multi-dfs"><i class="fa fa-check"></i><b>7.2.11</b> 合并多个数据框</a></li>
+<li class="chapter" data-level="7.2.12" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-multiple-aggregations"><i class="fa fa-check"></i><b>7.2.12</b> 分组聚合多个指标</a></li>
+<li class="chapter" data-level="7.2.13" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rename-multi-cols"><i class="fa fa-check"></i><b>7.2.13</b> 重命名多个列</a></li>
+<li class="chapter" data-level="7.2.14" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-sort-multi-cols"><i class="fa fa-check"></i><b>7.2.14</b> 对多个列依次排序</a></li>
+<li class="chapter" data-level="7.2.15" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rearrange-position-multi-cols"><i class="fa fa-check"></i><b>7.2.15</b> 重排多个列的位置</a></li>
+<li class="chapter" data-level="7.2.16" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-tidy-output"><i class="fa fa-check"></i><b>7.2.16</b> 整理回归结果</a></li>
+<li class="chapter" data-level="7.2.17" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-assignment-by-reference"><i class="fa fa-check"></i><b>7.2.17</b> <code>:=</code> 和 <code>.()</code></a></li>
+<li class="chapter" data-level="7.2.18" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-remove-na"><i class="fa fa-check"></i><b>7.2.18</b> 去掉含有缺失值的记录</a></li>
+<li class="chapter" data-level="7.2.19" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-match-set"><i class="fa fa-check"></i><b>7.2.19</b> 集合操作</a></li>
+<li class="chapter" data-level="7.2.20" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#transform-cut-aggregate"><i class="fa fa-check"></i><b>7.2.20</b> 对数值向量按既定分组计数</a></li>
+<li class="chapter" data-level="7.2.21" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#aggregate-order"><i class="fa fa-check"></i><b>7.2.21</b> 分组排序</a></li>
+<li class="chapter" data-level="7.2.22" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-order"><i class="fa fa-check"></i><b>7.2.22</b> 分组获取 Top 值</a></li>
+<li class="chapter" data-level="7.2.23" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-sample"><i class="fa fa-check"></i><b>7.2.23</b> 分组抽样</a></li>
+<li class="chapter" data-level="7.2.24" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-quantile"><i class="fa fa-check"></i><b>7.2.24</b> 分组计算分位数</a></li>
+<li class="chapter" data-level="7.2.25" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#shift-lag"><i class="fa fa-check"></i><b>7.2.25</b> 计算日粒度的 DoD/WoW/MoM/YoY</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-adm-sessioninfo.html"><a href="sec-adm-sessioninfo.html"><i class="fa fa-check"></i><b>7.3</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="chap-parallel-manipulation.html"><a href="chap-parallel-manipulation.html"><i class="fa fa-check"></i><b>8</b> 并行化操作</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="apply.html"><a href="apply.html"><i class="fa fa-check"></i><b>8.1</b> apply</a></li>
+<li class="chapter" data-level="8.2" data-path="map-reduce.html"><a href="map-reduce.html"><i class="fa fa-check"></i><b>8.2</b> MapReduce</a></li>
+<li class="chapter" data-level="8.3" data-path="parallel.html"><a href="parallel.html"><i class="fa fa-check"></i><b>8.3</b> parallel</a></li>
+<li class="chapter" data-level="8.4" data-path="rmpi.html"><a href="rmpi.html"><i class="fa fa-check"></i><b>8.4</b> Rmpi</a></li>
+<li class="chapter" data-level="8.5" data-path="gpur.html"><a href="gpur.html"><i class="fa fa-check"></i><b>8.5</b> gpuR</a></li>
+<li class="chapter" data-level="8.6" data-path="parallel-sessioninfo.html"><a href="parallel-sessioninfo.html"><i class="fa fa-check"></i><b>8.6</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chap-dplyr-manipulation.html"><a href="chap-dplyr-manipulation.html"><i class="fa fa-check"></i><b>9</b> 净土化操作</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="common-operations.html"><a href="common-operations.html"><i class="fa fa-check"></i><b>9.1</b> 常用操作</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="common-operations.html"><a href="common-operations.html#tibble-show"><i class="fa fa-check"></i><b>9.1.1</b> 查看</a></li>
+<li class="chapter" data-level="9.1.2" data-path="common-operations.html"><a href="common-operations.html#dplyr-filter"><i class="fa fa-check"></i><b>9.1.2</b> 筛选</a></li>
+<li class="chapter" data-level="9.1.3" data-path="common-operations.html"><a href="common-operations.html#dplyr-arrange"><i class="fa fa-check"></i><b>9.1.3</b> 排序</a></li>
+<li class="chapter" data-level="9.1.4" data-path="common-operations.html"><a href="common-operations.html#dplyr-summarise"><i class="fa fa-check"></i><b>9.1.4</b> 聚合</a></li>
+<li class="chapter" data-level="9.1.5" data-path="common-operations.html"><a href="common-operations.html#dplyr-merge"><i class="fa fa-check"></i><b>9.1.5</b> 合并</a></li>
+<li class="chapter" data-level="9.1.6" data-path="common-operations.html"><a href="common-operations.html#dplyr-mutate"><i class="fa fa-check"></i><b>9.1.6</b> 变换</a></li>
+<li class="chapter" data-level="9.1.7" data-path="common-operations.html"><a href="common-operations.html#dplyr-duplicated"><i class="fa fa-check"></i><b>9.1.7</b> 去重</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html"><i class="fa fa-check"></i><b>9.2</b> 高频问题</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#create-empty-dataframe"><i class="fa fa-check"></i><b>9.2.1</b> 初始化数据框</a></li>
+<li class="chapter" data-level="9.2.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#remove-missing-values"><i class="fa fa-check"></i><b>9.2.2</b> 移除缺失记录</a></li>
+<li class="chapter" data-level="9.2.3" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#coerce-data-type"><i class="fa fa-check"></i><b>9.2.3</b> 数据类型转化</a></li>
+<li class="chapter" data-level="9.2.4" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#cross-group-by"><i class="fa fa-check"></i><b>9.2.4</b> 跨列分组求和</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="pipe-manipulation.html"><a href="pipe-manipulation.html"><i class="fa fa-check"></i><b>9.3</b> 管道操作</a></li>
+</ul></li>
+<li class="part"><span><b>II 统计图形</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-graphics.html"><a href="chap-statistical-graphics.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="10" data-path="chap-graphics-foundations.html"><a href="chap-graphics-foundations.html"><i class="fa fa-check"></i><b>10</b> 图形基础</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="graphics-elements.html"><a href="graphics-elements.html"><i class="fa fa-check"></i><b>10.1</b> 绘图基本要素</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="graphics-elements.html"><a href="graphics-elements.html#base-points"><i class="fa fa-check"></i><b>10.1.1</b> 点线</a></li>
+<li class="chapter" data-level="10.1.2" data-path="graphics-elements.html"><a href="graphics-elements.html#base-rect"><i class="fa fa-check"></i><b>10.1.2</b> 区域</a></li>
+<li class="chapter" data-level="10.1.3" data-path="graphics-elements.html"><a href="graphics-elements.html#base-lines"><i class="fa fa-check"></i><b>10.1.3</b> 参考线</a></li>
+<li class="chapter" data-level="10.1.4" data-path="graphics-elements.html"><a href="graphics-elements.html#base-axis"><i class="fa fa-check"></i><b>10.1.4</b> 坐标轴</a></li>
+<li class="chapter" data-level="10.1.5" data-path="graphics-elements.html"><a href="graphics-elements.html#base-tick"><i class="fa fa-check"></i><b>10.1.5</b> 刻度线</a></li>
+<li class="chapter" data-level="10.1.6" data-path="graphics-elements.html"><a href="graphics-elements.html#base-title"><i class="fa fa-check"></i><b>10.1.6</b> 标题</a></li>
+<li class="chapter" data-level="10.1.7" data-path="graphics-elements.html"><a href="graphics-elements.html#base-annotation"><i class="fa fa-check"></i><b>10.1.7</b> 注释</a></li>
+<li class="chapter" data-level="10.1.8" data-path="graphics-elements.html"><a href="graphics-elements.html#base-legend"><i class="fa fa-check"></i><b>10.1.8</b> 图例</a></li>
+<li class="chapter" data-level="10.1.9" data-path="graphics-elements.html"><a href="graphics-elements.html#base-par"><i class="fa fa-check"></i><b>10.1.9</b> 边空</a></li>
+<li class="chapter" data-level="10.1.10" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layer"><i class="fa fa-check"></i><b>10.1.10</b> 图层</a></li>
+<li class="chapter" data-level="10.1.11" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layout"><i class="fa fa-check"></i><b>10.1.11</b> 布局</a></li>
+<li class="chapter" data-level="10.1.12" data-path="graphics-elements.html"><a href="graphics-elements.html#base-combine"><i class="fa fa-check"></i><b>10.1.12</b> 组合</a></li>
+<li class="chapter" data-level="10.1.13" data-path="graphics-elements.html"><a href="graphics-elements.html#base-screen"><i class="fa fa-check"></i><b>10.1.13</b> 分屏</a></li>
+<li class="chapter" data-level="10.1.14" data-path="graphics-elements.html"><a href="graphics-elements.html#identify-locator"><i class="fa fa-check"></i><b>10.1.14</b> 交互</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="base-graphics.html"><a href="base-graphics.html"><i class="fa fa-check"></i><b>10.2</b> 基础统计图形</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="base-graphics.html"><a href="base-graphics.html#plot-bar"><i class="fa fa-check"></i><b>10.2.1</b> 条形图</a></li>
+<li class="chapter" data-level="10.2.2" data-path="base-graphics.html"><a href="base-graphics.html#plot-hist"><i class="fa fa-check"></i><b>10.2.2</b> 直方图</a></li>
+<li class="chapter" data-level="10.2.3" data-path="base-graphics.html"><a href="base-graphics.html#plot-density"><i class="fa fa-check"></i><b>10.2.3</b> 密度图</a></li>
+<li class="chapter" data-level="10.2.4" data-path="base-graphics.html"><a href="base-graphics.html#plot-ecdf"><i class="fa fa-check"></i><b>10.2.4</b> 经验图</a></li>
+<li class="chapter" data-level="10.2.5" data-path="base-graphics.html"><a href="base-graphics.html#plot-qqnorm"><i class="fa fa-check"></i><b>10.2.5</b> QQ 图</a></li>
+<li class="chapter" data-level="10.2.6" data-path="base-graphics.html"><a href="base-graphics.html#plot-ts"><i class="fa fa-check"></i><b>10.2.6</b> 时序图</a></li>
+<li class="chapter" data-level="10.2.7" data-path="base-graphics.html"><a href="base-graphics.html#plot-pie"><i class="fa fa-check"></i><b>10.2.7</b> 饼图</a></li>
+<li class="chapter" data-level="10.2.8" data-path="base-graphics.html"><a href="base-graphics.html#plot-stem-leaf"><i class="fa fa-check"></i><b>10.2.8</b> 茎叶图</a></li>
+<li class="chapter" data-level="10.2.9" data-path="base-graphics.html"><a href="base-graphics.html#plot-scatter"><i class="fa fa-check"></i><b>10.2.9</b> 散点图</a></li>
+<li class="chapter" data-level="10.2.10" data-path="base-graphics.html"><a href="base-graphics.html#base-jitter"><i class="fa fa-check"></i><b>10.2.10</b> 抖动图</a></li>
+<li class="chapter" data-level="10.2.11" data-path="base-graphics.html"><a href="base-graphics.html#plot-box"><i class="fa fa-check"></i><b>10.2.11</b> 箱线图</a></li>
+<li class="chapter" data-level="10.2.12" data-path="base-graphics.html"><a href="base-graphics.html#error-bars"><i class="fa fa-check"></i><b>10.2.12</b> 残差图</a></li>
+<li class="chapter" data-level="10.2.13" data-path="base-graphics.html"><a href="base-graphics.html#plot-violin"><i class="fa fa-check"></i><b>10.2.13</b> 提琴图</a></li>
+<li class="chapter" data-level="10.2.14" data-path="base-graphics.html"><a href="base-graphics.html#plot-contour"><i class="fa fa-check"></i><b>10.2.14</b> 轮廓图</a></li>
+<li class="chapter" data-level="10.2.15" data-path="base-graphics.html"><a href="base-graphics.html#plot-line"><i class="fa fa-check"></i><b>10.2.15</b> 折线图</a></li>
+<li class="chapter" data-level="10.2.16" data-path="base-graphics.html"><a href="base-graphics.html#function"><i class="fa fa-check"></i><b>10.2.16</b> 函数图</a></li>
+<li class="chapter" data-level="10.2.17" data-path="base-graphics.html"><a href="base-graphics.html#plot-mosaic"><i class="fa fa-check"></i><b>10.2.17</b> 马赛克图</a></li>
+<li class="chapter" data-level="10.2.18" data-path="base-graphics.html"><a href="base-graphics.html#plot-dotchart"><i class="fa fa-check"></i><b>10.2.18</b> 点图</a></li>
+<li class="chapter" data-level="10.2.19" data-path="base-graphics.html"><a href="base-graphics.html#plot-matrix"><i class="fa fa-check"></i><b>10.2.19</b> 矩阵图</a></li>
+<li class="chapter" data-level="10.2.20" data-path="base-graphics.html"><a href="base-graphics.html#plot-radar"><i class="fa fa-check"></i><b>10.2.20</b> 雷达图</a></li>
+<li class="chapter" data-level="10.2.21" data-path="base-graphics.html"><a href="base-graphics.html#plot-rose"><i class="fa fa-check"></i><b>10.2.21</b> 玫瑰图</a></li>
+<li class="chapter" data-level="10.2.22" data-path="base-graphics.html"><a href="base-graphics.html#plot-persp"><i class="fa fa-check"></i><b>10.2.22</b> 透视图</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html"><i class="fa fa-check"></i><b>10.3</b> 栅格统计图形</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-line"><i class="fa fa-check"></i><b>10.3.1</b> 时序图</a></li>
+<li class="chapter" data-level="10.3.2" data-path="lattice-graphics.html"><a href="lattice-graphics.html#水平图"><i class="fa fa-check"></i><b>10.3.2</b> 水平图</a></li>
+<li class="chapter" data-level="10.3.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html#折线图"><i class="fa fa-check"></i><b>10.3.3</b> 折线图</a></li>
+<li class="chapter" data-level="10.3.4" data-path="lattice-graphics.html"><a href="lattice-graphics.html#高级设置"><i class="fa fa-check"></i><b>10.3.4</b> 高级设置</a></li>
+<li class="chapter" data-level="10.3.5" data-path="lattice-graphics.html"><a href="lattice-graphics.html#柱形图"><i class="fa fa-check"></i><b>10.3.5</b> 柱形图</a></li>
+<li class="chapter" data-level="10.3.6" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-smooth"><i class="fa fa-check"></i><b>10.3.6</b> Rootograms</a></li>
+<li class="chapter" data-level="10.3.7" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-persp"><i class="fa fa-check"></i><b>10.3.7</b> 透视图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="chap-visualization-colors.html"><a href="chap-visualization-colors.html"><i class="fa fa-check"></i><b>11</b> 可视化之配色</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="subsec-color-palettes.html"><a href="subsec-color-palettes.html"><i class="fa fa-check"></i><b>11.1</b> 调色板</a></li>
+<li class="chapter" data-level="11.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html"><i class="fa fa-check"></i><b>11.2</b> 颜色模式</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#rgb"><i class="fa fa-check"></i><b>11.2.1</b> RGB</a></li>
+<li class="chapter" data-level="11.2.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsl"><i class="fa fa-check"></i><b>11.2.2</b> HSL</a></li>
+<li class="chapter" data-level="11.2.3" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsv"><i class="fa fa-check"></i><b>11.2.3</b> HSV</a></li>
+<li class="chapter" data-level="11.2.4" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hcl"><i class="fa fa-check"></i><b>11.2.4</b> HCL</a></li>
+<li class="chapter" data-level="11.2.5" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#cmyk"><i class="fa fa-check"></i><b>11.2.5</b> CMYK</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="subsec-latex-colors.html"><a href="subsec-latex-colors.html"><i class="fa fa-check"></i><b>11.3</b> LaTeX 配色</a></li>
+<li class="chapter" data-level="11.4" data-path="subsec-ggplot2-colors.html"><a href="subsec-ggplot2-colors.html"><i class="fa fa-check"></i><b>11.4</b> ggplot2 配色</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chap-gallery.html"><a href="chap-gallery.html"><i class="fa fa-check"></i><b>12</b> 可视化之图库</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="sec-ggplot2-pie.html"><a href="sec-ggplot2-pie.html"><i class="fa fa-check"></i><b>12.1</b> 饼图</a></li>
+<li class="chapter" data-level="12.2" data-path="sec-ggplot2-map.html"><a href="sec-ggplot2-map.html"><i class="fa fa-check"></i><b>12.2</b> 地图</a></li>
+<li class="chapter" data-level="12.3" data-path="sec-ggplot2-heatmap.html"><a href="sec-ggplot2-heatmap.html"><i class="fa fa-check"></i><b>12.3</b> 热图</a></li>
+<li class="chapter" data-level="12.4" data-path="ggplot2-scatter.html"><a href="ggplot2-scatter.html"><i class="fa fa-check"></i><b>12.4</b> 散点图</a></li>
+<li class="chapter" data-level="12.5" data-path="sec-ggplot2-barplot.html"><a href="sec-ggplot2-barplot.html"><i class="fa fa-check"></i><b>12.5</b> 条形图</a></li>
+<li class="chapter" data-level="12.6" data-path="ggplot2-histogram.html"><a href="ggplot2-histogram.html"><i class="fa fa-check"></i><b>12.6</b> 直方图</a></li>
+<li class="chapter" data-level="12.7" data-path="ggplot2-boxplot.html"><a href="ggplot2-boxplot.html"><i class="fa fa-check"></i><b>12.7</b> 箱线图</a></li>
+<li class="chapter" data-level="12.8" data-path="sec-ggplot2-function.html"><a href="sec-ggplot2-function.html"><i class="fa fa-check"></i><b>12.8</b> 函数图</a></li>
+<li class="chapter" data-level="12.9" data-path="sec-ggplot2-density.html"><a href="sec-ggplot2-density.html"><i class="fa fa-check"></i><b>12.9</b> 密度图</a></li>
+<li class="chapter" data-level="12.10" data-path="sec-ggplot2-violin.html"><a href="sec-ggplot2-violin.html"><i class="fa fa-check"></i><b>12.10</b> 提琴图</a></li>
+<li class="chapter" data-level="12.11" data-path="ggplot2-jitter.html"><a href="ggplot2-jitter.html"><i class="fa fa-check"></i><b>12.11</b> 抖动图</a></li>
+<li class="chapter" data-level="12.12" data-path="sec-ggplot2-beeswarm.html"><a href="sec-ggplot2-beeswarm.html"><i class="fa fa-check"></i><b>12.12</b> 蜂群图</a></li>
+<li class="chapter" data-level="12.13" data-path="ggplot2-rose.html"><a href="ggplot2-rose.html"><i class="fa fa-check"></i><b>12.13</b> 玫瑰图</a></li>
+<li class="chapter" data-level="12.14" data-path="sec-ggplot2-tile.html"><a href="sec-ggplot2-tile.html"><i class="fa fa-check"></i><b>12.14</b> 瓦片图</a></li>
+<li class="chapter" data-level="12.15" data-path="sec-ggplot2-calendar.html"><a href="sec-ggplot2-calendar.html"><i class="fa fa-check"></i><b>12.15</b> 日历图</a></li>
+<li class="chapter" data-level="12.16" data-path="sec-ggplot2-ridgeline.html"><a href="sec-ggplot2-ridgeline.html"><i class="fa fa-check"></i><b>12.16</b> 岭线图</a></li>
+<li class="chapter" data-level="12.17" data-path="sec-ggplot2-ellipse.html"><a href="sec-ggplot2-ellipse.html"><i class="fa fa-check"></i><b>12.17</b> 椭圆图</a></li>
+<li class="chapter" data-level="12.18" data-path="sec-ggplot2-qq.html"><a href="sec-ggplot2-qq.html"><i class="fa fa-check"></i><b>12.18</b> Q-Q 图</a></li>
+<li class="chapter" data-level="12.19" data-path="sec-ggplot2-chull.html"><a href="sec-ggplot2-chull.html"><i class="fa fa-check"></i><b>12.19</b> 包络图</a></li>
+<li class="chapter" data-level="12.20" data-path="sec-ggplot2-fit.html"><a href="sec-ggplot2-fit.html"><i class="fa fa-check"></i><b>12.20</b> 拟合图</a></li>
+<li class="chapter" data-level="12.21" data-path="sec-ggplot2-raster.html"><a href="sec-ggplot2-raster.html"><i class="fa fa-check"></i><b>12.21</b> 地形图</a></li>
+<li class="chapter" data-level="12.22" data-path="sec-ggplot2-treemap.html"><a href="sec-ggplot2-treemap.html"><i class="fa fa-check"></i><b>12.22</b> 树状图</a></li>
+<li class="chapter" data-level="12.23" data-path="sec-ggplot2-cohort.html"><a href="sec-ggplot2-cohort.html"><i class="fa fa-check"></i><b>12.23</b> 留存图</a></li>
+<li class="chapter" data-level="12.24" data-path="sec-ggplot2-waterfall.html"><a href="sec-ggplot2-waterfall.html"><i class="fa fa-check"></i><b>12.24</b> 瀑布图</a></li>
+<li class="chapter" data-level="12.25" data-path="sec-ggplot2-streamgraph.html"><a href="sec-ggplot2-streamgraph.html"><i class="fa fa-check"></i><b>12.25</b> 水流图</a></li>
+<li class="chapter" data-level="12.26" data-path="sec-ggplot2-vistime.html"><a href="sec-ggplot2-vistime.html"><i class="fa fa-check"></i><b>12.26</b> 时间线</a></li>
+<li class="chapter" data-level="12.27" data-path="sec-ggplot2-ternary.html"><a href="sec-ggplot2-ternary.html"><i class="fa fa-check"></i><b>12.27</b> 三元图</a></li>
+<li class="chapter" data-level="12.28" data-path="sec-vector-fields.html"><a href="sec-vector-fields.html"><i class="fa fa-check"></i><b>12.28</b> 向量场图</a></li>
+<li class="chapter" data-level="12.29" data-path="sec-ggplot2-eisenhower.html"><a href="sec-ggplot2-eisenhower.html"><i class="fa fa-check"></i><b>12.29</b> 四象限图</a></li>
+<li class="chapter" data-level="12.30" data-path="sec-ggplot2-tornado.html"><a href="sec-ggplot2-tornado.html"><i class="fa fa-check"></i><b>12.30</b> 龙卷风图</a></li>
+<li class="chapter" data-level="12.31" data-path="sec-ggplot2-hclust.html"><a href="sec-ggplot2-hclust.html"><i class="fa fa-check"></i><b>12.31</b> 聚类图</a></li>
+<li class="chapter" data-level="12.32" data-path="sec-ggplot2-prcomp.html"><a href="sec-ggplot2-prcomp.html"><i class="fa fa-check"></i><b>12.32</b> 主成分图</a></li>
+<li class="chapter" data-level="12.33" data-path="sec-ggplot2-composite.html"><a href="sec-ggplot2-composite.html"><i class="fa fa-check"></i><b>12.33</b> 组合图</a></li>
+<li class="chapter" data-level="12.34" data-path="sec-ggplot2-animation.html"><a href="sec-ggplot2-animation.html"><i class="fa fa-check"></i><b>12.34</b> 动态图</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chap-interactive-web-graphics.html"><a href="chap-interactive-web-graphics.html"><i class="fa fa-check"></i><b>13</b> 交互图形</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="sec-plotly-scatter.html"><a href="sec-plotly-scatter.html"><i class="fa fa-check"></i><b>13.1</b> 散点图</a></li>
+<li class="chapter" data-level="13.2" data-path="sec-plotly-barplot.html"><a href="sec-plotly-barplot.html"><i class="fa fa-check"></i><b>13.2</b> 条形图</a></li>
+<li class="chapter" data-level="13.3" data-path="sec-plotly-lineplot.html"><a href="sec-plotly-lineplot.html"><i class="fa fa-check"></i><b>13.3</b> 折线图</a></li>
+<li class="chapter" data-level="13.4" data-path="sec-multiple-y-axes.html"><a href="sec-multiple-y-axes.html"><i class="fa fa-check"></i><b>13.4</b> 双轴图</a></li>
+<li class="chapter" data-level="13.5" data-path="sec-plotly-bubble.html"><a href="sec-plotly-bubble.html"><i class="fa fa-check"></i><b>13.5</b> 气泡图</a></li>
+<li class="chapter" data-level="13.6" data-path="sec-plotly-spline.html"><a href="sec-plotly-spline.html"><i class="fa fa-check"></i><b>13.6</b> 曲线图</a></li>
+<li class="chapter" data-level="13.7" data-path="sec-plotly-tozeroy.html"><a href="sec-plotly-tozeroy.html"><i class="fa fa-check"></i><b>13.7</b> 堆积图</a></li>
+<li class="chapter" data-level="13.8" data-path="sec-plotly-heatmap.html"><a href="sec-plotly-heatmap.html"><i class="fa fa-check"></i><b>13.8</b> 热力图</a></li>
+<li class="chapter" data-level="13.9" data-path="sec-plotly-map.html"><a href="sec-plotly-map.html"><i class="fa fa-check"></i><b>13.9</b> 地图上的散点图</a></li>
+<li class="chapter" data-level="13.10" data-path="sec-plotly-fitted.html"><a href="sec-plotly-fitted.html"><i class="fa fa-check"></i><b>13.10</b> 拟合图</a></li>
+<li class="chapter" data-level="13.11" data-path="sec-plotly-rasterly.html"><a href="sec-plotly-rasterly.html"><i class="fa fa-check"></i><b>13.11</b> 轨迹图</a></li>
+<li class="chapter" data-level="13.12" data-path="sec-plotly-gantt-charts.html"><a href="sec-plotly-gantt-charts.html"><i class="fa fa-check"></i><b>13.12</b> 甘特图</a></li>
+<li class="chapter" data-level="13.13" data-path="sec-plotly-pareto-charts.html"><a href="sec-plotly-pareto-charts.html"><i class="fa fa-check"></i><b>13.13</b> 帕雷托图</a></li>
+<li class="chapter" data-level="13.14" data-path="sec-plotly-vistime.html"><a href="sec-plotly-vistime.html"><i class="fa fa-check"></i><b>13.14</b> 时间线</a></li>
+<li class="chapter" data-level="13.15" data-path="sec-plotly-funnel.html"><a href="sec-plotly-funnel.html"><i class="fa fa-check"></i><b>13.15</b> 漏斗图</a></li>
+<li class="chapter" data-level="13.16" data-path="sec-plotly-radar.html"><a href="sec-plotly-radar.html"><i class="fa fa-check"></i><b>13.16</b> 雷达图</a></li>
+<li class="chapter" data-level="13.17" data-path="sec-plotly-waterfall.html"><a href="sec-plotly-waterfall.html"><i class="fa fa-check"></i><b>13.17</b> 瀑布图</a></li>
+<li class="chapter" data-level="13.18" data-path="sec-plotly-treemap.html"><a href="sec-plotly-treemap.html"><i class="fa fa-check"></i><b>13.18</b> 树状图</a></li>
+<li class="chapter" data-level="13.19" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>13.19</b> 旭日图</a></li>
+<li class="chapter" data-level="13.20" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>13.20</b> 调色板</a></li>
+<li class="chapter" data-level="13.21" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>13.21</b> 地图 II</a></li>
+<li class="chapter" data-level="13.22" data-path="sec-echarts4r-animation.html"><a href="sec-echarts4r-animation.html"><i class="fa fa-check"></i><b>13.22</b> 动画</a></li>
+<li class="chapter" data-level="13.23" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html"><i class="fa fa-check"></i><b>13.23</b> 网络图</a>
+<ul>
+<li class="chapter" data-level="13.23.1" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-networkD3"><i class="fa fa-check"></i><b>13.23.1</b> networkD3</a></li>
+<li class="chapter" data-level="13.23.2" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-visNetwork"><i class="fa fa-check"></i><b>13.23.2</b> visNetwork</a></li>
+<li class="chapter" data-level="13.23.3" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-r2d3"><i class="fa fa-check"></i><b>13.23.3</b> r2d3</a></li>
+</ul></li>
+<li class="chapter" data-level="13.24" data-path="sec-web-graphics-session.html"><a href="sec-web-graphics-session.html"><i class="fa fa-check"></i><b>13.24</b> 运行环境</a></li>
+</ul></li>
+<li class="part"><span><b>III 统计计算</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-computation.html"><a href="chap-statistical-computation.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="14" data-path="chap-numerical-optimization.html"><a href="chap-numerical-optimization.html"><i class="fa fa-check"></i><b>14</b> 数值优化</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="sec-linear-programming.html"><a href="sec-linear-programming.html"><i class="fa fa-check"></i><b>14.1</b> 线性规划</a></li>
+<li class="chapter" data-level="14.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html"><i class="fa fa-check"></i><b>14.2</b> 整数规划</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#common-integer-programming"><i class="fa fa-check"></i><b>14.2.1</b> 一般整数规划</a></li>
+<li class="chapter" data-level="14.2.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#binary-integer-programming"><i class="fa fa-check"></i><b>14.2.2</b> 0-1 整数规划</a></li>
+<li class="chapter" data-level="14.2.3" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#mixed-integer-programming"><i class="fa fa-check"></i><b>14.2.3</b> 混合整数规划</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html"><i class="fa fa-check"></i><b>14.3</b> 二次规划</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#sec-strictly-convex-quadratic-program"><i class="fa fa-check"></i><b>14.3.1</b> 凸二次规划</a></li>
+<li class="chapter" data-level="14.3.2" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#subsec-semidefinite-optimization"><i class="fa fa-check"></i><b>14.3.2</b> 半正定二次优化</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>14.4</b> 非线性规划</a>
+<ul>
+<li class="chapter" data-level="14.4.1" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-one-dimensional-optimization"><i class="fa fa-check"></i><b>14.4.1</b> 一元非线性优化</a></li>
+<li class="chapter" data-level="14.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-unconstrained-optimization"><i class="fa fa-check"></i><b>14.4.2</b> 多元非线性无约束优化</a></li>
+<li class="chapter" data-level="14.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-constrained-optimization"><i class="fa fa-check"></i><b>14.4.3</b> 多元非线性约束优化</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chap-differential-equations.html"><a href="chap-differential-equations.html"><i class="fa fa-check"></i><b>15</b> 微分方程</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="sec-ordinary-differential-equations.html"><a href="sec-ordinary-differential-equations.html"><i class="fa fa-check"></i><b>15.1</b> 常微分方程</a></li>
+<li class="chapter" data-level="15.2" data-path="sec-partial-differential-equations.html"><a href="sec-partial-differential-equations.html"><i class="fa fa-check"></i><b>15.2</b> 偏微分方程</a></li>
+<li class="chapter" data-level="15.3" data-path="sec-delay-differential-equations.html"><a href="sec-delay-differential-equations.html"><i class="fa fa-check"></i><b>15.3</b> 延迟微分方程</a></li>
+<li class="chapter" data-level="15.4" data-path="sec-stochastic-differential-equations.html"><a href="sec-stochastic-differential-equations.html"><i class="fa fa-check"></i><b>15.4</b> 随机微分方程</a></li>
+</ul></li>
+<li class="appendix"><span><b>附录</b></span></li>
+<li class="chapter" data-level="A" data-path="chap-linux-command-bash.html"><a href="chap-linux-command-bash.html"><i class="fa fa-check"></i><b>A</b> 命令行操作</a>
+<ul>
+<li class="chapter" data-level="A.1" data-path="sec-ls.html"><a href="sec-ls.html"><i class="fa fa-check"></i><b>A.1</b> 查看文件</a></li>
+<li class="chapter" data-level="A.2" data-path="sec-mkdir.html"><a href="sec-mkdir.html"><i class="fa fa-check"></i><b>A.2</b> 创建文件夹</a></li>
+<li class="chapter" data-level="A.3" data-path="sec-mv.html"><a href="sec-mv.html"><i class="fa fa-check"></i><b>A.3</b> 移动文件</a></li>
+<li class="chapter" data-level="A.4" data-path="sec-du.html"><a href="sec-du.html"><i class="fa fa-check"></i><b>A.4</b> 查看文件大小</a></li>
+<li class="chapter" data-level="A.5" data-path="sec-shell.html"><a href="sec-shell.html"><i class="fa fa-check"></i><b>A.5</b> 终端模拟器</a></li>
+<li class="chapter" data-level="A.6" data-path="sec-tar.html"><a href="sec-tar.html"><i class="fa fa-check"></i><b>A.6</b> 压缩和解压缩</a></li>
+<li class="chapter" data-level="A.7" data-path="repo-install.html"><a href="repo-install.html"><i class="fa fa-check"></i><b>A.7</b> 从仓库安装 R</a>
+<ul>
+<li class="chapter" data-level="A.7.1" data-path="repo-install.html"><a href="repo-install.html#ubuntu"><i class="fa fa-check"></i><b>A.7.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.7.2" data-path="repo-install.html"><a href="repo-install.html#centos"><i class="fa fa-check"></i><b>A.7.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.8" data-path="source-install.html"><a href="source-install.html"><i class="fa fa-check"></i><b>A.8</b> 源码安装</a>
+<ul>
+<li class="chapter" data-level="A.8.1" data-path="source-install.html"><a href="source-install.html#ubuntu-1"><i class="fa fa-check"></i><b>A.8.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.8.2" data-path="source-install.html"><a href="source-install.html#centos-1"><i class="fa fa-check"></i><b>A.8.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.9" data-path="ninja-install.html"><a href="ninja-install.html"><i class="fa fa-check"></i><b>A.9</b> 忍者安装</a></li>
+<li class="chapter" data-level="A.10" data-path="settings.html"><a href="settings.html"><i class="fa fa-check"></i><b>A.10</b> 配置</a>
+<ul>
+<li class="chapter" data-level="A.10.1" data-path="settings.html"><a href="settings.html#init-session"><i class="fa fa-check"></i><b>A.10.1</b> 初始会话 <code>.Rprofile</code></a></li>
+<li class="chapter" data-level="A.10.2" data-path="settings.html"><a href="settings.html#environ-vars"><i class="fa fa-check"></i><b>A.10.2</b> 环境变量 <code>.Renviron</code></a></li>
+<li class="chapter" data-level="A.10.3" data-path="settings.html"><a href="settings.html#make-vars"><i class="fa fa-check"></i><b>A.10.3</b> 编译选项 <code>Makevars</code></a></li>
+</ul></li>
+<li class="chapter" data-level="A.11" data-path="command-line-arguments.html"><a href="command-line-arguments.html"><i class="fa fa-check"></i><b>A.11</b> 命令行参数</a></li>
+<li class="chapter" data-level="A.12" data-path="sec-build-source-code.html"><a href="sec-build-source-code.html"><i class="fa fa-check"></i><b>A.12</b> 从源码安装 R</a></li>
+<li class="chapter" data-level="A.13" data-path="install-softwares.html"><a href="install-softwares.html"><i class="fa fa-check"></i><b>A.13</b> 安装软件</a></li>
+<li class="chapter" data-level="A.14" data-path="sec-install-r-pkgs.html"><a href="sec-install-r-pkgs.html"><i class="fa fa-check"></i><b>A.14</b> 安装 R 包</a></li>
+<li class="chapter" data-level="A.15" data-path="sec-software-manager.html"><a href="sec-software-manager.html"><i class="fa fa-check"></i><b>A.15</b> 软件包管理器</a>
+<ul>
+<li class="chapter" data-level="A.15.1" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-dnf-yum"><i class="fa fa-check"></i><b>A.15.1</b> dnf</a></li>
+<li class="chapter" data-level="A.15.2" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-apt-get"><i class="fa fa-check"></i><b>A.15.2</b> apt</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>参考文献</a></li>
+<li class="divider"></li>
+<li><a href="https://xiangyunhuang.github.io/notesdown/" target="blank">Published with Github Pages</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 语言学习笔记</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="subsec-color-palettes" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> 调色板<a href="subsec-color-palettes.html#subsec-color-palettes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R 预置的灰色有224种，挑出其中的调色板</p>
+<div class="sourceCode" id="cb1430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1430-1"><a href="subsec-color-palettes.html#cb1430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^gr(a|e)y&quot;</span>, <span class="fu">grep</span>(<span class="st">&quot;gr(a|e)y&quot;</span>, <span class="fu">colors</span>(), <span class="at">value =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb1430-2"><a href="subsec-color-palettes.html#cb1430-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">value =</span> <span class="cn">TRUE</span>, <span class="at">invert =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;darkgray&quot;       &quot;darkgrey&quot;       &quot;darkslategray&quot;  &quot;darkslategray1&quot;
+##  [5] &quot;darkslategray2&quot; &quot;darkslategray3&quot; &quot;darkslategray4&quot; &quot;darkslategrey&quot; 
+##  [9] &quot;dimgray&quot;        &quot;dimgrey&quot;        &quot;lightgray&quot;      &quot;lightgrey&quot;     
+## [13] &quot;lightslategray&quot; &quot;lightslategrey&quot; &quot;slategray&quot;      &quot;slategray1&quot;    
+## [17] &quot;slategray2&quot;     &quot;slategray3&quot;     &quot;slategray4&quot;     &quot;slategrey&quot;</code></pre>
+<div class="sourceCode" id="cb1432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1432-1"><a href="subsec-color-palettes.html#cb1432-1" aria-hidden="true" tabindex="-1"></a>gray_colors <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;slategray&quot;</span>, <span class="st">&quot;darkslategray&quot;</span>), <span class="at">each =</span> <span class="dv">4</span>), <span class="fu">seq</span>(<span class="dv">4</span>))</span>
+<span id="cb1432-2"><a href="subsec-color-palettes.html#cb1432-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="at">col =</span> gray_colors, <span class="at">border =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gray-palettes"></span>
+<img src="visualization-colors_files/figure-html/gray-palettes-1.png" alt="灰度调色板" width="672" />
+<p class="caption">
+图 11.4: 灰度调色板
+</p>
+</div>
+<p>gray 与 grey 是一样的，类似 color 和 colour 的关系，可能是美式和英式英语的差别，且看</p>
+<div class="sourceCode" id="cb1433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1433-1"><a href="subsec-color-palettes.html#cb1433-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
+<span id="cb1433-2"><a href="subsec-color-palettes.html#cb1433-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">col2rgb</span>(<span class="fu">paste0</span>(<span class="st">&quot;gray&quot;</span>, <span class="fu">seq</span>(<span class="dv">100</span>))),</span>
+<span id="cb1433-3"><a href="subsec-color-palettes.html#cb1433-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">col2rgb</span>(<span class="fu">paste0</span>(<span class="st">&quot;grey&quot;</span>, <span class="fu">seq</span>(<span class="dv">100</span>)))</span>
+<span id="cb1433-4"><a href="subsec-color-palettes.html#cb1433-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p><code>gray100</code> 代表白色，<code>gray0</code> 代表黑色，提取灰色调色板，去掉首尾部分是必要的</p>
+<div class="sourceCode" id="cb1435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1435-1"><a href="subsec-color-palettes.html#cb1435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>,</span>
+<span id="cb1435-2"><a href="subsec-color-palettes.html#cb1435-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">gray.colors</span>(<span class="dv">8</span>, <span class="at">start =</span> .<span class="dv">3</span>, <span class="at">end =</span> .<span class="dv">9</span>),</span>
+<span id="cb1435-3"><a href="subsec-color-palettes.html#cb1435-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">&quot;gray.colors function&quot;</span>, <span class="at">border =</span> <span class="cn">NA</span></span>
+<span id="cb1435-4"><a href="subsec-color-palettes.html#cb1435-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gray-colors"></span>
+<img src="visualization-colors_files/figure-html/gray-colors-1.png" alt="提取 10 种灰色做调色板" width="672" />
+<p class="caption">
+图 11.5: 提取 10 种灰色做调色板
+</p>
+</div>
+<p>首先选择一组合适的颜色，比如从桃色到梨色，选择6种颜色，以此为基础，可以借助 <code>grDevices::colorRampPalette()</code> 函数扩充至想要的数目，用 <code>graphics::rect()</code> 函数预览这组颜色配制的调色板</p>
+<div class="sourceCode" id="cb1436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1436-1"><a href="subsec-color-palettes.html#cb1436-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colors from https://github.com/johannesbjork/LaCroixColoR</span></span>
+<span id="cb1436-2"><a href="subsec-color-palettes.html#cb1436-2" aria-hidden="true" tabindex="-1"></a>colors_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#FF3200&quot;</span>, <span class="st">&quot;#E9A17C&quot;</span>, <span class="st">&quot;#E9E4A6&quot;</span>, </span>
+<span id="cb1436-3"><a href="subsec-color-palettes.html#cb1436-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;#1BB6AF&quot;</span>, <span class="st">&quot;#0076BB&quot;</span>, <span class="st">&quot;#172869&quot;</span>)</span>
+<span id="cb1436-4"><a href="subsec-color-palettes.html#cb1436-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 代码来自 ?colorspace::rainbow_hcl</span></span>
+<span id="cb1436-5"><a href="subsec-color-palettes.html#cb1436-5" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">colors =</span> colors, <span class="at">border =</span> <span class="st">&quot;light gray&quot;</span>, ...) {</span>
+<span id="cb1436-6"><a href="subsec-color-palettes.html#cb1436-6" aria-hidden="true" tabindex="-1"></a>  colorname <span class="ot">&lt;-</span> (grDevices<span class="sc">::</span><span class="fu">colorRampPalette</span>(colors))(n)</span>
+<span id="cb1436-7"><a href="subsec-color-palettes.html#cb1436-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb1436-8"><a href="subsec-color-palettes.html#cb1436-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb1436-9"><a href="subsec-color-palettes.html#cb1436-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">axes =</span> <span class="cn">FALSE</span>, ...</span>
+<span id="cb1436-10"><a href="subsec-color-palettes.html#cb1436-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1436-11"><a href="subsec-color-palettes.html#cb1436-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rect</span>(<span class="dv">0</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> n, <span class="dv">0</span>, <span class="dv">1</span><span class="sc">:</span>n <span class="sc">/</span> n, <span class="dv">1</span>, <span class="at">col =</span> colorname, <span class="at">border =</span> border)</span>
+<span id="cb1436-12"><a href="subsec-color-palettes.html#cb1436-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1436-13"><a href="subsec-color-palettes.html#cb1436-13" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))</span>
+<span id="cb1436-14"><a href="subsec-color-palettes.html#cb1436-14" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">colors =</span> colors_vec, <span class="at">xlab =</span> <span class="st">&quot;Colors from Peach to Pear&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:peach-pear-palette"></span>
+<img src="visualization-colors_files/figure-html/peach-pear-palette-1.png" alt="桃色至梨色的渐变" width="768" />
+<p class="caption">
+图 11.6: 桃色至梨色的渐变
+</p>
+</div>
+<p><code>colorRampPalette()</code> 自制调色板</p>
+<div class="sourceCode" id="cb1437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1437-1"><a href="subsec-color-palettes.html#cb1437-1" aria-hidden="true" tabindex="-1"></a>create_palette <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;orangeRed&quot;</span>)) {</span>
+<span id="cb1437-2"><a href="subsec-color-palettes.html#cb1437-2" aria-hidden="true" tabindex="-1"></a>  color_palette <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(colors)(n)</span>
+<span id="cb1437-3"><a href="subsec-color-palettes.html#cb1437-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">barplot</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="at">times =</span> n), <span class="at">col =</span> color_palette, </span>
+<span id="cb1437-4"><a href="subsec-color-palettes.html#cb1437-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">border =</span> color_palette, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1437-5"><a href="subsec-color-palettes.html#cb1437-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1437-6"><a href="subsec-color-palettes.html#cb1437-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>), <span class="at">xaxs =</span> <span class="st">&quot;i&quot;</span>, <span class="at">yaxs =</span> <span class="st">&quot;i&quot;</span>)</span>
+<span id="cb1437-7"><a href="subsec-color-palettes.html#cb1437-7" aria-hidden="true" tabindex="-1"></a><span class="fu">create_palette</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;orangeRed&quot;</span>))</span>
+<span id="cb1437-8"><a href="subsec-color-palettes.html#cb1437-8" aria-hidden="true" tabindex="-1"></a><span class="fu">create_palette</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orangered&quot;</span>))</span>
+<span id="cb1437-9"><a href="subsec-color-palettes.html#cb1437-9" aria-hidden="true" tabindex="-1"></a><span class="fu">create_palette</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orangered&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:custom-palettes"></span>
+<img src="visualization-colors_files/figure-html/custom-palettes-1.png" alt="colorRampPalette 自制调色板" width="768" />
+<p class="caption">
+图 11.7: colorRampPalette 自制调色板
+</p>
+</div>
+<div class="sourceCode" id="cb1438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1438-1"><a href="subsec-color-palettes.html#cb1438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb1438-2"><a href="subsec-color-palettes.html#cb1438-2" aria-hidden="true" tabindex="-1"></a>RColorBrewer<span class="sc">::</span><span class="fu">display.brewer.all</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rcolorbrewer-palette"></span>
+<img src="visualization-colors_files/figure-html/rcolorbrewer-palette-1.png" alt="RColorBrewer 调色板" width="672" />
+<p class="caption">
+图 11.8: RColorBrewer 调色板
+</p>
+</div>
+<div class="sourceCode" id="cb1439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1439-1"><a href="subsec-color-palettes.html#cb1439-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 代码来自 ?palettes</span></span>
+<span id="cb1439-2"><a href="subsec-color-palettes.html#cb1439-2" aria-hidden="true" tabindex="-1"></a>demo.pal <span class="ot">&lt;-</span> <span class="cf">function</span>(n, <span class="at">border =</span> <span class="cf">if</span> (n <span class="sc">&lt;</span> <span class="dv">32</span>) <span class="st">&quot;light gray&quot;</span> <span class="cf">else</span> <span class="cn">NA</span>,</span>
+<span id="cb1439-3"><a href="subsec-color-palettes.html#cb1439-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">&quot;color palettes: alpha = 1,  n=&quot;</span>, n),</span>
+<span id="cb1439-4"><a href="subsec-color-palettes.html#cb1439-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">ch.col =</span> <span class="fu">c</span>(</span>
+<span id="cb1439-5"><a href="subsec-color-palettes.html#cb1439-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;rainbow(n, start=.7, end=.1)&quot;</span>, <span class="st">&quot;heat.colors(n)&quot;</span>,</span>
+<span id="cb1439-6"><a href="subsec-color-palettes.html#cb1439-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;terrain.colors(n)&quot;</span>, <span class="st">&quot;topo.colors(n)&quot;</span>,</span>
+<span id="cb1439-7"><a href="subsec-color-palettes.html#cb1439-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;cm.colors(n)&quot;</span>, <span class="st">&quot;gray.colors(n, start = 0.3, end = 0.9)&quot;</span></span>
+<span id="cb1439-8"><a href="subsec-color-palettes.html#cb1439-8" aria-hidden="true" tabindex="-1"></a>           )) {</span>
+<span id="cb1439-9"><a href="subsec-color-palettes.html#cb1439-9" aria-hidden="true" tabindex="-1"></a>    nt <span class="ot">&lt;-</span> <span class="fu">length</span>(ch.col)</span>
+<span id="cb1439-10"><a href="subsec-color-palettes.html#cb1439-10" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>n</span>
+<span id="cb1439-11"><a href="subsec-color-palettes.html#cb1439-11" aria-hidden="true" tabindex="-1"></a>    j <span class="ot">&lt;-</span> n <span class="sc">/</span> nt</span>
+<span id="cb1439-12"><a href="subsec-color-palettes.html#cb1439-12" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> j <span class="sc">/</span> <span class="dv">6</span></span>
+<span id="cb1439-13"><a href="subsec-color-palettes.html#cb1439-13" aria-hidden="true" tabindex="-1"></a>    dy <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> d</span>
+<span id="cb1439-14"><a href="subsec-color-palettes.html#cb1439-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(i, i <span class="sc">+</span> d, <span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">ylab =</span> <span class="st">&quot;&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">main =</span> main)</span>
+<span id="cb1439-15"><a href="subsec-color-palettes.html#cb1439-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nt) {</span>
+<span id="cb1439-16"><a href="subsec-color-palettes.html#cb1439-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rect</span>(i <span class="sc">-</span> .<span class="dv">5</span>, (k <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> j <span class="sc">+</span> dy, i <span class="sc">+</span> .<span class="dv">4</span>, k <span class="sc">*</span> j,</span>
+<span id="cb1439-17"><a href="subsec-color-palettes.html#cb1439-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> ch.col[k])), <span class="at">border =</span> border</span>
+<span id="cb1439-18"><a href="subsec-color-palettes.html#cb1439-18" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1439-19"><a href="subsec-color-palettes.html#cb1439-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">text</span>(<span class="dv">2</span> <span class="sc">*</span> j, k <span class="sc">*</span> j <span class="sc">+</span> dy <span class="sc">/</span> <span class="dv">4</span>, ch.col[k])</span>
+<span id="cb1439-20"><a href="subsec-color-palettes.html#cb1439-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1439-21"><a href="subsec-color-palettes.html#cb1439-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1439-22"><a href="subsec-color-palettes.html#cb1439-22" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="cf">if</span> (.Device <span class="sc">==</span> <span class="st">&quot;postscript&quot;</span>) <span class="dv">64</span> <span class="cf">else</span> <span class="dv">16</span></span>
+<span id="cb1439-23"><a href="subsec-color-palettes.html#cb1439-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Since for screen, larger n may give color allocation problem</span></span>
+<span id="cb1439-24"><a href="subsec-color-palettes.html#cb1439-24" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb1439-25"><a href="subsec-color-palettes.html#cb1439-25" aria-hidden="true" tabindex="-1"></a><span class="fu">demo.pal</span>(n)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:builtin-palettes"></span>
+<img src="visualization-colors_files/figure-html/builtin-palettes-1.png" alt="grDevices 调色板 " width="576" />
+<p class="caption">
+图 11.9: grDevices 调色板
+</p>
+</div>
+<div class="sourceCode" id="cb1440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1440-1"><a href="subsec-color-palettes.html#cb1440-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">1</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">8</span>, <span class="dv">0</span>))</span>
+<span id="cb1440-2"><a href="subsec-color-palettes.html#cb1440-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">32</span>)) {</span>
+<span id="cb1440-3"><a href="subsec-color-palettes.html#cb1440-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pal</span>(</span>
+<span id="cb1440-4"><a href="subsec-color-palettes.html#cb1440-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>((<span class="dv">1</span> <span class="sc">+</span> <span class="dv">20</span> <span class="sc">*</span> (i <span class="sc">-</span> <span class="dv">1</span>))<span class="sc">:</span>(<span class="dv">20</span> <span class="sc">*</span> i)),</span>
+<span id="cb1440-5"><a href="subsec-color-palettes.html#cb1440-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colors</span>()[(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">20</span> <span class="sc">*</span> (i <span class="sc">-</span> <span class="dv">1</span>))<span class="sc">:</span>(<span class="dv">20</span> <span class="sc">*</span> i)],</span>
+<span id="cb1440-6"><a href="subsec-color-palettes.html#cb1440-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">paste</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">20</span> <span class="sc">*</span> (i <span class="sc">-</span> <span class="dv">1</span>), <span class="st">&quot;to&quot;</span>, <span class="dv">20</span> <span class="sc">*</span> i)</span>
+<span id="cb1440-7"><a href="subsec-color-palettes.html#cb1440-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1440-8"><a href="subsec-color-palettes.html#cb1440-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1440-9"><a href="subsec-color-palettes.html#cb1440-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">17</span>, <span class="fu">colors</span>()[<span class="dv">641</span><span class="sc">:</span><span class="dv">657</span>], <span class="at">main =</span> <span class="st">&quot;641 to 657&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:demo-colors"></span>
+<img src="visualization-colors_files/figure-html/demo-colors-1.png" alt="grDevices 调色板" width="100%" />
+<p class="caption">
+图 11.10: grDevices 调色板
+</p>
+</div>
+<div class="sourceCode" id="cb1441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1441-1"><a href="subsec-color-palettes.html#cb1441-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb1441-2"><a href="subsec-color-palettes.html#cb1441-2" aria-hidden="true" tabindex="-1"></a><span class="do">## a few useful diverging HCL palettes</span></span>
+<span id="cb1441-3"><a href="subsec-color-palettes.html#cb1441-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">2</span>))</span>
+<span id="cb1441-4"><a href="subsec-color-palettes.html#cb1441-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-5"><a href="subsec-color-palettes.html#cb1441-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>), <span class="at">main =</span> <span class="st">&quot;diverging HCL palettes&quot;</span>)</span>
+<span id="cb1441-6"><a href="subsec-color-palettes.html#cb1441-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">246</span>, <span class="dv">40</span>), <span class="at">c =</span> <span class="dv">96</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">90</span>)))</span>
+<span id="cb1441-7"><a href="subsec-color-palettes.html#cb1441-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">130</span>, <span class="dv">43</span>), <span class="at">c =</span> <span class="dv">100</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">90</span>)))</span>
+<span id="cb1441-8"><a href="subsec-color-palettes.html#cb1441-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">70</span>), <span class="at">c =</span> <span class="dv">70</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">95</span>)))</span>
+<span id="cb1441-9"><a href="subsec-color-palettes.html#cb1441-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-10"><a href="subsec-color-palettes.html#cb1441-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">330</span>), <span class="at">c =</span> <span class="dv">59</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">95</span>)))</span>
+<span id="cb1441-11"><a href="subsec-color-palettes.html#cb1441-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">128</span>, <span class="dv">330</span>), <span class="at">c =</span> <span class="dv">98</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">90</span>)))</span>
+<span id="cb1441-12"><a href="subsec-color-palettes.html#cb1441-12" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">255</span>, <span class="dv">330</span>), <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">90</span>)))</span>
+<span id="cb1441-13"><a href="subsec-color-palettes.html#cb1441-13" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">c =</span> <span class="dv">100</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">90</span>), <span class="at">power =</span> <span class="dv">1</span>))</span>
+<span id="cb1441-14"><a href="subsec-color-palettes.html#cb1441-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-15"><a href="subsec-color-palettes.html#cb1441-15" aria-hidden="true" tabindex="-1"></a><span class="do">## sequential palettes</span></span>
+<span id="cb1441-16"><a href="subsec-color-palettes.html#cb1441-16" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">sequential_hcl</span>(<span class="dv">16</span>), <span class="at">main=</span> <span class="st">&quot;sequential palettes&quot;</span>)</span>
+<span id="cb1441-17"><a href="subsec-color-palettes.html#cb1441-17" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">heat_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">100</span>), </span>
+<span id="cb1441-18"><a href="subsec-color-palettes.html#cb1441-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">40</span>), <span class="at">c =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">80</span>), <span class="at">power =</span> <span class="dv">1</span>))</span>
+<span id="cb1441-19"><a href="subsec-color-palettes.html#cb1441-19" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">terrain_hcl</span>(<span class="dv">16</span>, <span class="at">c =</span> <span class="fu">c</span>(<span class="dv">65</span>, <span class="dv">0</span>), <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">45</span>, <span class="dv">95</span>), <span class="at">power =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="fl">1.5</span>)))</span>
+<span id="cb1441-20"><a href="subsec-color-palettes.html#cb1441-20" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">heat_hcl</span>(<span class="dv">16</span>, <span class="at">c =</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">30</span>), <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">90</span>), <span class="at">power =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>, <span class="fl">1.5</span>)))</span>
+<span id="cb1441-21"><a href="subsec-color-palettes.html#cb1441-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-22"><a href="subsec-color-palettes.html#cb1441-22" aria-hidden="true" tabindex="-1"></a><span class="do">## compare base and colorspace palettes</span></span>
+<span id="cb1441-23"><a href="subsec-color-palettes.html#cb1441-23" aria-hidden="true" tabindex="-1"></a><span class="do">## (in color and desaturated)</span></span>
+<span id="cb1441-24"><a href="subsec-color-palettes.html#cb1441-24" aria-hidden="true" tabindex="-1"></a><span class="do">## diverging red-blue colors</span></span>
+<span id="cb1441-25"><a href="subsec-color-palettes.html#cb1441-25" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hsv</span>(<span class="dv">16</span>), <span class="at">main =</span> <span class="st">&quot;diverging red-blue colors&quot;</span>)</span>
+<span id="cb1441-26"><a href="subsec-color-palettes.html#cb1441-26" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">c =</span> <span class="dv">100</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">90</span>)))</span>
+<span id="cb1441-27"><a href="subsec-color-palettes.html#cb1441-27" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">diverge_hsv</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-28"><a href="subsec-color-palettes.html#cb1441-28" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">c =</span> <span class="dv">100</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">90</span>))))</span>
+<span id="cb1441-29"><a href="subsec-color-palettes.html#cb1441-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-30"><a href="subsec-color-palettes.html#cb1441-30" aria-hidden="true" tabindex="-1"></a><span class="do">## diverging cyan-magenta colors</span></span>
+<span id="cb1441-31"><a href="subsec-color-palettes.html#cb1441-31" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">cm.colors</span>(<span class="dv">16</span>), <span class="at">main =</span> <span class="st">&quot;diverging cyan-magenta colors&quot;</span>)</span>
+<span id="cb1441-32"><a href="subsec-color-palettes.html#cb1441-32" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">330</span>), <span class="at">c =</span> <span class="dv">59</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">95</span>)))</span>
+<span id="cb1441-33"><a href="subsec-color-palettes.html#cb1441-33" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">cm.colors</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-34"><a href="subsec-color-palettes.html#cb1441-34" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">diverge_hcl</span>(<span class="dv">16</span>, <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">180</span>, <span class="dv">330</span>), <span class="at">c =</span> <span class="dv">59</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">95</span>))))</span>
+<span id="cb1441-35"><a href="subsec-color-palettes.html#cb1441-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-36"><a href="subsec-color-palettes.html#cb1441-36" aria-hidden="true" tabindex="-1"></a><span class="do">## heat colors</span></span>
+<span id="cb1441-37"><a href="subsec-color-palettes.html#cb1441-37" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">heat.colors</span>(<span class="dv">16</span>), <span class="at">main =</span> <span class="st">&quot;heat colors&quot;</span>)</span>
+<span id="cb1441-38"><a href="subsec-color-palettes.html#cb1441-38" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">heat_hcl</span>(<span class="dv">16</span>))</span>
+<span id="cb1441-39"><a href="subsec-color-palettes.html#cb1441-39" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">heat.colors</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-40"><a href="subsec-color-palettes.html#cb1441-40" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">heat_hcl</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-41"><a href="subsec-color-palettes.html#cb1441-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-42"><a href="subsec-color-palettes.html#cb1441-42" aria-hidden="true" tabindex="-1"></a><span class="do">## terrain colors</span></span>
+<span id="cb1441-43"><a href="subsec-color-palettes.html#cb1441-43" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">terrain.colors</span>(<span class="dv">16</span>), <span class="at">main =</span> <span class="st">&quot;terrain colors&quot;</span>)</span>
+<span id="cb1441-44"><a href="subsec-color-palettes.html#cb1441-44" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">terrain_hcl</span>(<span class="dv">16</span>))</span>
+<span id="cb1441-45"><a href="subsec-color-palettes.html#cb1441-45" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">terrain.colors</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-46"><a href="subsec-color-palettes.html#cb1441-46" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">desaturate</span>(<span class="fu">terrain_hcl</span>(<span class="dv">16</span>)))</span>
+<span id="cb1441-47"><a href="subsec-color-palettes.html#cb1441-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1441-48"><a href="subsec-color-palettes.html#cb1441-48" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">rainbow_hcl</span>(<span class="dv">16</span>, <span class="at">start =</span> <span class="dv">30</span>, <span class="at">end =</span> <span class="dv">300</span>), <span class="at">main =</span> <span class="st">&quot;dynamic&quot;</span>)</span>
+<span id="cb1441-49"><a href="subsec-color-palettes.html#cb1441-49" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">rainbow_hcl</span>(<span class="dv">16</span>, <span class="at">start =</span> <span class="dv">60</span>, <span class="at">end =</span> <span class="dv">240</span>), <span class="at">main =</span> <span class="st">&quot;harmonic&quot;</span>)</span>
+<span id="cb1441-50"><a href="subsec-color-palettes.html#cb1441-50" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">rainbow_hcl</span>(<span class="dv">16</span>, <span class="at">start =</span> <span class="dv">270</span>, <span class="at">end =</span> <span class="dv">150</span>), <span class="at">main =</span> <span class="st">&quot;cold&quot;</span>)</span>
+<span id="cb1441-51"><a href="subsec-color-palettes.html#cb1441-51" aria-hidden="true" tabindex="-1"></a><span class="fu">pal</span>(<span class="at">n =</span> <span class="dv">16</span>, <span class="fu">rainbow_hcl</span>(<span class="dv">16</span>, <span class="at">start =</span> <span class="dv">90</span>, <span class="at">end =</span> <span class="sc">-</span><span class="dv">30</span>), <span class="at">main =</span> <span class="st">&quot;warm&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:colorspace-palette"></span>
+<img src="visualization-colors_files/figure-html/colorspace-palette-1.png" alt="colorspace 调色板" width="768" />
+<p class="caption">
+图 11.11: colorspace 调色板
+</p>
+</div>
+<p>除之前提到的 <strong>grDevices</strong> 包， <a href="https://colorspace.r-forge.r-project.org/"><strong>colorspace</strong></a> (<a href="https://hclwizard.org/" class="uri">https://hclwizard.org/</a>) 包 <span class="citation"><a href="#ref-colorspace_2009_rainbow" role="doc-biblioref">[15]</a>–<a href="#ref-colorspace_2019" role="doc-biblioref">[17]</a></span>，<a href="https://CRAN.R-project.org/package=RColorBrewer">RColorBrewer</a> 包 <span class="citation"><a href="#ref-RColorBrewer" role="doc-biblioref">[18]</a></span> <a href="https://colorbrewer2.org/" class="uri">https://colorbrewer2.org/</a>，<a href="https://github.com/sjmgarnier/viridis">viridis</a> 包、<a href="https://github.com/SymbolixAU/colourvalues">colourvalues</a>、<a href="https://github.com/karthik/wesanderson">wesanderson</a>、<a href="https://CRAN.R-project.org/package=dichromat">dichromat</a> 包、<a href="https://github.com/kwstat/pals">pals</a> 包，<a href="https://github.com/AustralianAntarcticDivision/palr">palr</a> 包，<a href="https://cran.r-project.org/package=colorRamps">colorRamps</a> 包、<a href="https://cran.r-project.org/package=ColorPalette">ColorPalette</a> 包、<a href="https://cran.r-project.org/package=colortools">colortools</a> 包就不一一详细介绍了。</p>
+<p><a href="https://github.com/bhaskarvk/colormap">colormap</a> 包基于 node.js 的 colormap 模块提供 44 个预定义的调色板
+<a href="https://github.com/EmilHvitfeldt/paletteer">paletteer</a> 包收集了很多 R 包提供的调色板，同时也引入了很多依赖。根据电影 Harry Potter 制作的调色板 <a href="https://github.com/aljrico/harrypotter">harrypotter</a>，根据网站 <a href="https://carto.com/">CARTO</a> 设计的 <a href="https://github.com/Nowosad/rcartocolor">rcartocolor</a> 包，<a href="https://github.com/clauswilke/colorblindr">colorblindr</a> 模拟色盲环境下的配色方案。</p>
+<p><a href="https://github.com/ndphillips/yarrr">yarrr</a> 包主要是为书籍 <a href="https://bookdown.org/ndphillips/YaRrr/">《YaRrr! The Pirate’s Guide to R》</a> <a href="https://github.com/ndphillips/ThePiratesGuideToR" class="uri">https://github.com/ndphillips/ThePiratesGuideToR</a> 提供配套资源，兼顾收集了一组<a href="https://bookdown.org/ndphillips/YaRrr/more-colors.html">调色板</a>。</p>
+<div class="rmdnote">
+<p>RColorBrewer 调色板数量必须至少 3 个，这是上游 colorbrewer 的 <a href="https://github.com/axismaps/colorbrewer/issues/23">问题</a>，具体体现在调用
+<code>RColorBrewer::brewer.pal(n = 2, name = "Set2")</code> 时会有警告。 plotly 调用</p>
+<pre><code>[1] &quot;#66C2A5&quot; &quot;#FC8D62&quot; &quot;#8DA0CB&quot;
+Warning message:
+In RColorBrewer::brewer.pal(n = 2, name = &quot;Set2&quot;) :
+  minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+</div>
+<div class="sourceCode" id="cb1443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1443-1"><a href="subsec-color-palettes.html#cb1443-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb1443-2"><a href="subsec-color-palettes.html#cb1443-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1443-3"><a href="subsec-color-palettes.html#cb1443-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">8</span>), <span class="dv">8</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1443-4"><a href="subsec-color-palettes.html#cb1443-4" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> <span class="fu">palette</span>(), <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1443-5"><a href="subsec-color-palettes.html#cb1443-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> <span class="fu">heat.colors</span>(<span class="dv">8</span>), <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1443-6"><a href="subsec-color-palettes.html#cb1443-6" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> <span class="fu">gray.colors</span>(<span class="dv">8</span>), <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1443-7"><a href="subsec-color-palettes.html#cb1443-7" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> <span class="st">&quot;lightblue&quot;</span>, <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1443-8"><a href="subsec-color-palettes.html#cb1443-8" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> colorspace<span class="sc">::</span><span class="fu">sequential_hcl</span>(<span class="dv">8</span>), <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1443-9"><a href="subsec-color-palettes.html#cb1443-9" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(x, <span class="at">col =</span> colorspace<span class="sc">::</span><span class="fu">diverge_hcl</span>(<span class="dv">8</span>,</span>
+<span id="cb1443-10"><a href="subsec-color-palettes.html#cb1443-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">c</span>(<span class="dv">130</span>, <span class="dv">43</span>),</span>
+<span id="cb1443-11"><a href="subsec-color-palettes.html#cb1443-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">c =</span> <span class="dv">100</span>, <span class="at">l =</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">90</span>)</span>
+<span id="cb1443-12"><a href="subsec-color-palettes.html#cb1443-12" aria-hidden="true" tabindex="-1"></a>), <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:select-color"></span>
+<img src="visualization-colors_files/figure-html/select-color-1.png" alt="源起" width="672" />
+<p class="caption">
+图 11.12: 源起
+</p>
+</div>
+<p>与图 <a href="sec-ggplot2-tile.html#fig:geom-tile">12.53</a> 对比，图<a href="subsec-color-palettes.html#fig:palette-spectral">11.13</a> 的层次更加丰富，识别性更高</p>
+<div class="sourceCode" id="cb1444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1444-1"><a href="subsec-color-palettes.html#cb1444-1" aria-hidden="true" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="at">months =</span> month.abb, <span class="at">years =</span> <span class="dv">1949</span><span class="sc">:</span><span class="dv">1960</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1444-2"><a href="subsec-color-palettes.html#cb1444-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(<span class="at">num =</span> <span class="fu">as.vector</span>(AirPassengers)) <span class="sc">|&gt;</span> </span>
+<span id="cb1444-3"><a href="subsec-color-palettes.html#cb1444-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> years, <span class="at">y =</span> months, <span class="at">fill =</span> num)) <span class="sc">+</span></span>
+<span id="cb1444-4"><a href="subsec-color-palettes.html#cb1444-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1444-5"><a href="subsec-color-palettes.html#cb1444-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb1444-6"><a href="subsec-color-palettes.html#cb1444-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb1444-7"><a href="subsec-color-palettes.html#cb1444-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.01</span>),</span>
+<span id="cb1444-8"><a href="subsec-color-palettes.html#cb1444-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1949</span>, <span class="dv">1960</span>, <span class="at">by =</span> <span class="dv">1</span>),</span>
+<span id="cb1444-9"><a href="subsec-color-palettes.html#cb1444-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="dv">1949</span><span class="sc">:</span><span class="dv">1960</span></span>
+<span id="cb1444-10"><a href="subsec-color-palettes.html#cb1444-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1444-11"><a href="subsec-color-palettes.html#cb1444-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(</span>
+<span id="cb1444-12"><a href="subsec-color-palettes.html#cb1444-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">base_size =</span> <span class="fl">10.54</span>,</span>
+<span id="cb1444-13"><a href="subsec-color-palettes.html#cb1444-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">base_family =</span> <span class="st">&quot;Noto Serif CJK SC&quot;</span></span>
+<span id="cb1444-14"><a href="subsec-color-palettes.html#cb1444-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1444-15"><a href="subsec-color-palettes.html#cb1444-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;年&quot;</span>, <span class="at">y =</span> <span class="st">&quot;月&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;人数&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:palette-spectral"></span>
+<img src="visualization-colors_files/figure-html/palette-spectral-1.png" alt="Spectral 调色板" width="672" />
+<p class="caption">
+图 11.13: Spectral 调色板
+</p>
+</div>
+<p>再举例子，图 <a href="subsec-color-palettes.html#fig:faithfuld">11.14</a> 是正负例对比，其中好在哪里呢？这张图要表达美国黄石国家公园的老忠实泉间歇喷发的时间规律，那么好的标准就是层次分明，以突出不同颜色之间的时间差异。这个差异，还要看起来不那么费眼睛，一目了然最好。</p>
+<div class="sourceCode" id="cb1446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1446-1"><a href="subsec-color-palettes.html#cb1446-1" aria-hidden="true" tabindex="-1"></a>erupt <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(faithfuld, <span class="fu">aes</span>(waiting, eruptions, <span class="at">fill =</span> density)) <span class="sc">+</span></span>
+<span id="cb1446-2"><a href="subsec-color-palettes.html#cb1446-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>() <span class="sc">+</span></span>
+<span id="cb1446-3"><a href="subsec-color-palettes.html#cb1446-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="cn">NULL</span>, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb1446-4"><a href="subsec-color-palettes.html#cb1446-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="cn">NULL</span>, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb1446-5"><a href="subsec-color-palettes.html#cb1446-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb1446-6"><a href="subsec-color-palettes.html#cb1446-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> erupt <span class="sc">+</span> <span class="fu">scale_fill_gradientn</span>(<span class="at">colours =</span> <span class="fu">gray.colors</span>(<span class="dv">7</span>))</span>
+<span id="cb1446-7"><a href="subsec-color-palettes.html#cb1446-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> erupt <span class="sc">+</span> <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">&quot;Spectral&quot;</span>)</span>
+<span id="cb1446-8"><a href="subsec-color-palettes.html#cb1446-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> erupt <span class="sc">+</span> <span class="fu">scale_fill_gradientn</span>(<span class="at">colours =</span> <span class="fu">terrain.colors</span>(<span class="dv">7</span>))</span>
+<span id="cb1446-9"><a href="subsec-color-palettes.html#cb1446-9" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> erupt <span class="sc">+</span> <span class="fu">scale_fill_continuous</span>(<span class="at">type =</span> <span class="st">&#39;viridis&#39;</span>)</span>
+<span id="cb1446-10"><a href="subsec-color-palettes.html#cb1446-10" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">+</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:faithfuld"></span>
+<img src="visualization-colors_files/figure-html/faithfuld-1.png" alt="美国黄石国家公园的老忠实泉" width="672" />
+<p class="caption">
+图 11.14: 美国黄石国家公园的老忠实泉
+</p>
+</div>
+<p>RColorBrewer 包 提供了有序 (Sequential) 、定性 (Qualitative) 和发散 (Diverging) 三类调色板，一般来讲，分别适用于连续或有序分类变量、无序分类变量、两类分层对比变量的绘图。再加上强大的 ggplot2 包内置的对颜色处理的函数，如 <code>scale_alpha_*</code> 、 <code>scale_colour_*</code> 和 <code>scale_fill_*</code> 等，详见：</p>
+<div class="sourceCode" id="cb1447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1447-1"><a href="subsec-color-palettes.html#cb1447-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="st">&quot;package:ggplot2&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;scale_col(ou|o)r_&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;scale_color_binned&quot;      &quot;scale_color_brewer&quot;     
+##  [3] &quot;scale_color_continuous&quot;  &quot;scale_color_date&quot;       
+##  [5] &quot;scale_color_datetime&quot;    &quot;scale_color_discrete&quot;   
+##  [7] &quot;scale_color_distiller&quot;   &quot;scale_color_fermenter&quot;  
+##  [9] &quot;scale_color_gradient&quot;    &quot;scale_color_gradient2&quot;  
+## [11] &quot;scale_color_gradientn&quot;   &quot;scale_color_grey&quot;       
+## [13] &quot;scale_color_hue&quot;         &quot;scale_color_identity&quot;   
+## [15] &quot;scale_color_manual&quot;      &quot;scale_color_ordinal&quot;    
+## [17] &quot;scale_color_steps&quot;       &quot;scale_color_steps2&quot;     
+## [19] &quot;scale_color_stepsn&quot;      &quot;scale_color_viridis_b&quot;  
+## [21] &quot;scale_color_viridis_c&quot;   &quot;scale_color_viridis_d&quot;  
+## [23] &quot;scale_colour_binned&quot;     &quot;scale_colour_brewer&quot;    
+## [25] &quot;scale_colour_continuous&quot; &quot;scale_colour_date&quot;      
+## [27] &quot;scale_colour_datetime&quot;   &quot;scale_colour_discrete&quot;  
+## [29] &quot;scale_colour_distiller&quot;  &quot;scale_colour_fermenter&quot; 
+## [31] &quot;scale_colour_gradient&quot;   &quot;scale_colour_gradient2&quot; 
+## [33] &quot;scale_colour_gradientn&quot;  &quot;scale_colour_grey&quot;      
+## [35] &quot;scale_colour_hue&quot;        &quot;scale_colour_identity&quot;  
+## [37] &quot;scale_colour_manual&quot;     &quot;scale_colour_ordinal&quot;   
+## [39] &quot;scale_colour_steps&quot;      &quot;scale_colour_steps2&quot;    
+## [41] &quot;scale_colour_stepsn&quot;     &quot;scale_colour_viridis_b&quot; 
+## [43] &quot;scale_colour_viridis_c&quot;  &quot;scale_colour_viridis_d&quot;</code></pre>
+<div class="sourceCode" id="cb1449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1449-1"><a href="subsec-color-palettes.html#cb1449-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="st">&quot;package:ggplot2&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;scale_fill_&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;scale_fill_binned&quot;     &quot;scale_fill_brewer&quot;     &quot;scale_fill_continuous&quot;
+##  [4] &quot;scale_fill_date&quot;       &quot;scale_fill_datetime&quot;   &quot;scale_fill_discrete&quot;  
+##  [7] &quot;scale_fill_distiller&quot;  &quot;scale_fill_fermenter&quot;  &quot;scale_fill_gradient&quot;  
+## [10] &quot;scale_fill_gradient2&quot;  &quot;scale_fill_gradientn&quot;  &quot;scale_fill_grey&quot;      
+## [13] &quot;scale_fill_hue&quot;        &quot;scale_fill_identity&quot;   &quot;scale_fill_manual&quot;    
+## [16] &quot;scale_fill_ordinal&quot;    &quot;scale_fill_steps&quot;      &quot;scale_fill_steps2&quot;    
+## [19] &quot;scale_fill_stepsn&quot;     &quot;scale_fill_viridis_b&quot;  &quot;scale_fill_viridis_c&quot; 
+## [22] &quot;scale_fill_viridis_d&quot;</code></pre>
+<p>colourlovers 包借助 XML, jsonlite 和 httr 包可以在线获取网站 <a href="https://www.colourlovers.com/">COLOURlovers</a> 的调色板</p>
+<div class="sourceCode" id="cb1451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1451-1"><a href="subsec-color-palettes.html#cb1451-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colourlovers)</span>
+<span id="cb1451-2"><a href="subsec-color-palettes.html#cb1451-2" aria-hidden="true" tabindex="-1"></a>palette1 <span class="ot">&lt;-</span> <span class="fu">clpalette</span>(<span class="st">&#39;113451&#39;</span>)</span>
+<span id="cb1451-3"><a href="subsec-color-palettes.html#cb1451-3" aria-hidden="true" tabindex="-1"></a>palette2 <span class="ot">&lt;-</span> <span class="fu">clpalette</span>(<span class="st">&#39;92095&#39;</span>)</span>
+<span id="cb1451-4"><a href="subsec-color-palettes.html#cb1451-4" aria-hidden="true" tabindex="-1"></a>palette3 <span class="ot">&lt;-</span> <span class="fu">clpalette</span>(<span class="st">&#39;629637&#39;</span>)</span>
+<span id="cb1451-5"><a href="subsec-color-palettes.html#cb1451-5" aria-hidden="true" tabindex="-1"></a>palette4 <span class="ot">&lt;-</span> <span class="fu">clpalette</span>(<span class="st">&#39;694737&#39;</span>)</span></code></pre></div>
+<p>使用调色板</p>
+<div class="sourceCode" id="cb1452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1452-1"><a href="subsec-color-palettes.html#cb1452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>))</span>
+<span id="cb1452-2"><a href="subsec-color-palettes.html#cb1452-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb1452-3"><a href="subsec-color-palettes.html#cb1452-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1452-4"><a href="subsec-color-palettes.html#cb1452-4" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(VADeaths, <span class="at">col =</span> <span class="fu">swatch</span>(palette1)[[<span class="dv">1</span>]], <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb1452-5"><a href="subsec-color-palettes.html#cb1452-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(VADeaths, <span class="at">col =</span> <span class="fu">swatch</span>(palette2)[[<span class="dv">1</span>]], <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb1452-6"><a href="subsec-color-palettes.html#cb1452-6" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(VADeaths, <span class="at">col =</span> <span class="fu">swatch</span>(palette3)[[<span class="dv">1</span>]], <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb1452-7"><a href="subsec-color-palettes.html#cb1452-7" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(VADeaths, <span class="at">col =</span> <span class="fu">swatch</span>(palette4)[[<span class="dv">1</span>]], <span class="at">border =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<p>调色板的描述信息</p>
+<div class="sourceCode" id="cb1453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1453-1"><a href="subsec-color-palettes.html#cb1453-1" aria-hidden="true" tabindex="-1"></a>palette1</span></code></pre></div>
+<p>获取调色板中的颜色向量</p>
+<div class="sourceCode" id="cb1454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1454-1"><a href="subsec-color-palettes.html#cb1454-1" aria-hidden="true" tabindex="-1"></a><span class="fu">swatch</span>(palette1)[[<span class="dv">1</span>]]</span></code></pre></div>
+</div>
+<h3>参考文献<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-colorspace_2009_rainbow" class="csl-entry">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">R. Stauffer, G. J. Mayr, M. Dabernig, and A. Zeileis, <span>“Somewhere over the rainbow: How to make effective use of colors in meteorological visualizations,”</span> <em>Bulletin of the American Meteorological Society</em>, vol. 96, no. 2, pp. 203–216, 2009, doi: <a href="https://doi.org/10.1175/BAMS-D-13-00155.1">10.1175/BAMS-D-13-00155.1</a>.</div>
+</div>
+<div id="ref-colorspace_2019" class="csl-entry">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">A. Zeileis <em>et al.</em>, <span>“<span class="nocase">colorspace</span>: A toolbox for manipulating and assessing colors and palettes,”</span> arXiv.org E-Print Archive, arXiv 1903.06490, 2019.Available: <a href="http://arxiv.org/abs/1903.06490">http://arxiv.org/abs/1903.06490</a></div>
+</div>
+<div id="ref-RColorBrewer" class="csl-entry">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">E. Neuwirth, <em>RColorBrewer: ColorBrewer palettes</em>. 2014.Available: <a href="https://CRAN.R-project.org/package=RColorBrewer">https://CRAN.R-project.org/package=RColorBrewer</a></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chap-visualization-colors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="subsec-color-schames.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": {}
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/XiangyunHuang/notesdown/edit/devel/visualization-colors.Rmd",
+"text": "编辑"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/XiangyunHuang/notesdown/blob/devel/visualization-colors.Rmd",
+"text": "查看"
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

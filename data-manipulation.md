@@ -66,9 +66,12 @@ sapply(.libPaths(), function(pkg_path) {
 ```
 
 ```
-##      /home/runner/work/_temp/Library /opt/R/4.2.2/lib/R/library
-## [1,]                            TRUE                       TRUE
-## [2,]                            TRUE                      FALSE
+##      /home/runner/work/_temp/Library /opt/R/4.2.3/lib/R/site-library
+## [1,]                           FALSE                           FALSE
+## [2,]                            TRUE                           FALSE
+##      /opt/R/4.2.3/lib/R/library
+## [1,]                       TRUE
+## [2,]                      FALSE
 ```
 
 

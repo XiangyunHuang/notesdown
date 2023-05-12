@@ -43,7 +43,7 @@ R.version.string
 ```
 
 ```
-## [1] "R version 4.2.2 (2022-10-31)"
+## [1] "R version 4.2.3 (2023-03-15)"
 ```
 
 ```r
@@ -450,13 +450,13 @@ endsWith(list.files(), ".Rmd")
 ```
 
 ```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
-## [13] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-## [25] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [37]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
-## [49] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-## [61] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [73] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [13] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
+## [25] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE
+## [37]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+## [49]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE
+## [61] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+## [73]  TRUE  TRUE
 ```
 
 ```r
@@ -465,13 +465,13 @@ grepl("\\.Rmd$", list.files())
 ```
 
 ```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
-## [13] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE
-## [25] FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [37]  TRUE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
-## [49] FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
-## [61] FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE
-## [73] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [13] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
+## [25] FALSE  TRUE FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE  TRUE
+## [37]  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+## [49]  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE
+## [61] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+## [73]  TRUE  TRUE
 ```
 
 部分匹配(Partial String Matching)
@@ -2210,7 +2210,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.2.2 (2022-10-31)
+## R version 4.2.3 (2023-03-15)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 22.04.2 LTS
 ## 
@@ -2223,22 +2223,20 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   askpass_1.1      assertthat_0.2.1 base64enc_0.1.3  bookdown_0.26   
-##   brio_1.1.3       bslib_0.3.1      cachem_1.0.6     cli_3.3.0       
-##   compiler_4.2.2   cpp11_0.4.2      crayon_1.5.1     curl_4.3.2      
-##   DBI_1.1.2        desc_1.4.1       digest_0.6.29    downlit_0.4.0   
-##   dplyr_1.0.9      ellipsis_0.3.2   evaluate_0.15    fansi_1.0.3     
-##   fastmap_1.1.0    fs_1.5.2         generics_0.1.2   glue_1.6.2      
-##   graphics_4.2.2   grDevices_4.2.2  highr_0.9        htmltools_0.5.2 
-##   jquerylib_0.1.4  jsonlite_1.8.0   knitr_1.39       lifecycle_1.0.1 
-##   magrittr_2.0.3   memoise_2.0.1    methods_4.2.2    openssl_2.0.1   
-##   pillar_1.7.0     pkgconfig_2.0.3  purrr_0.3.4      R6_2.5.1        
-##   rappdirs_0.3.3   rlang_1.0.2      rmarkdown_2.14   rprojroot_2.0.3 
-##   sass_0.4.1       stats_4.2.2      stringi_1.7.6    stringr_1.4.0   
-##   sys_3.4          sysfonts_0.8.8   tibble_3.1.7     tidyr_1.2.0     
-##   tidyselect_1.1.2 tinytex_0.39     tools_4.2.2      utf8_1.2.2      
-##   utils_4.2.2      vctrs_0.4.1      xfun_0.31        xml2_1.3.3      
-##   yaml_2.3.5
+##   askpass_1.1       base64enc_0.1.3   bookdown_0.34     bslib_0.4.2      
+##   cachem_1.0.8      cli_3.6.1         compiler_4.2.3    cpp11_0.4.3      
+##   curl_5.0.0        digest_0.6.31     dplyr_1.1.2       ellipsis_0.3.2   
+##   evaluate_0.21     fansi_1.0.4       fastmap_1.1.1     fontawesome_0.5.1
+##   fs_1.6.2          generics_0.1.3    glue_1.6.2        graphics_4.2.3   
+##   grDevices_4.2.3   highr_0.10        htmltools_0.5.5   jquerylib_0.1.4  
+##   jsonlite_1.8.4    knitr_1.42        lifecycle_1.0.3   magrittr_2.0.3   
+##   memoise_2.0.1     methods_4.2.3     mime_0.12         openssl_2.0.6    
+##   pillar_1.9.0      pkgconfig_2.0.3   purrr_1.0.1       R6_2.5.1         
+##   rappdirs_0.3.3    rlang_1.1.1       rmarkdown_2.21    sass_0.4.6       
+##   stats_4.2.3       stringi_1.7.12    stringr_1.5.0     sys_3.4.1        
+##   sysfonts_0.8.8    tibble_3.2.1      tidyr_1.3.0       tidyselect_1.2.0 
+##   tinytex_0.45      tools_4.2.3       utf8_1.2.3        utils_4.2.3      
+##   vctrs_0.6.2       withr_2.5.0       xfun_0.39         yaml_2.3.7
 ```
 
 [^regexp]: https://homepage.divms.uiowa.edu/~luke/R/regexp.html

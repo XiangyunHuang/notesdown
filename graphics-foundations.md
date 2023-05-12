@@ -869,7 +869,7 @@ Hmisc 包的 labcurve 函数可以在曲线上放置名称，而不是遥远的�
 边空分为内边空和外边空
 
 <div class="figure" style="text-align: center">
-<img src="../../../../../opt/R/4.2.2/lib/R/library/graphics/help/figures/mai.png" alt="边空" width="35%" /><img src="../../../../../opt/R/4.2.2/lib/R/library/graphics/help/figures/oma.png" alt="边空" width="35%" />
+<img src="../../../../../opt/R/4.2.3/lib/R/library/graphics/help/figures/mai.png" alt="边空" width="35%" /><img src="../../../../../opt/R/4.2.3/lib/R/library/graphics/help/figures/oma.png" alt="边空" width="35%" />
 <p class="caption">(\#fig:par-mai-oma)边空</p>
 </div>
 
@@ -2316,20 +2316,7 @@ persp(x1, x2, z,
 
 把网站搬出来，汉化 <http://latticeextra.r-forge.r-project.org/>
 
-
-### 箱线图 {#lattice-boxplot}
-
-
-```r
-library(lattice)
-# plot(data = InsectSprays, count ~ spray)
-bwplot(count ~ spray, data = InsectSprays)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" />
-
-
-### 折线图 {#lattice-line}
+### 时序图 {#lattice-line}
 
 latticeExtra 包提供了强大的图层函数 `layer()`
 
@@ -2345,12 +2332,12 @@ xyplot(EuStockMarkets) +
   ))
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" />
 
 
 如何解释
 
-时序图
+### 水平图
 
 Plot many time series in parallel
 
@@ -2373,8 +2360,9 @@ horizonplot(EuStockMarkets,
   )
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" />
 
+### 折线图
 
 
 ```r
@@ -2399,7 +2387,7 @@ plot(Orange,
 )
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" />
 
 
 ```r
@@ -2413,22 +2401,9 @@ barchart(Claims / Holders ~ Age | Group,
 )
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" />
 
-
-
-```r
-barchart(Claims / Holders ~ Age | Group,
-  groups = District, data = Insurance,
-  main = "Claims frequency",
-  auto.key = list(
-    space = "top", columns = 4,
-    title = "District", cex.title = 1
-  )
-)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-78-1.png" width="672" style="display: block; margin: auto;" />
+### 高级设置
 
 lattice 图形的参数设置
 
@@ -2456,6 +2431,8 @@ trellis.par.get()
 trellis.par.set(my.settings)
 ```
 
+
+### 柱形图
 
 
 ```r
@@ -2485,42 +2462,9 @@ barchart(Claims / Holders * 100 ~ Age | Group,
 )
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-80-1.png" width="672" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-78-1.png" width="672" style="display: block; margin: auto;" />
 
-### 平滑图 {#lattice-smooth}
-
-
-```r
-set.seed(1)
-xy <- data.frame(
-  x = runif(100),
-  y = rt(100, df = 5)
-)
-
-xyplot(y ~ x, xy, panel = function(...) {
-  panel.xyplot(...)
-  panel.smoother(..., span = 0.9)
-})
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-81-1.png" width="672" style="display: block; margin: auto;" />
-
-```r
-library(splines)
-xyplot(y ~ x, xy) +
-  layer(panel.smoother(y ~ ns(x, 5), method = "lm"))
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-81-2.png" width="672" style="display: block; margin: auto;" />
-
-```r
-library(nlme)
-library(mgcv)
-xyplot(y ~ x, xy) +
-  layer(panel.smoother(y ~ s(x), method = "gam"))
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-81-3.png" width="672" style="display: block; margin: auto;" />
+### Rootograms {#lattice-smooth}
 
 Trellis Displays of Tukey's Hanging Rootograms
 
@@ -2530,71 +2474,11 @@ x <- rpois(1000, lambda = 50)
 rootogram(~x, dfun = function(x) dpois(x, lambda = 50))
 ```
 
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-82-1.png" width="672" style="display: block; margin: auto;" />
-
-### 点图 {#lattice-dotplot}
-
-
-```r
-# 添加背景网格线作为参考线
-segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
-  data = subset(USCancerRates, state == "Washington"),
-  draw.bands = FALSE, centers = rate.male
-)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-83-1.png" width="576" style="display: block; margin: auto;" />
-
-### 阶梯图 {#lattice-step}
-
-经验累积分布图
-
-
-```r
-ecdfplot(~height | voice.part, data = singer)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-84-1.png" width="672" style="display: block; margin: auto;" />
-
-### 分面图 {#lattice-facet}
-
-
-```r
-## a variant of Figure 5.6 from Sarkar (2008)
-## http://lmdvr.r-forge.r-project.org/figures/figures.html?chapter=05;figure=05_06
-
-depth.ord <- rev(order(quakes$depth))
-quakes$Magnitude <- equal.count(quakes$mag, 4)
-quakes.ordered <- quakes[depth.ord, ]
-
-levelplot(depth ~ long + lat | Magnitude,
-  data = quakes.ordered,
-  panel = panel.levelplot.points, type = c("p", "g"),
-  aspect = "iso", prepanel = prepanel.default.xyplot
-)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-85-1.png" width="100%" style="display: block; margin: auto;" />
-
-### 等高线图 {#lattice-contour}
-
-
-```r
-set.seed(1)
-xyz <- data.frame(x = rnorm(100), y = rnorm(100))
-xyz$z <- with(xyz, x * y + rnorm(100, sd = 1))
-
-## GAM smoother with smoothness by cross validation
-library(mgcv)
-levelplot(z ~ x * y, xyz,
-  panel = panel.2dsmoother,
-  form = z ~ s(x, y), method = "gam"
-)
-```
-
-<img src="graphics-foundations_files/figure-html/smoothness-1.png" width="75%" style="display: block; margin: auto;" />
+<img src="graphics-foundations_files/figure-html/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" />
 
 ### 透视图 {#lattice-persp}
+
+(ref:volcano-topo) Topographic Information on Auckland's Maunga Whau Volcano
 
 
 ```r
@@ -2604,8 +2488,7 @@ persp(volcano,
   r = 50, d = 0.1, expand = 0.5, ltheta = 90, lphi = 180,
   shade = 0.1, ticktype = "detailed", nticks = 5, box = TRUE,
   col = drapecol(volcano, col = terrain.colors(100)),
-  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent",
-  main = "Topographic Information \n on Auckland's Maunga Whau Volcano"
+  xlab = "X", ylab = "Y", zlab = "Z", border = "transparent"
 )
 ```
 
@@ -2613,119 +2496,3 @@ persp(volcano,
 <img src="graphics-foundations_files/figure-html/volcano-topo-1.png" alt="(ref:volcano-topo)" width="528" />
 <p class="caption">(\#fig:volcano-topo)(ref:volcano-topo)</p>
 </div>
-
-
-
-### 聚类图 {#lattice-cluster}
-
-
-
-```r
-xyplot(Sepal.Length ~ Petal.Length,
-  groups = Species,
-  data = iris, scales = "free",
-  par.settings = list(
-    superpose.symbol = list(pch = c(15:17)),
-    superpose.line = list(lwd = 2, lty = 1:3)
-  ),
-  panel = function(x, y, ...) {
-    panel.xyplot(x, y, ...)
-    panel.ellipse(x, y, ...)
-  },
-  auto.key = list(x = .1, y = .8, corner = c(0, 0))
-)
-```
-
-<img src="graphics-foundations_files/figure-html/unnamed-chunk-86-1.png" width="75%" style="display: block; margin: auto;" />
-
-
-
-
-```r
-# lattice 书 6.3.1 节 参数曲面
-
-kx <- function(u, v) cos(u) * (r + cos(u / 2))
-ky <- function(u, v) {
-  sin(u) * (r + cos(u / 2) * sin(t * v) -
-    sin(u / 2) * sin(2 * t * v)) * sin(t * v) -
-    sin(u / 2) * sin(2 * t * v)
-}
-
-
-kz <- function(u, v) sin(u / 2) * sin(t * v) + cos(u / 2) * sin(t * v)
-n <- 50
-u <- seq(0.3, 1.25, length = n) * 2 * pi
-v <- seq(0, 1, length = n) * 2 * pi
-um <- matrix(u, length(u), length(u))
-vm <- matrix(v, length(v), length(v), byrow = TRUE)
-r <- 2
-t <- 1
-
-wireframe(kz(um, vm) ~ kx(um, vm) + ky(um, vm),
-  shade = TRUE, xlab = expression(x[1]),
-  ylab = expression(x[2]),
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
-  screen = list(z = 170, x = -60),
-  alpha = 0.75, panel.aspect = 0.6, aspect = c(1, 0.4),
-  scales = list(arrows = FALSE, col = "black"),
-  lattice.options = list(
-    layout.widths = list(
-      left.padding = list(x = -.6, units = "inches"),
-      right.padding = list(x = -1.0, units = "inches")
-    ),
-    layout.heights = list(
-      bottom.padding = list(x = -.8, units = "inches"),
-      top.padding = list(x = -1.0, units = "inches")
-    )
-  ),
-  par.settings = list(
-    axis.line = list(col = "transparent")
-  )
-)
-```
-
-
-
-## 运行环境 {#graphics-sessioninfo}
-
-
-```r
-xfun::session_info()
-```
-
-```
-## R version 4.2.2 (2022-10-31)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.2 LTS
-## 
-## Locale:
-##   LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##   LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##   LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##   LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##   LC_ADDRESS=C               LC_TELEPHONE=C            
-##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## Package version:
-##   base64enc_0.1.3     bookdown_0.26       brio_1.1.3         
-##   bslib_0.3.1         cachem_1.0.6        cli_3.3.0          
-##   compiler_4.2.2      curl_4.3.2          desc_1.4.1         
-##   digest_0.6.29       downlit_0.4.0       evaluate_0.15      
-##   fansi_1.0.3         fastmap_1.1.0       fs_1.5.2           
-##   glue_1.6.2          graphics_4.2.2      grDevices_4.2.2    
-##   grid_4.2.2          highr_0.9           htmltools_0.5.2    
-##   jpeg_0.1-9          jquerylib_0.1.4     jsonlite_1.8.0     
-##   KernSmooth_2.23-20  knitr_1.39          lattice_0.20-45    
-##   latticeExtra_0.6-29 magrittr_2.0.3      mapproj_1.2.8      
-##   maps_3.4.0          MASS_7.3-57         Matrix_1.4-1       
-##   memoise_2.0.1       methods_4.2.2       mgcv_1.8-40        
-##   nlme_3.1-157        png_0.1-7           R6_2.5.1           
-##   rappdirs_0.3.3      RColorBrewer_1.1-3  rlang_1.0.2        
-##   rmarkdown_2.14      rprojroot_2.0.3     sass_0.4.1         
-##   shape_1.4.6         splines_4.2.2       stats_4.2.2        
-##   stringi_1.7.6       stringr_1.4.0       survival_3.3-1     
-##   sysfonts_0.8.8      tinytex_0.39        tools_4.2.2        
-##   utils_4.2.2         vctrs_0.4.1         xfun_0.31          
-##   xml2_1.3.3          yaml_2.3.5
-```
-

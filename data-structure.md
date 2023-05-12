@@ -8,11 +8,9 @@
 
 数据类型：字符、数值：字符数据操作：按数据类型介绍各类数据操作，重复之处如前所述，数据处理的分类：按数据类型来，一共是 table matrix data.frame 和 vector
 
-> The trouble with nonstandard evaluation is that it doesn't follow standard
-evaluation rules...
+> The trouble with nonstandard evaluation is that it doesn't follow standard evaluation rules...
 >
->   --- Peter Dalgaard (about nonstandard evaluation in the `curve()` function)
-      R-help (June 2011)
+> --- Peter Dalgaard (about nonstandard evaluation in the `curve()` function) R-help (June 2011)
 
 <!-- 详细介绍 data.frame 和 data.table，而不简略介绍 tibble 和 dplyr -->
 
@@ -34,9 +32,7 @@ The function `data.frame()` creates data frames, tightly coupled collections of 
 
 Provides a 'tbl_df' class (the 'tibble') that provides stricter checking and better formatting than the traditional data frame.
 
-[vctrs](https://github.com/r-lib/vctrs) 和 [rlang](https://github.com/r-lib/rlang) 包
-R 内置的 [R Language Definition](https://cran.r-project.org/doc/manuals/r-release/R-lang.html)
-
+[vctrs](https://github.com/r-lib/vctrs) 和 [rlang](https://github.com/r-lib/rlang) 包 R 内置的 [R Language Definition](https://cran.r-project.org/doc/manuals/r-release/R-lang.html)
 
 ## 类型 {#subsec:typeof}
 
@@ -66,51 +62,48 @@ storage.mode(x) # 存储类型
 ## [1] "character"
 ```
 
+| 符号          | 含义                    |
+|:--------------|:------------------------|
+| `NULL`        | 空值                    |
+| `symbol`      | 可变的名称/变量         |
+| `pairlist`    | pairlist 对象\*\*\*     |
+| `closure`     | 函数闭包                |
+| `environment` | 环境                    |
+| `promise`     | 实现惰性求值的对象      |
+| `language`    | R 语言构造              |
+| `special`     | 内部函数，不计算参数    |
+| `builtin`     | 内部函数，计算参数      |
+| `char`        | scalar 型字符对象\*\*\* |
+| `logical`     | 逻辑向量                |
+| `integer`     | 整数向量                |
+| `double`      | 实值向量                |
+| `complex`     | 复值向量                |
+| `character`   | 字符向量                |
+| `...`         | 可变长度的参数\*\*\*    |
+| `any`         | 匹配任意类型            |
+| `expression`  | 表达式对象              |
+| `list`        | 列表                    |
+| `bytecode`    | 位代码\*\*\*            |
+| `externalptr` | 外部指针对象            |
+| `weakref`     | 弱引用对象              |
+| `raw`         | 位向量                  |
+| `S4`          | S4 对象                 |
 
-Table: (\#tab:all-data-type) 函数 `typeof()` 返回的数据类型 [^note]
+: (#tab:all-data-type) 函数 `typeof()` 返回的数据类型 [^data-structure-1]
 
-| 符号          | 含义                     |
-| :------------ | :----------------------- |
-| `NULL`        | 空值                     |
-| `symbol`      | 可变的名称/变量          |
-| `pairlist`    | pairlist 对象***         |
-| `closure`     | 函数闭包                 |
-| `environment` | 环境                     |
-| `promise`     | 实现惰性求值的对象       |
-| `language`    | R 语言构造               |
-| `special`     | 内部函数，不计算参数     |
-| `builtin`     | 内部函数，计算参数       |
-| `char`        | scalar 型字符对象***     |
-| `logical`     | 逻辑向量                 |
-| `integer`     | 整数向量                 |
-| `double`      | 实值向量                 |
-| `complex`     | 复值向量                 |
-| `character`   | 字符向量                 |
-| `...`         | 可变长度的参数***        |
-| `any`         | 匹配任意类型             |
-| `expression`  | 表达式对象               |
-| `list`        | 列表                     |
-| `bytecode`    | 位代码***                |
-| `externalptr` | 外部指针对象             |
-| `weakref`     | 弱引用对象               |
-| `raw`         | 位向量                   |
-| `S4`          | S4 对象                  |
-
-[^note]: 表格中带 *** 标记的类型，用户不能轻易获得
-
-
-Table: (\#tab:basic-data-type) R/Rcpp 提供的基本数据类型
+[^data-structure-1]: 表格中带 \*\*\* 标记的类型，用户不能轻易获得
 
 |  Value   |  R vector   |            Rcpp vector             |            Rcpp matrix             | Rcpp scalar | C++ scalar |
-| :------: | :---------: | :--------------------------------: | :--------------------------------: | :---------: | :--------: |
-| Logical  |  `logical`  |          `LogicalVector`           |          `LogicalMatrix`           |      -      |   `bool`   |
-| Integer  |  `integer`  |          `IntegerVector`           |          `IntegerMatrix`           |      -      |   `int`    |
-|   Real   |  `numeric`  |          `NumericVector`           |          `NumericMatrix`           |      -      |  `double`  |
+|:---------:|:---------:|:-------------:|:-------------:|:---------:|:---------:|
+| Logical  |  `logical`  |          `LogicalVector`           |          `LogicalMatrix`           |     \-      |   `bool`   |
+| Integer  |  `integer`  |          `IntegerVector`           |          `IntegerMatrix`           |     \-      |   `int`    |
+|   Real   |  `numeric`  |          `NumericVector`           |          `NumericMatrix`           |     \-      |  `double`  |
 | Complex  |  `complex`  |          `ComplexVector`           |          `ComplexMatrix`           | `Rcomplex`  | `complex`  |
 |  String  | `character` | `CharacterVector` (`StringVector`) | `CharacterMatrix` (`StringMatrix`) |  `String`   |  `string`  |
-|   Date   |   `Date`    |            `DateVector`            |                 -                  |   `Date`    |     -      |
-| Datetime |  `POSIXct`  |          `DatetimeVector`          |                 -                  | `Datetime`  |  `time_t`  |
+|   Date   |   `Date`    |            `DateVector`            |                 \-                 |   `Date`    |     \-     |
+| Datetime |  `POSIXct`  |          `DatetimeVector`          |                 \-                 | `Datetime`  |  `time_t`  |
 
+: (#tab:basic-data-type) R/Rcpp 提供的基本数据类型
 
 ## 字符 {#sec-character}
 
@@ -182,7 +175,7 @@ Sys.Date()
 ```
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-05-12"
 ```
 
 ```r
@@ -190,7 +183,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2023-04-26 15:03:11 UTC"
+## [1] "2023-05-12 20:43:20 UTC"
 ```
 
 ```r
@@ -198,7 +191,7 @@ c(Sys.time(), Sys.Date())
 ```
 
 ```
-## [1] "2023-04-26 15:03:11 UTC" "2023-04-26 00:00:00 UTC"
+## [1] "2023-05-12 20:43:20 UTC" "2023-05-12 00:00:00 UTC"
 ```
 
 ```r
@@ -240,9 +233,8 @@ format(x, format = "%Y-%m-%d")
 ```
 
 ```
-## [1] "2023-04-26"
+## [1] "2023-05-12"
 ```
-
 
 
 ```r
@@ -277,14 +269,13 @@ data.table::year(x)
 
 
 ```r
-gsub(pattern = "/", replacement = "-", x) %>% 
+gsub(pattern = "/", replacement = "-", x) |>  
   data.table::year()
 ```
 
 ```
 ## [1] 2019 2019
 ```
-
 
 date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 
@@ -294,7 +285,7 @@ date-times 表示 POSIXct 和 POSIXlt 类型的日期对象
 ```
 
 ```
-## [1] "2023-04-26 15:03:11 UTC"
+## [1] "2023-05-12 20:43:20 UTC"
 ```
 
 ```r
@@ -310,7 +301,7 @@ data.table::second(x) # 取秒
 ```
 
 ```
-## [1] 11
+## [1] 20
 ```
 
 ```r
@@ -318,7 +309,7 @@ format(x, format = "%S")
 ```
 
 ```
-## [1] "11"
+## [1] "20"
 ```
 
 ```r
@@ -326,7 +317,7 @@ data.table::minute(x) # 取分
 ```
 
 ```
-## [1] 3
+## [1] 43
 ```
 
 ```r
@@ -334,7 +325,7 @@ format(x, format = "%M")
 ```
 
 ```
-## [1] "03"
+## [1] "43"
 ```
 
 ```r
@@ -342,7 +333,7 @@ data.table::hour(x) # 取时
 ```
 
 ```
-## [1] 15
+## [1] 20
 ```
 
 ```r
@@ -350,7 +341,7 @@ format(x, format = "%H")
 ```
 
 ```
-## [1] "15"
+## [1] "20"
 ```
 
 ```r
@@ -358,7 +349,7 @@ data.table::yday(x) # 此刻在一年的第几天
 ```
 
 ```
-## [1] 116
+## [1] 132
 ```
 
 ```r
@@ -366,7 +357,7 @@ data.table::wday(x) # 此刻在一周的第几天，星期日是第1天，星期
 ```
 
 ```
-## [1] 4
+## [1] 6
 ```
 
 ```r
@@ -374,7 +365,7 @@ data.table::mday(x) # 此刻在当月第几天
 ```
 
 ```
-## [1] 26
+## [1] 12
 ```
 
 ```r
@@ -382,7 +373,7 @@ format(x, format = "%d")
 ```
 
 ```
-## [1] "26"
+## [1] "12"
 ```
 
 ```r
@@ -390,7 +381,7 @@ weekdays(x)
 ```
 
 ```
-## [1] "Wednesday"
+## [1] "Friday"
 ```
 
 ```r
@@ -398,7 +389,7 @@ weekdays(x, abbreviate = T)
 ```
 
 ```
-## [1] "Wed"
+## [1] "Fri"
 ```
 
 ```r
@@ -406,7 +397,7 @@ data.table::week(x) # 此刻在第几周
 ```
 
 ```
-## [1] 17
+## [1] 19
 ```
 
 ```r
@@ -414,7 +405,7 @@ data.table::isoweek(x)
 ```
 
 ```
-## [1] 17
+## [1] 19
 ```
 
 ```r
@@ -422,7 +413,7 @@ data.table::month(x) # 此刻在第几月
 ```
 
 ```
-## [1] 4
+## [1] 5
 ```
 
 ```r
@@ -430,7 +421,7 @@ format(x, format = "%m")
 ```
 
 ```
-## [1] "04"
+## [1] "05"
 ```
 
 ```r
@@ -438,7 +429,7 @@ months(x)
 ```
 
 ```
-## [1] "April"
+## [1] "May"
 ```
 
 ```r
@@ -446,7 +437,7 @@ months(x, abbreviate = T)
 ```
 
 ```
-## [1] "Apr"
+## [1] "May"
 ```
 
 ```r
@@ -482,8 +473,7 @@ format(x, format = "%Y")
 ```
 
 ::: {.rmdtip data-latex="{提示}"}
-`format()` 是一个泛型函数，此刻命名空间有 102 方法。
-`format.Date()`， `format.difftime()`， `format.POSIXct()` 和 `format.POSIXlt()` 四个函数通过格式化不同类型的日期数据对象抽取指定部分。
+`format()` 是一个泛型函数，此刻命名空间有 101 方法。 `format.Date()`， `format.difftime()`， `format.POSIXct()` 和 `format.POSIXlt()` 四个函数通过格式化不同类型的日期数据对象抽取指定部分。
 
 
 ```r
@@ -491,10 +481,10 @@ format(difftime(Sys.time(), x, units = "secs"))
 ```
 
 ```
-## [1] "0.07288623 secs"
+## [1] "0.06175685 secs"
 ```
 
-日期转化详见 [@Brian_2001_date;@Gabor_2004_date]
+日期转化详见 [@Brian_2001_date; @Gabor_2004_date]
 :::
 
 上个季度最后一天
@@ -577,7 +567,7 @@ formatC(round(runif(1, 1e8, 1e9)), digits = 10, big.mark = ",")
 ```
 
 ```
-## [1] "501,980,196"
+## [1] "983,488,726"
 ```
 
 
@@ -598,7 +588,7 @@ format(as.POSIXlt(Sys.Date()), "%Y-%m-%d %H:%M:%S")
 ```
 
 ```
-## [1] "2023-04-26 00:00:00"
+## [1] "2023-05-12 00:00:00"
 ```
 
 从 POSIXt 数据对象中，抽取小时和分钟部分，返回字符串
@@ -609,13 +599,11 @@ strftime(x = Sys.time(), format = "%H:%M")
 ```
 
 ```
-## [1] "15:03"
+## [1] "20:43"
 ```
 
-Table: (\#tab:table-of-date) 日期表格
-
-| 代码  | 含义                           | 代码  | 含义                                       |
-| ---- | :---------------------------- | ---- | :-------------------------------------------- |
+| 代码 | 含义                          | 代码 | 含义                                          |
+|-----------|:-----------------|-----------|:------------------------------|
 | `%a` | Abbreviated weekday           | `%A` | Full weekday                                  |
 | `%b` | Abbreviated month             | `%B` | Full month                                    |
 | `%c` | Locale-specific date and time | `%d` | Decimal date                                  |
@@ -628,47 +616,9 @@ Table: (\#tab:table-of-date) 日期表格
 | `%y` | 2-digit year                  | `%Y` | 4-digit year                                  |
 | `%z` | Offset from GMT               | `%Z` | Time zone (character)                         |
 
+: (#tab:table-of-date) 日期表格
+
 本节介绍了 R 本身提供的基础日期操作，第\@ref(chap-time-series-analysis)章着重介绍一般的时间序列类型的数据对象及其操作。
-
-
-
-[Jeffrey A. Ryan](https://blog.revolutionanalytics.com/2011/07/the-r-files-jeff-ryan.html) 开发的 [xts](https://github.com/joshuaulrich/xts) 和 [quantmod](https://github.com/joshuaulrich/quantmod) 包，Joshua M. Ulrich 开发的 [zoo](https://r-forge.r-project.org/projects/zoo/) 是处理时间序列数据的主要工具
-
-Jeffrey A. Ryan 在开设了一门免费课程教大家如何在 R 语言中使用 xts 和 zoo 包操作时间序列数据 [^course-xts-zoo]
-
-xts (eXtensible Time Series) 扩展的 zoo 对象
-
-
-```r
-xts(x = NULL,
-    order.by = index(x),
-    frequency = NULL,
-    unique = TRUE,
-    tzone = Sys.getenv("TZ"),
-    ...)
-```
-
-
-
-```r
-library(zoo)
-library(xts)
-x = matrix(1:4, ncol = 2,nrow = 2)
-idx <- as.Date(c("2018-01-01", "2019-12-12"))
-# xts = matrix + index
-xts(x, order.by = idx)
-```
-
-```
-##            [,1] [,2]
-## 2018-01-01    1    3
-## 2019-12-12    2    4
-```
-
-Date，POSIX times，timeDate，chron 等各种各样处理日期数据的对象
-
-
-[^course-xts-zoo]: https://www.datacamp.com/courses/manipulating-time-series-data-in-r-with-xts-zoo
 
 ## 空值 {#sec-null}
 
@@ -678,5 +628,3 @@ Date，POSIX times，timeDate，chron 等各种各样处理日期数据的对象
 ```r
 rm_null <- function(l) Filter(Negate(is.null), l)
 ```
-
-

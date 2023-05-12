@@ -437,8 +437,8 @@ microbenchmark::microbenchmark(s(), d())
 ```
 ## Unit: microseconds
 ##  expr   min     lq    mean median    uq    max neval
-##   s()  26.8  32.05  81.901  43.15  47.0 3561.7   100
-##   d() 296.9 313.95 393.688 338.70 392.7 3269.2   100
+##   s()  19.5  22.70  58.643  28.55  32.9 2735.2   100
+##   d() 214.8 221.15 252.197 225.10 229.6 2494.6   100
 ```
 
 ### 移除缺失记录 {#remove-missing-values}
@@ -536,7 +536,7 @@ Reduce(rbind, lapply(unique(airquality$Month), function(gv) {
 ```
 
 ```
-## [1] TRUE
+## [1] FALSE
 ```
 
 安装 pkg 的依赖
@@ -565,7 +565,11 @@ sort(setdiff(miss_pkg, pkg))
 ```
 
 ```
-## [1] "mnormt"
+##  [1] "bayesplot"      "BH"             "colourpicker"   "distributional"
+##  [5] "dygraphs"       "gtools"         "inline"         "loo"           
+##  [9] "mnormt"         "posterior"      "RcppParallel"   "rstantools"    
+## [13] "shinyjs"        "shinystan"      "shinythemes"    "StanHeaders"   
+## [17] "tensorA"        "threejs"        "xts"
 ```
 
 转化为管道操作，增加可读性

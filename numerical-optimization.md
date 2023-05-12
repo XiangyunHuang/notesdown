@@ -1,14 +1,5 @@
 # 数值优化 {#chap-numerical-optimization}
 
-```{=html}
-<!-- 
-Optimization Packages for R
-https://github.com/r-opt
-
-https://www.csie.ntu.edu.tw/~r97002/temp/num_optimization.pdf
-[gslnls](https://github.com/JorisChau/gslnls) GSL 库做非线性回归
--->
-```
 数值优化的理论部分可以参考经典教材《Numerical Optimization》 [@Nocedal2006] 和复旦大学吴立德教授的[数值优化课程](https://www.bilibili.com/video/BV1Kx411m7QB/)，本文仅仅梳理一些 R 语言社区提供的扩展包。
 
 R 语言提供了相当多的优化求解器，比较完整的概览见[优化视图](https://CRAN.R-project.org/view=Optimization)。 本章介绍一些常用的优化算法及其R实现，涵盖线性规划、整数规划、二次规划、非线性规划等。
@@ -34,9 +25,6 @@ library(ROI.plugin.quadprog) # 注册 quadprog 求解二次规划
 library(ROI.plugin.scs)      # 注册 scs 求解凸锥规划
 library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
-
-library(rootSolve)       # 非线性方程
-library(BB)              # 非线性方程组
 ```
 
 
@@ -525,59 +513,6 @@ nlp$solution
 ## [1] 0.1666667 1.8333333
 ```
 
-对变量 $x$ 添加整型约束，原二次规划即变成混合整数二次规划 （Mixed Integer Quadratic Programming，简称 MIQP）
-
-
-```r
-# 目前开源的求解器都不能处理 MIQP 问题
-op <- OP(
-  objective = Q_objective(Q = Dmat, L = -dvec),
-  constraints = L_constraint(A, rep(">=", 3), bvec),
-  types = c("I", "C"),
-  maximum = FALSE # 默认求最小
-)
-nlp <- ROI_solve(op, solver = "nloptr.slsqp", start = c(1, 2))
-nlp$objval
-nlp$solution
-```
-
-在可行域上画出等高线，标记目标解的位置，图中红点表示无约束下的解，黄点表示线性约束下的解
-
-
-```r
-qp_sol <- sol$solution # 二次规划的解
-uc_sol <- sol$unconstrained.solution # 无约束情况下的解
-# 画图
-library(lattice)
-x <- seq(-2, 5.5, length.out = 100)
-y <- seq(-1, 3.5, length.out = 100)
-grid <- expand.grid(x = x, y = y)
-# 二次规划的目标函数
-grid$z <- with(grid, x^2 + y^2 - x * y + 3 * x - 2 * y + 4)
-levelplot(z ~ x * y, grid,
-  cuts = 40,
-  panel = function(...) {
-    panel.levelplot(...)
-    panel.polygon(c(2, 5, -1), c(0, 3, 3),
-      border = TRUE,
-      lwd = 2, col = "transparent"
-    )
-    panel.points(
-      c(uc_sol[1], qp_sol[1]),
-      c(uc_sol[2], qp_sol[2]),
-      lwd = 5, col = c("red", "yellow"), pch = 19
-    )
-  },
-  colorkey = TRUE,
-  col.regions = terrain.colors(41)
-)
-```
-
-<div class="figure" style="text-align: center">
-<img src="numerical-optimization_files/figure-html/quadprog-1.png" alt="无约束和有约束条件下的解" width="432" />
-<p class="caption">(\#fig:quadprog)无约束和有约束条件下的解</p>
-</div>
-
 ### 半正定二次优化 {#subsec-semidefinite-optimization}
 
 kernlab 提供基于核的机器学习方法，可用于分类、回归、聚类、异常检测、分位回归、降维等场景，包含支撑向量机、谱聚类、核PCA、高斯过程和二次规划求解器，将优化方法用于机器学习，展示二者的关系。
@@ -997,11 +932,6 @@ wireframe(
 
 
 
-```{=html}
-<!-- 
-rgl 包、TikZ 的 pgfplots 也可以绘制类似的三维图形，加上自带的 persp 共计4-5种三维图形的绘制方法
--->
-```
 以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 --- Nelder--Mead 算法，选择初值 $(2,2,\cdots,2)$ ，看下效果，再与全局优化算法比较。
 
 
@@ -1069,7 +999,9 @@ fn(x = rep(2, 10))
 
 $$
 f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
-$$ 在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
+$$
+
+在 $\mathbf{x}^\star = (0,0)$ 处取得全局最小值 $f(\mathbf{x}^\star) = 0$
 
 
 ```r
@@ -1524,7 +1456,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227991 4.245434
+## [1] 1.227974 4.245367
 ```
 
 ```r
@@ -1532,7 +1464,7 @@ nlp$objval
 ```
 
 ```
-## [1] 0.09582503
+## [1] 0.09582504
 ```
 
 #### 含复杂约束条件 {#complex-constrained-function}
@@ -1645,7 +1577,7 @@ nlp$solution
 ```
 
 ```
-## [1] 33.262216  5.245054
+## [1]  8.51446 31.24807
 ```
 
 ```r
@@ -1653,7 +1585,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.354904
+## [1] -3.030187
 ```
 
 比如下面三组
@@ -1705,333 +1637,4 @@ heq(x = c(-49.921967437, 4.8499336803))
 
 ```
 ## [1] -8.515447e+208
-```
-
-## 非线性方程 {#sec-nonlinear-equations}
-
-### 一元非线性方程 {#subsec-equation}
-
-[牛顿-拉弗森方法](https://blog.hamaluik.ca/posts/solving-equations-using-the-newton-raphson-method/)
-
-
-```r
-library(rootSolve)
-```
-
-### 非线性方程组 {#subsec-equations}
-
-
-```r
-library(BB)
-```
-
-二项混合泊松分布的参数最大似然估计
-
-
-```r
-poissmix.loglik <- function(p, y) {
-  # Log-likelihood for a binary Poisson mixture distribution
-  i <- 0:(length(y) - 1)
-  
-  loglik <- y * log(p[1] * exp(-p[2]) * p[2]^i / exp(lgamma(i + 1)) +
-    (1 - p[1]) * exp(-p[3]) * p[3]^i / exp(lgamma(i + 1)))
-
-  sum(loglik)
-}
-# Data from Hasselblad (JASA 1969)
-# 介绍实际应用场景
-poissmix.dat <- data.frame(death = 0:9, 
-                           freq = c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1))
-lo <- c(0, 0, 0) # lower limits for parameters
-hi <- c(1, Inf, Inf) # upper limits for parameters
-p0 <- runif(3, c(0.2, 1, 1), c(0.8, 5, 8)) 
-# a randomly generated vector of length 3
-y <- c(162, 267, 271, 185, 111, 61, 27, 8, 3, 1)
-
-ans1 <- spg(
-  par = p0, fn = poissmix.loglik, y = y, lower = lo, upper = hi,
-  control = list(maximize = TRUE, trace = FALSE)
-)
-ans2 <- BBoptim(
-  par = p0, fn = poissmix.loglik, y = y,
-  lower = lo, upper = hi, control = list(maximize = TRUE)
-)
-```
-
-```
-## iter:  0  f-value:  -2136.431  pgrad:  236.9752 
-## iter:  10  f-value:  -1995.89  pgrad:  2.961353 
-## iter:  20  f-value:  -2041.139  pgrad:  2.57697 
-## iter:  30  f-value:  -1989.974  pgrad:  0.4742151 
-## iter:  40  f-value:  -1989.949  pgrad:  0.2614752 
-## iter:  50  f-value:  -1989.946  pgrad:  0.01959506 
-## iter:  60  f-value:  -1989.946  pgrad:  0.002494289 
-##   Successful convergence.
-```
-
-```r
-ans2
-```
-
-```
-## $par
-## [1] 0.3598829 1.2560906 2.6634011
-## 
-## $value
-## [1] -1989.946
-## 
-## $gradient
-## [1] 0.0001000444
-## 
-## $fn.reduction
-## [1] -146.4848
-## 
-## $iter
-## [1] 68
-## 
-## $feval
-## [1] 170
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## [1] "Successful convergence"
-## 
-## $cpar
-## method      M 
-##      2     50
-```
-
-计算最大似然处的黑塞矩阵以及参数的标准差
-
-
-```r
-hess <- numDeriv::hessian(x = ans2$par, func = poissmix.loglik, y = y)
-# Note that we have to supplied data vector 'y'
-hess
-```
-
-```
-##           [,1]      [,2]      [,3]
-## [1,] -907.1105  270.2287  341.2543
-## [2,]  270.2287 -113.4794  -61.6819
-## [3,]  341.2543  -61.6819 -192.7822
-```
-
-```r
-se <- sqrt(diag(solve(-hess)))
-se
-```
-
-```
-## [1] 0.1946836 0.3500308 0.2504769
-```
-
-从不同初始值出发尝试寻找全局最大值，实际找的是一系列局部最大值
-
-
-```r
-# 3 randomly generated starting values
-p0 <- matrix(runif(30, c(0.2, 1, 1), c(0.8, 8, 8)), 10, 3, byrow = TRUE)
-ans <- multiStart(
-  par = p0, fn = poissmix.loglik, action = "optimize",
-  y = y, lower = lo, upper = hi, control = list(maximize = TRUE)
-)
-```
-
-```
-## Parameter set :  1 ... 
-## iter:  0  f-value:  -2076.377  pgrad:  266.5811 
-## iter:  10  f-value:  -1991.788  pgrad:  3.394882 
-## iter:  20  f-value:  -1990.932  pgrad:  8.266675 
-## iter:  30  f-value:  -1989.958  pgrad:  0.2441652 
-## iter:  40  f-value:  -1989.946  pgrad:  0.001411991 
-##   Successful convergence.
-## Parameter set :  2 ... 
-## iter:  0  f-value:  -3999.343  pgrad:  6.350898 
-## iter:  10  f-value:  -2015.457  pgrad:  2.400803 
-##   Successful convergence.
-## Parameter set :  3 ... 
-## iter:  0  f-value:  -2526.385  pgrad:  3.959104 
-## iter:  10  f-value:  -1997.785  pgrad:  4.651176 
-## iter:  20  f-value:  -2041.124  pgrad:  130.6335 
-## iter:  30  f-value:  -1989.979  pgrad:  0.4133676 
-## iter:  40  f-value:  -1989.953  pgrad:  0.2001525 
-## iter:  50  f-value:  -1989.946  pgrad:  0.02953584 
-##   Successful convergence.
-## Parameter set :  4 ... 
-## iter:  0  f-value:  -4036.966  pgrad:  7.725057 
-## iter:  10  f-value:  -1993.146  pgrad:  3.356279 
-## iter:  20  f-value:  -1992.445  pgrad:  3.162911 
-## iter:  30  f-value:  -1999.964  pgrad:  3.124857 
-## iter:  40  f-value:  -1990.201  pgrad:  0.9762675 
-## iter:  50  f-value:  -1989.962  pgrad:  0.3950169 
-## iter:  60  f-value:  -1989.946  pgrad:  0.0507498 
-## iter:  70  f-value:  -1989.946  pgrad:  0.0001978151 
-##   Successful convergence.
-## Parameter set :  5 ... 
-## iter:  0  f-value:  -2048.809  pgrad:  2.862445 
-## iter:  10  f-value:  -1992.344  pgrad:  2.68979 
-## iter:  20  f-value:  -1990.604  pgrad:  7.2791 
-## iter:  30  f-value:  -1989.978  pgrad:  0.3772993 
-## iter:  40  f-value:  -1989.946  pgrad:  0.004172307 
-## iter:  50  f-value:  -1989.946  pgrad:  0.004260983 
-##   Successful convergence.
-## Parameter set :  6 ... 
-## iter:  0  f-value:  -4777.283  pgrad:  7.596832 
-## iter:  10  f-value:  -1991.838  pgrad:  11.02078 
-## iter:  20  f-value:  -1990.272  pgrad:  0.5307333 
-## iter:  30  f-value:  -1989.963  pgrad:  2.230793 
-## iter:  40  f-value:  -1989.946  pgrad:  0.008421921 
-## iter:  50  f-value:  -1989.946  pgrad:  0.0001841727 
-##   Successful convergence.
-## Parameter set :  7 ... 
-## iter:  0  f-value:  -2019.928  pgrad:  3.485709 
-## iter:  10  f-value:  -1990.626  pgrad:  1.833378 
-## iter:  20  f-value:  -1989.999  pgrad:  1.098717 
-## iter:  30  f-value:  -1989.947  pgrad:  0.3092782 
-## iter:  40  f-value:  -1989.946  pgrad:  0.007039489 
-##   Successful convergence.
-## Parameter set :  8 ... 
-## iter:  0  f-value:  -2764.625  pgrad:  4.891128 
-## iter:  10  f-value:  -2001.398  pgrad:  2.273737e-06 
-##   Successful convergence.
-## Parameter set :  9 ... 
-## iter:  0  f-value:  -2167.165  pgrad:  195.5499 
-## iter:  10  f-value:  -2001.54  pgrad:  2.194864 
-## iter:  20  f-value:  -2000.825  pgrad:  0.6559458 
-## iter:  30  f-value:  -1992.777  pgrad:  7.064828 
-## iter:  40  f-value:  -1991.747  pgrad:  3.357115 
-## iter:  50  f-value:  -1989.983  pgrad:  2.772795 
-## iter:  60  f-value:  -1989.946  pgrad:  0.03392643 
-## iter:  70  f-value:  -1989.946  pgrad:  0.0003728928 
-##   Successful convergence.
-## Parameter set :  10 ... 
-## iter:  0  f-value:  -2100.94  pgrad:  317.5313 
-## iter:  10  f-value:  -1991.327  pgrad:  2.7843 
-## iter:  20  f-value:  -1990.415  pgrad:  1.435174 
-## iter:  30  f-value:  -1990.046  pgrad:  3.248585 
-## iter:  40  f-value:  -1989.946  pgrad:  0.06813025 
-## iter:  50  f-value:  -1989.946  pgrad:  0.001450644 
-##   Successful convergence.
-```
-
-```r
-# selecting only converged solutions
-pmat <- round(cbind(ans$fvalue[ans$conv], ans$par[ans$conv, ]), 4)
-dimnames(pmat) <- list(NULL, c("fvalue", "parameter 1", "parameter 2", "parameter 3"))
-pmat[!duplicated(pmat), ]
-```
-
-```
-##         fvalue parameter 1 parameter 2 parameter 3
-## [1,] -1989.946      0.6401      2.6634      1.2561
-## [2,] -1997.263      0.4922      2.4559      1.8567
-## [3,] -1989.946      0.3599      1.2561      2.6634
-## [4,] -2000.039      0.7931      2.0681      2.4778
-## [5,] -1989.946      0.3599      1.2560      2.6634
-```
-
-用一个具体的参数估计问题，求极大似然点，混合正态分布 隐函数方程组 求解非线性方程组 [@BB2019]
-
-## 多目标规划 {#sec-multi-objective-optimization}
-
-多目标规划的基本想法是将多目标问题转化为单目标问题，常见方法有理想点法、线性加权法、非劣解集法、极大极小法。理想点法是先在给定约束条件下分别求解单个目标的最优值，构造新的单目标函数。线性加权法是给每个目标函数赋予权重系数，各个权重系数之和等于1。非劣解集法是先求解其中一个单目标函数的最优值，然后将其设为等式约束，将其最优值从最小值开始递增，然后求解另一个目标函数的最小值。极大极小法是采用标准的简面体爬山法和通用全局优化法求解多目标优化问题。
-
-R 环境中，[GPareto](https://github.com/mbinois/GPareto) 主要用来求解多目标规划问题。[试验设计和过程优化与R语言](https://bookdown.org/gerhard_krennrich/doe_and_optimization/) 的 [约束优化](https://bookdown.org/gerhard_krennrich/doe_and_optimization/optimization.html#constrained-optimization) 章节，[优化和解方程](https://www.stat.umn.edu/geyer/3701/notes/optimize.html)。另外，《Search Methodologies: Introductory Tutorials in Optimization and Decision Support Techniques》[@Deb2005] 多目标优化方法
-
-```{=tex}
-\begin{equation*}
-\begin{array}{l}
-  \min_x \left\{
-      \begin{array}{l}  
-        f_1(x) = 0.5x_1 + 0.6x_2 + 0.7 \exp(\frac{x_1 + x_3}{10}) \\
-        f_2(x) = (x_1 - 2x_2)^2 + (2x_2 - 3x_3)^2 + (5x_3 -x_1)^2
-      \end{array} \right. \\
-    s.t. \quad x_1 \in [10, 80], x_2 \in [20, 90], x_3 \in [15, 100]
-\end{array}
-\end{equation*}
-```
-
-```r
-library(DiceKriging)
-library(emoa)
-library(GPareto)
-library(DiceDesign)
-```
-
-
-```r
-library(Ternary)
-TernaryPlot(
-  atip = "Top", btip = "Bottom", ctip = "Right", 
-  axis.col = "red", col = rgb(0.8, 0.8, 0.8)
-)
-HorizontalGrid(grid.lines = 2, grid.col = "blue", grid.lty = 1)
-```
-
-## 经典优化问题 {#sec-classic-optimization}
-
-旅行商问题、背包问题、指派问题、选址问题、网络流量问题
-
-规划快递员送餐的路线：从快递员出发地到各个取餐地，再到顾客家里，如何规划路线使得每个顾客下单到拿到餐的时间间隔小于 50 分钟，完成送餐，快递员的总时间最少？
-
-## 运行环境 {#sec-numerical-optimization-session}
-
-
-```r
-sessionInfo()
-```
-
-```
-## R version 4.2.2 (2022-10-31)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 22.04.2 LTS
-## 
-## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3
-## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
-## other attached packages:
-##  [1] Deriv_4.1.3               quadprog_1.5-8           
-##  [3] kableExtra_1.3.4          tibble_3.1.7             
-##  [5] BB_2019.10-1              rootSolve_1.8.2.3        
-##  [7] kernlab_0.9-30            lattice_0.20-45          
-##  [9] ROI.plugin.scs_1.1-1      ROI.plugin.quadprog_1.0-0
-## [11] ROI.plugin.lpsolve_1.0-1  ROI.plugin.nloptr_1.0-0  
-## [13] ROI.plugin.alabama_1.0-0  ROI_1.0-0                
-## [15] lpSolve_5.6.15           
-## 
-## loaded via a namespace (and not attached):
-##  [1] svglite_2.1.0           sysfonts_0.8.8          digest_0.6.29          
-##  [4] utf8_1.2.2              slam_0.1-50             R6_2.5.1               
-##  [7] alabama_2022.4-1        evaluate_0.15           highr_0.9              
-## [10] httr_1.4.3              pillar_1.7.0            rlang_1.0.2            
-## [13] curl_4.3.2              rstudioapi_0.13         nloptr_2.0.1           
-## [16] jquerylib_0.1.4         rmarkdown_2.14          webshot_0.5.3          
-## [19] stringr_1.4.0           munsell_0.5.0           compiler_4.2.2         
-## [22] numDeriv_2016.8-1.1     xfun_0.31               pkgconfig_2.0.3        
-## [25] systemfonts_1.0.4       htmltools_0.5.2         downlit_0.4.0          
-## [28] bookdown_0.26           viridisLite_0.4.0       fansi_1.0.3            
-## [31] crayon_1.5.1            grid_4.2.2              jsonlite_1.8.0         
-## [34] lifecycle_1.0.1         registry_0.5-1          magrittr_2.0.3         
-## [37] scales_1.2.0            cli_3.3.0               stringi_1.7.6          
-## [40] cachem_1.0.6            fs_1.5.2                xml2_1.3.3             
-## [43] bslib_0.3.1             ellipsis_0.3.2          vctrs_0.4.1            
-## [46] lpSolveAPI_5.5.2.0-17.7 tools_4.2.2             glue_1.6.2             
-## [49] fastmap_1.1.0           yaml_2.3.5              colorspace_2.0-3       
-## [52] scs_3.0-0               rvest_1.0.2             memoise_2.0.1          
-## [55] knitr_1.39              sass_0.4.1
 ```

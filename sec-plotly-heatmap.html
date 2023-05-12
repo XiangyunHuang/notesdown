@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>13.8 热力图 | R 语言学习笔记</title>
+  <meta name="description" content="13.8 热力图 | R 语言学习笔记" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="13.8 热力图 | R 语言学习笔记" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/cover.png" />
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="13.8 热力图 | R 语言学习笔记" />
+  
+  
+  <meta name="twitter:image" content="/images/cover.png" />
+
+<meta name="author" content="黄湘云" />
+
+
+<meta name="date" content="2023-05-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-plotly-tozeroy.html"/>
+<link rel="next" href="sec-plotly-map.html"/>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<script src="libs/plotly-locale-zh-CN/zh-cn.js"></script>
+<script src="libs/mathjax/cdn.js"></script>
+<script src="libs/echarts4r/echarts-en.min.js"></script>
+<script src="libs/echarts4r/ecStat.min.js"></script>
+<script src="libs/echarts4r/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding/echarts4r.js"></script>
+<script src="libs/d3/d3.min.js"></script>
+<script src="libs/forceNetwork-binding/forceNetwork.js"></script>
+<link href="libs/vis/vis-network.min.css" rel="stylesheet" />
+<script src="libs/vis/vis-network.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+<script src="libs/FileSaver/FileSaver.min.js"></script>
+<script src="libs/Blob/Blob.js"></script>
+<script src="libs/canvas-toBlob/canvas-toBlob.js"></script>
+<script src="libs/html2canvas/html2canvas.js"></script>
+<script src="libs/jspdf/jspdf.debug.js"></script>
+<link href="libs/jquery-sparkline/jquery.sparkline.css" rel="stylesheet" />
+<script src="libs/jquery-sparkline/jquery.sparkline.js"></script>
+<script src="libs/sparkline-binding/sparkline.js"></script>
+<script src="libs/r2d3-render/r2d3-render.js"></script>
+<script src="libs/webcomponents/webcomponents.js"></script>
+<script src="libs/r2d3-binding/r2d3.js"></script>
+<script src="libs/d3v6/d3.min.js"></script>
+<script src="libs/kePrint/kePrint.js"></script>
+<link href="libs/lightable/lightable.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-54GQKWF7VP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-54GQKWF7VP');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 语言学习笔记</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>欢迎</a></li>
+<li class="chapter" data-level="1" data-path="chap-preface.html"><a href="chap-preface.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-r-or-python.html"><a href="sec-r-or-python.html"><i class="fa fa-check"></i><b>1.1</b> 语言抉择</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-data-science.html"><a href="sec-data-science.html"><i class="fa fa-check"></i><b>1.2</b> 数据科学</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-writing-details.html"><a href="sec-writing-details.html"><i class="fa fa-check"></i><b>1.3</b> 写作环境</a></li>
+</ul></li>
+<li class="part"><span><b>I 数据整理</b></span></li>
+<li class="chapter" data-level="" data-path="chap-data-wrangling.html"><a href="chap-data-wrangling.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="2" data-path="chap-data-structure.html"><a href="chap-data-structure.html"><i class="fa fa-check"></i><b>2</b> 数据结构</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="subsec:typeof.html"><a href="subsec:typeof.html"><i class="fa fa-check"></i><b>2.1</b> 类型</a></li>
+<li class="chapter" data-level="2.2" data-path="sec-character.html"><a href="sec-character.html"><i class="fa fa-check"></i><b>2.2</b> 字符</a></li>
+<li class="chapter" data-level="2.3" data-path="sec-vector.html"><a href="sec-vector.html"><i class="fa fa-check"></i><b>2.3</b> 向量</a></li>
+<li class="chapter" data-level="2.4" data-path="sec-matrix.html"><a href="sec-matrix.html"><i class="fa fa-check"></i><b>2.4</b> 矩阵</a></li>
+<li class="chapter" data-level="2.5" data-path="sec-array.html"><a href="sec-array.html"><i class="fa fa-check"></i><b>2.5</b> 数组</a></li>
+<li class="chapter" data-level="2.6" data-path="sec-expression.html"><a href="sec-expression.html"><i class="fa fa-check"></i><b>2.6</b> 表达式</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-list.html"><a href="sec-list.html"><i class="fa fa-check"></i><b>2.7</b> 列表</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-date.html"><a href="sec-date.html"><i class="fa fa-check"></i><b>2.8</b> 日期</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-null.html"><a href="sec-null.html"><i class="fa fa-check"></i><b>2.9</b> 空值</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chap-data-transportation.html"><a href="chap-data-transportation.html"><i class="fa fa-check"></i><b>3</b> 数据搬运</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="import-data.html"><a href="import-data.html"><i class="fa fa-check"></i><b>3.1</b> 导入数据</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="import-data.html"><a href="import-data.html#scan-file"><i class="fa fa-check"></i><b>3.1.1</b> <code>scan</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="import-data.html"><a href="import-data.html#read-write-table"><i class="fa fa-check"></i><b>3.1.2</b> <code>read.table</code></a></li>
+<li class="chapter" data-level="3.1.3" data-path="import-data.html"><a href="import-data.html#read-write-lines"><i class="fa fa-check"></i><b>3.1.3</b> <code>readLines</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="import-data.html"><a href="import-data.html#read-save-rds"><i class="fa fa-check"></i><b>3.1.4</b> <code>readRDS</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="other-data-source.html"><a href="other-data-source.html"><i class="fa fa-check"></i><b>3.2</b> 其它数据格式</a></li>
+<li class="chapter" data-level="3.3" data-path="import-large-dataset.html"><a href="import-large-dataset.html"><i class="fa fa-check"></i><b>3.3</b> 导入大数据集</a></li>
+<li class="chapter" data-level="3.4" data-path="import-data-from-database.html"><a href="import-data-from-database.html"><i class="fa fa-check"></i><b>3.4</b> 从数据库导入</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="import-data-from-database.html"><a href="import-data-from-database.html#postgresql"><i class="fa fa-check"></i><b>3.4.1</b> PostgreSQL</a></li>
+<li class="chapter" data-level="3.4.2" data-path="import-data-from-database.html"><a href="import-data-from-database.html#mysql"><i class="fa fa-check"></i><b>3.4.2</b> MySQL</a></li>
+<li class="chapter" data-level="3.4.3" data-path="import-data-from-database.html"><a href="import-data-from-database.html#spark"><i class="fa fa-check"></i><b>3.4.3</b> Spark</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="batch-import-data.html"><a href="batch-import-data.html"><i class="fa fa-check"></i><b>3.5</b> 批量导入数据</a></li>
+<li class="chapter" data-level="3.6" data-path="batch-export-data.html"><a href="batch-export-data.html"><i class="fa fa-check"></i><b>3.6</b> 批量导出数据</a></li>
+<li class="chapter" data-level="3.7" data-path="export-data.html"><a href="export-data.html"><i class="fa fa-check"></i><b>3.7</b> 导出数据</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="export-data.html"><a href="export-data.html#export-output"><i class="fa fa-check"></i><b>3.7.1</b> 导出运行结果</a></li>
+<li class="chapter" data-level="3.7.2" data-path="export-data.html"><a href="export-data.html#export-data-object"><i class="fa fa-check"></i><b>3.7.2</b> 导出数据对象</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html"><i class="fa fa-check"></i><b>3.8</b> Spark 与 R 语言</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparklyr"><i class="fa fa-check"></i><b>3.8.1</b> sparklyr</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparkr"><i class="fa fa-check"></i><b>3.8.2</b> SparkR</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="sec-database-with-r.html"><a href="sec-database-with-r.html"><i class="fa fa-check"></i><b>3.9</b> 数据库与 R 语言</a></li>
+<li class="chapter" data-level="3.10" data-path="sec-batch-import-csv.html"><a href="sec-batch-import-csv.html"><i class="fa fa-check"></i><b>3.10</b> 批量读取 csv 文件</a></li>
+<li class="chapter" data-level="3.11" data-path="sec-batch-export-xlsx.html"><a href="sec-batch-export-xlsx.html"><i class="fa fa-check"></i><b>3.11</b> 批量导出 xlsx 文件</a></li>
+<li class="chapter" data-level="3.12" data-path="dm-session-info.html"><a href="dm-session-info.html"><i class="fa fa-check"></i><b>3.12</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="chap-string-operations.html"><a href="chap-string-operations.html"><i class="fa fa-check"></i><b>4</b> 字符串操作</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="base-count.html"><a href="base-count.html"><i class="fa fa-check"></i><b>4.1</b> 字符数统计</a></li>
+<li class="chapter" data-level="4.2" data-path="base-translations.html"><a href="base-translations.html"><i class="fa fa-check"></i><b>4.2</b> 字符串翻译</a></li>
+<li class="chapter" data-level="4.3" data-path="base-concatenate.html"><a href="base-concatenate.html"><i class="fa fa-check"></i><b>4.3</b> 字符串连接</a></li>
+<li class="chapter" data-level="4.4" data-path="base-strsplit.html"><a href="base-strsplit.html"><i class="fa fa-check"></i><b>4.4</b> 字符串拆分</a></li>
+<li class="chapter" data-level="4.5" data-path="base-match.html"><a href="base-match.html"><i class="fa fa-check"></i><b>4.5</b> 字符串匹配</a></li>
+<li class="chapter" data-level="4.6" data-path="base-search.html"><a href="base-search.html"><i class="fa fa-check"></i><b>4.6</b> 字符串查询</a></li>
+<li class="chapter" data-level="4.7" data-path="base-replacement.html"><a href="base-replacement.html"><i class="fa fa-check"></i><b>4.7</b> 字符串替换</a></li>
+<li class="chapter" data-level="4.8" data-path="base-extract.html"><a href="base-extract.html"><i class="fa fa-check"></i><b>4.8</b> 字符串提取</a></li>
+<li class="chapter" data-level="4.9" data-path="string-named-capture.html"><a href="string-named-capture.html"><i class="fa fa-check"></i><b>4.9</b> 命名捕捉</a></li>
+<li class="chapter" data-level="4.10" data-path="exact-match.html"><a href="exact-match.html"><i class="fa fa-check"></i><b>4.10</b> 精确匹配</a></li>
+<li class="chapter" data-level="4.11" data-path="fuzzy-match.html"><a href="fuzzy-match.html"><i class="fa fa-check"></i><b>4.11</b> 模糊匹配</a></li>
+<li class="chapter" data-level="4.12" data-path="replace.html"><a href="replace.html"><i class="fa fa-check"></i><b>4.12</b> 高级的替换</a></li>
+<li class="chapter" data-level="4.13" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>4.13</b> 高级的提取</a></li>
+<li class="chapter" data-level="4.14" data-path="other-string-op.html"><a href="other-string-op.html"><i class="fa fa-check"></i><b>4.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="4.14.1" data-path="other-string-op.html"><a href="other-string-op.html#strwrap"><i class="fa fa-check"></i><b>4.14.1</b> strwrap</a></li>
+<li class="chapter" data-level="4.14.2" data-path="other-string-op.html"><a href="other-string-op.html#strtrim"><i class="fa fa-check"></i><b>4.14.2</b> strtrim</a></li>
+<li class="chapter" data-level="4.14.3" data-path="other-string-op.html"><a href="other-string-op.html#strrep"><i class="fa fa-check"></i><b>4.14.3</b> strrep</a></li>
+<li class="chapter" data-level="4.14.4" data-path="other-string-op.html"><a href="other-string-op.html#trimws"><i class="fa fa-check"></i><b>4.14.4</b> trimws</a></li>
+<li class="chapter" data-level="4.14.5" data-path="other-string-op.html"><a href="other-string-op.html#tolower"><i class="fa fa-check"></i><b>4.14.5</b> tolower</a></li>
+</ul></li>
+<li class="chapter" data-level="4.15" data-path="encode-string.html"><a href="encode-string.html"><i class="fa fa-check"></i><b>4.15</b> 字符串加密</a></li>
+<li class="chapter" data-level="4.16" data-path="performance.html"><a href="performance.html"><i class="fa fa-check"></i><b>4.16</b> 处理性能</a></li>
+<li class="chapter" data-level="4.17" data-path="web-crawler.html"><a href="web-crawler.html"><i class="fa fa-check"></i><b>4.17</b> 网络爬虫</a></li>
+<li class="chapter" data-level="4.18" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>4.18</b> 文本挖掘</a></li>
+<li class="chapter" data-level="4.19" data-path="string-session-info.html"><a href="string-session-info.html"><i class="fa fa-check"></i><b>4.19</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="chap-regular-expressions.html"><a href="chap-regular-expressions.html"><i class="fa fa-check"></i><b>5</b> 正则表达式</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="character-constants.html"><a href="character-constants.html"><i class="fa fa-check"></i><b>5.1</b> 字符常量</a></li>
+<li class="chapter" data-level="5.2" data-path="environments.html"><a href="environments.html"><i class="fa fa-check"></i><b>5.2</b> 软件环境</a></li>
+<li class="chapter" data-level="5.3" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>5.3</b> 基本概念</a></li>
+<li class="chapter" data-level="5.4" data-path="match.html"><a href="match.html"><i class="fa fa-check"></i><b>5.4</b> 字符串匹配</a></li>
+<li class="chapter" data-level="5.5" data-path="concatenation.html"><a href="concatenation.html"><i class="fa fa-check"></i><b>5.5</b> 级联表达式</a></li>
+<li class="chapter" data-level="5.6" data-path="backreference.html"><a href="backreference.html"><i class="fa fa-check"></i><b>5.6</b> 反向引用</a></li>
+<li class="chapter" data-level="5.7" data-path="regexp-named-capture.html"><a href="regexp-named-capture.html"><i class="fa fa-check"></i><b>5.7</b> 命名捕捉</a></li>
+<li class="chapter" data-level="5.8" data-path="comment.html"><a href="comment.html"><i class="fa fa-check"></i><b>5.8</b> 表达式注释</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="chap-data-manipulation.html"><a href="chap-data-manipulation.html"><i class="fa fa-check"></i><b>6</b> 数据操作</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dm-view.html"><a href="dm-view.html"><i class="fa fa-check"></i><b>6.1</b> 查看数据</a></li>
+<li class="chapter" data-level="6.2" data-path="dm-subset.html"><a href="dm-subset.html"><i class="fa fa-check"></i><b>6.2</b> 提取子集</a></li>
+<li class="chapter" data-level="6.3" data-path="dm-reshape.html"><a href="dm-reshape.html"><i class="fa fa-check"></i><b>6.3</b> 数据重塑</a></li>
+<li class="chapter" data-level="6.4" data-path="dm-transform.html"><a href="dm-transform.html"><i class="fa fa-check"></i><b>6.4</b> 数据转换</a></li>
+<li class="chapter" data-level="6.5" data-path="dm-order.html"><a href="dm-order.html"><i class="fa fa-check"></i><b>6.5</b> 按列排序</a></li>
+<li class="chapter" data-level="6.6" data-path="dm-split.html"><a href="dm-split.html"><i class="fa fa-check"></i><b>6.6</b> 数据拆分</a></li>
+<li class="chapter" data-level="6.7" data-path="dm-merge.html"><a href="dm-merge.html"><i class="fa fa-check"></i><b>6.7</b> 数据合并</a></li>
+<li class="chapter" data-level="6.8" data-path="dm-duplicated.html"><a href="dm-duplicated.html"><i class="fa fa-check"></i><b>6.8</b> 数据去重</a></li>
+<li class="chapter" data-level="6.9" data-path="dm-missing.html"><a href="dm-missing.html"><i class="fa fa-check"></i><b>6.9</b> 数据缺失</a></li>
+<li class="chapter" data-level="6.10" data-path="dm-aggregate.html"><a href="dm-aggregate.html"><i class="fa fa-check"></i><b>6.10</b> 数据聚合</a></li>
+<li class="chapter" data-level="6.11" data-path="dm-table.html"><a href="dm-table.html"><i class="fa fa-check"></i><b>6.11</b> 表格统计</a></li>
+<li class="chapter" data-level="6.12" data-path="dm-index.html"><a href="dm-index.html"><i class="fa fa-check"></i><b>6.12</b> 索引访问</a></li>
+<li class="chapter" data-level="6.13" data-path="dm-array.html"><a href="dm-array.html"><i class="fa fa-check"></i><b>6.13</b> 多维数组</a></li>
+<li class="chapter" data-level="6.14" data-path="dm-others.html"><a href="dm-others.html"><i class="fa fa-check"></i><b>6.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="dm-others.html"><a href="dm-others.html#relist-or-unlist"><i class="fa fa-check"></i><b>6.14.1</b> 列表属性</a></li>
+<li class="chapter" data-level="6.14.2" data-path="dm-others.html"><a href="dm-others.html#stack-or-unstack"><i class="fa fa-check"></i><b>6.14.2</b> 堆叠向量</a></li>
+<li class="chapter" data-level="6.14.3" data-path="dm-others.html"><a href="dm-others.html#class-or-unclass"><i class="fa fa-check"></i><b>6.14.3</b> 属性转化</a></li>
+<li class="chapter" data-level="6.14.4" data-path="dm-others.html"><a href="dm-others.html#attach-or-detach"><i class="fa fa-check"></i><b>6.14.4</b> 绑定环境</a></li>
+<li class="chapter" data-level="6.14.5" data-path="dm-others.html"><a href="dm-others.html#with-or-within"><i class="fa fa-check"></i><b>6.14.5</b> 数据环境</a></li>
+</ul></li>
+<li class="chapter" data-level="6.15" data-path="dm-apply-family.html"><a href="dm-apply-family.html"><i class="fa fa-check"></i><b>6.15</b> apply 族</a></li>
+<li class="chapter" data-level="6.16" data-path="sec-option-with.html"><a href="sec-option-with.html"><i class="fa fa-check"></i><b>6.16</b> with 选项</a></li>
+<li class="chapter" data-level="6.17" data-path="sec-aggregate.html"><a href="sec-aggregate.html"><i class="fa fa-check"></i><b>6.17</b> 分组聚合</a></li>
+<li class="chapter" data-level="6.18" data-path="sec-merge-two-tables.html"><a href="sec-merge-two-tables.html"><i class="fa fa-check"></i><b>6.18</b> 合并操作</a></li>
+<li class="chapter" data-level="6.19" data-path="sec-reshape.html"><a href="sec-reshape.html"><i class="fa fa-check"></i><b>6.19</b> 长宽转换</a></li>
+<li class="chapter" data-level="6.20" data-path="sec-filter-columns.html"><a href="sec-filter-columns.html"><i class="fa fa-check"></i><b>6.20</b> 对符合条件的列操作</a></li>
+<li class="chapter" data-level="6.21" data-path="sec-case-when.html"><a href="sec-case-when.html"><i class="fa fa-check"></i><b>6.21</b> <code>CASE WHEN</code> 和 <code>fcase</code></a></li>
+<li class="chapter" data-level="6.22" data-path="sec-datatable-in-action.html"><a href="sec-datatable-in-action.html"><i class="fa fa-check"></i><b>6.22</b> 数据操作实战</a></li>
+<li class="chapter" data-level="6.23" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html"><i class="fa fa-check"></i><b>6.23</b> 高频数据操作</a>
+<ul>
+<li class="chapter" data-level="6.23.1" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-reduce-merge"><i class="fa fa-check"></i><b>6.23.1</b> 循环合并</a></li>
+<li class="chapter" data-level="6.23.2" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-count-by-group"><i class="fa fa-check"></i><b>6.23.2</b> 分组计数</a></li>
+<li class="chapter" data-level="6.23.3" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-sample-by-group"><i class="fa fa-check"></i><b>6.23.3</b> 分组抽样</a></li>
+<li class="chapter" data-level="6.23.4" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-order-by-group"><i class="fa fa-check"></i><b>6.23.4</b> 分组排序</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chap-advanced-manipulation.html"><a href="chap-advanced-manipulation.html"><i class="fa fa-check"></i><b>7</b> 高级数据操作</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>7.1</b> 基础介绍</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="intro.html"><a href="intro.html#subsec-filter-i"><i class="fa fa-check"></i><b>7.1.1</b> 过滤</a></li>
+<li class="chapter" data-level="7.1.2" data-path="intro.html"><a href="intro.html#subsec-mutate-j"><i class="fa fa-check"></i><b>7.1.2</b> 变换</a></li>
+<li class="chapter" data-level="7.1.3" data-path="intro.html"><a href="intro.html#subsec-summarise-j"><i class="fa fa-check"></i><b>7.1.3</b> 聚合</a></li>
+<li class="chapter" data-level="7.1.4" data-path="intro.html"><a href="intro.html#subsec-setname"><i class="fa fa-check"></i><b>7.1.4</b> 命名</a></li>
+<li class="chapter" data-level="7.1.5" data-path="intro.html"><a href="intro.html#subsec-order-by-j"><i class="fa fa-check"></i><b>7.1.5</b> 排序</a></li>
+<li class="chapter" data-level="7.1.6" data-path="intro.html"><a href="intro.html#subsec-reshape"><i class="fa fa-check"></i><b>7.1.6</b> 变形</a></li>
+<li class="chapter" data-level="7.1.7" data-path="intro.html"><a href="intro.html#subsec-group-by"><i class="fa fa-check"></i><b>7.1.7</b> 分组</a></li>
+<li class="chapter" data-level="7.1.8" data-path="intro.html"><a href="intro.html#subsec-merge"><i class="fa fa-check"></i><b>7.1.8</b> 合并</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html"><i class="fa fa-check"></i><b>7.2</b> 高频操作</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select"><i class="fa fa-check"></i><b>7.2.1</b> 选择多列</a></li>
+<li class="chapter" data-level="7.2.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-filter"><i class="fa fa-check"></i><b>7.2.2</b> 过滤多行</a></li>
+<li class="chapter" data-level="7.2.3" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-duplicated"><i class="fa fa-check"></i><b>7.2.3</b> 去重多行</a></li>
+<li class="chapter" data-level="7.2.4" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge"><i class="fa fa-check"></i><b>7.2.4</b> 合并操作</a></li>
+<li class="chapter" data-level="7.2.5" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-add-columns"><i class="fa fa-check"></i><b>7.2.5</b> 新添多列</a></li>
+<li class="chapter" data-level="7.2.6" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-delete-columns"><i class="fa fa-check"></i><b>7.2.6</b> 删除多列</a></li>
+<li class="chapter" data-level="7.2.7" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-columns"><i class="fa fa-check"></i><b>7.2.7</b> 筛选多列</a></li>
+<li class="chapter" data-level="7.2.8" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-modify-columns-type"><i class="fa fa-check"></i><b>7.2.8</b> 修改多列类型</a></li>
+<li class="chapter" data-level="7.2.9" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-first-row"><i class="fa fa-check"></i><b>7.2.9</b> 取每组第一行</a></li>
+<li class="chapter" data-level="7.2.10" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#subsec-mom-vs-yoy"><i class="fa fa-check"></i><b>7.2.10</b> 计算环比同比</a></li>
+<li class="chapter" data-level="7.2.11" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge-multi-dfs"><i class="fa fa-check"></i><b>7.2.11</b> 合并多个数据框</a></li>
+<li class="chapter" data-level="7.2.12" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-multiple-aggregations"><i class="fa fa-check"></i><b>7.2.12</b> 分组聚合多个指标</a></li>
+<li class="chapter" data-level="7.2.13" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rename-multi-cols"><i class="fa fa-check"></i><b>7.2.13</b> 重命名多个列</a></li>
+<li class="chapter" data-level="7.2.14" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-sort-multi-cols"><i class="fa fa-check"></i><b>7.2.14</b> 对多个列依次排序</a></li>
+<li class="chapter" data-level="7.2.15" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rearrange-position-multi-cols"><i class="fa fa-check"></i><b>7.2.15</b> 重排多个列的位置</a></li>
+<li class="chapter" data-level="7.2.16" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-tidy-output"><i class="fa fa-check"></i><b>7.2.16</b> 整理回归结果</a></li>
+<li class="chapter" data-level="7.2.17" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-assignment-by-reference"><i class="fa fa-check"></i><b>7.2.17</b> <code>:=</code> 和 <code>.()</code></a></li>
+<li class="chapter" data-level="7.2.18" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-remove-na"><i class="fa fa-check"></i><b>7.2.18</b> 去掉含有缺失值的记录</a></li>
+<li class="chapter" data-level="7.2.19" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-match-set"><i class="fa fa-check"></i><b>7.2.19</b> 集合操作</a></li>
+<li class="chapter" data-level="7.2.20" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#transform-cut-aggregate"><i class="fa fa-check"></i><b>7.2.20</b> 对数值向量按既定分组计数</a></li>
+<li class="chapter" data-level="7.2.21" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#aggregate-order"><i class="fa fa-check"></i><b>7.2.21</b> 分组排序</a></li>
+<li class="chapter" data-level="7.2.22" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-order"><i class="fa fa-check"></i><b>7.2.22</b> 分组获取 Top 值</a></li>
+<li class="chapter" data-level="7.2.23" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-sample"><i class="fa fa-check"></i><b>7.2.23</b> 分组抽样</a></li>
+<li class="chapter" data-level="7.2.24" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-quantile"><i class="fa fa-check"></i><b>7.2.24</b> 分组计算分位数</a></li>
+<li class="chapter" data-level="7.2.25" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#shift-lag"><i class="fa fa-check"></i><b>7.2.25</b> 计算日粒度的 DoD/WoW/MoM/YoY</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-adm-sessioninfo.html"><a href="sec-adm-sessioninfo.html"><i class="fa fa-check"></i><b>7.3</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="chap-parallel-manipulation.html"><a href="chap-parallel-manipulation.html"><i class="fa fa-check"></i><b>8</b> 并行化操作</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="apply.html"><a href="apply.html"><i class="fa fa-check"></i><b>8.1</b> apply</a></li>
+<li class="chapter" data-level="8.2" data-path="map-reduce.html"><a href="map-reduce.html"><i class="fa fa-check"></i><b>8.2</b> MapReduce</a></li>
+<li class="chapter" data-level="8.3" data-path="parallel.html"><a href="parallel.html"><i class="fa fa-check"></i><b>8.3</b> parallel</a></li>
+<li class="chapter" data-level="8.4" data-path="rmpi.html"><a href="rmpi.html"><i class="fa fa-check"></i><b>8.4</b> Rmpi</a></li>
+<li class="chapter" data-level="8.5" data-path="gpur.html"><a href="gpur.html"><i class="fa fa-check"></i><b>8.5</b> gpuR</a></li>
+<li class="chapter" data-level="8.6" data-path="parallel-sessioninfo.html"><a href="parallel-sessioninfo.html"><i class="fa fa-check"></i><b>8.6</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chap-dplyr-manipulation.html"><a href="chap-dplyr-manipulation.html"><i class="fa fa-check"></i><b>9</b> 净土化操作</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="common-operations.html"><a href="common-operations.html"><i class="fa fa-check"></i><b>9.1</b> 常用操作</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="common-operations.html"><a href="common-operations.html#tibble-show"><i class="fa fa-check"></i><b>9.1.1</b> 查看</a></li>
+<li class="chapter" data-level="9.1.2" data-path="common-operations.html"><a href="common-operations.html#dplyr-filter"><i class="fa fa-check"></i><b>9.1.2</b> 筛选</a></li>
+<li class="chapter" data-level="9.1.3" data-path="common-operations.html"><a href="common-operations.html#dplyr-arrange"><i class="fa fa-check"></i><b>9.1.3</b> 排序</a></li>
+<li class="chapter" data-level="9.1.4" data-path="common-operations.html"><a href="common-operations.html#dplyr-summarise"><i class="fa fa-check"></i><b>9.1.4</b> 聚合</a></li>
+<li class="chapter" data-level="9.1.5" data-path="common-operations.html"><a href="common-operations.html#dplyr-merge"><i class="fa fa-check"></i><b>9.1.5</b> 合并</a></li>
+<li class="chapter" data-level="9.1.6" data-path="common-operations.html"><a href="common-operations.html#dplyr-mutate"><i class="fa fa-check"></i><b>9.1.6</b> 变换</a></li>
+<li class="chapter" data-level="9.1.7" data-path="common-operations.html"><a href="common-operations.html#dplyr-duplicated"><i class="fa fa-check"></i><b>9.1.7</b> 去重</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html"><i class="fa fa-check"></i><b>9.2</b> 高频问题</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#create-empty-dataframe"><i class="fa fa-check"></i><b>9.2.1</b> 初始化数据框</a></li>
+<li class="chapter" data-level="9.2.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#remove-missing-values"><i class="fa fa-check"></i><b>9.2.2</b> 移除缺失记录</a></li>
+<li class="chapter" data-level="9.2.3" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#coerce-data-type"><i class="fa fa-check"></i><b>9.2.3</b> 数据类型转化</a></li>
+<li class="chapter" data-level="9.2.4" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#cross-group-by"><i class="fa fa-check"></i><b>9.2.4</b> 跨列分组求和</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="pipe-manipulation.html"><a href="pipe-manipulation.html"><i class="fa fa-check"></i><b>9.3</b> 管道操作</a></li>
+</ul></li>
+<li class="part"><span><b>II 统计图形</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-graphics.html"><a href="chap-statistical-graphics.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="10" data-path="chap-graphics-foundations.html"><a href="chap-graphics-foundations.html"><i class="fa fa-check"></i><b>10</b> 图形基础</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="graphics-elements.html"><a href="graphics-elements.html"><i class="fa fa-check"></i><b>10.1</b> 绘图基本要素</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="graphics-elements.html"><a href="graphics-elements.html#base-points"><i class="fa fa-check"></i><b>10.1.1</b> 点线</a></li>
+<li class="chapter" data-level="10.1.2" data-path="graphics-elements.html"><a href="graphics-elements.html#base-rect"><i class="fa fa-check"></i><b>10.1.2</b> 区域</a></li>
+<li class="chapter" data-level="10.1.3" data-path="graphics-elements.html"><a href="graphics-elements.html#base-lines"><i class="fa fa-check"></i><b>10.1.3</b> 参考线</a></li>
+<li class="chapter" data-level="10.1.4" data-path="graphics-elements.html"><a href="graphics-elements.html#base-axis"><i class="fa fa-check"></i><b>10.1.4</b> 坐标轴</a></li>
+<li class="chapter" data-level="10.1.5" data-path="graphics-elements.html"><a href="graphics-elements.html#base-tick"><i class="fa fa-check"></i><b>10.1.5</b> 刻度线</a></li>
+<li class="chapter" data-level="10.1.6" data-path="graphics-elements.html"><a href="graphics-elements.html#base-title"><i class="fa fa-check"></i><b>10.1.6</b> 标题</a></li>
+<li class="chapter" data-level="10.1.7" data-path="graphics-elements.html"><a href="graphics-elements.html#base-annotation"><i class="fa fa-check"></i><b>10.1.7</b> 注释</a></li>
+<li class="chapter" data-level="10.1.8" data-path="graphics-elements.html"><a href="graphics-elements.html#base-legend"><i class="fa fa-check"></i><b>10.1.8</b> 图例</a></li>
+<li class="chapter" data-level="10.1.9" data-path="graphics-elements.html"><a href="graphics-elements.html#base-par"><i class="fa fa-check"></i><b>10.1.9</b> 边空</a></li>
+<li class="chapter" data-level="10.1.10" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layer"><i class="fa fa-check"></i><b>10.1.10</b> 图层</a></li>
+<li class="chapter" data-level="10.1.11" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layout"><i class="fa fa-check"></i><b>10.1.11</b> 布局</a></li>
+<li class="chapter" data-level="10.1.12" data-path="graphics-elements.html"><a href="graphics-elements.html#base-combine"><i class="fa fa-check"></i><b>10.1.12</b> 组合</a></li>
+<li class="chapter" data-level="10.1.13" data-path="graphics-elements.html"><a href="graphics-elements.html#base-screen"><i class="fa fa-check"></i><b>10.1.13</b> 分屏</a></li>
+<li class="chapter" data-level="10.1.14" data-path="graphics-elements.html"><a href="graphics-elements.html#identify-locator"><i class="fa fa-check"></i><b>10.1.14</b> 交互</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="base-graphics.html"><a href="base-graphics.html"><i class="fa fa-check"></i><b>10.2</b> 基础统计图形</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="base-graphics.html"><a href="base-graphics.html#plot-bar"><i class="fa fa-check"></i><b>10.2.1</b> 条形图</a></li>
+<li class="chapter" data-level="10.2.2" data-path="base-graphics.html"><a href="base-graphics.html#plot-hist"><i class="fa fa-check"></i><b>10.2.2</b> 直方图</a></li>
+<li class="chapter" data-level="10.2.3" data-path="base-graphics.html"><a href="base-graphics.html#plot-density"><i class="fa fa-check"></i><b>10.2.3</b> 密度图</a></li>
+<li class="chapter" data-level="10.2.4" data-path="base-graphics.html"><a href="base-graphics.html#plot-ecdf"><i class="fa fa-check"></i><b>10.2.4</b> 经验图</a></li>
+<li class="chapter" data-level="10.2.5" data-path="base-graphics.html"><a href="base-graphics.html#plot-qqnorm"><i class="fa fa-check"></i><b>10.2.5</b> QQ 图</a></li>
+<li class="chapter" data-level="10.2.6" data-path="base-graphics.html"><a href="base-graphics.html#plot-ts"><i class="fa fa-check"></i><b>10.2.6</b> 时序图</a></li>
+<li class="chapter" data-level="10.2.7" data-path="base-graphics.html"><a href="base-graphics.html#plot-pie"><i class="fa fa-check"></i><b>10.2.7</b> 饼图</a></li>
+<li class="chapter" data-level="10.2.8" data-path="base-graphics.html"><a href="base-graphics.html#plot-stem-leaf"><i class="fa fa-check"></i><b>10.2.8</b> 茎叶图</a></li>
+<li class="chapter" data-level="10.2.9" data-path="base-graphics.html"><a href="base-graphics.html#plot-scatter"><i class="fa fa-check"></i><b>10.2.9</b> 散点图</a></li>
+<li class="chapter" data-level="10.2.10" data-path="base-graphics.html"><a href="base-graphics.html#base-jitter"><i class="fa fa-check"></i><b>10.2.10</b> 抖动图</a></li>
+<li class="chapter" data-level="10.2.11" data-path="base-graphics.html"><a href="base-graphics.html#plot-box"><i class="fa fa-check"></i><b>10.2.11</b> 箱线图</a></li>
+<li class="chapter" data-level="10.2.12" data-path="base-graphics.html"><a href="base-graphics.html#error-bars"><i class="fa fa-check"></i><b>10.2.12</b> 残差图</a></li>
+<li class="chapter" data-level="10.2.13" data-path="base-graphics.html"><a href="base-graphics.html#plot-violin"><i class="fa fa-check"></i><b>10.2.13</b> 提琴图</a></li>
+<li class="chapter" data-level="10.2.14" data-path="base-graphics.html"><a href="base-graphics.html#plot-contour"><i class="fa fa-check"></i><b>10.2.14</b> 轮廓图</a></li>
+<li class="chapter" data-level="10.2.15" data-path="base-graphics.html"><a href="base-graphics.html#plot-line"><i class="fa fa-check"></i><b>10.2.15</b> 折线图</a></li>
+<li class="chapter" data-level="10.2.16" data-path="base-graphics.html"><a href="base-graphics.html#function"><i class="fa fa-check"></i><b>10.2.16</b> 函数图</a></li>
+<li class="chapter" data-level="10.2.17" data-path="base-graphics.html"><a href="base-graphics.html#plot-mosaic"><i class="fa fa-check"></i><b>10.2.17</b> 马赛克图</a></li>
+<li class="chapter" data-level="10.2.18" data-path="base-graphics.html"><a href="base-graphics.html#plot-dotchart"><i class="fa fa-check"></i><b>10.2.18</b> 点图</a></li>
+<li class="chapter" data-level="10.2.19" data-path="base-graphics.html"><a href="base-graphics.html#plot-matrix"><i class="fa fa-check"></i><b>10.2.19</b> 矩阵图</a></li>
+<li class="chapter" data-level="10.2.20" data-path="base-graphics.html"><a href="base-graphics.html#plot-radar"><i class="fa fa-check"></i><b>10.2.20</b> 雷达图</a></li>
+<li class="chapter" data-level="10.2.21" data-path="base-graphics.html"><a href="base-graphics.html#plot-rose"><i class="fa fa-check"></i><b>10.2.21</b> 玫瑰图</a></li>
+<li class="chapter" data-level="10.2.22" data-path="base-graphics.html"><a href="base-graphics.html#plot-persp"><i class="fa fa-check"></i><b>10.2.22</b> 透视图</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html"><i class="fa fa-check"></i><b>10.3</b> 栅格统计图形</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-line"><i class="fa fa-check"></i><b>10.3.1</b> 时序图</a></li>
+<li class="chapter" data-level="10.3.2" data-path="lattice-graphics.html"><a href="lattice-graphics.html#水平图"><i class="fa fa-check"></i><b>10.3.2</b> 水平图</a></li>
+<li class="chapter" data-level="10.3.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html#折线图"><i class="fa fa-check"></i><b>10.3.3</b> 折线图</a></li>
+<li class="chapter" data-level="10.3.4" data-path="lattice-graphics.html"><a href="lattice-graphics.html#高级设置"><i class="fa fa-check"></i><b>10.3.4</b> 高级设置</a></li>
+<li class="chapter" data-level="10.3.5" data-path="lattice-graphics.html"><a href="lattice-graphics.html#柱形图"><i class="fa fa-check"></i><b>10.3.5</b> 柱形图</a></li>
+<li class="chapter" data-level="10.3.6" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-smooth"><i class="fa fa-check"></i><b>10.3.6</b> Rootograms</a></li>
+<li class="chapter" data-level="10.3.7" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-persp"><i class="fa fa-check"></i><b>10.3.7</b> 透视图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="chap-visualization-colors.html"><a href="chap-visualization-colors.html"><i class="fa fa-check"></i><b>11</b> 可视化之配色</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="subsec-color-palettes.html"><a href="subsec-color-palettes.html"><i class="fa fa-check"></i><b>11.1</b> 调色板</a></li>
+<li class="chapter" data-level="11.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html"><i class="fa fa-check"></i><b>11.2</b> 颜色模式</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#rgb"><i class="fa fa-check"></i><b>11.2.1</b> RGB</a></li>
+<li class="chapter" data-level="11.2.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsl"><i class="fa fa-check"></i><b>11.2.2</b> HSL</a></li>
+<li class="chapter" data-level="11.2.3" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsv"><i class="fa fa-check"></i><b>11.2.3</b> HSV</a></li>
+<li class="chapter" data-level="11.2.4" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hcl"><i class="fa fa-check"></i><b>11.2.4</b> HCL</a></li>
+<li class="chapter" data-level="11.2.5" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#cmyk"><i class="fa fa-check"></i><b>11.2.5</b> CMYK</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="subsec-latex-colors.html"><a href="subsec-latex-colors.html"><i class="fa fa-check"></i><b>11.3</b> LaTeX 配色</a></li>
+<li class="chapter" data-level="11.4" data-path="subsec-ggplot2-colors.html"><a href="subsec-ggplot2-colors.html"><i class="fa fa-check"></i><b>11.4</b> ggplot2 配色</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chap-gallery.html"><a href="chap-gallery.html"><i class="fa fa-check"></i><b>12</b> 可视化之图库</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="sec-ggplot2-pie.html"><a href="sec-ggplot2-pie.html"><i class="fa fa-check"></i><b>12.1</b> 饼图</a></li>
+<li class="chapter" data-level="12.2" data-path="sec-ggplot2-map.html"><a href="sec-ggplot2-map.html"><i class="fa fa-check"></i><b>12.2</b> 地图</a></li>
+<li class="chapter" data-level="12.3" data-path="sec-ggplot2-heatmap.html"><a href="sec-ggplot2-heatmap.html"><i class="fa fa-check"></i><b>12.3</b> 热图</a></li>
+<li class="chapter" data-level="12.4" data-path="ggplot2-scatter.html"><a href="ggplot2-scatter.html"><i class="fa fa-check"></i><b>12.4</b> 散点图</a></li>
+<li class="chapter" data-level="12.5" data-path="sec-ggplot2-barplot.html"><a href="sec-ggplot2-barplot.html"><i class="fa fa-check"></i><b>12.5</b> 条形图</a></li>
+<li class="chapter" data-level="12.6" data-path="ggplot2-histogram.html"><a href="ggplot2-histogram.html"><i class="fa fa-check"></i><b>12.6</b> 直方图</a></li>
+<li class="chapter" data-level="12.7" data-path="ggplot2-boxplot.html"><a href="ggplot2-boxplot.html"><i class="fa fa-check"></i><b>12.7</b> 箱线图</a></li>
+<li class="chapter" data-level="12.8" data-path="sec-ggplot2-function.html"><a href="sec-ggplot2-function.html"><i class="fa fa-check"></i><b>12.8</b> 函数图</a></li>
+<li class="chapter" data-level="12.9" data-path="sec-ggplot2-density.html"><a href="sec-ggplot2-density.html"><i class="fa fa-check"></i><b>12.9</b> 密度图</a></li>
+<li class="chapter" data-level="12.10" data-path="sec-ggplot2-violin.html"><a href="sec-ggplot2-violin.html"><i class="fa fa-check"></i><b>12.10</b> 提琴图</a></li>
+<li class="chapter" data-level="12.11" data-path="ggplot2-jitter.html"><a href="ggplot2-jitter.html"><i class="fa fa-check"></i><b>12.11</b> 抖动图</a></li>
+<li class="chapter" data-level="12.12" data-path="sec-ggplot2-beeswarm.html"><a href="sec-ggplot2-beeswarm.html"><i class="fa fa-check"></i><b>12.12</b> 蜂群图</a></li>
+<li class="chapter" data-level="12.13" data-path="ggplot2-rose.html"><a href="ggplot2-rose.html"><i class="fa fa-check"></i><b>12.13</b> 玫瑰图</a></li>
+<li class="chapter" data-level="12.14" data-path="sec-ggplot2-tile.html"><a href="sec-ggplot2-tile.html"><i class="fa fa-check"></i><b>12.14</b> 瓦片图</a></li>
+<li class="chapter" data-level="12.15" data-path="sec-ggplot2-calendar.html"><a href="sec-ggplot2-calendar.html"><i class="fa fa-check"></i><b>12.15</b> 日历图</a></li>
+<li class="chapter" data-level="12.16" data-path="sec-ggplot2-ridgeline.html"><a href="sec-ggplot2-ridgeline.html"><i class="fa fa-check"></i><b>12.16</b> 岭线图</a></li>
+<li class="chapter" data-level="12.17" data-path="sec-ggplot2-ellipse.html"><a href="sec-ggplot2-ellipse.html"><i class="fa fa-check"></i><b>12.17</b> 椭圆图</a></li>
+<li class="chapter" data-level="12.18" data-path="sec-ggplot2-qq.html"><a href="sec-ggplot2-qq.html"><i class="fa fa-check"></i><b>12.18</b> Q-Q 图</a></li>
+<li class="chapter" data-level="12.19" data-path="sec-ggplot2-chull.html"><a href="sec-ggplot2-chull.html"><i class="fa fa-check"></i><b>12.19</b> 包络图</a></li>
+<li class="chapter" data-level="12.20" data-path="sec-ggplot2-fit.html"><a href="sec-ggplot2-fit.html"><i class="fa fa-check"></i><b>12.20</b> 拟合图</a></li>
+<li class="chapter" data-level="12.21" data-path="sec-ggplot2-raster.html"><a href="sec-ggplot2-raster.html"><i class="fa fa-check"></i><b>12.21</b> 地形图</a></li>
+<li class="chapter" data-level="12.22" data-path="sec-ggplot2-treemap.html"><a href="sec-ggplot2-treemap.html"><i class="fa fa-check"></i><b>12.22</b> 树状图</a></li>
+<li class="chapter" data-level="12.23" data-path="sec-ggplot2-cohort.html"><a href="sec-ggplot2-cohort.html"><i class="fa fa-check"></i><b>12.23</b> 留存图</a></li>
+<li class="chapter" data-level="12.24" data-path="sec-ggplot2-waterfall.html"><a href="sec-ggplot2-waterfall.html"><i class="fa fa-check"></i><b>12.24</b> 瀑布图</a></li>
+<li class="chapter" data-level="12.25" data-path="sec-ggplot2-streamgraph.html"><a href="sec-ggplot2-streamgraph.html"><i class="fa fa-check"></i><b>12.25</b> 水流图</a></li>
+<li class="chapter" data-level="12.26" data-path="sec-ggplot2-vistime.html"><a href="sec-ggplot2-vistime.html"><i class="fa fa-check"></i><b>12.26</b> 时间线</a></li>
+<li class="chapter" data-level="12.27" data-path="sec-ggplot2-ternary.html"><a href="sec-ggplot2-ternary.html"><i class="fa fa-check"></i><b>12.27</b> 三元图</a></li>
+<li class="chapter" data-level="12.28" data-path="sec-vector-fields.html"><a href="sec-vector-fields.html"><i class="fa fa-check"></i><b>12.28</b> 向量场图</a></li>
+<li class="chapter" data-level="12.29" data-path="sec-ggplot2-eisenhower.html"><a href="sec-ggplot2-eisenhower.html"><i class="fa fa-check"></i><b>12.29</b> 四象限图</a></li>
+<li class="chapter" data-level="12.30" data-path="sec-ggplot2-tornado.html"><a href="sec-ggplot2-tornado.html"><i class="fa fa-check"></i><b>12.30</b> 龙卷风图</a></li>
+<li class="chapter" data-level="12.31" data-path="sec-ggplot2-hclust.html"><a href="sec-ggplot2-hclust.html"><i class="fa fa-check"></i><b>12.31</b> 聚类图</a></li>
+<li class="chapter" data-level="12.32" data-path="sec-ggplot2-prcomp.html"><a href="sec-ggplot2-prcomp.html"><i class="fa fa-check"></i><b>12.32</b> 主成分图</a></li>
+<li class="chapter" data-level="12.33" data-path="sec-ggplot2-composite.html"><a href="sec-ggplot2-composite.html"><i class="fa fa-check"></i><b>12.33</b> 组合图</a></li>
+<li class="chapter" data-level="12.34" data-path="sec-ggplot2-animation.html"><a href="sec-ggplot2-animation.html"><i class="fa fa-check"></i><b>12.34</b> 动态图</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chap-interactive-web-graphics.html"><a href="chap-interactive-web-graphics.html"><i class="fa fa-check"></i><b>13</b> 交互图形</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="sec-plotly-scatter.html"><a href="sec-plotly-scatter.html"><i class="fa fa-check"></i><b>13.1</b> 散点图</a></li>
+<li class="chapter" data-level="13.2" data-path="sec-plotly-barplot.html"><a href="sec-plotly-barplot.html"><i class="fa fa-check"></i><b>13.2</b> 条形图</a></li>
+<li class="chapter" data-level="13.3" data-path="sec-plotly-lineplot.html"><a href="sec-plotly-lineplot.html"><i class="fa fa-check"></i><b>13.3</b> 折线图</a></li>
+<li class="chapter" data-level="13.4" data-path="sec-multiple-y-axes.html"><a href="sec-multiple-y-axes.html"><i class="fa fa-check"></i><b>13.4</b> 双轴图</a></li>
+<li class="chapter" data-level="13.5" data-path="sec-plotly-bubble.html"><a href="sec-plotly-bubble.html"><i class="fa fa-check"></i><b>13.5</b> 气泡图</a></li>
+<li class="chapter" data-level="13.6" data-path="sec-plotly-spline.html"><a href="sec-plotly-spline.html"><i class="fa fa-check"></i><b>13.6</b> 曲线图</a></li>
+<li class="chapter" data-level="13.7" data-path="sec-plotly-tozeroy.html"><a href="sec-plotly-tozeroy.html"><i class="fa fa-check"></i><b>13.7</b> 堆积图</a></li>
+<li class="chapter" data-level="13.8" data-path="sec-plotly-heatmap.html"><a href="sec-plotly-heatmap.html"><i class="fa fa-check"></i><b>13.8</b> 热力图</a></li>
+<li class="chapter" data-level="13.9" data-path="sec-plotly-map.html"><a href="sec-plotly-map.html"><i class="fa fa-check"></i><b>13.9</b> 地图上的散点图</a></li>
+<li class="chapter" data-level="13.10" data-path="sec-plotly-fitted.html"><a href="sec-plotly-fitted.html"><i class="fa fa-check"></i><b>13.10</b> 拟合图</a></li>
+<li class="chapter" data-level="13.11" data-path="sec-plotly-rasterly.html"><a href="sec-plotly-rasterly.html"><i class="fa fa-check"></i><b>13.11</b> 轨迹图</a></li>
+<li class="chapter" data-level="13.12" data-path="sec-plotly-gantt-charts.html"><a href="sec-plotly-gantt-charts.html"><i class="fa fa-check"></i><b>13.12</b> 甘特图</a></li>
+<li class="chapter" data-level="13.13" data-path="sec-plotly-pareto-charts.html"><a href="sec-plotly-pareto-charts.html"><i class="fa fa-check"></i><b>13.13</b> 帕雷托图</a></li>
+<li class="chapter" data-level="13.14" data-path="sec-plotly-vistime.html"><a href="sec-plotly-vistime.html"><i class="fa fa-check"></i><b>13.14</b> 时间线</a></li>
+<li class="chapter" data-level="13.15" data-path="sec-plotly-funnel.html"><a href="sec-plotly-funnel.html"><i class="fa fa-check"></i><b>13.15</b> 漏斗图</a></li>
+<li class="chapter" data-level="13.16" data-path="sec-plotly-radar.html"><a href="sec-plotly-radar.html"><i class="fa fa-check"></i><b>13.16</b> 雷达图</a></li>
+<li class="chapter" data-level="13.17" data-path="sec-plotly-waterfall.html"><a href="sec-plotly-waterfall.html"><i class="fa fa-check"></i><b>13.17</b> 瀑布图</a></li>
+<li class="chapter" data-level="13.18" data-path="sec-plotly-treemap.html"><a href="sec-plotly-treemap.html"><i class="fa fa-check"></i><b>13.18</b> 树状图</a></li>
+<li class="chapter" data-level="13.19" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>13.19</b> 旭日图</a></li>
+<li class="chapter" data-level="13.20" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>13.20</b> 调色板</a></li>
+<li class="chapter" data-level="13.21" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>13.21</b> 地图 II</a></li>
+<li class="chapter" data-level="13.22" data-path="sec-echarts4r-animation.html"><a href="sec-echarts4r-animation.html"><i class="fa fa-check"></i><b>13.22</b> 动画</a></li>
+<li class="chapter" data-level="13.23" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html"><i class="fa fa-check"></i><b>13.23</b> 网络图</a>
+<ul>
+<li class="chapter" data-level="13.23.1" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-networkD3"><i class="fa fa-check"></i><b>13.23.1</b> networkD3</a></li>
+<li class="chapter" data-level="13.23.2" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-visNetwork"><i class="fa fa-check"></i><b>13.23.2</b> visNetwork</a></li>
+<li class="chapter" data-level="13.23.3" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-r2d3"><i class="fa fa-check"></i><b>13.23.3</b> r2d3</a></li>
+</ul></li>
+<li class="chapter" data-level="13.24" data-path="sec-web-graphics-session.html"><a href="sec-web-graphics-session.html"><i class="fa fa-check"></i><b>13.24</b> 运行环境</a></li>
+</ul></li>
+<li class="part"><span><b>III 统计计算</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-computation.html"><a href="chap-statistical-computation.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="14" data-path="chap-numerical-optimization.html"><a href="chap-numerical-optimization.html"><i class="fa fa-check"></i><b>14</b> 数值优化</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="sec-linear-programming.html"><a href="sec-linear-programming.html"><i class="fa fa-check"></i><b>14.1</b> 线性规划</a></li>
+<li class="chapter" data-level="14.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html"><i class="fa fa-check"></i><b>14.2</b> 整数规划</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#common-integer-programming"><i class="fa fa-check"></i><b>14.2.1</b> 一般整数规划</a></li>
+<li class="chapter" data-level="14.2.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#binary-integer-programming"><i class="fa fa-check"></i><b>14.2.2</b> 0-1 整数规划</a></li>
+<li class="chapter" data-level="14.2.3" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#mixed-integer-programming"><i class="fa fa-check"></i><b>14.2.3</b> 混合整数规划</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html"><i class="fa fa-check"></i><b>14.3</b> 二次规划</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#sec-strictly-convex-quadratic-program"><i class="fa fa-check"></i><b>14.3.1</b> 凸二次规划</a></li>
+<li class="chapter" data-level="14.3.2" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#subsec-semidefinite-optimization"><i class="fa fa-check"></i><b>14.3.2</b> 半正定二次优化</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>14.4</b> 非线性规划</a>
+<ul>
+<li class="chapter" data-level="14.4.1" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-one-dimensional-optimization"><i class="fa fa-check"></i><b>14.4.1</b> 一元非线性优化</a></li>
+<li class="chapter" data-level="14.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-unconstrained-optimization"><i class="fa fa-check"></i><b>14.4.2</b> 多元非线性无约束优化</a></li>
+<li class="chapter" data-level="14.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-constrained-optimization"><i class="fa fa-check"></i><b>14.4.3</b> 多元非线性约束优化</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chap-differential-equations.html"><a href="chap-differential-equations.html"><i class="fa fa-check"></i><b>15</b> 微分方程</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="sec-ordinary-differential-equations.html"><a href="sec-ordinary-differential-equations.html"><i class="fa fa-check"></i><b>15.1</b> 常微分方程</a></li>
+<li class="chapter" data-level="15.2" data-path="sec-partial-differential-equations.html"><a href="sec-partial-differential-equations.html"><i class="fa fa-check"></i><b>15.2</b> 偏微分方程</a></li>
+<li class="chapter" data-level="15.3" data-path="sec-delay-differential-equations.html"><a href="sec-delay-differential-equations.html"><i class="fa fa-check"></i><b>15.3</b> 延迟微分方程</a></li>
+<li class="chapter" data-level="15.4" data-path="sec-stochastic-differential-equations.html"><a href="sec-stochastic-differential-equations.html"><i class="fa fa-check"></i><b>15.4</b> 随机微分方程</a></li>
+</ul></li>
+<li class="appendix"><span><b>附录</b></span></li>
+<li class="chapter" data-level="A" data-path="chap-linux-command-bash.html"><a href="chap-linux-command-bash.html"><i class="fa fa-check"></i><b>A</b> 命令行操作</a>
+<ul>
+<li class="chapter" data-level="A.1" data-path="sec-ls.html"><a href="sec-ls.html"><i class="fa fa-check"></i><b>A.1</b> 查看文件</a></li>
+<li class="chapter" data-level="A.2" data-path="sec-mkdir.html"><a href="sec-mkdir.html"><i class="fa fa-check"></i><b>A.2</b> 创建文件夹</a></li>
+<li class="chapter" data-level="A.3" data-path="sec-mv.html"><a href="sec-mv.html"><i class="fa fa-check"></i><b>A.3</b> 移动文件</a></li>
+<li class="chapter" data-level="A.4" data-path="sec-du.html"><a href="sec-du.html"><i class="fa fa-check"></i><b>A.4</b> 查看文件大小</a></li>
+<li class="chapter" data-level="A.5" data-path="sec-shell.html"><a href="sec-shell.html"><i class="fa fa-check"></i><b>A.5</b> 终端模拟器</a></li>
+<li class="chapter" data-level="A.6" data-path="sec-tar.html"><a href="sec-tar.html"><i class="fa fa-check"></i><b>A.6</b> 压缩和解压缩</a></li>
+<li class="chapter" data-level="A.7" data-path="repo-install.html"><a href="repo-install.html"><i class="fa fa-check"></i><b>A.7</b> 从仓库安装 R</a>
+<ul>
+<li class="chapter" data-level="A.7.1" data-path="repo-install.html"><a href="repo-install.html#ubuntu"><i class="fa fa-check"></i><b>A.7.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.7.2" data-path="repo-install.html"><a href="repo-install.html#centos"><i class="fa fa-check"></i><b>A.7.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.8" data-path="source-install.html"><a href="source-install.html"><i class="fa fa-check"></i><b>A.8</b> 源码安装</a>
+<ul>
+<li class="chapter" data-level="A.8.1" data-path="source-install.html"><a href="source-install.html#ubuntu-1"><i class="fa fa-check"></i><b>A.8.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.8.2" data-path="source-install.html"><a href="source-install.html#centos-1"><i class="fa fa-check"></i><b>A.8.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.9" data-path="ninja-install.html"><a href="ninja-install.html"><i class="fa fa-check"></i><b>A.9</b> 忍者安装</a></li>
+<li class="chapter" data-level="A.10" data-path="settings.html"><a href="settings.html"><i class="fa fa-check"></i><b>A.10</b> 配置</a>
+<ul>
+<li class="chapter" data-level="A.10.1" data-path="settings.html"><a href="settings.html#init-session"><i class="fa fa-check"></i><b>A.10.1</b> 初始会话 <code>.Rprofile</code></a></li>
+<li class="chapter" data-level="A.10.2" data-path="settings.html"><a href="settings.html#environ-vars"><i class="fa fa-check"></i><b>A.10.2</b> 环境变量 <code>.Renviron</code></a></li>
+<li class="chapter" data-level="A.10.3" data-path="settings.html"><a href="settings.html#make-vars"><i class="fa fa-check"></i><b>A.10.3</b> 编译选项 <code>Makevars</code></a></li>
+</ul></li>
+<li class="chapter" data-level="A.11" data-path="command-line-arguments.html"><a href="command-line-arguments.html"><i class="fa fa-check"></i><b>A.11</b> 命令行参数</a></li>
+<li class="chapter" data-level="A.12" data-path="sec-build-source-code.html"><a href="sec-build-source-code.html"><i class="fa fa-check"></i><b>A.12</b> 从源码安装 R</a></li>
+<li class="chapter" data-level="A.13" data-path="install-softwares.html"><a href="install-softwares.html"><i class="fa fa-check"></i><b>A.13</b> 安装软件</a></li>
+<li class="chapter" data-level="A.14" data-path="sec-install-r-pkgs.html"><a href="sec-install-r-pkgs.html"><i class="fa fa-check"></i><b>A.14</b> 安装 R 包</a></li>
+<li class="chapter" data-level="A.15" data-path="sec-software-manager.html"><a href="sec-software-manager.html"><i class="fa fa-check"></i><b>A.15</b> 软件包管理器</a>
+<ul>
+<li class="chapter" data-level="A.15.1" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-dnf-yum"><i class="fa fa-check"></i><b>A.15.1</b> dnf</a></li>
+<li class="chapter" data-level="A.15.2" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-apt-get"><i class="fa fa-check"></i><b>A.15.2</b> apt</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>参考文献</a></li>
+<li class="divider"></li>
+<li><a href="https://xiangyunhuang.github.io/notesdown/" target="blank">Published with Github Pages</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 语言学习笔记</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-plotly-heatmap" class="section level2 hasAnchor" number="13.8">
+<h2><span class="header-section-number">13.8</span> 热力图<a href="sec-plotly-heatmap.html#sec-plotly-heatmap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>其他基础图形</p>
+<div class="sourceCode" id="cb1634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1634-1"><a href="sec-plotly-heatmap.html#cb1634-1" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">plot_ly</span>(<span class="at">z =</span> volcano, <span class="at">type =</span> <span class="st">&#39;heatmap&#39;</span>, <span class="at">colors =</span> <span class="st">&quot;Greys&quot;</span>)</span></code></pre></div>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-77ea7828f463668e1ee2" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-77ea7828f463668e1ee2">{"x":{"visdat":{"4bac28be0dfe":["function () ","plotlyVisDat"]},"cur_data":"4bac28be0dfe","attrs":{"4bac28be0dfe":{"z":[[100,100,101,101,101,101,101,100,100,100,101,101,102,102,102,102,103,104,103,102,101,101,102,103,104,104,105,107,107,107,108,108,110,110,110,110,110,110,110,110,108,108,108,107,107,108,108,108,108,108,107,107,107,107,106,106,105,105,104,104,103],[101,101,102,102,102,102,102,101,101,101,102,102,103,103,103,103,104,105,104,103,102,102,103,105,106,106,107,109,110,110,110,110,111,112,113,114,116,115,114,112,110,110,110,109,108,109,109,109,109,108,108,108,108,107,107,106,106,105,105,104,104],[102,102,103,103,103,103,103,102,102,102,103,103,104,104,104,104,105,106,105,104,104,105,106,107,108,110,111,113,114,115,114,115,116,118,119,119,121,121,120,118,116,114,112,111,110,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105,104],[103,103,104,104,104,104,104,103,103,103,103,104,104,104,105,105,106,107,106,106,106,107,108,110,111,114,117,118,117,119,120,121,122,124,125,126,127,127,126,124,122,120,117,116,113,111,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105],[104,104,105,105,105,105,105,104,104,103,104,104,105,105,105,106,107,108,108,108,109,110,112,114,115,118,121,122,121,123,128,131,129,130,131,131,132,132,131,130,128,126,122,119,115,114,112,110,110,110,110,110,109,109,108,107,107,107,106,106,105],[105,105,105,106,106,106,106,105,105,104,104,105,105,106,106,107,109,110,110,112,113,115,116,118,119,121,124,126,126,129,134,137,137,136,136,135,136,136,136,135,133,129,126,122,118,116,115,113,111,110,110,110,110,109,108,108,108,107,107,106,106],[105,106,106,107,107,107,107,106,106,105,105,106,106,107,108,109,111,113,114,116,118,120,121,122,123,125,127,129,130,135,140,142,142,142,141,140,140,140,140,139,137,134,129,125,121,118,116,114,112,110,110,110,111,110,109,109,108,108,107,107,106],[106,107,107,108,108,108,108,107,107,106,106,107,108,108,110,113,115,117,118,120,122,124,125,127,128,129,131,134,135,141,146,147,146,146,145,144,144,144,143,142,141,139,135,130,126,122,118,116,114,112,112,113,112,110,110,109,109,108,108,107,106],[107,108,108,109,109,109,109,108,108,107,108,108,110,111,113,116,118,120,123,125,127,129,130,132,134,135,137,139,142,146,152,152,151,151,150,149,148,148,146,145,143,142,139,135,131,127,122,119,117,115,115,115,114,112,110,110,109,109,108,107,107],[108,109,109,110,110,110,110,109,109,108,110,110,113,116,118,120,122,125,127,129,133,136,138,140,141,142,148,150,151,156,158,159,158,157,158,158,154,151,149,148,146,144,141,137,134,130,125,122,120,118,117,117,115,113,111,110,110,109,108,107,107],[109,110,110,111,111,111,111,110,110,110,112,114,118,121,123,125,127,129,133,137,141,143,145,146,148,150,154,156,159,161,162,163,164,163,164,164,160,157,154,151,149,146,144,140,137,133,129,126,124,121,119,118,116,114,112,111,110,109,108,107,106],[110,110,111,113,112,111,113,112,112,114,116,119,121,124,127,129,133,138,143,146,149,149,151,153,154,157,159,160,163,165,166,167,168,168,168,168,166,162,159,157,154,152,149,144,140,136,133,131,128,125,122,119,117,115,113,111,110,109,108,107,106],[110,111,113,115,114,113,114,114,115,117,119,121,124,126,129,133,140,145,150,154,155,155,157,159,161,162,164,165,167,168,169,170,172,174,172,172,171,169,166,163,161,158,153,148,143,140,137,134,131,128,125,120,118,116,114,112,110,109,108,107,105],[111,113,115,117,116,115,116,117,117,119,121,124,126,128,132,137,143,151,156,161,161,162,163,165,166,167,168,170,171,173,175,177,179,178,177,176,176,174,171,169,165,161,156,152,148,144,140,138,135,131,127,123,119,117,115,113,111,110,108,106,105],[114,115,117,117,117,118,119,119,120,121,124,126,128,131,137,143,150,156,160,163,165,168,170,171,172,173,174,175,177,179,180,182,183,183,183,183,180,178,177,172,168,164,160,156,152,148,144,141,138,134,130,126,121,117,114,112,110,110,108,106,104],[116,118,118,118,120,121,121,122,122,123,125,128,130,134,141,147,152,156,160,165,168,170,174,176,179,180,181,181,182,182,183,184,186,187,187,184,184,181,180,176,172,168,165,161,157,153,149,145,142,138,133,129,125,120,115,111,110,110,108,106,104],[118,120,120,121,122,123,124,124,125,126,127,129,132,135,142,149,153,157,161,166,170,174,178,180,182,183,184,184,185,186,186,187,189,189,189,189,189,186,182,179,175,171,168,165,162,157,152,149,145,141,137,131,125,120,116,111,110,110,108,106,104],[120,121,122,123,124,125,126,127,127,128,130,132,134,137,142,151,155,158,162,169,172,176,181,183,184,186,187,188,189,189,189,189,190,190,191,190,190,188,186,183,180,175,171,168,165,161,157,152,149,145,141,134,127,121,116,112,110,110,108,106,104],[120,122,125,126,126,127,128,129,130,130,132,134,136,139,145,152,157,160,167,172,175,178,181,185,186,188,190,191,192,193,193,192,192,191,192,191,191,190,190,187,184,181,177,172,169,165,161,156,152,147,143,139,131,123,119,115,111,110,108,106,105],[121,124,126,128,129,129,130,131,132,133,135,137,139,143,150,154,159,164,170,173,176,179,184,186,189,190,191,192,193,194,195,194,193,192,191,191,191,191,190,190,188,184,181,177,173,169,165,160,155,149,145,142,136,129,123,118,114,110,108,108,107],[122,125,127,130,130,131,133,134,135,136,137,140,143,147,154,158,162,166,171,174,177,181,186,189,190,190,191,192,191,191,190,189,188,189,190,190,191,190,190,190,189,186,184,181,177,173,169,164,158,152,148,144,140,134,125,118,115,111,110,108,107],[122,125,128,130,132,133,135,136,137,139,140,143,147,152,157,161,164,168,172,175,179,182,186,190,190,190,190,189,187,184,184,183,182,182,183,183,183,184,185,186,187,186,185,184,181,177,173,169,163,157,149,145,141,136,130,119,116,112,110,108,106],[123,126,129,131,133,135,137,138,139,141,143,147,150,156,161,164,167,170,173,177,181,184,187,188,190,189,187,185,183,179,176,174,174,174,174,174,176,177,179,180,182,183,182,181,181,180,176,171,166,160,152,147,142,138,133,126,121,115,110,106,105],[124,127,130,132,135,137,138,140,142,144,147,149,154,157,161,165,168,171,175,178,181,184,186,187,187,184,184,181,179,175,171,169,168,168,168,169,170,172,174,177,178,179,180,181,181,180,179,174,167,161,155,148,144,139,134,128,121,115,110,106,105],[123,128,131,133,136,138,140,142,144,146,149,151,154,157,160,164,168,172,175,178,181,183,184,184,185,183,180,177,174,170,167,165,164,164,164,165,166,168,171,175,176,178,180,181,180,180,179,177,170,163,157,150,144,139,134,128,121,115,110,108,107],[123,127,131,134,136,138,140,142,144,147,149,151,154,157,160,164,168,171,174,178,180,181,181,182,183,181,178,173,169,166,163,161,161,160,160,161,163,165,168,173,176,178,179,180,181,180,180,175,173,166,159,152,145,139,134,127,121,115,110,109,108],[120,124,128,131,134,137,139,142,144,146,149,151,153,156,160,163,167,171,174,178,180,180,180,180,180,180,175,171,167,162,160,158,157,157,157,158,159,162,166,170,175,177,178,180,181,181,180,178,175,169,160,154,148,140,134,128,121,115,110,110,109],[118,121,125,129,132,134,137,140,142,145,147,149,151,155,159,163,166,169,173,177,179,180,180,180,180,179,174,169,166,161,158,156,154,153,153,154,156,159,163,169,173,175,178,180,181,180,180,179,175,170,160,154,149,142,135,128,122,116,111,110,110],[117,120,121,125,129,132,135,138,140,143,145,147,149,153,157,160,163,166,171,174,177,179,180,180,180,179,172,168,164,160,157,154,151,149,150,150,154,158,164,169,174,178,180,180,180,180,178,177,175,170,161,153,148,142,135,129,123,116,113,112,110],[115,118,120,122,126,130,133,136,138,141,143,145,148,151,154,157,160,163,168,171,174,177,179,179,179,176,171,167,164,160,156,153,149,148,149,151,155,158,163,170,173,177,179,180,180,180,178,175,173,171,162,154,147,141,136,130,124,117,115,112,110],[114,116,118,120,122,127,131,133,136,138,141,143,146,148,151,154,157,160,164,168,171,174,178,178,179,177,173,169,165,161,157,154,151,149,150,152,155,159,166,171,175,177,179,180,180,179,176,174,171,168,159,151,146,141,135,129,124,119,116,113,110],[115,114,116,118,120,122,127,129,132,136,139,141,143,146,148,151,153,156,160,164,167,172,174,176,177,176,173,170,166,162,159,157,154,153,154,155,158,161,169,172,174,176,178,178,178,178,175,172,169,162,156,149,144,140,134,128,123,118,115,112,110],[113,113,114,116,118,120,122,125,129,133,136,138,141,143,146,149,150,153,156,160,165,170,173,176,176,176,173,172,169,165,163,160,158,157,158,159,161,166,170,170,173,175,176,178,176,173,171,168,164,158,153,146,140,137,132,127,121,117,113,111,110],[111,112,113,114,116,118,120,122,126,130,133,136,139,142,145,147,148,151,155,158,163,168,173,176,177,177,176,174,171,169,166,164,161,161,162,164,165,167,170,170,171,173,173,173,170,168,165,163,160,155,149,143,138,134,130,125,119,116,112,110,109],[110,112,113,113,114,116,118,120,123,127,131,134,137,141,143,145,148,150,154,157,161,166,171,176,178,178,178,176,174,172,170,167,167,167,166,168,170,169,168,167,168,168,168,168,167,165,163,160,156,152,146,140,136,131,128,122,118,114,110,110,109],[109,110,111,112,114,116,118,119,120,124,128,131,136,140,142,145,147,150,153,157,160,165,170,174,178,179,179,178,178,176,174,171,170,170,170,168,167,166,164,163,161,162,163,163,163,161,160,157,153,148,142,136,130,127,124,120,117,113,110,110,109],[108,109,111,112,114,116,117,118,120,121,125,128,132,138,142,144,147,149,153,156,160,164,170,174,178,180,180,179,179,178,176,172,170,170,170,168,166,164,162,160,157,156,157,158,158,156,153,151,149,144,139,130,127,124,121,118,115,112,110,110,109],[108,109,111,113,114,116,117,118,119,120,122,126,130,135,139,143,147,149,152,156,160,164,169,173,177,180,180,180,180,179,178,174,170,170,168,167,165,163,161,157,154,153,152,152,152,149,148,147,144,140,134,128,125,122,119,117,114,110,110,109,109],[107,108,111,112,114,115,116,117,119,120,121,124,128,133,137,141,145,149,152,156,160,164,168,172,176,179,180,180,180,179,178,174,170,168,166,165,163,161,158,154,150,149,148,146,145,143,143,143,140,136,130,126,123,120,118,115,112,110,110,109,109],[107,108,110,112,113,113,115,116,118,120,122,125,128,132,136,140,145,148,150,155,160,164,167,170,174,177,179,179,178,176,176,173,169,166,164,163,161,159,155,152,148,145,143,141,140,139,139,138,136,132,128,124,121,118,116,114,111,110,110,109,108],[107,108,109,111,113,114,116,117,119,120,122,125,128,132,137,141,144,146,149,152,157,162,166,168,171,173,175,175,173,172,172,171,168,165,162,160,158,156,153,149,145,142,139,138,137,136,135,133,131,129,126,122,119,117,114,112,110,110,109,108,107],[108,109,110,112,114,115,116,117,119,120,122,126,129,133,137,141,143,146,148,151,155,160,164,167,168,169,170,170,169,168,167,168,166,163,160,158,155,153,150,147,143,140,137,136,134,133,132,130,129,127,125,121,118,115,112,110,110,110,108,107,107],[109,110,111,113,115,116,117,118,120,121,123,126,129,133,138,141,143,146,148,150,155,159,163,165,166,167,168,168,166,165,164,161,160,159,158,155,152,149,147,144,141,138,135,134,132,130,129,128,126,124,122,120,117,113,111,110,110,110,108,107,107],[110,111,112,113,116,117,118,119,120,122,125,127,130,133,138,141,143,146,148,150,154,159,162,163,164,166,166,166,165,163,161,159,157,156,155,153,150,146,143,140,138,136,133,132,130,129,128,125,124,122,120,119,117,114,111,110,110,109,108,107,107],[111,112,113,114,116,117,118,119,120,123,125,128,130,134,139,141,144,146,148,151,154,158,161,164,166,167,168,166,165,163,161,158,156,154,152,150,146,142,139,137,135,133,131,130,129,128,127,125,123,121,120,118,116,113,111,110,110,109,108,107,106],[111,112,113,115,117,118,118,120,121,124,126,128,131,135,139,142,144,146,148,151,155,160,164,165,168,169,169,168,166,163,160,158,156,153,151,148,145,142,139,137,135,132,130,129,127,126,125,124,123,120,120,117,116,114,112,110,110,108,107,106,106],[112,113,114,116,117,118,119,120,122,124,127,129,132,135,139,142,144,146,149,152,157,162,167,169,170,170,170,168,165,163,161,159,157,155,151,148,145,141,139,136,134,132,130,128,127,126,124,123,122,120,119,117,116,114,112,111,109,107,106,106,105],[113,114,115,116,117,119,119,120,122,125,127,129,132,135,139,142,144,147,149,154,159,164,169,170,170,170,170,170,168,165,163,161,158,155,151,148,145,142,139,137,135,132,131,128,126,125,124,122,121,120,119,117,115,113,111,110,109,106,105,105,104],[113,114,115,117,118,119,120,121,123,125,127,130,132,135,139,142,145,148,150,156,161,166,170,170,170,170,170,170,169,166,163,161,159,155,151,148,146,143,140,138,135,134,132,130,127,125,123,121,120,120,119,116,114,112,110,110,108,106,105,104,104],[114,115,116,117,118,119,120,121,123,126,128,130,133,136,139,142,145,148,152,157,161,166,168,170,170,170,170,168,166,164,163,160,159,155,151,148,146,143,141,138,136,134,132,130,128,125,123,121,120,120,118,116,113,111,110,110,109,106,105,104,104],[115,116,117,118,119,120,121,121,123,126,128,131,134,136,139,142,145,149,152,157,161,163,164,166,168,167,166,164,163,161,160,158,156,152,149,147,144,143,141,139,136,134,132,130,128,125,122,120,120,119,117,115,113,110,110,109,107,106,105,104,104],[115,116,117,118,119,120,121,122,123,125,128,131,134,137,139,142,145,149,152,156,159,159,160,162,162,161,161,160,159,158,157,155,153,150,148,146,145,143,142,140,137,134,131,129,126,124,122,120,119,117,115,113,111,110,109,109,107,106,105,104,104],[114,115,116,116,118,119,120,121,122,126,129,132,135,137,140,143,146,149,152,155,156,157,158,159,159,159,158,158,157,155,153,151,150,149,147,146,145,144,142,141,138,135,132,128,125,122,120,118,117,115,113,112,110,109,108,108,106,105,105,104,104],[113,114,115,116,117,118,119,120,123,126,129,132,135,138,140,143,146,148,151,153,154,156,157,157,157,157,156,155,154,152,150,149,148,147,146,145,144,142,141,140,139,136,132,129,125,121,118,116,115,113,111,110,109,108,108,107,106,105,104,104,104],[112,113,114,115,116,117,119,120,122,126,130,133,136,138,141,143,146,148,150,152,154,155,155,155,155,155,154,152,152,150,148,147,146,145,145,143,142,141,140,140,140,137,133,129,125,120,117,115,111,110,110,109,108,107,107,106,105,105,104,104,103],[111,112,114,115,116,117,118,120,122,125,131,134,137,139,142,144,146,148,150,152,153,153,153,153,153,153,153,151,149,147,146,144,144,143,143,142,141,140,140,140,140,138,134,130,123,120,118,111,110,110,110,108,107,106,108,105,105,104,104,103,103],[111,112,113,115,115,116,117,119,121,126,131,135,138,140,142,144,146,148,150,151,151,151,151,151,151,151,151,150,148,146,144,142,141,141,142,141,140,140,140,140,140,140,136,132,126,120,115,110,110,110,109,107,106,105,107,105,104,104,104,103,103],[112,113,113,114,115,116,117,119,122,127,132,135,139,141,143,145,147,149,150,150,150,150,150,150,150,150,150,149,147,144,142,141,140,140,140,140,140,140,140,140,140,140,137,133,128,120,117,110,110,110,108,106,105,105,106,105,104,104,103,103,103],[112,113,114,114,116,117,118,120,122,128,132,136,139,141,144,146,147,149,150,150,150,150,150,150,150,150,150,149,146,143,141,140,140,139,139,139,140,140,140,140,140,140,137,133,129,121,118,110,110,109,107,106,105,105,105,104,104,103,103,103,102],[112,114,114,115,116,117,119,120,122,128,133,136,140,142,144,146,148,150,150,150,150,150,150,150,150,150,150,148,145,142,140,138,138,138,137,138,140,140,140,140,140,140,137,134,130,122,118,110,110,108,106,105,103,104,104,104,104,103,103,102,102],[113,114,115,116,116,117,118,120,123,129,133,137,140,142,144,146,149,150,150,150,150,150,150,150,150,150,150,147,143,141,139,137,136,136,135,136,138,140,140,140,140,139,136,134,130,123,119,113,109,108,106,104,103,104,104,104,103,103,102,102,101],[114,115,115,116,117,118,118,120,123,129,133,137,140,143,145,147,150,150,150,150,150,150,150,150,150,150,148,145,142,139,138,136,135,134,134,134,136,138,137,138,139,137,134,132,125,122,117,114,109,107,105,103,102,104,104,103,103,102,102,101,101],[114,115,116,117,117,119,118,120,123,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,150,147,144,141,139,136,135,134,133,132,132,134,134,134,134,135,133,131,128,124,120,116,113,110,107,104,102,102,103,103,103,102,102,102,101,100],[115,116,116,117,118,119,119,120,124,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,149,146,143,140,138,135,134,133,131,131,131,131,131,131,131,130,127,124,122,119,117,115,112,109,106,104,101,102,103,103,102,102,102,101,100,100],[115,116,117,118,118,119,120,123,125,128,131,135,138,141,145,148,150,150,150,150,150,150,150,150,150,147,145,142,139,137,134,132,131,130,129,128,128,128,128,128,126,123,121,119,116,114,112,110,108,105,103,101,103,103,103,102,102,101,100,100,100],[116,117,118,118,119,120,122,123,125,128,131,134,137,141,145,148,149,150,150,150,150,150,150,150,148,145,143,141,138,135,133,130,129,128,127,126,125,125,125,124,123,120,118,116,114,111,109,107,106,104,102,100,101,101,102,102,101,100,100,100,100],[116,117,118,119,120,121,123,124,126,128,130,133,137,140,144,145,147,148,149,150,149,149,147,146,144,141,139,136,133,131,129,128,127,126,125,124,123,123,122,121,120,118,116,114,112,108,107,105,103,102,100,100,100,100,101,101,100,100,100,100,100],[117,118,119,119,120,121,123,124,126,128,129,131,135,139,142,143,145,146,147,147,147,146,144,142,140,138,135,133,130,128,127,126,125,124,123,122,121,120,119,118,117,115,114,112,110,106,105,102,101,100,100,100,100,100,100,100,100,99,99,99,99],[117,118,119,120,120,121,123,124,125,126,128,129,132,137,140,142,143,143,144,144,144,143,141,139,137,135,133,130,128,127,126,125,123,122,121,120,119,117,116,115,114,112,111,108,107,105,100,100,100,100,100,100,100,99,99,99,99,99,99,99,98],[116,117,118,120,120,121,122,123,124,125,126,128,130,134,139,140,141,141,141,141,141,140,138,136,134,133,131,129,127,125,124,123,122,120,119,118,117,116,114,112,111,108,109,106,106,100,100,100,100,100,99,99,99,99,99,99,99,98,98,98,97],[114,115,116,117,119,119,120,121,122,123,125,127,129,133,136,134,134,136,138,138,137,137,135,133,132,130,129,127,125,124,122,121,120,119,117,116,115,114,112,110,109,108,107,105,105,100,100,100,100,99,99,99,98,98,98,98,98,97,97,97,97],[112,113,114,115,116,116,117,119,120,122,124,126,127,129,129,128,127,129,132,133,133,133,133,131,129,127,126,125,124,122,121,119,118,117,116,114,113,112,110,109,108,106,106,105,100,100,100,98,98,98,98,98,98,97,97,97,97,97,97,97,96],[109,111,112,112,113,113,113,114,116,119,121,123,124,125,124,123,123,123,125,127,129,129,128,128,127,125,124,123,122,121,119,118,117,116,114,113,112,110,109,108,107,106,105,100,100,100,97,97,97,97,97,97,97,96,96,96,96,96,96,96,96],[106,107,108,108,109,110,110,112,113,114,117,119,120,121,119,117,117,117,118,120,123,124,125,125,125,123,121,120,120,119,118,117,116,115,114,113,111,109,109,107,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[104,105,105,106,106,107,108,108,109,109,111,115,116,114,113,112,111,110,111,113,116,119,122,122,122,121,120,119,118,118,117,116,115,114,113,112,111,108,108,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[102,103,103,104,104,105,106,106,107,108,109,111,112,110,109,108,108,108,108,109,110,112,116,117,117,118,118,118,117,116,116,115,114,113,112,111,110,107,107,105,100,100,100,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[101,102,103,103,104,105,105,106,106,107,108,109,109,107,106,106,105,105,105,106,107,108,109,110,111,113,114,115,115,115,114,113,112,111,110,108,108,106,105,100,100,100,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,102,102,103,103,104,104,105,106,106,107,106,106,106,105,105,104,103,103,104,105,107,108,110,111,111,112,112,113,113,112,111,110,108,107,106,105,100,100,100,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,101,102,102,103,103,104,104,105,105,105,105,106,105,105,104,103,102,101,102,103,104,106,107,110,111,111,111,112,112,112,110,107,107,106,105,102,100,100,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95],[99,100,101,102,102,103,103,103,104,104,104,104,103,104,104,104,104,102,101,101,102,103,104,105,107,110,111,111,111,111,111,111,108,106,105,105,102,101,100,99,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95,95],[99,100,100,101,101,102,102,102,103,103,103,103,102,103,103,104,103,102,101,101,101,102,103,104,106,109,110,111,111,111,110,110,107,105,103,104,100,100,99,99,98,98,97,97,96,96,96,96,96,96,96,96,96,96,95,95,95,95,95,95,95],[99,100,100,100,101,101,101,102,102,103,102,102,101,102,102,103,103,101,101,100,101,101,102,103,105,109,110,110,111,110,110,109,106,105,100,102,100,99,99,99,98,98,97,97,96,96,96,96,96,96,95,95,95,95,95,95,95,95,95,95,94],[99,99,99,99,100,100,101,101,102,102,101,101,101,101,101,102,102,101,100,100,101,101,101,103,104,107,109,109,110,110,109,108,105,102,100,100,99,99,99,98,98,98,97,96,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94],[98,99,99,99,99,100,100,101,101,102,101,100,100,100,101,101,101,100,100,100,100,101,101,101,103,106,107,109,109,109,109,107,104,101,100,99,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94,94,94],[98,98,98,99,99,99,100,100,101,101,100,100,99,99,100,100,100,100,100,100,100,101,101,101,102,105,106,109,108,109,107,105,102,100,100,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94],[97,98,98,98,99,99,99,100,100,100,100,100,99,99,99,100,100,100,100,100,100,100,101,101,101,103,104,105,106,105,104,101,100,100,99,99,98,98,97,97,97,96,96,96,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94],[97,97,97,98,98,99,99,99,100,100,100,99,99,99,99,99,100,100,100,100,100,100,101,101,100,100,100,100,100,100,100,100,100,100,99,99,98,97,97,97,96,96,96,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94,94,94]],"colors":"Greys","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"heatmap"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"zaxis":{"title":[]}},"xaxis":{"domain":[0,1],"automargin":true},"yaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"colorbar":{"title":"","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"colorscale":[["0","rgba(255,255,255,1)"],["0.0416666666666666","rgba(250,250,250,1)"],["0.0833333333333334","rgba(245,245,245,1)"],["0.125","rgba(240,240,240,1)"],["0.166666666666667","rgba(232,232,232,1)"],["0.208333333333333","rgba(225,225,225,1)"],["0.25","rgba(217,217,217,1)"],["0.291666666666667","rgba(208,208,208,1)"],["0.333333333333333","rgba(198,198,198,1)"],["0.375","rgba(189,189,189,1)"],["0.416666666666666","rgba(176,176,176,1)"],["0.458333333333333","rgba(163,163,163,1)"],["0.5","rgba(150,150,150,1)"],["0.541666666666667","rgba(138,138,138,1)"],["0.583333333333333","rgba(126,126,126,1)"],["0.625","rgba(115,115,115,1)"],["0.666666666666667","rgba(104,104,104,1)"],["0.708333333333333","rgba(93,93,93,1)"],["0.75","rgba(82,82,82,1)"],["0.791666666666667","rgba(66,66,66,1)"],["0.833333333333333","rgba(51,51,51,1)"],["0.875","rgba(37,37,37,1)"],["0.916666666666667","rgba(27,27,27,1)"],["0.958333333333333","rgba(17,17,17,1)"],["1","rgba(0,0,0,1)"]],"showscale":true,"z":[[100,100,101,101,101,101,101,100,100,100,101,101,102,102,102,102,103,104,103,102,101,101,102,103,104,104,105,107,107,107,108,108,110,110,110,110,110,110,110,110,108,108,108,107,107,108,108,108,108,108,107,107,107,107,106,106,105,105,104,104,103],[101,101,102,102,102,102,102,101,101,101,102,102,103,103,103,103,104,105,104,103,102,102,103,105,106,106,107,109,110,110,110,110,111,112,113,114,116,115,114,112,110,110,110,109,108,109,109,109,109,108,108,108,108,107,107,106,106,105,105,104,104],[102,102,103,103,103,103,103,102,102,102,103,103,104,104,104,104,105,106,105,104,104,105,106,107,108,110,111,113,114,115,114,115,116,118,119,119,121,121,120,118,116,114,112,111,110,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105,104],[103,103,104,104,104,104,104,103,103,103,103,104,104,104,105,105,106,107,106,106,106,107,108,110,111,114,117,118,117,119,120,121,122,124,125,126,127,127,126,124,122,120,117,116,113,111,110,110,110,109,109,109,109,108,108,107,107,106,106,105,105],[104,104,105,105,105,105,105,104,104,103,104,104,105,105,105,106,107,108,108,108,109,110,112,114,115,118,121,122,121,123,128,131,129,130,131,131,132,132,131,130,128,126,122,119,115,114,112,110,110,110,110,110,109,109,108,107,107,107,106,106,105],[105,105,105,106,106,106,106,105,105,104,104,105,105,106,106,107,109,110,110,112,113,115,116,118,119,121,124,126,126,129,134,137,137,136,136,135,136,136,136,135,133,129,126,122,118,116,115,113,111,110,110,110,110,109,108,108,108,107,107,106,106],[105,106,106,107,107,107,107,106,106,105,105,106,106,107,108,109,111,113,114,116,118,120,121,122,123,125,127,129,130,135,140,142,142,142,141,140,140,140,140,139,137,134,129,125,121,118,116,114,112,110,110,110,111,110,109,109,108,108,107,107,106],[106,107,107,108,108,108,108,107,107,106,106,107,108,108,110,113,115,117,118,120,122,124,125,127,128,129,131,134,135,141,146,147,146,146,145,144,144,144,143,142,141,139,135,130,126,122,118,116,114,112,112,113,112,110,110,109,109,108,108,107,106],[107,108,108,109,109,109,109,108,108,107,108,108,110,111,113,116,118,120,123,125,127,129,130,132,134,135,137,139,142,146,152,152,151,151,150,149,148,148,146,145,143,142,139,135,131,127,122,119,117,115,115,115,114,112,110,110,109,109,108,107,107],[108,109,109,110,110,110,110,109,109,108,110,110,113,116,118,120,122,125,127,129,133,136,138,140,141,142,148,150,151,156,158,159,158,157,158,158,154,151,149,148,146,144,141,137,134,130,125,122,120,118,117,117,115,113,111,110,110,109,108,107,107],[109,110,110,111,111,111,111,110,110,110,112,114,118,121,123,125,127,129,133,137,141,143,145,146,148,150,154,156,159,161,162,163,164,163,164,164,160,157,154,151,149,146,144,140,137,133,129,126,124,121,119,118,116,114,112,111,110,109,108,107,106],[110,110,111,113,112,111,113,112,112,114,116,119,121,124,127,129,133,138,143,146,149,149,151,153,154,157,159,160,163,165,166,167,168,168,168,168,166,162,159,157,154,152,149,144,140,136,133,131,128,125,122,119,117,115,113,111,110,109,108,107,106],[110,111,113,115,114,113,114,114,115,117,119,121,124,126,129,133,140,145,150,154,155,155,157,159,161,162,164,165,167,168,169,170,172,174,172,172,171,169,166,163,161,158,153,148,143,140,137,134,131,128,125,120,118,116,114,112,110,109,108,107,105],[111,113,115,117,116,115,116,117,117,119,121,124,126,128,132,137,143,151,156,161,161,162,163,165,166,167,168,170,171,173,175,177,179,178,177,176,176,174,171,169,165,161,156,152,148,144,140,138,135,131,127,123,119,117,115,113,111,110,108,106,105],[114,115,117,117,117,118,119,119,120,121,124,126,128,131,137,143,150,156,160,163,165,168,170,171,172,173,174,175,177,179,180,182,183,183,183,183,180,178,177,172,168,164,160,156,152,148,144,141,138,134,130,126,121,117,114,112,110,110,108,106,104],[116,118,118,118,120,121,121,122,122,123,125,128,130,134,141,147,152,156,160,165,168,170,174,176,179,180,181,181,182,182,183,184,186,187,187,184,184,181,180,176,172,168,165,161,157,153,149,145,142,138,133,129,125,120,115,111,110,110,108,106,104],[118,120,120,121,122,123,124,124,125,126,127,129,132,135,142,149,153,157,161,166,170,174,178,180,182,183,184,184,185,186,186,187,189,189,189,189,189,186,182,179,175,171,168,165,162,157,152,149,145,141,137,131,125,120,116,111,110,110,108,106,104],[120,121,122,123,124,125,126,127,127,128,130,132,134,137,142,151,155,158,162,169,172,176,181,183,184,186,187,188,189,189,189,189,190,190,191,190,190,188,186,183,180,175,171,168,165,161,157,152,149,145,141,134,127,121,116,112,110,110,108,106,104],[120,122,125,126,126,127,128,129,130,130,132,134,136,139,145,152,157,160,167,172,175,178,181,185,186,188,190,191,192,193,193,192,192,191,192,191,191,190,190,187,184,181,177,172,169,165,161,156,152,147,143,139,131,123,119,115,111,110,108,106,105],[121,124,126,128,129,129,130,131,132,133,135,137,139,143,150,154,159,164,170,173,176,179,184,186,189,190,191,192,193,194,195,194,193,192,191,191,191,191,190,190,188,184,181,177,173,169,165,160,155,149,145,142,136,129,123,118,114,110,108,108,107],[122,125,127,130,130,131,133,134,135,136,137,140,143,147,154,158,162,166,171,174,177,181,186,189,190,190,191,192,191,191,190,189,188,189,190,190,191,190,190,190,189,186,184,181,177,173,169,164,158,152,148,144,140,134,125,118,115,111,110,108,107],[122,125,128,130,132,133,135,136,137,139,140,143,147,152,157,161,164,168,172,175,179,182,186,190,190,190,190,189,187,184,184,183,182,182,183,183,183,184,185,186,187,186,185,184,181,177,173,169,163,157,149,145,141,136,130,119,116,112,110,108,106],[123,126,129,131,133,135,137,138,139,141,143,147,150,156,161,164,167,170,173,177,181,184,187,188,190,189,187,185,183,179,176,174,174,174,174,174,176,177,179,180,182,183,182,181,181,180,176,171,166,160,152,147,142,138,133,126,121,115,110,106,105],[124,127,130,132,135,137,138,140,142,144,147,149,154,157,161,165,168,171,175,178,181,184,186,187,187,184,184,181,179,175,171,169,168,168,168,169,170,172,174,177,178,179,180,181,181,180,179,174,167,161,155,148,144,139,134,128,121,115,110,106,105],[123,128,131,133,136,138,140,142,144,146,149,151,154,157,160,164,168,172,175,178,181,183,184,184,185,183,180,177,174,170,167,165,164,164,164,165,166,168,171,175,176,178,180,181,180,180,179,177,170,163,157,150,144,139,134,128,121,115,110,108,107],[123,127,131,134,136,138,140,142,144,147,149,151,154,157,160,164,168,171,174,178,180,181,181,182,183,181,178,173,169,166,163,161,161,160,160,161,163,165,168,173,176,178,179,180,181,180,180,175,173,166,159,152,145,139,134,127,121,115,110,109,108],[120,124,128,131,134,137,139,142,144,146,149,151,153,156,160,163,167,171,174,178,180,180,180,180,180,180,175,171,167,162,160,158,157,157,157,158,159,162,166,170,175,177,178,180,181,181,180,178,175,169,160,154,148,140,134,128,121,115,110,110,109],[118,121,125,129,132,134,137,140,142,145,147,149,151,155,159,163,166,169,173,177,179,180,180,180,180,179,174,169,166,161,158,156,154,153,153,154,156,159,163,169,173,175,178,180,181,180,180,179,175,170,160,154,149,142,135,128,122,116,111,110,110],[117,120,121,125,129,132,135,138,140,143,145,147,149,153,157,160,163,166,171,174,177,179,180,180,180,179,172,168,164,160,157,154,151,149,150,150,154,158,164,169,174,178,180,180,180,180,178,177,175,170,161,153,148,142,135,129,123,116,113,112,110],[115,118,120,122,126,130,133,136,138,141,143,145,148,151,154,157,160,163,168,171,174,177,179,179,179,176,171,167,164,160,156,153,149,148,149,151,155,158,163,170,173,177,179,180,180,180,178,175,173,171,162,154,147,141,136,130,124,117,115,112,110],[114,116,118,120,122,127,131,133,136,138,141,143,146,148,151,154,157,160,164,168,171,174,178,178,179,177,173,169,165,161,157,154,151,149,150,152,155,159,166,171,175,177,179,180,180,179,176,174,171,168,159,151,146,141,135,129,124,119,116,113,110],[115,114,116,118,120,122,127,129,132,136,139,141,143,146,148,151,153,156,160,164,167,172,174,176,177,176,173,170,166,162,159,157,154,153,154,155,158,161,169,172,174,176,178,178,178,178,175,172,169,162,156,149,144,140,134,128,123,118,115,112,110],[113,113,114,116,118,120,122,125,129,133,136,138,141,143,146,149,150,153,156,160,165,170,173,176,176,176,173,172,169,165,163,160,158,157,158,159,161,166,170,170,173,175,176,178,176,173,171,168,164,158,153,146,140,137,132,127,121,117,113,111,110],[111,112,113,114,116,118,120,122,126,130,133,136,139,142,145,147,148,151,155,158,163,168,173,176,177,177,176,174,171,169,166,164,161,161,162,164,165,167,170,170,171,173,173,173,170,168,165,163,160,155,149,143,138,134,130,125,119,116,112,110,109],[110,112,113,113,114,116,118,120,123,127,131,134,137,141,143,145,148,150,154,157,161,166,171,176,178,178,178,176,174,172,170,167,167,167,166,168,170,169,168,167,168,168,168,168,167,165,163,160,156,152,146,140,136,131,128,122,118,114,110,110,109],[109,110,111,112,114,116,118,119,120,124,128,131,136,140,142,145,147,150,153,157,160,165,170,174,178,179,179,178,178,176,174,171,170,170,170,168,167,166,164,163,161,162,163,163,163,161,160,157,153,148,142,136,130,127,124,120,117,113,110,110,109],[108,109,111,112,114,116,117,118,120,121,125,128,132,138,142,144,147,149,153,156,160,164,170,174,178,180,180,179,179,178,176,172,170,170,170,168,166,164,162,160,157,156,157,158,158,156,153,151,149,144,139,130,127,124,121,118,115,112,110,110,109],[108,109,111,113,114,116,117,118,119,120,122,126,130,135,139,143,147,149,152,156,160,164,169,173,177,180,180,180,180,179,178,174,170,170,168,167,165,163,161,157,154,153,152,152,152,149,148,147,144,140,134,128,125,122,119,117,114,110,110,109,109],[107,108,111,112,114,115,116,117,119,120,121,124,128,133,137,141,145,149,152,156,160,164,168,172,176,179,180,180,180,179,178,174,170,168,166,165,163,161,158,154,150,149,148,146,145,143,143,143,140,136,130,126,123,120,118,115,112,110,110,109,109],[107,108,110,112,113,113,115,116,118,120,122,125,128,132,136,140,145,148,150,155,160,164,167,170,174,177,179,179,178,176,176,173,169,166,164,163,161,159,155,152,148,145,143,141,140,139,139,138,136,132,128,124,121,118,116,114,111,110,110,109,108],[107,108,109,111,113,114,116,117,119,120,122,125,128,132,137,141,144,146,149,152,157,162,166,168,171,173,175,175,173,172,172,171,168,165,162,160,158,156,153,149,145,142,139,138,137,136,135,133,131,129,126,122,119,117,114,112,110,110,109,108,107],[108,109,110,112,114,115,116,117,119,120,122,126,129,133,137,141,143,146,148,151,155,160,164,167,168,169,170,170,169,168,167,168,166,163,160,158,155,153,150,147,143,140,137,136,134,133,132,130,129,127,125,121,118,115,112,110,110,110,108,107,107],[109,110,111,113,115,116,117,118,120,121,123,126,129,133,138,141,143,146,148,150,155,159,163,165,166,167,168,168,166,165,164,161,160,159,158,155,152,149,147,144,141,138,135,134,132,130,129,128,126,124,122,120,117,113,111,110,110,110,108,107,107],[110,111,112,113,116,117,118,119,120,122,125,127,130,133,138,141,143,146,148,150,154,159,162,163,164,166,166,166,165,163,161,159,157,156,155,153,150,146,143,140,138,136,133,132,130,129,128,125,124,122,120,119,117,114,111,110,110,109,108,107,107],[111,112,113,114,116,117,118,119,120,123,125,128,130,134,139,141,144,146,148,151,154,158,161,164,166,167,168,166,165,163,161,158,156,154,152,150,146,142,139,137,135,133,131,130,129,128,127,125,123,121,120,118,116,113,111,110,110,109,108,107,106],[111,112,113,115,117,118,118,120,121,124,126,128,131,135,139,142,144,146,148,151,155,160,164,165,168,169,169,168,166,163,160,158,156,153,151,148,145,142,139,137,135,132,130,129,127,126,125,124,123,120,120,117,116,114,112,110,110,108,107,106,106],[112,113,114,116,117,118,119,120,122,124,127,129,132,135,139,142,144,146,149,152,157,162,167,169,170,170,170,168,165,163,161,159,157,155,151,148,145,141,139,136,134,132,130,128,127,126,124,123,122,120,119,117,116,114,112,111,109,107,106,106,105],[113,114,115,116,117,119,119,120,122,125,127,129,132,135,139,142,144,147,149,154,159,164,169,170,170,170,170,170,168,165,163,161,158,155,151,148,145,142,139,137,135,132,131,128,126,125,124,122,121,120,119,117,115,113,111,110,109,106,105,105,104],[113,114,115,117,118,119,120,121,123,125,127,130,132,135,139,142,145,148,150,156,161,166,170,170,170,170,170,170,169,166,163,161,159,155,151,148,146,143,140,138,135,134,132,130,127,125,123,121,120,120,119,116,114,112,110,110,108,106,105,104,104],[114,115,116,117,118,119,120,121,123,126,128,130,133,136,139,142,145,148,152,157,161,166,168,170,170,170,170,168,166,164,163,160,159,155,151,148,146,143,141,138,136,134,132,130,128,125,123,121,120,120,118,116,113,111,110,110,109,106,105,104,104],[115,116,117,118,119,120,121,121,123,126,128,131,134,136,139,142,145,149,152,157,161,163,164,166,168,167,166,164,163,161,160,158,156,152,149,147,144,143,141,139,136,134,132,130,128,125,122,120,120,119,117,115,113,110,110,109,107,106,105,104,104],[115,116,117,118,119,120,121,122,123,125,128,131,134,137,139,142,145,149,152,156,159,159,160,162,162,161,161,160,159,158,157,155,153,150,148,146,145,143,142,140,137,134,131,129,126,124,122,120,119,117,115,113,111,110,109,109,107,106,105,104,104],[114,115,116,116,118,119,120,121,122,126,129,132,135,137,140,143,146,149,152,155,156,157,158,159,159,159,158,158,157,155,153,151,150,149,147,146,145,144,142,141,138,135,132,128,125,122,120,118,117,115,113,112,110,109,108,108,106,105,105,104,104],[113,114,115,116,117,118,119,120,123,126,129,132,135,138,140,143,146,148,151,153,154,156,157,157,157,157,156,155,154,152,150,149,148,147,146,145,144,142,141,140,139,136,132,129,125,121,118,116,115,113,111,110,109,108,108,107,106,105,104,104,104],[112,113,114,115,116,117,119,120,122,126,130,133,136,138,141,143,146,148,150,152,154,155,155,155,155,155,154,152,152,150,148,147,146,145,145,143,142,141,140,140,140,137,133,129,125,120,117,115,111,110,110,109,108,107,107,106,105,105,104,104,103],[111,112,114,115,116,117,118,120,122,125,131,134,137,139,142,144,146,148,150,152,153,153,153,153,153,153,153,151,149,147,146,144,144,143,143,142,141,140,140,140,140,138,134,130,123,120,118,111,110,110,110,108,107,106,108,105,105,104,104,103,103],[111,112,113,115,115,116,117,119,121,126,131,135,138,140,142,144,146,148,150,151,151,151,151,151,151,151,151,150,148,146,144,142,141,141,142,141,140,140,140,140,140,140,136,132,126,120,115,110,110,110,109,107,106,105,107,105,104,104,104,103,103],[112,113,113,114,115,116,117,119,122,127,132,135,139,141,143,145,147,149,150,150,150,150,150,150,150,150,150,149,147,144,142,141,140,140,140,140,140,140,140,140,140,140,137,133,128,120,117,110,110,110,108,106,105,105,106,105,104,104,103,103,103],[112,113,114,114,116,117,118,120,122,128,132,136,139,141,144,146,147,149,150,150,150,150,150,150,150,150,150,149,146,143,141,140,140,139,139,139,140,140,140,140,140,140,137,133,129,121,118,110,110,109,107,106,105,105,105,104,104,103,103,103,102],[112,114,114,115,116,117,119,120,122,128,133,136,140,142,144,146,148,150,150,150,150,150,150,150,150,150,150,148,145,142,140,138,138,138,137,138,140,140,140,140,140,140,137,134,130,122,118,110,110,108,106,105,103,104,104,104,104,103,103,102,102],[113,114,115,116,116,117,118,120,123,129,133,137,140,142,144,146,149,150,150,150,150,150,150,150,150,150,150,147,143,141,139,137,136,136,135,136,138,140,140,140,140,139,136,134,130,123,119,113,109,108,106,104,103,104,104,104,103,103,102,102,101],[114,115,115,116,117,118,118,120,123,129,133,137,140,143,145,147,150,150,150,150,150,150,150,150,150,150,148,145,142,139,138,136,135,134,134,134,136,138,137,138,139,137,134,132,125,122,117,114,109,107,105,103,102,104,104,103,103,102,102,101,101],[114,115,116,117,117,119,118,120,123,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,150,147,144,141,139,136,135,134,133,132,132,134,134,134,134,135,133,131,128,124,120,116,113,110,107,104,102,102,103,103,103,102,102,102,101,100],[115,116,116,117,118,119,119,120,124,128,132,136,139,142,145,148,150,150,150,150,150,150,150,150,150,149,146,143,140,138,135,134,133,131,131,131,131,131,131,131,130,127,124,122,119,117,115,112,109,106,104,101,102,103,103,102,102,102,101,100,100],[115,116,117,118,118,119,120,123,125,128,131,135,138,141,145,148,150,150,150,150,150,150,150,150,150,147,145,142,139,137,134,132,131,130,129,128,128,128,128,128,126,123,121,119,116,114,112,110,108,105,103,101,103,103,103,102,102,101,100,100,100],[116,117,118,118,119,120,122,123,125,128,131,134,137,141,145,148,149,150,150,150,150,150,150,150,148,145,143,141,138,135,133,130,129,128,127,126,125,125,125,124,123,120,118,116,114,111,109,107,106,104,102,100,101,101,102,102,101,100,100,100,100],[116,117,118,119,120,121,123,124,126,128,130,133,137,140,144,145,147,148,149,150,149,149,147,146,144,141,139,136,133,131,129,128,127,126,125,124,123,123,122,121,120,118,116,114,112,108,107,105,103,102,100,100,100,100,101,101,100,100,100,100,100],[117,118,119,119,120,121,123,124,126,128,129,131,135,139,142,143,145,146,147,147,147,146,144,142,140,138,135,133,130,128,127,126,125,124,123,122,121,120,119,118,117,115,114,112,110,106,105,102,101,100,100,100,100,100,100,100,100,99,99,99,99],[117,118,119,120,120,121,123,124,125,126,128,129,132,137,140,142,143,143,144,144,144,143,141,139,137,135,133,130,128,127,126,125,123,122,121,120,119,117,116,115,114,112,111,108,107,105,100,100,100,100,100,100,100,99,99,99,99,99,99,99,98],[116,117,118,120,120,121,122,123,124,125,126,128,130,134,139,140,141,141,141,141,141,140,138,136,134,133,131,129,127,125,124,123,122,120,119,118,117,116,114,112,111,108,109,106,106,100,100,100,100,100,99,99,99,99,99,99,99,98,98,98,97],[114,115,116,117,119,119,120,121,122,123,125,127,129,133,136,134,134,136,138,138,137,137,135,133,132,130,129,127,125,124,122,121,120,119,117,116,115,114,112,110,109,108,107,105,105,100,100,100,100,99,99,99,98,98,98,98,98,97,97,97,97],[112,113,114,115,116,116,117,119,120,122,124,126,127,129,129,128,127,129,132,133,133,133,133,131,129,127,126,125,124,122,121,119,118,117,116,114,113,112,110,109,108,106,106,105,100,100,100,98,98,98,98,98,98,97,97,97,97,97,97,97,96],[109,111,112,112,113,113,113,114,116,119,121,123,124,125,124,123,123,123,125,127,129,129,128,128,127,125,124,123,122,121,119,118,117,116,114,113,112,110,109,108,107,106,105,100,100,100,97,97,97,97,97,97,97,96,96,96,96,96,96,96,96],[106,107,108,108,109,110,110,112,113,114,117,119,120,121,119,117,117,117,118,120,123,124,125,125,125,123,121,120,120,119,118,117,116,115,114,113,111,109,109,107,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[104,105,105,106,106,107,108,108,109,109,111,115,116,114,113,112,111,110,111,113,116,119,122,122,122,121,120,119,118,118,117,116,115,114,113,112,111,108,108,106,105,100,100,100,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[102,103,103,104,104,105,106,106,107,108,109,111,112,110,109,108,108,108,108,109,110,112,116,117,117,118,118,118,117,116,116,115,114,113,112,111,110,107,107,105,100,100,100,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[101,102,103,103,104,105,105,106,106,107,108,109,109,107,106,106,105,105,105,106,107,108,109,110,111,113,114,115,115,115,114,113,112,111,110,108,108,106,105,100,100,100,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,102,102,103,103,104,104,105,106,106,107,106,106,106,105,105,104,103,103,104,105,107,108,110,111,111,112,112,113,113,112,111,110,108,107,106,105,100,100,100,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96],[100,101,101,102,102,103,103,104,104,105,105,105,105,106,105,105,104,103,102,101,102,103,104,106,107,110,111,111,111,112,112,112,110,107,107,106,105,102,100,100,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95],[99,100,101,102,102,103,103,103,104,104,104,104,103,104,104,104,104,102,101,101,102,103,104,105,107,110,111,111,111,111,111,111,108,106,105,105,102,101,100,99,99,98,97,97,96,96,96,96,96,96,96,96,96,96,96,96,96,96,96,95,95],[99,100,100,101,101,102,102,102,103,103,103,103,102,103,103,104,103,102,101,101,101,102,103,104,106,109,110,111,111,111,110,110,107,105,103,104,100,100,99,99,98,98,97,97,96,96,96,96,96,96,96,96,96,96,95,95,95,95,95,95,95],[99,100,100,100,101,101,101,102,102,103,102,102,101,102,102,103,103,101,101,100,101,101,102,103,105,109,110,110,111,110,110,109,106,105,100,102,100,99,99,99,98,98,97,97,96,96,96,96,96,96,95,95,95,95,95,95,95,95,95,95,94],[99,99,99,99,100,100,101,101,102,102,101,101,101,101,101,102,102,101,100,100,101,101,101,103,104,107,109,109,110,110,109,108,105,102,100,100,99,99,99,98,98,98,97,96,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94],[98,99,99,99,99,100,100,101,101,102,101,100,100,100,101,101,101,100,100,100,100,101,101,101,103,106,107,109,109,109,109,107,104,101,100,99,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,95,94,94,94,94,94,94,94,94],[98,98,98,99,99,99,100,100,101,101,100,100,99,99,100,100,100,100,100,100,100,101,101,101,102,105,106,109,108,109,107,105,102,100,100,99,99,98,98,98,97,96,96,96,96,95,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94],[97,98,98,98,99,99,99,100,100,100,100,100,99,99,99,100,100,100,100,100,100,100,101,101,101,103,104,105,106,105,104,101,100,100,99,99,98,98,97,97,97,96,96,96,95,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94],[97,97,97,98,98,99,99,99,100,100,100,99,99,99,99,99,100,100,100,100,100,100,101,101,100,100,100,100,100,100,100,100,100,100,99,99,98,97,97,97,96,96,96,95,95,95,95,94,94,94,94,94,94,94,94,94,94,94,94,94,94]],"type":"heatmap","xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-plotly-tozeroy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-plotly-map.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": {}
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/XiangyunHuang/notesdown/edit/devel/interactive-web-graphics.Rmd",
+"text": "编辑"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/XiangyunHuang/notesdown/blob/devel/interactive-web-graphics.Rmd",
+"text": "查看"
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -185,7 +185,7 @@ xfun::session_info()
 ```
 
 ```
-## R version 4.2.2 (2022-10-31)
+## R version 4.2.3 (2023-03-15)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 22.04.2 LTS
 ## 
@@ -198,17 +198,17 @@ xfun::session_info()
 ##   LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## Package version:
-##   base64enc_0.1.3 bookdown_0.26   brio_1.1.3      bslib_0.3.1    
-##   cachem_1.0.6    cli_3.3.0       compiler_4.2.2  curl_4.3.2     
-##   desc_1.4.1      digest_0.6.29   downlit_0.4.0   evaluate_0.15  
-##   fansi_1.0.3     fastmap_1.1.0   fs_1.5.2        glue_1.6.2     
-##   graphics_4.2.2  grDevices_4.2.2 highr_0.9       htmltools_0.5.2
-##   jquerylib_0.1.4 jsonlite_1.8.0  knitr_1.39      magrittr_2.0.3 
-##   memoise_2.0.1   methods_4.2.2   R6_2.5.1        rappdirs_0.3.3 
-##   rlang_1.0.2     rmarkdown_2.14  rprojroot_2.0.3 sass_0.4.1     
-##   stats_4.2.2     stringi_1.7.6   stringr_1.4.0   sysfonts_0.8.8 
-##   tinytex_0.39    tools_4.2.2     utils_4.2.2     vctrs_0.4.1    
-##   xfun_0.31       xml2_1.3.3      yaml_2.3.5
+##   base64enc_0.1.3   bookdown_0.34     bslib_0.4.2       cachem_1.0.8     
+##   cli_3.6.1         compiler_4.2.3    curl_5.0.0        digest_0.6.31    
+##   ellipsis_0.3.2    evaluate_0.21     fastmap_1.1.1     fontawesome_0.5.1
+##   fs_1.6.2          glue_1.6.2        graphics_4.2.3    grDevices_4.2.3  
+##   highr_0.10        htmltools_0.5.5   jquerylib_0.1.4   jsonlite_1.8.4   
+##   knitr_1.42        lifecycle_1.0.3   magrittr_2.0.3    memoise_2.0.1    
+##   methods_4.2.3     mime_0.12         R6_2.5.1          rappdirs_0.3.3   
+##   rlang_1.1.1       rmarkdown_2.21    sass_0.4.6        stats_4.2.3      
+##   stringi_1.7.12    stringr_1.5.0     sysfonts_0.8.8    tinytex_0.45     
+##   tools_4.2.3       utils_4.2.3       vctrs_0.6.2       xfun_0.39        
+##   yaml_2.3.7
 ```
 
 [create-an-empty-data-frame](https://stackoverflow.com/questions/10689055)

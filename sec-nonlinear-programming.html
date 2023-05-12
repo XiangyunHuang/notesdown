@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>14.4 非线性规划 | R 语言学习笔记</title>
+  <meta name="description" content="14.4 非线性规划 | R 语言学习笔记" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="14.4 非线性规划 | R 语言学习笔记" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="/images/cover.png" />
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="14.4 非线性规划 | R 语言学习笔记" />
+  
+  
+  <meta name="twitter:image" content="/images/cover.png" />
+
+<meta name="author" content="黄湘云" />
+
+
+<meta name="date" content="2023-05-12" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-quadratic-programming.html"/>
+<link rel="next" href="chap-differential-equations.html"/>
+<script src="libs/jquery/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<script src="libs/plotly-locale-zh-CN/zh-cn.js"></script>
+<script src="libs/mathjax/cdn.js"></script>
+<script src="libs/echarts4r/echarts-en.min.js"></script>
+<script src="libs/echarts4r/ecStat.min.js"></script>
+<script src="libs/echarts4r/dataTool.min.js"></script>
+<script src="libs/echarts4r-binding/echarts4r.js"></script>
+<script src="libs/d3/d3.min.js"></script>
+<script src="libs/forceNetwork-binding/forceNetwork.js"></script>
+<link href="libs/vis/vis-network.min.css" rel="stylesheet" />
+<script src="libs/vis/vis-network.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+<script src="libs/FileSaver/FileSaver.min.js"></script>
+<script src="libs/Blob/Blob.js"></script>
+<script src="libs/canvas-toBlob/canvas-toBlob.js"></script>
+<script src="libs/html2canvas/html2canvas.js"></script>
+<script src="libs/jspdf/jspdf.debug.js"></script>
+<link href="libs/jquery-sparkline/jquery.sparkline.css" rel="stylesheet" />
+<script src="libs/jquery-sparkline/jquery.sparkline.js"></script>
+<script src="libs/sparkline-binding/sparkline.js"></script>
+<script src="libs/r2d3-render/r2d3-render.js"></script>
+<script src="libs/webcomponents/webcomponents.js"></script>
+<script src="libs/r2d3-binding/r2d3.js"></script>
+<script src="libs/d3v6/d3.min.js"></script>
+<script src="libs/kePrint/kePrint.js"></script>
+<link href="libs/lightable/lightable.css" rel="stylesheet" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-54GQKWF7VP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-54GQKWF7VP');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R 语言学习笔记</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>欢迎</a></li>
+<li class="chapter" data-level="1" data-path="chap-preface.html"><a href="chap-preface.html"><i class="fa fa-check"></i><b>1</b> 前言</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-r-or-python.html"><a href="sec-r-or-python.html"><i class="fa fa-check"></i><b>1.1</b> 语言抉择</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-data-science.html"><a href="sec-data-science.html"><i class="fa fa-check"></i><b>1.2</b> 数据科学</a></li>
+<li class="chapter" data-level="1.3" data-path="sec-writing-details.html"><a href="sec-writing-details.html"><i class="fa fa-check"></i><b>1.3</b> 写作环境</a></li>
+</ul></li>
+<li class="part"><span><b>I 数据整理</b></span></li>
+<li class="chapter" data-level="" data-path="chap-data-wrangling.html"><a href="chap-data-wrangling.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="2" data-path="chap-data-structure.html"><a href="chap-data-structure.html"><i class="fa fa-check"></i><b>2</b> 数据结构</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="subsec:typeof.html"><a href="subsec:typeof.html"><i class="fa fa-check"></i><b>2.1</b> 类型</a></li>
+<li class="chapter" data-level="2.2" data-path="sec-character.html"><a href="sec-character.html"><i class="fa fa-check"></i><b>2.2</b> 字符</a></li>
+<li class="chapter" data-level="2.3" data-path="sec-vector.html"><a href="sec-vector.html"><i class="fa fa-check"></i><b>2.3</b> 向量</a></li>
+<li class="chapter" data-level="2.4" data-path="sec-matrix.html"><a href="sec-matrix.html"><i class="fa fa-check"></i><b>2.4</b> 矩阵</a></li>
+<li class="chapter" data-level="2.5" data-path="sec-array.html"><a href="sec-array.html"><i class="fa fa-check"></i><b>2.5</b> 数组</a></li>
+<li class="chapter" data-level="2.6" data-path="sec-expression.html"><a href="sec-expression.html"><i class="fa fa-check"></i><b>2.6</b> 表达式</a></li>
+<li class="chapter" data-level="2.7" data-path="sec-list.html"><a href="sec-list.html"><i class="fa fa-check"></i><b>2.7</b> 列表</a></li>
+<li class="chapter" data-level="2.8" data-path="sec-date.html"><a href="sec-date.html"><i class="fa fa-check"></i><b>2.8</b> 日期</a></li>
+<li class="chapter" data-level="2.9" data-path="sec-null.html"><a href="sec-null.html"><i class="fa fa-check"></i><b>2.9</b> 空值</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chap-data-transportation.html"><a href="chap-data-transportation.html"><i class="fa fa-check"></i><b>3</b> 数据搬运</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="import-data.html"><a href="import-data.html"><i class="fa fa-check"></i><b>3.1</b> 导入数据</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="import-data.html"><a href="import-data.html#scan-file"><i class="fa fa-check"></i><b>3.1.1</b> <code>scan</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="import-data.html"><a href="import-data.html#read-write-table"><i class="fa fa-check"></i><b>3.1.2</b> <code>read.table</code></a></li>
+<li class="chapter" data-level="3.1.3" data-path="import-data.html"><a href="import-data.html#read-write-lines"><i class="fa fa-check"></i><b>3.1.3</b> <code>readLines</code></a></li>
+<li class="chapter" data-level="3.1.4" data-path="import-data.html"><a href="import-data.html#read-save-rds"><i class="fa fa-check"></i><b>3.1.4</b> <code>readRDS</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="other-data-source.html"><a href="other-data-source.html"><i class="fa fa-check"></i><b>3.2</b> 其它数据格式</a></li>
+<li class="chapter" data-level="3.3" data-path="import-large-dataset.html"><a href="import-large-dataset.html"><i class="fa fa-check"></i><b>3.3</b> 导入大数据集</a></li>
+<li class="chapter" data-level="3.4" data-path="import-data-from-database.html"><a href="import-data-from-database.html"><i class="fa fa-check"></i><b>3.4</b> 从数据库导入</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="import-data-from-database.html"><a href="import-data-from-database.html#postgresql"><i class="fa fa-check"></i><b>3.4.1</b> PostgreSQL</a></li>
+<li class="chapter" data-level="3.4.2" data-path="import-data-from-database.html"><a href="import-data-from-database.html#mysql"><i class="fa fa-check"></i><b>3.4.2</b> MySQL</a></li>
+<li class="chapter" data-level="3.4.3" data-path="import-data-from-database.html"><a href="import-data-from-database.html#spark"><i class="fa fa-check"></i><b>3.4.3</b> Spark</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="batch-import-data.html"><a href="batch-import-data.html"><i class="fa fa-check"></i><b>3.5</b> 批量导入数据</a></li>
+<li class="chapter" data-level="3.6" data-path="batch-export-data.html"><a href="batch-export-data.html"><i class="fa fa-check"></i><b>3.6</b> 批量导出数据</a></li>
+<li class="chapter" data-level="3.7" data-path="export-data.html"><a href="export-data.html"><i class="fa fa-check"></i><b>3.7</b> 导出数据</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="export-data.html"><a href="export-data.html#export-output"><i class="fa fa-check"></i><b>3.7.1</b> 导出运行结果</a></li>
+<li class="chapter" data-level="3.7.2" data-path="export-data.html"><a href="export-data.html#export-data-object"><i class="fa fa-check"></i><b>3.7.2</b> 导出数据对象</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html"><i class="fa fa-check"></i><b>3.8</b> Spark 与 R 语言</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparklyr"><i class="fa fa-check"></i><b>3.8.1</b> sparklyr</a></li>
+<li class="chapter" data-level="3.8.2" data-path="sec-spark-with-r.html"><a href="sec-spark-with-r.html#subsec-sparkr"><i class="fa fa-check"></i><b>3.8.2</b> SparkR</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="sec-database-with-r.html"><a href="sec-database-with-r.html"><i class="fa fa-check"></i><b>3.9</b> 数据库与 R 语言</a></li>
+<li class="chapter" data-level="3.10" data-path="sec-batch-import-csv.html"><a href="sec-batch-import-csv.html"><i class="fa fa-check"></i><b>3.10</b> 批量读取 csv 文件</a></li>
+<li class="chapter" data-level="3.11" data-path="sec-batch-export-xlsx.html"><a href="sec-batch-export-xlsx.html"><i class="fa fa-check"></i><b>3.11</b> 批量导出 xlsx 文件</a></li>
+<li class="chapter" data-level="3.12" data-path="dm-session-info.html"><a href="dm-session-info.html"><i class="fa fa-check"></i><b>3.12</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="chap-string-operations.html"><a href="chap-string-operations.html"><i class="fa fa-check"></i><b>4</b> 字符串操作</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="base-count.html"><a href="base-count.html"><i class="fa fa-check"></i><b>4.1</b> 字符数统计</a></li>
+<li class="chapter" data-level="4.2" data-path="base-translations.html"><a href="base-translations.html"><i class="fa fa-check"></i><b>4.2</b> 字符串翻译</a></li>
+<li class="chapter" data-level="4.3" data-path="base-concatenate.html"><a href="base-concatenate.html"><i class="fa fa-check"></i><b>4.3</b> 字符串连接</a></li>
+<li class="chapter" data-level="4.4" data-path="base-strsplit.html"><a href="base-strsplit.html"><i class="fa fa-check"></i><b>4.4</b> 字符串拆分</a></li>
+<li class="chapter" data-level="4.5" data-path="base-match.html"><a href="base-match.html"><i class="fa fa-check"></i><b>4.5</b> 字符串匹配</a></li>
+<li class="chapter" data-level="4.6" data-path="base-search.html"><a href="base-search.html"><i class="fa fa-check"></i><b>4.6</b> 字符串查询</a></li>
+<li class="chapter" data-level="4.7" data-path="base-replacement.html"><a href="base-replacement.html"><i class="fa fa-check"></i><b>4.7</b> 字符串替换</a></li>
+<li class="chapter" data-level="4.8" data-path="base-extract.html"><a href="base-extract.html"><i class="fa fa-check"></i><b>4.8</b> 字符串提取</a></li>
+<li class="chapter" data-level="4.9" data-path="string-named-capture.html"><a href="string-named-capture.html"><i class="fa fa-check"></i><b>4.9</b> 命名捕捉</a></li>
+<li class="chapter" data-level="4.10" data-path="exact-match.html"><a href="exact-match.html"><i class="fa fa-check"></i><b>4.10</b> 精确匹配</a></li>
+<li class="chapter" data-level="4.11" data-path="fuzzy-match.html"><a href="fuzzy-match.html"><i class="fa fa-check"></i><b>4.11</b> 模糊匹配</a></li>
+<li class="chapter" data-level="4.12" data-path="replace.html"><a href="replace.html"><i class="fa fa-check"></i><b>4.12</b> 高级的替换</a></li>
+<li class="chapter" data-level="4.13" data-path="extract.html"><a href="extract.html"><i class="fa fa-check"></i><b>4.13</b> 高级的提取</a></li>
+<li class="chapter" data-level="4.14" data-path="other-string-op.html"><a href="other-string-op.html"><i class="fa fa-check"></i><b>4.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="4.14.1" data-path="other-string-op.html"><a href="other-string-op.html#strwrap"><i class="fa fa-check"></i><b>4.14.1</b> strwrap</a></li>
+<li class="chapter" data-level="4.14.2" data-path="other-string-op.html"><a href="other-string-op.html#strtrim"><i class="fa fa-check"></i><b>4.14.2</b> strtrim</a></li>
+<li class="chapter" data-level="4.14.3" data-path="other-string-op.html"><a href="other-string-op.html#strrep"><i class="fa fa-check"></i><b>4.14.3</b> strrep</a></li>
+<li class="chapter" data-level="4.14.4" data-path="other-string-op.html"><a href="other-string-op.html#trimws"><i class="fa fa-check"></i><b>4.14.4</b> trimws</a></li>
+<li class="chapter" data-level="4.14.5" data-path="other-string-op.html"><a href="other-string-op.html#tolower"><i class="fa fa-check"></i><b>4.14.5</b> tolower</a></li>
+</ul></li>
+<li class="chapter" data-level="4.15" data-path="encode-string.html"><a href="encode-string.html"><i class="fa fa-check"></i><b>4.15</b> 字符串加密</a></li>
+<li class="chapter" data-level="4.16" data-path="performance.html"><a href="performance.html"><i class="fa fa-check"></i><b>4.16</b> 处理性能</a></li>
+<li class="chapter" data-level="4.17" data-path="web-crawler.html"><a href="web-crawler.html"><i class="fa fa-check"></i><b>4.17</b> 网络爬虫</a></li>
+<li class="chapter" data-level="4.18" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>4.18</b> 文本挖掘</a></li>
+<li class="chapter" data-level="4.19" data-path="string-session-info.html"><a href="string-session-info.html"><i class="fa fa-check"></i><b>4.19</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="chap-regular-expressions.html"><a href="chap-regular-expressions.html"><i class="fa fa-check"></i><b>5</b> 正则表达式</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="character-constants.html"><a href="character-constants.html"><i class="fa fa-check"></i><b>5.1</b> 字符常量</a></li>
+<li class="chapter" data-level="5.2" data-path="environments.html"><a href="environments.html"><i class="fa fa-check"></i><b>5.2</b> 软件环境</a></li>
+<li class="chapter" data-level="5.3" data-path="foundations.html"><a href="foundations.html"><i class="fa fa-check"></i><b>5.3</b> 基本概念</a></li>
+<li class="chapter" data-level="5.4" data-path="match.html"><a href="match.html"><i class="fa fa-check"></i><b>5.4</b> 字符串匹配</a></li>
+<li class="chapter" data-level="5.5" data-path="concatenation.html"><a href="concatenation.html"><i class="fa fa-check"></i><b>5.5</b> 级联表达式</a></li>
+<li class="chapter" data-level="5.6" data-path="backreference.html"><a href="backreference.html"><i class="fa fa-check"></i><b>5.6</b> 反向引用</a></li>
+<li class="chapter" data-level="5.7" data-path="regexp-named-capture.html"><a href="regexp-named-capture.html"><i class="fa fa-check"></i><b>5.7</b> 命名捕捉</a></li>
+<li class="chapter" data-level="5.8" data-path="comment.html"><a href="comment.html"><i class="fa fa-check"></i><b>5.8</b> 表达式注释</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="chap-data-manipulation.html"><a href="chap-data-manipulation.html"><i class="fa fa-check"></i><b>6</b> 数据操作</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dm-view.html"><a href="dm-view.html"><i class="fa fa-check"></i><b>6.1</b> 查看数据</a></li>
+<li class="chapter" data-level="6.2" data-path="dm-subset.html"><a href="dm-subset.html"><i class="fa fa-check"></i><b>6.2</b> 提取子集</a></li>
+<li class="chapter" data-level="6.3" data-path="dm-reshape.html"><a href="dm-reshape.html"><i class="fa fa-check"></i><b>6.3</b> 数据重塑</a></li>
+<li class="chapter" data-level="6.4" data-path="dm-transform.html"><a href="dm-transform.html"><i class="fa fa-check"></i><b>6.4</b> 数据转换</a></li>
+<li class="chapter" data-level="6.5" data-path="dm-order.html"><a href="dm-order.html"><i class="fa fa-check"></i><b>6.5</b> 按列排序</a></li>
+<li class="chapter" data-level="6.6" data-path="dm-split.html"><a href="dm-split.html"><i class="fa fa-check"></i><b>6.6</b> 数据拆分</a></li>
+<li class="chapter" data-level="6.7" data-path="dm-merge.html"><a href="dm-merge.html"><i class="fa fa-check"></i><b>6.7</b> 数据合并</a></li>
+<li class="chapter" data-level="6.8" data-path="dm-duplicated.html"><a href="dm-duplicated.html"><i class="fa fa-check"></i><b>6.8</b> 数据去重</a></li>
+<li class="chapter" data-level="6.9" data-path="dm-missing.html"><a href="dm-missing.html"><i class="fa fa-check"></i><b>6.9</b> 数据缺失</a></li>
+<li class="chapter" data-level="6.10" data-path="dm-aggregate.html"><a href="dm-aggregate.html"><i class="fa fa-check"></i><b>6.10</b> 数据聚合</a></li>
+<li class="chapter" data-level="6.11" data-path="dm-table.html"><a href="dm-table.html"><i class="fa fa-check"></i><b>6.11</b> 表格统计</a></li>
+<li class="chapter" data-level="6.12" data-path="dm-index.html"><a href="dm-index.html"><i class="fa fa-check"></i><b>6.12</b> 索引访问</a></li>
+<li class="chapter" data-level="6.13" data-path="dm-array.html"><a href="dm-array.html"><i class="fa fa-check"></i><b>6.13</b> 多维数组</a></li>
+<li class="chapter" data-level="6.14" data-path="dm-others.html"><a href="dm-others.html"><i class="fa fa-check"></i><b>6.14</b> 其它操作</a>
+<ul>
+<li class="chapter" data-level="6.14.1" data-path="dm-others.html"><a href="dm-others.html#relist-or-unlist"><i class="fa fa-check"></i><b>6.14.1</b> 列表属性</a></li>
+<li class="chapter" data-level="6.14.2" data-path="dm-others.html"><a href="dm-others.html#stack-or-unstack"><i class="fa fa-check"></i><b>6.14.2</b> 堆叠向量</a></li>
+<li class="chapter" data-level="6.14.3" data-path="dm-others.html"><a href="dm-others.html#class-or-unclass"><i class="fa fa-check"></i><b>6.14.3</b> 属性转化</a></li>
+<li class="chapter" data-level="6.14.4" data-path="dm-others.html"><a href="dm-others.html#attach-or-detach"><i class="fa fa-check"></i><b>6.14.4</b> 绑定环境</a></li>
+<li class="chapter" data-level="6.14.5" data-path="dm-others.html"><a href="dm-others.html#with-or-within"><i class="fa fa-check"></i><b>6.14.5</b> 数据环境</a></li>
+</ul></li>
+<li class="chapter" data-level="6.15" data-path="dm-apply-family.html"><a href="dm-apply-family.html"><i class="fa fa-check"></i><b>6.15</b> apply 族</a></li>
+<li class="chapter" data-level="6.16" data-path="sec-option-with.html"><a href="sec-option-with.html"><i class="fa fa-check"></i><b>6.16</b> with 选项</a></li>
+<li class="chapter" data-level="6.17" data-path="sec-aggregate.html"><a href="sec-aggregate.html"><i class="fa fa-check"></i><b>6.17</b> 分组聚合</a></li>
+<li class="chapter" data-level="6.18" data-path="sec-merge-two-tables.html"><a href="sec-merge-two-tables.html"><i class="fa fa-check"></i><b>6.18</b> 合并操作</a></li>
+<li class="chapter" data-level="6.19" data-path="sec-reshape.html"><a href="sec-reshape.html"><i class="fa fa-check"></i><b>6.19</b> 长宽转换</a></li>
+<li class="chapter" data-level="6.20" data-path="sec-filter-columns.html"><a href="sec-filter-columns.html"><i class="fa fa-check"></i><b>6.20</b> 对符合条件的列操作</a></li>
+<li class="chapter" data-level="6.21" data-path="sec-case-when.html"><a href="sec-case-when.html"><i class="fa fa-check"></i><b>6.21</b> <code>CASE WHEN</code> 和 <code>fcase</code></a></li>
+<li class="chapter" data-level="6.22" data-path="sec-datatable-in-action.html"><a href="sec-datatable-in-action.html"><i class="fa fa-check"></i><b>6.22</b> 数据操作实战</a></li>
+<li class="chapter" data-level="6.23" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html"><i class="fa fa-check"></i><b>6.23</b> 高频数据操作</a>
+<ul>
+<li class="chapter" data-level="6.23.1" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-reduce-merge"><i class="fa fa-check"></i><b>6.23.1</b> 循环合并</a></li>
+<li class="chapter" data-level="6.23.2" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-count-by-group"><i class="fa fa-check"></i><b>6.23.2</b> 分组计数</a></li>
+<li class="chapter" data-level="6.23.3" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-sample-by-group"><i class="fa fa-check"></i><b>6.23.3</b> 分组抽样</a></li>
+<li class="chapter" data-level="6.23.4" data-path="sec-faq-operations.html"><a href="sec-faq-operations.html#subsec-order-by-group"><i class="fa fa-check"></i><b>6.23.4</b> 分组排序</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chap-advanced-manipulation.html"><a href="chap-advanced-manipulation.html"><i class="fa fa-check"></i><b>7</b> 高级数据操作</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>7.1</b> 基础介绍</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="intro.html"><a href="intro.html#subsec-filter-i"><i class="fa fa-check"></i><b>7.1.1</b> 过滤</a></li>
+<li class="chapter" data-level="7.1.2" data-path="intro.html"><a href="intro.html#subsec-mutate-j"><i class="fa fa-check"></i><b>7.1.2</b> 变换</a></li>
+<li class="chapter" data-level="7.1.3" data-path="intro.html"><a href="intro.html#subsec-summarise-j"><i class="fa fa-check"></i><b>7.1.3</b> 聚合</a></li>
+<li class="chapter" data-level="7.1.4" data-path="intro.html"><a href="intro.html#subsec-setname"><i class="fa fa-check"></i><b>7.1.4</b> 命名</a></li>
+<li class="chapter" data-level="7.1.5" data-path="intro.html"><a href="intro.html#subsec-order-by-j"><i class="fa fa-check"></i><b>7.1.5</b> 排序</a></li>
+<li class="chapter" data-level="7.1.6" data-path="intro.html"><a href="intro.html#subsec-reshape"><i class="fa fa-check"></i><b>7.1.6</b> 变形</a></li>
+<li class="chapter" data-level="7.1.7" data-path="intro.html"><a href="intro.html#subsec-group-by"><i class="fa fa-check"></i><b>7.1.7</b> 分组</a></li>
+<li class="chapter" data-level="7.1.8" data-path="intro.html"><a href="intro.html#subsec-merge"><i class="fa fa-check"></i><b>7.1.8</b> 合并</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html"><i class="fa fa-check"></i><b>7.2</b> 高频操作</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select"><i class="fa fa-check"></i><b>7.2.1</b> 选择多列</a></li>
+<li class="chapter" data-level="7.2.2" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-filter"><i class="fa fa-check"></i><b>7.2.2</b> 过滤多行</a></li>
+<li class="chapter" data-level="7.2.3" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-duplicated"><i class="fa fa-check"></i><b>7.2.3</b> 去重多行</a></li>
+<li class="chapter" data-level="7.2.4" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge"><i class="fa fa-check"></i><b>7.2.4</b> 合并操作</a></li>
+<li class="chapter" data-level="7.2.5" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-add-columns"><i class="fa fa-check"></i><b>7.2.5</b> 新添多列</a></li>
+<li class="chapter" data-level="7.2.6" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-delete-columns"><i class="fa fa-check"></i><b>7.2.6</b> 删除多列</a></li>
+<li class="chapter" data-level="7.2.7" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-columns"><i class="fa fa-check"></i><b>7.2.7</b> 筛选多列</a></li>
+<li class="chapter" data-level="7.2.8" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-modify-columns-type"><i class="fa fa-check"></i><b>7.2.8</b> 修改多列类型</a></li>
+<li class="chapter" data-level="7.2.9" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-select-first-row"><i class="fa fa-check"></i><b>7.2.9</b> 取每组第一行</a></li>
+<li class="chapter" data-level="7.2.10" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#subsec-mom-vs-yoy"><i class="fa fa-check"></i><b>7.2.10</b> 计算环比同比</a></li>
+<li class="chapter" data-level="7.2.11" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-merge-multi-dfs"><i class="fa fa-check"></i><b>7.2.11</b> 合并多个数据框</a></li>
+<li class="chapter" data-level="7.2.12" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-multiple-aggregations"><i class="fa fa-check"></i><b>7.2.12</b> 分组聚合多个指标</a></li>
+<li class="chapter" data-level="7.2.13" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rename-multi-cols"><i class="fa fa-check"></i><b>7.2.13</b> 重命名多个列</a></li>
+<li class="chapter" data-level="7.2.14" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-sort-multi-cols"><i class="fa fa-check"></i><b>7.2.14</b> 对多个列依次排序</a></li>
+<li class="chapter" data-level="7.2.15" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-rearrange-position-multi-cols"><i class="fa fa-check"></i><b>7.2.15</b> 重排多个列的位置</a></li>
+<li class="chapter" data-level="7.2.16" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-tidy-output"><i class="fa fa-check"></i><b>7.2.16</b> 整理回归结果</a></li>
+<li class="chapter" data-level="7.2.17" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-assignment-by-reference"><i class="fa fa-check"></i><b>7.2.17</b> <code>:=</code> 和 <code>.()</code></a></li>
+<li class="chapter" data-level="7.2.18" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-remove-na"><i class="fa fa-check"></i><b>7.2.18</b> 去掉含有缺失值的记录</a></li>
+<li class="chapter" data-level="7.2.19" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#sec-match-set"><i class="fa fa-check"></i><b>7.2.19</b> 集合操作</a></li>
+<li class="chapter" data-level="7.2.20" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#transform-cut-aggregate"><i class="fa fa-check"></i><b>7.2.20</b> 对数值向量按既定分组计数</a></li>
+<li class="chapter" data-level="7.2.21" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#aggregate-order"><i class="fa fa-check"></i><b>7.2.21</b> 分组排序</a></li>
+<li class="chapter" data-level="7.2.22" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-order"><i class="fa fa-check"></i><b>7.2.22</b> 分组获取 Top 值</a></li>
+<li class="chapter" data-level="7.2.23" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-sample"><i class="fa fa-check"></i><b>7.2.23</b> 分组抽样</a></li>
+<li class="chapter" data-level="7.2.24" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#lapply-split-quantile"><i class="fa fa-check"></i><b>7.2.24</b> 分组计算分位数</a></li>
+<li class="chapter" data-level="7.2.25" data-path="chap:data-manipulation.html"><a href="chap:data-manipulation.html#shift-lag"><i class="fa fa-check"></i><b>7.2.25</b> 计算日粒度的 DoD/WoW/MoM/YoY</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-adm-sessioninfo.html"><a href="sec-adm-sessioninfo.html"><i class="fa fa-check"></i><b>7.3</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="chap-parallel-manipulation.html"><a href="chap-parallel-manipulation.html"><i class="fa fa-check"></i><b>8</b> 并行化操作</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="apply.html"><a href="apply.html"><i class="fa fa-check"></i><b>8.1</b> apply</a></li>
+<li class="chapter" data-level="8.2" data-path="map-reduce.html"><a href="map-reduce.html"><i class="fa fa-check"></i><b>8.2</b> MapReduce</a></li>
+<li class="chapter" data-level="8.3" data-path="parallel.html"><a href="parallel.html"><i class="fa fa-check"></i><b>8.3</b> parallel</a></li>
+<li class="chapter" data-level="8.4" data-path="rmpi.html"><a href="rmpi.html"><i class="fa fa-check"></i><b>8.4</b> Rmpi</a></li>
+<li class="chapter" data-level="8.5" data-path="gpur.html"><a href="gpur.html"><i class="fa fa-check"></i><b>8.5</b> gpuR</a></li>
+<li class="chapter" data-level="8.6" data-path="parallel-sessioninfo.html"><a href="parallel-sessioninfo.html"><i class="fa fa-check"></i><b>8.6</b> 运行环境</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="chap-dplyr-manipulation.html"><a href="chap-dplyr-manipulation.html"><i class="fa fa-check"></i><b>9</b> 净土化操作</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="common-operations.html"><a href="common-operations.html"><i class="fa fa-check"></i><b>9.1</b> 常用操作</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="common-operations.html"><a href="common-operations.html#tibble-show"><i class="fa fa-check"></i><b>9.1.1</b> 查看</a></li>
+<li class="chapter" data-level="9.1.2" data-path="common-operations.html"><a href="common-operations.html#dplyr-filter"><i class="fa fa-check"></i><b>9.1.2</b> 筛选</a></li>
+<li class="chapter" data-level="9.1.3" data-path="common-operations.html"><a href="common-operations.html#dplyr-arrange"><i class="fa fa-check"></i><b>9.1.3</b> 排序</a></li>
+<li class="chapter" data-level="9.1.4" data-path="common-operations.html"><a href="common-operations.html#dplyr-summarise"><i class="fa fa-check"></i><b>9.1.4</b> 聚合</a></li>
+<li class="chapter" data-level="9.1.5" data-path="common-operations.html"><a href="common-operations.html#dplyr-merge"><i class="fa fa-check"></i><b>9.1.5</b> 合并</a></li>
+<li class="chapter" data-level="9.1.6" data-path="common-operations.html"><a href="common-operations.html#dplyr-mutate"><i class="fa fa-check"></i><b>9.1.6</b> 变换</a></li>
+<li class="chapter" data-level="9.1.7" data-path="common-operations.html"><a href="common-operations.html#dplyr-duplicated"><i class="fa fa-check"></i><b>9.1.7</b> 去重</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html"><i class="fa fa-check"></i><b>9.2</b> 高频问题</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#create-empty-dataframe"><i class="fa fa-check"></i><b>9.2.1</b> 初始化数据框</a></li>
+<li class="chapter" data-level="9.2.2" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#remove-missing-values"><i class="fa fa-check"></i><b>9.2.2</b> 移除缺失记录</a></li>
+<li class="chapter" data-level="9.2.3" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#coerce-data-type"><i class="fa fa-check"></i><b>9.2.3</b> 数据类型转化</a></li>
+<li class="chapter" data-level="9.2.4" data-path="common-dataframe-operations.html"><a href="common-dataframe-operations.html#cross-group-by"><i class="fa fa-check"></i><b>9.2.4</b> 跨列分组求和</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="pipe-manipulation.html"><a href="pipe-manipulation.html"><i class="fa fa-check"></i><b>9.3</b> 管道操作</a></li>
+</ul></li>
+<li class="part"><span><b>II 统计图形</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-graphics.html"><a href="chap-statistical-graphics.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="10" data-path="chap-graphics-foundations.html"><a href="chap-graphics-foundations.html"><i class="fa fa-check"></i><b>10</b> 图形基础</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="graphics-elements.html"><a href="graphics-elements.html"><i class="fa fa-check"></i><b>10.1</b> 绘图基本要素</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="graphics-elements.html"><a href="graphics-elements.html#base-points"><i class="fa fa-check"></i><b>10.1.1</b> 点线</a></li>
+<li class="chapter" data-level="10.1.2" data-path="graphics-elements.html"><a href="graphics-elements.html#base-rect"><i class="fa fa-check"></i><b>10.1.2</b> 区域</a></li>
+<li class="chapter" data-level="10.1.3" data-path="graphics-elements.html"><a href="graphics-elements.html#base-lines"><i class="fa fa-check"></i><b>10.1.3</b> 参考线</a></li>
+<li class="chapter" data-level="10.1.4" data-path="graphics-elements.html"><a href="graphics-elements.html#base-axis"><i class="fa fa-check"></i><b>10.1.4</b> 坐标轴</a></li>
+<li class="chapter" data-level="10.1.5" data-path="graphics-elements.html"><a href="graphics-elements.html#base-tick"><i class="fa fa-check"></i><b>10.1.5</b> 刻度线</a></li>
+<li class="chapter" data-level="10.1.6" data-path="graphics-elements.html"><a href="graphics-elements.html#base-title"><i class="fa fa-check"></i><b>10.1.6</b> 标题</a></li>
+<li class="chapter" data-level="10.1.7" data-path="graphics-elements.html"><a href="graphics-elements.html#base-annotation"><i class="fa fa-check"></i><b>10.1.7</b> 注释</a></li>
+<li class="chapter" data-level="10.1.8" data-path="graphics-elements.html"><a href="graphics-elements.html#base-legend"><i class="fa fa-check"></i><b>10.1.8</b> 图例</a></li>
+<li class="chapter" data-level="10.1.9" data-path="graphics-elements.html"><a href="graphics-elements.html#base-par"><i class="fa fa-check"></i><b>10.1.9</b> 边空</a></li>
+<li class="chapter" data-level="10.1.10" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layer"><i class="fa fa-check"></i><b>10.1.10</b> 图层</a></li>
+<li class="chapter" data-level="10.1.11" data-path="graphics-elements.html"><a href="graphics-elements.html#base-layout"><i class="fa fa-check"></i><b>10.1.11</b> 布局</a></li>
+<li class="chapter" data-level="10.1.12" data-path="graphics-elements.html"><a href="graphics-elements.html#base-combine"><i class="fa fa-check"></i><b>10.1.12</b> 组合</a></li>
+<li class="chapter" data-level="10.1.13" data-path="graphics-elements.html"><a href="graphics-elements.html#base-screen"><i class="fa fa-check"></i><b>10.1.13</b> 分屏</a></li>
+<li class="chapter" data-level="10.1.14" data-path="graphics-elements.html"><a href="graphics-elements.html#identify-locator"><i class="fa fa-check"></i><b>10.1.14</b> 交互</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="base-graphics.html"><a href="base-graphics.html"><i class="fa fa-check"></i><b>10.2</b> 基础统计图形</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="base-graphics.html"><a href="base-graphics.html#plot-bar"><i class="fa fa-check"></i><b>10.2.1</b> 条形图</a></li>
+<li class="chapter" data-level="10.2.2" data-path="base-graphics.html"><a href="base-graphics.html#plot-hist"><i class="fa fa-check"></i><b>10.2.2</b> 直方图</a></li>
+<li class="chapter" data-level="10.2.3" data-path="base-graphics.html"><a href="base-graphics.html#plot-density"><i class="fa fa-check"></i><b>10.2.3</b> 密度图</a></li>
+<li class="chapter" data-level="10.2.4" data-path="base-graphics.html"><a href="base-graphics.html#plot-ecdf"><i class="fa fa-check"></i><b>10.2.4</b> 经验图</a></li>
+<li class="chapter" data-level="10.2.5" data-path="base-graphics.html"><a href="base-graphics.html#plot-qqnorm"><i class="fa fa-check"></i><b>10.2.5</b> QQ 图</a></li>
+<li class="chapter" data-level="10.2.6" data-path="base-graphics.html"><a href="base-graphics.html#plot-ts"><i class="fa fa-check"></i><b>10.2.6</b> 时序图</a></li>
+<li class="chapter" data-level="10.2.7" data-path="base-graphics.html"><a href="base-graphics.html#plot-pie"><i class="fa fa-check"></i><b>10.2.7</b> 饼图</a></li>
+<li class="chapter" data-level="10.2.8" data-path="base-graphics.html"><a href="base-graphics.html#plot-stem-leaf"><i class="fa fa-check"></i><b>10.2.8</b> 茎叶图</a></li>
+<li class="chapter" data-level="10.2.9" data-path="base-graphics.html"><a href="base-graphics.html#plot-scatter"><i class="fa fa-check"></i><b>10.2.9</b> 散点图</a></li>
+<li class="chapter" data-level="10.2.10" data-path="base-graphics.html"><a href="base-graphics.html#base-jitter"><i class="fa fa-check"></i><b>10.2.10</b> 抖动图</a></li>
+<li class="chapter" data-level="10.2.11" data-path="base-graphics.html"><a href="base-graphics.html#plot-box"><i class="fa fa-check"></i><b>10.2.11</b> 箱线图</a></li>
+<li class="chapter" data-level="10.2.12" data-path="base-graphics.html"><a href="base-graphics.html#error-bars"><i class="fa fa-check"></i><b>10.2.12</b> 残差图</a></li>
+<li class="chapter" data-level="10.2.13" data-path="base-graphics.html"><a href="base-graphics.html#plot-violin"><i class="fa fa-check"></i><b>10.2.13</b> 提琴图</a></li>
+<li class="chapter" data-level="10.2.14" data-path="base-graphics.html"><a href="base-graphics.html#plot-contour"><i class="fa fa-check"></i><b>10.2.14</b> 轮廓图</a></li>
+<li class="chapter" data-level="10.2.15" data-path="base-graphics.html"><a href="base-graphics.html#plot-line"><i class="fa fa-check"></i><b>10.2.15</b> 折线图</a></li>
+<li class="chapter" data-level="10.2.16" data-path="base-graphics.html"><a href="base-graphics.html#function"><i class="fa fa-check"></i><b>10.2.16</b> 函数图</a></li>
+<li class="chapter" data-level="10.2.17" data-path="base-graphics.html"><a href="base-graphics.html#plot-mosaic"><i class="fa fa-check"></i><b>10.2.17</b> 马赛克图</a></li>
+<li class="chapter" data-level="10.2.18" data-path="base-graphics.html"><a href="base-graphics.html#plot-dotchart"><i class="fa fa-check"></i><b>10.2.18</b> 点图</a></li>
+<li class="chapter" data-level="10.2.19" data-path="base-graphics.html"><a href="base-graphics.html#plot-matrix"><i class="fa fa-check"></i><b>10.2.19</b> 矩阵图</a></li>
+<li class="chapter" data-level="10.2.20" data-path="base-graphics.html"><a href="base-graphics.html#plot-radar"><i class="fa fa-check"></i><b>10.2.20</b> 雷达图</a></li>
+<li class="chapter" data-level="10.2.21" data-path="base-graphics.html"><a href="base-graphics.html#plot-rose"><i class="fa fa-check"></i><b>10.2.21</b> 玫瑰图</a></li>
+<li class="chapter" data-level="10.2.22" data-path="base-graphics.html"><a href="base-graphics.html#plot-persp"><i class="fa fa-check"></i><b>10.2.22</b> 透视图</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html"><i class="fa fa-check"></i><b>10.3</b> 栅格统计图形</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-line"><i class="fa fa-check"></i><b>10.3.1</b> 时序图</a></li>
+<li class="chapter" data-level="10.3.2" data-path="lattice-graphics.html"><a href="lattice-graphics.html#水平图"><i class="fa fa-check"></i><b>10.3.2</b> 水平图</a></li>
+<li class="chapter" data-level="10.3.3" data-path="lattice-graphics.html"><a href="lattice-graphics.html#折线图"><i class="fa fa-check"></i><b>10.3.3</b> 折线图</a></li>
+<li class="chapter" data-level="10.3.4" data-path="lattice-graphics.html"><a href="lattice-graphics.html#高级设置"><i class="fa fa-check"></i><b>10.3.4</b> 高级设置</a></li>
+<li class="chapter" data-level="10.3.5" data-path="lattice-graphics.html"><a href="lattice-graphics.html#柱形图"><i class="fa fa-check"></i><b>10.3.5</b> 柱形图</a></li>
+<li class="chapter" data-level="10.3.6" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-smooth"><i class="fa fa-check"></i><b>10.3.6</b> Rootograms</a></li>
+<li class="chapter" data-level="10.3.7" data-path="lattice-graphics.html"><a href="lattice-graphics.html#lattice-persp"><i class="fa fa-check"></i><b>10.3.7</b> 透视图</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="chap-visualization-colors.html"><a href="chap-visualization-colors.html"><i class="fa fa-check"></i><b>11</b> 可视化之配色</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="subsec-color-palettes.html"><a href="subsec-color-palettes.html"><i class="fa fa-check"></i><b>11.1</b> 调色板</a></li>
+<li class="chapter" data-level="11.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html"><i class="fa fa-check"></i><b>11.2</b> 颜色模式</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#rgb"><i class="fa fa-check"></i><b>11.2.1</b> RGB</a></li>
+<li class="chapter" data-level="11.2.2" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsl"><i class="fa fa-check"></i><b>11.2.2</b> HSL</a></li>
+<li class="chapter" data-level="11.2.3" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hsv"><i class="fa fa-check"></i><b>11.2.3</b> HSV</a></li>
+<li class="chapter" data-level="11.2.4" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#hcl"><i class="fa fa-check"></i><b>11.2.4</b> HCL</a></li>
+<li class="chapter" data-level="11.2.5" data-path="subsec-color-schames.html"><a href="subsec-color-schames.html#cmyk"><i class="fa fa-check"></i><b>11.2.5</b> CMYK</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="subsec-latex-colors.html"><a href="subsec-latex-colors.html"><i class="fa fa-check"></i><b>11.3</b> LaTeX 配色</a></li>
+<li class="chapter" data-level="11.4" data-path="subsec-ggplot2-colors.html"><a href="subsec-ggplot2-colors.html"><i class="fa fa-check"></i><b>11.4</b> ggplot2 配色</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="chap-gallery.html"><a href="chap-gallery.html"><i class="fa fa-check"></i><b>12</b> 可视化之图库</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="sec-ggplot2-pie.html"><a href="sec-ggplot2-pie.html"><i class="fa fa-check"></i><b>12.1</b> 饼图</a></li>
+<li class="chapter" data-level="12.2" data-path="sec-ggplot2-map.html"><a href="sec-ggplot2-map.html"><i class="fa fa-check"></i><b>12.2</b> 地图</a></li>
+<li class="chapter" data-level="12.3" data-path="sec-ggplot2-heatmap.html"><a href="sec-ggplot2-heatmap.html"><i class="fa fa-check"></i><b>12.3</b> 热图</a></li>
+<li class="chapter" data-level="12.4" data-path="ggplot2-scatter.html"><a href="ggplot2-scatter.html"><i class="fa fa-check"></i><b>12.4</b> 散点图</a></li>
+<li class="chapter" data-level="12.5" data-path="sec-ggplot2-barplot.html"><a href="sec-ggplot2-barplot.html"><i class="fa fa-check"></i><b>12.5</b> 条形图</a></li>
+<li class="chapter" data-level="12.6" data-path="ggplot2-histogram.html"><a href="ggplot2-histogram.html"><i class="fa fa-check"></i><b>12.6</b> 直方图</a></li>
+<li class="chapter" data-level="12.7" data-path="ggplot2-boxplot.html"><a href="ggplot2-boxplot.html"><i class="fa fa-check"></i><b>12.7</b> 箱线图</a></li>
+<li class="chapter" data-level="12.8" data-path="sec-ggplot2-function.html"><a href="sec-ggplot2-function.html"><i class="fa fa-check"></i><b>12.8</b> 函数图</a></li>
+<li class="chapter" data-level="12.9" data-path="sec-ggplot2-density.html"><a href="sec-ggplot2-density.html"><i class="fa fa-check"></i><b>12.9</b> 密度图</a></li>
+<li class="chapter" data-level="12.10" data-path="sec-ggplot2-violin.html"><a href="sec-ggplot2-violin.html"><i class="fa fa-check"></i><b>12.10</b> 提琴图</a></li>
+<li class="chapter" data-level="12.11" data-path="ggplot2-jitter.html"><a href="ggplot2-jitter.html"><i class="fa fa-check"></i><b>12.11</b> 抖动图</a></li>
+<li class="chapter" data-level="12.12" data-path="sec-ggplot2-beeswarm.html"><a href="sec-ggplot2-beeswarm.html"><i class="fa fa-check"></i><b>12.12</b> 蜂群图</a></li>
+<li class="chapter" data-level="12.13" data-path="ggplot2-rose.html"><a href="ggplot2-rose.html"><i class="fa fa-check"></i><b>12.13</b> 玫瑰图</a></li>
+<li class="chapter" data-level="12.14" data-path="sec-ggplot2-tile.html"><a href="sec-ggplot2-tile.html"><i class="fa fa-check"></i><b>12.14</b> 瓦片图</a></li>
+<li class="chapter" data-level="12.15" data-path="sec-ggplot2-calendar.html"><a href="sec-ggplot2-calendar.html"><i class="fa fa-check"></i><b>12.15</b> 日历图</a></li>
+<li class="chapter" data-level="12.16" data-path="sec-ggplot2-ridgeline.html"><a href="sec-ggplot2-ridgeline.html"><i class="fa fa-check"></i><b>12.16</b> 岭线图</a></li>
+<li class="chapter" data-level="12.17" data-path="sec-ggplot2-ellipse.html"><a href="sec-ggplot2-ellipse.html"><i class="fa fa-check"></i><b>12.17</b> 椭圆图</a></li>
+<li class="chapter" data-level="12.18" data-path="sec-ggplot2-qq.html"><a href="sec-ggplot2-qq.html"><i class="fa fa-check"></i><b>12.18</b> Q-Q 图</a></li>
+<li class="chapter" data-level="12.19" data-path="sec-ggplot2-chull.html"><a href="sec-ggplot2-chull.html"><i class="fa fa-check"></i><b>12.19</b> 包络图</a></li>
+<li class="chapter" data-level="12.20" data-path="sec-ggplot2-fit.html"><a href="sec-ggplot2-fit.html"><i class="fa fa-check"></i><b>12.20</b> 拟合图</a></li>
+<li class="chapter" data-level="12.21" data-path="sec-ggplot2-raster.html"><a href="sec-ggplot2-raster.html"><i class="fa fa-check"></i><b>12.21</b> 地形图</a></li>
+<li class="chapter" data-level="12.22" data-path="sec-ggplot2-treemap.html"><a href="sec-ggplot2-treemap.html"><i class="fa fa-check"></i><b>12.22</b> 树状图</a></li>
+<li class="chapter" data-level="12.23" data-path="sec-ggplot2-cohort.html"><a href="sec-ggplot2-cohort.html"><i class="fa fa-check"></i><b>12.23</b> 留存图</a></li>
+<li class="chapter" data-level="12.24" data-path="sec-ggplot2-waterfall.html"><a href="sec-ggplot2-waterfall.html"><i class="fa fa-check"></i><b>12.24</b> 瀑布图</a></li>
+<li class="chapter" data-level="12.25" data-path="sec-ggplot2-streamgraph.html"><a href="sec-ggplot2-streamgraph.html"><i class="fa fa-check"></i><b>12.25</b> 水流图</a></li>
+<li class="chapter" data-level="12.26" data-path="sec-ggplot2-vistime.html"><a href="sec-ggplot2-vistime.html"><i class="fa fa-check"></i><b>12.26</b> 时间线</a></li>
+<li class="chapter" data-level="12.27" data-path="sec-ggplot2-ternary.html"><a href="sec-ggplot2-ternary.html"><i class="fa fa-check"></i><b>12.27</b> 三元图</a></li>
+<li class="chapter" data-level="12.28" data-path="sec-vector-fields.html"><a href="sec-vector-fields.html"><i class="fa fa-check"></i><b>12.28</b> 向量场图</a></li>
+<li class="chapter" data-level="12.29" data-path="sec-ggplot2-eisenhower.html"><a href="sec-ggplot2-eisenhower.html"><i class="fa fa-check"></i><b>12.29</b> 四象限图</a></li>
+<li class="chapter" data-level="12.30" data-path="sec-ggplot2-tornado.html"><a href="sec-ggplot2-tornado.html"><i class="fa fa-check"></i><b>12.30</b> 龙卷风图</a></li>
+<li class="chapter" data-level="12.31" data-path="sec-ggplot2-hclust.html"><a href="sec-ggplot2-hclust.html"><i class="fa fa-check"></i><b>12.31</b> 聚类图</a></li>
+<li class="chapter" data-level="12.32" data-path="sec-ggplot2-prcomp.html"><a href="sec-ggplot2-prcomp.html"><i class="fa fa-check"></i><b>12.32</b> 主成分图</a></li>
+<li class="chapter" data-level="12.33" data-path="sec-ggplot2-composite.html"><a href="sec-ggplot2-composite.html"><i class="fa fa-check"></i><b>12.33</b> 组合图</a></li>
+<li class="chapter" data-level="12.34" data-path="sec-ggplot2-animation.html"><a href="sec-ggplot2-animation.html"><i class="fa fa-check"></i><b>12.34</b> 动态图</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="chap-interactive-web-graphics.html"><a href="chap-interactive-web-graphics.html"><i class="fa fa-check"></i><b>13</b> 交互图形</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="sec-plotly-scatter.html"><a href="sec-plotly-scatter.html"><i class="fa fa-check"></i><b>13.1</b> 散点图</a></li>
+<li class="chapter" data-level="13.2" data-path="sec-plotly-barplot.html"><a href="sec-plotly-barplot.html"><i class="fa fa-check"></i><b>13.2</b> 条形图</a></li>
+<li class="chapter" data-level="13.3" data-path="sec-plotly-lineplot.html"><a href="sec-plotly-lineplot.html"><i class="fa fa-check"></i><b>13.3</b> 折线图</a></li>
+<li class="chapter" data-level="13.4" data-path="sec-multiple-y-axes.html"><a href="sec-multiple-y-axes.html"><i class="fa fa-check"></i><b>13.4</b> 双轴图</a></li>
+<li class="chapter" data-level="13.5" data-path="sec-plotly-bubble.html"><a href="sec-plotly-bubble.html"><i class="fa fa-check"></i><b>13.5</b> 气泡图</a></li>
+<li class="chapter" data-level="13.6" data-path="sec-plotly-spline.html"><a href="sec-plotly-spline.html"><i class="fa fa-check"></i><b>13.6</b> 曲线图</a></li>
+<li class="chapter" data-level="13.7" data-path="sec-plotly-tozeroy.html"><a href="sec-plotly-tozeroy.html"><i class="fa fa-check"></i><b>13.7</b> 堆积图</a></li>
+<li class="chapter" data-level="13.8" data-path="sec-plotly-heatmap.html"><a href="sec-plotly-heatmap.html"><i class="fa fa-check"></i><b>13.8</b> 热力图</a></li>
+<li class="chapter" data-level="13.9" data-path="sec-plotly-map.html"><a href="sec-plotly-map.html"><i class="fa fa-check"></i><b>13.9</b> 地图上的散点图</a></li>
+<li class="chapter" data-level="13.10" data-path="sec-plotly-fitted.html"><a href="sec-plotly-fitted.html"><i class="fa fa-check"></i><b>13.10</b> 拟合图</a></li>
+<li class="chapter" data-level="13.11" data-path="sec-plotly-rasterly.html"><a href="sec-plotly-rasterly.html"><i class="fa fa-check"></i><b>13.11</b> 轨迹图</a></li>
+<li class="chapter" data-level="13.12" data-path="sec-plotly-gantt-charts.html"><a href="sec-plotly-gantt-charts.html"><i class="fa fa-check"></i><b>13.12</b> 甘特图</a></li>
+<li class="chapter" data-level="13.13" data-path="sec-plotly-pareto-charts.html"><a href="sec-plotly-pareto-charts.html"><i class="fa fa-check"></i><b>13.13</b> 帕雷托图</a></li>
+<li class="chapter" data-level="13.14" data-path="sec-plotly-vistime.html"><a href="sec-plotly-vistime.html"><i class="fa fa-check"></i><b>13.14</b> 时间线</a></li>
+<li class="chapter" data-level="13.15" data-path="sec-plotly-funnel.html"><a href="sec-plotly-funnel.html"><i class="fa fa-check"></i><b>13.15</b> 漏斗图</a></li>
+<li class="chapter" data-level="13.16" data-path="sec-plotly-radar.html"><a href="sec-plotly-radar.html"><i class="fa fa-check"></i><b>13.16</b> 雷达图</a></li>
+<li class="chapter" data-level="13.17" data-path="sec-plotly-waterfall.html"><a href="sec-plotly-waterfall.html"><i class="fa fa-check"></i><b>13.17</b> 瀑布图</a></li>
+<li class="chapter" data-level="13.18" data-path="sec-plotly-treemap.html"><a href="sec-plotly-treemap.html"><i class="fa fa-check"></i><b>13.18</b> 树状图</a></li>
+<li class="chapter" data-level="13.19" data-path="sec-plotly-sunburst.html"><a href="sec-plotly-sunburst.html"><i class="fa fa-check"></i><b>13.19</b> 旭日图</a></li>
+<li class="chapter" data-level="13.20" data-path="sec-plotly-color-palette.html"><a href="sec-plotly-color-palette.html"><i class="fa fa-check"></i><b>13.20</b> 调色板</a></li>
+<li class="chapter" data-level="13.21" data-path="sec-echarts4r-map.html"><a href="sec-echarts4r-map.html"><i class="fa fa-check"></i><b>13.21</b> 地图 II</a></li>
+<li class="chapter" data-level="13.22" data-path="sec-echarts4r-animation.html"><a href="sec-echarts4r-animation.html"><i class="fa fa-check"></i><b>13.22</b> 动画</a></li>
+<li class="chapter" data-level="13.23" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html"><i class="fa fa-check"></i><b>13.23</b> 网络图</a>
+<ul>
+<li class="chapter" data-level="13.23.1" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-networkD3"><i class="fa fa-check"></i><b>13.23.1</b> networkD3</a></li>
+<li class="chapter" data-level="13.23.2" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-visNetwork"><i class="fa fa-check"></i><b>13.23.2</b> visNetwork</a></li>
+<li class="chapter" data-level="13.23.3" data-path="sec-network-analysis.html"><a href="sec-network-analysis.html#subsec-r2d3"><i class="fa fa-check"></i><b>13.23.3</b> r2d3</a></li>
+</ul></li>
+<li class="chapter" data-level="13.24" data-path="sec-web-graphics-session.html"><a href="sec-web-graphics-session.html"><i class="fa fa-check"></i><b>13.24</b> 运行环境</a></li>
+</ul></li>
+<li class="part"><span><b>III 统计计算</b></span></li>
+<li class="chapter" data-level="" data-path="chap-statistical-computation.html"><a href="chap-statistical-computation.html"><i class="fa fa-check"></i>介绍</a></li>
+<li class="chapter" data-level="14" data-path="chap-numerical-optimization.html"><a href="chap-numerical-optimization.html"><i class="fa fa-check"></i><b>14</b> 数值优化</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="sec-linear-programming.html"><a href="sec-linear-programming.html"><i class="fa fa-check"></i><b>14.1</b> 线性规划</a></li>
+<li class="chapter" data-level="14.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html"><i class="fa fa-check"></i><b>14.2</b> 整数规划</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#common-integer-programming"><i class="fa fa-check"></i><b>14.2.1</b> 一般整数规划</a></li>
+<li class="chapter" data-level="14.2.2" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#binary-integer-programming"><i class="fa fa-check"></i><b>14.2.2</b> 0-1 整数规划</a></li>
+<li class="chapter" data-level="14.2.3" data-path="sec-integer-programming.html"><a href="sec-integer-programming.html#mixed-integer-programming"><i class="fa fa-check"></i><b>14.2.3</b> 混合整数规划</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html"><i class="fa fa-check"></i><b>14.3</b> 二次规划</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#sec-strictly-convex-quadratic-program"><i class="fa fa-check"></i><b>14.3.1</b> 凸二次规划</a></li>
+<li class="chapter" data-level="14.3.2" data-path="sec-quadratic-programming.html"><a href="sec-quadratic-programming.html#subsec-semidefinite-optimization"><i class="fa fa-check"></i><b>14.3.2</b> 半正定二次优化</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html"><i class="fa fa-check"></i><b>14.4</b> 非线性规划</a>
+<ul>
+<li class="chapter" data-level="14.4.1" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-one-dimensional-optimization"><i class="fa fa-check"></i><b>14.4.1</b> 一元非线性优化</a></li>
+<li class="chapter" data-level="14.4.2" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-unconstrained-optimization"><i class="fa fa-check"></i><b>14.4.2</b> 多元非线性无约束优化</a></li>
+<li class="chapter" data-level="14.4.3" data-path="sec-nonlinear-programming.html"><a href="sec-nonlinear-programming.html#sec-nonlinear-constrained-optimization"><i class="fa fa-check"></i><b>14.4.3</b> 多元非线性约束优化</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="chap-differential-equations.html"><a href="chap-differential-equations.html"><i class="fa fa-check"></i><b>15</b> 微分方程</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="sec-ordinary-differential-equations.html"><a href="sec-ordinary-differential-equations.html"><i class="fa fa-check"></i><b>15.1</b> 常微分方程</a></li>
+<li class="chapter" data-level="15.2" data-path="sec-partial-differential-equations.html"><a href="sec-partial-differential-equations.html"><i class="fa fa-check"></i><b>15.2</b> 偏微分方程</a></li>
+<li class="chapter" data-level="15.3" data-path="sec-delay-differential-equations.html"><a href="sec-delay-differential-equations.html"><i class="fa fa-check"></i><b>15.3</b> 延迟微分方程</a></li>
+<li class="chapter" data-level="15.4" data-path="sec-stochastic-differential-equations.html"><a href="sec-stochastic-differential-equations.html"><i class="fa fa-check"></i><b>15.4</b> 随机微分方程</a></li>
+</ul></li>
+<li class="appendix"><span><b>附录</b></span></li>
+<li class="chapter" data-level="A" data-path="chap-linux-command-bash.html"><a href="chap-linux-command-bash.html"><i class="fa fa-check"></i><b>A</b> 命令行操作</a>
+<ul>
+<li class="chapter" data-level="A.1" data-path="sec-ls.html"><a href="sec-ls.html"><i class="fa fa-check"></i><b>A.1</b> 查看文件</a></li>
+<li class="chapter" data-level="A.2" data-path="sec-mkdir.html"><a href="sec-mkdir.html"><i class="fa fa-check"></i><b>A.2</b> 创建文件夹</a></li>
+<li class="chapter" data-level="A.3" data-path="sec-mv.html"><a href="sec-mv.html"><i class="fa fa-check"></i><b>A.3</b> 移动文件</a></li>
+<li class="chapter" data-level="A.4" data-path="sec-du.html"><a href="sec-du.html"><i class="fa fa-check"></i><b>A.4</b> 查看文件大小</a></li>
+<li class="chapter" data-level="A.5" data-path="sec-shell.html"><a href="sec-shell.html"><i class="fa fa-check"></i><b>A.5</b> 终端模拟器</a></li>
+<li class="chapter" data-level="A.6" data-path="sec-tar.html"><a href="sec-tar.html"><i class="fa fa-check"></i><b>A.6</b> 压缩和解压缩</a></li>
+<li class="chapter" data-level="A.7" data-path="repo-install.html"><a href="repo-install.html"><i class="fa fa-check"></i><b>A.7</b> 从仓库安装 R</a>
+<ul>
+<li class="chapter" data-level="A.7.1" data-path="repo-install.html"><a href="repo-install.html#ubuntu"><i class="fa fa-check"></i><b>A.7.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.7.2" data-path="repo-install.html"><a href="repo-install.html#centos"><i class="fa fa-check"></i><b>A.7.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.8" data-path="source-install.html"><a href="source-install.html"><i class="fa fa-check"></i><b>A.8</b> 源码安装</a>
+<ul>
+<li class="chapter" data-level="A.8.1" data-path="source-install.html"><a href="source-install.html#ubuntu-1"><i class="fa fa-check"></i><b>A.8.1</b> Ubuntu</a></li>
+<li class="chapter" data-level="A.8.2" data-path="source-install.html"><a href="source-install.html#centos-1"><i class="fa fa-check"></i><b>A.8.2</b> CentOS</a></li>
+</ul></li>
+<li class="chapter" data-level="A.9" data-path="ninja-install.html"><a href="ninja-install.html"><i class="fa fa-check"></i><b>A.9</b> 忍者安装</a></li>
+<li class="chapter" data-level="A.10" data-path="settings.html"><a href="settings.html"><i class="fa fa-check"></i><b>A.10</b> 配置</a>
+<ul>
+<li class="chapter" data-level="A.10.1" data-path="settings.html"><a href="settings.html#init-session"><i class="fa fa-check"></i><b>A.10.1</b> 初始会话 <code>.Rprofile</code></a></li>
+<li class="chapter" data-level="A.10.2" data-path="settings.html"><a href="settings.html#environ-vars"><i class="fa fa-check"></i><b>A.10.2</b> 环境变量 <code>.Renviron</code></a></li>
+<li class="chapter" data-level="A.10.3" data-path="settings.html"><a href="settings.html#make-vars"><i class="fa fa-check"></i><b>A.10.3</b> 编译选项 <code>Makevars</code></a></li>
+</ul></li>
+<li class="chapter" data-level="A.11" data-path="command-line-arguments.html"><a href="command-line-arguments.html"><i class="fa fa-check"></i><b>A.11</b> 命令行参数</a></li>
+<li class="chapter" data-level="A.12" data-path="sec-build-source-code.html"><a href="sec-build-source-code.html"><i class="fa fa-check"></i><b>A.12</b> 从源码安装 R</a></li>
+<li class="chapter" data-level="A.13" data-path="install-softwares.html"><a href="install-softwares.html"><i class="fa fa-check"></i><b>A.13</b> 安装软件</a></li>
+<li class="chapter" data-level="A.14" data-path="sec-install-r-pkgs.html"><a href="sec-install-r-pkgs.html"><i class="fa fa-check"></i><b>A.14</b> 安装 R 包</a></li>
+<li class="chapter" data-level="A.15" data-path="sec-software-manager.html"><a href="sec-software-manager.html"><i class="fa fa-check"></i><b>A.15</b> 软件包管理器</a>
+<ul>
+<li class="chapter" data-level="A.15.1" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-dnf-yum"><i class="fa fa-check"></i><b>A.15.1</b> dnf</a></li>
+<li class="chapter" data-level="A.15.2" data-path="sec-software-manager.html"><a href="sec-software-manager.html#subsec-apt-get"><i class="fa fa-check"></i><b>A.15.2</b> apt</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>参考文献</a></li>
+<li class="divider"></li>
+<li><a href="https://xiangyunhuang.github.io/notesdown/" target="blank">Published with Github Pages</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R 语言学习笔记</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-nonlinear-programming" class="section level2 hasAnchor" number="14.4">
+<h2><span class="header-section-number">14.4</span> 非线性规划<a href="sec-nonlinear-programming.html#sec-nonlinear-programming" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>开源的非线性优化求解器，推荐使用 nloptr，它支持全局优化，同时推荐 ROI，它有统一的接口函数。</p>
+<div id="sec-one-dimensional-optimization" class="section level3 hasAnchor" number="14.4.1">
+<h3><span class="header-section-number">14.4.1</span> 一元非线性优化<a href="sec-nonlinear-programming.html#sec-one-dimensional-optimization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>下面考虑一个稍微复杂的一元函数优化问题，求复合函数的极值</p>
+<p><span class="math display">\[
+g(x) = \int_{0}^{x} -\sqrt{t}\exp(-t^2) \mathrm{dt}, \quad f(y) = \int_{0}^{y} g(s) \exp(-s) \mathrm{ds}
+\]</span></p>
+<div class="sourceCode" id="cb1701"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1701-1"><a href="sec-nonlinear-programming.html#cb1701-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1701-2"><a href="sec-nonlinear-programming.html#cb1701-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(t) {</span>
+<span id="cb1701-3"><a href="sec-nonlinear-programming.html#cb1701-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sqrt</span>(t) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>t<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1701-4"><a href="sec-nonlinear-programming.html#cb1701-4" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> x)<span class="sc">$</span>value</span>
+<span id="cb1701-5"><a href="sec-nonlinear-programming.html#cb1701-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1701-6"><a href="sec-nonlinear-programming.html#cb1701-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1701-7"><a href="sec-nonlinear-programming.html#cb1701-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(y) {</span>
+<span id="cb1701-8"><a href="sec-nonlinear-programming.html#cb1701-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">integrate</span>(<span class="cf">function</span>(s) {</span>
+<span id="cb1701-9"><a href="sec-nonlinear-programming.html#cb1701-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Vectorize</span>(g, <span class="st">&quot;x&quot;</span>)(s) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>s)</span>
+<span id="cb1701-10"><a href="sec-nonlinear-programming.html#cb1701-10" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">lower =</span> <span class="dv">0</span>, <span class="at">upper =</span> y)<span class="sc">$</span>value</span>
+<span id="cb1701-11"><a href="sec-nonlinear-programming.html#cb1701-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1701-12"><a href="sec-nonlinear-programming.html#cb1701-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1701-13"><a href="sec-nonlinear-programming.html#cb1701-13" aria-hidden="true" tabindex="-1"></a><span class="fu">optimize</span>(f, <span class="at">interval =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>), <span class="at">maximum =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 66.84459
+## 
+## $objective
+## [1] -0.3201572</code></pre>
+<div class="rmdtip">
+<p>计算积分的时候，输入了一系列 s 值，参数是向量，而函数 g 只支持输入参数是单个值，<code>g(c(1,2))</code> 会报错，因此上面对函数 <code>g()</code> 用了向量化函数 <code>Vectorize()</code> 操作。</p>
+<div class="sourceCode" id="cb1703"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1703-1"><a href="sec-nonlinear-programming.html#cb1703-1" aria-hidden="true" tabindex="-1"></a><span class="fu">g</span>(<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] -0.453392</code></pre>
+<p>类似地，同时计算多个目标函数 <code>f(y)</code> 的值，也需要<code>Vectorize()</code> 实现向量化操作。</p>
+<div class="sourceCode" id="cb1705"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1705-1"><a href="sec-nonlinear-programming.html#cb1705-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Vectorize</span>(f, <span class="st">&quot;y&quot;</span>)(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] -0.1103310 -0.2373865</code></pre>
+</div>
+</div>
+<div id="sec-nonlinear-unconstrained-optimization" class="section level3 hasAnchor" number="14.4.2">
+<h3><span class="header-section-number">14.4.2</span> 多元非线性无约束优化<a href="sec-nonlinear-programming.html#sec-nonlinear-unconstrained-optimization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- ?nlm -->
+<p>下面这些用来测试优化算法的函数来自<a href="https://en.wikipedia.org/wiki/Test_functions_for_optimization">维基百科</a></p>
+<div id="himmelblau" class="section level4 hasAnchor" number="14.4.2.1">
+<h4><span class="header-section-number">14.4.2.1</span> Himmelblau 函数<a href="sec-nonlinear-programming.html#himmelblau" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Himmelblau 函数是一个多摸函数，常用于比较优化算法的优劣。</p>
+<p><span class="math display">\[f(x_1,x_2) = (x_1^2 + x_2 -11)^2 + (x_1 + x_2^2 -7)^2\]</span> 它在四个位置取得一样的极小值，分别是 <span class="math inline">\(f(-3.7793, -3.2832) = 0\)</span>，<span class="math inline">\(f(-2.8051, 3.1313) = 0\)</span>，<span class="math inline">\(f(3, 2) = 0\)</span>，<span class="math inline">\(f(3.5844, -1.8481) = 0\)</span>。函数图像见图 <a href="sec-nonlinear-programming.html#fig:himmelblau">14.3</a>。</p>
+<div class="sourceCode" id="cb1707"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1707-1"><a href="sec-nonlinear-programming.html#cb1707-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1707-2"><a href="sec-nonlinear-programming.html#cb1707-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1707-3"><a href="sec-nonlinear-programming.html#cb1707-3" aria-hidden="true" tabindex="-1"></a>   (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">11</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">7</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1707-4"><a href="sec-nonlinear-programming.html#cb1707-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1707-5"><a href="sec-nonlinear-programming.html#cb1707-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1707-6"><a href="sec-nonlinear-programming.html#cb1707-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1707-7"><a href="sec-nonlinear-programming.html#cb1707-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1707-8"><a href="sec-nonlinear-programming.html#cb1707-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1707-9"><a href="sec-nonlinear-programming.html#cb1707-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1707-10"><a href="sec-nonlinear-programming.html#cb1707-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1707-11"><a href="sec-nonlinear-programming.html#cb1707-11" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1707-12"><a href="sec-nonlinear-programming.html#cb1707-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1707-13"><a href="sec-nonlinear-programming.html#cb1707-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb1707-14"><a href="sec-nonlinear-programming.html#cb1707-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 减少三维图形的边空</span></span>
+<span id="cb1707-15"><a href="sec-nonlinear-programming.html#cb1707-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lattice.options</span>(</span>
+<span id="cb1707-16"><a href="sec-nonlinear-programming.html#cb1707-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout.widths =</span> <span class="fu">list</span>(</span>
+<span id="cb1707-17"><a href="sec-nonlinear-programming.html#cb1707-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">left.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span>.<span class="dv">6</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>),</span>
+<span id="cb1707-18"><a href="sec-nonlinear-programming.html#cb1707-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">right.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.0</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb1707-19"><a href="sec-nonlinear-programming.html#cb1707-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1707-20"><a href="sec-nonlinear-programming.html#cb1707-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout.heights =</span> <span class="fu">list</span>(</span>
+<span id="cb1707-21"><a href="sec-nonlinear-programming.html#cb1707-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">bottom.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span>.<span class="dv">8</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>),</span>
+<span id="cb1707-22"><a href="sec-nonlinear-programming.html#cb1707-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">top.padding =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.0</span>, <span class="at">units =</span> <span class="st">&quot;inches&quot;</span>)</span>
+<span id="cb1707-23"><a href="sec-nonlinear-programming.html#cb1707-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1707-24"><a href="sec-nonlinear-programming.html#cb1707-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1707-25"><a href="sec-nonlinear-programming.html#cb1707-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1707-26"><a href="sec-nonlinear-programming.html#cb1707-26" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1707-27"><a href="sec-nonlinear-programming.html#cb1707-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1707-28"><a href="sec-nonlinear-programming.html#cb1707-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1707-29"><a href="sec-nonlinear-programming.html#cb1707-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1707-30"><a href="sec-nonlinear-programming.html#cb1707-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1707-31"><a href="sec-nonlinear-programming.html#cb1707-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1707-32"><a href="sec-nonlinear-programming.html#cb1707-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1707-33"><a href="sec-nonlinear-programming.html#cb1707-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1707-34"><a href="sec-nonlinear-programming.html#cb1707-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="sc">-</span><span class="dv">240</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1707-35"><a href="sec-nonlinear-programming.html#cb1707-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:himmelblau"></span>
+<img src="numerical-optimization_files/figure-html/himmelblau-1.png" alt="Himmelblau 函数图像" width="528" />
+<p class="caption">
+图 14.3: Himmelblau 函数图像
+</p>
+</div>
+<div class="sourceCode" id="cb1708"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1708-1"><a href="sec-nonlinear-programming.html#cb1708-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 梯度函数</span></span>
+<span id="cb1708-2"><a href="sec-nonlinear-programming.html#cb1708-2" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1708-3"><a href="sec-nonlinear-programming.html#cb1708-3" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>])) </span>
+<span id="cb1708-4"><a href="sec-nonlinear-programming.html#cb1708-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1708-5"><a href="sec-nonlinear-programming.html#cb1708-5" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="dv">1</span>), <span class="at">fn =</span> fn, <span class="at">gr =</span> gr, <span class="at">method =</span> <span class="st">&quot;BFGS&quot;</span>)</span></code></pre></div>
+<pre><code>## $par
+## [1] -2.805118  3.131313
+## 
+## $value
+## [1] 2.069971e-27
+## 
+## $counts
+## function gradient 
+##       42       15 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+</div>
+<div id="peaks" class="section level4 hasAnchor" number="14.4.2.2">
+<h4><span class="header-section-number">14.4.2.2</span> Peaks 函数<a href="sec-nonlinear-programming.html#peaks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>测试函数</p>
+<p><span class="math display">\[
+f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mathrm{e}^{-x^2-y^2} - \frac{1}{3}*\mathrm{e}^{-(x+1)^2-y^2}
+\]</span></p>
+<div class="sourceCode" id="cb1710"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1710-1"><a href="sec-nonlinear-programming.html#cb1710-1" aria-hidden="true" tabindex="-1"></a>peaks <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="dv">3</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x)<span class="sc">*</span>exp<span class="sc">^</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> (y<span class="sc">+</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> <span class="dv">10</span><span class="sc">*</span>(x<span class="sc">/</span><span class="dv">5</span> <span class="sc">-</span> x<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> y<span class="sc">^</span><span class="dv">5</span>)<span class="sc">*</span>exp<span class="sc">^</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">-</span>y<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span><span class="sc">*</span>exp<span class="sc">^</span>(<span class="sc">-</span>(x<span class="sc">+</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span><span class="sc">-</span>y<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1711"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1711-1"><a href="sec-nonlinear-programming.html#cb1711-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D</span>(peaks, <span class="st">&quot;x&quot;</span>)</span></code></pre></div>
+<pre><code>## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * x))) + 
+##     3 * exp^(-x^2 - (y + 1)^2) + (10 * (1/5 - 3 * x^2) * exp^(-x^2 - 
+##     y^2) - 10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
+##     (2 * x)))) - 1/3 * (exp^(-(x + 1)^2 - y^2) * (log(exp) * 
+##     (2 * (x + 1)))))</code></pre>
+<div class="sourceCode" id="cb1713"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1713-1"><a href="sec-nonlinear-programming.html#cb1713-1" aria-hidden="true" tabindex="-1"></a><span class="fu">D</span>(peaks, <span class="st">&quot;y&quot;</span>)</span></code></pre></div>
+<pre><code>## -(3 * (1 - x) * (exp^(-x^2 - (y + 1)^2) * (log(exp) * (2 * (y + 
+##     1)))) - (10 * (x/5 - x^3 - y^5) * (exp^(-x^2 - y^2) * (log(exp) * 
+##     (2 * y))) + 10 * (5 * y^4) * exp^(-x^2 - y^2)) - 1/3 * (exp^(-(x + 
+##     1)^2 - y^2) * (log(exp) * (2 * y))))</code></pre>
+<div class="sourceCode" id="cb1715"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1715-1"><a href="sec-nonlinear-programming.html#cb1715-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Deriv)</span>
+<span id="cb1715-2"><a href="sec-nonlinear-programming.html#cb1715-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span>(<span class="fu">D</span>(peaks, <span class="st">&quot;x&quot;</span>))</span></code></pre></div>
+<pre><code>## -(10 * ((0.2 - 3 * x^2)/exp^(x^2 + y^2)) + 3/exp^((1 + y)^2 + 
+##     x^2) + log(exp) * (x * (6 * ((1 - x)/exp^((1 + y)^2 + x^2)) - 
+##     20 * ((x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2))) - 0.666666666666667 * 
+##     ((1 + x)/exp^((1 + x)^2 + y^2))))</code></pre>
+<div class="sourceCode" id="cb1717"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1717-1"><a href="sec-nonlinear-programming.html#cb1717-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Simplify</span>(<span class="fu">D</span>(peaks, <span class="st">&quot;y&quot;</span>))</span></code></pre></div>
+<pre><code>## -((6 * ((1 - x) * (1 + y)/exp^((1 + y)^2 + x^2)) - 0.666666666666667 * 
+##     (y/exp^((1 + x)^2 + y^2))) * log(exp) - y * (20 * (log(exp) * 
+##     (x * (0.2 - x^2) - y^5)/exp^(x^2 + y^2)) + 50 * (y^3/exp^(x^2 + 
+##     y^2))))</code></pre>
+<div class="sourceCode" id="cb1719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1719-1"><a href="sec-nonlinear-programming.html#cb1719-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1719-2"><a href="sec-nonlinear-programming.html#cb1719-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> x[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> (x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span></span>
+<span id="cb1719-3"><a href="sec-nonlinear-programming.html#cb1719-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">10</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">/</span> <span class="dv">5</span> <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">5</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span></span>
+<span id="cb1719-4"><a href="sec-nonlinear-programming.html#cb1719-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>(x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1719-5"><a href="sec-nonlinear-programming.html#cb1719-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1719-6"><a href="sec-nonlinear-programming.html#cb1719-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 梯度函数</span></span>
+<span id="cb1719-7"><a href="sec-nonlinear-programming.html#cb1719-7" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1719-8"><a href="sec-nonlinear-programming.html#cb1719-8" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1719-9"><a href="sec-nonlinear-programming.html#cb1719-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1719-10"><a href="sec-nonlinear-programming.html#cb1719-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1719-11"><a href="sec-nonlinear-programming.html#cb1719-11" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="dv">1</span>), <span class="at">fn =</span> fn, <span class="at">gr =</span> gr, <span class="at">method =</span> <span class="st">&quot;BFGS&quot;</span>)</span></code></pre></div>
+<pre><code>## $par
+## [1] -1.3473958  0.2045192
+## 
+## $value
+## [1] -3.049849
+## 
+## $counts
+## function gradient 
+##       28       10 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<p>在 <span class="math inline">\((-1.3473958, 0.2045192)\)</span> 处取得极小值</p>
+<div class="sourceCode" id="cb1721"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1721-1"><a href="sec-nonlinear-programming.html#cb1721-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1721-2"><a href="sec-nonlinear-programming.html#cb1721-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1721-3"><a href="sec-nonlinear-programming.html#cb1721-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1721-4"><a href="sec-nonlinear-programming.html#cb1721-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1721-5"><a href="sec-nonlinear-programming.html#cb1721-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1721-6"><a href="sec-nonlinear-programming.html#cb1721-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1721-7"><a href="sec-nonlinear-programming.html#cb1721-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1721-8"><a href="sec-nonlinear-programming.html#cb1721-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb1721-9"><a href="sec-nonlinear-programming.html#cb1721-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1721-10"><a href="sec-nonlinear-programming.html#cb1721-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1721-11"><a href="sec-nonlinear-programming.html#cb1721-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1721-12"><a href="sec-nonlinear-programming.html#cb1721-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]),</span>
+<span id="cb1721-13"><a href="sec-nonlinear-programming.html#cb1721-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]),</span>
+<span id="cb1721-14"><a href="sec-nonlinear-programming.html#cb1721-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1721-15"><a href="sec-nonlinear-programming.html#cb1721-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1721-16"><a href="sec-nonlinear-programming.html#cb1721-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1721-17"><a href="sec-nonlinear-programming.html#cb1721-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="sc">-</span><span class="dv">240</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1721-18"><a href="sec-nonlinear-programming.html#cb1721-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:peaks"></span>
+<img src="numerical-optimization_files/figure-html/peaks-1.png" alt="Peaks 多峰图像" width="528" />
+<p class="caption">
+图 14.4: Peaks 多峰图像
+</p>
+</div>
+<p>函数来自 Octave 内置的 <code>peaks()</code> 函数，它有很多的局部极大值和极小值，可在 <a href="https://octave-online.net/">Octave Online</a> 上输入命令 <code>help peaks</code> 查看其帮助文档。</p>
+</div>
+<div id="rosenbrock" class="section level4 hasAnchor" number="14.4.2.3">
+<h4><span class="header-section-number">14.4.2.3</span> Rosenbrock 函数<a href="sec-nonlinear-programming.html#rosenbrock" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><a href="https://en.wikipedia.org/wiki/Rosenbrock_function">香蕉函数</a> 定义如下：</p>
+<p><span class="math display">\[f(x_1,x_2) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2\]</span></p>
+<div class="sourceCode" id="cb1722"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1722-1"><a href="sec-nonlinear-programming.html#cb1722-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1722-2"><a href="sec-nonlinear-programming.html#cb1722-2" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">100</span> <span class="sc">*</span> (x[<span class="dv">2</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> x[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1722-3"><a href="sec-nonlinear-programming.html#cb1722-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1722-4"><a href="sec-nonlinear-programming.html#cb1722-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1722-5"><a href="sec-nonlinear-programming.html#cb1722-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1722-6"><a href="sec-nonlinear-programming.html#cb1722-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1722-7"><a href="sec-nonlinear-programming.html#cb1722-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1722-8"><a href="sec-nonlinear-programming.html#cb1722-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1722-9"><a href="sec-nonlinear-programming.html#cb1722-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1722-10"><a href="sec-nonlinear-programming.html#cb1722-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1722-11"><a href="sec-nonlinear-programming.html#cb1722-11" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1722-12"><a href="sec-nonlinear-programming.html#cb1722-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1722-13"><a href="sec-nonlinear-programming.html#cb1722-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1722-14"><a href="sec-nonlinear-programming.html#cb1722-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1722-15"><a href="sec-nonlinear-programming.html#cb1722-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1722-16"><a href="sec-nonlinear-programming.html#cb1722-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1722-17"><a href="sec-nonlinear-programming.html#cb1722-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1722-18"><a href="sec-nonlinear-programming.html#cb1722-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1722-19"><a href="sec-nonlinear-programming.html#cb1722-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="dv">120</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1722-20"><a href="sec-nonlinear-programming.html#cb1722-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rosenbrock"></span>
+<img src="numerical-optimization_files/figure-html/rosenbrock-1.png" alt="香蕉函数图像" width="528" />
+<p class="caption">
+图 14.5: 香蕉函数图像
+</p>
+</div>
+<div class="sourceCode" id="cb1723"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1723-1"><a href="sec-nonlinear-programming.html#cb1723-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">rasterFromXYZ</span>(df, <span class="at">crs =</span> <span class="fu">CRS</span>(<span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>))</span>
+<span id="cb1723-2"><a href="sec-nonlinear-programming.html#cb1723-2" aria-hidden="true" tabindex="-1"></a>rasterVis<span class="sc">::</span><span class="fu">vectorplot</span>(r, <span class="at">par.settings =</span> <span class="fu">RdBuTheme</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb1724"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1724-1"><a href="sec-nonlinear-programming.html#cb1724-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 梯度函数</span></span>
+<span id="cb1724-2"><a href="sec-nonlinear-programming.html#cb1724-2" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1724-3"><a href="sec-nonlinear-programming.html#cb1724-3" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>])) </span>
+<span id="cb1724-4"><a href="sec-nonlinear-programming.html#cb1724-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1724-5"><a href="sec-nonlinear-programming.html#cb1724-5" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="dv">1</span>), <span class="at">fn =</span> fn, <span class="at">gr =</span> gr, <span class="at">method =</span> <span class="st">&quot;BFGS&quot;</span>)</span></code></pre></div>
+<pre><code>## $par
+## [1] 1 1
+## 
+## $value
+## [1] 9.595012e-18
+## 
+## $counts
+## function gradient 
+##      110       43 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<div class="sourceCode" id="cb1726"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1726-1"><a href="sec-nonlinear-programming.html#cb1726-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1726-2"><a href="sec-nonlinear-programming.html#cb1726-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr),</span>
+<span id="cb1726-3"><a href="sec-nonlinear-programming.html#cb1726-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">ud =</span> <span class="dv">3</span>, <span class="at">nobj =</span> 2L)</span>
+<span id="cb1726-4"><a href="sec-nonlinear-programming.html#cb1726-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1726-5"><a href="sec-nonlinear-programming.html#cb1726-5" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.lbfgs&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="dv">1</span>))</span>
+<span id="cb1726-6"><a href="sec-nonlinear-programming.html#cb1726-6" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 1.364878e-17</code></pre>
+<div class="sourceCode" id="cb1728"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1728-1"><a href="sec-nonlinear-programming.html#cb1728-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1] 1 1</code></pre>
+</div>
+<div id="ackley" class="section level4 hasAnchor" number="14.4.2.4">
+<h4><span class="header-section-number">14.4.2.4</span> Ackley 函数<a href="sec-nonlinear-programming.html#ackley" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Ackley 函数是一个非凸函数，有大量局部极小值点，获取全局极小值点是一个比较有挑战的事。它的 <span class="math inline">\(n\)</span> 维形式如下： <span class="math display">\[f(\mathbf{x}) = - a \mathrm{e}^{-b\sqrt{\frac{1}{n}\sum_{i=1}^{n}x_{i}^{2}}} - \mathrm{e}^{\frac{1}{n}\sum_{i=1}^{n}\cos(cx_i)} + a + \mathrm{e}\]</span> 其中，<span class="math inline">\(a = 20, b = 0.2, c = 2\pi\)</span>，对 <span class="math inline">\(\forall i = 1,2,\cdots, n\)</span>，<span class="math inline">\(x_i \in [-10, 10]\)</span>，<span class="math inline">\(f(\mathbf{x})\)</span> 在 <span class="math inline">\(\mathbf{x}^{\star} = (0,0,\cdot,0)\)</span> 取得全局最小值 <span class="math inline">\(f(\mathbf{x}^{\star}) = 0\)</span>，二维图像如图 <a href="sec-nonlinear-programming.html#fig:ackley">14.6</a>。</p>
+<div class="sourceCode" id="cb1730"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1730-1"><a href="sec-nonlinear-programming.html#cb1730-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">a =</span> <span class="dv">20</span>, <span class="at">b =</span> <span class="fl">0.2</span>, <span class="at">c =</span> <span class="dv">2</span> <span class="sc">*</span> pi) {</span>
+<span id="cb1730-2"><a href="sec-nonlinear-programming.html#cb1730-2" aria-hidden="true" tabindex="-1"></a>  mean1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1730-3"><a href="sec-nonlinear-programming.html#cb1730-3" aria-hidden="true" tabindex="-1"></a>  mean2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">cos</span>(c <span class="sc">*</span> x))</span>
+<span id="cb1730-4"><a href="sec-nonlinear-programming.html#cb1730-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span>a <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>b <span class="sc">*</span> <span class="fu">sqrt</span>(mean1)) <span class="sc">-</span> <span class="fu">exp</span>(mean2) <span class="sc">+</span> a <span class="sc">+</span> <span class="fu">exp</span>(<span class="dv">1</span>)</span>
+<span id="cb1730-5"><a href="sec-nonlinear-programming.html#cb1730-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1730-6"><a href="sec-nonlinear-programming.html#cb1730-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1730-7"><a href="sec-nonlinear-programming.html#cb1730-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1730-8"><a href="sec-nonlinear-programming.html#cb1730-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">201</span>),</span>
+<span id="cb1730-9"><a href="sec-nonlinear-programming.html#cb1730-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">201</span>)</span>
+<span id="cb1730-10"><a href="sec-nonlinear-programming.html#cb1730-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1730-11"><a href="sec-nonlinear-programming.html#cb1730-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1730-12"><a href="sec-nonlinear-programming.html#cb1730-12" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1730-13"><a href="sec-nonlinear-programming.html#cb1730-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1730-14"><a href="sec-nonlinear-programming.html#cb1730-14" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1730-15"><a href="sec-nonlinear-programming.html#cb1730-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1730-16"><a href="sec-nonlinear-programming.html#cb1730-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1730-17"><a href="sec-nonlinear-programming.html#cb1730-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1730-18"><a href="sec-nonlinear-programming.html#cb1730-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1730-19"><a href="sec-nonlinear-programming.html#cb1730-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1730-20"><a href="sec-nonlinear-programming.html#cb1730-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1730-21"><a href="sec-nonlinear-programming.html#cb1730-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1730-22"><a href="sec-nonlinear-programming.html#cb1730-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="dv">120</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1730-23"><a href="sec-nonlinear-programming.html#cb1730-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ackley"></span>
+<img src="numerical-optimization_files/figure-html/ackley-1.png" alt="二维 Ackley 函数图像" width="528" />
+<p class="caption">
+图 14.6: 二维 Ackley 函数图像
+</p>
+</div>
+<p>以 10 维的 Ackley 函数为例，先试一下普通的局部优化算法 — Nelder–Mead 算法，选择初值 <span class="math inline">\((2,2,\cdots,2)\)</span> ，看下效果，再与全局优化算法比较。</p>
+<div class="sourceCode" id="cb1731"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1731-1"><a href="sec-nonlinear-programming.html#cb1731-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1731-2"><a href="sec-nonlinear-programming.html#cb1731-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(fn, <span class="at">n =</span> 10L),</span>
+<span id="cb1731-3"><a href="sec-nonlinear-programming.html#cb1731-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">10</span>, <span class="at">ud =</span> <span class="dv">10</span>, <span class="at">nobj =</span> 10L)</span>
+<span id="cb1731-4"><a href="sec-nonlinear-programming.html#cb1731-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1731-5"><a href="sec-nonlinear-programming.html#cb1731-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1731-6"><a href="sec-nonlinear-programming.html#cb1731-6" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.neldermead&quot;</span>, <span class="at">start =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">10</span>))</span>
+<span id="cb1731-7"><a href="sec-nonlinear-programming.html#cb1731-7" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2</code></pre>
+<div class="sourceCode" id="cb1733"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1733-1"><a href="sec-nonlinear-programming.html#cb1733-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 6.593599</code></pre>
+<p>可以说完全没有优化效果，已经陷入局部极小值。根据<a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#global-optimization">nloptr 全局优化算法</a>的介绍，这里采用 directL 算法，因为是全局优化，不用选择初值。</p>
+<div class="sourceCode" id="cb1735"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1735-1"><a href="sec-nonlinear-programming.html#cb1735-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 调全局优化器</span></span>
+<span id="cb1735-2"><a href="sec-nonlinear-programming.html#cb1735-2" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.directL&quot;</span>)</span>
+<span id="cb1735-3"><a href="sec-nonlinear-programming.html#cb1735-3" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>##  [1] 0 0 0 0 0 0 0 0 0 0</code></pre>
+<div class="sourceCode" id="cb1737"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1737-1"><a href="sec-nonlinear-programming.html#cb1737-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 4.440892e-16</code></pre>
+<div class="sourceCode" id="cb1739"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1739-1"><a href="sec-nonlinear-programming.html#cb1739-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 6.593599</code></pre>
+<div class="sourceCode" id="cb1741"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1741-1"><a href="sec-nonlinear-programming.html#cb1741-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">10</span>))</span></code></pre></div>
+<pre><code>## [1] 6.593599</code></pre>
+</div>
+<div id="schaffer" class="section level4 hasAnchor" number="14.4.2.5">
+<h4><span class="header-section-number">14.4.2.5</span> Schaffer 函数<a href="sec-nonlinear-programming.html#schaffer" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[
+f(x_1,x_2) = 0.5 + \frac{\sin^2(x_1^2 - x_2^2) - 0.5}{ [1 + 0.001(x_1^2 + x_2^2)]^2}
+\]</span></p>
+<p>在 <span class="math inline">\(\mathbf{x}^\star = (0,0)\)</span> 处取得全局最小值 <span class="math inline">\(f(\mathbf{x}^\star) = 0\)</span></p>
+<div class="sourceCode" id="cb1743"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1743-1"><a href="sec-nonlinear-programming.html#cb1743-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1743-2"><a href="sec-nonlinear-programming.html#cb1743-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.5</span> <span class="sc">+</span> ((<span class="fu">sin</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.001</span><span class="sc">*</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1743-3"><a href="sec-nonlinear-programming.html#cb1743-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1743-4"><a href="sec-nonlinear-programming.html#cb1743-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1743-5"><a href="sec-nonlinear-programming.html#cb1743-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1743-6"><a href="sec-nonlinear-programming.html#cb1743-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>, <span class="at">length =</span> <span class="dv">201</span>),</span>
+<span id="cb1743-7"><a href="sec-nonlinear-programming.html#cb1743-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>, <span class="at">length =</span> <span class="dv">201</span>)</span>
+<span id="cb1743-8"><a href="sec-nonlinear-programming.html#cb1743-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1743-9"><a href="sec-nonlinear-programming.html#cb1743-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1743-10"><a href="sec-nonlinear-programming.html#cb1743-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1743-11"><a href="sec-nonlinear-programming.html#cb1743-11" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1743-12"><a href="sec-nonlinear-programming.html#cb1743-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1743-13"><a href="sec-nonlinear-programming.html#cb1743-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1743-14"><a href="sec-nonlinear-programming.html#cb1743-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1743-15"><a href="sec-nonlinear-programming.html#cb1743-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1743-16"><a href="sec-nonlinear-programming.html#cb1743-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1743-17"><a href="sec-nonlinear-programming.html#cb1743-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1743-18"><a href="sec-nonlinear-programming.html#cb1743-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1743-19"><a href="sec-nonlinear-programming.html#cb1743-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="dv">120</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1743-20"><a href="sec-nonlinear-programming.html#cb1743-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:schaffer-01"></span>
+<img src="numerical-optimization_files/figure-html/schaffer-01-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">
+图 14.7: Schaffer 函数
+</p>
+</div>
+<div class="sourceCode" id="cb1744"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1744-1"><a href="sec-nonlinear-programming.html#cb1744-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1744-2"><a href="sec-nonlinear-programming.html#cb1744-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1744-3"><a href="sec-nonlinear-programming.html#cb1744-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1744-4"><a href="sec-nonlinear-programming.html#cb1744-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1744-5"><a href="sec-nonlinear-programming.html#cb1744-5" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1744-6"><a href="sec-nonlinear-programming.html#cb1744-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1744-7"><a href="sec-nonlinear-programming.html#cb1744-7" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1744-8"><a href="sec-nonlinear-programming.html#cb1744-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1744-9"><a href="sec-nonlinear-programming.html#cb1744-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1744-10"><a href="sec-nonlinear-programming.html#cb1744-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1744-11"><a href="sec-nonlinear-programming.html#cb1744-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1744-12"><a href="sec-nonlinear-programming.html#cb1744-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1744-13"><a href="sec-nonlinear-programming.html#cb1744-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1744-14"><a href="sec-nonlinear-programming.html#cb1744-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1744-15"><a href="sec-nonlinear-programming.html#cb1744-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="dv">120</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1744-16"><a href="sec-nonlinear-programming.html#cb1744-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:schaffer-02"></span>
+<img src="numerical-optimization_files/figure-html/schaffer-02-1.png" alt="Schaffer 函数" width="528" />
+<p class="caption">
+图 14.8: Schaffer 函数
+</p>
+</div>
+</div>
+<div id="holder" class="section level4 hasAnchor" number="14.4.2.6">
+<h4><span class="header-section-number">14.4.2.6</span> Hölder 函数<a href="sec-nonlinear-programming.html#holder" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Hölder 桌面函数</p>
+<p><span class="math display">\[
+f(x_1,x_2) = - | \sin(x_1)\cos(x_2)\exp\big(| 1 - \frac{\sqrt{x_1^2 + x_2^2}}{\pi}|\big) |
+\]</span></p>
+<p>在 <span class="math inline">\((8.05502, 9.66459)\)</span>、<span class="math inline">\((-8.05502, 9.66459)\)</span>、<span class="math inline">\((8.05502, -9.66459)\)</span>、<span class="math inline">\((-8.05502, -9.66459)\)</span> 同时取得最小值 <span class="math inline">\(-19.2085\)</span>。</p>
+
+<div class="sourceCode" id="cb1745"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1745-1"><a href="sec-nonlinear-programming.html#cb1745-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1745-2"><a href="sec-nonlinear-programming.html#cb1745-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">abs</span>(<span class="fu">sin</span>(x[<span class="dv">1</span>]) <span class="sc">*</span> <span class="fu">cos</span>(x[<span class="dv">2</span>])) <span class="sc">*</span> <span class="fu">exp</span>(<span class="fu">abs</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">sqrt</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> pi))</span>
+<span id="cb1745-3"><a href="sec-nonlinear-programming.html#cb1745-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1745-4"><a href="sec-nonlinear-programming.html#cb1745-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1745-5"><a href="sec-nonlinear-programming.html#cb1745-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1745-6"><a href="sec-nonlinear-programming.html#cb1745-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1745-7"><a href="sec-nonlinear-programming.html#cb1745-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1745-8"><a href="sec-nonlinear-programming.html#cb1745-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1745-9"><a href="sec-nonlinear-programming.html#cb1745-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1745-10"><a href="sec-nonlinear-programming.html#cb1745-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1745-11"><a href="sec-nonlinear-programming.html#cb1745-11" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1745-12"><a href="sec-nonlinear-programming.html#cb1745-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1745-13"><a href="sec-nonlinear-programming.html#cb1745-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1745-14"><a href="sec-nonlinear-programming.html#cb1745-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1745-15"><a href="sec-nonlinear-programming.html#cb1745-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1745-16"><a href="sec-nonlinear-programming.html#cb1745-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1745-17"><a href="sec-nonlinear-programming.html#cb1745-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1745-18"><a href="sec-nonlinear-programming.html#cb1745-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1745-19"><a href="sec-nonlinear-programming.html#cb1745-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="dv">120</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">60</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1745-20"><a href="sec-nonlinear-programming.html#cb1745-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:holder"></span>
+<img src="numerical-optimization_files/figure-html/holder-1.png" alt="Hölder 函数" width="528" />
+<p class="caption">
+图 14.9: Hölder 函数
+</p>
+</div>
+</div>
+<div id="trid" class="section level4 hasAnchor" number="14.4.2.7">
+<h4><span class="header-section-number">14.4.2.7</span> Trid 函数<a href="sec-nonlinear-programming.html#trid" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- 碗状函数 -->
+<p><span class="math inline">\(n \geq 2\)</span> 维 Trid 函数</p>
+<p><span class="math display">\[
+f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
+\]</span> <span class="math inline">\(\forall i = 1,2,\cdots, n\)</span>，<span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\(x_i = i(n+1-i)\)</span> 处取得全局极小值 <span class="math inline">\(f(\mathbf{x}^\star)=-n(n+4)(n-1)/6\)</span>，取值区间 <span class="math inline">\(x \in [-n^2, n^2], \forall i = 1,2,\cdots,n\)</span></p>
+<div class="sourceCode" id="cb1746"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1746-1"><a href="sec-nonlinear-programming.html#cb1746-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1746-2"><a href="sec-nonlinear-programming.html#cb1746-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb1746-3"><a href="sec-nonlinear-programming.html#cb1746-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>((x <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> <span class="fu">sum</span>(x[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> x[<span class="sc">-</span>n])</span>
+<span id="cb1746-4"><a href="sec-nonlinear-programming.html#cb1746-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1746-5"><a href="sec-nonlinear-programming.html#cb1746-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1746-6"><a href="sec-nonlinear-programming.html#cb1746-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb1746-7"><a href="sec-nonlinear-programming.html#cb1746-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length =</span> <span class="dv">101</span>),</span>
+<span id="cb1746-8"><a href="sec-nonlinear-programming.html#cb1746-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length =</span> <span class="dv">101</span>)</span>
+<span id="cb1746-9"><a href="sec-nonlinear-programming.html#cb1746-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1746-10"><a href="sec-nonlinear-programming.html#cb1746-10" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>fnxy <span class="ot">=</span> <span class="fu">apply</span>(df, <span class="dv">1</span>, fn)</span>
+<span id="cb1746-11"><a href="sec-nonlinear-programming.html#cb1746-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1746-12"><a href="sec-nonlinear-programming.html#cb1746-12" aria-hidden="true" tabindex="-1"></a><span class="fu">wireframe</span>(</span>
+<span id="cb1746-13"><a href="sec-nonlinear-programming.html#cb1746-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df, fnxy <span class="sc">~</span> x <span class="sc">*</span> y,</span>
+<span id="cb1746-14"><a href="sec-nonlinear-programming.html#cb1746-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="cn">TRUE</span>, <span class="at">drape =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1746-15"><a href="sec-nonlinear-programming.html#cb1746-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), </span>
+<span id="cb1746-16"><a href="sec-nonlinear-programming.html#cb1746-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), </span>
+<span id="cb1746-17"><a href="sec-nonlinear-programming.html#cb1746-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">zlab =</span> <span class="fu">list</span>(<span class="fu">expression</span>(<span class="fu">italic</span>(f) <span class="sc">~</span> <span class="fu">group</span>(<span class="st">&quot;(&quot;</span>, <span class="fu">list</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]), <span class="st">&quot;)&quot;</span>)), <span class="at">rot =</span> <span class="dv">90</span>),</span>
+<span id="cb1746-18"><a href="sec-nonlinear-programming.html#cb1746-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">scales =</span> <span class="fu">list</span>(<span class="at">arrows =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb1746-19"><a href="sec-nonlinear-programming.html#cb1746-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">par.settings =</span> <span class="fu">list</span>(<span class="at">axis.line =</span> <span class="fu">list</span>(<span class="at">col =</span> <span class="st">&quot;transparent&quot;</span>)),</span>
+<span id="cb1746-20"><a href="sec-nonlinear-programming.html#cb1746-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">screen =</span> <span class="fu">list</span>(<span class="at">z =</span> <span class="sc">-</span><span class="dv">60</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">70</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
+<span id="cb1746-21"><a href="sec-nonlinear-programming.html#cb1746-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:trid"></span>
+<img src="numerical-optimization_files/figure-html/trid-1.png" alt="Trid 函数" width="528" />
+<p class="caption">
+图 14.10: Trid 函数
+</p>
+</div>
+</div>
+</div>
+<div id="sec-nonlinear-constrained-optimization" class="section level3 hasAnchor" number="14.4.3">
+<h3><span class="header-section-number">14.4.3</span> 多元非线性约束优化<a href="sec-nonlinear-programming.html#sec-nonlinear-constrained-optimization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="nonlinear-strictly-inequality-constraints" class="section level4 hasAnchor" number="14.4.3.1">
+<h4><span class="header-section-number">14.4.3.1</span> 非线性严格不等式约束<a href="sec-nonlinear-programming.html#nonlinear-strictly-inequality-constraints" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>第一个例子，目标函数是非线性的，约束条件也是非线性的，非线性不等式约束不包含等号。</p>
+<span class="math display">\[\begin{equation*}
+\begin{array}{l}
+  \min_x \quad (x_1 + 3x_2 + x_3)^2 + 4(x_1 - x_2)^2 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     x_1 + x_2 + x_3 = 1 \\
+     6 x_2 + 4 x_3 - x_1^3 &gt; 3 \\
+     x_1, x_2, x_3 &gt; 0
+    \end{array} \right.
+\end{array}
+\end{equation*}\]</span>
+<div class="sourceCode" id="cb1747"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1747-1"><a href="sec-nonlinear-programming.html#cb1747-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1747-2"><a href="sec-nonlinear-programming.html#cb1747-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1747-3"><a href="sec-nonlinear-programming.html#cb1747-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1747-4"><a href="sec-nonlinear-programming.html#cb1747-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1747-5"><a href="sec-nonlinear-programming.html#cb1747-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1747-6"><a href="sec-nonlinear-programming.html#cb1747-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]), <span class="co"># 对 x[1] 求偏导</span></span>
+<span id="cb1747-7"><a href="sec-nonlinear-programming.html#cb1747-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]), <span class="co"># 对 x[2] 求偏导</span></span>
+<span id="cb1747-8"><a href="sec-nonlinear-programming.html#cb1747-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="co"># 对 x[3] 求偏导</span></span>
+<span id="cb1747-9"><a href="sec-nonlinear-programming.html#cb1747-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1747-10"><a href="sec-nonlinear-programming.html#cb1747-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1747-11"><a href="sec-nonlinear-programming.html#cb1747-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束</span></span>
+<span id="cb1747-12"><a href="sec-nonlinear-programming.html#cb1747-12" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1747-13"><a href="sec-nonlinear-programming.html#cb1747-13" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>] <span class="sc">-</span> <span class="dv">1</span> </span>
+<span id="cb1747-14"><a href="sec-nonlinear-programming.html#cb1747-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1747-15"><a href="sec-nonlinear-programming.html#cb1747-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 等式约束的雅可比矩阵</span></span>
+<span id="cb1747-16"><a href="sec-nonlinear-programming.html#cb1747-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 这里只有一个等式约束，所以雅可比矩阵行数为 1</span></span>
+<span id="cb1747-17"><a href="sec-nonlinear-programming.html#cb1747-17" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1747-18"><a href="sec-nonlinear-programming.html#cb1747-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1747-19"><a href="sec-nonlinear-programming.html#cb1747-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1747-20"><a href="sec-nonlinear-programming.html#cb1747-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束</span></span>
+<span id="cb1747-21"><a href="sec-nonlinear-programming.html#cb1747-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 要求必须是严格不等式，不能带等号，方向是 x &gt; 0 </span></span>
+<span id="cb1747-22"><a href="sec-nonlinear-programming.html#cb1747-22" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1747-23"><a href="sec-nonlinear-programming.html#cb1747-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> <span class="dv">3</span>, x[<span class="dv">1</span>], x[<span class="dv">2</span>], x[<span class="dv">3</span>])</span>
+<span id="cb1747-24"><a href="sec-nonlinear-programming.html#cb1747-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1747-25"><a href="sec-nonlinear-programming.html#cb1747-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 不等式约束的雅可比矩阵</span></span>
+<span id="cb1747-26"><a href="sec-nonlinear-programming.html#cb1747-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 其实是有 4 个不等式约束，3 个目标变量约束，雅可比矩阵行数是 4</span></span>
+<span id="cb1747-27"><a href="sec-nonlinear-programming.html#cb1747-27" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1747-28"><a href="sec-nonlinear-programming.html#cb1747-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb1747-29"><a href="sec-nonlinear-programming.html#cb1747-29" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>,</span>
+<span id="cb1747-30"><a href="sec-nonlinear-programming.html#cb1747-30" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb1747-31"><a href="sec-nonlinear-programming.html#cb1747-31" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb1747-32"><a href="sec-nonlinear-programming.html#cb1747-32" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span></span>
+<span id="cb1747-33"><a href="sec-nonlinear-programming.html#cb1747-33" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1747-34"><a href="sec-nonlinear-programming.html#cb1747-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>调用 <strong>alabama</strong> 包的求解器</p>
+<div class="sourceCode" id="cb1748"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1748-1"><a href="sec-nonlinear-programming.html#cb1748-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb1748-2"><a href="sec-nonlinear-programming.html#cb1748-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1748-3"><a href="sec-nonlinear-programming.html#cb1748-3" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
+<span id="cb1748-4"><a href="sec-nonlinear-programming.html#cb1748-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 求目标函数的极小值</span></span>
+<span id="cb1748-5"><a href="sec-nonlinear-programming.html#cb1748-5" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> alabama<span class="sc">::</span><span class="fu">constrOptim.nl</span>(</span>
+<span id="cb1748-6"><a href="sec-nonlinear-programming.html#cb1748-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">par =</span> p0,</span>
+<span id="cb1748-7"><a href="sec-nonlinear-programming.html#cb1748-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 目标函数</span></span>
+<span id="cb1748-8"><a href="sec-nonlinear-programming.html#cb1748-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> fn,</span>
+<span id="cb1748-9"><a href="sec-nonlinear-programming.html#cb1748-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">gr =</span> gr,</span>
+<span id="cb1748-10"><a href="sec-nonlinear-programming.html#cb1748-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 等式约束</span></span>
+<span id="cb1748-11"><a href="sec-nonlinear-programming.html#cb1748-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq =</span> heq,</span>
+<span id="cb1748-12"><a href="sec-nonlinear-programming.html#cb1748-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">heq.jac =</span> heq.jac,</span>
+<span id="cb1748-13"><a href="sec-nonlinear-programming.html#cb1748-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不等式约束</span></span>
+<span id="cb1748-14"><a href="sec-nonlinear-programming.html#cb1748-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin =</span> hin,</span>
+<span id="cb1748-15"><a href="sec-nonlinear-programming.html#cb1748-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">hin.jac =</span> hin.jac,</span>
+<span id="cb1748-16"><a href="sec-nonlinear-programming.html#cb1748-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 不显示迭代过程</span></span>
+<span id="cb1748-17"><a href="sec-nonlinear-programming.html#cb1748-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">control.outer =</span> <span class="fu">list</span>(<span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1748-18"><a href="sec-nonlinear-programming.html#cb1748-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1748-19"><a href="sec-nonlinear-programming.html#cb1748-19" aria-hidden="true" tabindex="-1"></a>ans</span></code></pre></div>
+<pre><code>## $par
+## [1] 7.390292e-04 4.497160e-12 9.992610e-01
+## 
+## $value
+## [1] 1.000002
+## 
+## $counts
+## function gradient 
+##     1230      163 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL
+## 
+## $hessian
+##           [,1]      [,2]      [,3]
+## [1,] 120517098 120517087 120517091
+## [2,] 120517087 120517115 120517095
+## [3,] 120517091 120517095 120517091
+## 
+## $outer.iterations
+## [1] 13
+## 
+## $lambda
+## [1] 4.481599
+## 
+## $sigma
+## [1] 120517089
+## 
+## $barrier.value
+## [1] 0.003472071
+## 
+## $K
+## [1] 4.269112e-08</code></pre>
+<p>ans 是 <code>constrOptim.nl()</code> 返回的一个 list， convergence = 0 表示迭代成功收敛，value 表示目标函数在迭代终止时的取直，par 表示满足约束条件，成功收敛的情况下，目标函数的参数值，counts 表示迭代过程中目标函数及其梯度计算的次数。</p>
+<div class="sourceCode" id="cb1750"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1750-1"><a href="sec-nonlinear-programming.html#cb1750-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 不提供梯度函数，照样可以求解</span></span>
+<span id="cb1750-2"><a href="sec-nonlinear-programming.html#cb1750-2" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> alabama<span class="sc">::</span><span class="fu">constrOptim.nl</span>(<span class="at">par =</span> p0, <span class="at">fn =</span> fn, <span class="at">heq =</span> heq, <span class="at">hin =</span> hin)</span></code></pre></div>
+<div class="rmdtip">
+<p>等式和不等式约束的雅可比矩阵必须以 matrix 数据类型存储，而不能以 vector 类型存储。要注意和后面 ROI 包的调用形式区别。</p>
+</div>
+<p>实际上，可以用 ROI 调用 alabama 求解器的方式，这种方式可以简化目标函数梯度和约束条件的表示</p>
+<div class="sourceCode" id="cb1751"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1751-1"><a href="sec-nonlinear-programming.html#cb1751-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1751-2"><a href="sec-nonlinear-programming.html#cb1751-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1751-3"><a href="sec-nonlinear-programming.html#cb1751-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1751-4"><a href="sec-nonlinear-programming.html#cb1751-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1751-5"><a href="sec-nonlinear-programming.html#cb1751-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1751-6"><a href="sec-nonlinear-programming.html#cb1751-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">+</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
+<span id="cb1751-7"><a href="sec-nonlinear-programming.html#cb1751-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">6</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]) <span class="sc">-</span> <span class="dv">8</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]),</span>
+<span id="cb1751-8"><a href="sec-nonlinear-programming.html#cb1751-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>])</span>
+<span id="cb1751-9"><a href="sec-nonlinear-programming.html#cb1751-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1751-10"><a href="sec-nonlinear-programming.html#cb1751-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1751-11"><a href="sec-nonlinear-programming.html#cb1751-11" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1751-12"><a href="sec-nonlinear-programming.html#cb1751-12" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">+</span> x[<span class="dv">3</span>]</span>
+<span id="cb1751-13"><a href="sec-nonlinear-programming.html#cb1751-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1751-14"><a href="sec-nonlinear-programming.html#cb1751-14" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1751-15"><a href="sec-nonlinear-programming.html#cb1751-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb1751-16"><a href="sec-nonlinear-programming.html#cb1751-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1751-17"><a href="sec-nonlinear-programming.html#cb1751-17" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1751-18"><a href="sec-nonlinear-programming.html#cb1751-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span> <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">-</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb1751-19"><a href="sec-nonlinear-programming.html#cb1751-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1751-20"><a href="sec-nonlinear-programming.html#cb1751-20" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1751-21"><a href="sec-nonlinear-programming.html#cb1751-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span> <span class="sc">*</span> x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">4</span>)</span>
+<span id="cb1751-22"><a href="sec-nonlinear-programming.html#cb1751-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>通过 ROI 调用 alabama 求解器</p>
+<div class="sourceCode" id="cb1752"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1752-1"><a href="sec-nonlinear-programming.html#cb1752-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2020</span>)</span>
+<span id="cb1752-2"><a href="sec-nonlinear-programming.html#cb1752-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1752-3"><a href="sec-nonlinear-programming.html#cb1752-3" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">3</span>)</span>
+<span id="cb1752-4"><a href="sec-nonlinear-programming.html#cb1752-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1752-5"><a href="sec-nonlinear-programming.html#cb1752-5" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1752-6"><a href="sec-nonlinear-programming.html#cb1752-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 4 个目标变量</span></span>
+<span id="cb1752-7"><a href="sec-nonlinear-programming.html#cb1752-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1752-8"><a href="sec-nonlinear-programming.html#cb1752-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq, <span class="at">hin =</span> hin),</span>
+<span id="cb1752-9"><a href="sec-nonlinear-programming.html#cb1752-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;==&quot;</span>, <span class="st">&quot;&gt;&quot;</span>),</span>
+<span id="cb1752-10"><a href="sec-nonlinear-programming.html#cb1752-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>),</span>
+<span id="cb1752-11"><a href="sec-nonlinear-programming.html#cb1752-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 等式和不等式约束的雅可比</span></span>
+<span id="cb1752-12"><a href="sec-nonlinear-programming.html#cb1752-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac, <span class="at">hin.jac =</span> hin.jac)</span>
+<span id="cb1752-13"><a href="sec-nonlinear-programming.html#cb1752-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1752-14"><a href="sec-nonlinear-programming.html#cb1752-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="sc">+</span><span class="cn">Inf</span>, <span class="at">nobj =</span> 3L),</span>
+<span id="cb1752-15"><a href="sec-nonlinear-programming.html#cb1752-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1752-16"><a href="sec-nonlinear-programming.html#cb1752-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1752-17"><a href="sec-nonlinear-programming.html#cb1752-17" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;alabama&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1752-18"><a href="sec-nonlinear-programming.html#cb1752-18" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1] 1.674812e-06 9.994336e-08 9.999982e-01</code></pre>
+<div class="sourceCode" id="cb1754"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1754-1"><a href="sec-nonlinear-programming.html#cb1754-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="nonlinear-mixed-integer-constrained" class="section level4 hasAnchor" number="14.4.3.2">
+<h4><span class="header-section-number">14.4.3.2</span> 非线性混合整数约束<a href="sec-nonlinear-programming.html#nonlinear-mixed-integer-constrained" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<span class="math display">\[\begin{equation*}
+\begin{array}{l}
+  \max_x \quad 1.5(x_1 - \sin(x_1 - x_2))^2 + 0.5x_2^2 + x_3^2 - x_1 x_2 - 2x_1 + x_2 x_3 \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     -20 &lt; x_1 &lt; 20 \\
+     -20 &lt; x_2 &lt; 20 \\
+     -10 &lt; x_3 &lt; 10 \\
+     x_1, x_2 \in \mathbb{R}, \quad x_3 \in \mathbb{Z}
+    \end{array} \right.
+\end{array}
+\end{equation*}\]</span>
+<div class="sourceCode" id="cb1756"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1756-1"><a href="sec-nonlinear-programming.html#cb1756-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1756-2"><a href="sec-nonlinear-programming.html#cb1756-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.5</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1756-3"><a href="sec-nonlinear-programming.html#cb1756-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span>x[<span class="dv">1</span>] <span class="sc">*</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>] <span class="sc">*</span> x[<span class="dv">3</span>]</span>
+<span id="cb1756-4"><a href="sec-nonlinear-programming.html#cb1756-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1756-5"><a href="sec-nonlinear-programming.html#cb1756-5" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1756-6"><a href="sec-nonlinear-programming.html#cb1756-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1756-7"><a href="sec-nonlinear-programming.html#cb1756-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">2</span>,</span>
+<span id="cb1756-8"><a href="sec-nonlinear-programming.html#cb1756-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">sin</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>])) <span class="sc">*</span> <span class="fu">cos</span>(x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">2</span>]) <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">3</span>],</span>
+<span id="cb1756-9"><a href="sec-nonlinear-programming.html#cb1756-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">3</span>] <span class="sc">+</span> x[<span class="dv">2</span>]</span>
+<span id="cb1756-10"><a href="sec-nonlinear-programming.html#cb1756-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1756-11"><a href="sec-nonlinear-programming.html#cb1756-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>目前 ROI 还解不了</p>
+<div class="sourceCode" id="cb1757"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1757-1"><a href="sec-nonlinear-programming.html#cb1757-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1757-2"><a href="sec-nonlinear-programming.html#cb1757-2" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.1</span>, <span class="fl">5.1</span>, <span class="dv">5</span>)</span>
+<span id="cb1757-3"><a href="sec-nonlinear-programming.html#cb1757-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1757-4"><a href="sec-nonlinear-programming.html#cb1757-4" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1757-5"><a href="sec-nonlinear-programming.html#cb1757-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 3L, <span class="at">G =</span> gr), <span class="co"># 3 个目标变量</span></span>
+<span id="cb1757-6"><a href="sec-nonlinear-programming.html#cb1757-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">types =</span> <span class="fu">c</span>(<span class="st">&quot;C&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;I&quot;</span>), <span class="co"># 目标变量的类型</span></span>
+<span id="cb1757-7"><a href="sec-nonlinear-programming.html#cb1757-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">lb =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">20</span>, <span class="sc">-</span><span class="dv">10</span>), <span class="at">ub =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">10</span>), <span class="at">nobj =</span> 3L),</span>
+<span id="cb1757-8"><a href="sec-nonlinear-programming.html#cb1757-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1757-9"><a href="sec-nonlinear-programming.html#cb1757-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1757-10"><a href="sec-nonlinear-programming.html#cb1757-10" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;auto&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1757-11"><a href="sec-nonlinear-programming.html#cb1757-11" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<p>目标函数在 <span class="math inline">\((4.49712, 9.147501, -4)\)</span> 取得最小值 -86.72165</p>
+<div class="sourceCode" id="cb1758"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1758-1"><a href="sec-nonlinear-programming.html#cb1758-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">4.49712</span>, <span class="fl">9.147501</span>, <span class="sc">-</span><span class="dv">4</span>))</span></code></pre></div>
+<pre><code>## [1] -86.72165</code></pre>
+</div>
+<div id="complex-object-function" class="section level4 hasAnchor" number="14.4.3.3">
+<h4><span class="header-section-number">14.4.3.3</span> 含复杂目标函数<a href="sec-nonlinear-programming.html#complex-object-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>下面这个目标函数比较复杂，约束条件也是非线性的</p>
+<span class="math display">\[\begin{equation*}
+\begin{array}{l}
+  \max_x \quad \frac{(\sin(2\pi x_1))^3 \sin(2\pi x_2)}{x_1^3 (x_1 + x_2)} \\
+    s.t.\left\{ 
+    \begin{array}{l}
+     x_1^2 - x_2 + 1 \leq 0 \\
+     1 - x_1 + (x_2 - 4)^2 \geq 0 \\
+     0 \leq x_1, x_2 \leq 10
+    \end{array} \right.
+\end{array}
+\end{equation*}\]</span>
+<div class="sourceCode" id="cb1760"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1760-1"><a href="sec-nonlinear-programming.html#cb1760-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数</span></span>
+<span id="cb1760-2"><a href="sec-nonlinear-programming.html#cb1760-2" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">1</span>]))<span class="sc">^</span><span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x[<span class="dv">2</span>])<span class="sc">/</span>(x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">3</span><span class="sc">*</span>(x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>]))</span>
+<span id="cb1760-3"><a href="sec-nonlinear-programming.html#cb1760-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 目标函数的梯度</span></span>
+<span id="cb1760-4"><a href="sec-nonlinear-programming.html#cb1760-4" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1760-5"><a href="sec-nonlinear-programming.html#cb1760-5" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1760-6"><a href="sec-nonlinear-programming.html#cb1760-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1760-7"><a href="sec-nonlinear-programming.html#cb1760-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1760-8"><a href="sec-nonlinear-programming.html#cb1760-8" aria-hidden="true" tabindex="-1"></a>hin <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1760-9"><a href="sec-nonlinear-programming.html#cb1760-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb1760-10"><a href="sec-nonlinear-programming.html#cb1760-10" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb1760-11"><a href="sec-nonlinear-programming.html#cb1760-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="sc">-</span> x[<span class="dv">1</span>] <span class="sc">+</span> (x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">4</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1760-12"><a href="sec-nonlinear-programming.html#cb1760-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1760-13"><a href="sec-nonlinear-programming.html#cb1760-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1760-14"><a href="sec-nonlinear-programming.html#cb1760-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1760-15"><a href="sec-nonlinear-programming.html#cb1760-15" aria-hidden="true" tabindex="-1"></a>hin.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1760-16"><a href="sec-nonlinear-programming.html#cb1760-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb1760-17"><a href="sec-nonlinear-programming.html#cb1760-17" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">1</span>], <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb1760-18"><a href="sec-nonlinear-programming.html#cb1760-18" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="dv">1</span>, <span class="dv">2</span> <span class="sc">*</span> x[<span class="dv">2</span>]</span>
+<span id="cb1760-19"><a href="sec-nonlinear-programming.html#cb1760-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1760-20"><a href="sec-nonlinear-programming.html#cb1760-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb1760-21"><a href="sec-nonlinear-programming.html#cb1760-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1760-22"><a href="sec-nonlinear-programming.html#cb1760-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1760-23"><a href="sec-nonlinear-programming.html#cb1760-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1760-24"><a href="sec-nonlinear-programming.html#cb1760-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始值</span></span>
+<span id="cb1760-25"><a href="sec-nonlinear-programming.html#cb1760-25" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb1760-26"><a href="sec-nonlinear-programming.html#cb1760-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1760-27"><a href="sec-nonlinear-programming.html#cb1760-27" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1760-28"><a href="sec-nonlinear-programming.html#cb1760-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
+<span id="cb1760-29"><a href="sec-nonlinear-programming.html#cb1760-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1760-30"><a href="sec-nonlinear-programming.html#cb1760-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">hin =</span> hin),</span>
+<span id="cb1760-31"><a href="sec-nonlinear-programming.html#cb1760-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;=&quot;</span>, <span class="st">&quot;&lt;=&quot;</span>),</span>
+<span id="cb1760-32"><a href="sec-nonlinear-programming.html#cb1760-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1760-33"><a href="sec-nonlinear-programming.html#cb1760-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 不等式约束的雅可比</span></span>
+<span id="cb1760-34"><a href="sec-nonlinear-programming.html#cb1760-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">hin.jac =</span> hin.jac)</span>
+<span id="cb1760-35"><a href="sec-nonlinear-programming.html#cb1760-35" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1760-36"><a href="sec-nonlinear-programming.html#cb1760-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="dv">0</span>, <span class="at">ud =</span> <span class="dv">10</span>, <span class="at">nobj =</span> 2L),</span>
+<span id="cb1760-37"><a href="sec-nonlinear-programming.html#cb1760-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">TRUE</span> <span class="co"># 求最大</span></span>
+<span id="cb1760-38"><a href="sec-nonlinear-programming.html#cb1760-38" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1760-39"><a href="sec-nonlinear-programming.html#cb1760-39" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> p0)</span>
+<span id="cb1760-40"><a href="sec-nonlinear-programming.html#cb1760-40" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1] 1.227974 4.245367</code></pre>
+<div class="sourceCode" id="cb1762"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1762-1"><a href="sec-nonlinear-programming.html#cb1762-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] 0.09582504</code></pre>
+</div>
+<div id="complex-constrained-function" class="section level4 hasAnchor" number="14.4.3.4">
+<h4><span class="header-section-number">14.4.3.4</span> 含复杂约束条件<a href="sec-nonlinear-programming.html#complex-constrained-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<span class="math display">\[\begin{equation*}
+\begin{array}{l}
+  \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
+         \qquad + \sin(\sin(80\cdot y)) - \sin(10\cdot (x +y)) + \frac{(x^2 + y^2)^{\sin(y)}}{4} \\
+    s.t. \quad \left\{ 
+    \begin{array}{l}
+     x - \big((\cos(y))^x - x\big)^y = 0 \\
+    -50 \leq x_1,x_2 \leq 50
+    \end{array} \right.
+\end{array}
+\end{equation*}\]</span>
+<p>Lingo 代码如下：</p>
+<pre><code>Min = @exp(@sin(50 * x)) + @sin(60 * @exp(y)) + @sin(70 * @sin(x)) 
+      + @sin(@sin(80 * y)) - @sin(10 * (x + y)) + (x^2 + y^2)^@sin(y) / 4;
+
+x - (( @cos(y) )^x - x)^y = 0;
+
+@bnd(-50, x, 50);
+@bnd(-50, y, 50);</code></pre>
+<p>启用全局优化求解器，求解 14 分钟，在 <span class="math inline">\((0.08256372, 24.56510)\)</span> 取得极小值 -2.863497。不启用全局优化器就没法解，Lingo 会报错，找不到最优解，勉强找到一个可行解 <span class="math inline">\((0.06082750, 44.12793)\)</span>，目标值为 -1.29816。</p>
+<div class="sourceCode" id="cb1765"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1765-1"><a href="sec-nonlinear-programming.html#cb1765-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1765-2"><a href="sec-nonlinear-programming.html#cb1765-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">sin</span>(<span class="dv">50</span> <span class="sc">*</span> x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">60</span> <span class="sc">*</span> <span class="fu">exp</span>(x[<span class="dv">2</span>])) <span class="sc">+</span></span>
+<span id="cb1765-3"><a href="sec-nonlinear-programming.html#cb1765-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="dv">70</span> <span class="sc">*</span> <span class="fu">sin</span>(x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="fu">sin</span>(<span class="dv">80</span> <span class="sc">*</span> x[<span class="dv">2</span>])) <span class="sc">-</span></span>
+<span id="cb1765-4"><a href="sec-nonlinear-programming.html#cb1765-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="dv">10</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>])) <span class="sc">+</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="fu">sin</span>(x[<span class="dv">2</span>])) <span class="sc">/</span> <span class="dv">4</span></span>
+<span id="cb1765-5"><a href="sec-nonlinear-programming.html#cb1765-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1765-6"><a href="sec-nonlinear-programming.html#cb1765-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1765-7"><a href="sec-nonlinear-programming.html#cb1765-7" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1765-8"><a href="sec-nonlinear-programming.html#cb1765-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1765-9"><a href="sec-nonlinear-programming.html#cb1765-9" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1765-10"><a href="sec-nonlinear-programming.html#cb1765-10" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">-</span> ( (<span class="fu">cos</span>(x[<span class="dv">2</span>]))<span class="sc">^</span>x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">1</span>] )<span class="sc">^</span>x[<span class="dv">2</span>]</span>
+<span id="cb1765-11"><a href="sec-nonlinear-programming.html#cb1765-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1765-12"><a href="sec-nonlinear-programming.html#cb1765-12" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb1765-13"><a href="sec-nonlinear-programming.html#cb1765-13" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(heq, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
+<span id="cb1765-14"><a href="sec-nonlinear-programming.html#cb1765-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1765-15"><a href="sec-nonlinear-programming.html#cb1765-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1765-16"><a href="sec-nonlinear-programming.html#cb1765-16" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
+<pre><code>## [1] -1.29816</code></pre>
+<div class="sourceCode" id="cb1767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1767-1"><a href="sec-nonlinear-programming.html#cb1767-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<pre><code>## [1] 1.966877</code></pre>
+<div class="sourceCode" id="cb1769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1769-1"><a href="sec-nonlinear-programming.html#cb1769-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
+<pre><code>## [1] 1.923673e-08</code></pre>
+<div class="sourceCode" id="cb1771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1771-1"><a href="sec-nonlinear-programming.html#cb1771-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb1773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1773-1"><a href="sec-nonlinear-programming.html#cb1773-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
+<span id="cb1773-2"><a href="sec-nonlinear-programming.html#cb1773-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
+<span id="cb1773-3"><a href="sec-nonlinear-programming.html#cb1773-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
+<span id="cb1773-4"><a href="sec-nonlinear-programming.html#cb1773-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
+<span id="cb1773-5"><a href="sec-nonlinear-programming.html#cb1773-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
+<span id="cb1773-6"><a href="sec-nonlinear-programming.html#cb1773-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
+<span id="cb1773-7"><a href="sec-nonlinear-programming.html#cb1773-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
+<span id="cb1773-8"><a href="sec-nonlinear-programming.html#cb1773-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
+<span id="cb1773-9"><a href="sec-nonlinear-programming.html#cb1773-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1773-10"><a href="sec-nonlinear-programming.html#cb1773-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">50</span>, <span class="at">ud =</span> <span class="dv">50</span>, <span class="at">nobj =</span> 2L),</span>
+<span id="cb1773-11"><a href="sec-nonlinear-programming.html#cb1773-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
+<span id="cb1773-12"><a href="sec-nonlinear-programming.html#cb1773-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>nloptr.auglag 无法求解此优化问题</p>
+<div class="sourceCode" id="cb1774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1774-1"><a href="sec-nonlinear-programming.html#cb1774-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1774-2"><a href="sec-nonlinear-programming.html#cb1774-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<p>调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解</p>
+<div class="sourceCode" id="cb1775"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1775-1"><a href="sec-nonlinear-programming.html#cb1775-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1775-2"><a href="sec-nonlinear-programming.html#cb1775-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
+<pre><code>## [1]  8.51446 31.24807</code></pre>
+<div class="sourceCode" id="cb1777"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1777-1"><a href="sec-nonlinear-programming.html#cb1777-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
+<pre><code>## [1] -3.030187</code></pre>
+<p>比如下面三组</p>
+<div class="sourceCode" id="cb1779"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1779-1"><a href="sec-nonlinear-programming.html#cb1779-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
+<pre><code>## [1] -1.025926</code></pre>
+<div class="sourceCode" id="cb1781"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1781-1"><a href="sec-nonlinear-programming.html#cb1781-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
+<pre><code>## [1] NaN</code></pre>
+<div class="sourceCode" id="cb1783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1783-1"><a href="sec-nonlinear-programming.html#cb1783-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
+<pre><code>## [1] -1.467513</code></pre>
+<div class="sourceCode" id="cb1785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1785-1"><a href="sec-nonlinear-programming.html#cb1785-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
+<pre><code>## [1] NaN</code></pre>
+<div class="sourceCode" id="cb1787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1787-1"><a href="sec-nonlinear-programming.html#cb1787-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
+<pre><code>## [1] -3.466596</code></pre>
+<div class="sourceCode" id="cb1789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1789-1"><a href="sec-nonlinear-programming.html#cb1789-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
+<pre><code>## [1] -8.515447e+208</code></pre>
+
+</div>
+</div>
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-quadratic-programming.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chap-differential-equations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": {}
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/XiangyunHuang/notesdown/edit/devel/numerical-optimization.Rmd",
+"text": "编辑"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/XiangyunHuang/notesdown/blob/devel/numerical-optimization.Rmd",
+"text": "查看"
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
