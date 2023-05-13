@@ -25,6 +25,13 @@ library(ROI.plugin.quadprog) # 注册 quadprog 求解二次规划
 library(ROI.plugin.scs)      # 注册 scs 求解凸锥规划
 library(lattice)    # 图形绘制
 library(kernlab)    # 优化问题和机器学习的关系
+# 自定义调色板
+custom_palette <- function(irr, ref, height, saturation = 0.9) {
+  hsv(
+    h = height, s = 1 - saturation * (1 - (1 - ref)^0.5),
+    v = irr
+  )
+}
 ```
 
 
@@ -641,7 +648,10 @@ wireframe(
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]), 
   ylab = expression(x[2]), 
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  zlab = list(expression(
+    italic(f) ~ group("(", list(x[1], x[2]), ")")
+    ), rot = 90),
+  shade.colors.palette = custom_palette,
   scales = list(arrows = FALSE, col = "black"),
   par.settings = list(axis.line = list(col = "transparent")),
   screen = list(z = -240, x = -70, y = 0)
@@ -685,7 +695,11 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 测试函数
 
 $$
-f(x,y) = 3*(1-x)*\mathrm{e}^{-x^2 - (y+1)^2} - 10*(\frac{x}{5} - x^3 - y^5)*\mathrm{e}^{-x^2-y^2} - \frac{1}{3}*\mathrm{e}^{-(x+1)^2-y^2}
+\begin{aligned}
+f(x,y) = &~ 3(1-x)\exp\{-x^2 - (y+1)^2\} \\
+&- 10(\frac{x}{5} - x^3 - y^5)\exp\{-x^2-y^2\} \\
+&- \frac{1}{3}\exp\{-(x+1)^2-y^2\}
+\end{aligned}
 $$
 
 
@@ -778,22 +792,26 @@ optim(par = c(-1.2, 1), fn = fn, gr = gr, method = "BFGS")
 
 ```r
 df <- expand.grid(
-  x = seq(-3, 3, length = 101),
-  y = seq(-3, 3, length = 101)
+  x = seq(-3, 3, length = 51),
+  y = seq(-3, 3, length = 51)
 )
 
-df$fnxy = apply(df, 1, fn)
+df$fnxy <- apply(df, 1, fn)
 
-library(lattice)
 wireframe(
   data = df, fnxy ~ x * y,
   shade = TRUE, drape = FALSE,
   xlab = expression(x[1]),
   ylab = expression(x[2]),
-  zlab = list(expression(italic(f) ~ group("(", list(x[1], x[2]), ")")), rot = 90),
+  zlab = list(expression(
+    italic(f) ~ group("(", list(x[1], x[2]), ")")
+  ), rot = 90), aspect = c(1, 0.75), 
+  shade.colors.palette = custom_palette,
   scales = list(arrows = FALSE, col = "black"),
-  par.settings = list(axis.line = list(col = "transparent")),
-  screen = list(z = -240, x = -70, y = 0)
+  par.settings = list(
+    axis.line = list(col = "transparent")
+    ),
+  screen = list(z = 45, x = -70, y = 0)
 )
 ```
 
@@ -806,7 +824,7 @@ wireframe(
 
 #### Rosenbrock 函数 {#rosenbrock}
 
-[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function) 定义如下：
+[香蕉函数](https://en.wikipedia.org/wiki/Rosenbrock_function)定义如下：
 
 $$f(x_1,x_2) = 100 (x_2 -x_1^2)^2 + (1 - x_1)^2$$
 
@@ -1456,7 +1474,7 @@ nlp$solution
 ```
 
 ```
-## [1] 1.227975 4.245371
+## [1] 1.227972 4.245371
 ```
 
 ```r
@@ -1577,7 +1595,7 @@ nlp$solution
 ```
 
 ```
-## [1] 41.04884 18.21041
+## [1] 28.75581 10.98399
 ```
 
 ```r
@@ -1585,7 +1603,7 @@ nlp$objval
 ```
 
 ```
-## [1] -3.118944
+## [1] -3.091665
 ```
 
 比如下面三组
