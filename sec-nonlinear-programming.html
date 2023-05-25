@@ -23,7 +23,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2023-05-13" />
+<meta name="date" content="2023-05-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1332,89 +1332,9 @@ f(x) = \sum_{i=1}^{n}(x_i - 1)^2 - \sum_{i=2}^{n}x_i x_{i-1}
 <span id="cb1760-38"><a href="sec-nonlinear-programming.html#cb1760-38" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1760-39"><a href="sec-nonlinear-programming.html#cb1760-39" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> p0)</span>
 <span id="cb1760-40"><a href="sec-nonlinear-programming.html#cb1760-40" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 1.227972 4.245371</code></pre>
+<pre><code>## [1] 1.227969 4.245379</code></pre>
 <div class="sourceCode" id="cb1762"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1762-1"><a href="sec-nonlinear-programming.html#cb1762-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
 <pre><code>## [1] 0.09582504</code></pre>
-</div>
-<div id="complex-constrained-function" class="section level4 hasAnchor" number="14.4.3.4">
-<h4><span class="header-section-number">14.4.3.4</span> 含复杂约束条件<a href="sec-nonlinear-programming.html#complex-constrained-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<span class="math display">\[\begin{equation*}
-\begin{array}{l}
-  \min_x \quad \exp(\sin(50\cdot x)) + \sin(60\cdot \exp(y)) + \sin(70\cdot\sin(x)) \\
-         \qquad + \sin(\sin(80\cdot y)) - \sin(10\cdot (x +y)) + \frac{(x^2 + y^2)^{\sin(y)}}{4} \\
-    s.t. \quad \left\{ 
-    \begin{array}{l}
-     x - \big((\cos(y))^x - x\big)^y = 0 \\
-    -50 \leq x_1,x_2 \leq 50
-    \end{array} \right.
-\end{array}
-\end{equation*}\]</span>
-<p>Lingo 代码如下：</p>
-<pre><code>Min = @exp(@sin(50 * x)) + @sin(60 * @exp(y)) + @sin(70 * @sin(x)) 
-      + @sin(@sin(80 * y)) - @sin(10 * (x + y)) + (x^2 + y^2)^@sin(y) / 4;
-
-x - (( @cos(y) )^x - x)^y = 0;
-
-@bnd(-50, x, 50);
-@bnd(-50, y, 50);</code></pre>
-<p>启用全局优化求解器，求解 14 分钟，在 <span class="math inline">\((0.08256372, 24.56510)\)</span> 取得极小值 -2.863497。不启用全局优化器就没法解，Lingo 会报错，找不到最优解，勉强找到一个可行解 <span class="math inline">\((0.06082750, 44.12793)\)</span>，目标值为 -1.29816。</p>
-<div class="sourceCode" id="cb1765"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1765-1"><a href="sec-nonlinear-programming.html#cb1765-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb1765-2"><a href="sec-nonlinear-programming.html#cb1765-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="fu">sin</span>(<span class="dv">50</span> <span class="sc">*</span> x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="dv">60</span> <span class="sc">*</span> <span class="fu">exp</span>(x[<span class="dv">2</span>])) <span class="sc">+</span></span>
-<span id="cb1765-3"><a href="sec-nonlinear-programming.html#cb1765-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="dv">70</span> <span class="sc">*</span> <span class="fu">sin</span>(x[<span class="dv">1</span>])) <span class="sc">+</span> <span class="fu">sin</span>(<span class="fu">sin</span>(<span class="dv">80</span> <span class="sc">*</span> x[<span class="dv">2</span>])) <span class="sc">-</span></span>
-<span id="cb1765-4"><a href="sec-nonlinear-programming.html#cb1765-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sin</span>(<span class="dv">10</span> <span class="sc">*</span> (x[<span class="dv">1</span>] <span class="sc">+</span> x[<span class="dv">2</span>])) <span class="sc">+</span> (x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span>(<span class="fu">sin</span>(x[<span class="dv">2</span>])) <span class="sc">/</span> <span class="dv">4</span></span>
-<span id="cb1765-5"><a href="sec-nonlinear-programming.html#cb1765-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1765-6"><a href="sec-nonlinear-programming.html#cb1765-6" aria-hidden="true" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1765-7"><a href="sec-nonlinear-programming.html#cb1765-7" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(fn, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
-<span id="cb1765-8"><a href="sec-nonlinear-programming.html#cb1765-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1765-9"><a href="sec-nonlinear-programming.html#cb1765-9" aria-hidden="true" tabindex="-1"></a>heq <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1765-10"><a href="sec-nonlinear-programming.html#cb1765-10" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="sc">-</span> ( (<span class="fu">cos</span>(x[<span class="dv">2</span>]))<span class="sc">^</span>x[<span class="dv">1</span>] <span class="sc">-</span> x[<span class="dv">1</span>] )<span class="sc">^</span>x[<span class="dv">2</span>]</span>
-<span id="cb1765-11"><a href="sec-nonlinear-programming.html#cb1765-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1765-12"><a href="sec-nonlinear-programming.html#cb1765-12" aria-hidden="true" tabindex="-1"></a>heq.jac <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb1765-13"><a href="sec-nonlinear-programming.html#cb1765-13" aria-hidden="true" tabindex="-1"></a>  numDeriv<span class="sc">::</span><span class="fu">grad</span>(heq, <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>]))</span>
-<span id="cb1765-14"><a href="sec-nonlinear-programming.html#cb1765-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1765-15"><a href="sec-nonlinear-programming.html#cb1765-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1765-16"><a href="sec-nonlinear-programming.html#cb1765-16" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
-<pre><code>## [1] -1.29816</code></pre>
-<div class="sourceCode" id="cb1767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1767-1"><a href="sec-nonlinear-programming.html#cb1767-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
-<pre><code>## [1] 1.966877</code></pre>
-<div class="sourceCode" id="cb1769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1769-1"><a href="sec-nonlinear-programming.html#cb1769-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.06082750</span>, <span class="fl">44.12793</span>))</span></code></pre></div>
-<pre><code>## [1] 1.923673e-08</code></pre>
-<div class="sourceCode" id="cb1771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1771-1"><a href="sec-nonlinear-programming.html#cb1771-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
-<pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb1773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1773-1"><a href="sec-nonlinear-programming.html#cb1773-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义目标规划</span></span>
-<span id="cb1773-2"><a href="sec-nonlinear-programming.html#cb1773-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">OP</span>(</span>
-<span id="cb1773-3"><a href="sec-nonlinear-programming.html#cb1773-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">objective =</span> <span class="fu">F_objective</span>(<span class="at">F =</span> fn, <span class="at">n =</span> 2L, <span class="at">G =</span> gr), <span class="co"># 2 个目标变量</span></span>
-<span id="cb1773-4"><a href="sec-nonlinear-programming.html#cb1773-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">constraints =</span> <span class="fu">F_constraint</span>(</span>
-<span id="cb1773-5"><a href="sec-nonlinear-programming.html#cb1773-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F =</span> <span class="fu">list</span>(<span class="at">heq =</span> heq),</span>
-<span id="cb1773-6"><a href="sec-nonlinear-programming.html#cb1773-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">dir =</span> <span class="st">&quot;==&quot;</span>,</span>
-<span id="cb1773-7"><a href="sec-nonlinear-programming.html#cb1773-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">rhs =</span> <span class="dv">0</span>,</span>
-<span id="cb1773-8"><a href="sec-nonlinear-programming.html#cb1773-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">J =</span> <span class="fu">list</span>(<span class="at">heq.jac =</span> heq.jac)</span>
-<span id="cb1773-9"><a href="sec-nonlinear-programming.html#cb1773-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb1773-10"><a href="sec-nonlinear-programming.html#cb1773-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bounds =</span> <span class="fu">V_bound</span>(<span class="at">ld =</span> <span class="sc">-</span><span class="dv">50</span>, <span class="at">ud =</span> <span class="dv">50</span>, <span class="at">nobj =</span> 2L),</span>
-<span id="cb1773-11"><a href="sec-nonlinear-programming.html#cb1773-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">maximum =</span> <span class="cn">FALSE</span> <span class="co"># 求最小</span></span>
-<span id="cb1773-12"><a href="sec-nonlinear-programming.html#cb1773-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>nloptr.auglag 无法求解此优化问题</p>
-<div class="sourceCode" id="cb1774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1774-1"><a href="sec-nonlinear-programming.html#cb1774-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.auglag&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb1774-2"><a href="sec-nonlinear-programming.html#cb1774-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<p>调 nloptr.isres 求解器，每次执行都会得到不同的局部最优解</p>
-<div class="sourceCode" id="cb1775"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1775-1"><a href="sec-nonlinear-programming.html#cb1775-1" aria-hidden="true" tabindex="-1"></a>nlp <span class="ot">&lt;-</span> <span class="fu">ROI_solve</span>(op, <span class="at">solver =</span> <span class="st">&quot;nloptr.isres&quot;</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb1775-2"><a href="sec-nonlinear-programming.html#cb1775-2" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>solution</span></code></pre></div>
-<pre><code>## [1] 28.75581 10.98399</code></pre>
-<div class="sourceCode" id="cb1777"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1777-1"><a href="sec-nonlinear-programming.html#cb1777-1" aria-hidden="true" tabindex="-1"></a>nlp<span class="sc">$</span>objval</span></code></pre></div>
-<pre><code>## [1] -3.091665</code></pre>
-<p>比如下面三组</p>
-<div class="sourceCode" id="cb1779"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1779-1"><a href="sec-nonlinear-programming.html#cb1779-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
-<pre><code>## [1] -1.025926</code></pre>
-<div class="sourceCode" id="cb1781"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1781-1"><a href="sec-nonlinear-programming.html#cb1781-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">40.95941</span>, <span class="fl">41.52914</span>))</span></code></pre></div>
-<pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1783-1"><a href="sec-nonlinear-programming.html#cb1783-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
-<pre><code>## [1] -1.467513</code></pre>
-<div class="sourceCode" id="cb1785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1785-1"><a href="sec-nonlinear-programming.html#cb1785-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">21.88091</span>, <span class="fl">28.96994</span>))</span></code></pre></div>
-<pre><code>## [1] NaN</code></pre>
-<div class="sourceCode" id="cb1787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1787-1"><a href="sec-nonlinear-programming.html#cb1787-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fn</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
-<pre><code>## [1] -3.466596</code></pre>
-<div class="sourceCode" id="cb1789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1789-1"><a href="sec-nonlinear-programming.html#cb1789-1" aria-hidden="true" tabindex="-1"></a><span class="fu">heq</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">49.921967437</span>, <span class="fl">4.8499336803</span>))</span></code></pre></div>
-<pre><code>## [1] -8.515447e+208</code></pre>
 
 </div>
 </div>

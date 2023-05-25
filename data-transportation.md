@@ -288,7 +288,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpClBipw/file360f43d5dbd5.data"
+## [1] "/tmp/Rtmpt76iAL/file3eec7bde3aa5.data"
 ```
 
 设置参数 `n = -1` 表示将文件 fil 的内容从头读到尾
@@ -328,7 +328,7 @@ fil
 ```
 
 ```
-## [1] "/tmp/RtmpClBipw/test360ff9b5520"
+## [1] "/tmp/Rtmpt76iAL/test3eec6b742b98"
 ```
 
 ```r
@@ -1584,13 +1584,13 @@ diamonds_sample
 ```
 
 ```
-##   carat   cut color clarity depth table price    x    y    z
-## 1  0.75 Ideal     D     SI2  61.3    56  2773 5.85 5.89 3.60
-## 2  0.53 Ideal     F    VVS1  60.9    57  2830 5.23 5.29 3.19
-## 3  0.24 Ideal     G    VVS1  62.4    56   559 3.97 3.99 2.48
-## 4  1.04  Good     I     SI2  59.9    64  2970 6.51 6.45 3.88
-## 5  0.90  Good     F     SI2  64.3    57  3210 6.16 6.06 3.93
-## 6  0.76 Ideal     F     VS2  61.0    55  3257 5.89 5.92 3.60
+##   carat       cut color clarity depth table price    x    y    z
+## 1  0.60     Ideal     F    VVS2  62.0    55  2822 5.37 5.40 3.34
+## 2  0.77     Ideal     E     SI2  60.7    55  2834 6.01 5.95 3.63
+## 3  0.70 Very Good     D     VS2  63.1    56  2985 5.62 5.69 3.57
+## 4  0.76 Very Good     E     VS2  61.0    58  3111 5.88 5.93 3.60
+## 5  1.00      Good     J     VS2  62.0    61  3835 6.36 6.45 3.97
+## 6  1.01      Good     H     SI1  64.0    58  4191 6.37 6.31 4.06
 ```
 
 将抽样的结果用窗口函数 `RANK()` 排序，详见 <https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html>
@@ -1608,13 +1608,13 @@ diamonds_rank
 ```
 
 ```
-##     cut price rank
-## 1  Fair  4916    1
-## 2  Good   526    1
-## 3  Good   567    2
-## 4  Good  1377    3
-## 5  Good  4028    4
-## 6 Ideal   507    1
+##    cut price rank
+## 1 Fair  4480    1
+## 2 Fair  4600    2
+## 3 Good   605    1
+## 4 Good  3139    2
+## 5 Good  3465    3
+## 6 Good  4588    4
 ```
 
 LATERAL VIEW 把一列拆成多行
@@ -1649,10 +1649,10 @@ dbGetQuery(sc, "SELECT * FROM person")
 
 ```
 ##    id name age class  address
-## 1 300 Mike  80     3 Street 3
-## 2 400  Dan  50     4 Street 4
-## 3 100 John  30     1 Street 1
-## 4 200 Mary  NA     1 Street 2
+## 1 100 John  30     1 Street 1
+## 2 200 Mary  NA     1 Street 2
+## 3 300 Mike  80     3 Street 3
+## 4 400  Dan  50     4 Street 4
 ```
 
 行列转换 <https://www.cnblogs.com/kimbo/p/6208973.html>，LATERAL VIEW 展开
@@ -1669,12 +1669,12 @@ LIMIT 6
 
 ```
 ##    id name age class  address c_age d_age
-## 1 300 Mike  80     3 Street 3    30    40
-## 2 300 Mike  80     3 Street 3    30    80
-## 3 300 Mike  80     3 Street 3    60    40
-## 4 300 Mike  80     3 Street 3    60    80
-## 5 400  Dan  50     4 Street 4    30    40
-## 6 400  Dan  50     4 Street 4    30    80
+## 1 100 John  30     1 Street 1    30    40
+## 2 100 John  30     1 Street 1    30    80
+## 3 100 John  30     1 Street 1    60    40
+## 4 100 John  30     1 Street 1    60    80
+## 5 200 Mary  NA     1 Street 2    30    40
+## 6 200 Mary  NA     1 Street 2    30    80
 ```
 
 日期相关的函数 <https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html#date-and-timestamp-functions>
@@ -1687,7 +1687,7 @@ dbGetQuery(sc, "select current_date")
 
 ```
 ##   current_date()
-## 1     2023-05-13
+## 1     2023-05-25
 ```
 
 ```r
@@ -1697,7 +1697,7 @@ dbGetQuery(sc, "select date_sub(current_date, 1)")
 
 ```
 ##   date_sub(current_date(), 1)
-## 1                  2023-05-12
+## 1                  2023-05-24
 ```
 
 ```r
@@ -1717,7 +1717,7 @@ dbGetQuery(sc, "select dayofweek(current_date)")
 
 ```
 ##   dayofweek(current_date())
-## 1                         7
+## 1                         5
 ```
 
 最后，使用完记得关闭 Spark 连接
@@ -1957,7 +1957,7 @@ xfun::session_info()
 ##   RColorBrewer_1.1.3 rlang_1.1.1        rmarkdown_2.21     rprojroot_2.0.3   
 ##   rstudioapi_0.14    sass_0.4.6         scales_1.2.1       sparklyr_1.8.1    
 ##   splines_4.2.3      stats_4.2.3        stringi_1.7.12     stringr_1.5.0     
-##   sys_3.4.1          sysfonts_0.8.8     tibble_3.2.1       tidyr_1.3.0       
+##   sys_3.4.2          sysfonts_0.8.8     tibble_3.2.1       tidyr_1.3.0       
 ##   tidyselect_1.2.0   tinytex_0.45       tools_4.2.3        utf8_1.2.3        
 ##   utils_4.2.3        uuid_1.1.0         vctrs_0.6.2        viridisLite_0.4.2 
 ##   withr_2.5.0        xfun_0.39          xml2_1.3.4         yaml_2.3.7

@@ -23,7 +23,7 @@
 <meta name="author" content="黄湘云" />
 
 
-<meta name="date" content="2023-05-13" />
+<meta name="date" content="2023-05-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -648,33 +648,33 @@ div.csl-indent {
   \end{array} \right.
 \end{equation*}\]</span>
 <p>参数 <span class="math inline">\(D = 0.01\)</span>，边界条件 <span class="math inline">\(y_{t,x=0} = 0, y_{t, x = 1} = 1\)</span>，初始条件 <span class="math inline">\(y_{t=0,x} = \sin(\pi x)\)</span>。</p>
-<div class="sourceCode" id="cb1794"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1794-1"><a href="sec-partial-differential-equations.html#cb1794-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ReacTran)</span>
-<span id="cb1794-2"><a href="sec-partial-differential-equations.html#cb1794-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1794-3"><a href="sec-partial-differential-equations.html#cb1794-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb1794-4"><a href="sec-partial-differential-equations.html#cb1794-4" aria-hidden="true" tabindex="-1"></a>xgrid <span class="ot">&lt;-</span> <span class="fu">setup.grid.1D</span>(<span class="at">x.up =</span> <span class="dv">0</span>, <span class="at">x.down =</span> <span class="dv">1</span>, <span class="at">N =</span> N)</span>
-<span id="cb1794-5"><a href="sec-partial-differential-equations.html#cb1794-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>x.mid</span>
-<span id="cb1794-6"><a href="sec-partial-differential-equations.html#cb1794-6" aria-hidden="true" tabindex="-1"></a>D.coeff <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
-<span id="cb1794-7"><a href="sec-partial-differential-equations.html#cb1794-7" aria-hidden="true" tabindex="-1"></a>Diffusion <span class="ot">&lt;-</span> <span class="cf">function</span>(t, Y, parms) {</span>
-<span id="cb1794-8"><a href="sec-partial-differential-equations.html#cb1794-8" aria-hidden="true" tabindex="-1"></a>  tran <span class="ot">&lt;-</span> <span class="fu">tran.1D</span>(</span>
-<span id="cb1794-9"><a href="sec-partial-differential-equations.html#cb1794-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">C =</span> Y, <span class="at">C.up =</span> <span class="dv">0</span>, <span class="at">C.down =</span> <span class="dv">1</span>,</span>
-<span id="cb1794-10"><a href="sec-partial-differential-equations.html#cb1794-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">D =</span> D.coeff, <span class="at">dx =</span> xgrid</span>
-<span id="cb1794-11"><a href="sec-partial-differential-equations.html#cb1794-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1794-12"><a href="sec-partial-differential-equations.html#cb1794-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb1794-13"><a href="sec-partial-differential-equations.html#cb1794-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">dY =</span> tran<span class="sc">$</span>dC, </span>
-<span id="cb1794-14"><a href="sec-partial-differential-equations.html#cb1794-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">flux.up =</span> tran<span class="sc">$</span>flux.up,</span>
-<span id="cb1794-15"><a href="sec-partial-differential-equations.html#cb1794-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">flux.down =</span> tran<span class="sc">$</span>flux.down</span>
-<span id="cb1794-16"><a href="sec-partial-differential-equations.html#cb1794-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1794-17"><a href="sec-partial-differential-equations.html#cb1794-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1794-18"><a href="sec-partial-differential-equations.html#cb1794-18" aria-hidden="true" tabindex="-1"></a>yini <span class="ot">&lt;-</span> <span class="fu">sin</span>(pi <span class="sc">*</span> x)</span>
-<span id="cb1794-19"><a href="sec-partial-differential-equations.html#cb1794-19" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
-<span id="cb1794-20"><a href="sec-partial-differential-equations.html#cb1794-20" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">ode.1D</span>(</span>
-<span id="cb1794-21"><a href="sec-partial-differential-equations.html#cb1794-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> yini, <span class="at">times =</span> times, <span class="at">func =</span> Diffusion,</span>
-<span id="cb1794-22"><a href="sec-partial-differential-equations.html#cb1794-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">parms =</span> <span class="cn">NULL</span>, <span class="at">dimens =</span> N</span>
-<span id="cb1794-23"><a href="sec-partial-differential-equations.html#cb1794-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb1795"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1795-1"><a href="sec-partial-differential-equations.html#cb1795-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(out,</span>
-<span id="cb1795-2"><a href="sec-partial-differential-equations.html#cb1795-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> xgrid<span class="sc">$</span>x.mid, <span class="at">xlab =</span> <span class="st">&quot;times&quot;</span>,</span>
-<span id="cb1795-3"><a href="sec-partial-differential-equations.html#cb1795-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">main =</span> <span class="st">&quot;PDE&quot;</span>, <span class="at">add.contour =</span> <span class="cn">TRUE</span></span>
-<span id="cb1795-4"><a href="sec-partial-differential-equations.html#cb1795-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1767-1"><a href="sec-partial-differential-equations.html#cb1767-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ReacTran)</span>
+<span id="cb1767-2"><a href="sec-partial-differential-equations.html#cb1767-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1767-3"><a href="sec-partial-differential-equations.html#cb1767-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1767-4"><a href="sec-partial-differential-equations.html#cb1767-4" aria-hidden="true" tabindex="-1"></a>xgrid <span class="ot">&lt;-</span> <span class="fu">setup.grid.1D</span>(<span class="at">x.up =</span> <span class="dv">0</span>, <span class="at">x.down =</span> <span class="dv">1</span>, <span class="at">N =</span> N)</span>
+<span id="cb1767-5"><a href="sec-partial-differential-equations.html#cb1767-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>x.mid</span>
+<span id="cb1767-6"><a href="sec-partial-differential-equations.html#cb1767-6" aria-hidden="true" tabindex="-1"></a>D.coeff <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb1767-7"><a href="sec-partial-differential-equations.html#cb1767-7" aria-hidden="true" tabindex="-1"></a>Diffusion <span class="ot">&lt;-</span> <span class="cf">function</span>(t, Y, parms) {</span>
+<span id="cb1767-8"><a href="sec-partial-differential-equations.html#cb1767-8" aria-hidden="true" tabindex="-1"></a>  tran <span class="ot">&lt;-</span> <span class="fu">tran.1D</span>(</span>
+<span id="cb1767-9"><a href="sec-partial-differential-equations.html#cb1767-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">C =</span> Y, <span class="at">C.up =</span> <span class="dv">0</span>, <span class="at">C.down =</span> <span class="dv">1</span>,</span>
+<span id="cb1767-10"><a href="sec-partial-differential-equations.html#cb1767-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">D =</span> D.coeff, <span class="at">dx =</span> xgrid</span>
+<span id="cb1767-11"><a href="sec-partial-differential-equations.html#cb1767-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1767-12"><a href="sec-partial-differential-equations.html#cb1767-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb1767-13"><a href="sec-partial-differential-equations.html#cb1767-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">dY =</span> tran<span class="sc">$</span>dC, </span>
+<span id="cb1767-14"><a href="sec-partial-differential-equations.html#cb1767-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">flux.up =</span> tran<span class="sc">$</span>flux.up,</span>
+<span id="cb1767-15"><a href="sec-partial-differential-equations.html#cb1767-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">flux.down =</span> tran<span class="sc">$</span>flux.down</span>
+<span id="cb1767-16"><a href="sec-partial-differential-equations.html#cb1767-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1767-17"><a href="sec-partial-differential-equations.html#cb1767-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1767-18"><a href="sec-partial-differential-equations.html#cb1767-18" aria-hidden="true" tabindex="-1"></a>yini <span class="ot">&lt;-</span> <span class="fu">sin</span>(pi <span class="sc">*</span> x)</span>
+<span id="cb1767-19"><a href="sec-partial-differential-equations.html#cb1767-19" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb1767-20"><a href="sec-partial-differential-equations.html#cb1767-20" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">ode.1D</span>(</span>
+<span id="cb1767-21"><a href="sec-partial-differential-equations.html#cb1767-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> yini, <span class="at">times =</span> times, <span class="at">func =</span> Diffusion,</span>
+<span id="cb1767-22"><a href="sec-partial-differential-equations.html#cb1767-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">parms =</span> <span class="cn">NULL</span>, <span class="at">dimens =</span> N</span>
+<span id="cb1767-23"><a href="sec-partial-differential-equations.html#cb1767-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1768-1"><a href="sec-partial-differential-equations.html#cb1768-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(out,</span>
+<span id="cb1768-2"><a href="sec-partial-differential-equations.html#cb1768-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> xgrid<span class="sc">$</span>x.mid, <span class="at">xlab =</span> <span class="st">&quot;times&quot;</span>,</span>
+<span id="cb1768-3"><a href="sec-partial-differential-equations.html#cb1768-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">main =</span> <span class="st">&quot;PDE&quot;</span>, <span class="at">add.contour =</span> <span class="cn">TRUE</span></span>
+<span id="cb1768-4"><a href="sec-partial-differential-equations.html#cb1768-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pde-1d"></span>
 <img src="differential-equations_files/figure-html/pde-1d-1.png" alt="一维热传导方程的数值解热力图" width="528" />
 <p class="caption">
@@ -702,29 +702,29 @@ div.csl-indent {
 u(x,y) = \sin(\pi x)\cosh(\pi y)
 \]</span></p>
 <p>其中 <span class="math inline">\(x \in [0,1], y\in [0,1]\)</span></p>
-<div class="sourceCode" id="cb1796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1796-1"><a href="sec-partial-differential-equations.html#cb1796-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1796-2"><a href="sec-partial-differential-equations.html#cb1796-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sin</span>(pi <span class="sc">*</span> x) <span class="sc">*</span> <span class="fu">cosh</span>(pi <span class="sc">*</span> y)</span>
-<span id="cb1796-3"><a href="sec-partial-differential-equations.html#cb1796-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1796-4"><a href="sec-partial-differential-equations.html#cb1796-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
-<span id="cb1796-5"><a href="sec-partial-differential-equations.html#cb1796-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
-<span id="cb1796-6"><a href="sec-partial-differential-equations.html#cb1796-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, y, fn)</span></code></pre></div>
-<div class="sourceCode" id="cb1797"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1797-1"><a href="sec-partial-differential-equations.html#cb1797-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(z, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">20</span>))</span>
-<span id="cb1797-2"><a href="sec-partial-differential-equations.html#cb1797-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(z, <span class="at">method =</span> <span class="st">&quot;flattest&quot;</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1769-1"><a href="sec-partial-differential-equations.html#cb1769-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1769-2"><a href="sec-partial-differential-equations.html#cb1769-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sin</span>(pi <span class="sc">*</span> x) <span class="sc">*</span> <span class="fu">cosh</span>(pi <span class="sc">*</span> y)</span>
+<span id="cb1769-3"><a href="sec-partial-differential-equations.html#cb1769-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1769-4"><a href="sec-partial-differential-equations.html#cb1769-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
+<span id="cb1769-5"><a href="sec-partial-differential-equations.html#cb1769-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">101</span>)</span>
+<span id="cb1769-6"><a href="sec-partial-differential-equations.html#cb1769-6" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, y, fn)</span></code></pre></div>
+<div class="sourceCode" id="cb1770"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1770-1"><a href="sec-partial-differential-equations.html#cb1770-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(z, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">20</span>))</span>
+<span id="cb1770-2"><a href="sec-partial-differential-equations.html#cb1770-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(z, <span class="at">method =</span> <span class="st">&quot;flattest&quot;</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:laplace-eq-image"></span>
 <img src="differential-equations_files/figure-html/laplace-eq-image-1.png" alt="解析解的二维图像" width="528" />
 <p class="caption">
 图 15.3: 解析解的二维图像
 </p>
 </div>
-<div class="sourceCode" id="cb1798"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1798-1"><a href="sec-partial-differential-equations.html#cb1798-1" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(z, </span>
-<span id="cb1798-2"><a href="sec-partial-differential-equations.html#cb1798-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="dv">30</span>, <span class="at">phi =</span> <span class="dv">20</span>, </span>
-<span id="cb1798-3"><a href="sec-partial-differential-equations.html#cb1798-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="dv">50</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> <span class="fl">0.5</span>, <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
-<span id="cb1798-4"><a href="sec-partial-differential-equations.html#cb1798-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">ticktype =</span> <span class="st">&quot;detailed&quot;</span>, <span class="at">nticks =</span> <span class="dv">5</span>, <span class="at">box =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1798-5"><a href="sec-partial-differential-equations.html#cb1798-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">drapecol</span>(z, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">20</span>)),</span>
-<span id="cb1798-6"><a href="sec-partial-differential-equations.html#cb1798-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">&quot;transparent&quot;</span>,</span>
-<span id="cb1798-7"><a href="sec-partial-differential-equations.html#cb1798-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;X&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y&quot;</span>, <span class="at">zlab =</span> <span class="st">&quot;Z&quot;</span>, </span>
-<span id="cb1798-8"><a href="sec-partial-differential-equations.html#cb1798-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb1798-9"><a href="sec-partial-differential-equations.html#cb1798-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1771-1"><a href="sec-partial-differential-equations.html#cb1771-1" aria-hidden="true" tabindex="-1"></a><span class="fu">persp</span>(z, </span>
+<span id="cb1771-2"><a href="sec-partial-differential-equations.html#cb1771-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> <span class="dv">30</span>, <span class="at">phi =</span> <span class="dv">20</span>, </span>
+<span id="cb1771-3"><a href="sec-partial-differential-equations.html#cb1771-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="dv">50</span>, <span class="at">d =</span> <span class="fl">0.1</span>, <span class="at">expand =</span> <span class="fl">0.5</span>, <span class="at">ltheta =</span> <span class="dv">90</span>, <span class="at">lphi =</span> <span class="dv">180</span>,</span>
+<span id="cb1771-4"><a href="sec-partial-differential-equations.html#cb1771-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">shade =</span> <span class="fl">0.1</span>, <span class="at">ticktype =</span> <span class="st">&quot;detailed&quot;</span>, <span class="at">nticks =</span> <span class="dv">5</span>, <span class="at">box =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1771-5"><a href="sec-partial-differential-equations.html#cb1771-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">drapecol</span>(z, <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">20</span>)),</span>
+<span id="cb1771-6"><a href="sec-partial-differential-equations.html#cb1771-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">&quot;transparent&quot;</span>,</span>
+<span id="cb1771-7"><a href="sec-partial-differential-equations.html#cb1771-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;X&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y&quot;</span>, <span class="at">zlab =</span> <span class="st">&quot;Z&quot;</span>, </span>
+<span id="cb1771-8"><a href="sec-partial-differential-equations.html#cb1771-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb1771-9"><a href="sec-partial-differential-equations.html#cb1771-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:laplace-eq-persp"></span>
 <img src="differential-equations_files/figure-html/laplace-eq-persp-1.png" alt="解析解的三维透视图像" width="528" />
 <p class="caption">
@@ -732,28 +732,28 @@ u(x,y) = \sin(\pi x)\cosh(\pi y)
 </p>
 </div>
 <p>求解 PDE</p>
-<div class="sourceCode" id="cb1799"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1799-1"><a href="sec-partial-differential-equations.html#cb1799-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
-<span id="cb1799-2"><a href="sec-partial-differential-equations.html#cb1799-2" aria-hidden="true" tabindex="-1"></a>xgrid <span class="ot">&lt;-</span> <span class="fu">setup.grid.1D</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="dv">100</span>, <span class="at">dx.1 =</span> dx)</span>
-<span id="cb1799-3"><a href="sec-partial-differential-equations.html#cb1799-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>x.mid</span>
-<span id="cb1799-4"><a href="sec-partial-differential-equations.html#cb1799-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>N</span>
-<span id="cb1799-5"><a href="sec-partial-differential-equations.html#cb1799-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1799-6"><a href="sec-partial-differential-equations.html#cb1799-6" aria-hidden="true" tabindex="-1"></a>uini <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.05</span> <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1799-7"><a href="sec-partial-differential-equations.html#cb1799-7" aria-hidden="true" tabindex="-1"></a>vini <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, N)</span>
-<span id="cb1799-8"><a href="sec-partial-differential-equations.html#cb1799-8" aria-hidden="true" tabindex="-1"></a>yini <span class="ot">&lt;-</span> <span class="fu">c</span>(uini, vini)</span>
-<span id="cb1799-9"><a href="sec-partial-differential-equations.html#cb1799-9" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">50</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
-<span id="cb1799-10"><a href="sec-partial-differential-equations.html#cb1799-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1799-11"><a href="sec-partial-differential-equations.html#cb1799-11" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(t, y, parms) {</span>
-<span id="cb1799-12"><a href="sec-partial-differential-equations.html#cb1799-12" aria-hidden="true" tabindex="-1"></a>  u1 <span class="ot">&lt;-</span> y[<span class="dv">1</span><span class="sc">:</span>N]</span>
-<span id="cb1799-13"><a href="sec-partial-differential-equations.html#cb1799-13" aria-hidden="true" tabindex="-1"></a>  u2 <span class="ot">&lt;-</span> y[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>N)]</span>
-<span id="cb1799-14"><a href="sec-partial-differential-equations.html#cb1799-14" aria-hidden="true" tabindex="-1"></a>  du1 <span class="ot">&lt;-</span> u2</span>
-<span id="cb1799-15"><a href="sec-partial-differential-equations.html#cb1799-15" aria-hidden="true" tabindex="-1"></a>  du2 <span class="ot">&lt;-</span> <span class="fu">tran.1D</span>(<span class="at">C =</span> u1, <span class="at">C.up =</span> <span class="dv">0</span>, <span class="at">C.down =</span> <span class="dv">0</span>, <span class="at">D =</span> <span class="dv">1</span>, <span class="at">dx =</span> xgrid)<span class="sc">$</span>dC</span>
-<span id="cb1799-16"><a href="sec-partial-differential-equations.html#cb1799-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="fu">c</span>(du1, du2)))</span>
-<span id="cb1799-17"><a href="sec-partial-differential-equations.html#cb1799-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1799-18"><a href="sec-partial-differential-equations.html#cb1799-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1799-19"><a href="sec-partial-differential-equations.html#cb1799-19" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">ode.1D</span>(</span>
-<span id="cb1799-20"><a href="sec-partial-differential-equations.html#cb1799-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> wave, <span class="at">y =</span> yini, <span class="at">times =</span> times, <span class="at">parms =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1799-21"><a href="sec-partial-differential-equations.html#cb1799-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">nspec =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">&quot;ode45&quot;</span>, <span class="at">dimens =</span> N, <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;u&quot;</span>, <span class="st">&quot;v&quot;</span>)</span>
-<span id="cb1799-22"><a href="sec-partial-differential-equations.html#cb1799-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb1772"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1772-1"><a href="sec-partial-differential-equations.html#cb1772-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb1772-2"><a href="sec-partial-differential-equations.html#cb1772-2" aria-hidden="true" tabindex="-1"></a>xgrid <span class="ot">&lt;-</span> <span class="fu">setup.grid.1D</span>(<span class="sc">-</span><span class="dv">100</span>, <span class="dv">100</span>, <span class="at">dx.1 =</span> dx)</span>
+<span id="cb1772-3"><a href="sec-partial-differential-equations.html#cb1772-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>x.mid</span>
+<span id="cb1772-4"><a href="sec-partial-differential-equations.html#cb1772-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> xgrid<span class="sc">$</span>N</span>
+<span id="cb1772-5"><a href="sec-partial-differential-equations.html#cb1772-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1772-6"><a href="sec-partial-differential-equations.html#cb1772-6" aria-hidden="true" tabindex="-1"></a>uini <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.05</span> <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1772-7"><a href="sec-partial-differential-equations.html#cb1772-7" aria-hidden="true" tabindex="-1"></a>vini <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, N)</span>
+<span id="cb1772-8"><a href="sec-partial-differential-equations.html#cb1772-8" aria-hidden="true" tabindex="-1"></a>yini <span class="ot">&lt;-</span> <span class="fu">c</span>(uini, vini)</span>
+<span id="cb1772-9"><a href="sec-partial-differential-equations.html#cb1772-9" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">50</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb1772-10"><a href="sec-partial-differential-equations.html#cb1772-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1772-11"><a href="sec-partial-differential-equations.html#cb1772-11" aria-hidden="true" tabindex="-1"></a>wave <span class="ot">&lt;-</span> <span class="cf">function</span>(t, y, parms) {</span>
+<span id="cb1772-12"><a href="sec-partial-differential-equations.html#cb1772-12" aria-hidden="true" tabindex="-1"></a>  u1 <span class="ot">&lt;-</span> y[<span class="dv">1</span><span class="sc">:</span>N]</span>
+<span id="cb1772-13"><a href="sec-partial-differential-equations.html#cb1772-13" aria-hidden="true" tabindex="-1"></a>  u2 <span class="ot">&lt;-</span> y[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>N)]</span>
+<span id="cb1772-14"><a href="sec-partial-differential-equations.html#cb1772-14" aria-hidden="true" tabindex="-1"></a>  du1 <span class="ot">&lt;-</span> u2</span>
+<span id="cb1772-15"><a href="sec-partial-differential-equations.html#cb1772-15" aria-hidden="true" tabindex="-1"></a>  du2 <span class="ot">&lt;-</span> <span class="fu">tran.1D</span>(<span class="at">C =</span> u1, <span class="at">C.up =</span> <span class="dv">0</span>, <span class="at">C.down =</span> <span class="dv">0</span>, <span class="at">D =</span> <span class="dv">1</span>, <span class="at">dx =</span> xgrid)<span class="sc">$</span>dC</span>
+<span id="cb1772-16"><a href="sec-partial-differential-equations.html#cb1772-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="fu">c</span>(du1, du2)))</span>
+<span id="cb1772-17"><a href="sec-partial-differential-equations.html#cb1772-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1772-18"><a href="sec-partial-differential-equations.html#cb1772-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1772-19"><a href="sec-partial-differential-equations.html#cb1772-19" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">ode.1D</span>(</span>
+<span id="cb1772-20"><a href="sec-partial-differential-equations.html#cb1772-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">func =</span> wave, <span class="at">y =</span> yini, <span class="at">times =</span> times, <span class="at">parms =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1772-21"><a href="sec-partial-differential-equations.html#cb1772-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">nspec =</span> <span class="dv">2</span>, <span class="at">method =</span> <span class="st">&quot;ode45&quot;</span>, <span class="at">dimens =</span> N, <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;u&quot;</span>, <span class="st">&quot;v&quot;</span>)</span>
+<span id="cb1772-22"><a href="sec-partial-differential-equations.html#cb1772-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
             </section>
 

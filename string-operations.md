@@ -1933,7 +1933,7 @@ sapply(
 ## actual   10   10   11   12   13   14   15   16   17    18    19    20    21
 ##        [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 ## target    23    24    25    26    27    28    29    30    31    32    33    34
-## actual    22    23    24    25    26    27    28    29    30    31    32    33
+## actual    22    23    24    25    26    27    28    29    30    31    31    33
 ##        [,26] [,27] [,28] [,29] [,30] [,31]
 ## target    35    36    37    38    39    40
 ## actual    34    35    36    37    38    39
@@ -2233,7 +2233,7 @@ xfun::session_info()
 ##   memoise_2.0.1     methods_4.2.3     mime_0.12         openssl_2.0.6    
 ##   pillar_1.9.0      pkgconfig_2.0.3   purrr_1.0.1       R6_2.5.1         
 ##   rappdirs_0.3.3    rlang_1.1.1       rmarkdown_2.21    sass_0.4.6       
-##   stats_4.2.3       stringi_1.7.12    stringr_1.5.0     sys_3.4.1        
+##   stats_4.2.3       stringi_1.7.12    stringr_1.5.0     sys_3.4.2        
 ##   sysfonts_0.8.8    tibble_3.2.1      tidyr_1.3.0       tidyselect_1.2.0 
 ##   tinytex_0.45      tools_4.2.3       utf8_1.2.3        utils_4.2.3      
 ##   vctrs_0.6.2       withr_2.5.0       xfun_0.39         yaml_2.3.7
